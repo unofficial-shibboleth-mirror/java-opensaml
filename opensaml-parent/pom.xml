@@ -49,6 +49,8 @@
         <svn.relative.location>java-opensaml/trunk</svn.relative.location>
         <java-support.version>7.3.0</java-support.version>
         <spring-extensions.version>5.3.0</spring-extensions.version>
+        <!-- Override version on branch. -->
+        <ldaptive.version>1.0.11</ldaptive.version>
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
         <opensaml-parent.site.url>${shibboleth.site.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
         <opensaml-module.site.url>${opensaml-parent.site.url}${project.artifactId}</opensaml-module.site.url>
