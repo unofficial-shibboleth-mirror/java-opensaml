@@ -416,7 +416,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed);
     }
     
-    @Test
+    @Test(enabled=false)
     public void testHTTPSTrustEngineValidPKIX() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";
@@ -449,7 +449,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         Assert.assertNull(ed.getDOM());
     }
     
-    @Test
+    @Test(enabled=false)
     public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
         String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
         String entityID = "https://www.example.org/sp";
