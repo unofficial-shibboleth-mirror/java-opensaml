@@ -19,7 +19,7 @@
 
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
-    <version>3.4.2</version>
+    <version>3.4.3-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <modules>
