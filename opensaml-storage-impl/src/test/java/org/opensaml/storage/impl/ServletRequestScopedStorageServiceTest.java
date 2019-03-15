@@ -154,7 +154,7 @@ public class ServletRequestScopedStorageServiceTest extends StorageServiceTest {
             StorageRecord record = ss.read(context, Integer.toString(i));
             Assert.assertNotNull(record);
             Assert.assertEquals(record.getValue(), Integer.toString(i + 1));
-            Assert.assertTrue(record.getExpiration() < System.currentTimeMillis() + 300000);
+            Assert.assertTrue(record.getExpiration() <= System.currentTimeMillis() + 300000);
         }
     }
 
