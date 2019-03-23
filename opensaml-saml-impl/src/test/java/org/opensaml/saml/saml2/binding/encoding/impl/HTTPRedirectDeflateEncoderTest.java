@@ -410,7 +410,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
-        samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
+        samlMessage.setIssueInstant(new DateTime(0));
         samlMessage.setStatus(responseStatus);
 
         SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
