@@ -197,12 +197,17 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         HTTPEntityIDRequestURLBuilder requestURLBuilder = new HTTPEntityIDRequestURLBuilder();
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory(false));
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
         resolver.setRequestURLBuilder(requestURLBuilder);
+        
+        final HttpClientSecurityParameters params = new HttpClientSecurityParameters();
+        params.setTLSTrustEngine(HTTPMetadataResolverTest.buildExplicitKeyTrustEngine("test.shibboleth.net.crt"));
+        resolver.setHttpClientSecurityParameters(params);
+        
         resolver.initialize();
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
@@ -265,7 +270,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception {
-        String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
+        String template = RepositorySupport.buildHTTPResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml", false);
         String entityID = "https://www.example.org/sp";
         
         // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
@@ -275,7 +280,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory(false));
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
@@ -303,7 +308,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
@@ -326,30 +331,38 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testHTTPSNoTrustEngine() throws Exception  {
-        String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
-        String entityID = "https://www.example.org/sp";
-        
-        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
-        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
-                VelocityEngine.newVelocityEngine(), 
-                template, 
-                EncodingStyle.path, 
-                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
-        
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory(false));
-        
-        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
-        resolver.setId("myDynamicResolver");
-        resolver.setParserPool(parserPool);
-        resolver.setRequestURLBuilder(requestURLBuilder);
-        resolver.initialize();
-        
-        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
-        
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
-        Assert.assertEquals(ed.getEntityID(), entityID);
-        Assert.assertNull(ed.getDOM());
+        try {
+            System.setProperty("javax.net.ssl.trustStore", getClass().getResource("repo.truststore.jks").getFile());
+            System.setProperty("javax.net.ssl.trustStorePassword", "shibboleth");
+            
+            String template = RepositorySupport.buildHTTPSResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml");
+            String entityID = "https://www.example.org/sp";
+
+            // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+            TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                    VelocityEngine.newVelocityEngine(), 
+                    template, 
+                    EncodingStyle.path, 
+                    new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+
+            httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory(false));
+
+            resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+            resolver.setId("myDynamicResolver");
+            resolver.setParserPool(parserPool);
+            resolver.setRequestURLBuilder(requestURLBuilder);
+            resolver.initialize();
+
+            CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+
+            EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+            Assert.assertNotNull(ed);
+            Assert.assertEquals(ed.getEntityID(), entityID);
+            Assert.assertNull(ed.getDOM());
+        } finally {
+            System.setProperty("javax.net.ssl.trustStore", "");
+            System.setProperty("javax.net.ssl.trustStorePassword", "");
+        }
     }
     
     @Test
@@ -364,7 +377,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
@@ -397,7 +410,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
@@ -428,7 +441,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
@@ -461,7 +474,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
@@ -494,7 +507,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
@@ -525,7 +538,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
                 EncodingStyle.path, 
                 new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
         
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");

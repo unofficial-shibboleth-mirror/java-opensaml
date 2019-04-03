@@ -57,7 +57,7 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     protected void setUpClass() throws Exception {
         httpClientBuilder = new HttpClientBuilder();
         httpClientBuilder.setConnectionTimeout(Duration.ofSeconds(5));
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         httpClient = httpClientBuilder.buildClient();
 
         httpClientParams = new HttpClientSecurityParameters();

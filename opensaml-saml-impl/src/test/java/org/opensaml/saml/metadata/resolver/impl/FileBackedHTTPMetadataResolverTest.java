@@ -385,9 +385,9 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory(false));
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory(true));
         
-        metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
+        metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
         metadataProvider.initialize();
@@ -400,7 +400,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
         metadataProvider.setParserPool(parserPool);
@@ -417,21 +417,30 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testHTTPSNoTrustEngine() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory(false));
-        
-        metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath); 
-        metadataProvider.setParserPool(parserPool);
-        metadataProvider.setId("test");
-        metadataProvider.initialize();
-        
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
-        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+        try {
+            System.setProperty("javax.net.ssl.trustStore", getClass().getResource("repo.truststore.jks").getFile());
+            System.setProperty("javax.net.ssl.trustStorePassword", "shibboleth");
+            
+            httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory(false));
+
+            metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath); 
+            metadataProvider.setParserPool(parserPool);
+            metadataProvider.setId("test");
+            metadataProvider.initialize();
+
+            EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+            Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+            Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+        } finally {
+            System.setProperty("javax.net.ssl.trustStore", "");
+            System.setProperty("javax.net.ssl.trustStorePassword", "");
+
+        }
     }
     
     @Test
     public void testHTTPSTrustEngineExplicitKey() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
         metadataProvider.setParserPool(parserPool);
@@ -449,7 +458,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
 
     @Test(expectedExceptions=ComponentInitializationException.class)
     public void testHTTPSTrustEngineInvalidKey() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
         metadataProvider.setParserPool(parserPool);
@@ -466,7 +475,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testHTTPSTrustEngineValidPKIX() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
         metadataProvider.setParserPool(parserPool);
@@ -485,7 +494,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
         metadataProvider.setParserPool(parserPool);
@@ -503,7 +512,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions=ComponentInitializationException.class)
     public void testHTTPSTrustEngineInvalidPKIX() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
         metadataProvider.setParserPool(parserPool);
@@ -521,7 +530,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions=ComponentInitializationException.class)
     public void testHTTPSTrustEngineValidPKIXInvalidName() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(HTTPMetadataResolverTest.buildSocketFactory());
         
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps, backupFilePath);
         metadataProvider.setParserPool(parserPool);

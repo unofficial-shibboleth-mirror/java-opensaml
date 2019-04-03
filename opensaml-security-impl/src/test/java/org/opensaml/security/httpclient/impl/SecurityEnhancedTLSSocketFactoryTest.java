@@ -22,29 +22,29 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import javax.net.ssl.SSLException;
-import javax.net.ssl.SSLPeerUnverifiedException;
-
 import org.apache.http.HttpHost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.protocol.HttpContext;
-import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialContext;
+import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineContext;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.httpclient.HttpClientSupport;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 public class SecurityEnhancedTLSSocketFactoryTest {
     
@@ -61,156 +61,144 @@ public class SecurityEnhancedTLSSocketFactoryTest {
         httpContext = new HttpClientContext();
     }
     
+    @AfterMethod
+    public void clearThreadLocals() {
+        ThreadLocalX509TrustEngineContext.clearCurrent();
+        ThreadLocalX509CredentialContext.clearCurrent();
+    }
+    
     @Test
-    public void testNonSSL() throws IOException {
-        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(null, hostname), null);
+    public void testNoContextParametersHTTP() throws IOException {
+        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(null, hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-        
-        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 80, "http"), null, null, httpContext);
-        
-        Assert.assertNull(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED));
-    }
-    
-    @Test(expectedExceptions=SSLPeerUnverifiedException.class)
-    public void testDefaultFailNoTrustEngine() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), null);
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
-    }
-    
-    @Test
-    public void testSuccessNoTrustEngine() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), null, false);
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
-       
-       Assert.assertNull(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED));
-    }
-    
-    @Test
-    public void testSuccessWithEngine() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(cred));
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), null);
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
-       
-       Assert.assertEquals(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED), Boolean.TRUE);
-    }
-    
-    @Test
-    public void testSuccessWithEngineAndVerifier() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(cred));
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
-       
-       Assert.assertEquals(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED), Boolean.TRUE);
-    }
-    
-    @Test(expectedExceptions=SSLPeerUnverifiedException.class)
-    public void testFailUntrustedCert() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       List<Credential> emptyCreds = new ArrayList<>();
-       ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(emptyCreds));
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       try {
-           securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
-       } catch (Exception e) {
-           Assert.assertEquals(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED), Boolean.FALSE);
-           throw e;
-       }
-    }
-    
-    @Test(expectedExceptions=SSLPeerUnverifiedException.class)
-    public void testFailUntrustedCertExplicitFatal() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       List<Credential> emptyCreds = new ArrayList<>();
-       ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(emptyCreds));
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL, Boolean.TRUE);
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       try {
-           securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
-       } catch (Exception e) {
-           Assert.assertEquals(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED), Boolean.FALSE);
-           throw e;
-       }
-    }
-    
-    @Test
-    public void testFailUntrustedCertNonFatal() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       List<Credential> emptyCreds = new ArrayList<>();
-       ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(emptyCreds));
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL, Boolean.FALSE);
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
-       Assert.assertEquals(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED), Boolean.FALSE);
-    }
-    
-    @Test(expectedExceptions=SSLException.class)
-    public void testFailBadHostname() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(cred));
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
-       
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), "bogus.example.com"), new DefaultHostnameVerifier());
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
-       
-       
-       try {
-           securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost("bogus.example.com", 443, "https"), null, null, httpContext);
-       } catch (Exception e) {
-           Assert.assertEquals(httpContext.getAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED), Boolean.TRUE);
-           throw e;
-       }
-    }
 
-    @Test(expectedExceptions=SSLPeerUnverifiedException.class)
-    public void testFailNoCertsInSession() throws IOException {
-       X509Credential cred = getCredential("foo-1A1-good.crt");
-       ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(cred));
-       httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
+        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 80, "http"), null, null, httpContext);
+
+        Assert.assertFalse(ThreadLocalX509TrustEngineContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalServerTLSHandler.class.isInstance(h)));
+        
+        Assert.assertFalse(ThreadLocalX509CredentialContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalClientTLSCredentialHandler.class.isInstance(h)));
+    }
+    
+    @Test
+    public void testNoContextParametersHTTPS() throws IOException {
+        X509Credential cred = getCredential("foo-1A1-good.crt");
+
+        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
+                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
+
+        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+
+        Assert.assertFalse(ThreadLocalX509TrustEngineContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalServerTLSHandler.class.isInstance(h)));
+        
+        Assert.assertFalse(ThreadLocalX509CredentialContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalClientTLSCredentialHandler.class.isInstance(h)));
+    }
+    
+    @Test
+    public void testEngineParamWithDefaultCriteria() throws IOException {
+        X509Credential cred = getCredential("foo-1A1-good.crt");
+        ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(cred));
+        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
+
+        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
+                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
+
+        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
        
-       // Pass an empty cert list, to simulate unlikely condition of SSLSession not having any peerCertificates
-       securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               new ArrayList<Certificate>(), hostname), new DefaultHostnameVerifier());
-       Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
+        Assert.assertTrue(ThreadLocalX509TrustEngineContext.haveCurrent());
+        Assert.assertSame(ThreadLocalX509TrustEngineContext.getTrustEngine(), trustEngine);
+        Assert.assertNotNull(ThreadLocalX509TrustEngineContext.getCriteria());
+        Assert.assertTrue(ThreadLocalX509TrustEngineContext.isFailureFatal());
+        Assert.assertTrue(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalServerTLSHandler.class.isInstance(h)));
+        
+        Assert.assertFalse(ThreadLocalX509CredentialContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalClientTLSCredentialHandler.class.isInstance(h)));
+    }
+    
+    @Test
+    public void testEngineParamWithExplicitCriteria() throws IOException {
+        X509Credential cred = getCredential("foo-1A1-good.crt");
+        ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(cred));
+        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
+
+        CriteriaSet criteria = new CriteriaSet();
+        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, criteria);
+
+        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
+                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
+
+        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
        
-       securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+        Assert.assertTrue(ThreadLocalX509TrustEngineContext.haveCurrent());
+        Assert.assertSame(ThreadLocalX509TrustEngineContext.getTrustEngine(), trustEngine);
+        Assert.assertSame(ThreadLocalX509TrustEngineContext.getCriteria(), criteria);
+        Assert.assertTrue(ThreadLocalX509TrustEngineContext.isFailureFatal());
+        Assert.assertTrue(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalServerTLSHandler.class.isInstance(h)));
+        
+        Assert.assertFalse(ThreadLocalX509CredentialContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalClientTLSCredentialHandler.class.isInstance(h)));
+    }
+    
+    @Test
+    public void testEngineParamWithFailureNonFatal() throws IOException {
+        X509Credential cred = getCredential("foo-1A1-good.crt");
+        ExplicitKeyTrustEngine trustEngine = new ExplicitKeyTrustEngine(new StaticCredentialResolver(cred));
+        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
+        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL, Boolean.FALSE);
+
+        CriteriaSet criteria = new CriteriaSet();
+        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, criteria);
+
+        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
+                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
+
+        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+       
+        Assert.assertTrue(ThreadLocalX509TrustEngineContext.haveCurrent());
+        Assert.assertSame(ThreadLocalX509TrustEngineContext.getTrustEngine(), trustEngine);
+        Assert.assertNotNull(ThreadLocalX509TrustEngineContext.getCriteria());
+        Assert.assertFalse(ThreadLocalX509TrustEngineContext.isFailureFatal());
+        Assert.assertTrue(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalServerTLSHandler.class.isInstance(h)));
+        
+        Assert.assertFalse(ThreadLocalX509CredentialContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalClientTLSCredentialHandler.class.isInstance(h)));
+    }
+    
+    @Test
+    public void testClientTLSParam() throws IOException {
+        X509Credential cred = getCredential("foo-1A1-good.crt");
+        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, cred);
+        
+        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(null, hostname));
+        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
+
+        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+        
+        Assert.assertFalse(ThreadLocalX509TrustEngineContext.haveCurrent());
+        Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalServerTLSHandler.class.isInstance(h)));
+        
+        Assert.assertTrue(ThreadLocalX509CredentialContext.haveCurrent());
+        Assert.assertSame(ThreadLocalX509CredentialContext.getCredential(), cred);
+        Assert.assertTrue(HttpClientSupport.getDynamicContextHandlerList(
+                HttpClientContext.adapt(httpContext)).stream().anyMatch(h -> ThreadLocalClientTLSCredentialHandler.class.isInstance(h)));
     }
     
     // Helper methods

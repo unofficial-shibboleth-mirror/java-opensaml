@@ -8,6 +8,26 @@
         </encoder>
     </appender>
     
+    <logger name="org.apache.http">
+        <level value="WARN"/>
+    </logger>
+    
+    <logger name="org.apache.http.wire">
+        <level value="WARN"/>
+    </logger>
+    
+    <logger name="org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager">
+        <level value="INFO"/>
+    </logger>
+    
+    <logger name="org.opensaml.security.httpclient.impl.SecurityEnhancedTLSSocketFactory">
+        <level value="INFO"/>
+    </logger>
+    
+    <logger name="org.opensaml.security.httpclient.impl.ThreadLocalServerTLSHandler">
+        <level value="INFO"/>
+    </logger>
+    
     <logger name="org.opensaml.messaging">
         <level value="INFO"/>
     </logger>

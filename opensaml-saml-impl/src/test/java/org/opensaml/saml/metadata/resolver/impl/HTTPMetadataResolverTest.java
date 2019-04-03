@@ -32,6 +32,7 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
+import org.opensaml.security.httpclient.impl.SecurityEnhancedHttpClientSupport;
 import org.opensaml.security.httpclient.impl.SecurityEnhancedTLSSocketFactory;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
@@ -45,6 +46,7 @@ import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
 import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
 import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.testng.Assert;
+import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -55,6 +57,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientSupport;
 import net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory;
+import net.shibboleth.utilities.java.support.httpclient.TLSSocketFactoryBuilder;
 import net.shibboleth.utilities.java.support.repository.RepositorySupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -156,9 +159,9 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testTrustEngineSocketFactoryNoHTTPSNoTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory(false));
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory(true));
         
-        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
+        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
         metadataProvider.initialize();
@@ -171,7 +174,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testTrustEngineSocketFactoryNoHTTPSWithTrustEngine() throws Exception  {
         // Make sure resolver works when TrustEngine socket factory is configured but just using an HTTP URL.
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
         metadataProvider.setParserPool(parserPool);
@@ -189,21 +192,29 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testHTTPSNoTrustEngine() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory(false));
-        
-        metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
-        metadataProvider.setParserPool(parserPool);
-        metadataProvider.setId("test");
-        metadataProvider.initialize();
-        
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
-        Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+        try {
+            System.setProperty("javax.net.ssl.trustStore", getClass().getResource("repo.truststore.jks").getFile());
+            System.setProperty("javax.net.ssl.trustStorePassword", "shibboleth");
+
+            httpClientBuilder.setTLSSocketFactory(buildSocketFactory(false));
+
+            metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
+            metadataProvider.setParserPool(parserPool);
+            metadataProvider.setId("test");
+            metadataProvider.initialize();
+
+            EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+            Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+            Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+        } finally {
+            System.setProperty("javax.net.ssl.trustStore", "");
+            System.setProperty("javax.net.ssl.trustStorePassword", "");        
+        }
     }
     
     @Test
     public void testHTTPSTrustEngineExplicitKey() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
         metadataProvider.setParserPool(parserPool);
@@ -223,7 +234,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
 
     @Test(expectedExceptions=ComponentInitializationException.class)
     public void testHTTPSTrustEngineInvalidKey() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
         metadataProvider.setParserPool(parserPool);
@@ -242,7 +253,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testHTTPSTrustEngineValidPKIX() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
         metadataProvider.setParserPool(parserPool);
@@ -261,7 +272,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testHTTPSTrustEngineValidPKIXExplicitName() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
         metadataProvider.setParserPool(parserPool);
@@ -280,7 +291,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions=ComponentInitializationException.class)
     public void testHTTPSTrustEngineInvalidPKIX() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
         metadataProvider.setParserPool(parserPool);
@@ -299,7 +310,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions=ComponentInitializationException.class)
     public void testHTTPSTrustEngineValidPKIXInvalidName() throws Exception  {
-        httpClientBuilder.setTLSSocketFactory(buildTrustEngineSocketFactory());
+        httpClientBuilder.setTLSSocketFactory(buildSocketFactory());
         
         metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttps);
         metadataProvider.setParserPool(parserPool);
@@ -355,17 +366,12 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
     }
 
-    public static LayeredConnectionSocketFactory buildTrustEngineSocketFactory() {
-        return buildTrustEngineSocketFactory(true);
+    public static LayeredConnectionSocketFactory buildSocketFactory() {
+        return buildSocketFactory(true);
     }
     
-    public static LayeredConnectionSocketFactory buildTrustEngineSocketFactory(boolean trustEngineRequired) {
-        SecurityEnhancedTLSSocketFactory factory = new SecurityEnhancedTLSSocketFactory(
-                HttpClientSupport.buildNoTrustTLSSocketFactory(),
-                TLSSocketFactory.STRICT_HOSTNAME_VERIFIER,
-                trustEngineRequired
-                );
-        return factory;
+    public static LayeredConnectionSocketFactory buildSocketFactory(boolean supportTrustEngine) {
+        return SecurityEnhancedHttpClientSupport.buildTLSSocketFactory(supportTrustEngine, false);
     }
 
 }
