@@ -20,6 +20,7 @@ package org.opensaml.saml.security.impl;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.concurrent.locks.ReadWriteLock;
 
@@ -258,7 +259,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
         
         log.debug("Resolving credentials from supplied RoleDescriptor using usage: {}.  Effective entityID was: {}", 
                 usage, entityID);
-        final HashSet<Credential> credentials = new HashSet<>(3);
+        final LinkedHashSet<Credential> credentials = new LinkedHashSet<>(3);
         
         processRoleDescriptor(credentials, roleDescriptor, entityID, usage);
         
@@ -285,7 +286,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
 
         log.debug("Resolving credentials from metadata using entityID: {}, role: {}, protocol: {}, usage: {}", 
                 entityID, role, protocol, usage);
-        final HashSet<Credential> credentials = new HashSet<>(3);
+        final LinkedHashSet<Credential> credentials = new LinkedHashSet<>(3);
 
         final Iterable<RoleDescriptor> roleDescriptors = getRoleDescriptors(criteriaSet, entityID, role, protocol);
             
