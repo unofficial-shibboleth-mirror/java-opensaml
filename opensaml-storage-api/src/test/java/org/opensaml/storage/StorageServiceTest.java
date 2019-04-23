@@ -172,7 +172,7 @@ public abstract class StorageServiceTest {
         Assert.assertEquals(o1.getValue(), o2.getValue());
         
         o2.setValue("foo");
-        o2.setExpiration(System.currentTimeMillis() + 10000);
+        o2.setExpiration(System.currentTimeMillis() + 9700);
         shared.update(o2);
         
         shared.read(o1);
