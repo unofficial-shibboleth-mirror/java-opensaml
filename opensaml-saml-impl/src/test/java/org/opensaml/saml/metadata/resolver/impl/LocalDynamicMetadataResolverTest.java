@@ -104,7 +104,7 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         sourceManager.save(sha1Digester.apply(entityID2), entity2);
         
         // Wait for the negative lookup cache to expire
-        Uninterruptibles.sleepUninterruptibly(resolver.getNegativeLookupCacheDuration(), TimeUnit.MILLISECONDS);
+        Uninterruptibles.sleepUninterruptibly(resolver.getNegativeLookupCacheDuration()+150, TimeUnit.MILLISECONDS);
         
         // Now should be resolveable
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID2))), entity2);
