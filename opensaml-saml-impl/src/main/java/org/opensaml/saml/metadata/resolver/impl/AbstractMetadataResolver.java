@@ -288,7 +288,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         try {
             initMetadataResolver();
         } catch (final ComponentInitializationException e) {
-            if (failFastInitialization) {
+            if (isFailFastInitialization()) {
                 log.error("{} Metadata provider failed to properly initialize, fail-fast=true, halting", 
                         getLogPrefix());
                 throw e;
