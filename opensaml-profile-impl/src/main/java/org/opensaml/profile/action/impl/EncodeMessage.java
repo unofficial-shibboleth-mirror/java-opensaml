@@ -17,6 +17,8 @@
 
 package org.opensaml.profile.action.impl;
 
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -32,7 +34,6 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.action.MessageEncoderFactory;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,8 +56,8 @@ public class EncodeMessage extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(EncodeMessage.class);
 
-    /** The factory to use to obtain an encoder. */
-    @NonnullAfterInit private MessageEncoderFactory encoderFactory;
+    /** The function to use to obtain an encoder. */
+    @NonnullAfterInit private Function<ProfileRequestContext,MessageEncoder> encoderFactory;
     
     /**
      * An optional {@link MessageHandler} instance to be invoked after 
@@ -72,7 +73,7 @@ public class EncodeMessage extends AbstractProfileAction {
      * 
      * @param factory   factory to use
      */
-    public void setMessageEncoderFactory(@Nonnull final MessageEncoderFactory factory) {
+    public void setMessageEncoderFactory(@Nonnull final Function<ProfileRequestContext,MessageEncoder> factory) {
         encoderFactory = Constraint.isNotNull(factory, "MessageEncoderFactory cannot be null");
     }
     
@@ -117,7 +118,7 @@ public class EncodeMessage extends AbstractProfileAction {
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        final MessageEncoder encoder = encoderFactory.getMessageEncoder(profileRequestContext);
+        final MessageEncoder encoder = encoderFactory.apply(profileRequestContext);
         if (encoder == null) {
             log.error("{} Unable to locate an outbound message encoder", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.UNABLE_TO_ENCODE);

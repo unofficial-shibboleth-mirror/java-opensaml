@@ -17,6 +17,8 @@
 
 package org.opensaml.profile.action.impl;
 
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -29,7 +31,6 @@ import org.opensaml.messaging.encoder.MessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.action.MessageEncoderFactory;
 import org.opensaml.profile.action.impl.EncodeMessage;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.testng.Assert;
@@ -139,11 +140,10 @@ public class EncodeMessageTest {
         }
     }
  
-    private class MockEncoderFactory implements MessageEncoderFactory {
+    private class MockEncoderFactory implements Function<ProfileRequestContext,MessageEncoder> {
 
         /** {@inheritDoc} */
-        @Override
-        @Nullable public MessageEncoder getMessageEncoder(@Nonnull final ProfileRequestContext profileRequestContext) {
+        @Nullable public MessageEncoder apply(@Nonnull final ProfileRequestContext profileRequestContext) {
             return encoder;
         }
         
