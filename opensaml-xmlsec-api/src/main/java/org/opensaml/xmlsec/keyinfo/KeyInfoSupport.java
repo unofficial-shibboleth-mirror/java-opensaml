@@ -47,6 +47,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
+import org.apache.xml.security.utils.XMLUtils;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -766,7 +767,7 @@ public class KeyInfoSupport {
         Constraint.isNotNull(bigInt, "BigInteger cannot be null");
         
         // This code is really complicated, for now just use the Apache xmlsec lib code directly.
-        final byte[] bigIntBytes = org.apache.xml.security.utils.Base64.encode(bigInt, bigInt.bitLength());
+        final byte[] bigIntBytes = XMLUtils.getBytes(bigInt, bigInt.bitLength());
         return Base64Support.encode(bigIntBytes, Base64Support.UNCHUNKED);
     }
 
