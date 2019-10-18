@@ -17,17 +17,42 @@
 
 package org.opensaml.saml.metadata.resolver.filter.data.impl;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext.Data;
 
 /**
  * Data object for {@link MetadataFilterContext} intended to hold information about the source of the
  * metadata currently being processed.
+ * 
+ * @since 4.0.0
  */
 public class MetadataSource implements Data {
 
+    /** An identifier for the source of the metadata, typically the resolver ID. */
+    @Nullable private String sourceId;
+
     /** Flag indicating whether the metadata source is trusted. */
     private boolean trusted;
+    
+    /**
+     * Get identifier of the metadata source.
+     * 
+     * @return source identifier
+     */
+    @Nullable public String getSourceId() {
+        return sourceId;
+    }
+    
+    /**
+     * Set identifier of the metadata source. 
+     * 
+     * @param id source identifier
+     */
+    public void setSourceId(@Nullable final String id) {
+        sourceId = id;
+    }
 
     /**
      * Get whether the metadata source is trusted.

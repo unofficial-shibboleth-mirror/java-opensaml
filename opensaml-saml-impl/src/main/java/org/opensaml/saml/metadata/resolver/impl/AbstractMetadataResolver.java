@@ -58,6 +58,7 @@ import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
+import org.opensaml.saml.metadata.resolver.filter.data.impl.MetadataSource;
 import org.opensaml.saml.saml2.common.SAML2Support;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -390,7 +391,14 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @return the new filter context instance
      */
     @Nonnull protected MetadataFilterContext newFilterContext() {
-        return new MetadataFilterContext();
+        
+        final MetadataSource source = new MetadataSource();
+        source.setSourceId(getId());
+
+        final MetadataFilterContext context = new MetadataFilterContext();
+        context.add(source);
+        
+        return context;
     }
 
     /**
