@@ -241,7 +241,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(initRefresh.isBefore(metadataProvider.getLastRefresh()));
         Assert.assertTrue(initUpdate.isBefore(metadataProvider.getLastUpdate()));
 
-        Assert.assertNull(mockFilter.lastFilterContext.get(MetadataSource.class));
+        Assert.assertFalse(mockFilter.lastFilterContext.get(MetadataSource.class).isTrusted());
 
         Assert.assertNotNull(metadataProvider.resolveSingle(criteriaSet), "Metadata retrieved from HTTP refreshed metadata was null");
     }
