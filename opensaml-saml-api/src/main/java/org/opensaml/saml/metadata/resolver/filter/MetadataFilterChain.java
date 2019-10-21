@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.filter;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,9 +30,6 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 /**
  * A filter that allows the composition of {@link MetadataFilter}s. Filters will be executed on the given metadata
@@ -98,7 +94,7 @@ public class MetadataFilterChain implements MetadataFilter {
     public void setFilters(@Nonnull @NonnullElements final List<MetadataFilter> newFilters) {
         Constraint.isNotNull(newFilters, "Filter collection cannot be null");
         
-        filters = new ArrayList<>(Collections2.filter(newFilters, Predicates.notNull()));
+        filters = List.copyOf(newFilters);
     }
     
 }
