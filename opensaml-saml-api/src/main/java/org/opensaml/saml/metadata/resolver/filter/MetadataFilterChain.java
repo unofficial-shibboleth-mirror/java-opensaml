@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.filter;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -51,7 +50,7 @@ public class MetadataFilterChain implements MetadataFilter {
      * Constructor.
      */
     public MetadataFilterChain() {
-        filters = Collections.emptyList();
+        filters = new ArrayList<>();
     }
 
     /** {@inheritDoc} */
