@@ -18,7 +18,6 @@
 package org.opensaml.security.x509.tls;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -31,10 +30,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.security.x509.InternalX500DNHandler;
 import org.opensaml.security.x509.X500DNHandler;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * Options for deriving message context issuer names from an client TLS X.509 certificate.
@@ -109,7 +104,7 @@ public class CertificateNameOptions implements Cloneable {
      * @return Returns the subjectAltNames.
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Set<Integer> getSubjectAltNames() {
-        return ImmutableSet.copyOf(subjectAltNames);
+        return subjectAltNames;
     }
     
     /**
@@ -118,14 +113,12 @@ public class CertificateNameOptions implements Cloneable {
      * 
      * @param names the set of types of subject alternative names
      */
-    public void setSubjectAltNames(@Nullable final Set<Integer> names) {
+    public void setSubjectAltNames(@Nullable @NonnullElements final Set<Integer> names) {
         if (names == null) {
             subjectAltNames = Collections.emptySet();
-            return;
+        } else {
+            subjectAltNames = Set.copyOf(names);
         }
-        
-        subjectAltNames = new HashSet<>();
-        subjectAltNames.addAll(Collections2.filter(names, Predicates.notNull()));
     }
 
     /**

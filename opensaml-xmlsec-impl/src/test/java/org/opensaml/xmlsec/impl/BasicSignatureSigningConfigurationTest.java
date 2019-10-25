@@ -77,7 +77,7 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertNotNull(config.getSigningCredentials());
         Assert.assertEquals(config.getSigningCredentials().size(), 0);
         
-        config.setSigningCredentials(Arrays.asList(cred1, null, cred2, null));
+        config.setSigningCredentials(Arrays.asList(cred1, cred2));
         
         Assert.assertNotNull(config.getSigningCredentials());
         Assert.assertEquals(config.getSigningCredentials().size(), 2);

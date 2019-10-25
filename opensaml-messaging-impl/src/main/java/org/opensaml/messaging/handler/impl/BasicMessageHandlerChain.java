@@ -17,7 +17,6 @@
 
 package org.opensaml.messaging.handler.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -32,9 +31,6 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerChain;
 import org.opensaml.messaging.handler.MessageHandlerException;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 /**
  * A basic implementation of {@link MessageHandlerChain}.
@@ -70,9 +66,7 @@ public class BasicMessageHandlerChain extends AbstractMessageHandler
      */
     public void setHandlers(@Nullable @NonnullElements final List<MessageHandler> handlers) {
         if (handlers != null) {
-            final ArrayList<MessageHandler> newMembers = new ArrayList<>();
-            newMembers.addAll(Collections2.filter(handlers, Predicates.notNull()));
-            members = newMembers;
+            members = List.copyOf(handlers);
         } else {
             members = Collections.emptyList();
         }
@@ -81,7 +75,7 @@ public class BasicMessageHandlerChain extends AbstractMessageHandler
     /** {@inheritDoc} */
     public void doInvoke(@Nonnull final MessageContext msgContext) throws MessageHandlerException {
         if (members != null) {
-            for (final MessageHandler handler: members) {
+            for (final MessageHandler handler : members) {
                 handler.invoke(msgContext);
             }
         }

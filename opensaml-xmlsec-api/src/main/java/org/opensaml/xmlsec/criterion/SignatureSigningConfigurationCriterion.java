@@ -17,8 +17,6 @@
 
 package org.opensaml.xmlsec.criterion;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,10 +29,6 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Criterion which holds one or more instances of {@link SignatureSigningConfiguration}.
@@ -51,9 +45,8 @@ public class SignatureSigningConfigurationCriterion implements Criterion {
      */
     public SignatureSigningConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
             List<SignatureSigningConfiguration> configurations) {
-        Constraint.isNotNull(configurations, "List of configurations cannot be null");
-        configs = new ArrayList<>(Collections2.filter(configurations, Predicates.notNull()));
-        Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
+        configs = List.copyOf(Constraint.isNotNull(configurations, "List of configurations cannot be null"));
+        Constraint.isNotEmpty(configs, "At least one configuration is required");
         
     }
     
@@ -64,9 +57,8 @@ public class SignatureSigningConfigurationCriterion implements Criterion {
      */
     public SignatureSigningConfigurationCriterion(@Nonnull @NonnullElements  @NotEmpty final
             SignatureSigningConfiguration... configurations) {
-        Constraint.isNotNull(configurations, "List of configurations cannot be null");
-        configs = new ArrayList<>(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
-        Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
+        configs = List.of(Constraint.isNotNull(configurations, "List of configurations cannot be null"));
+        Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
     
     /**
@@ -75,7 +67,7 @@ public class SignatureSigningConfigurationCriterion implements Criterion {
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
     public List<SignatureSigningConfiguration> getConfigurations() {
-        return ImmutableList.copyOf(configs);
+        return configs;
     }
     
     /** {@inheritDoc} */

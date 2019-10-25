@@ -21,7 +21,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -53,10 +52,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -69,7 +66,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 public class SAMLArtifactMetadataIndex implements MetadataIndex {
     
     /** Indexing function instance to use. */
-    private List<Function<EntityDescriptor, Set<MetadataIndexKey>>> indexingFunctions;
+    @Nonnull @NonnullElements private List<Function<EntityDescriptor, Set<MetadataIndexKey>>> indexingFunctions;
     
     /**
      * Constructor.
@@ -84,7 +81,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
      * </p>
      */
     public SAMLArtifactMetadataIndex() {
-        this(Lists.<Function<EntityDescriptor, Set<MetadataIndexKey>>>newArrayList(
+        this(Arrays.asList(
                 new EntityIDToSHA1SourceIDIndexingFunction(),
                 new SourceIDExtensionIndexingFunction(),
                 new SourceLocationIndexingFunction()
@@ -98,10 +95,9 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
      */
     public SAMLArtifactMetadataIndex(
             @Nonnull final List<Function<EntityDescriptor, Set<MetadataIndexKey>>> descriptorIndexingFunctions) {
-        indexingFunctions = new ArrayList<>(Collections2.filter(
-                Constraint.isNotNull(descriptorIndexingFunctions, 
-                        "EntityDescriptor indexing functions list may not be null"),
-                Predicates.notNull()));
+        indexingFunctions = List.copyOf(
+                Constraint.isNotNull(descriptorIndexingFunctions,
+                        "EntityDescriptor indexing functions list may not be null"));
         Constraint.isNotEmpty(indexingFunctions, "EntityDescriptor indexing functions list may not be empty");
     }
 

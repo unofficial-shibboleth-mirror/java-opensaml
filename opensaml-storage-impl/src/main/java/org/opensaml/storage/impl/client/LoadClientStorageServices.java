@@ -21,6 +21,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -37,9 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Iterables;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -108,7 +107,7 @@ public class LoadClientStorageServices extends AbstractProfileAction {
         
         Constraint.isNotNull(services, "StorageService collection cannot be null");
         storageServices = new HashMap<>(services.size());
-        for (final ClientStorageService ss : Collections2.filter(services, Predicates.notNull())) {
+        for (final ClientStorageService ss : List.copyOf(services)) {
             storageServices.put(ss.getStorageName(), ss);
         }
     }

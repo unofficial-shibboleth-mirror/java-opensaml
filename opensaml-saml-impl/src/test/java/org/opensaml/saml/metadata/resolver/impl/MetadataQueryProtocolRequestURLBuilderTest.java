@@ -64,9 +64,6 @@ public class MetadataQueryProtocolRequestURLBuilderTest {
         function = new MetadataQueryProtocolRequestURLBuilder("http://metadata.example.org/service", Lists.newArrayList(bar,foo));
         Assert.assertEquals(function.apply(new CriteriaSet(new SimpleStringCriterion("will-be-ignored"))), "http://metadata.example.org/service/tags/bar");
         
-        function = new MetadataQueryProtocolRequestURLBuilder("http://metadata.example.org/service", Lists.newArrayList(null, null, foo, bar));
-        Assert.assertEquals(function.apply(new CriteriaSet(new SimpleStringCriterion("will-be-ignored"))), "http://metadata.example.org/service/tags/foo");
-        
         function = new MetadataQueryProtocolRequestURLBuilder("http://metadata.example.org/service", Lists.newArrayList(noValue, foo, bar));
         Assert.assertEquals(function.apply(new CriteriaSet(new SimpleStringCriterion("will-be-ignored"))), "http://metadata.example.org/service/tags/foo");
     }

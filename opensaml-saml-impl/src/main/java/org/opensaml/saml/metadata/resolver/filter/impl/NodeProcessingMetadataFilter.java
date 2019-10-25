@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -36,9 +35,6 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-
 /**
  * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor} to each element node in the
  * metadata document tree. The node processors will be applied in the order of {@link List} provided by
@@ -51,13 +47,13 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
     
     /** Constructor. */
     public NodeProcessingMetadataFilter() {
-        processors = Collections.emptyList();
+        processors = new ArrayList<>();
     }
 
     /**
      * Get the list of metadata node processors.
      * 
-     * @return the list of metadata node processors.
+     * @return the list of metadata node processors
      */
     @Nonnull @NonnullElements @Live public List<MetadataNodeProcessor> getNodeProcessors() {
         return processors;
@@ -73,7 +69,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         Constraint.isNotNull(newProcessors, "MetadataNodeProcessor list cannot be null");
 
-        processors = new ArrayList<>(Collections2.filter(newProcessors, Predicates.notNull()));
+        processors = new ArrayList<>(List.copyOf(newProcessors));
     }
 
     /** {@inheritDoc} */

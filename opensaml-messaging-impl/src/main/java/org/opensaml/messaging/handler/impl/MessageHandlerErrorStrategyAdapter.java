@@ -17,7 +17,6 @@
 
 package org.opensaml.messaging.handler.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,9 +31,6 @@ import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 /**
  * A {@link MessageHandler} which wraps and invokes another handler, catches any {@link Throwable} which is 
@@ -87,9 +83,8 @@ public class MessageHandlerErrorStrategyAdapter extends AbstractMessageHandler {
     public MessageHandlerErrorStrategyAdapter(@Nonnull final MessageHandler messageHandler, 
             @Nonnull @NonnullElements final List<TypedMessageErrorHandler> typedErrorHandlers) {
         wrappedHandler = Constraint.isNotNull(messageHandler, "Wrapped MessageHandler cannot be null");
-        errorHandlers = new ArrayList<>(Collections2.filter(
-                Constraint.isNotNull(typedErrorHandlers, "List of TypedMessageErroHandlers cannot be null"), 
-                Predicates.notNull()));
+        errorHandlers = List.copyOf(
+                Constraint.isNotNull(typedErrorHandlers, "List of TypedMessageErroHandlers cannot be null"));
         
         rethrowIfHandled = false;
         rethrowIfNotHandled = true;

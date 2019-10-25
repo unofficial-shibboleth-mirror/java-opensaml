@@ -17,8 +17,6 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,10 +29,6 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Criterion which holds one or more instances of {@link WhitelistBlacklistConfiguration},
@@ -52,9 +46,8 @@ public class WhitelistBlacklistConfigurationCriterion implements Criterion {
      */
     public WhitelistBlacklistConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
             List<WhitelistBlacklistConfiguration> configurations) {
-        Constraint.isNotNull(configurations, "List of configurations may not be null");
-        configs = new ArrayList<>(Collections2.filter(configurations, Predicates.notNull()));
-        Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
+        configs = List.copyOf(Constraint.isNotNull(configurations, "List of configurations may not be null"));
+        Constraint.isNotEmpty(configs, "At least one configuration is required");
         
     }
     
@@ -65,9 +58,8 @@ public class WhitelistBlacklistConfigurationCriterion implements Criterion {
      */
     public WhitelistBlacklistConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
             WhitelistBlacklistConfiguration... configurations) {
-        Constraint.isNotNull(configurations, "List of configurations may not be null");
-        configs = new ArrayList<>(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
-        Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
+        configs = List.of(Constraint.isNotNull(configurations, "List of configurations may not be null"));
+        Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
     
     /**
@@ -76,7 +68,7 @@ public class WhitelistBlacklistConfigurationCriterion implements Criterion {
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
     public List<WhitelistBlacklistConfiguration> getConfigurations() {
-        return ImmutableList.copyOf(configs);
+        return configs;
     }
     
     /** {@inheritDoc} */

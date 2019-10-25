@@ -18,7 +18,7 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
@@ -26,9 +26,6 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 /**
  * Predicate which implements an algorithm URI blacklist policy.
@@ -43,10 +40,8 @@ public class BlacklistPredicate implements Predicate<String> {
      *
      * @param algorithms collection of blacklisted algorithms
      */
-    public BlacklistPredicate(@Nonnull final Collection<String> algorithms) {
-        Constraint.isNotNull(algorithms, "Blacklist may not be null");
-        blacklist = new HashSet<>();
-        blacklist.addAll(Collections2.filter(algorithms, Predicates.notNull()));
+    public BlacklistPredicate(@Nonnull @NonnullElements final Collection<String> algorithms) {
+        blacklist = Set.copyOf(Constraint.isNotNull(algorithms, "Blacklist may not be null"));
     }
 
     /** {@inheritDoc} */

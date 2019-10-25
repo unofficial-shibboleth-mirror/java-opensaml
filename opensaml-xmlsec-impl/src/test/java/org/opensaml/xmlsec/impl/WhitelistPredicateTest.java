@@ -45,23 +45,6 @@ public class WhitelistPredicateTest {
         Assert.assertFalse(predicate.test("bar"));
         Assert.assertFalse(predicate.test("bax"));
     }
-
-    @Test
-    public void testWithNullsInSet() {
-        WhitelistPredicate predicate = new WhitelistPredicate(Arrays.asList("A", null, "B", null, "C", null, "D"));
-        
-        Assert.assertTrue(predicate.test("A"));
-        Assert.assertTrue(predicate.test("B"));
-        Assert.assertTrue(predicate.test("C"));
-        Assert.assertTrue(predicate.test("D"));
-        
-        Assert.assertFalse(predicate.test("X"));
-        Assert.assertFalse(predicate.test("Y"));
-        Assert.assertFalse(predicate.test("Z"));
-        Assert.assertFalse(predicate.test("foo"));
-        Assert.assertFalse(predicate.test("bar"));
-        Assert.assertFalse(predicate.test("bax"));
-    }
     
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testNullSet() {

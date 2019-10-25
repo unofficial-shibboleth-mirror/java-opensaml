@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -37,9 +36,6 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Basic implementation of {@link EncryptionConfiguration}.
@@ -94,7 +90,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getDataEncryptionCredentials() {
-        return ImmutableList.copyOf(dataEncryptionCredentials);
+        return dataEncryptionCredentials;
     }
     
     /**
@@ -102,18 +98,18 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      * 
      * @param credentials the list of data encryption credentials
      */
-    public void setDataEncryptionCredentials(@Nullable final List<Credential> credentials) {
+    public void setDataEncryptionCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
         if (credentials == null) {
             dataEncryptionCredentials  = Collections.emptyList();
-            return;
+        } else {
+            dataEncryptionCredentials = List.copyOf(credentials);
         }
-        dataEncryptionCredentials = new ArrayList<>(Collections2.filter(credentials, Predicates.notNull()));
     }
     
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithms() {
-        return ImmutableList.copyOf(dataEncryptionAlgorithms);
+        return dataEncryptionAlgorithms;
     }
     
     /**
@@ -121,18 +117,18 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      * 
      * @param algorithms the list of algorithms
      */
-    public void setDataEncryptionAlgorithms(@Nullable final List<String> algorithms) {
+    public void setDataEncryptionAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
             dataEncryptionAlgorithms = Collections.emptyList();
-            return;
+        } else {
+            dataEncryptionAlgorithms = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
         }
-        dataEncryptionAlgorithms = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getKeyTransportEncryptionCredentials() {
-        return ImmutableList.copyOf(keyTransportEncryptionCredentials);
+        return keyTransportEncryptionCredentials;
     }
     
     /**
@@ -140,18 +136,18 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      * 
      * @param credentials the list of key transport encryption credentials
      */
-    public void setKeyTransportEncryptionCredentials(@Nullable final List<Credential> credentials) {
+    public void setKeyTransportEncryptionCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
         if (credentials == null) {
             keyTransportEncryptionCredentials  = Collections.emptyList();
-            return;
+        } else {
+            keyTransportEncryptionCredentials = List.copyOf(credentials);
         }
-        keyTransportEncryptionCredentials = new ArrayList<>(Collections2.filter(credentials, Predicates.notNull()));
     }
     
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithms() {
-        return ImmutableList.copyOf(keyTransportEncryptionAlgorithms);
+        return keyTransportEncryptionAlgorithms;
     }
     
     /**
@@ -159,12 +155,12 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
      * 
      * @param algorithms the list of algorithms
      */
-    public void setKeyTransportEncryptionAlgorithms(@Nullable final List<String> algorithms) {
+    public void setKeyTransportEncryptionAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
             keyTransportEncryptionAlgorithms = Collections.emptyList();
-            return;
+        } else {
+            keyTransportEncryptionAlgorithms = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
         }
-        keyTransportEncryptionAlgorithms = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */

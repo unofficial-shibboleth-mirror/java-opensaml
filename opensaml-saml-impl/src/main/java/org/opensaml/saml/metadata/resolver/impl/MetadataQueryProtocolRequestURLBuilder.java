@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
@@ -28,12 +27,11 @@ import org.opensaml.core.criterion.EntityIdCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -101,7 +99,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
      */
     public MetadataQueryProtocolRequestURLBuilder(
             @ParameterName(name="baseURL") @Nonnull @NotEmpty final String baseURL,
-            @ParameterName(name="secondaryURLBuilders") @Nullable 
+            @ParameterName(name="secondaryURLBuilders") @Nullable @NonnullElements
                 final List<MetadataQueryProtocolURLBuilder> secondaryURLBuilders) {
         this(baseURL, null, secondaryURLBuilders);
     }
@@ -116,7 +114,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
     public MetadataQueryProtocolRequestURLBuilder(
             @ParameterName(name="baseURL") @Nonnull @NotEmpty final String baseURL, 
             @ParameterName(name="transform") @Nullable final Function<String,String> transform,
-            @ParameterName(name="secondaryURLBuilders") @Nullable 
+            @ParameterName(name="secondaryURLBuilders") @Nullable @NonnullElements
                 final List<MetadataQueryProtocolURLBuilder> secondaryURLBuilders
             ) {
         base = Constraint.isNotNull(StringSupport.trimOrNull(baseURL), "Base URL was null or empty");
@@ -129,7 +127,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
         transformer = transform;
         
         if (secondaryURLBuilders != null) {
-            urlBuilders = new ArrayList<>(Collections2.filter(secondaryURLBuilders, Predicates.notNull()));
+            urlBuilders = List.copyOf(secondaryURLBuilders);
         }
     }
 

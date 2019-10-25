@@ -17,7 +17,6 @@
 
 package org.opensaml.security.credential.impl;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -36,10 +35,6 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 
 /**
  * An abstract implementation of {@link CredentialResolver} which chains together one or more underlying credential 
@@ -62,9 +57,8 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
      * 
      * @param credResolvers the list of chained credential resolvers
      */
-    public AbstractChainingCredentialResolver(@Nonnull final List<ResolverType> credResolvers) {
-        Constraint.isNotNull(credResolvers, "CredentialResolver list cannot be null");
-        resolvers = new ArrayList<>(Collections2.filter(credResolvers, Predicates.notNull()));
+    public AbstractChainingCredentialResolver(@Nonnull @NonnullElements final List<ResolverType> credResolvers) {
+        resolvers = List.copyOf(Constraint.isNotNull(credResolvers, "CredentialResolver list cannot be null"));
     }
 
     /**
@@ -73,7 +67,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
      * @return the list of credential resolvers in the chain
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<ResolverType> getResolverChain() {
-        return ImmutableList.copyOf(resolvers);
+        return resolvers;
     }
 
     /** {@inheritDoc} */

@@ -17,7 +17,6 @@
 
 package org.opensaml.soap.client.messaging;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
@@ -32,9 +31,6 @@ import org.opensaml.messaging.context.navigate.RecursiveTypedParentContextLookup
 import org.opensaml.soap.client.SOAPClientContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Maps;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -78,10 +74,7 @@ public class SOAPClientPipelineNameMappingFunction<T> implements Function<Messag
             @Nullable @ParameterName(name="lookupStrategy") 
                 final ContextDataLookupFunction<MessageContext, SOAPClientContext> lookupStrategy) {
         
-        Constraint.isNotNull(mappings, "Delegate mappings may not be null");
-        delegateMap = new HashMap<>(Maps.filterKeys(
-                Maps.filterValues(mappings, Predicates.notNull()), 
-                Predicates.notNull()));
+        delegateMap = Map.copyOf(Constraint.isNotNull(mappings, "Delegate mappings may not be null"));
         
         if (lookupStrategy != null) {
             soapClientContextLookup = lookupStrategy;

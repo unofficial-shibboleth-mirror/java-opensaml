@@ -26,6 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -45,9 +46,6 @@ import org.opensaml.soap.soap11.FaultActor;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Iterables;
 
 /**
  * Helper methods for working with SOAP.
@@ -406,7 +404,7 @@ public final class SOAPSupport {
      * @return the new Fault element object
      */
     public static Fault buildSOAP11Fault(@Nonnull final QName faultCode, @Nonnull final String faultString,
-            @Nullable final String faultActor, @Nullable final List<XMLObject> detailChildren,
+            @Nullable final String faultActor, @Nullable @NonnullElements final List<XMLObject> detailChildren,
             @Nullable final Map<QName, String> detailAttributes) {
         Constraint.isNotNull(faultCode, "faultcode cannot be null");
         Constraint.isNotNull(faultString, "faultstring cannot be null");
@@ -437,10 +435,9 @@ public final class SOAPSupport {
         if (detailChildren != null && !detailChildren.isEmpty()) {
             detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)
                 .buildObject(Detail.DEFAULT_ELEMENT_NAME);
-            for (final XMLObject xo : Iterables.filter(detailChildren, Predicates.notNull())) {
-                detailObj.getUnknownXMLObjects().add(xo);
-            }
+            detailObj.getUnknownXMLObjects().addAll(detailChildren);
         }
+        
         if (detailAttributes != null && !detailAttributes.isEmpty()) {
             if (detailObj == null) {
                 detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)

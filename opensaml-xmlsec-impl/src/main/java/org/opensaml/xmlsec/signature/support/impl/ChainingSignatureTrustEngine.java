@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.signature.support.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -38,10 +37,6 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-
 /**
  * Evaluate a signature in sequence using a chain of subordinate trust engines. If the signature may be established as
  * trusted by any of the subordinate engines, the token is considered trusted. Otherwise it is considered untrusted.
@@ -59,10 +54,9 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
      *  
      *  @param chain the list of trust engines in the chain
      */
-    public ChainingSignatureTrustEngine(@Nonnull @NonnullElements @ParameterName(name="chain") 
-                                                      final List<SignatureTrustEngine> chain) {
-        Constraint.isNotNull(chain, "SignatureTrustEngine list cannot be null");
-        engines = new ArrayList<>(Collections2.filter(chain, Predicates.notNull()));
+    public ChainingSignatureTrustEngine(
+            @Nonnull @NonnullElements @ParameterName(name="chain") final List<SignatureTrustEngine> chain) {
+        engines = List.copyOf(Constraint.isNotNull(chain, "SignatureTrustEngine list cannot be null"));
     }
 
     /**
@@ -71,7 +65,7 @@ public class ChainingSignatureTrustEngine implements SignatureTrustEngine {
      * @return the modifiable list of trust engines in the chain
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<SignatureTrustEngine> getChain() {
-        return ImmutableList.copyOf(engines);
+        return engines;
     }
 
     /** {@inheritDoc} */

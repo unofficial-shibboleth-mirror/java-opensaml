@@ -34,8 +34,6 @@ import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.MetricSet;
 import com.codahale.metrics.Timer;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -125,11 +123,7 @@ public class FilteredMetricRegistry extends MetricRegistry {
      */
     public void registerMultiple(@Nonnull @NonnullElements final Collection<MetricSet> metricSets)
             throws IllegalArgumentException {
-        Constraint.isNotNull(metricSets, "Collection cannot be null");
-        
-        for (final MetricSet set : Collections2.filter(metricSets, Predicates.notNull())) {
-            registerAll(set);
-        }
+        Constraint.isNotNull(metricSets, "Collection cannot be null").forEach(m -> registerAll(m));
     }
 
 }

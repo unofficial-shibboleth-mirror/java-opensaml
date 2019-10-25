@@ -67,8 +67,6 @@ import com.codahale.metrics.Timer.Context;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Optional;
 import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -600,7 +598,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @return the set of configured indexes
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
-        return ImmutableSet.copyOf(indexes);
+        return indexes;
     }
 
     /**
@@ -610,11 +608,12 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      */
     public void setIndexes(@Nullable final Set<MetadataIndex> newIndexes) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         if (newIndexes == null) {
             indexes = Collections.emptySet();
         } else {
-            indexes = new HashSet<>();
-            indexes.addAll(Collections2.filter(newIndexes, Predicates.notNull()));
+            indexes = Set.copyOf(newIndexes);
         }
     }
     
@@ -1284,7 +1283,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             }
             
             if (getInitializationFromCachePredicate() == null) {
-                setInitializationFromCachePredicate(Predicates.<EntityDescriptor>alwaysTrue());
+                setInitializationFromCachePredicate(Predicates.alwaysTrue());
             }
             
             persistentCacheInitMetrics = new PersistentCacheInitializationMetrics();

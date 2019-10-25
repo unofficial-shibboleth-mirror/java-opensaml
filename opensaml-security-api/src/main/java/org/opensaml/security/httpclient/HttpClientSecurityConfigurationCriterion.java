@@ -17,8 +17,6 @@
 
 package org.opensaml.security.httpclient;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -29,10 +27,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Criterion which holds one or more instances of {@link HttpClientSecurityConfiguration}.
@@ -50,8 +44,8 @@ public class HttpClientSecurityConfigurationCriterion implements Criterion {
     public HttpClientSecurityConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
             List<HttpClientSecurityConfiguration> configurations) {
         Constraint.isNotNull(configurations, "List of configurations cannot be null");
-        configs = new ArrayList<>(Collections2.filter(configurations, Predicates.notNull()));
-        Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
+        configs = List.copyOf(configurations);
+        Constraint.isNotEmpty(configs, "At least one configuration is required");
         
     }
     
@@ -63,8 +57,8 @@ public class HttpClientSecurityConfigurationCriterion implements Criterion {
     public HttpClientSecurityConfigurationCriterion(@Nonnull @NonnullElements  @NotEmpty final
             HttpClientSecurityConfiguration... configurations) {
         Constraint.isNotNull(configurations, "List of configurations cannot be null");
-        configs = new ArrayList<>(Collections2.filter(Arrays.asList(configurations), Predicates.notNull()));
-        Constraint.isGreaterThanOrEqual(1, configs.size(), "At least one configuration is required");
+        configs = List.of(configurations);
+        Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
     
     /**
@@ -73,7 +67,7 @@ public class HttpClientSecurityConfigurationCriterion implements Criterion {
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
     public List<HttpClientSecurityConfiguration> getConfigurations() {
-        return ImmutableList.copyOf(configs);
+        return configs;
     }
     
     /** {@inheritDoc} */

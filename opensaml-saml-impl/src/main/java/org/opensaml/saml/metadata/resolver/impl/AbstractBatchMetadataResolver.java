@@ -20,7 +20,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.time.Instant;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -41,9 +40,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Iterables;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -115,7 +111,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @return the set of configured indexes
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
-        return ImmutableSet.copyOf(indexes);
+        return indexes;
     }
 
     /**
@@ -128,8 +124,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         if (newIndexes == null) {
             indexes = Collections.emptySet();
         } else {
-            indexes = new HashSet<>();
-            indexes.addAll(Collections2.filter(newIndexes, Predicates.notNull()));
+            indexes = Set.copyOf(newIndexes);
         }
     }
 

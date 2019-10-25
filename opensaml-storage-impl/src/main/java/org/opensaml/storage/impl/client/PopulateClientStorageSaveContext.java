@@ -17,9 +17,10 @@
 
 package org.opensaml.storage.impl.client;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -28,9 +29,6 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -71,8 +69,7 @@ public class PopulateClientStorageSaveContext extends AbstractProfileAction {
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
-        Constraint.isNotNull(services, "StorageService collection cannot be null");
-        storageServices = new ArrayList<>(Collections2.filter(services, Predicates.notNull()));
+        storageServices = List.copyOf(Constraint.isNotNull(services, "StorageService collection cannot be null"));
     }
     
     /** {@inheritDoc} */
@@ -111,9 +108,8 @@ public class PopulateClientStorageSaveContext extends AbstractProfileAction {
             profileRequestContext.addSubcontext(saveCtx, true);
             
             if (log.isDebugEnabled()) {
-                final Collection<String> ids =
-                        Collections2.transform(saveCtx.getStorageOperations(),
-                                ClientStorageServiceOperation::getStorageServiceID);
+                final Collection<String> ids = saveCtx.getStorageOperations().stream().map(
+                        ClientStorageServiceOperation::getStorageServiceID).collect(Collectors.toList());
                 log.debug("{} ClientStorageServices requiring save: {}", getLogPrefix(), ids);
             }
         }

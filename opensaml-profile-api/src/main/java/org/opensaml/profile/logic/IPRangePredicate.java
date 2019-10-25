@@ -17,9 +17,9 @@
 
 package org.opensaml.profile.logic;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,8 +27,6 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.messaging.context.BaseContext;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import com.google.common.net.InetAddresses;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -62,7 +60,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
     public void setRanges(@Nonnull @NonnullElements final Collection<IPRange> ranges) {
         Constraint.isNotNull(ranges, "Address range collection cannot be null");
         
-        addressRanges = new ArrayList<>(Collections2.filter(ranges, Predicates.notNull()));
+        addressRanges = List.copyOf(ranges);
     }
     
     /**

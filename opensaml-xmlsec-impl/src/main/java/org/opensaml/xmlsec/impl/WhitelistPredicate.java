@@ -18,7 +18,7 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.Collection;
-import java.util.HashSet;
+import java.util.Set;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
@@ -26,9 +26,6 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 /**
  * Predicate which implements an algorithm URI whitelist policy.
@@ -45,9 +42,7 @@ public class WhitelistPredicate implements Predicate<String> {
      * @param algorithms collection of whitelisted algorithms
      */
     public WhitelistPredicate(@Nonnull final Collection<String> algorithms) {
-        Constraint.isNotNull(algorithms, "Whitelist may not be null");
-        whitelist = new HashSet<>();
-        whitelist.addAll(Collections2.filter(algorithms, Predicates.notNull()));
+        whitelist = Set.copyOf(Constraint.isNotNull(algorithms, "Whitelist may not be null"));
     }
 
     /** {@inheritDoc} */

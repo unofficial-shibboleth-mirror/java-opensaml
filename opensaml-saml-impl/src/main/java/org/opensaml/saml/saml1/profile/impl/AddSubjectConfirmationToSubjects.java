@@ -17,9 +17,9 @@
 
 package org.opensaml.saml.saml1.profile.impl;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
@@ -51,9 +51,6 @@ import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.saml.saml1.core.SubjectStatement;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 
 /**
  * Action that builds {@link SubjectConfirmation} and adds it to the {@link Subject} of all the statements
@@ -144,7 +141,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         Constraint.isNotEmpty(methods, "Confirmation method collection cannot be null or empty");
         
-        confirmationMethods = new ArrayList<>(Collections2.filter(methods, Predicates.notNull()));
+        confirmationMethods = List.copyOf(methods);
     }
     
     /** {@inheritDoc} */

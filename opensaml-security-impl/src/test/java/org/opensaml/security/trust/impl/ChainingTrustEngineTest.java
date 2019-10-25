@@ -86,17 +86,7 @@ public class ChainingTrustEngineTest {
         engine = new ChainingTrustEngine<>(chain);
         Assert.assertTrue(engine.validate(token, criteriaSet), "SuperEngine evaled token as trusted");
     }
-    
-    @Test
-    public void testNullEngineOK() throws SecurityException {
-        chain.add( new FooEngine(Boolean.FALSE));
-        chain.add( null );
-        chain.add( new FooEngine(Boolean.TRUE));
-        engine = new ChainingTrustEngine<>(chain);
-        Assert.assertTrue(engine.validate(token, criteriaSet), 
-                "Engine # 3 evaled token as trusted with intervening null engine");
-    }
-    
+        
     @Test(expectedExceptions=SecurityException.class)
     public void testException() throws SecurityException {
         chain.add( new FooEngine(Boolean.FALSE));

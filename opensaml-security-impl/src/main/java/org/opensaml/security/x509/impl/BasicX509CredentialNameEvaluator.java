@@ -41,10 +41,7 @@ import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableSet;
 
 /**
  * A basic implementaion of {@link X509CredentialNameEvaluator} which evaluates various identifiers 
@@ -123,7 +120,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
      * @return the immutable set of alt name identifiers
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Set<Integer> getSubjectAltNameTypes() {
-        return ImmutableSet.copyOf(subjectAltNameTypes);
+        return subjectAltNameTypes;
     }
 
     /**
@@ -134,12 +131,11 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
      * 
      * @param nameTypes the new set of alt name identifiers
      */
-    public void setSubjectAltNameTypes(@Nullable final Set<Integer> nameTypes) {
+    public void setSubjectAltNameTypes(@Nullable @NonnullElements final Set<Integer> nameTypes) {
         if (nameTypes == null) {
             subjectAltNameTypes = Collections.emptySet();
         } else {
-            subjectAltNameTypes = new HashSet<>();
-            subjectAltNameTypes.addAll(Collections2.filter(nameTypes, Predicates.notNull()));
+            subjectAltNameTypes = Set.copyOf(nameTypes);
         }
     }
 

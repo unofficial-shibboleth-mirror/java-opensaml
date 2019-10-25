@@ -36,9 +36,7 @@ import org.opensaml.saml.common.profile.NameIdentifierGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.ListMultimap;
 
 /**
@@ -77,14 +75,13 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
         Constraint.isNotNull(generators, "NameIdentifierGenerator list cannot be null");
         
         nameIdGeneratorMap.clear();
-        for (final NameIdentifierGenerator<NameIdType> generator
-                : Collections2.filter(generators, Predicates.notNull())) {
+        for (final NameIdentifierGenerator<NameIdType> generator : generators) {
             if (generator instanceof FormatSpecificNameIdentifierGenerator) {
                 nameIdGeneratorMap.put(
                         ((FormatSpecificNameIdentifierGenerator<NameIdType>) generator).getFormat(), generator);
             } else {
                 log.warn("Unable to install NameIdentifierGenerator of type {}, not format-specific",
-                        generator.getClass().getName());
+                        generator != null ? generator.getClass().getName() : "null");
             }
         }
     }

@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -34,10 +33,6 @@ import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 
 /**
  * Basic implementation of {@link SignatureSigningConfiguration}.
@@ -83,7 +78,7 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getSigningCredentials() {
-        return ImmutableList.copyOf(signingCredentials);
+        return signingCredentials;
     }
     
     /**
@@ -91,18 +86,18 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
      * 
      * @param credentials the list of signing credentials
      */
-    public void setSigningCredentials(@Nullable final List<Credential> credentials) {
+    public void setSigningCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
         if (credentials == null) {
             signingCredentials = Collections.emptyList();
-            return;
+        } else {
+            signingCredentials = List.copyOf(credentials);
         }
-        signingCredentials = new ArrayList<>(Collections2.filter(credentials, Predicates.notNull()));
     }
     
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithms() {
-        return ImmutableList.copyOf(signatureAlgorithms);
+        return signatureAlgorithms;
     }
     
     /**
@@ -110,18 +105,18 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
      * 
      * @param algorithms the list of signature algorithms
      */
-    public void setSignatureAlgorithms(@Nullable final List<String> algorithms) {
+    public void setSignatureAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
             signatureAlgorithms = Collections.emptyList();
-            return;
+        } else {
+            signatureAlgorithms = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
         }
-        signatureAlgorithms = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureReferenceDigestMethods() {
-        return ImmutableList.copyOf(signatureReferenceDigestMethods);
+        return signatureReferenceDigestMethods;
     }
     
     /**
@@ -129,12 +124,12 @@ public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistC
      * 
      * @param algorithms a list of digest method algorithm URIs
      */
-    public void setSignatureReferenceDigestMethods(@Nullable final List<String> algorithms) {
+    public void setSignatureReferenceDigestMethods(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
             signatureReferenceDigestMethods = Collections.emptyList();
-            return;
+        } else {
+            signatureReferenceDigestMethods = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
         }
-        signatureReferenceDigestMethods = new ArrayList<>(StringSupport.normalizeStringCollection(algorithms));
     }
     
     /**

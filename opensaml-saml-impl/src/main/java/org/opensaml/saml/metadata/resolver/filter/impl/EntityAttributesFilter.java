@@ -50,9 +50,7 @@ import org.opensaml.saml.saml2.metadata.Extensions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.ArrayListMultimap;
-import com.google.common.collect.Collections2;
 import com.google.common.collect.Multimap;
 
 /**
@@ -105,7 +103,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
         applyMap = ArrayListMultimap.create(rules.size(), 1);
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<Attribute>> entry : rules.entrySet()) {
             if (entry.getKey() != null && entry.getValue() != null) {
-                applyMap.putAll(entry.getKey(), Collections2.filter(entry.getValue(), Predicates.notNull()));
+                applyMap.putAll(entry.getKey(), List.copyOf(entry.getValue()));
             }
         }
     }

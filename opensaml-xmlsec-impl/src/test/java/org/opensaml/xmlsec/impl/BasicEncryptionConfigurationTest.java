@@ -87,7 +87,7 @@ public class BasicEncryptionConfigurationTest {
         Assert.assertNotNull(config.getDataEncryptionCredentials());
         Assert.assertEquals(config.getDataEncryptionCredentials().size(), 0);
         
-        config.setDataEncryptionCredentials(Arrays.asList(cred1, null, cred2, null));
+        config.setDataEncryptionCredentials(Arrays.asList(cred1, cred2));
         
         Assert.assertNotNull(config.getDataEncryptionCredentials());
         Assert.assertEquals(config.getDataEncryptionCredentials().size(), 2);
@@ -109,7 +109,7 @@ public class BasicEncryptionConfigurationTest {
         Assert.assertNotNull(config.getDataEncryptionAlgorithms());
         Assert.assertEquals(config.getDataEncryptionAlgorithms().size(), 0);
         
-        config.setDataEncryptionAlgorithms(Arrays.asList("   A   ", null, null, "   B    ", null, "   C    "));
+        config.setDataEncryptionAlgorithms(Arrays.asList("   A   ", "   B    ", "   C    "));
         
         Assert.assertNotNull(config.getDataEncryptionAlgorithms());
         Assert.assertEquals(config.getDataEncryptionAlgorithms().size(), 3);
@@ -134,7 +134,7 @@ public class BasicEncryptionConfigurationTest {
         Assert.assertNotNull(config.getKeyTransportEncryptionCredentials());
         Assert.assertEquals(config.getKeyTransportEncryptionCredentials().size(), 0);
         
-        config.setKeyTransportEncryptionCredentials(Arrays.asList(cred1, null, cred2, null));
+        config.setKeyTransportEncryptionCredentials(Arrays.asList(cred1, cred2));
         
         Assert.assertNotNull(config.getKeyTransportEncryptionCredentials());
         Assert.assertEquals(config.getKeyTransportEncryptionCredentials().size(), 2);

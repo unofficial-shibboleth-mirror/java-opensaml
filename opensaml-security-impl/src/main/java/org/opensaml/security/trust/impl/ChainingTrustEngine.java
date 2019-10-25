@@ -17,7 +17,6 @@
 
 package org.opensaml.security.trust.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -27,10 +26,6 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -58,9 +53,9 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * 
      * @param chain the list of trust engines in the chain
      */
-    public ChainingTrustEngine(@Nonnull @ParameterName(name="chain") final List<TrustEngine<? super TokenType>> chain) {
-        Constraint.isNotNull(chain, "TrustEngine list cannot be null");
-        engines = new ArrayList<>(Collections2.filter(chain, Predicates.notNull()));
+    public ChainingTrustEngine(
+            @Nonnull @NonnullElements @ParameterName(name="chain") final List<TrustEngine<? super TokenType>> chain) {
+        engines = List.copyOf(Constraint.isNotNull(chain, "TrustEngine list cannot be null"));
     }
 
     /**
@@ -69,7 +64,7 @@ public class ChainingTrustEngine<TokenType> implements TrustEngine<TokenType> {
      * @return the modifiable list of trust engines in the chain
      */
     @Nonnull  @NonnullElements @Unmodifiable @NotLive public List<TrustEngine<? super TokenType>> getChain() {
-        return ImmutableList.copyOf(engines);
+        return engines;
     }
 
     /** {@inheritDoc} */

@@ -85,26 +85,6 @@ public class ChainingSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         Assert.assertFalse(engine.validate(token, criteriaSet), "No engine evaled token as trusted");
     }
 
-    @Test
-    public void testNullEngineOK() throws SecurityException {
-        chain.add(new MockSignatureTrustEngine(Boolean.FALSE));
-        chain.add(null);
-        chain.add(new MockSignatureTrustEngine(Boolean.TRUE));
-        engine = new ChainingSignatureTrustEngine(chain);
-        Assert.assertTrue(engine.validate(token, criteriaSet),
-                "Engine # 3 evaled token as trusted with intervening null engine");
-    }
-
-    @Test
-    public void testRawSignature() throws SecurityException {
-        chain.add(new MockSignatureTrustEngine(Boolean.FALSE));
-        chain.add(null);
-        chain.add(new MockSignatureTrustEngine(Boolean.TRUE));
-        engine = new ChainingSignatureTrustEngine(chain);
-        Assert.assertTrue(engine.validate(null, null, null, null, null),
-                "Engine # 3 evaled raw signature as trusted with intervening null engine");
-    }
-
     @Test(expectedExceptions = SecurityException.class)
     public void testException() throws SecurityException {
         chain.add(new MockSignatureTrustEngine(Boolean.FALSE));
