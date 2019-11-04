@@ -37,8 +37,6 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Iterables;
-
 /**
  * Partial implementation of {@link StorageService} that stores data in-memory with no persistence
  * using a simple map.
@@ -475,12 +473,12 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
     protected boolean reapWithLock(@Nonnull @NonnullElements final Map<String, MutableStorageRecord<?>> dataMap,
             final long expiration) {
         
-        return Iterables.removeIf(dataMap.entrySet(), new Predicate<Entry<String, MutableStorageRecord<?>>>() {
+        return dataMap.entrySet().removeIf(new Predicate<Entry<String, MutableStorageRecord<?>>>() {
                 public boolean test(@Nullable final Entry<String, MutableStorageRecord<?>> entry) {
                     final Long exp = entry.getValue().getExpiration();
                     return exp != null && exp <= expiration;
                 }
-            }::test
+            }
         );
     }
     
