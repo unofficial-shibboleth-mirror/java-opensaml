@@ -18,6 +18,7 @@
 package org.opensaml.saml.metadata.resolver.index.impl;
 
 import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -32,9 +33,6 @@ import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.Sets;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -275,7 +273,7 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
                         new SimpleStringCriteriaFunction());
         
         MetadataIndexManager<EntityDescriptor> manager =
-                new MetadataIndexManager<>(Sets.newHashSet(roleIndex, functionIndex), extractionFunction);
+                new MetadataIndexManager<>(Set.of(roleIndex, functionIndex), extractionFunction);
         
         manager.indexEntityDescriptor(a);
         manager.indexEntityDescriptor(b);
@@ -300,7 +298,7 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
                         new SimpleStringCriteriaFunction());
         
         MetadataIndexManager<EntityDescriptor> manager =
-                new MetadataIndexManager<>(Sets.newHashSet(roleIndex, functionIndex), extractionFunction);
+                new MetadataIndexManager<>(Set.of(roleIndex, functionIndex), extractionFunction);
         
         manager.indexEntityDescriptor(a);
         manager.indexEntityDescriptor(b);
@@ -323,7 +321,7 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
                         new SimpleStringCriteriaFunction());
         
         MetadataIndexManager<EntityDescriptor> manager =
-                new MetadataIndexManager<>(Sets.newHashSet(roleIndex, functionIndex), extractionFunction);
+                new MetadataIndexManager<>(Set.of(roleIndex, functionIndex), extractionFunction);
         
         manager.indexEntityDescriptor(a);
         manager.indexEntityDescriptor(b);
@@ -354,7 +352,7 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
     @Test
     public void testNoIndexes() {
         MetadataIndexManager<EntityDescriptor> manager =
-                new MetadataIndexManager<>(Sets.newHashSet(), extractionFunction);
+                new MetadataIndexManager<>(Collections.emptySet(), extractionFunction);
         
         manager.indexEntityDescriptor(a);
         

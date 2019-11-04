@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.resolver.index.impl;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
@@ -32,9 +33,6 @@ import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Optional;
-import com.google.common.collect.ImmutableSet;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
@@ -92,7 +90,7 @@ public class MetadataIndexManager<T> {
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive 
     public Set<MetadataIndex> getIndexes() {
-        return ImmutableSet.copyOf(indexes.keySet());
+        return Set.copyOf(indexes.keySet());
     }
     
     /**
@@ -151,7 +149,7 @@ public class MetadataIndexManager<T> {
             //   2) no criteria was supplied applicable for any indexes 
             //      (i.e. no MetadataIndexKeys were generated for any criteria)
             // Returning absent here allows to distinguish these cases from the empty set case above.
-            return Optional.absent();
+            return Optional.empty();
         }
         
         return Optional.of(items);

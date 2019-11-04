@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -65,7 +66,6 @@ import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.RatioGauge;
 import com.codahale.metrics.Timer.Context;
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Optional;
 import com.google.common.base.Predicates;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
@@ -764,7 +764,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             return Collections.emptySet();
         }
 
-        Optional<Set<String>> indexedResult = null;
+        Optional<Set<String>> indexedResult = Optional.empty();
         final Lock readLock = getBackingStore().getSecondaryIndexManager().getReadWriteLock().readLock();
         try {
             readLock.lock();

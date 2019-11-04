@@ -24,8 +24,10 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Set;
 import java.util.Timer;
 import java.util.function.Function;
@@ -71,10 +73,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Optional;
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -411,7 +410,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertTrue(sourceMap.isEmpty());
         
-        for (String entityID : Lists.newArrayList(id1, id2, id3)) {
+        for (final String entityID : List.of(id1, id2, id3)) {
             EntityDescriptor ed = resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
             Assert.assertNotNull(ed);
             Assert.assertEquals(ed.getEntityID(), entityID);
@@ -512,7 +511,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         resolver.initialize();
         
         DynamicEntityBackingStore backingStore = resolver.getBackingStore();
-        Optional<Set<String>> indexedData = null;
+        Optional<Set<String>> indexedData = Optional.empty();
         
         Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new SimpleStringCriterion(id1.toUpperCase()))));
         
@@ -520,7 +519,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         indexedData = backingStore.getSecondaryIndexManager().lookupIndexedItems(new CriteriaSet(new SimpleStringCriterion(id1.toUpperCase())));
         Assert.assertTrue(indexedData.isPresent());
-        Assert.assertEquals(indexedData.get(), Sets.newHashSet(id1));
+        Assert.assertEquals(indexedData.get(), Set.of(id1));
         
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new SimpleStringCriterion(id1.toUpperCase()))), ed1);
     }
@@ -550,24 +549,24 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         indexedData = backingStore.getSecondaryIndexManager().lookupIndexedItems(new CriteriaSet(new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME)));
         Assert.assertTrue(indexedData.isPresent());
-        Assert.assertEquals(indexedData.get(), Sets.newHashSet(id1));
+        Assert.assertEquals(indexedData.get(), Set.of(id1));
         
         results.clear();
         Iterables.addAll(results, resolver.resolve(new CriteriaSet(new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME))));
         Assert.assertEquals(results.size(), 1);
-        Assert.assertEquals(results, Sets.newHashSet(ed1));
+        Assert.assertEquals(results, Set.of(ed1));
         
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2))), ed2);
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3))), ed3);
         
         indexedData = backingStore.getSecondaryIndexManager().lookupIndexedItems(new CriteriaSet(new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME)));
         Assert.assertTrue(indexedData.isPresent());
-        Assert.assertEquals(indexedData.get(), Sets.newHashSet(id1, id2));
+        Assert.assertEquals(indexedData.get(), Set.of(id1, id2));
         
         results.clear();
         Iterables.addAll(results, resolver.resolve(new CriteriaSet(new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME))));
         Assert.assertEquals(results.size(), 2);
-        Assert.assertEquals(results, Sets.newHashSet(ed1, ed2));
+        Assert.assertEquals(results, Set.of(ed1, ed2));
     }
     
     @Test
@@ -593,7 +592,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         indexedData = backingStore.getSecondaryIndexManager().lookupIndexedItems(new CriteriaSet(new SimpleStringCriterion(id1.toUpperCase())));
         Assert.assertTrue(indexedData.isPresent());
-        Assert.assertEquals(indexedData.get(), Sets.newHashSet(id1));
+        Assert.assertEquals(indexedData.get(), Set.of(id1));
         
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))), ed1);
     }

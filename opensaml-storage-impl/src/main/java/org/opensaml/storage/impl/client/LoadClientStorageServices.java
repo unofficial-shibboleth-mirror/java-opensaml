@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -37,9 +38,7 @@ import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
 import com.google.common.base.Strings;
-import com.google.common.collect.Iterables;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -180,14 +179,14 @@ public class LoadClientStorageServices extends AbstractProfileAction {
     private void loadFromCookie(@Nonnull final ClientStorageService storageService,
             @Nonnull final ClientStorageSource source) {
         
-        Optional<Cookie> cookie = Optional.absent();
+        Optional<Cookie> cookie = Optional.empty();
         
         // Search for our cookie.
         final Cookie[] cookies = getHttpServletRequest().getCookies();
         if (cookies != null) {
-            cookie = Iterables.tryFind(
-                    Arrays.asList(cookies),
-                        c -> c != null && c.getName().equals(storageService.getStorageName()));
+            cookie = Arrays.asList(cookies).stream().filter(
+                    c -> c != null && c.getName().equals(storageService.getStorageName())
+                    ).findFirst();
         }
 
         if (!cookie.isPresent() || Strings.isNullOrEmpty(cookie.get().getValue())) {
@@ -196,7 +195,7 @@ public class LoadClientStorageServices extends AbstractProfileAction {
             storageService.load(null, source);
         } else {
             log.debug("{} Initializing StorageService '{}' from cookie", getLogPrefix(), storageService.getId());
-            storageService.load(URISupport.doURLDecode(cookie.get().getValue()), source);
+            storageService.load(URISupport.doURLDecode(cookie.orElseThrow().getValue()), source);
         }
     }
  
