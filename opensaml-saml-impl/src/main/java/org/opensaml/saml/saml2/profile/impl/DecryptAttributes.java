@@ -117,17 +117,21 @@ public class DecryptAttributes extends AbstractDecryptAction {
     private void processAssertion(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final Assertion assertion) throws DecryptionException {
 
-        final Collection<Attribute> decrypteds = new ArrayList<>();
-        
         for (final AttributeStatement s : assertion.getAttributeStatements()) {
+
+            final Collection<Attribute> decrypteds = new ArrayList<>();
+            final Collection<EncryptedAttribute> encrypteds = new ArrayList<>();
+            
             final Iterator<EncryptedAttribute> i = s.getEncryptedAttributes().iterator();
             while (i.hasNext()) {
                 log.debug("{} Decrypting EncryptedAttribute in AttributeStatement", getLogPrefix());
+                
                 try {
-                    final Attribute decrypted = processEncryptedAttribute(profileRequestContext, i.next());
+                    final EncryptedAttribute encrypted = i.next();
+                    final Attribute decrypted = processEncryptedAttribute(profileRequestContext, encrypted);
                     if (decrypted != null) {
+                        encrypteds.add(encrypted);
                         decrypteds.add(decrypted);
-                        i.remove();
                     }
                 } catch (final DecryptionException e) {
                     if (isErrorFatal()) {
@@ -138,6 +142,7 @@ public class DecryptAttributes extends AbstractDecryptAction {
                 }
             }
             
+            s.getEncryptedAttributes().removeAll(encrypteds);
             s.getAttributes().addAll(decrypteds); 
         }
     }

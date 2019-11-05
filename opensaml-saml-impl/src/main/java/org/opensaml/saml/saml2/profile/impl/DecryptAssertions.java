@@ -112,24 +112,27 @@ public class DecryptAssertions extends AbstractDecryptAction {
             @Nonnull final Response response) throws DecryptionException {
 
         final Collection<Assertion> decrypteds = new ArrayList<>();
+        final Collection<EncryptedAssertion> encrypteds = new ArrayList<>();
         
         final Iterator<EncryptedAssertion> i = response.getEncryptedAssertions().iterator();
         while (i.hasNext()) {
             log.debug("{} Decrypting EncryptedAssertion in Response", getLogPrefix());
             try {
-                final Assertion decrypted = processEncryptedAssertion(profileRequestContext, i.next());
+                final EncryptedAssertion encrypted = i.next();
+                final Assertion decrypted = processEncryptedAssertion(profileRequestContext, encrypted);
                 if (decrypted != null) {
+                    encrypteds.add(encrypted);
                     decrypteds.add(decrypted);
-                    i.remove();
                 }
             } catch (final DecryptionException e) {
                 if (isErrorFatal()) {
                     throw e;
                 }
-                log.warn("{} Trapped failure decrypting EncryptedAttribute in AttributeStatement", getLogPrefix(), e);
+                log.warn("{} Trapped failure decrypting EncryptedAssertion in Response", getLogPrefix(), e);
             }
         }
         
+        response.getEncryptedAssertions().removeAll(encrypteds);
         response.getAssertions().addAll(decrypteds); 
     }
     
