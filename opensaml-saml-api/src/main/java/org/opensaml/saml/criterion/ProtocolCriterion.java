@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing an entity ID. */
+/** {@link Criterion} representing a protocolSupportEnumeration value. */
 public final class ProtocolCriterion implements Criterion {
 
     /** The SAML protocol. */
