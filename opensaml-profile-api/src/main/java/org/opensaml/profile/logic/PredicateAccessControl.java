@@ -81,7 +81,7 @@ public class PredicateAccessControl extends AbstractIdentifiableInitializableCom
                 return true;
             }
             prc.removeSubcontext(acc);
-            log.warn("{} Denied request based on predicate (Operation: {}, Resource: {})",
+            log.debug("{} Denied request based on predicate (Operation: {}, Resource: {})",
                     new Object[] {getLogPrefix(), operation, resource});
         } else {
             log.warn("{} Denied request based on predicate, missing ProfileRequestContext (Operation: {}, Resource: {})"
