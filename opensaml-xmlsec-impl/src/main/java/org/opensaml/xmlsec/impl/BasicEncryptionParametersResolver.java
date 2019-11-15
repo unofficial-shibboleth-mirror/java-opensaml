@@ -44,8 +44,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Collections2;
-
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.PredicateSupport;
@@ -585,12 +583,13 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
         
         final ArrayList<String> accumulator = new ArrayList<>();
-        for (final EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
-                .getConfigurations()) {
+        for (final EncryptionConfiguration config
+                : criteria.get(EncryptionConfigurationCriterion.class).getConfigurations()) {
             
-            accumulator.addAll(Collections2.filter(config.getDataEncryptionAlgorithms(), 
-                    PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate)::test));
-            
+            config.getDataEncryptionAlgorithms()
+                .stream()
+                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                .forEach(accumulator::add);
         }
         return accumulator;
     }
@@ -626,12 +625,13 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
         
         final ArrayList<String> accumulator = new ArrayList<>();
-        for (final EncryptionConfiguration config : criteria.get(EncryptionConfigurationCriterion.class)
-                .getConfigurations()) {
+        for (final EncryptionConfiguration config
+                : criteria.get(EncryptionConfigurationCriterion.class).getConfigurations()) {
             
-            accumulator.addAll(Collections2.filter(config.getKeyTransportEncryptionAlgorithms(), 
-                    PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate)::test));
-            
+            config.getKeyTransportEncryptionAlgorithms()
+                .stream()
+                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                .forEach(accumulator::add);
         }
         return accumulator;
     }

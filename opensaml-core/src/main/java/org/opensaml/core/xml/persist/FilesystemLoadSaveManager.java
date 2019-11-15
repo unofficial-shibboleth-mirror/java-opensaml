@@ -31,6 +31,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,8 +46,6 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 
@@ -379,8 +378,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
          * @param filenames Snapshot of filesystem keys at time of construction
          */
         public FileIterable(@Nonnull final Collection<String> filenames) {
-            keys = new HashSet<>();
-            keys.addAll(Collections2.filter(filenames, Predicates.notNull()));
+            keys = filenames.stream().filter(s -> s != null).collect(Collectors.toSet());
         }
 
         /** {@inheritDoc} */
@@ -407,8 +405,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
          * @param filenames Snapshot of filesystem keys at time of construction
          */
         public FileIterator(@Nonnull final Collection<String> filenames) {
-            final Set<String> keys = new HashSet<>();
-            keys.addAll(Collections2.filter(filenames, Predicates.notNull()));
+            final Set<String> keys = filenames.stream().filter(s -> s != null).collect(Collectors.toSet());
             keysIter = keys.iterator();
         }
 
@@ -429,14 +426,12 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
                 final Pair<String, T> temp = current;
                 current = null;
                 return temp;
-            } else {
-                final Pair<String, T> temp = getNext();
-                if (temp != null) {
-                    return temp;
-                } else {
-                    throw new NoSuchElementException();
-                }
             }
+            final Pair<String, T> temp = getNext();
+            if (temp != null) {
+                return temp;
+            }
+            throw new NoSuchElementException();
         }
 
         /** {@inheritDoc} */
@@ -459,9 +454,8 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
                         // This is to defensively guard against files being removed after files/keys are enumerated.
                         // Don't fail, just skip
                         return new Pair<>(key, xmlObject);
-                    } else {
-                        log.warn("Target file with key '{}' was removed since iterator creation, skipping", key);
                     }
+                    log.warn("Target file with key '{}' was removed since iterator creation, skipping", key);
                 } catch (final IOException e) {
                     log.warn("Error loading target file with key '{}'", key, e);
                 }

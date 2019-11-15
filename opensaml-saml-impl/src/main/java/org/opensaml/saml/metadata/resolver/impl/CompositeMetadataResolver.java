@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
@@ -43,10 +42,6 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-import com.google.common.collect.Collections2;
-import com.google.common.collect.ImmutableList;
-import com.google.common.collect.Iterables;
 
 /**
  * A {@link MetadataResolver} implementation that answers requests by composing the answers of child
@@ -72,7 +67,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
      * @return list of currently registered resolvers
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<MetadataResolver> getResolvers() {
-        return ImmutableList.copyOf(resolvers);
+        return resolvers;
     }
 
     /**
@@ -89,10 +84,9 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
 
         if (newResolvers == null || newResolvers.isEmpty()) {
             resolvers = Collections.emptyList();
-            return;
+        } else {
+            resolvers = List.copyOf(newResolvers);
         }
-
-        resolvers = new ArrayList<>(Collections2.filter(newResolvers, Predicates.notNull()));
     }
 
     /** {@inheritDoc} */
@@ -264,9 +258,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
          */
         public CompositeMetadataResolverIterable(final List<MetadataResolver> composedResolvers,
                 final CriteriaSet metadataCritiera) {
-            resolvers =
-                    ImmutableList.<MetadataResolver> builder()
-                            .addAll(Iterables.filter(composedResolvers, Predicates.notNull())).build();
+            resolvers = List.copyOf(composedResolvers);
 
             criteria = metadataCritiera;
         }

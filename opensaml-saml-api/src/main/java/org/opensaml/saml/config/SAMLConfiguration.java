@@ -17,20 +17,16 @@
 
 package org.opensaml.saml.config;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
-
-import com.google.common.collect.Collections2;
-import com.google.common.collect.Lists;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
@@ -59,7 +55,7 @@ public class SAMLConfiguration {
     
     /** The list of schemes allowed to appear in binding URLs when encoding a message. 
      * Defaults to 'http' and 'https'. */
-    private List<String> allowedBindingURLSchemes;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive private List<String> allowedBindingURLSchemes;
     
 
     /**
@@ -67,7 +63,7 @@ public class SAMLConfiguration {
      *
      */
     public SAMLConfiguration() {
-        setAllowedBindingURLSchemes(Lists.newArrayList("http", "https"));
+        setAllowedBindingURLSchemes(List.of("http", "https"));
     }
 
     /**
@@ -121,7 +117,7 @@ public class SAMLConfiguration {
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive
     public List<String> getAllowedBindingURLSchemes() {
-        return Collections.unmodifiableList(allowedBindingURLSchemes);
+        return allowedBindingURLSchemes;
     }
 
     /**
@@ -142,9 +138,10 @@ public class SAMLConfiguration {
         if (schemes == null || schemes.isEmpty()) {
             allowedBindingURLSchemes = Collections.emptyList();
         } else {
-            final Collection<String> normalized = Collections2.transform(
-                    StringSupport.normalizeStringCollection(schemes), lowercaseFunction::apply);
-            allowedBindingURLSchemes = new ArrayList<>(normalized);
+            allowedBindingURLSchemes = StringSupport.normalizeStringCollection(schemes)
+                    .stream()
+                    .map(lowercaseFunction::apply)
+                    .collect(Collectors.toUnmodifiableList());
         }
     }
     

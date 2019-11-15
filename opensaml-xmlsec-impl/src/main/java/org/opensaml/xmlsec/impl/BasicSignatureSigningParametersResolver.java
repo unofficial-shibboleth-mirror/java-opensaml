@@ -45,8 +45,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Collections2;
-
 /**
  * Basic implementation of {@link SignatureSigningParametersResolver}.
  * 
@@ -296,9 +294,10 @@ public class BasicSignatureSigningParametersResolver
         for (final SignatureSigningConfiguration config : criteria.get(SignatureSigningConfigurationCriterion.class)
                 .getConfigurations()) {
             
-            accumulator.addAll(Collections2.filter(config.getSignatureAlgorithms(), 
-                    PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate)::test));
-            
+            config.getSignatureAlgorithms()
+                .stream()
+                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                .forEach(accumulator::add);
         }
         return accumulator;
     }

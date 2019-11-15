@@ -20,12 +20,12 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,7 +48,6 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import com.google.common.base.Strings;
-import com.google.common.collect.Collections2;
 import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
 
@@ -207,9 +206,11 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         if (types == null) {
             supportedContentTypes = Collections.emptyList();
         } else {
-            supportedContentTypes = new ArrayList<>(Collections2.transform(
-                    StringSupport.normalizeStringCollection(types),
-                    s -> s == null ? null : s.toLowerCase()));
+            supportedContentTypes = StringSupport.normalizeStringCollection(types)
+                    .stream()
+                    .filter(s -> s != null)
+                    .map(String::toLowerCase)
+                    .collect(Collectors.toUnmodifiableList());
         }
     }
     
