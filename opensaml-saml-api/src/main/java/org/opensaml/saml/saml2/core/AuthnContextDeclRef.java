@@ -17,10 +17,14 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core AuthnContextDeclRef.
@@ -28,10 +32,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthnContextDeclRef extends SAMLObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextDeclRef";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextDeclRef";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
     
     /**
@@ -39,12 +43,35 @@ public interface AuthnContextDeclRef extends SAMLObject {
      * 
      * @return authentication context declaration reference URI
      */
-    public String getAuthnContextDeclRef();
+    @Nullable String getURI();
 
     /**
      * Sets the URI reference to an authentication context declaration.
      * 
-     * @param newAuthnContextDeclRef the new AuthnContextDeclRef URI
+     * @param uri the new AuthnContextDeclRef URI
      */
-    public void setAuthnContextDeclRef(String newAuthnContextDeclRef);
+    void setURI(@Nullable final String uri);
+    
+    /**
+     * Gets the URI reference to an authentication context declaration.
+     * 
+     * @return authentication context declaration reference URI
+     * 
+     * @deprecated
+     */
+    @Nullable default String getAuthnContextDeclRef() {
+        return getURI();
+    }
+
+    /**
+     * Sets the URI reference to an authentication context declaration.
+     * 
+     * @param uri the new AuthnContextDeclRef URI
+     * 
+     * @deprecated
+     */
+    default void setAuthnContextDeclRef(@Nullable String uri) {
+        setURI(uri);
+    }
+    
 }

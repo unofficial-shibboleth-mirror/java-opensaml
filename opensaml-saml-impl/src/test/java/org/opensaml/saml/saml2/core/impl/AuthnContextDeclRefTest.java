@@ -49,7 +49,7 @@ public class AuthnContextDeclRefTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) unmarshallElement(singleElementFile);
 
-        String declRef = authnContextDeclRef.getAuthnContextDeclRef();
+        String declRef = authnContextDeclRef.getURI();
         Assert.assertEquals(declRef, expectedDeclRef, "Declartion Reference was " + declRef + ", expected " + expectedDeclRef);
     }
 
@@ -65,7 +65,7 @@ public class AuthnContextDeclRefTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthnContextDeclRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) buildXMLObject(qname);
 
-        authnContextDeclRef.setAuthnContextDeclRef(expectedDeclRef);
+        authnContextDeclRef.setURI(expectedDeclRef);
         assertXMLEquals(expectedDOM, authnContextDeclRef);
     }
 

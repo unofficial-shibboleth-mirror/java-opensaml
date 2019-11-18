@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthnContextDeclRef}.
+ * A thread-safe Marshaller for {@link AuthnContextDeclRef}.
  */
 public class AuthnContextDeclRefMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -38,6 +38,6 @@ public class AuthnContextDeclRefMarshaller extends AbstractSAMLObjectMarshaller 
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) samlObject;
-        ElementSupport.appendTextContent(domElement, authnContextDeclRef.getAuthnContextDeclRef());
+        ElementSupport.appendTextContent(domElement, authnContextDeclRef.getURI());
     }
 }

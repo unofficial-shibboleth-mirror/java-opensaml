@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthnContextClassRef}.
+ * A thread-safe Marshaller for {@link AuthnContextClassRef}.
  */
 public class AuthnContextClassRefMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -38,6 +38,6 @@ public class AuthnContextClassRefMarshaller extends AbstractSAMLObjectMarshaller
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final AuthnContextClassRef authnContextClassRef = (AuthnContextClassRef) samlObject;
-        ElementSupport.appendTextContent(domElement, authnContextClassRef.getAuthnContextClassRef());
+        ElementSupport.appendTextContent(domElement, authnContextClassRef.getURI());
     }
 }

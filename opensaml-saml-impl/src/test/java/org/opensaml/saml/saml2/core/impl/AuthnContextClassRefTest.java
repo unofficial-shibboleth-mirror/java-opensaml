@@ -49,7 +49,7 @@ public class AuthnContextClassRefTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AuthnContextClassRef authnContextClassRef = (AuthnContextClassRef) unmarshallElement(singleElementFile);
 
-        String classRef = authnContextClassRef.getAuthnContextClassRef();
+        String classRef = authnContextClassRef.getURI();
         Assert.assertEquals(classRef, expectedClassRef, "Class Reference was " + classRef + ", expected " + expectedClassRef);
     }
 
@@ -65,7 +65,7 @@ public class AuthnContextClassRefTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, AuthnContextClassRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AuthnContextClassRef authnContextClassRef = (AuthnContextClassRef) buildXMLObject(qname);
 
-        authnContextClassRef.setAuthnContextClassRef(expectedClassRef);
+        authnContextClassRef.setURI(expectedClassRef);
         assertXMLEquals(expectedDOM, authnContextClassRef);
     }
 

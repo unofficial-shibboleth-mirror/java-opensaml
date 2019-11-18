@@ -26,13 +26,13 @@ import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthnContextClassRef}.
+ * A thread-safe Unmarshaller for {@link AuthnContextClassRef}.
  */
 public class AuthnContextClassRefUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final AuthnContextClassRef authnContextClassRef = (AuthnContextClassRef) samlObject;
-        authnContextClassRef.setAuthnContextClassRef(elementContent);
+        authnContextClassRef.setURI(elementContent);
     }
 }

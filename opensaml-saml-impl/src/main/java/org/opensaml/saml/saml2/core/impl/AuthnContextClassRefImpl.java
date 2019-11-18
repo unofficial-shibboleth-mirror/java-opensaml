@@ -23,17 +23,22 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthnContextClassRef}.
+ * A concrete implementation of {@link AuthnContextClassRef}.
  */
 public class AuthnContextClassRefImpl extends AbstractXMLObject implements AuthnContextClassRef {
 
     /** URI of the Authentication Context Class. */
-    private String authnContextClassRef;
+    @Nullable private String authnContextClassRef;
 
     /**
      * Constructor.
@@ -42,23 +47,24 @@ public class AuthnContextClassRefImpl extends AbstractXMLObject implements Authn
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnContextClassRefImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthnContextClassRefImpl(@Nullable final String namespaceURI,
+            @Nonnull @NotEmpty final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getAuthnContextClassRef() {
+    @Nullable public String getURI() {
         return authnContextClassRef;
     }
 
     /** {@inheritDoc} */
-    public void setAuthnContextClassRef(final String newAuthnContextClassRef) {
-        this.authnContextClassRef = prepareForAssignment(this.authnContextClassRef, newAuthnContextClassRef);
+    public void setURI(@Nullable final String uri) {
+        authnContextClassRef = prepareForAssignment(authnContextClassRef, uri);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return null;
     }
+    
 }

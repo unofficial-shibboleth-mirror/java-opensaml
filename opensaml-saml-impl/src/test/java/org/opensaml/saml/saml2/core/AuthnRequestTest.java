@@ -61,20 +61,20 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
         Assert.assertEquals(request.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Version");
         Assert.assertEquals(request.getIssueInstant(), Instant.parse("2005-01-31T12:00:00.000Z"), "IssueInstant");
         Assert.assertEquals(request.getDestination(), "http://www.example.com/", "Destination");
-        Assert.assertEquals(request.getConsent(), "urn:oasis:names:tc:SAML:2.0:consent:obtained", "Consent");
-        Assert.assertEquals(request.getSubject().getNameID().getFormat(), "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress", "Subject/NameID/@NameIdFormat");
+        Assert.assertEquals(request.getConsent(), RequestAbstractType.OBTAINED_CONSENT, "Consent");
+        Assert.assertEquals(request.getSubject().getNameID().getFormat(), NameIDType.EMAIL, "Subject/NameID/@NameIdFormat");
         Assert.assertEquals(request.getSubject().getNameID().getValue(), "j.doe@company.com", "Subject/NameID contents");
         Audience audience = request.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
         Assert.assertEquals(audience.getAudienceURI(), "urn:foo:sp.example.org", "Conditions/AudienceRestriction[1]/Audience[1] contents");
         AuthnContextClassRef classRef = request.getRequestedAuthnContext().getAuthnContextClassRefs().get(0);
-        Assert.assertEquals(classRef.getAuthnContextClassRef(), "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", "RequestedAuthnContext/AuthnContextClassRef[1] contents");
+        Assert.assertEquals(classRef.getURI(), AuthnContext.PPT_AUTHN_CTX, "RequestedAuthnContext/AuthnContextClassRef[1] contents");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testMarshall() {
         NameID nameid = (NameID) buildXMLObject(NameID.DEFAULT_ELEMENT_NAME);
-        nameid.setFormat("urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress");
+        nameid.setFormat(NameIDType.EMAIL);
         nameid.setValue("j.doe@company.com");
         
         Subject subject = (Subject) buildXMLObject(Subject.DEFAULT_ELEMENT_NAME);
@@ -90,7 +90,7 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
         conditions.getAudienceRestrictions().add(ar);
         
         AuthnContextClassRef classRef = (AuthnContextClassRef) buildXMLObject(AuthnContextClassRef.DEFAULT_ELEMENT_NAME);
-        classRef.setAuthnContextClassRef("urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport");
+        classRef.setURI(AuthnContext.PPT_AUTHN_CTX);
         
         RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
         rac.getAuthnContextClassRefs().add(classRef);
@@ -108,7 +108,7 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
         request.setVersion(SAMLVersion.VERSION_20);
         request.setIssueInstant(Instant.parse("2005-01-31T12:00:00.000Z"));
         request.setDestination("http://www.example.com/");
-        request.setConsent("urn:oasis:names:tc:SAML:2.0:consent:obtained");
+        request.setConsent(RequestAbstractType.OBTAINED_CONSENT);
         
         assertXMLEquals("Marshalled AuthnRequest", expectedDOM, request);
         

@@ -66,19 +66,19 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         Assert.assertEquals(response.getInResponseTo(), "_abcdef123456", "InResponseTo");
         Assert.assertEquals(response.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Version");
         Assert.assertEquals(response.getIssueInstant(), Instant.parse("2006-01-26T13:35:05.000Z"), "IssueInstant");
-        Assert.assertEquals(response.getIssuer().getFormat(), "urn:oasis:names:tc:SAML:2.0:nameid-format:entity", "Issuer/@Format");
-        Assert.assertEquals(response.getStatus().getStatusCode().getValue(), "urn:oasis:names:tc:SAML:2.0:status:Success", "Status/Statuscode/@Value");
+        Assert.assertEquals(response.getIssuer().getFormat(), NameIDType.ENTITY, "Issuer/@Format");
+        Assert.assertEquals(response.getStatus().getStatusCode().getValue(), StatusCode.SUCCESS, "Status/Statuscode/@Value");
         
         Assertion assertion = response.getAssertions().get(0);
         Assert.assertNotNull(assertion, "Assertion[0] was null");
         Assert.assertEquals(assertion.getID(), "_a75adf55-01d7-40cc-929f-dbd8372ebdfc", "Assertion ID");
         Assert.assertEquals(assertion.getIssueInstant(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/@IssueInstant");
         Assert.assertEquals(assertion.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Assertion/@Version");
-        Assert.assertEquals(assertion.getIssuer().getFormat(), "urn:oasis:names:tc:SAML:2.0:nameid-format:entity", "Assertion/Issuer/@Format");
-        Assert.assertEquals(assertion.getSubject().getNameID().getFormat(), "urn:oasis:names:tc:SAML:2.0:nameid-format:transient", "Assertion/Subject/NameID/@Format");
+        Assert.assertEquals(assertion.getIssuer().getFormat(), NameIDType.ENTITY, "Assertion/Issuer/@Format");
+        Assert.assertEquals(assertion.getSubject().getNameID().getFormat(), NameIDType.TRANSIENT, "Assertion/Subject/NameID/@Format");
         Assert.assertEquals(assertion.getSubject().getNameID().getValue(), "_820d2843-2342-8236-ad28-8ac94fb3e6a1", "Assertion/Subject/NameID contents");
         SubjectConfirmation sc = assertion.getSubject().getSubjectConfirmations().get(0);
-        Assert.assertEquals(sc.getMethod(), "urn:oasis:names:tc:SAML:2.0:cm:bearer", "Assertion/Subject/SubjectConfirmation/@Method");
+        Assert.assertEquals(sc.getMethod(), SubjectConfirmation.METHOD_BEARER, "Assertion/Subject/SubjectConfirmation/@Method");
         Assert.assertEquals(assertion.getConditions().getNotBefore(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/Condition/@NotBefore");
         Assert.assertEquals(assertion.getConditions().getNotOnOrAfter(), Instant.parse("2006-01-26T13:45:05.000Z"), "Assertion/Condition/@NotOnOrAfter");
         Audience audience = assertion.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
@@ -86,7 +86,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         
         AuthnStatement authnStatement = assertion.getAuthnStatements().get(0);
         Assert.assertEquals(authnStatement.getAuthnInstant(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/AuthnStatement/@AuthnInstant");
-        Assert.assertEquals(authnStatement.getAuthnContext().getAuthnContextClassRef().getAuthnContextClassRef(), "urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport", "Assertion/AuthnStatement/AuthnContext/AuthnContextClassRef contents");
+        Assert.assertEquals(authnStatement.getAuthnContext().getAuthnContextClassRef().getURI(), AuthnContext.PPT_AUTHN_CTX, "Assertion/AuthnStatement/AuthnContext/AuthnContextClassRef contents");
         
         AttributeStatement  attribStatement = assertion.getAttributeStatements().get(0);
         Attribute attrib = null;
@@ -95,7 +95,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         attrib = attribStatement.getAttributes().get(0);
         Assert.assertEquals(attrib.getFriendlyName(), "fooAttrib", "Attribute/@FriendlyName");
         Assert.assertEquals(attrib.getName(), "urn:foo:attrib", "Attribute/@Name");
-        Assert.assertEquals(attrib.getNameFormat(), "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", "Attribute/@NameFormat");
+        Assert.assertEquals(attrib.getNameFormat(), Attribute.URI_REFERENCE, "Attribute/@NameFormat");
         Assert.assertEquals(attrib.getAttributeValues().size(), 2, "Number of fooAttrib AttributeValues");
         value = (XSString) attrib.getAttributeValues().get(0);
         Assert.assertEquals(value.getValue(), "SomeValue", "Attribute content");
@@ -105,7 +105,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         attrib = attribStatement.getAttributes().get(1);
         Assert.assertEquals(attrib.getFriendlyName(), "eduPersonPrincipalName", "Attribute/@FriendlyName");
         Assert.assertEquals(attrib.getName(), "urn:oid:1.3.6.1.4.1.5923.1.1.1.6", "Attribute/@Name");
-        Assert.assertEquals(attrib.getNameFormat(), "urn:oasis:names:tc:SAML:2.0:attrname-format:uri", "Attribute/@NameFormat");
+        Assert.assertEquals(attrib.getNameFormat(), Attribute.URI_REFERENCE, "Attribute/@NameFormat");
         Assert.assertEquals(attrib.getAttributeValues().size(), 1, "Number of ldapAttrib AttributeValues");
         value = (XSString) attrib.getAttributeValues().get(0);
         Assert.assertEquals(value.getValue(), "j.doe@idp.example.org", "Attribute content");
@@ -120,28 +120,28 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         response.setIssueInstant(Instant.parse("2006-01-26T13:35:05.000Z"));
         
         Issuer rIssuer = (Issuer) buildXMLObject(Issuer.DEFAULT_ELEMENT_NAME);
-        rIssuer.setFormat("urn:oasis:names:tc:SAML:2.0:nameid-format:entity");
+        rIssuer.setFormat(NameIDType.ENTITY);
         rIssuer.setValue("https://idp.example.org");
         
         Status status = (Status) buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
         StatusCode statusCode = (StatusCode) buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
-        statusCode.setValue("urn:oasis:names:tc:SAML:2.0:status:Success");
+        statusCode.setValue(StatusCode.SUCCESS);
         
         Assertion assertion = (Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME);
         assertion.setID("_a75adf55-01d7-40cc-929f-dbd8372ebdfc");
         assertion.setIssueInstant(Instant.parse("2006-01-26T13:35:05.000Z"));
         
         Issuer aIssuer = (Issuer) buildXMLObject(Issuer.DEFAULT_ELEMENT_NAME);
-        aIssuer.setFormat("urn:oasis:names:tc:SAML:2.0:nameid-format:entity");
+        aIssuer.setFormat(NameIDType.ENTITY);
         aIssuer.setValue("https://idp.example.org");
         
         Subject subject = (Subject) buildXMLObject(Subject.DEFAULT_ELEMENT_NAME);
         NameID nameID = (NameID) buildXMLObject(NameID.DEFAULT_ELEMENT_NAME);
-        nameID.setFormat("urn:oasis:names:tc:SAML:2.0:nameid-format:transient");
+        nameID.setFormat(NameIDType.TRANSIENT);
         nameID.setValue("_820d2843-2342-8236-ad28-8ac94fb3e6a1");
         
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) buildXMLObject(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
-        subjectConfirmation.setMethod("urn:oasis:names:tc:SAML:2.0:cm:bearer");
+        subjectConfirmation.setMethod(SubjectConfirmation.METHOD_BEARER);
         
         Conditions conditions = (Conditions) buildXMLObject(Conditions.DEFAULT_ELEMENT_NAME);
         conditions.setNotBefore(Instant.parse("2006-01-26T13:35:05.000Z"));
@@ -156,7 +156,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         
         AuthnContext authnContext = (AuthnContext) buildXMLObject(AuthnContext.DEFAULT_ELEMENT_NAME);
         AuthnContextClassRef classRef = (AuthnContextClassRef) buildXMLObject(AuthnContextClassRef.DEFAULT_ELEMENT_NAME);
-        classRef.setAuthnContextClassRef("urn:oasis:names:tc:SAML:2.0:ac:classes:PasswordProtectedTransport");
+        classRef.setURI(AuthnContext.PPT_AUTHN_CTX);
         
         AttributeStatement attribStatement = (AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME);
         XMLObjectBuilder<XSString> stringBuilder = builderFactory.getBuilderOrThrow(XSString.TYPE_NAME);
@@ -164,7 +164,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         Attribute fooAttrib = (Attribute) buildXMLObject(Attribute.DEFAULT_ELEMENT_NAME);
         fooAttrib.setFriendlyName("fooAttrib");
         fooAttrib.setName("urn:foo:attrib");
-        fooAttrib.setNameFormat("urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
+        fooAttrib.setNameFormat(Attribute.URI_REFERENCE);
         XSString fooAttribValue = null;
         fooAttribValue = stringBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
         fooAttribValue.setValue("SomeValue");
@@ -176,7 +176,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         Attribute ldapAttrib = (Attribute) buildXMLObject(Attribute.DEFAULT_ELEMENT_NAME);
         ldapAttrib.setFriendlyName("eduPersonPrincipalName");
         ldapAttrib.setName("urn:oid:1.3.6.1.4.1.5923.1.1.1.6");
-        ldapAttrib.setNameFormat("urn:oasis:names:tc:SAML:2.0:attrname-format:uri");
+        ldapAttrib.setNameFormat(Attribute.URI_REFERENCE);
         XSString ldapAttribValue = stringBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
         ldapAttribValue.setValue("j.doe@idp.example.org");
         ldapAttrib.getAttributeValues().add(ldapAttribValue);

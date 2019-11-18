@@ -20,10 +20,14 @@
  */
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core AuthnContextClassRef.
@@ -31,24 +35,46 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthnContextClassRef extends SAMLObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextClassRef";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextClassRef";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-    
+
     /**
      * Gets the URI reference to an authentication context class.
      * 
      * @return authentication context class reference URI
      */
-    public String getAuthnContextClassRef();
+    @Nullable String getURI();
 
     /**
      * Sets the URI reference to an authentication context class.
      * 
-     * @param newAuthnContextClassRef the new AuthnContextClassRef URI
+     * @param uri the new AuthnContextClassRef URI
      */
-    public void setAuthnContextClassRef(String newAuthnContextClassRef);
+    void setURI(@Nullable final String uri);
+    
+    /**
+     * Gets the URI reference to an authentication context class.
+     * 
+     * @return authentication context class reference URI
+     * 
+     * @deprecated
+     */
+    @Nullable default String getAuthnContextClassRef() {
+        return getURI();
+    }
+
+    /**
+     * Sets the URI reference to an authentication context class.
+     * 
+     * @param uri the new AuthnContextClassRef URI
+     * 
+     * @deprecated
+     */
+    default void setAuthnContextClassRef(@Nullable final String uri) {
+        setURI(uri);
+    }
 
 }
