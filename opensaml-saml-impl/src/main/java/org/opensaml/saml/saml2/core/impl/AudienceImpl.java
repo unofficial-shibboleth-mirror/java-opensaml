@@ -23,12 +23,17 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Audience;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.Audience}.
+ * Concrete implementation of {@link Audience}.
  */
 public class AudienceImpl extends AbstractXMLObject implements Audience {
 
@@ -42,22 +47,24 @@ public class AudienceImpl extends AbstractXMLObject implements Audience {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AudienceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AudienceImpl(@Nullable @NotEmpty final String namespaceURI,
+            @Nonnull @NotEmpty final String elementLocalName, @Nullable @NotEmpty final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getAudienceURI() {
+    @Nullable public String getURI() {
         return audienceURI;
     }
 
     /** {@inheritDoc} */
-    public void setAudienceURI(final String newAudienceURI) {
-        this.audienceURI = prepareForAssignment(this.audienceURI, newAudienceURI);
+    public void setURI(@Nullable final String uri) {
+        audienceURI = prepareForAssignment(audienceURI, uri);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return null;
     }
+    
 }

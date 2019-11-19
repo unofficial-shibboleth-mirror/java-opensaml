@@ -93,8 +93,8 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
         Assert.assertEquals(proxy.getAudiences().size(), 2);
-        Assert.assertEquals(proxy.getAudiences().get(0).getAudienceURI(), AUDIENCE1);
-        Assert.assertEquals(proxy.getAudiences().get(1).getAudienceURI(), AUDIENCE2);
+        Assert.assertEquals(proxy.getAudiences().get(0).getURI(), AUDIENCE1);
+        Assert.assertEquals(proxy.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
     /**
@@ -123,8 +123,8 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
         Assert.assertEquals(proxy.getAudiences().size(), 2);
-        Assert.assertEquals(proxy.getAudiences().get(0).getAudienceURI(), AUDIENCE1);
-        Assert.assertEquals(proxy.getAudiences().get(1).getAudienceURI(), AUDIENCE2);
+        Assert.assertEquals(proxy.getAudiences().get(0).getURI(), AUDIENCE1);
+        Assert.assertEquals(proxy.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
     /** Test that the condition is properly added if there are multiple assertions in the response. */
@@ -148,8 +148,8 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
             final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
             Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
             Assert.assertEquals(proxy.getAudiences().size(), 2);
-            Assert.assertEquals(proxy.getAudiences().get(0).getAudienceURI(), AUDIENCE1);
-            Assert.assertEquals(proxy.getAudiences().get(1).getAudienceURI(), AUDIENCE2);
+            Assert.assertEquals(proxy.getAudiences().get(0).getURI(), AUDIENCE1);
+            Assert.assertEquals(proxy.getAudiences().get(1).getURI(), AUDIENCE2);
         }
     }
 

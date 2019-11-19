@@ -65,7 +65,7 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
         Assert.assertEquals(request.getSubject().getNameID().getFormat(), NameIDType.EMAIL, "Subject/NameID/@NameIdFormat");
         Assert.assertEquals(request.getSubject().getNameID().getValue(), "j.doe@company.com", "Subject/NameID contents");
         Audience audience = request.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
-        Assert.assertEquals(audience.getAudienceURI(), "urn:foo:sp.example.org", "Conditions/AudienceRestriction[1]/Audience[1] contents");
+        Assert.assertEquals(audience.getURI(), "urn:foo:sp.example.org", "Conditions/AudienceRestriction[1]/Audience[1] contents");
         AuthnContextClassRef classRef = request.getRequestedAuthnContext().getAuthnContextClassRefs().get(0);
         Assert.assertEquals(classRef.getURI(), AuthnContext.PPT_AUTHN_CTX, "RequestedAuthnContext/AuthnContextClassRef[1] contents");
     }
@@ -81,7 +81,7 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
         subject.setNameID(nameid);
         
         Audience audience = (Audience) buildXMLObject(Audience.DEFAULT_ELEMENT_NAME);
-        audience.setAudienceURI("urn:foo:sp.example.org");
+        audience.setURI("urn:foo:sp.example.org");
         
         AudienceRestriction ar = (AudienceRestriction) buildXMLObject(AudienceRestriction.DEFAULT_ELEMENT_NAME);
         ar.getAudiences().add(audience);

@@ -177,7 +177,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
         for (final String audienceId : audiences) {
             log.debug("{} Adding {} as an Audience of the ProxyRestriction", getLogPrefix(), audienceId);
             final Audience audience = audienceBuilder.buildObject();
-            audience.setAudienceURI(audienceId);
+            audience.setURI(audienceId);
             condition.getAudiences().add(audience);
         }
         

@@ -26,13 +26,13 @@ import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.Audience;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Audience} objects.
+ * A thread-safe Unmarshaller for {@link Audience} objects.
  */
 public class AudienceUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final Audience audience = (Audience) samlObject;
-        audience.setAudienceURI(elementContent);
+        audience.setURI(elementContent);
     }
 }

@@ -82,7 +82,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         Assert.assertEquals(assertion.getConditions().getNotBefore(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/Condition/@NotBefore");
         Assert.assertEquals(assertion.getConditions().getNotOnOrAfter(), Instant.parse("2006-01-26T13:45:05.000Z"), "Assertion/Condition/@NotOnOrAfter");
         Audience audience = assertion.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
-        Assert.assertEquals(audience.getAudienceURI(), "https://sp.example.org", "Assertion/Conditions/AudienceRestriction/Audience contents");
+        Assert.assertEquals(audience.getURI(), "https://sp.example.org", "Assertion/Conditions/AudienceRestriction/Audience contents");
         
         AuthnStatement authnStatement = assertion.getAuthnStatements().get(0);
         Assert.assertEquals(authnStatement.getAuthnInstant(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/AuthnStatement/@AuthnInstant");
@@ -149,7 +149,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         
         AudienceRestriction audienceRestriction = (AudienceRestriction) buildXMLObject(AudienceRestriction.DEFAULT_ELEMENT_NAME);
         Audience audience = (Audience) buildXMLObject(Audience.DEFAULT_ELEMENT_NAME);
-        audience.setAudienceURI("https://sp.example.org");
+        audience.setURI("https://sp.example.org");
         
         AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
         authnStatement.setAuthnInstant(Instant.parse("2006-01-26T13:35:05.000Z"));

@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.Audience;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.Audience} objects.
+ * A thread safe Marshaller for {@link Audience} objects.
  */
 public class AudienceMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -38,6 +38,6 @@ public class AudienceMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final Audience audience = (Audience) samlObject;
-        ElementSupport.appendTextContent(domElement, audience.getAudienceURI());
+        ElementSupport.appendTextContent(domElement, audience.getURI());
     }
 }

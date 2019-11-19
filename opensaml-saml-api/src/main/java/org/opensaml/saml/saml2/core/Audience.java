@@ -17,10 +17,14 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core Audience.
@@ -28,30 +32,57 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Audience extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Audience";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Audience";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AudienceType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AudienceType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /**
      * Gets the URI of the audience for the assertion.
      * 
      * @return the URI of the audience for the assertion
+     * 
+     * @since 4.0.0
      */
-    public String getAudienceURI();
+    @Nullable String getURI();
 
     /**
      * Sets the URI of the audience for the assertion.
      * 
-     * @param newAudienceURI the URI of the audience for the assertion
+     * @param uri the URI of the audience for the assertion
+     * 
+     * @since 4.0.0
      */
-    public void setAudienceURI(String newAudienceURI);
+    void setURI(@Nullable final String uri);
+
+    /**
+     * Gets the URI of the audience for the assertion.
+     * 
+     * @return the URI of the audience for the assertion
+     * 
+     * @deprecated
+     */
+    @Nullable default String getAudienceURI() {
+        return getURI();
+    }
+
+    /**
+     * Sets the URI of the audience for the assertion.
+     * 
+     * @param uri the URI of the audience for the assertion
+     * 
+     * @deprecated
+     */
+    default void setAudienceURI(@Nullable final String uri) {
+        setURI(uri);
+    }
+    
 }
