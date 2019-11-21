@@ -40,6 +40,9 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
 
     /** Location of file containing a single element with child elements */
     protected String childElementsFile;
+    
+    /** Location of file containing some kind of invalid content. */
+    protected String invalidFile;
 
     /** The expected result of a marshalled single element with no optional attributes */
     protected Document expectedDOM;
@@ -52,6 +55,9 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
 
     /** The expected result of a marshalled single element with child elements */
     protected Document expectedChildElementsDOM;
+    
+    /** The result of parsing the invalid file. */
+    protected Document invalidDOM;
 
     @BeforeClass
 	protected void initXMLObjectProviderTestingSupprt() throws Exception {
@@ -73,6 +79,11 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
         if (singleElementUnknownAttributesFile != null) {
             expectedUnknownAttributesDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
                     .getResourceAsStream(singleElementUnknownAttributesFile));
+        }
+        
+        if (invalidFile != null) {
+            invalidDOM = parserPool.parse(XMLObjectProviderBaseTestCase.class
+                    .getResourceAsStream(invalidFile));
         }
     }
 
@@ -136,6 +147,4 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
         Assert.assertNull(expectedChildElementsDOM, "No testSingleElementChildElementsMarshall");
     }
     
-    
-
 }
