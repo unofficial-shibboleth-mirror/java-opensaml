@@ -65,11 +65,14 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     @Nullable private Function<ProfileRequestContext,Collection<String>> proxyAudiencesLookupStrategy;
     
     /** Strategy used to obtain the proxy count to add. */
-    @Nullable private Function<ProfileRequestContext,Long> proxyCountLookupStrategy;
+    @Nullable private Function<ProfileRequestContext,Integer> proxyCountLookupStrategy;
     
     /** Response to modify. */
     @Nullable private Response response;
 
+    /** ProxyCount to add. */
+    @Nullable private Integer proxyCount;
+    
     /** Audiences to add. */
     @Nullable private Collection<String> audiences;
     
@@ -107,7 +110,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
      * 
      * @param strategy lookup strategy
      */
-    public void setProxyCountLookupStrategy(@Nonnull final Function<ProfileRequestContext,Long> strategy) {
+    public void setProxyCountLookupStrategy(@Nonnull final Function<ProfileRequestContext,Integer> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         proxyCountLookupStrategy = Constraint.isNotNull(strategy, "Proxy count lookup strategy cannot be null");
@@ -128,9 +131,16 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
+        proxyCount = proxyCountLookupStrategy.apply(profileRequestContext);
         audiences = proxyAudiencesLookupStrategy.apply(profileRequestContext);
-        if (audiences == null || audiences.isEmpty()) {
-            log.debug("{} No audiences to add, nothing to do", getLogPrefix());
+        
+        if (proxyCount == null && (audiences == null || audiences.isEmpty())) {
+            log.debug("{} No restrictions to add, nothing to do", getLogPrefix());
             return false;
         }
 
@@ -147,7 +157,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -170,19 +180,19 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     private void addProxyRestriction(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final Conditions conditions) {
         final ProxyRestriction condition = getProxyRestriction(conditions);
+        condition.setProxyCount(proxyCount);
 
-        final SAMLObjectBuilder<Audience> audienceBuilder = (SAMLObjectBuilder<Audience>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>getBuilderOrThrow(
-                        Audience.DEFAULT_ELEMENT_NAME);
-        for (final String audienceId : audiences) {
-            log.debug("{} Adding {} as an Audience of the ProxyRestriction", getLogPrefix(), audienceId);
-            final Audience audience = audienceBuilder.buildObject();
-            audience.setURI(audienceId);
-            condition.getAudiences().add(audience);
+        if (audiences != null && !audiences.isEmpty()) {
+            final SAMLObjectBuilder<Audience> audienceBuilder = (SAMLObjectBuilder<Audience>)
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>getBuilderOrThrow(
+                            Audience.DEFAULT_ELEMENT_NAME);
+            for (final String audienceId : audiences) {
+                log.debug("{} Adding {} as an Audience of the ProxyRestriction", getLogPrefix(), audienceId);
+                final Audience audience = audienceBuilder.buildObject();
+                audience.setURI(audienceId);
+                condition.getAudiences().add(audience);
+            }
         }
-        
-        final Long count = proxyCountLookupStrategy.apply(profileRequestContext);
-        condition.setProxyCount(count != null ? count.intValue() : 0);
     }
         
     /**

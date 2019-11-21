@@ -20,6 +20,8 @@ package org.opensaml.saml.saml2.profile.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
+import java.util.List;
+
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.RequestContextBuilder;
@@ -36,8 +38,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.ImmutableList;
-
 /** {@link AddProxyRestrictionToAssertions} unit test. */
 public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCase {
 
@@ -46,17 +46,17 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
     
     private AddProxyRestrictionToAssertions action;
     
-    @BeforeMethod public void setUp() throws ComponentInitializationException {
+    @BeforeMethod public void setUp() {
         action = new AddProxyRestrictionToAssertions();
-        action.setProxyAudiencesLookupStrategy(FunctionSupport.constant(ImmutableList.of(AUDIENCE1, AUDIENCE2)));
-        action.setProxyCountLookupStrategy(FunctionSupport.constant(1L));
-        action.initialize();
+        action.setProxyAudiencesLookupStrategy(FunctionSupport.constant(List.of(AUDIENCE1, AUDIENCE2)));
+        action.setProxyCountLookupStrategy(FunctionSupport.constant(1));
     }
     
     /** Test that action errors out properly if there is no response. */
     @Test public void testNoResponse() throws Exception {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
         
+        action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
@@ -66,15 +66,18 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML2ActionTestingSupport.buildResponse()).buildProfileRequestContext();
 
+        action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
     }
 
     /**
      * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
-     * response.
+     * response with no audiences.
+     * 
+     * @throws ComponentInitializationException 
      */
-    @Test public void testSingleAssertion() throws Exception {
+    @Test public void testCountOnly() throws ComponentInitializationException {
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
 
         final Response response = SAML2ActionTestingSupport.buildResponse();
@@ -82,6 +85,67 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
+        action.setProxyAudiencesLookupStrategy(FunctionSupport.constant(null));
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+
+        Assert.assertNotNull(response.getAssertions());
+        Assert.assertEquals(response.getAssertions().size(), 1);
+
+        Assert.assertNotNull(assertion.getConditions());
+        Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
+        final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+        Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
+        Assert.assertTrue(proxy.getAudiences().isEmpty());
+    }
+    
+    /**
+     * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
+     * response with no count.
+     * 
+     * @throws ComponentInitializationException 
+     */
+    @Test public void testAudiencesOnly() throws ComponentInitializationException {
+        final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
+
+        final Response response = SAML2ActionTestingSupport.buildResponse();
+        response.getAssertions().add(assertion);
+
+        final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
+
+        action.setProxyCountLookupStrategy(FunctionSupport.constant(null));
+        action.initialize();
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+
+        Assert.assertNotNull(response.getAssertions());
+        Assert.assertEquals(response.getAssertions().size(), 1);
+
+        Assert.assertNotNull(assertion.getConditions());
+        Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
+        final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+        Assert.assertNull(proxy.getProxyCount());
+        Assert.assertEquals(proxy.getAudiences().size(), 2);
+        Assert.assertEquals(proxy.getAudiences().get(0).getURI(), AUDIENCE1);
+        Assert.assertEquals(proxy.getAudiences().get(1).getURI(), AUDIENCE2);
+    }
+    
+    /**
+     * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
+     * response.
+     * 
+     * @throws ComponentInitializationException 
+     */
+    @Test public void testSingleAssertion() throws ComponentInitializationException {
+        final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
+
+        final Response response = SAML2ActionTestingSupport.buildResponse();
+        response.getAssertions().add(assertion);
+
+        final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
+
+        action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
@@ -100,8 +164,10 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
     /**
      * Test that the condition is properly added if there is a single assertion, with a Conditions element, in the
      * response.
+     * 
+     * @throws ComponentInitializationException 
      */
-    @Test public void testSingleAssertionWithExistingCondition() throws Exception {
+    @Test public void testSingleAssertionWithExistingCondition() throws ComponentInitializationException {
         final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>getBuilderOrThrow(
                         Conditions.DEFAULT_ELEMENT_NAME);
@@ -115,6 +181,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
+        action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
@@ -127,8 +194,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         Assert.assertEquals(proxy.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
-    /** Test that the condition is properly added if there are multiple assertions in the response. */
-    @Test public void testMultipleAssertion() throws Exception {
+    /** Test that the condition is properly added if there are multiple assertions in the response.
+     * 
+     * @throws ComponentInitializationException
+     */
+    @Test public void testMultipleAssertion() throws ComponentInitializationException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
@@ -136,6 +206,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
+        action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 

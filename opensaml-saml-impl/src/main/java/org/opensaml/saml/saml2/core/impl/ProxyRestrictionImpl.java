@@ -25,11 +25,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.ProxyRestriction;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.core.ProxyRestriction}.
@@ -37,10 +42,10 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
 public class ProxyRestrictionImpl extends AbstractXMLObject implements ProxyRestriction {
 
     /** Audiences of the Restriction. */
-    private final XMLObjectChildrenList<Audience> audiences;
+    @Nonnull private final XMLObjectChildrenList<Audience> audiences;
 
     /** Count of the Restriction. */
-    private Integer proxyCount;
+    @Nullable private Integer proxyCount;
 
     /**
      * Constructor.
@@ -49,26 +54,26 @@ public class ProxyRestrictionImpl extends AbstractXMLObject implements ProxyRest
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ProxyRestrictionImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected ProxyRestrictionImpl(@Nullable @NotEmpty final String namespaceURI,
+            @Nonnull @NotEmpty final String elementLocalName, @Nullable @NotEmpty final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         audiences = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Audience> getAudiences() {
+    @Nullable public List<Audience> getAudiences() {
         return audiences;
     }
 
     /** {@inheritDoc} */
-    public Integer getProxyCount() {
+    @Nullable public Integer getProxyCount() {
         return proxyCount;
     }
 
     /** {@inheritDoc} */
-    public void setProxyCount(final Integer newProxyCount) {
-        if (newProxyCount >= 0) {
-            this.proxyCount = prepareForAssignment(this.proxyCount, newProxyCount);
+    public void setProxyCount(@Nullable final Integer newProxyCount) {
+        if (newProxyCount == null || newProxyCount >= 0) {
+            proxyCount = prepareForAssignment(proxyCount, newProxyCount);
         } else {
             throw new IllegalArgumentException("Count must be a non-negative integer.");
         }
@@ -81,4 +86,5 @@ public class ProxyRestrictionImpl extends AbstractXMLObject implements ProxyRest
         children.addAll(audiences);
         return Collections.unmodifiableList(children);
     }
+    
 }
