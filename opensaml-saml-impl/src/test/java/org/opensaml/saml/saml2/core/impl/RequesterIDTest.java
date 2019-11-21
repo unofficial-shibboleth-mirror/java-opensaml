@@ -54,7 +54,7 @@ public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         RequesterID reqID = (RequesterID) unmarshallElement(singleElementFile);
         
-       Assert.assertEquals(reqID.getRequesterID(), expectedRequesterID, "Unmarshalled requester ID was not the expected value"); 
+       Assert.assertEquals(reqID.getValue(), expectedRequesterID, "Unmarshalled requester ID was not the expected value"); 
     }
 
     /** {@inheritDoc} */
@@ -62,7 +62,7 @@ public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         RequesterID reqID = (RequesterID) buildXMLObject(RequesterID.DEFAULT_ELEMENT_NAME);
 
-        reqID.setRequesterID(expectedRequesterID);
+        reqID.setValue(expectedRequesterID);
         
         assertXMLEquals(expectedDOM, reqID);
     }

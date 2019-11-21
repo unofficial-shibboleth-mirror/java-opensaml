@@ -173,7 +173,7 @@ public class ResolveArtifact extends AbstractProfileAction {
             log.debug("{} No request located", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
-        } else if (request.getArtifact() == null || request.getArtifact().getArtifact() == null) {
+        } else if (request.getArtifact() == null || request.getArtifact().getValue() == null) {
             log.debug("{} No Artifact element found in request, nothing to do", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
@@ -207,7 +207,7 @@ public class ResolveArtifact extends AbstractProfileAction {
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        final String artifact = request.getArtifact().getArtifact();
+        final String artifact = request.getArtifact().getValue();
 
         SAMLArtifactMapEntry entry = null;
         

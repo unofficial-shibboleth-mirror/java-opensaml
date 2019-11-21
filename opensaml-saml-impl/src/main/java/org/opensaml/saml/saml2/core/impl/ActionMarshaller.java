@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.Action;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Action}.
+ * A thread-safe Marshaller for {@link Action}.
  */
 public class ActionMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -48,6 +48,6 @@ public class ActionMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final Action action = (Action) samlObject;
-        ElementSupport.appendTextContent(domElement, action.getAction());
+        ElementSupport.appendTextContent(domElement, action.getValue());
     }
 }

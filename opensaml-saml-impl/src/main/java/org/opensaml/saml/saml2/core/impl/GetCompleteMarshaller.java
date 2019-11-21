@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.GetComplete;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.GetComplete} objects.
+ * A thread safe Marshaller for {@link GetComplete} objects.
  */
 public class GetCompleteMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class GetCompleteMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final GetComplete gc = (GetComplete) samlObject;
 
-        if (gc.getGetComplete() != null) {
-            ElementSupport.appendTextContent(domElement, gc.getGetComplete());
+        if (gc.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, gc.getURI());
         }
     }
 }

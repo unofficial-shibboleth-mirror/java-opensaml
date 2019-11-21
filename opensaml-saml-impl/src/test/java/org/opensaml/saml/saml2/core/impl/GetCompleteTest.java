@@ -54,7 +54,7 @@ public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         GetComplete gc = (GetComplete) unmarshallElement(singleElementFile);
         
-       Assert.assertEquals(gc.getGetComplete(), expectedGetComplete, "Unmarshalled GetComplete URI was not the expected value"); 
+       Assert.assertEquals(gc.getURI(), expectedGetComplete, "Unmarshalled GetComplete URI was not the expected value"); 
 
     }
 
@@ -63,7 +63,7 @@ public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         GetComplete gc = (GetComplete) buildXMLObject(GetComplete.DEFAULT_ELEMENT_NAME);
 
-        gc.setGetComplete(expectedGetComplete);
+        gc.setURI(expectedGetComplete);
         
         assertXMLEquals(expectedDOM, gc);
     }

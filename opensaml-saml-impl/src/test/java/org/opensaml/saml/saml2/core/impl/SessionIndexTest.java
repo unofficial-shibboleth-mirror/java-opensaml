@@ -55,7 +55,7 @@ public class SessionIndexTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         SessionIndex si = (SessionIndex) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(si.getSessionIndex(), expectedSessionIndex, "The unmarshalled session index as not the expected value");
+        Assert.assertEquals(si.getValue(), expectedSessionIndex, "The unmarshalled session index as not the expected value");
     }
 
     /** {@inheritDoc} */
@@ -63,7 +63,7 @@ public class SessionIndexTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         SessionIndex si = (SessionIndex) buildXMLObject(SessionIndex.DEFAULT_ELEMENT_NAME);
         
-        si.setSessionIndex(expectedSessionIndex);
+        si.setValue(expectedSessionIndex);
         
         assertXMLEquals(expectedDOM, si);
     }

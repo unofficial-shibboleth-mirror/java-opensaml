@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Artifact;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.Artifact}.
+ * Concrete implementation of {@link Artifact}.
  */
 public class ArtifactImpl extends AbstractXMLObject implements Artifact {
 
@@ -47,13 +47,13 @@ public class ArtifactImpl extends AbstractXMLObject implements Artifact {
     }
 
     /** {@inheritDoc} */
-    public String getArtifact() {
-        return this.artifact;
+    public String getValue() {
+        return artifact;
     }
 
     /** {@inheritDoc} */
-    public void setArtifact(final String newArtifact) {
-        this.artifact = prepareForAssignment(this.artifact, newArtifact);
+    public void setValue(final String value) {
+        artifact = prepareForAssignment(artifact, value);
     }
 
     /** {@inheritDoc} */

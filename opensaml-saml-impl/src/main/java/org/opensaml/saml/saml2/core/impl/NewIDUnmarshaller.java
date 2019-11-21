@@ -26,7 +26,7 @@ import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.NewID;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NewID} objects.
+ * A thread-safe Unmarshaller for {@link NewID} objects.
  */
 public class NewIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -34,6 +34,6 @@ public class NewIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final NewID newID = (NewID) samlObject;
 
-        newID.setNewID(elementContent);
+        newID.setValue(elementContent);
     }
 }

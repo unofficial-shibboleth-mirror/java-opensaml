@@ -17,10 +17,14 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core RequesterID.
@@ -28,10 +32,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface RequesterID extends SAMLObject {
 
     /** Element Local Name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequesterID";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequesterID";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -39,12 +43,35 @@ public interface RequesterID extends SAMLObject {
      * 
      * @return RequesterID value
      */
-    public String getRequesterID();
+    @Nullable String getValue();
 
     /**
      * Sets the RequesterID value.
      * 
-     * @param newRequesterID the RequesterID value
+     * @param value the RequesterID value
      */
-    public void setRequesterID(String newRequesterID);
+    void setValue(@Nullable final String value);
+
+    /**
+     * Gets the RequesterID value.
+     * 
+     * @return RequesterID value
+     * 
+     * @deprecated
+     */
+    @Nullable default String getRequesterID() {
+        return getValue();
+    }
+
+    /**
+     * Sets the RequesterID value.
+     * 
+     * @param value the RequesterID value
+     * 
+     * @deprecated
+     */
+    default void setRequesterID(@Nullable final String value) {
+        setValue(value);
+    }
+    
 }

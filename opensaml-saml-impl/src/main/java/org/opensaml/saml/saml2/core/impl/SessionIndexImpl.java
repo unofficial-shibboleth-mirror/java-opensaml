@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.SessionIndex}.
+ * Concrete implementation of {@link SessionIndex}.
  */
 public class SessionIndexImpl extends AbstractXMLObject implements SessionIndex {
 
@@ -47,13 +47,13 @@ public class SessionIndexImpl extends AbstractXMLObject implements SessionIndex 
     }
 
     /** {@inheritDoc} */
-    public String getSessionIndex() {
-        return this.sessionIndex;
+    public String getValue() {
+        return sessionIndex;
     }
 
     /** {@inheritDoc} */
-    public void setSessionIndex(final String newSessionIndex) {
-        this.sessionIndex = prepareForAssignment(this.sessionIndex, newSessionIndex);
+    public void setValue(final String value) {
+        sessionIndex = prepareForAssignment(sessionIndex, value);
     }
 
     /** {@inheritDoc} */

@@ -26,7 +26,7 @@ import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.RequesterID;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.RequesterID} objects.
+ * A thread-safe Unmarshaller for {@link RequesterID} objects.
  */
 public class RequesterIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -34,6 +34,6 @@ public class RequesterIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final RequesterID reqID = (RequesterID) samlObject;
 
-        reqID.setRequesterID(elementContent);
+        reqID.setValue(elementContent);
     }
 }

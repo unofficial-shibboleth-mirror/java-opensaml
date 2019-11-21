@@ -17,34 +17,40 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
- * A type safe enumeration of {@link org.opensaml.saml.saml2.core.AuthzDecisionStatement} decision types.
+ * A type safe enumeration of {@link AuthzDecisionStatement} decision types.
  */
-public final class DecisionTypeEnumeration {
+public enum DecisionTypeEnumeration {
 
     /** Permit decision type. */
-    public static final DecisionTypeEnumeration PERMIT = new DecisionTypeEnumeration("Permit");
+    PERMIT("Permit"),
 
     /** Deny decision type. */
-    public static final DecisionTypeEnumeration DENY = new DecisionTypeEnumeration("Deny");
+    DENY("Deny"),
 
     /** Indeterminate decision type. */
-    public static final DecisionTypeEnumeration INDETERMINATE = new DecisionTypeEnumeration("Indeterminate");
+    INDETERMINATE("Indeterminate");
 
     /** The decision type string. */
-    private String decisionType;
+    @Nonnull @NotEmpty private String decisionType;
 
     /**
      * Constructor.
      * 
      * @param newDecisionType the decision type string
      */
-    protected DecisionTypeEnumeration(final String newDecisionType) {
-        this.decisionType = newDecisionType;
+    private DecisionTypeEnumeration(@Nonnull @NotEmpty final String newDecisionType) {
+        decisionType = newDecisionType;
     }
 
     /** {@inheritDoc} */
+    @Override
     public String toString() {
         return decisionType;
     }
+
 }

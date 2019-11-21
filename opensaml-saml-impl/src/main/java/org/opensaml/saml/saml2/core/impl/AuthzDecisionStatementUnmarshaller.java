@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.core.Evidence;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthzDecisionStatement}.
+ * A thread-safe Unmarshaller for {@link AuthzDecisionStatement}.
  */
 public class AuthzDecisionStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -57,15 +57,15 @@ public class AuthzDecisionStatementUnmarshaller extends AbstractSAMLObjectUnmars
             if (attribute.getLocalName().equals(AuthzDecisionStatement.RESOURCE_ATTRIB_NAME)) {
                 authzDS.setResource(attribute.getValue());
             } else if (attribute.getLocalName().equals(AuthzDecisionStatement.DECISION_ATTRIB_NAME)) {
-                final String value = attribute.getValue();
-                if (value.equals(DecisionTypeEnumeration.PERMIT.toString())) {
-                    authzDS.setDecision(DecisionTypeEnumeration.PERMIT);
-                } else if (value.equals(DecisionTypeEnumeration.DENY.toString())) {
-                    authzDS.setDecision(DecisionTypeEnumeration.DENY);
-                } else if (value.equals(DecisionTypeEnumeration.INDETERMINATE.toString())) {
-                    authzDS.setDecision(DecisionTypeEnumeration.INDETERMINATE);
-                } else {
-                    throw new UnmarshallingException("Unknown value for DecisionType '" + value + "'");
+                try {
+                    if (attribute.getValue() != null) {
+                        authzDS.setDecision(DecisionTypeEnumeration.valueOf(attribute.getValue().toUpperCase()));
+                    } else {
+                        throw new UnmarshallingException("Saw an empty value for Decision attribute");
+                    }
+                } catch (final IllegalArgumentException e) {
+                    throw new UnmarshallingException("Saw an invalid value for Decision attribute: "
+                            + attribute.getValue());
                 }
             } else {
                 super.processAttribute(samlObject, attribute);

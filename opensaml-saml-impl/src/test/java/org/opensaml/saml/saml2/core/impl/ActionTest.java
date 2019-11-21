@@ -54,7 +54,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementFile);
 
-        String actionname = action.getAction();
+        String actionname = action.getValue();
         Assert.assertEquals(actionname, expectedAction, "Action was " + actionname + ", expected " + expectedAction);
     }
 
@@ -63,7 +63,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
 
-        String actionname = action.getAction();
+        String actionname = action.getValue();
         Assert.assertEquals(actionname, expectedAction, "Action was " + actionname + ", expected " + expectedAction);
 
         String namespace = action.getNamespace();
@@ -76,7 +76,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Action action = (Action) buildXMLObject(qname);
 
-        action.setAction(expectedAction);
+        action.setValue(expectedAction);
         assertXMLEquals(expectedDOM, action);
     }
 
@@ -86,7 +86,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Action action = (Action) buildXMLObject(qname);
 
-        action.setAction(expectedAction);
+        action.setValue(expectedAction);
         action.setNamespace(expectedNamespace);
         assertXMLEquals(expectedOptionalAttributesDOM, action);
     }

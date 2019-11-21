@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.GetComplete;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.GetComplete}.
+ * Concrete implementation of {@link GetComplete}.
  */
 public class GetCompleteImpl extends AbstractXMLObject implements GetComplete {
 
@@ -47,13 +47,13 @@ public class GetCompleteImpl extends AbstractXMLObject implements GetComplete {
     }
 
     /** {@inheritDoc} */
-    public String getGetComplete() {
-        return this.getComplete;
+    public String getURI() {
+        return getComplete;
     }
 
     /** {@inheritDoc} */
-    public void setGetComplete(final String newGetComplete) {
-        this.getComplete = prepareForAssignment(this.getComplete, newGetComplete);
+    public void setURI(final String uri) {
+        getComplete = prepareForAssignment(getComplete, uri);
     }
 
     /** {@inheritDoc} */

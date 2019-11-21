@@ -52,7 +52,7 @@ public class ArtifactTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Artifact artifact = (Artifact) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(artifact.getArtifact(), expectedContent, "Artifact content is not the expected value");
+        Assert.assertEquals(artifact.getValue(), expectedContent, "Artifact content is not the expected value");
     }
 
     /** {@inheritDoc} */
@@ -60,7 +60,7 @@ public class ArtifactTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         Artifact artifact = (Artifact) buildXMLObject(Artifact.DEFAULT_ELEMENT_NAME);
         
-        artifact.setArtifact(expectedContent);
+        artifact.setValue(expectedContent);
         
         assertXMLEquals(expectedDOM, artifact);
     }

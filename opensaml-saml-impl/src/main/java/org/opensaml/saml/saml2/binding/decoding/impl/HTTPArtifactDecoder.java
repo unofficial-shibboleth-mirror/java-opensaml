@@ -514,7 +514,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
                 (ArtifactResolve) XMLObjectSupport.buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);
         
         final Artifact requestArtifact = (Artifact) XMLObjectSupport.buildXMLObject(Artifact.DEFAULT_ELEMENT_NAME);
-        requestArtifact.setArtifact(Base64Support.encode(artifact.getArtifactBytes(), false));
+        requestArtifact.setValue(Base64Support.encode(artifact.getArtifactBytes(), false));
         request.setArtifact(requestArtifact);
         
         request.setID(idStrategy.generateIdentifier(true));

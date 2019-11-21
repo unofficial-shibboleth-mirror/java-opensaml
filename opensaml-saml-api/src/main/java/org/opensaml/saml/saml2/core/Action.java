@@ -17,10 +17,14 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core Action.
@@ -28,101 +32,124 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Action extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Action";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Action";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ActionType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ActionType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Name of the Namespace attribute. */
-    public static final String NAMEPSACE_ATTRIB_NAME = "Namespace";
+    @Nonnull @NotEmpty static final String NAMEPSACE_ATTRIB_NAME = "Namespace";
 
     /** Read/Write/Execute/Delete/Control action namespace. */
-    public static final String RWEDC_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:rwedc";
+    @Nonnull @NotEmpty static final String RWEDC_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:rwedc";
 
     /** Read/Write/Execute/Delete/Control negation action namespace. */
-    public static final String RWEDC_NEGATION_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:rwedc-negation";
+    @Nonnull @NotEmpty static final String RWEDC_NEGATION_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:rwedc-negation";
 
     /** Get/Head/Put/Post action namespace. */
-    public static final String GHPP_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:ghpp";
+    @Nonnull @NotEmpty static final String GHPP_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:ghpp";
 
     /** UNIX file permission action namespace. */
-    public static final String UNIX_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:unix";
+    @Nonnull @NotEmpty static final String UNIX_NS_URI = "urn:oasis:names:tc:SAML:1.0:action:unix";
 
     /** Read action. */
-    public static final String READ_ACTION = "Read";
+    @Nonnull @NotEmpty static final String READ_ACTION = "Read";
 
     /** Write action. */
-    public static final String WRITE_ACTION = "Write";
+    @Nonnull @NotEmpty static final String WRITE_ACTION = "Write";
 
     /** Execute action. */
-    public static final String EXECUTE_ACTION = "Execute";
+    @Nonnull @NotEmpty static final String EXECUTE_ACTION = "Execute";
 
     /** Delete action. */
-    public static final String DELETE_ACTION = "Delete";
+    @Nonnull @NotEmpty static final String DELETE_ACTION = "Delete";
 
     /** Control action. */
-    public static final String CONTROL_ACTION = "Control";
+    @Nonnull @NotEmpty static final String CONTROL_ACTION = "Control";
 
     /** Negated Read action. */
-    public static final String NEG_READ_ACTION = "~Read";
+    @Nonnull @NotEmpty static final String NEG_READ_ACTION = "~Read";
 
     /** Negated Write action. */
-    public static final String NEG_WRITE_ACTION = "~Write";
+    @Nonnull @NotEmpty static final String NEG_WRITE_ACTION = "~Write";
 
     /** Negated Execute action. */
-    public static final String NEG_EXECUTE_ACTION = "~Execute";
+    @Nonnull @NotEmpty static final String NEG_EXECUTE_ACTION = "~Execute";
 
     /** Negated Delete action. */
-    public static final String NEG_DELETE_ACTION = "~Delete";
+    @Nonnull @NotEmpty static final String NEG_DELETE_ACTION = "~Delete";
 
     /** Negated Control action. */
-    public static final String NEG_CONTROL_ACTION = "~Control";
+    @Nonnull @NotEmpty static final String NEG_CONTROL_ACTION = "~Control";
 
     /** HTTP GET action. */
-    public static final String HTTP_GET_ACTION = "GET";
+    @Nonnull @NotEmpty static final String HTTP_GET_ACTION = "GET";
 
     /** HTTP HEAD action. */
-    public static final String HTTP_HEAD_ACTION = "HEAD";
+    @Nonnull @NotEmpty static final String HTTP_HEAD_ACTION = "HEAD";
 
     /** HTTP PUT action. */
-    public static final String HTTP_PUT_ACTION = "PUT";
+    @Nonnull @NotEmpty static final String HTTP_PUT_ACTION = "PUT";
 
     /** HTTP POST action. */
-    public static final String HTTP_POST_ACTION = "POST";
+    @Nonnull @NotEmpty static final String HTTP_POST_ACTION = "POST";
 
     /**
      * Gets the namespace scope of the specified action.
      * 
      * @return the namespace scope of the specified action
      */
-    public String getNamespace();
+    @Nullable String getNamespace();
 
     /**
      * Sets the namespace scope of the specified action.
      * 
      * @param newNamespace the namespace scope of the specified action
      */
-    public void setNamespace(String newNamespace);
+    void setNamespace(@Nullable final String newNamespace);
 
     /**
-     * Gets the URI of the action to be performed.
+     * Gets the value of the action to be performed.
      * 
-     * @return the URI of the action to be performed
+     * @return the value of the action to be performed
      */
-    public String getAction();
+    @Nullable String getValue();
 
     /**
-     * Sets the URI of the action to be performed.
+     * Sets the value of the action to be performed.
      * 
-     * @param newAction the URI of the action to be performed
+     * @param value the value of the action to be performed
      */
-    public void setAction(String newAction);
+    void setValue(@Nullable final String value);
+    
+    /**
+     * Gets the value of the action to be performed.
+     * 
+     * @return the value of the action to be performed
+     * 
+     * @deprecated
+     */
+    @Nullable default String getAction() {
+        return getValue();
+    }
+
+    /**
+     * Sets the value of the action to be performed.
+     * 
+     * @param value the value of the action to be performed
+     * 
+     * @deprecated
+     */
+    default void setAction(@Nullable final String value) {
+        setValue(value);
+    }
+    
 }

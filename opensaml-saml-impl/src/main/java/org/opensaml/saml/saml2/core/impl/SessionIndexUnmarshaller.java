@@ -26,7 +26,7 @@ import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.SessionIndex} objects.
+ * A thread-safe Unmarshaller for {@link SessionIndex} objects.
  */
 public class SessionIndexUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -34,6 +34,6 @@ public class SessionIndexUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final SessionIndex si = (SessionIndex) samlObject;
 
-        si.setSessionIndex(elementContent);
+        si.setValue(elementContent);
     }
 }

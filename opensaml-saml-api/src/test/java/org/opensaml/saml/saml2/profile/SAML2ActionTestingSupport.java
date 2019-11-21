@@ -331,7 +331,7 @@ public class SAML2ActionTestingSupport {
                     XMLObjectProviderRegistrySupport.getBuilderFactory().<Artifact>getBuilderOrThrow(
                             Artifact.DEFAULT_ELEMENT_NAME);
             final Artifact art = artifactBuilder.buildObject();
-            art.setArtifact(artifact);
+            art.setValue(artifact);
             request.setArtifact(art);
         }
 

@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Action;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.Action}.
+ * A concrete implementation of {@link Action}.
  */
 public class ActionImpl extends AbstractXMLObject implements Action {
 
@@ -60,13 +60,13 @@ public class ActionImpl extends AbstractXMLObject implements Action {
     }
 
     /** {@inheritDoc} */
-    public String getAction() {
+    public String getValue() {
         return action;
     }
 
     /** {@inheritDoc} */
-    public void setAction(final String newAction) {
-        this.action = prepareForAssignment(this.action, newAction);
+    public void setValue(final String value) {
+        action = prepareForAssignment(action, value);
     }
 
     /** {@inheritDoc} */

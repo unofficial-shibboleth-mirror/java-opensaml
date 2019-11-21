@@ -17,10 +17,14 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core GetComplete.
@@ -28,10 +32,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface GetComplete extends SAMLObject {
 
     /** Element Local Name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "GetComplete";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "GetComplete";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -39,12 +43,35 @@ public interface GetComplete extends SAMLObject {
      * 
      * @return GetComplete URI
      */
-    public String getGetComplete();
+    @Nullable String getURI();
 
     /**
      * Sets the GetComplete URI.
      * 
-     * @param newGetComplete the GetComplete URI
+     * @param uri the GetComplete URI
      */
-    public void setGetComplete(String newGetComplete);
+    void setURI(@Nullable final String uri);
+
+    /**
+     * Gets the GetComplete URI value.
+     * 
+     * @return GetComplete URI
+     * 
+     * @deprecated
+     */
+    @Nullable default String getGetComplete() {
+        return getURI();
+    }
+
+    /**
+     * Sets the GetComplete URI.
+     * 
+     * @param uri the GetComplete URI
+     * 
+     * @deprecated
+     */
+    default void setGetComplete(@Nullable final String uri) {
+        setURI(uri);
+    }
+
 }

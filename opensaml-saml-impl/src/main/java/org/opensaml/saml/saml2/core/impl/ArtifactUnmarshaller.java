@@ -26,7 +26,7 @@ import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.core.Artifact;
 
 /**
- * A thead-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Artifact}.
+ * A thead-safe Unmarshaller for {@link Artifact}.
  */
 public class ArtifactUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -34,7 +34,7 @@ public class ArtifactUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final Artifact artifact = (Artifact) samlObject;
 
-        artifact.setArtifact(elementContent);
+        artifact.setValue(elementContent);
     }
 
 }

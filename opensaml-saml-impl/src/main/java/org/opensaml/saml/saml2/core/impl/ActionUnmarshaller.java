@@ -28,14 +28,14 @@ import org.opensaml.saml.saml2.core.Action;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Action}.
+ * A thread-safe Unmarshaller for {@link Action}.
  */
 public class ActionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final Action action = (Action) samlObject;
-        action.setAction(elementContent);
+        action.setValue(elementContent);
     }
 
     /** {@inheritDoc} */

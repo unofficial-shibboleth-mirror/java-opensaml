@@ -21,10 +21,14 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core Artifact.
@@ -32,17 +36,17 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Artifact extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Artifact";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Artifact";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ArtifactType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ArtifactType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -50,13 +54,35 @@ public interface Artifact extends SAMLObject {
      * 
      * @return the artifact value
      */
-    public String getArtifact();
+    @Nullable String getValue();
 
     /**
      * Set artifact value.
      * 
-     * @param newArtifact sets the new artifact value
+     * @param value new artifact value
      */
-    public void setArtifact(String newArtifact);
+    void setValue(@Nullable final String value);
+    
+    /**
+     * Get artifact value.
+     * 
+     * @return the artifact value
+     * 
+     * @deprecated
+     */
+    @Nullable default String getArtifact() {
+        return getValue();
+    }
+
+    /**
+     * Set artifact value.
+     * 
+     * @param value new artifact value
+     * 
+     * @deprecated
+     */
+    default void setArtifact(@Nullable final String value) {
+        setValue(value);
+    }
 
 }

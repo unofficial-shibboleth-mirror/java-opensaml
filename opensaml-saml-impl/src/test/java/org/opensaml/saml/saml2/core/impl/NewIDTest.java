@@ -53,7 +53,7 @@ public class NewIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         NewID newID = (NewID) unmarshallElement(singleElementFile);
         
-       Assert.assertEquals(newID.getNewID(), expectedNewID, "The unmarshalled NewID was not the expected value");
+       Assert.assertEquals(newID.getValue(), expectedNewID, "The unmarshalled NewID was not the expected value");
     }
 
     /** {@inheritDoc} */
@@ -61,7 +61,7 @@ public class NewIDTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         NewID newID = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
         
-        newID.setNewID(expectedNewID);
+        newID.setValue(expectedNewID);
         
         assertXMLEquals(expectedDOM, newID);
     }

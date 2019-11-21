@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.RequesterID;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.RequesterID} objects.
+ * A thread safe Marshaller for {@link RequesterID} objects.
  */
 public class RequesterIDMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class RequesterIDMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final RequesterID reqID = (RequesterID) samlObject;
 
-        if (reqID.getRequesterID() != null) {
-            ElementSupport.appendTextContent(domElement, reqID.getRequesterID());
+        if (reqID.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, reqID.getValue());
         }
     }
 }

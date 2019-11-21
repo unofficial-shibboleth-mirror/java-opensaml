@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.Artifact;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Artifact}.
+ * A thread-safe Marshaller for {@link Artifact}.
  */
 public class ArtifactMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class ArtifactMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final Artifact artifact = (Artifact) samlObject;
 
-        if (artifact.getArtifact() != null) {
-            ElementSupport.appendTextContent(domElement, artifact.getArtifact());
+        if (artifact.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, artifact.getValue());
         }
     }
 }

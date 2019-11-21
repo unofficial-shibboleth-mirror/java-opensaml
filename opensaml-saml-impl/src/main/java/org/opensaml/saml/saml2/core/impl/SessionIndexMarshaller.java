@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.SessionIndex;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.SessionIndex} objects.
+ * A thread safe Marshaller for {@link SessionIndex} objects.
  */
 public class SessionIndexMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class SessionIndexMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final SessionIndex si = (SessionIndex) samlObject;
 
-        if (si.getSessionIndex() != null) {
-            ElementSupport.appendTextContent(domElement, si.getSessionIndex());
+        if (si.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, si.getValue());
         }
     }
 }

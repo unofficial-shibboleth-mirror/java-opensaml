@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.core.impl;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Action;
 import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
@@ -28,6 +29,8 @@ import org.opensaml.saml.saml2.core.Evidence;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -49,6 +52,7 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
         singleElementFile = "/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatement.xml";
         singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementOptionalAttributes.xml";
         childElementsFile = "/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementChildElements.xml";
+        invalidFile = "/org/opensaml/saml/saml2/core/impl/AuthzDecisionStatementInvalidDecision.xml";
     }
 
     @BeforeMethod
@@ -56,7 +60,12 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
         expectedResource = "resource name";
         expectedDecision = DecisionTypeEnumeration.DENY;
     }
-
+    
+    @Test(expectedExceptions=UnmarshallingException.class)
+    public void testInvalidUnmarshall() throws XMLParserException, UnmarshallingException {
+        unmarshallElement(invalidFile, true);
+    }
+    
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {

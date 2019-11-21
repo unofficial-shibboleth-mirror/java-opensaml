@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.core.NewID;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.NewID} objects.
+ * A thread safe Marshaller for {@link NewID} objects.
  */
 public class NewIDMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class NewIDMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final NewID newID = (NewID) samlObject;
 
-        if (newID.getNewID() != null) {
-            ElementSupport.appendTextContent(domElement, newID.getNewID());
+        if (newID.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, newID.getValue());
         }
     }
 }

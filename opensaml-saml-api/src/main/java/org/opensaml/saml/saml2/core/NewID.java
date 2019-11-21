@@ -21,10 +21,14 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core NewID.
@@ -32,10 +36,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface NewID extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NewID";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "NewID";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -43,12 +47,35 @@ public interface NewID extends SAMLObject {
      * 
      * @return NewID value
      */
-    public String getNewID();
+    @Nullable String getValue();
 
     /**
      * Set NewID value.
      * 
-     * @param newNewID the new NewID value
+     * @param value the new NewID value
      */
-    public void setNewID(String newNewID);
+    void setValue(@Nullable final String value);
+
+    /**
+     * Get NewID value.
+     * 
+     * @return NewID value
+     * 
+     * @deprecated
+     */
+    @Nullable default String getNewID() {
+        return getValue();
+    }
+
+    /**
+     * Set NewID value.
+     * 
+     * @param value the new NewID value
+     * 
+     * @deprecated
+     */
+    default void setNewID(@Nullable final String value) {
+        setValue(value);
+    }
+
 }

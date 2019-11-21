@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.NewID;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.NewID}.
+ * Concrete implementation of {@link NewID}.
  */
 public class NewIDImpl extends AbstractXMLObject implements NewID {
 
@@ -47,13 +47,13 @@ public class NewIDImpl extends AbstractXMLObject implements NewID {
     }
 
     /** {@inheritDoc} */
-    public String getNewID() {
+    public String getValue() {
         return newID;
     }
 
     /** {@inheritDoc} */
-    public void setNewID(final String newNewID) {
-        this.newID = prepareForAssignment(this.newID, newNewID);
+    public void setValue(final String value) {
+        newID = prepareForAssignment(newID, value);
     }
 
     /** {@inheritDoc} */

@@ -28,7 +28,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.RequesterID;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.RequesterID}.
+ * Concrete implementation of {@link RequesterID}.
  */
 public class RequesterIDImpl extends AbstractXMLObject implements RequesterID {
 
@@ -47,13 +47,13 @@ public class RequesterIDImpl extends AbstractXMLObject implements RequesterID {
     }
 
     /** {@inheritDoc} */
-    public String getRequesterID() {
-        return this.requesterID;
+    public String getValue() {
+        return requesterID;
     }
 
     /** {@inheritDoc} */
-    public void setRequesterID(final String newRequesterID) {
-        this.requesterID = prepareForAssignment(this.requesterID, newRequesterID);
+    public void setValue(final String value) {
+        requesterID = prepareForAssignment(requesterID, value);
     }
 
     /** {@inheritDoc} */
