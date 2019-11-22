@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import java.util.Collection;
+import java.util.Set;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
@@ -29,6 +29,7 @@ import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -61,11 +62,8 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     /** Strategy used to locate the Response to operate on. */
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
-    /** Strategy used to obtain the audiences to add. */
-    @Nullable private Function<ProfileRequestContext,Collection<String>> proxyAudiencesLookupStrategy;
-    
-    /** Strategy used to obtain the proxy count to add. */
-    @Nullable private Function<ProfileRequestContext,Integer> proxyCountLookupStrategy;
+    /** Strategy used to obtain the material to add. */
+    @Nullable private Function<ProfileRequestContext,Pair<Integer,Set<String>>> proxyRestrictionLookupStrategy;
     
     /** Response to modify. */
     @Nullable private Response response;
@@ -74,7 +72,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     @Nullable private Integer proxyCount;
     
     /** Audiences to add. */
-    @Nullable private Collection<String> audiences;
+    @Nullable private Set<String> audiences;
     
     /** Constructor. */
     public AddProxyRestrictionToAssertions() {
@@ -97,23 +95,12 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
      * 
      * @param strategy lookup strategy
      */
-    public void setProxyAudiencesLookupStrategy(
-            @Nonnull final Function<ProfileRequestContext,Collection<String>> strategy) {
+    public void setProxyRestrictionLookupStrategy(
+            @Nonnull final Function<ProfileRequestContext,Pair<Integer,Set<String>>> strategy) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        proxyAudiencesLookupStrategy =
-                Constraint.isNotNull(strategy, "Proxy restriction audiences lookup strategy cannot be null");
-    }
-
-    /**
-     * Set the strategy used to obtain the proxy count to apply.
-     * 
-     * @param strategy lookup strategy
-     */
-    public void setProxyCountLookupStrategy(@Nonnull final Function<ProfileRequestContext,Integer> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
-        proxyCountLookupStrategy = Constraint.isNotNull(strategy, "Proxy count lookup strategy cannot be null");
+        proxyRestrictionLookupStrategy =
+                Constraint.isNotNull(strategy, "Proxy restriction lookup strategy cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -121,10 +108,8 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (proxyAudiencesLookupStrategy == null) {
-            throw new ComponentInitializationException("Proxy restriction audience lookup strategy cannot be null");
-        } else if (proxyCountLookupStrategy == null) {
-            throw new ComponentInitializationException("Proxy count lookup strategy cannot be null");
+        if (proxyRestrictionLookupStrategy == null) {
+            throw new ComponentInitializationException("Proxy restriction lookup strategy cannot be null");
         }
     }
 
@@ -136,16 +121,18 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
             return false;
         }
         
-        proxyCount = proxyCountLookupStrategy.apply(profileRequestContext);
-        audiences = proxyAudiencesLookupStrategy.apply(profileRequestContext);
+        final Pair<Integer,Set<String>> result = proxyRestrictionLookupStrategy.apply(profileRequestContext);
+        if (result != null) {
+            proxyCount = result.getFirst();
+            audiences = result.getSecond();
+        }
         
         if (proxyCount == null && (audiences == null || audiences.isEmpty())) {
             log.debug("{} No restrictions to add, nothing to do", getLogPrefix());
             return false;
         }
 
-        log.debug("{} Attempting to add an ProxyRestriction to every Assertion in Response",
-                getLogPrefix());
+        log.debug("{} Attempting to add an ProxyRestriction to every Assertion in Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
@@ -182,6 +169,11 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
         final ProxyRestriction condition = getProxyRestriction(conditions);
         condition.setProxyCount(proxyCount);
 
+        if (proxyCount != null && proxyCount == 0) {
+            // Count is zero, so audiences are irrelevant.
+            return;
+        }
+        
         if (audiences != null && !audiences.isEmpty()) {
             final SAMLObjectBuilder<Audience> audienceBuilder = (SAMLObjectBuilder<Audience>)
                     XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>getBuilderOrThrow(
