@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.Company;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.Company} objects.
+ * A thread safe Marshaller for {@link Company} objects.
  */
 public class CompanyMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class CompanyMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final Company company = (Company) samlObject;
 
-        if (company.getName() != null) {
-            ElementSupport.appendTextContent(domElement, company.getName());
+        if (company.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, company.getValue());
         }
     }
 }

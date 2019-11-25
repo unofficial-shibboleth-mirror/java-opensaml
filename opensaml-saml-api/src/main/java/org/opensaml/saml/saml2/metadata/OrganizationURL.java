@@ -17,9 +17,12 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata OrganizationURL.
@@ -27,17 +30,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface OrganizationURL extends LocalizedURI {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "OrganizationURL";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "OrganizationURL";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-    
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "localizedURIType"; 
-        
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
-        new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
     
 }

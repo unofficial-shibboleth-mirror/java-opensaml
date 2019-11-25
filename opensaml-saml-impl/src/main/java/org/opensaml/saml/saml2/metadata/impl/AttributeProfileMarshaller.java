@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.AttributeProfile;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.AttributeProfile} objects.
+ * A thread safe Marshaller for {@link AttributeProfile} objects.
  */
 public class AttributeProfileMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -38,8 +38,8 @@ public class AttributeProfileMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final AttributeProfile profile = (AttributeProfile) samlObject;
-        if (profile.getProfileURI() != null) {
-            ElementSupport.appendTextContent(domElement, profile.getProfileURI());
+        if (profile.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, profile.getURI());
         }
     }
 }

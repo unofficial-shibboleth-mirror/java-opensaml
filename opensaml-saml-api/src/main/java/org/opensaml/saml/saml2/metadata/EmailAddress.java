@@ -17,41 +17,48 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata EmailAddress.
  */
-public interface EmailAddress extends SAMLObject {
+public interface EmailAddress extends SAMLObject, XSURI {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EmailAddress";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EmailAddress";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
-
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EmailAddressType";
-
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
      * Gets the email address.
      * 
      * @return the email address
+     * 
+     * @deprecated
      */
-    public String getAddress();
+    @Nullable default String getAddress() {
+        return getURI();
+    }
 
     /**
      * Sets the email address.
      * 
-     * @param address email address
+     * @param value email address
+     * 
+     * @deprecated
      */
-    public void setAddress(String address);
+    default void setAddress(@Nullable final String value) {
+        setURI(value);
+    }
+    
 }

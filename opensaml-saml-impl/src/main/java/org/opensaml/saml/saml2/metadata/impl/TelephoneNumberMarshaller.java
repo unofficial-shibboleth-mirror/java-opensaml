@@ -25,22 +25,22 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 import org.w3c.dom.Element;
 
 /**
  * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.TelephoneNumber} objects.
  */
-public class TelephoneNumberMarshaller extends AbstractSAMLObjectMarshaller {
+public class TelephoneNumberMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final TelephoneNumber number = (TelephoneNumber) samlObject;
 
-        if (number.getNumber() != null) {
-            ElementSupport.appendTextContent(domElement, number.getNumber());
+        if (number.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, number.getValue());
         }
     }
 }

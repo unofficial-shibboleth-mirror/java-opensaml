@@ -21,19 +21,12 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.EmailAddress} objects.
+ * A thread-safe Unmarshaller for {@link EmailAddress} objects.
  */
-public class EmailAddressUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class EmailAddressUnmarshaller extends XSURIUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final EmailAddress address = (EmailAddress) samlObject;
-
-        address.setAddress(elementContent);
-    }
 }

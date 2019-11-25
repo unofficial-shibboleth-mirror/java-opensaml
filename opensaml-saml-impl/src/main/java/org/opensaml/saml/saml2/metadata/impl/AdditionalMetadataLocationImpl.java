@@ -17,22 +17,18 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation}.
+ * Concrete implementation of {@link AdditionalMetadataLocation}.
  */
-public class AdditionalMetadataLocationImpl extends AbstractXMLObject implements AdditionalMetadataLocation {
-
-    /** The metadata location. */
-    private String location;
+public class AdditionalMetadataLocationImpl extends XSURIImpl implements AdditionalMetadataLocation {
 
     /** Namespace scope of the root metadata element at the location. */
-    private String namespace;
+    @Nullable private String namespace;
 
     /**
      * Constructor.
@@ -47,28 +43,13 @@ public class AdditionalMetadataLocationImpl extends AbstractXMLObject implements
     }
 
     /** {@inheritDoc} */
-    public String getLocationURI() {
-        return location;
-    }
-
-    /** {@inheritDoc} */
-    public void setLocationURI(final String locationURI) {
-        location = prepareForAssignment(location, locationURI);
-    }
-
-    /** {@inheritDoc} */
-    public String getNamespaceURI() {
+    @Nullable public String getNamespaceURI() {
         return namespace;
     }
 
     /** {@inheritDoc} */
-    public void setNamespaceURI(final String namespaceURI) {
+    public void setNamespaceURI(@Nullable final String namespaceURI) {
         namespace = prepareForAssignment(namespace, namespaceURI);
     }
 
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // No children for this element
-        return null;
-    }
 }

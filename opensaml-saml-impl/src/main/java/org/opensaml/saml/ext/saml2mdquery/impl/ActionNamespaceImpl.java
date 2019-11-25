@@ -17,19 +17,13 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.ext.saml2mdquery.ActionNamespace;
 
 /**
  * Concrete implementation of {@link ActionNamespace}.
  */
-public class ActionNamespaceImpl extends AbstractXMLObject implements ActionNamespace {
-
-    /** Action namespace value. */
-    private String value;
+public class ActionNamespaceImpl extends XSURIImpl implements ActionNamespace {
     
     /**
      * Constructor.
@@ -41,24 +35,5 @@ public class ActionNamespaceImpl extends AbstractXMLObject implements ActionName
     protected ActionNamespaceImpl(final String namespaceURI, final String elementLocalName,
             final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-    
-    /** {@inheritDoc} */
-    @Override
-    public String getValue() {
-        return value;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setValue(final String newValue) {
-        value = prepareForAssignment(value, newValue);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        // no children
-        return null;
     }
 }

@@ -21,18 +21,15 @@ import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.BaseXMLObjectMarshaller;
+import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSDateTime;
 import org.w3c.dom.Element;
 
 /**
- * Thread-safe marshaller of {@link org.opensaml.core.xml.schema.XSDateTime} objects.
+ * Thread-safe marshaller of {@link XSDateTime} objects.
  */
-public class XSDateTimeMarshaller extends BaseXMLObjectMarshaller {
-    
-    /** Constructor. */
-    public XSDateTimeMarshaller(){}
+public class XSDateTimeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)

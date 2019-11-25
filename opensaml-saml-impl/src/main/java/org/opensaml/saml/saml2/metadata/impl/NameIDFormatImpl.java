@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.NameIDFormat}.
+ * Concrete implementation of {@link NameIDFormat}.
  */
-public class NameIDFormatImpl extends AbstractXMLObject implements NameIDFormat {
-
-    /** NameID format. */
-    private String format;
+public class NameIDFormatImpl extends XSURIImpl implements NameIDFormat {
 
     /**
      * Constructor.
@@ -46,19 +40,5 @@ public class NameIDFormatImpl extends AbstractXMLObject implements NameIDFormat 
     protected NameIDFormatImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getFormat() {
-        return format;
-    }
-
-    /** {@inheritDoc} */
-    public void setFormat(final String newFormat) {
-        this.format = prepareForAssignment(this.format, newFormat);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

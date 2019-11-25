@@ -17,41 +17,47 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata AttributeProfile.
  */
-public interface AttributeProfile extends SAMLObject {
+public interface AttributeProfile extends SAMLObject, XSURI {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeProfile";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeProfile";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
-
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributeProfileType";
-
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
-
+    
     /**
      * Gets the URI of this attribute profile.
      * 
      * @return the URI of this attribute profile
+     * 
+     * @deprecated
      */
-    public String getProfileURI();
+    @Nullable default String getProfileURI() {
+        return getURI();
+    }
 
     /**
      * Sets the URI of this attribute profile.
      * 
-     * @param profileURI the URI of this attribute profile
+     * @param uri the URI of this attribute profile
+     * 
+     * @deprecated
      */
-    public void setProfileURI(String profileURI);
+    default void setProfileURI(@Nullable final String uri) {
+        setURI(uri);
+    }
 }

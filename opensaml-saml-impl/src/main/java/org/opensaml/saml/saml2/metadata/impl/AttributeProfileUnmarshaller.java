@@ -21,17 +21,12 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AttributeProfile} objects.
+ * A thread safe Unmarshaller for {@link AttributeProfile} objects.
  */
-public class AttributeProfileUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        ((AttributeProfile) samlObject).setProfileURI(elementContent);
-    }
+public class AttributeProfileUnmarshaller extends XSURIUnmarshaller {
+    
 }

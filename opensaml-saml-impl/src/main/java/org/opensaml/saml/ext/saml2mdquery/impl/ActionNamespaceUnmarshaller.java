@@ -30,6 +30,6 @@ public class ActionNamespaceUnmarshaller extends AbstractSAMLObjectUnmarshaller 
     protected void processElementContent(final XMLObject samlObject, final String elementContent) {
         final ActionNamespace actionNamespace = (ActionNamespace) samlObject;
 
-        actionNamespace.setValue(elementContent);
+        actionNamespace.setURI(elementContent);
     }
 }

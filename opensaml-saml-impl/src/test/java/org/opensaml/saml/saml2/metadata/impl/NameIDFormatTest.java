@@ -52,7 +52,7 @@ public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         NameIDFormat format = (NameIDFormat) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(format.getFormat(), expectFormat, "Format was not expected value");
+        Assert.assertEquals(format.getURI(), expectFormat, "Format was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -60,7 +60,7 @@ public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         NameIDFormat format = (NameIDFormat) buildXMLObject(NameIDFormat.DEFAULT_ELEMENT_NAME);
         
-        format.setFormat(expectFormat);
+        format.setURI(expectFormat);
 
         assertXMLEquals(expectedDOM, format);
     }

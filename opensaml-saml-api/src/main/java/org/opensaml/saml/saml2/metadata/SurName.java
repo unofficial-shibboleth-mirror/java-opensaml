@@ -17,34 +17,48 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata SurName.
  */
-public interface SurName extends SAMLObject {
+public interface SurName extends SAMLObject, XSString {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SurName";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SurName";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
      * Gets the name.
      * 
      * @return the name
+     * 
+     * @deprecated
      */
-    public String getName();
+    @Nullable default String getName() {
+        return getValue();
+    }
 
     /**
      * Sets the name.
      * 
-     * @param newName the name
+     * @param value the name
+     * 
+     * @deprecated
      */
-    public void setName(String newName);
+    default void setName(@Nullable final String value) {
+        setValue(value);
+    }
+    
 }

@@ -17,10 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.soap.wssecurity.AttributedURI;
 import org.w3c.dom.Element;
@@ -30,7 +29,7 @@ import com.google.common.base.Strings;
 /**
  * Marshaller for instances of {@link AttributedURI}.
  */
-public class AttributedURIMarshaller extends AbstractWSSecurityObjectMarshaller {
+public class AttributedURIMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
@@ -43,13 +42,6 @@ public class AttributedURIMarshaller extends AbstractWSSecurityObjectMarshaller 
         
         XMLObjectSupport.marshallAttributeMap(attributedURI.getUnknownAttributes(), domElement);
         
-    }
-
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
-            throws MarshallingException {
-        final AttributedURI attributedURI = (AttributedURI) xmlObject;
-        ElementSupport.appendTextContent(domElement, attributedURI.getValue());
     }
     
 }

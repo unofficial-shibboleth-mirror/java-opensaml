@@ -17,14 +17,14 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import org.opensaml.core.xml.schema.impl.XSStringImpl;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.soap.wstrust.KeyWrapAlgorithm;
 
 /**
  * KeyWrapAlgorithmImpl.
  * 
  */
-public class KeyWrapAlgorithmImpl extends XSStringImpl implements KeyWrapAlgorithm {
+public class KeyWrapAlgorithmImpl extends XSURIImpl implements KeyWrapAlgorithm {
 
     /**
      * Constructor.

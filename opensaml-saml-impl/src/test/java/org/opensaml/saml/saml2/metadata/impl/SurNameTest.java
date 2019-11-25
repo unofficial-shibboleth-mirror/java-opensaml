@@ -52,7 +52,7 @@ public class SurNameTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         SurName name = (SurName) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(name.getName(), expectedName, "Name was not expected value");
+        Assert.assertEquals(name.getValue(), expectedName, "Name was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -60,7 +60,7 @@ public class SurNameTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         SurName name = (new SurNameBuilder()).buildObject();
         
-        name.setName(expectedName);
+        name.setValue(expectedName);
 
         assertXMLEquals(expectedDOM, name);
     }

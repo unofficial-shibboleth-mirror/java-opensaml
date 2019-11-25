@@ -49,7 +49,7 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall(){
         AttributeProfile profile = (AttributeProfile) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(profile.getProfileURI(), expectedProfileURI, "Profile URI has a value of " + profile.getProfileURI() + ", expected a value of " + expectedProfileURI);
+        Assert.assertEquals(profile.getURI(), expectedProfileURI);
     }
 
     /** {@inheritDoc} */
@@ -57,7 +57,7 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall(){
         AttributeProfile profile = (new AttributeProfileBuilder()).buildObject();
         
-        profile.setProfileURI(expectedProfileURI);
+        profile.setURI(expectedProfileURI);
         
         assertXMLEquals(expectedDOM, profile);
     }

@@ -52,7 +52,7 @@ public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         EmailAddress address = (EmailAddress) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(address.getAddress(), expectedAddress, "Email address was not expected value");
+        Assert.assertEquals(address.getURI(), expectedAddress, "Email address was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -60,7 +60,7 @@ public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         EmailAddress address = (new EmailAddressBuilder()).buildObject();
         
-        address.setAddress(expectedAddress);
+        address.setURI(expectedAddress);
 
         assertXMLEquals(expectedDOM, address);
     }

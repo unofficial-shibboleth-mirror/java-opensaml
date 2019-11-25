@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.GivenName;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.GivenName} objects.
+ * A thread safe Marshaller for {@link GivenName} objects.
  */
 public class GivenNameMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class GivenNameMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final GivenName name = (GivenName) samlObject;
 
-        if (name.getName() != null) {
-            ElementSupport.appendTextContent(domElement, name.getName());
+        if (name.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, name.getValue());
         }
     }
 }

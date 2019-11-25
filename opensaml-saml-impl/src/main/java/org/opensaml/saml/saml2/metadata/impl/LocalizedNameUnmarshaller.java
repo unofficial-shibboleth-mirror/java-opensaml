@@ -22,21 +22,14 @@ import net.shibboleth.utilities.java.support.xml.XMLConstants;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.metadata.LocalizedName;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.LocalizedName} objects.
+ * A thread-safe unmarshaller for {@link LocalizedName} objects.
  */
-public class LocalizedNameUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final LocalizedName name = (LocalizedName) samlObject;
-    
-        name.setValue(elementContent);
-    }
+public class LocalizedNameUnmarshaller extends XSStringUnmarshaller {
 
     /**
      * {@inheritDoc}

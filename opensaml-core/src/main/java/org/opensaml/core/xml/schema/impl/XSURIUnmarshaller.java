@@ -19,29 +19,16 @@ package org.opensaml.core.xml.schema.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSURI;
-import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.core.xml.schema.XSURI}s.
+ * A thread-safe unmarshaller for {@link XSURI}.
  */
 public class XSURIUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
-        // no child elements
-    }
-
-    /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
-        // no attributes
-    }
-
-    /** {@inheritDoc} */
     protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
         final XSURI uri = (XSURI) xmlObject;
-        uri.setValue(elementContent);
+        uri.setURI(elementContent);
     }
 }

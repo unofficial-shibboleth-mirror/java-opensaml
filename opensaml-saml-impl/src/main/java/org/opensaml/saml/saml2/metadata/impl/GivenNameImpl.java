@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.metadata.GivenName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.GivenName}.
+ * Concrete implementation of {@link GivenName}.
  */
-public class GivenNameImpl extends AbstractXMLObject implements GivenName {
-
-    /** Given name (first name). */
-    private String name;
+public class GivenNameImpl extends XSStringImpl implements GivenName {
 
     /**
      * Constructor.
@@ -44,20 +38,5 @@ public class GivenNameImpl extends AbstractXMLObject implements GivenName {
      */
     protected GivenNameImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public String getName() {
-        return name;
-    }
-
-    /** {@inheritDoc} */
-    public void setName(final String newName) {
-        name = prepareForAssignment(name, newName);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
     }
 }

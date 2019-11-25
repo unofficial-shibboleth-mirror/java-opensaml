@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe marshaller for {@link org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation} objects.
+ * A thread safe marshaller for {@link AdditionalMetadataLocation} objects.
  */
-public class AdditionalMetadataLocationMarshaller extends AbstractSAMLObjectMarshaller {
+public class AdditionalMetadataLocationMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
@@ -41,11 +41,11 @@ public class AdditionalMetadataLocationMarshaller extends AbstractSAMLObjectMars
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
-        super.marshallElementContent(samlObject, domElement);
-
+        
         final AdditionalMetadataLocation aml = (AdditionalMetadataLocation) samlObject;
-        if (aml.getLocationURI() != null) {
-            domElement.appendChild(domElement.getOwnerDocument().createTextNode(aml.getLocationURI()));
+        if (aml.getURI() != null) {
+            domElement.appendChild(domElement.getOwnerDocument().createTextNode(aml.getURI()));
         }
     }
+    
 }

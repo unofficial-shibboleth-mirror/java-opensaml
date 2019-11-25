@@ -26,14 +26,9 @@ import org.opensaml.core.xml.schema.XSInteger;
 import org.w3c.dom.Element;
 
 /**
- * Thread-safe marshaller of {@link org.opensaml.core.xml.schema.XSInteger} objects.
+ * Thread-safe marshaller of {@link XSInteger} objects.
  */
 public class XSIntegerMarshaller extends AbstractXMLObjectMarshaller {
-
-    /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
-        // no attributes
-    }
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)

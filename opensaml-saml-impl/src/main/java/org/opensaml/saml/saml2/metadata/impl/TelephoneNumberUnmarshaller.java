@@ -21,19 +21,12 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.TelephoneNumber} objects.
+ * A thread-safe Unmarshaller for {@link TelephoneNumber} objects.
  */
-public class TelephoneNumberUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final TelephoneNumber number = (TelephoneNumber) samlObject;
-
-        number.setNumber(elementContent);
-    }
+public class TelephoneNumberUnmarshaller extends XSStringUnmarshaller {
+    
 }

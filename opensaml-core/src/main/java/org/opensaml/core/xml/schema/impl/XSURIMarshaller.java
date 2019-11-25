@@ -26,20 +26,15 @@ import org.opensaml.core.xml.schema.XSURI;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe marshaller for {@link org.opensaml.core.xml.schema.XSURI}s.
+ * A thread-safe marshaller for {@link XSURI}.
  */
 public class XSURIMarshaller extends AbstractXMLObjectMarshaller {
-
-    /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
-        // no attributes
-    }
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
             throws MarshallingException {
         final XSURI uri = (XSURI) xmlObject;
 
-        ElementSupport.appendTextContent(domElement, uri.getValue());
+        ElementSupport.appendTextContent(domElement, uri.getURI());
     }
 }

@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.TelephoneNumber}.
+ * Concrete implementation of {@link TelephoneNumber}.
  */
-public class TelephoneNumberImpl extends AbstractXMLObject implements TelephoneNumber {
-
-    /** Telephone number. */
-    private String number;
+public class TelephoneNumberImpl extends XSStringImpl implements TelephoneNumber {
 
     /**
      * Constructor.
@@ -46,19 +40,5 @@ public class TelephoneNumberImpl extends AbstractXMLObject implements TelephoneN
             final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getNumber() {
-        return number;
-    }
-
-    /** {@inheritDoc} */
-    public void setNumber(final String newNumber) {
-        number = prepareForAssignment(number, newNumber);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

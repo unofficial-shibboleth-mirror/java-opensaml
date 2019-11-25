@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.metadata.SurName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SurName}.
+ * Concrete implementation of {@link SurName}.
  */
-public class SurNameImpl extends AbstractXMLObject implements SurName {
-
-    /** Service name. */
-    private String name;
+public class SurNameImpl extends XSStringImpl implements SurName {
 
     /**
      * Constructor.
@@ -45,19 +39,5 @@ public class SurNameImpl extends AbstractXMLObject implements SurName {
     protected SurNameImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getName() {
-        return name;
-    }
-
-    /** {@inheritDoc} */
-    public void setName(final String newName) {
-        name = prepareForAssignment(name, newName);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

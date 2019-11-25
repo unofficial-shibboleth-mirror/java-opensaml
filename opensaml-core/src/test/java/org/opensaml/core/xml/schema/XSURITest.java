@@ -58,7 +58,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
     public void testMarshall() throws MarshallingException, XMLParserException{
         XMLObjectBuilder<XSURI> uriBuilder = builderFactory.getBuilderOrThrow(XSURI.TYPE_NAME);
         XSURI xsURI = uriBuilder.buildObject(expectedXMLObjectQName, XSURI.TYPE_NAME);
-        xsURI.setValue(expectedValue);
+        xsURI.setURI(expectedValue);
         
         Marshaller marshaller = marshallerFactory.getMarshaller(xsURI);
         marshaller.marshall(xsURI);
@@ -82,6 +82,6 @@ public class XSURITest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(xsURI.getElementQName(), expectedXMLObjectQName, "Unexpected XSURI QName");
         Assert.assertEquals(xsURI.getSchemaType(), XSURI.TYPE_NAME, "Unexpected XSURI schema type");
-        Assert.assertEquals(expectedValue, xsURI.getValue(), "Unexpected value of XSURI");
+        Assert.assertEquals(expectedValue, xsURI.getURI(), "Unexpected value of XSURI");
     }
 }

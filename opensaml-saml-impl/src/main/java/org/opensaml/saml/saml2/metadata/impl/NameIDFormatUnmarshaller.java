@@ -21,19 +21,12 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.NameIDFormat} objects.
+ * A thread-safe Unmarshaller for {@link NameIDFormat} objects.
  */
-public class NameIDFormatUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class NameIDFormatUnmarshaller extends XSURIUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final NameIDFormat format = (NameIDFormat) samlObject;
-
-        format.setFormat(elementContent);
-    }
 }

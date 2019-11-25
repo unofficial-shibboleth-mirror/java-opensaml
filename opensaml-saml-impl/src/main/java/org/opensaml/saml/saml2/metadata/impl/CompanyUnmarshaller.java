@@ -21,19 +21,12 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.metadata.Company;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.Company} objects.
+ * A thread-safe Unmarshaller for {@link Company} objects.
  */
-public class CompanyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final Company company = (Company) samlObject;
-
-        company.setName(elementContent);
-    }
+public class CompanyUnmarshaller extends XSStringUnmarshaller {
+    
 }

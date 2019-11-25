@@ -18,18 +18,15 @@
 package org.opensaml.core.xml.schema.impl;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.BaseXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.schema.XSDateTime;
 
 import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
 
 /**
- * Thread-safe unmarshaller for {@link org.opensaml.core.xml.schema.XSDateTime} objects.
+ * Thread-safe unmarshaller for {@link XSDateTime} objects.
  */
-public class XSDateTimeUnmarshaller extends BaseXMLObjectUnmarshaller{
-    
-    /** Constructor. */
-    public XSDateTimeUnmarshaller(){}
+public class XSDateTimeUnmarshaller extends AbstractXMLObjectUnmarshaller{
 
     /** {@inheritDoc} */
     protected void processElementContent(final XMLObject xmlObject, final String elementContent) {

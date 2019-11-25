@@ -19,25 +19,12 @@ package org.opensaml.core.xml.schema.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSString;
-import org.w3c.dom.Attr;
 
 /**
  * Thread-safe unmarshaller for {@link org.opensaml.core.xml.schema.XSString} objects.
  */
 public class XSStringUnmarshaller extends AbstractXMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
-        // no children
-    }
-
-    /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
-        // no attributes
-    }
 
     /** {@inheritDoc} */
     protected void processElementContent(final XMLObject xmlObject, final String elementContent) {

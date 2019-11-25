@@ -52,7 +52,7 @@ public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         TelephoneNumber number = (TelephoneNumber) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(number.getNumber(), expectedNumber, "Telephone number was not expected value");
+        Assert.assertEquals(number.getValue(), expectedNumber, "Telephone number was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -60,7 +60,7 @@ public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         TelephoneNumber number = (new TelephoneNumberBuilder()).buildObject();
         
-        number.setNumber(expectedNumber);
+        number.setValue(expectedNumber);
 
         assertXMLEquals(expectedDOM, number);
     }

@@ -17,58 +17,72 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata AdditionalMetadataLocation.
  */
-public interface AdditionalMetadataLocation extends SAMLObject {
+public interface AdditionalMetadataLocation extends SAMLObject, XSURI {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AdditionalMetadataLocation";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AdditionalMetadataLocation";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AdditionalMetadataLocationType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AdditionalMetadataLocationType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "affiliationOwnerID" attribute's local name. */
-    public static final String NAMESPACE_ATTRIB_NAME = "namespace";
+    @Nonnull @NotEmpty static final String NAMESPACE_ATTRIB_NAME = "namespace";
 
     /**
      * Gets the location URI.
      * 
      * @return the location URI
+     * 
+     * @deprecated
      */
-    public String getLocationURI();
+    @Nullable default String getLocationURI() {
+        return getURI();
+    }
 
     /**
      * Sets the location URI.
      * 
-     * @param locationURI the location URI
+     * @param uri the location URI
+     * 
+     * @deprecated
      */
-    public void setLocationURI(String locationURI);
+    default void setLocationURI(@Nullable final String uri) {
+        setURI(uri);
+    }
 
     /**
      * Gets the namespace URI.
      * 
      * @return the namespace URI
      */
-    public String getNamespaceURI();
+    @Nullable String getNamespaceURI();
 
     /**
      * Sets the namespace URI.
      * 
      * @param namespaceURI the namespace URI
      */
-    public void setNamespaceURI(String namespaceURI);
+    void setNamespaceURI(@Nullable final String namespaceURI);
+
 }

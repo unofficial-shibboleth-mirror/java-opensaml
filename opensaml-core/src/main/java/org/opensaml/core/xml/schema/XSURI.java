@@ -36,18 +36,40 @@ public interface XSURI extends XMLObject {
         
     /** QName of the XSI type. */
     @Nonnull static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
-    
+
     /**
      * Gets the URI content of the element.
      * 
      * @return the URI content of the element
      */
-    @Nullable String getValue();
+    @Nullable String getURI();
     
     /**
      * Sets the URI content of the element.
      * 
-     * @param newValue the URI content of the element
+     * @param uri the URI content of the element
      */
-    void setValue(@Nullable final String newValue);
+    void setURI(@Nullable final String uri);
+
+    /**
+     * Gets the URI content of the element.
+     * 
+     * @return the URI content of the element
+     * 
+     * @deprecated
+     */
+    @Nullable default String getValue() {
+        return getURI();
+    }
+    
+    /**
+     * Sets the URI content of the element.
+     * 
+     * @param uri the URI content of the element
+     * 
+     * @deprecated
+     */
+    default void setValue(@Nullable final String uri) {
+        setURI(uri);
+    }
 }

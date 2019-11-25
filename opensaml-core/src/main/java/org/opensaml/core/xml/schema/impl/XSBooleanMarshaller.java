@@ -32,13 +32,6 @@ public class XSBooleanMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
     @Override
-    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
-            throws MarshallingException {
-        // no attributes
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final XSBoolean xsiBoolean = (XSBoolean) xmlObject;

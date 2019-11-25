@@ -25,7 +25,6 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSQName;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Text;
 
 /**
@@ -37,16 +36,7 @@ public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
     protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
             throws UnmarshallingException {
         // no child elements
-    }
-
-    /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
-        // no attributes
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
-        // handled by overriden unmarshallTextContent() directly, because we need access to the owning DOM element
+        // left this in to bypass the "ignore" logging message since we're not in fact ignoring the content
     }
 
     /** {@inheritDoc} */

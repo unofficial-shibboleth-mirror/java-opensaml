@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.metadata.AttributeProfile}.
+ * A concrete implementation of {@link AttributeProfile}.
  */
-public class AttributeProfileImpl extends AbstractXMLObject implements AttributeProfile {
-
-    /** Profile URI. */
-    private String profileURI;
+public class AttributeProfileImpl extends XSURIImpl implements AttributeProfile {
 
     /**
      * Constructor.
@@ -47,19 +41,4 @@ public class AttributeProfileImpl extends AbstractXMLObject implements Attribute
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc} */
-    public String getProfileURI() {
-        return profileURI;
-    }
-
-    /** {@inheritDoc} */
-    public void setProfileURI(final String theProfileURI) {
-        this.profileURI = prepareForAssignment(this.profileURI, theProfileURI);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // No Children
-        return null; 
-    }
 }

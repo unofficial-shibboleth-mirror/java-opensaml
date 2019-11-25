@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.metadata.EmailAddress;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.EmailAddress} objects.
+ * A thread safe Marshaller for {@link EmailAddress} objects.
  */
 public class EmailAddressMarshaller extends AbstractSAMLObjectMarshaller {
 
@@ -39,8 +39,8 @@ public class EmailAddressMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final EmailAddress address = (EmailAddress) samlObject;
 
-        if (address.getAddress() != null) {
-            ElementSupport.appendTextContent(domElement, address.getAddress());
+        if (address.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, address.getURI());
         }
     }
 }

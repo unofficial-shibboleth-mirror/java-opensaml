@@ -19,14 +19,14 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation} objects.
+ * A thread-safe Unmarshaller for {@link AdditionalMetadataLocation} objects.
  */
-public class AdditionalMetadataLocationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class AdditionalMetadataLocationUnmarshaller extends XSURIUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
@@ -38,12 +38,6 @@ public class AdditionalMetadataLocationUnmarshaller extends AbstractSAMLObjectUn
         } else {
             super.processAttribute(samlObject, attribute);
         }
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final AdditionalMetadataLocation aml = (AdditionalMetadataLocation) samlObject;
-        aml.setLocationURI(elementContent);
     }
     
 }

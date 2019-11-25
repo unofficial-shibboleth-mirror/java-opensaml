@@ -22,21 +22,14 @@ import net.shibboleth.utilities.java.support.xml.XMLConstants;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe unmarshaller for {@link LocalizedURI} objects.
  */
-public class LocalizedURIUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final LocalizedURI name = (LocalizedURI) samlObject;
-    
-        name.setValue(elementContent);
-    }
+public class LocalizedURIUnmarshaller extends XSURIUnmarshaller {
 
     /**
      * {@inheritDoc}

@@ -52,7 +52,7 @@ public class CompanyTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Company company = (Company) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(company.getName(), expectedName, "Company name was not expected value");
+        Assert.assertEquals(company.getValue(), expectedName, "Company name was not expected value");
     }
 
     /** {@inheritDoc} */
@@ -60,7 +60,7 @@ public class CompanyTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         Company company = (new CompanyBuilder()).buildObject();
         
-        company.setName(expectedName);
+        company.setValue(expectedName);
 
         assertXMLEquals(expectedDOM, company);
     }

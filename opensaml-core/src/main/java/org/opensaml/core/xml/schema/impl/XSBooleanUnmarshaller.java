@@ -21,27 +21,11 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
-import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBoolean;
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.w3c.dom.Attr;
 
 /** Thread-safe unmarshaller for {@link XSBoolean} objects. */
 public class XSBooleanUnmarshaller extends AbstractXMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    @Override
-    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
-            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
-        // no children
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
-            throws UnmarshallingException {
-        // no attributes
-    }
 
     /** {@inheritDoc} */
     @Override

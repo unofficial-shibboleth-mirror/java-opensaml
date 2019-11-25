@@ -28,16 +28,9 @@ import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.w3c.dom.Element;
 
 /**
- * Thread-safe marshaller of {@link org.opensaml.core.xml.schema.XSBase64Binary} objects.
+ * Thread-safe marshaller of {@link XSBase64Binary} objects.
  */
 public class XSBase64BinaryMarshaller extends AbstractXMLObjectMarshaller {
-
-    /** {@inheritDoc} */
-    @Override
-    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
-            throws MarshallingException {
-        // no attributes
-    }
 
     /** {@inheritDoc} */
     @Override

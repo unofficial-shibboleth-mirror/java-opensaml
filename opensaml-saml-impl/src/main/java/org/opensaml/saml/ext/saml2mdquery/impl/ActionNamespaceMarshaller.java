@@ -37,8 +37,8 @@ public class ActionNamespaceMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final ActionNamespace actionNamespace = (ActionNamespace) xmlObject;
 
-        if (!Strings.isNullOrEmpty(actionNamespace.getValue())) {
-            ElementSupport.appendTextContent(domElement, actionNamespace.getValue());
+        if (!Strings.isNullOrEmpty(actionNamespace.getURI())) {
+            ElementSupport.appendTextContent(domElement, actionNamespace.getURI());
         }
     }
 }

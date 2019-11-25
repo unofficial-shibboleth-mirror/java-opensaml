@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wssecurity.AttributedURI;
 import org.opensaml.soap.wssecurity.IdBearing;
@@ -24,10 +25,7 @@ import org.opensaml.soap.wssecurity.IdBearing;
 /**
  * Implementation of {@link AttributedURI}.
  */
-public class AttributedURIImpl extends AbstractWSSecurityObject implements AttributedURI {
-    
-    /** The string value. */
-    private String value;
+public class AttributedURIImpl extends XSURIImpl implements AttributedURI {
     
     /** The wsu:Id attribute value. */
     private String id;
@@ -45,16 +43,6 @@ public class AttributedURIImpl extends AbstractWSSecurityObject implements Attri
     public AttributedURIImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new AttributeMap(this);
-    }
-
-    /** {@inheritDoc} */
-    public String getValue() {
-        return value;
-    }
-
-    /** {@inheritDoc} */
-    public void setValue(final String newValue) {
-        value = prepareForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */

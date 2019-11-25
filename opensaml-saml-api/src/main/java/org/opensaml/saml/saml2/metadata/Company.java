@@ -17,41 +17,47 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata Company.
  */
-public interface Company extends SAMLObject {
+public interface Company extends SAMLObject, XSString {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Company";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Company";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
-
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "CompanyType";
-
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
      * Gets the name of the company.
      * 
      * @return the name of the company
+     * 
+     * @deprecated
      */
-    public String getName();
+    @Nullable default String getName() {
+        return getValue();
+    }
 
     /**
      * Sets the name of the company.
      * 
-     * @param newName the name of the company
+     * @param value the name of the company
+     * 
+     * @deprecated
      */
-    public void setName(String newName);
+    default void setName(@Nullable final String value) {
+        setValue(value);
+    }
 }

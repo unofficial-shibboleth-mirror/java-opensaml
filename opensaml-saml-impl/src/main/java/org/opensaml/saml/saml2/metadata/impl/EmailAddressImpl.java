@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.EmailAddress}.
+ * Concrete implementation of {@link EmailAddress}.
  */
-public class EmailAddressImpl extends AbstractXMLObject implements EmailAddress {
-
-    /** The email address. */
-    private String address;
+public class EmailAddressImpl extends XSURIImpl implements EmailAddress {
 
     /**
      * Constructor.
@@ -45,22 +39,5 @@ public class EmailAddressImpl extends AbstractXMLObject implements EmailAddress 
     protected EmailAddressImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public String getAddress() {
-        return address;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setAddress(final String addr) {
-        address = prepareForAssignment(address, addr);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

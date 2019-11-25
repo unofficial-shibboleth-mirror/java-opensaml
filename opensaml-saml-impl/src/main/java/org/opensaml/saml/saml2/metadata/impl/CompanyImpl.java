@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.metadata.Company;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.Company}.
+ * Concrete implementation of {@link Company}.
  */
-public class CompanyImpl extends AbstractXMLObject implements Company {
-
-    /** Company name. */
-    private String companyName;
+public class CompanyImpl extends XSStringImpl implements Company {
 
     /**
      * Constructor.
@@ -46,18 +40,4 @@ public class CompanyImpl extends AbstractXMLObject implements Company {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc} */
-    public String getName() {
-        return companyName;
-    }
-
-    /** {@inheritDoc} */
-    public void setName(final String newName) {
-        companyName = prepareForAssignment(companyName, newName);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
 }

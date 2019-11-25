@@ -25,22 +25,23 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml2.metadata.SurName;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.SurName} objects.
+ * A thread safe Marshaller for {@link SurName} objects.
  */
-public class SurNameMarshaller extends AbstractSAMLObjectMarshaller {
+public class SurNameMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final SurName name = (SurName) samlObject;
 
-        if (name.getName() != null) {
-            ElementSupport.appendTextContent(domElement, name.getName());
+        if (name.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, name.getValue());
         }
     }
+    
 }

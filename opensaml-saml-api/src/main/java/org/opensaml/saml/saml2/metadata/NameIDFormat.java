@@ -17,41 +17,48 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata NameIDFormat.
  */
-public interface NameIDFormat extends SAMLObject {
+public interface NameIDFormat extends SAMLObject, XSURI {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDFormat";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDFormat";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
-
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "NameIDFormatType";
-
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
      * Gets the format of the NameID.
      * 
      * @return the format of the NameID
+     * 
+     * @deprecated
      */
-    public String getFormat();
+    @Nullable default String getFormat() {
+        return getURI();
+    }
 
     /**
      * Sets the format of the NameID.
      * 
-     * @param format the format of the NameID
+     * @param uri the format of the NameID
+     * 
+     * @deprecated
      */
-    public void setFormat(String format);
+    default void setFormat(@Nullable final String uri) {
+        setURI(uri);
+    }
+    
 }

@@ -53,7 +53,7 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
     public void testSingleElementUnmarshall() {
         AdditionalMetadataLocation locationObj = (AdditionalMetadataLocation) unmarshallElement(singleElementFile);
 
-        String location = locationObj.getLocationURI();
+        String location = locationObj.getURI();
         Assert.assertEquals(location, expectedContent, "Location URI was " + location + ", expected " + expectedContent);
 
         String namespace = locationObj.getNamespaceURI();
@@ -64,7 +64,7 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
     @Test
     public void testSingleElementMarshall() {
         AdditionalMetadataLocation location = (new AdditionalMetadataLocationBuilder()).buildObject(); 
-        location.setLocationURI(expectedContent);
+        location.setURI(expectedContent);
         location.setNamespaceURI(expectedNamespace);
 
         assertXMLEquals(expectedDOM, location);

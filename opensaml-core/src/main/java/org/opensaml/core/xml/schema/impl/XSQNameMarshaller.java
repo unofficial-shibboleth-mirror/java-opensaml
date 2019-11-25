@@ -27,14 +27,9 @@ import org.opensaml.core.xml.schema.XSQName;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe marshaller for {@link org.opensaml.core.xml.schema.XSQName}s.
+ * A thread-safe marshaller for {@link XSQName}s.
  */
 public class XSQNameMarshaller extends AbstractXMLObjectMarshaller {
-
-    /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
-        // no attributes to marshall
-    }
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)

@@ -24,7 +24,7 @@ import net.shibboleth.utilities.java.support.xml.XMLConstants;
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
@@ -32,7 +32,7 @@ import org.w3c.dom.Element;
 /**
  * A thread safe Marshaller for {@link LocalizedURI} objects.
  */
-public class LocalizedURIMarshaller extends AbstractSAMLObjectMarshaller {
+public class LocalizedURIMarshaller extends XSURIMarshaller {
 
     /**
      * {@inheritDoc}
@@ -54,8 +54,8 @@ public class LocalizedURIMarshaller extends AbstractSAMLObjectMarshaller {
             throws MarshallingException {
         final LocalizedURI name = (LocalizedURI) samlObject;
 
-        if (name.getValue() != null) {
-            ElementSupport.appendTextContent(domElement, name.getValue());
+        if (name.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, name.getURI());
         }
     }
 }

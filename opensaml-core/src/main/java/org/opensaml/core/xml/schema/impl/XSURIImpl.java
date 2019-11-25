@@ -17,9 +17,9 @@
 
 package org.opensaml.core.xml.schema.impl;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
+
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -31,7 +31,7 @@ import org.opensaml.core.xml.schema.XSURI;
 public class XSURIImpl extends AbstractXMLObject implements XSURI {
 
     /** URI value. */
-    private String value;
+    @Nullable private String value;
 
     /**
      * Constructor.
@@ -45,17 +45,17 @@ public class XSURIImpl extends AbstractXMLObject implements XSURI {
     }
 
     /** {@inheritDoc} */
-    public String getValue() {
+    @Nullable public String getURI() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final String newValue) {
-        value = prepareForAssignment(value, newValue);
+    public void setURI(@Nullable final String uri) {
+        value = prepareForAssignment(value, uri);
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(new LinkedList<XMLObject>());
+        return null;
     }
 }

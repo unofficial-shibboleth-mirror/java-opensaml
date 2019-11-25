@@ -52,7 +52,7 @@ public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         OrganizationURL url = (OrganizationURL) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(url.getValue(), expectValue, "URL was not expected value");
+        Assert.assertEquals(url.getURI(), expectValue, "URL was not expected value");
         Assert.assertEquals(url.getXMLLang(), expectLang, "langg was not expected value");
         url.hashCode();
     }
@@ -63,7 +63,7 @@ public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20MD_NS, OrganizationURL.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         OrganizationURL url = (OrganizationURL) buildXMLObject(qname);
         
-        url.setValue(expectValue);
+        url.setURI(expectValue);
         url.setXMLLang(expectLang);
 
         assertXMLEquals(expectedDOM, url);

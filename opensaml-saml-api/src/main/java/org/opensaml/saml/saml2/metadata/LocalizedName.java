@@ -17,9 +17,15 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
+import javax.xml.namespace.QName;
+
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * LocalizedName.
@@ -27,6 +33,10 @@ import org.opensaml.saml.common.SAMLObject;
 public interface LocalizedName extends XSString, LangBearing, SAMLObject {
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "localizedNameType"; 
-        
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "localizedNameType"; 
+ 
+    /** QName of the XSI type. */
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+            SAMLConstants.SAML20MD_PREFIX);
+
 }
