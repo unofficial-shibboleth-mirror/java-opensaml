@@ -15,10 +15,6 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-
 package org.opensaml.saml.saml2.core.impl;
 
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
@@ -26,21 +22,42 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
-import org.opensaml.saml.saml2.core.AssertionIDRef;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDType;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link AssertionIDRef}.
+ * A thread safe Marshaller for {@link NameIDType} objects.
  */
-public class AssertionIDRefMarshaller extends XSStringMarshaller {
+public class NameIDTypeMarshaller extends XSStringMarshaller {
+
+    /** {@inheritDoc} */
+    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+            throws MarshallingException {
+        final NameIDType nameID = (NameIDType) samlObject;
+
+        if (nameID.getNameQualifier() != null) {
+            domElement.setAttributeNS(null, NameID.NAME_QUALIFIER_ATTRIB_NAME, nameID.getNameQualifier());
+        }
+
+        if (nameID.getSPNameQualifier() != null) {
+            domElement.setAttributeNS(null, NameID.SP_NAME_QUALIFIER_ATTRIB_NAME, nameID.getSPNameQualifier());
+        }
+
+        if (nameID.getFormat() != null) {
+            domElement.setAttributeNS(null, NameID.FORMAT_ATTRIB_NAME, nameID.getFormat());
+        }
+
+        if (nameID.getSPProvidedID() != null) {
+            domElement.setAttributeNS(null, NameID.SPPROVIDED_ID_ATTRIB_NAME, nameID.getSPProvidedID());
+        }
+    }
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
-        final AssertionIDRef assertionIDRef = (AssertionIDRef) samlObject;
+        final NameIDType nameID = (NameIDType) samlObject;
         
-        if (assertionIDRef.getValue() != null) {
-            ElementSupport.appendTextContent(domElement, assertionIDRef.getValue());
-        }
+        ElementSupport.appendTextContent(domElement, nameID.getValue());
     }
 }

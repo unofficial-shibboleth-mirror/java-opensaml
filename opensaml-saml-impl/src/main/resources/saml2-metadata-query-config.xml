@@ -7,8 +7,8 @@
 		<!-- ActionNamespace provider -->
 		<ObjectProvider qualifiedName="query:ActionNamespace">
 			<BuilderClass className="org.opensaml.saml.ext.saml2mdquery.impl.ActionNamespaceBuilder"/>
-			<MarshallingClass className="org.opensaml.saml.ext.saml2mdquery.impl.ActionNamespaceMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.saml.ext.saml2mdquery.impl.ActionNamespaceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
 		</ObjectProvider>
 		
 		<!-- AttributeQueryDescriptorType provider -->

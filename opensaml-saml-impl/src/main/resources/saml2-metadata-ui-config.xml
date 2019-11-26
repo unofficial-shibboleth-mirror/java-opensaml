@@ -7,8 +7,8 @@
 		<!-- Description provider -->
 		<ObjectProvider qualifiedName="mdui:Description">
 			<BuilderClass className="org.opensaml.saml.ext.saml2mdui.impl.DescriptionBuilder"/>
-			<MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DescriptionMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DescriptionUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
 		</ObjectProvider>
         
         <!-- DiscoHints provider -->
@@ -40,36 +40,36 @@
         <!-- DisplayName provider -->
         <ObjectProvider qualifiedName="mdui:DisplayName">
             <BuilderClass className="org.opensaml.saml.ext.saml2mdui.impl.DisplayNameBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DisplayNameMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DisplayNameUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedNameUnmarshaller"/>
         </ObjectProvider>
         
         <!-- DomainHint provider -->
         <ObjectProvider qualifiedName="mdui:DomainHint">
             <BuilderClass className="org.opensaml.saml.ext.saml2mdui.impl.DomainHintBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DomainHintMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.DomainHintUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
         
         <!-- GeolocationHint provider -->
         <ObjectProvider qualifiedName="mdui:GeolocationHint">
             <BuilderClass className="org.opensaml.saml.ext.saml2mdui.impl.GeolocationHintBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.GeolocationHintMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.GeolocationHintUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- InformationURL provider -->
         <ObjectProvider qualifiedName="mdui:InformationURL">
             <BuilderClass className="org.opensaml.saml.ext.saml2mdui.impl.InformationURLBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.InformationURLMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.InformationURLUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- IPHint provider -->
         <ObjectProvider qualifiedName="mdui:IPHint">
             <BuilderClass className="org.opensaml.saml.ext.saml2mdui.impl.IPHintBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.IPHintMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.IPHintUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
             
         <!-- Logo provider -->
@@ -88,8 +88,8 @@
         <!-- PrivacyStatementURL provider -->
         <ObjectProvider qualifiedName="mdui:PrivacyStatementURL">
             <BuilderClass className="org.opensaml.saml.ext.saml2mdui.impl.PrivacyStatementURLBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.PrivacyStatementURLMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdui.impl.PrivacyStatementURLUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- UIInfo provider -->

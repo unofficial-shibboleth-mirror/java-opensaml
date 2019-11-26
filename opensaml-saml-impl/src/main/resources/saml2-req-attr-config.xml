@@ -6,8 +6,14 @@
   <!-- SAML 2.0 SAML V2.0 Protocol Extension For Requesting Attributes Per Request -->
   <ObjectProviders>
 
-    <!-- Publication provider -->
+    <!-- RequestedAttributes -->
     <ObjectProvider qualifiedName="req-attr:RequestedAttributes">
+      <BuilderClass className="org.opensaml.saml.ext.reqattr.impl.RequestedAttributesBuilder" />
+      <MarshallingClass className="org.opensaml.saml.ext.reqattr.impl.RequestedAttributesMarshaller" />
+      <UnmarshallingClass className="org.opensaml.saml.ext.reqattr.impl.RequestedAttributesUnmarshaller" />
+    </ObjectProvider>
+
+    <ObjectProvider qualifiedName="req-attr:RequestedAttributesType">
       <BuilderClass className="org.opensaml.saml.ext.reqattr.impl.RequestedAttributesBuilder" />
       <MarshallingClass className="org.opensaml.saml.ext.reqattr.impl.RequestedAttributesMarshaller" />
       <UnmarshallingClass className="org.opensaml.saml.ext.reqattr.impl.RequestedAttributesUnmarshaller" />

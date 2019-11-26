@@ -21,8 +21,6 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
@@ -44,13 +42,4 @@ public class ActionMarshaller extends XSStringMarshaller {
         }
     }
 
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
-            throws MarshallingException {
-        final Action action = (Action) samlObject;
-        
-        if (action.getValue() != null) {
-            ElementSupport.appendTextContent(domElement, action.getValue());
-        }
-    }
 }

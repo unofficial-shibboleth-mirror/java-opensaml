@@ -48,15 +48,15 @@
     <!-- UsagePolicy provider -->
     <ObjectProvider qualifiedName="mdrpi:UsagePolicy">
       <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.UsagePolicyBuilder" />
-      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.UsagePolicyMarshaller" />
-      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.UsagePolicyUnmarshaller" />
+      <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller"/>
+      <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller"/>
     </ObjectProvider>
 
     <!-- RegistrationPolicy provider -->
     <ObjectProvider qualifiedName="mdrpi:RegistrationPolicy">
       <BuilderClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationPolicyBuilder" />
-      <MarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationPolicyMarshaller" />
-      <UnmarshallingClass className="org.opensaml.saml.ext.saml2mdrpi.impl.RegistrationPolicyUnmarshaller" />
+      <MarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller"/>
+      <UnmarshallingClass className="org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller"/>
     </ObjectProvider>
 
     <!-- RegistrationInfo provider -->

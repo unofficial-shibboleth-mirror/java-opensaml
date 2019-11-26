@@ -21,30 +21,16 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.Collections;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import javax.xml.namespace.QName;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.util.AttributeMap;
-import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.core.xml.schema.impl.XSAnyImpl;
 import org.opensaml.saml.saml2.core.AuthnContextDecl;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthnContextDecl}.
+ * A concrete implementation of {@link AuthnContextDecl}.
  */
-public class AuthnContextDeclImpl extends AbstractXMLObject implements AuthnContextDecl {
-
-    /** Child XMLObjects. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
-
-    /** Attributes for this element. */
-    private AttributeMap unknownAttributes;
-
-    /** Text content of the element. */
-    private String textContent;
+public class AuthnContextDeclImpl extends XSAnyImpl implements AuthnContextDecl {
 
     /**
      * Constructor.
@@ -53,41 +39,9 @@ public class AuthnContextDeclImpl extends AbstractXMLObject implements AuthnCont
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnContextDeclImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthnContextDeclImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-
-        unknownXMLObjects = new IndexedXMLObjectChildrenList<>(this);
-        unknownAttributes = new AttributeMap(this);
     }
 
-    /** {@inheritDoc} */
-    public String getTextContent() {
-        return textContent;
-    }
-
-    /** {@inheritDoc} */
-    public void setTextContent(final String newContent) {
-        textContent = prepareForAssignment(textContent, newContent);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
-        return unknownXMLObjects;
-    }
-    
-    /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
-        return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownXMLObjects);
-    }
-
-    /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
-        return unknownAttributes;
-    }
 }

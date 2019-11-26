@@ -7,8 +7,8 @@
         <!-- Artifact provider -->
         <ObjectProvider qualifiedName="saml2p:Artifact">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.ArtifactBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.ArtifactMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.ArtifactUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
 
         <!-- ArtifactResolve provider -->
@@ -118,8 +118,8 @@
         <!-- GetComplete provider -->
         <ObjectProvider qualifiedName="saml2p:GetComplete">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.GetCompleteBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.GetCompleteMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.GetCompleteUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- IDPEntry provider -->
@@ -249,8 +249,8 @@
         <!-- NewID provider -->
         <ObjectProvider qualifiedName="saml2p:NewID">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.NewIDBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.NewIDMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NewIDUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
                 
         <!-- RequestedAuthnContext provider -->
@@ -269,8 +269,8 @@
         <!-- RequesterID -->
         <ObjectProvider qualifiedName="saml2p:RequesterID">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.RequesterIDBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.RequesterIDMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.RequesterIDUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
                         
         <!-- Response provider -->
@@ -296,8 +296,8 @@
         <!-- SessionIndex provider -->
         <ObjectProvider qualifiedName="saml2p:SessionIndex">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.SessionIndexBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.SessionIndexMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.SessionIndexUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
         
         <!-- Status -->
@@ -342,8 +342,8 @@
         <!-- StatusMessage -->
         <ObjectProvider qualifiedName="saml2p:StatusMessage">
             <BuilderClass className="org.opensaml.saml.saml2.core.impl.StatusMessageBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml2.core.impl.StatusMessageMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.StatusMessageUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
         
         <!-- Terminate provider -->

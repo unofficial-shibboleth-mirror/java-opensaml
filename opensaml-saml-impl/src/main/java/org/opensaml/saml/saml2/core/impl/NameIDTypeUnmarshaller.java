@@ -26,7 +26,7 @@ import org.w3c.dom.Attr;
 /**
  * A thread-safe Unmarshaller for {@link NameIDType} objects.
  */
-public abstract class AbstractNameIDTypeUnmarshaller extends XSStringUnmarshaller {
+public class NameIDTypeUnmarshaller extends XSStringUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {

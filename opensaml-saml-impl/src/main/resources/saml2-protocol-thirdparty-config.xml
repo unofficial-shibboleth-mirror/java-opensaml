@@ -7,8 +7,8 @@
 		<!-- RespondTo provider -->
 		<ObjectProvider qualifiedName="thrpty:RespondTo">
 			<BuilderClass className="org.opensaml.saml.ext.samlpthrpty.impl.RespondToBuilder"/>
-			<MarshallingClass className="org.opensaml.saml.ext.samlpthrpty.impl.RespondToMarshaller"/>
-			<UnmarshallingClass className="org.opensaml.saml.ext.samlpthrpty.impl.RespondToUnmarshaller"/>
+			<MarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeMarshaller"/>
+			<UnmarshallingClass className="org.opensaml.saml.saml2.core.impl.NameIDTypeUnmarshaller"/>
 		</ObjectProvider>
 	</ObjectProviders>
 </XMLTooling>

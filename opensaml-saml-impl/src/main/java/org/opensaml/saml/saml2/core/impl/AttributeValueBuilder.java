@@ -15,12 +15,31 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.metadata.impl;
+/**
+ * 
+ */
 
+package org.opensaml.saml.saml2.core.impl;
+
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.core.AttributeValue;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.EncryptionMethod} objects.
+ * Builder for {@link AttributeValue} objects.
  */
-public class EncryptionMethodMarshaller extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodMarshaller {
+public class AttributeValueBuilder extends AbstractSAMLObjectBuilder<AttributeValue> {
 
+    /** {@inheritDoc} */
+    public AttributeValue buildObject() {
+        return buildObject(SAMLConstants.SAML20_NS, AttributeValue.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20_PREFIX);
+    }
+
+    /** {@inheritDoc} */
+    public AttributeValue buildObject(final String namespaceURI, final String localName,
+            final String namespacePrefix) {
+        return new AttributeValueImpl(namespaceURI, localName, namespacePrefix);
+    }
+    
 }

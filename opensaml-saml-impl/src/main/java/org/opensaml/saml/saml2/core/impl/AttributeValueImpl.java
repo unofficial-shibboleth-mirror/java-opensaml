@@ -15,12 +15,33 @@
  * limitations under the License.
  */
 
+/**
+ * 
+ */
+
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.opensaml.core.xml.schema.impl.XSAnyImpl;
+import org.opensaml.saml.saml2.core.AttributeValue;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameID} objects.
+ * A concrete implementation of {@link AttributeValue}.
  */
-public class NameIDUnmarshaller extends AbstractNameIDTypeUnmarshaller {
+public class AttributeValueImpl extends XSAnyImpl implements AttributeValue {
+
+    /**
+     * Constructor.
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
+     */
+    protected AttributeValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
+    }
 
 }

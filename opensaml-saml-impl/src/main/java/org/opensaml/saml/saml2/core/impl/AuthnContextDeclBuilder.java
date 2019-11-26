@@ -30,11 +30,6 @@ import org.opensaml.saml.saml2.core.AuthnContextDecl;
  */
 public class AuthnContextDeclBuilder extends AbstractSAMLObjectBuilder<AuthnContextDecl> {
 
-    /** Constructor. */
-    public AuthnContextDeclBuilder() {
-
-    }
-
     /** {@inheritDoc} */
     public AuthnContextDecl buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, AuthnContextDecl.DEFAULT_ELEMENT_LOCAL_NAME,

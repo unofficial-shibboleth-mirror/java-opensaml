@@ -17,19 +17,15 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.List;
+import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AffiliateMember}.
  */
-public class AffiliateMemberImpl extends AbstractXMLObject implements AffiliateMember {
-
-    /** ID of this member. */
-    private String id;
+public class AffiliateMemberImpl extends XSURIImpl implements AffiliateMember {
     
     /**
      * Constructor.
@@ -45,24 +41,12 @@ public class AffiliateMemberImpl extends AbstractXMLObject implements AffiliateM
 
     /** {@inheritDoc} */
     @Override
-    public String getID() {
-        return id;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setID(final String newID) {
-        if (newID != null && newID.length() > 1024) {
+    public void setURI(@Nullable final String uri) {
+        if (uri != null && uri.length() > 1024) {
             throw new IllegalArgumentException("Member ID can not exceed 1024 characters in length");
         }
 
-        id = prepareForAssignment(id, newID);
+        super.setURI(uri);
     }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        // No children
-        return null;
-    }
+    
 }

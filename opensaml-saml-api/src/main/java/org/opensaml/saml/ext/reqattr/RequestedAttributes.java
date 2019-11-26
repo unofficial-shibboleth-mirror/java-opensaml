@@ -19,11 +19,14 @@ package org.opensaml.saml.ext.reqattr;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML V2.0 Protocol Extension For Requesting Attributes Per Request.
@@ -31,17 +34,24 @@ import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 public interface RequestedAttributes extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAttributes";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAttributes";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PREQ_ATTR_NS, 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PREQ_ATTR_NS, 
                     DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20PREQ_ATTRR_PREFIX);
 
+    /** Local name of the XSI type. */
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RequestedAttributesType";
+    
+    /** QName of the XSI type. */
+    @Nonnull static final QName TYPE_NAME =
+            new QName(SAMLConstants.SAML20PREQ_ATTR_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20PREQ_ATTRR_PREFIX);
+    
     /** Local name of the supportsRequestedAttributes attribute. */
-    public static final String SUPPORTS_REQUESTED_ATTRIBUTES_LOCAL_NAME = "supportsRequestedAttributes";
+    @Nonnull @NotEmpty static final String SUPPORTS_REQUESTED_ATTRIBUTES_LOCAL_NAME = "supportsRequestedAttributes";
 
     /** QName of the XSI type. */
-    public static final QName SUPPORTS_REQUESTED_ATTRIBUTES = new QName(SAMLConstants.SAML20PREQ_ATTR_NS, 
+    @Nonnull static final QName SUPPORTS_REQUESTED_ATTRIBUTES = new QName(SAMLConstants.SAML20PREQ_ATTR_NS, 
             SUPPORTS_REQUESTED_ATTRIBUTES_LOCAL_NAME, SAMLConstants.SAML20PREQ_ATTRR_PREFIX);
 
     /**
@@ -49,6 +59,6 @@ public interface RequestedAttributes extends SAMLObject {
      * 
      * @return list of child RequestedAttribute s
      */
-    public List<RequestedAttribute> getRequestedAttributes();
+    List<RequestedAttribute> getRequestedAttributes();
 
 }
