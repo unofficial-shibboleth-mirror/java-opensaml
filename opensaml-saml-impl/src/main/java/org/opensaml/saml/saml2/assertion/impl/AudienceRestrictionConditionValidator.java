@@ -111,7 +111,7 @@ public class AudienceRestrictionConditionValidator implements ConditionValidator
         }
 
         for (final Audience audience : audiences) {
-            final String audienceURI = StringSupport.trimOrNull(audience.getAudienceURI());
+            final String audienceURI = StringSupport.trimOrNull(audience.getURI());
             if (validAudiences.contains(audienceURI)) {
                 log.debug("Matched valid audience: {}", audienceURI);
                 return ValidationResult.VALID;
