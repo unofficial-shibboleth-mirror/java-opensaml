@@ -17,13 +17,18 @@
 
 package org.opensaml.saml.ext.saml2mdui;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
- * IPHint.
+ * DomainHint.
  *
  * See IdP Discovery and Login UI Metadata Extension Profile.
  *
@@ -32,26 +37,34 @@ import org.opensaml.saml.common.xml.SAMLConstants;
  * The <DomainHint> element specifies a set of DNS domains associated with, 
  * or serviced by, the entity. 
  */
-public interface DomainHint extends SAMLObject {
+public interface DomainHint extends SAMLObject, XSString {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DomainHint";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "DomainHint";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**
      * Gets the Hint.
      * 
      * @return the Hint
+     * 
+     * @deprecated
      */
-    public String getHint();
+    @Nullable default String getHint() {
+        return getValue();
+    }
     
     /**
      * Sets the hint.
      * 
-     * @param newHint hint
+     * @param value hint
+     * 
+     * @deprecated
      */
-    public void setHint(String newHint);
+    default void setHint(@Nullable final String value) {
+        setValue(value);
+    }
 }

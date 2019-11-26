@@ -66,7 +66,7 @@ public class RegistrationPolicyPredicate extends AbstractRegistrationInfoPredica
     @Override
     protected boolean doApply(@Nonnull final RegistrationInfo info) {
         for (final RegistrationPolicy policy : info.getRegistrationPolicies()) {
-            if (policySet.contains(policy.getValue())) {
+            if (policySet.contains(policy.getURI())) {
                 return true;
             }
         }

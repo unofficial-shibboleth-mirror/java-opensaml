@@ -17,21 +17,13 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.GeolocationHint}.
+ * Concrete implementation of {@link GeolocationHint}.
  */
-public class GeolocationHintImpl extends AbstractXMLObject implements GeolocationHint {
-
-    /**
-     * local storage.
-     */
-    private String hint;
+public class GeolocationHintImpl extends XSURIImpl implements GeolocationHint {
     
     /**
      * Constructor.
@@ -43,21 +35,6 @@ public class GeolocationHintImpl extends AbstractXMLObject implements Geolocatio
     protected GeolocationHintImpl(final String namespaceURI, final String elementLocalName,
             final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public String getHint() {
-        return hint;
-    }
-
-    /** {@inheritDoc} */
-    public void setHint(final String newHint) {
-        hint = prepareForAssignment(hint, newHint);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
     }
 
 }

@@ -17,51 +17,33 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
-
-import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.ext.saml2mdui.Logo;
-import org.w3c.dom.Attr;
+import org.opensaml.saml.saml2.metadata.impl.LocalizedURIMarshaller;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.Logo} objects.
+ * A thread safe Marshaller for {@link Logo} objects.
  */
-public class LogoMarshaller extends AbstractSAMLObjectMarshaller {
+public class LogoMarshaller extends LocalizedURIMarshaller {
 
     /**
      * {@inheritDoc}
      */
     protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
+        super.marshallAttributes(samlObject, domElement);
+        
         final Logo logo = (Logo) samlObject;
 
-        if (logo.getXMLLang() != null) {
-            final Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(),
-                    XMLConstants.XML_NS, LangBearing.XML_LANG_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
-            attribute.setValue(logo.getXMLLang());
-            domElement.setAttributeNodeNS(attribute);
-        }
         if (logo.getHeight() != null) {
             domElement.setAttributeNS(null, Logo.HEIGHT_ATTR_NAME, logo.getHeight().toString());
         }
+        
         if (logo.getWidth() != null) {
             domElement.setAttributeNS(null, Logo.WIDTH_ATTR_NAME, logo.getWidth().toString());
         }
     }
 
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
-            throws MarshallingException {
-        final Logo logo = (Logo) samlObject;
-
-        if (logo.getURL() != null) {
-            ElementSupport.appendTextContent(domElement, logo.getURL());
-        }
-    }
 }

@@ -17,22 +17,14 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.ext.saml2mdui.IPHint;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.IPHint}.
  */
-public class IPHintImpl extends AbstractXMLObject implements IPHint {
+public class IPHintImpl extends XSStringImpl implements IPHint {
 
-    /**
-     * local storage.
-     */
-    private String hint;
-    
     /**
      * Constructor.
      * 
@@ -42,21 +34,6 @@ public class IPHintImpl extends AbstractXMLObject implements IPHint {
      */
     protected IPHintImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public String getHint() {
-        return hint;
-    }
-
-    /** {@inheritDoc} */
-    public void setHint(final String newHint) {
-        hint = prepareForAssignment(hint, newHint);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
     }
 
 }

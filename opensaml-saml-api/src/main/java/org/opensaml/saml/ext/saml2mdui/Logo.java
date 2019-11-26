@@ -17,11 +17,15 @@
 
 package org.opensaml.saml.ext.saml2mdui;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.LangBearing;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml2.metadata.LocalizedURI;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * Localized logo type.
@@ -32,64 +36,71 @@ import org.opensaml.saml.common.xml.SAMLConstants;
  * See IdP Discovery and Login UI Metadata Extension Profile.
  *  
  */
-public interface Logo extends LangBearing, SAMLObject {
+public interface Logo extends LocalizedURI, SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Logo";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Logo";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "LogoType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "LogoType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Attribute label. */
-    public static final String HEIGHT_ATTR_NAME = "height";
+    @Nonnull @NotEmpty static final String HEIGHT_ATTR_NAME = "height";
 
     /** Attribute label. */
-    public static final String WIDTH_ATTR_NAME = "width";
-
+    @Nonnull @NotEmpty static final String WIDTH_ATTR_NAME = "width";
 
     /**
      * Gets the URL.
      * 
      * @return the URL
+     * 
+     * @deprecated
      */
-    public String getURL();
+    @Nullable default String getURL() {
+        return getURI();
+    }
     
     /**
      * Sets the URL.
      * 
-     * @param newURL the URL
+     * @param uri the URL
+     * 
+     * @deprecated
      */
-    public void setURL(String newURL);
+    default void setURL(@Nullable final String uri) {
+        setURI(uri);
+    }
 
     /**
      * Get the height of the logo.
      * @return the height of the logo
      */
-    public Integer getHeight();
+    @Nullable public Integer getHeight();
     
     /**
      * Sets the height of the logo.
      * @param newHeight the height of the logo
      */
-    public void setHeight(Integer newHeight);
+    public void setHeight(@Nullable final Integer newHeight);
 
     /**
      * Get the width of the logo.
      * @return the width of the logo
      */
-    public Integer getWidth();
+    @Nullable public Integer getWidth();
     
     /**
      * Sets the width of the logo.
      * @param newWidth the height of the logo
      */
-    public void setWidth(Integer newWidth);
+    public void setWidth(@Nullable final Integer newWidth);
 }

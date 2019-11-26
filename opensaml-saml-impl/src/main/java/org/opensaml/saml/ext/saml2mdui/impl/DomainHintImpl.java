@@ -17,21 +17,13 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.DomainHint}.
+ * Concrete implementation of {@link DomainHint}.
  */
-public class DomainHintImpl extends AbstractXMLObject implements DomainHint{
-
-    /**
-     * local storage.
-     */
-    private String hint;
+public class DomainHintImpl extends XSStringImpl implements DomainHint{
     
     /**
      * Constructor.
@@ -42,21 +34,6 @@ public class DomainHintImpl extends AbstractXMLObject implements DomainHint{
      */
     protected DomainHintImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public String getHint() {
-        return hint;
-    }
-
-    /** {@inheritDoc} */
-    public void setHint(final String newHint) {
-        hint = prepareForAssignment(hint, newHint);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
     }
 
 }

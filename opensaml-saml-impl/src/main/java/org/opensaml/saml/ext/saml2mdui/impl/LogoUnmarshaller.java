@@ -17,35 +17,22 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
-
-import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.ext.saml2mdui.Logo;
+import org.opensaml.saml.saml2.metadata.impl.LocalizedURIUnmarshaller;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.Logo} objects.
+ * A thread-safe Unmarshaller for {@link Logo} objects.
  */
-public class LogoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-    
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final Logo logo = (Logo) samlObject;
-
-        logo.setURL(elementContent);
-    }
+public class LogoUnmarshaller extends LocalizedURIUnmarshaller {
     
     /**  {@inheritDoc} */
     protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
         final Logo logo = (Logo) samlObject;
 
-        if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
-                && XMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
-            logo.setXMLLang(attribute.getValue());
-        } else if (attribute.getLocalName().equals(Logo.HEIGHT_ATTR_NAME) && attribute.getNamespaceURI() == null) {
+        if (attribute.getLocalName().equals(Logo.HEIGHT_ATTR_NAME) && attribute.getNamespaceURI() == null) {
             logo.setHeight(Integer.valueOf(attribute.getValue()));
         } else if (attribute.getLocalName().equals(Logo.WIDTH_ATTR_NAME) && attribute.getNamespaceURI() == null) {
             logo.setWidth(Integer.valueOf(attribute.getValue()));

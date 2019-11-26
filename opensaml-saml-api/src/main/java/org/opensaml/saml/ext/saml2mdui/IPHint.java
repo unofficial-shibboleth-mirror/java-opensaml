@@ -17,10 +17,15 @@
 
 package org.opensaml.saml.ext.saml2mdui;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * IPHint.
@@ -32,26 +37,35 @@ import org.opensaml.saml.common.xml.SAMLConstants;
  * The <IPHint> element specifies a set of [CIDR] blocks associated with, 
  *  or serviced by, the entity.  Both IPv4 and IPv6 CIDR blocks MUST be supported.
  */
-public interface IPHint extends SAMLObject {
+public interface IPHint extends SAMLObject, XSString {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IPHint";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "IPHint";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**
      * Gets the Hint.
      * 
      * @return the Hint
+     * 
+     * @deprecated
      */
-    public String getHint();
+    @Nullable default String getHint() {
+        return getValue();
+    }
     
     /**
      * Sets the hint.
      * 
-     * @param newHint hint
+     * @param value hint
+     * 
+     * @deprecated
      */
-    public void setHint(String newHint);
+    default void setHint(@Nullable final String value) {
+        setValue(value);
+    }
+
 }

@@ -17,13 +17,18 @@
 
 package org.opensaml.saml.ext.saml2mdui;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+
 /**
- * IPHint.
+ * GeolocationHint.
  *
  * See IdP Discovery and Login UI Metadata Extension Profile.
  *
@@ -33,26 +38,34 @@ import org.opensaml.saml.common.xml.SAMLConstants;
  *  with, or serviced by, the entity.  Coordinates are given in decimal form using
  *  the World Geodetic System (2d) coordinate system.
  */
-public interface GeolocationHint extends SAMLObject {
+public interface GeolocationHint extends SAMLObject, XSURI {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "GeolocationHint";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "GeolocationHint";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**
      * Gets the Hint.
      * 
      * @return the Hint
+     * 
+     * @deprecated
      */
-    public String getHint();
+    @Nullable default String getHint() {
+        return getURI();
+    }
     
     /**
      * Sets the hint.
      * 
-     * @param newHint hint
+     * @param value hint
+     * 
+     * @deprecated
      */
-    public void setHint(String newHint);
+    default void setHint(@Nullable final String value) {
+        setURI(value);
+    }
 }

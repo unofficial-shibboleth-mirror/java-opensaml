@@ -49,9 +49,6 @@ public interface UIInfo extends SAMLObject {
     public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
-    /** Language attribute name. */
-    public static final String LANG_ATTRIB_NAME = "lang";
-    
     /** 
      * Get the Display Names
      * 

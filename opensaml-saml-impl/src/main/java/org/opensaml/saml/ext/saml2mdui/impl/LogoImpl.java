@@ -17,26 +17,14 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.LangBearing;
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.ext.saml2mdui.Logo;
-
-import com.google.common.base.Strings;
+import org.opensaml.saml.saml2.metadata.impl.LocalizedURIImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.Logo}.
+ * Concrete implementation of {@link Logo}.
  * @author rod widdowson
  */
-public class LogoImpl extends AbstractXMLObject implements Logo {
-    
-    /** Logo URL. */
-    private String url;
-    
-    /** Language. */
-    private String lang;
+public class LogoImpl extends LocalizedURIImpl implements Logo {
 
     /** X-Dimension of the logo. */
     private Integer width;
@@ -77,34 +65,6 @@ public class LogoImpl extends AbstractXMLObject implements Logo {
     }
 
     /** {@inheritDoc} */
-    public String getURL() {
-        return url;
-    }
-
-    /** {@inheritDoc} */
-    public void setURL(final String newURL) {
-       url = prepareForAssignment(url, newURL);
-    }
-
-    /** {@inheritDoc} */
-    public String getXMLLang() {
-        return lang;
-    }
-
-    /** {@inheritDoc} */
-    public void setXMLLang(final String newLang) {
-        final boolean hasValue = newLang != null && !Strings.isNullOrEmpty(newLang);
-        lang = prepareForAssignment(lang, newLang);
-        manageQualifiedAttributeNamespace(LangBearing.XML_LANG_ATTR_NAME, hasValue);
-    }
-
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
-
-    /** {@inheritDoc} */
     @Override
     public final boolean equals(final Object obj) {
         return super.equals(obj);
@@ -113,10 +73,10 @@ public class LogoImpl extends AbstractXMLObject implements Logo {
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        int hash = url.hashCode();
-        hash = hash * 31 + lang.hashCode();
+        int hash = super.hashCode();
         hash = hash * 31 + height;
         hash = hash * 31 + width;
         return hash;
     }
+
 }

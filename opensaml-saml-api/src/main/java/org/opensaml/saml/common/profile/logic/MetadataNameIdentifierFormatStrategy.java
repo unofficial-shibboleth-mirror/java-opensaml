@@ -68,12 +68,12 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
         if (role != null) {
             final List<String> strings = new ArrayList<>();
             for (final NameIDFormat nif : role.getNameIDFormats()) {
-                if (nif.getFormat() != null) {
-                    if (NameID.UNSPECIFIED.equals(nif.getFormat())) {
+                if (nif.getURI() != null) {
+                    if (NameID.UNSPECIFIED.equals(nif.getURI())) {
                         log.warn("Ignoring NameIDFormat metadata that includes the 'unspecified' format");
                         return Collections.emptyList();
                     }
-                    strings.add(nif.getFormat());
+                    strings.add(nif.getURI());
                 }
             }
             

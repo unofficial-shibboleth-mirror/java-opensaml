@@ -17,19 +17,11 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.DomainHint} objects.
+ * A thread-safe unmarshaller for {@link DomainHint} objects.
  */
-public class DomainHintUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final DomainHint hint = (DomainHint) samlObject;
-
-        hint.setHint(elementContent);
-    }
+public class DomainHintUnmarshaller extends XSStringUnmarshaller {
 }

@@ -21,22 +21,22 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.DomainHint} objects.
+ * A thread safe Marshaller for {@link DomainHint} objects.
  */
-public class DomainHintMarshaller extends AbstractSAMLObjectMarshaller {
+public class DomainHintMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final DomainHint name = (DomainHint) samlObject;
 
-        if (name.getHint() != null) {
-            ElementSupport.appendTextContent(domElement, name.getHint());
+        if (name.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, name.getValue());
         }
     }
 }

@@ -61,7 +61,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Logo logo = (Logo) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(logo.getURL(), expectedURL, "URL was not expected value");
+        Assert.assertEquals(logo.getURI(), expectedURL, "URL was not expected value");
         Assert.assertEquals(logo.getHeight(), expectedHeight, "height was not expected value");
         Assert.assertEquals(logo.getWidth(), expectedWidth, "width was not expected value");
     }
@@ -71,7 +71,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Logo logo = (Logo) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertEquals(logo.getURL(), expectedURL, "URL was not expected value");
+        Assert.assertEquals(logo.getURI(), expectedURL, "URL was not expected value");
         Assert.assertEquals(logo.getHeight(), expectedHeight, "height was not expected value");
         Assert.assertEquals(logo.getWidth(), expectedWidth, "width was not expected value");
         Assert.assertEquals(logo.getXMLLang(), expectedLang, "xml:lang was not the expected value");
@@ -82,7 +82,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
         
-        logo.setURL(expectedURL);
+        logo.setURI(expectedURL);
         logo.setWidth(expectedWidth);
         logo.setHeight(expectedHeight);
 
@@ -94,7 +94,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesMarshall() {
         Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
         
-        logo.setURL(expectedURL);
+        logo.setURI(expectedURL);
         logo.setWidth(expectedWidth);
         logo.setHeight(expectedHeight);
         logo.setXMLLang(expectedLang);

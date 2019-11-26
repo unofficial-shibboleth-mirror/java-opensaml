@@ -428,7 +428,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             if (object instanceof XSString) {
                 toMatch = ((XSString) object).getValue();
             } else if (object instanceof XSURI) {
-                toMatch = ((XSURI) object).getValue();
+                toMatch = ((XSURI) object).getURI();
             } else if (object instanceof XSBoolean) {
                 toMatch = ((XSBoolean) object).getValue().getValue() ? "1" : "0";
                 toMatchAlt = ((XSBoolean) object).getValue().getValue() ? "true" : "false";

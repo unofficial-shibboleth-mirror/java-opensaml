@@ -17,10 +17,13 @@
 
 package org.opensaml.saml.ext.saml2mdrpi;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * Representation of the <code>&lt;mdrpi:RegistrationPolicy&gt;</code> element. <br/>
@@ -28,15 +31,13 @@ import org.opensaml.saml.saml2.metadata.LocalizedURI;
  * href="http://docs.oasis-open.org/security/saml/Post2.0/saml-metadata-rpi/v1.0/">http://docs.oasis-open.org/security
  * /saml/Post2.0/saml-metadata-rpi/v1.0/</a>
  */
-// Checkstyle: InterfaceIsType OFF
 public interface RegistrationPolicy extends LocalizedURI {
 
     /** Name of the element inside the Extensions. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationPolicy";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationPolicy";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MDRPI_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
 }
-// Checkstyle: InterfaceIsType ON

@@ -17,19 +17,12 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.ext.saml2mdui.IPHint;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.IPHint} objects.
+ * A thread-safe unmarshaller for {@link IPHint} objects.
  */
-public class IPHintUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class IPHintUnmarshaller extends XSStringUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final IPHint hint = (IPHint) samlObject;
-
-        hint.setHint(elementContent);
-    }
 }
