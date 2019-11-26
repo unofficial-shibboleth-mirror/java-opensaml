@@ -49,7 +49,7 @@ public class ExtractMessageIDHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
         final MessageID header = getMessageID(messageContext);
-        final String headerValue = header != null ? StringSupport.trimOrNull(header.getValue()) : null;
+        final String headerValue = header != null ? StringSupport.trimOrNull(header.getURI()) : null;
         log.debug("Extracted inbound WS-Addressing MessageID value: {}", headerValue);
         if (header != null && headerValue != null) {
             messageContext.getSubcontext(WSAddressingContext.class, true).setMessageIDURI(headerValue);

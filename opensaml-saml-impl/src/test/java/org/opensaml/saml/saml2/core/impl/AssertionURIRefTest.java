@@ -49,7 +49,7 @@ public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AssertionURIRef assertionURIRef = (AssertionURIRef) unmarshallElement(singleElementFile);
 
-        String assertionURI = assertionURIRef.getAssertionURI();
+        String assertionURI = assertionURIRef.getURI();
         Assert.assertEquals(assertionURI, expectedAssertionURI,
                 "AssertionURI was " + assertionURI + ", expected " + expectedAssertionURI);
     }
@@ -66,7 +66,7 @@ public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, AssertionURIRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AssertionURIRef assertionURIRef = (AssertionURIRef) buildXMLObject(qname);
 
-        assertionURIRef.setAssertionURI(expectedAssertionURI);
+        assertionURIRef.setURI(expectedAssertionURI);
         assertXMLEquals(expectedDOM, assertionURIRef);
     }
 

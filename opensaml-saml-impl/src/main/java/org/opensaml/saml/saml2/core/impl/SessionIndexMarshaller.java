@@ -25,14 +25,14 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml2.core.SessionIndex;
 import org.w3c.dom.Element;
 
 /**
  * A thread safe Marshaller for {@link SessionIndex} objects.
  */
-public class SessionIndexMarshaller extends AbstractSAMLObjectMarshaller {
+public class SessionIndexMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
@@ -43,4 +43,5 @@ public class SessionIndexMarshaller extends AbstractSAMLObjectMarshaller {
             ElementSupport.appendTextContent(domElement, si.getValue());
         }
     }
+    
 }

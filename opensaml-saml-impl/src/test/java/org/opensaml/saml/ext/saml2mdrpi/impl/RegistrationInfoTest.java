@@ -82,10 +82,10 @@ public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(info.getRegistrationInstant(), expectedRegistrationInstant);
         RegistrationPolicy policy = info.getRegistrationPolicies().get(0);
         Assert.assertEquals(policy.getXMLLang(), langs[0]);
-        Assert.assertEquals(policy.getValue(), uris[0]);
+        Assert.assertEquals(policy.getURI(), uris[0]);
         policy = info.getRegistrationPolicies().get(1);
         Assert.assertEquals(policy.getXMLLang(), langs[1]);
-        Assert.assertEquals(policy.getValue(), uris[1]);
+        Assert.assertEquals(policy.getURI(), uris[1]);
     }
 
     public void testChildElementsMarshall() {
@@ -96,7 +96,7 @@ public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
         for (int i = 0; i < 2; i++) {
 
             RegistrationPolicy policy = (RegistrationPolicy) buildXMLObject(RegistrationPolicy.DEFAULT_ELEMENT_NAME);
-            policy.setValue(uris[i]);
+            policy.setURI(uris[i]);
             policy.setXMLLang(langs[i]);
             info.getRegistrationPolicies().add(policy);
         }

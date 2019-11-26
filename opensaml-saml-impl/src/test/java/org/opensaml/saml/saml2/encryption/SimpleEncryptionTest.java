@@ -265,7 +265,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     @Test
     public void testNewID() {
         NewID target = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
-        target.setNewID("SomeNewID");
+        target.setValue("SomeNewID");
         
         KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);

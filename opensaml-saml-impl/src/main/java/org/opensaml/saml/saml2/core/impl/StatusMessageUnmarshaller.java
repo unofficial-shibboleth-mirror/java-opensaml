@@ -21,20 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.core.StatusMessage;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.StatusMessage} objects.
+ * A thread-safe Unmarshaller for {@link StatusMessage} objects.
  * 
  */
-public class StatusMessageUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final StatusMessage message = (StatusMessage) samlObject;
-
-        message.setMessage(elementContent);
-    }
+public class StatusMessageUnmarshaller extends XSStringUnmarshaller {
+    
 }

@@ -25,19 +25,22 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link AuthnContextDeclRef}.
  */
-public class AuthnContextDeclRefMarshaller extends AbstractSAMLObjectMarshaller {
+public class AuthnContextDeclRefMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) samlObject;
-        ElementSupport.appendTextContent(domElement, authnContextDeclRef.getURI());
+        
+        if (authnContextDeclRef.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, authnContextDeclRef.getURI());
+        }
     }
 }

@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.core.GetComplete;
 
 /**
  * A thread-safe Unmarshaller for {@link GetComplete} objects.
  */
-public class GetCompleteUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final GetComplete gc = (GetComplete) samlObject;
-
-        gc.setURI(elementContent);
-    }
+public class GetCompleteUnmarshaller extends XSURIUnmarshaller {
+    
+    
 }

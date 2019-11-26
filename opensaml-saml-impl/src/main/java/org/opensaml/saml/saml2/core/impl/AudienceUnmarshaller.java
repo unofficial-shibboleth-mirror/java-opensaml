@@ -21,18 +21,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.core.Audience;
 
 /**
  * A thread-safe Unmarshaller for {@link Audience} objects.
  */
-public class AudienceUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class AudienceUnmarshaller extends XSURIUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final Audience audience = (Audience) samlObject;
-        audience.setURI(elementContent);
-    }
 }

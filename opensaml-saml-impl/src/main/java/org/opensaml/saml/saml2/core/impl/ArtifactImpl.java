@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.Artifact;
 
 /**
  * Concrete implementation of {@link Artifact}.
  */
-public class ArtifactImpl extends AbstractXMLObject implements Artifact {
-
-    /** Artifact data. */
-    private String artifact;
+public class ArtifactImpl extends XSStringImpl implements Artifact {
 
     /**
      * Constructor.
@@ -45,20 +39,5 @@ public class ArtifactImpl extends AbstractXMLObject implements Artifact {
     protected ArtifactImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getValue() {
-        return artifact;
-    }
-
-    /** {@inheritDoc} */
-    public void setValue(final String value) {
-        artifact = prepareForAssignment(artifact, value);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // no children
-        return null;
-    }
+    
 }

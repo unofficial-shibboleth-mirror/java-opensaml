@@ -49,7 +49,7 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Audience audience = (Audience) unmarshallElement(singleElementFile);
 
-        String audienceURI = audience.getAudienceURI();
+        String audienceURI = audience.getURI();
         Assert.assertEquals(audienceURI, expectedAudienceURI,
                 "AssertionURI was " + audienceURI + ", expected " + expectedAudienceURI);
     }
@@ -66,7 +66,7 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, Audience.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         Audience audience = (Audience) buildXMLObject(qname);
 
-        audience.setAudienceURI(expectedAudienceURI);
+        audience.setURI(expectedAudienceURI);
         assertXMLEquals(expectedDOM, audience);
     }
 

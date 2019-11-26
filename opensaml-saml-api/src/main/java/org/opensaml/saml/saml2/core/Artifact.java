@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
@@ -33,7 +34,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /**
  * SAML 2.0 Core Artifact.
  */
-public interface Artifact extends SAMLObject {
+public interface Artifact extends SAMLObject, XSString {
 
     /** Element local name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Artifact";
@@ -41,27 +42,6 @@ public interface Artifact extends SAMLObject {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
-
-    /** Local name of the XSI type. */
-    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ArtifactType";
-
-    /** QName of the XSI type. */
-    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
-            SAMLConstants.SAML20P_PREFIX);
-
-    /**
-     * Get artifact value.
-     * 
-     * @return the artifact value
-     */
-    @Nullable String getValue();
-
-    /**
-     * Set artifact value.
-     * 
-     * @param value new artifact value
-     */
-    void setValue(@Nullable final String value);
     
     /**
      * Get artifact value.

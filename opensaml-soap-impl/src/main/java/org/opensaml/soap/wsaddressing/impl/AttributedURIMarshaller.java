@@ -36,7 +36,7 @@ public class AttributedURIMarshaller extends AbstractWSAddressingObjectMarshalle
     protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
             throws MarshallingException {
         final AttributedURI attributedURI = (AttributedURI) xmlObject;
-        ElementSupport.appendTextContent(domElement, attributedURI.getValue());
+        ElementSupport.appendTextContent(domElement, attributedURI.getURI());
     }
 
     /** {@inheritDoc} */

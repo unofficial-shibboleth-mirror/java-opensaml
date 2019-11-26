@@ -205,8 +205,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(assertion.getConditions().getAudienceRestrictions().size(), 1);
         final AudienceRestriction audcond = assertion.getConditions().getAudienceRestrictions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
-        Assert.assertEquals(audcond.getAudiences().get(0).getAudienceURI(), AUDIENCE1);
-        Assert.assertEquals(audcond.getAudiences().get(1).getAudienceURI(), AUDIENCE2);
+        Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
+        Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
 }

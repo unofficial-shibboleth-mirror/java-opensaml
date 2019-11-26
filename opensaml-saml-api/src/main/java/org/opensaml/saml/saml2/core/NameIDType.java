@@ -17,10 +17,12 @@
 
 package org.opensaml.saml.saml2.core;
 
+import org.opensaml.core.xml.schema.XSString;
+
 /**
  * SAML 2.0 Assertion NameID schema type.
  */
-public interface NameIDType {
+public interface NameIDType extends XSString {
 
     /** NameQualifier attribute name. */
     public static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
@@ -61,20 +63,6 @@ public interface NameIDType {
 
     /** Special URI used by NameIDPolicy to indicate a NameID should be encrypted. */
     public static final String ENCRYPTED = "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted";
-
-    /**
-     * Gets the value of this type.
-     * 
-     * @return the value of this type
-     */
-    public String getValue();
-
-    /**
-     * Sets the value of this type.
-     * 
-     * @param newValue the value of this type
-     */
-    public void setValue(String newValue);
 
     /**
      * Gets the NameQualifier value.

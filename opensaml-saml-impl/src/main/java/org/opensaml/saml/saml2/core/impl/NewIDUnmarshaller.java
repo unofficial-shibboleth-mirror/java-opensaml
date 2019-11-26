@@ -21,19 +21,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.core.NewID;
 
 /**
  * A thread-safe Unmarshaller for {@link NewID} objects.
  */
-public class NewIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class NewIDUnmarshaller extends XSStringUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final NewID newID = (NewID) samlObject;
-
-        newID.setValue(elementContent);
-    }
 }

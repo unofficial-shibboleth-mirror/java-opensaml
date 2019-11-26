@@ -21,22 +21,16 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.Action;
 
 /**
  * A concrete implementation of {@link Action}.
  */
-public class ActionImpl extends AbstractXMLObject implements Action {
+public class ActionImpl extends XSStringImpl implements Action {
 
     /** URI of the Namespace of this Action. */
     private String namespace;
-
-    /** Action value. */
-    private String action;
 
     /**
      * Constructor.
@@ -59,18 +53,4 @@ public class ActionImpl extends AbstractXMLObject implements Action {
         this.namespace = prepareForAssignment(this.namespace, newNamespace);
     }
 
-    /** {@inheritDoc} */
-    public String getValue() {
-        return action;
-    }
-
-    /** {@inheritDoc} */
-    public void setValue(final String value) {
-        action = prepareForAssignment(action, value);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
 }

@@ -25,14 +25,14 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml2.core.Artifact;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link Artifact}.
  */
-public class ArtifactMarshaller extends AbstractSAMLObjectMarshaller {
+public class ArtifactMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)

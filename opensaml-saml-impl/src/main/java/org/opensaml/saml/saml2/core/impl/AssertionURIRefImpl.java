@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AssertionURIRef}.
+ * A concrete implementation of {@link AssertionURIRef}.
  */
-public class AssertionURIRefImpl extends AbstractXMLObject implements AssertionURIRef {
-
-    /** URI of the Assertion. */
-    private String assertionURI;
+public class AssertionURIRefImpl extends XSURIImpl implements AssertionURIRef {
 
     /**
      * Constructor.
@@ -47,18 +41,4 @@ public class AssertionURIRefImpl extends AbstractXMLObject implements AssertionU
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc} */
-    public String getAssertionURI() {
-        return assertionURI;
-    }
-
-    /** {@inheritDoc} */
-    public void setAssertionURI(final String newAssertionURI) {
-        this.assertionURI = prepareForAssignment(this.assertionURI, newAssertionURI);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
 }

@@ -120,7 +120,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
         log.debug("Issuing WS-Addressing RelatesTo header with URI '{}' and RelationshipType '{}'", 
                 relatesToURI, relationshipType);
         final RelatesTo relatesTo = (RelatesTo) XMLObjectSupport.buildXMLObject(RelatesTo.ELEMENT_NAME);
-        relatesTo.setValue(relatesToURI);
+        relatesTo.setURI(relatesToURI);
         relatesTo.setRelationshipType(relationshipType);
         decorateGeneratedHeader(messageContext, relatesTo);
         SOAPMessagingSupport.addHeaderBlock(messageContext, relatesTo);

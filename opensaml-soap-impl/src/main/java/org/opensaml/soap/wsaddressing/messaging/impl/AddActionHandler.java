@@ -154,16 +154,15 @@ public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
         }
         if (faultCode != null && WSAddressingConstants.WS_ADDRESSING_FAULTS.contains(faultCode)) {
             return WSAddressingConstants.ACTION_URI_FAULT;
-        } else {
-            return WSAddressingConstants.ACTION_URI_SOAP_FAULT;
         }
+        return WSAddressingConstants.ACTION_URI_SOAP_FAULT;
     }
 
     /** {@inheritDoc} */
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         log.debug("Issuing WS-Addressing Action header with URI value: {}", sendURI);
         final Action action = (Action) XMLObjectSupport.buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue(sendURI);
+        action.setURI(sendURI);
         decorateGeneratedHeader(messageContext, action);
         SOAPMessagingSupport.addHeaderBlock(messageContext, action);
     }

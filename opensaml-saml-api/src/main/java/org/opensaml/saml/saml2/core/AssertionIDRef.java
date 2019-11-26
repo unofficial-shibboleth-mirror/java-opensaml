@@ -17,34 +17,47 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core AssertionIDRef.
  */
-public interface AssertionIDRef extends SAMLObject, Evidentiary {
+public interface AssertionIDRef extends SAMLObject, XSString, Evidentiary {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDRef";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDRef";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /**
      * Gets the ID of the assertion this references.
      * 
      * @return the ID of the assertion this references
+     * 
+     * @deprecated
      */
-    public String getAssertionID();
+    @Nullable default String getAssertionID() {
+        return getValue();
+    }
 
     /**
      * Sets the ID of the assertion this references.
      * 
-     * @param newID the ID of the assertion this references
+     * @param value the ID of the assertion this references
+     * 
+     * @deprecated
      */
-    public void setAssertionID(String newID);
+    default void setAssertionID(@Nullable final String value) {
+        setValue(value);
+    }
 }

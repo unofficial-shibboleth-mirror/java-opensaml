@@ -21,34 +21,25 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core AuthenticatingAuthority.
  */
-public interface AuthenticatingAuthority extends SAMLObject {
+public interface AuthenticatingAuthority extends SAMLObject, XSURI {
 
     /** Local Name of AuthenticatingAuthority. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticatingAuthority";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticatingAuthority";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
-
-    /**
-     * Gets the URI of this Authenticating Authority.
-     * 
-     * @return AuthenticatingAuthority URI
-     */
-    public String getURI();
-
-    /**
-     * Sets the URI of this Authenticating Authority.
-     * 
-     * @param newURI the URI of this Authenticating Authority
-     */
-    public void setURI(String newURI);
+    
 }

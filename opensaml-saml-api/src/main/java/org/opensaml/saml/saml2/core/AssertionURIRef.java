@@ -17,34 +17,48 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core AssertionURIRef.
  */
-public interface AssertionURIRef extends SAMLObject, Evidentiary {
+public interface AssertionURIRef extends SAMLObject, XSURI, Evidentiary {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionURIRef";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionURIRef";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /**
      * Gets the URI of the assertion this references.
      * 
      * @return the URI of the assertion this references
+     * 
+     * @deprecated
      */
-    public String getAssertionURI();
+    @Nullable default String getAssertionURI() {
+        return getURI();
+    }
 
     /**
      * Sets the URI of the assertion this references.
      * 
-     * @param newURI the URI of the assertion this references
+     * @param uri the URI of the assertion this references
+     * 
+     * @deprecated
      */
-    public void setAssertionURI(String newURI);
+    default void setAssertionURI(@Nullable final String uri) {
+        setURI(uri);
+    }
+    
 }

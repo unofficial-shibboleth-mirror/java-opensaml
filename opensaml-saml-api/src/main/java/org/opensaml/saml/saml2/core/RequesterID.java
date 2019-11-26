@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
@@ -29,7 +30,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /**
  * SAML 2.0 Core RequesterID.
  */
-public interface RequesterID extends SAMLObject {
+public interface RequesterID extends SAMLObject, XSURI {
 
     /** Element Local Name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequesterID";
@@ -42,25 +43,11 @@ public interface RequesterID extends SAMLObject {
      * Gets the RequesterID value.
      * 
      * @return RequesterID value
-     */
-    @Nullable String getValue();
-
-    /**
-     * Sets the RequesterID value.
-     * 
-     * @param value the RequesterID value
-     */
-    void setValue(@Nullable final String value);
-
-    /**
-     * Gets the RequesterID value.
-     * 
-     * @return RequesterID value
      * 
      * @deprecated
      */
     @Nullable default String getRequesterID() {
-        return getValue();
+        return getURI();
     }
 
     /**
@@ -71,7 +58,7 @@ public interface RequesterID extends SAMLObject {
      * @deprecated
      */
     default void setRequesterID(@Nullable final String value) {
-        setValue(value);
+        setURI(value);
     }
     
 }

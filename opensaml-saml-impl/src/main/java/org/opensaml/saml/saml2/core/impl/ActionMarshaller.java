@@ -25,14 +25,14 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml2.core.Action;
 import org.w3c.dom.Element;
 
 /**
  * A thread-safe Marshaller for {@link Action}.
  */
-public class ActionMarshaller extends AbstractSAMLObjectMarshaller {
+public class ActionMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
@@ -48,6 +48,9 @@ public class ActionMarshaller extends AbstractSAMLObjectMarshaller {
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final Action action = (Action) samlObject;
-        ElementSupport.appendTextContent(domElement, action.getValue());
+        
+        if (action.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, action.getValue());
+        }
     }
 }

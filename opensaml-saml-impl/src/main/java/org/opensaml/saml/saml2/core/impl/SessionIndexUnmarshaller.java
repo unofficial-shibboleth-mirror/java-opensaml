@@ -21,19 +21,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
  * A thread-safe Unmarshaller for {@link SessionIndex} objects.
  */
-public class SessionIndexUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class SessionIndexUnmarshaller extends XSStringUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final SessionIndex si = (SessionIndex) samlObject;
-
-        si.setValue(elementContent);
-    }
 }

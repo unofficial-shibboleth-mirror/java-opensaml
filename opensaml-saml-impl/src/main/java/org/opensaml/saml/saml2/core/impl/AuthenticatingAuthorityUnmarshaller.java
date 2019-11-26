@@ -21,18 +21,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthenticatingAuthority}.
+ * A thread-safe Unmarshaller for {@link AuthenticatingAuthority}.
  */
-public class AuthenticatingAuthorityUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class AuthenticatingAuthorityUnmarshaller extends XSURIUnmarshaller {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) samlObject;
-        authenticatingAuthority.setURI(elementContent);
-    }
 }

@@ -19,34 +19,27 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.core.NameIDType;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameIDType} objects.
+ * A thread-safe Unmarshaller for {@link NameIDType} objects.
  */
-public abstract class AbstractNameIDTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final NameIDType nameID = (NameIDType) samlObject;
-        nameID.setValue(elementContent);
-    }
+public abstract class AbstractNameIDTypeUnmarshaller extends XSStringUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
         final NameIDType nameID = (NameIDType) samlObject;
         
         if (attribute.getNamespaceURI() == null) {
-            if (attribute.getLocalName().equals(NameID.NAME_QUALIFIER_ATTRIB_NAME)) {
+            if (attribute.getLocalName().equals(NameIDType.NAME_QUALIFIER_ATTRIB_NAME)) {
                 nameID.setNameQualifier(attribute.getValue());
-            } else if (attribute.getLocalName().equals(NameID.SP_NAME_QUALIFIER_ATTRIB_NAME)) {
+            } else if (attribute.getLocalName().equals(NameIDType.SP_NAME_QUALIFIER_ATTRIB_NAME)) {
                 nameID.setSPNameQualifier(attribute.getValue());
-            } else if (attribute.getLocalName().equals(NameID.FORMAT_ATTRIB_NAME)) {
+            } else if (attribute.getLocalName().equals(NameIDType.FORMAT_ATTRIB_NAME)) {
                 nameID.setFormat(attribute.getValue());
-            } else if (attribute.getLocalName().equals(NameID.SPPROVIDED_ID_ATTRIB_NAME)) {
+            } else if (attribute.getLocalName().equals(NameIDType.SPPROVIDED_ID_ATTRIB_NAME)) {
                 nameID.setSPProvidedID(attribute.getValue());
             } else {
                 super.processAttribute(samlObject, attribute);

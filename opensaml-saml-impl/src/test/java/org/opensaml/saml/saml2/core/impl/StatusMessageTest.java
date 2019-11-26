@@ -51,7 +51,7 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementMarshall() {
         StatusMessage message = (StatusMessage) buildXMLObject(StatusMessage.DEFAULT_ELEMENT_NAME);
         
-        message.setMessage(expectedMessage);
+        message.setValue(expectedMessage);
         
         assertXMLEquals(expectedDOM, message);
     }
@@ -61,6 +61,6 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         StatusMessage message = (StatusMessage) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(message.getMessage(), expectedMessage, "Unmarshalled status message was not the expected value");   
+        Assert.assertEquals(message.getValue(), expectedMessage, "Unmarshalled status message was not the expected value");   
     }
 }

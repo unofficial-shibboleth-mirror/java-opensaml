@@ -33,7 +33,7 @@ public class AttributedURIUnmarshaller extends AbstractWSAddressingObjectUnmarsh
     protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
         if (elementContent != null) {
             final AttributedURI attributedURI = (AttributedURI) xmlObject;
-            attributedURI.setValue(elementContent);
+            attributedURI.setURI(elementContent);
         }
     }
 

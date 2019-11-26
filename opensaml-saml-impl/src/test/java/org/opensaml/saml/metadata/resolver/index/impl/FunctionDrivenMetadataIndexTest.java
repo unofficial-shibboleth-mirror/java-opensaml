@@ -39,7 +39,7 @@ public class FunctionDrivenMetadataIndexTest extends OpenSAMLInitBaseTestCase {
     private FunctionDrivenMetadataIndex metadataIndex;
     
     private EntityDescriptor a, b, c;
-    private MetadataIndexKey keyA, keyB, keyC;
+    private MetadataIndexKey keyA;
     
     @BeforeClass
     protected void setUp() {
@@ -51,11 +51,11 @@ public class FunctionDrivenMetadataIndexTest extends OpenSAMLInitBaseTestCase {
         
         b = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         b.setEntityID("urn:test:b");
-        keyB = new SimpleStringMetadataIndexKey(b.getEntityID().toUpperCase());
+        new SimpleStringMetadataIndexKey(b.getEntityID().toUpperCase());
         
         c = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         c.setEntityID("urn:test:c");
-        keyC = new SimpleStringMetadataIndexKey(c.getEntityID().toUpperCase());
+        new SimpleStringMetadataIndexKey(c.getEntityID().toUpperCase());
     }
     
     @Test

@@ -23,7 +23,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
- * This interface defines how the object representing a SAML 12 <code> AttributeValue </code> element behaves.
+ * This interface defines how the object representing a SAML 2 <code> AttributeValue </code> element behaves.
  */
 public interface AttributeValue extends SAMLObject {
 

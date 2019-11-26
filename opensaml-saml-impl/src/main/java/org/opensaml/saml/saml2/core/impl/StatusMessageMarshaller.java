@@ -25,22 +25,22 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml2.core.StatusMessage;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.StatusMessage} objects.
+ * A thread safe Marshaller for {@link StatusMessage} objects.
  */
-public class StatusMessageMarshaller extends AbstractSAMLObjectMarshaller {
+public class StatusMessageMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final StatusMessage message = (StatusMessage) samlObject;
 
-        if (message.getMessage() != null) {
-            ElementSupport.appendTextContent(domElement, message.getMessage());
+        if (message.getValue() != null) {
+            ElementSupport.appendTextContent(domElement, message.getValue());
         }
     }
 }

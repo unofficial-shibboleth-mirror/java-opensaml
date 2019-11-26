@@ -25,19 +25,22 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthenticatingAuthority}.
+ * A thread-safe Marshaller for {@link AuthenticatingAuthority}.
  */
-public class AuthenticatingAuthorityMarshaller extends AbstractSAMLObjectMarshaller {
+public class AuthenticatingAuthorityMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) samlObject;
-        ElementSupport.appendTextContent(domElement, authenticatingAuthority.getURI());
+        
+        if (authenticatingAuthority.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, authenticatingAuthority.getURI());
+        }
     }
 }

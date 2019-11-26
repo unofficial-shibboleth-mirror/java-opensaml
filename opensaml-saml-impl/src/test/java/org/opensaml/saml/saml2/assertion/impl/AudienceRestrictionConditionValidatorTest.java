@@ -50,7 +50,7 @@ public class AudienceRestrictionConditionValidatorTest extends BaseAssertionVali
     public void setUp() {
         validator = new AudienceRestrictionConditionValidator();
         audience = buildXMLObject(Audience.DEFAULT_ELEMENT_NAME);
-        audience.setAudienceURI(expectedAudienceURI);
+        audience.setURI(expectedAudienceURI);
         condition = buildXMLObject(AudienceRestriction.DEFAULT_ELEMENT_NAME);
         ((AudienceRestriction)condition).getAudiences().add(audience);
         getAssertion().getConditions().getConditions().add(condition);

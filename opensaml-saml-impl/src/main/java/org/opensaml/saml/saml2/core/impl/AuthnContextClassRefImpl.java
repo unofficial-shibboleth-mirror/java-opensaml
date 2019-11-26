@@ -21,13 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -35,10 +32,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /**
  * A concrete implementation of {@link AuthnContextClassRef}.
  */
-public class AuthnContextClassRefImpl extends AbstractXMLObject implements AuthnContextClassRef {
-
-    /** URI of the Authentication Context Class. */
-    @Nullable private String authnContextClassRef;
+public class AuthnContextClassRefImpl extends XSURIImpl implements AuthnContextClassRef {
 
     /**
      * Constructor.
@@ -50,21 +44,6 @@ public class AuthnContextClassRefImpl extends AbstractXMLObject implements Authn
     protected AuthnContextClassRefImpl(@Nullable final String namespaceURI,
             @Nonnull @NotEmpty final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public String getURI() {
-        return authnContextClassRef;
-    }
-
-    /** {@inheritDoc} */
-    public void setURI(@Nullable final String uri) {
-        authnContextClassRef = prepareForAssignment(authnContextClassRef, uri);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
-        return null;
     }
     
 }

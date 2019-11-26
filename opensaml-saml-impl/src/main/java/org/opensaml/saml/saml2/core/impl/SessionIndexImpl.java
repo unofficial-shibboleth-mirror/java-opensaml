@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
  * Concrete implementation of {@link SessionIndex}.
  */
-public class SessionIndexImpl extends AbstractXMLObject implements SessionIndex {
-
-    /** The session index value. */
-    private String sessionIndex;
+public class SessionIndexImpl extends XSStringImpl implements SessionIndex {
 
     /**
      * Constructor.
@@ -46,19 +40,4 @@ public class SessionIndexImpl extends AbstractXMLObject implements SessionIndex 
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc} */
-    public String getValue() {
-        return sessionIndex;
-    }
-
-    /** {@inheritDoc} */
-    public void setValue(final String value) {
-        sessionIndex = prepareForAssignment(sessionIndex, value);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // no children
-        return null;
-    }
 }

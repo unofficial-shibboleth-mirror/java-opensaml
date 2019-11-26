@@ -70,9 +70,9 @@ public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCas
         
         final Scoping scoping = scopingBuilder.buildObject();
         final RequesterID one = requesterIDBuilder.buildObject();
-        one.setRequesterID("one");
+        one.setURI("one");
         final RequesterID two = requesterIDBuilder.buildObject();
-        two.setRequesterID("two");
+        two.setURI("two");
         scoping.getRequesterIDs().addAll(Arrays.asList(one, two));
         
         ((AuthnRequest) messageCtx.getMessage()).setScoping(scoping);

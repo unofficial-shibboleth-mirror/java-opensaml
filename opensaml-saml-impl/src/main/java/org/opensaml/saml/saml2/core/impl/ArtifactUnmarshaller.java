@@ -21,20 +21,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.core.Artifact;
 
 /**
  * A thead-safe Unmarshaller for {@link Artifact}.
  */
-public class ArtifactUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final Artifact artifact = (Artifact) samlObject;
-
-        artifact.setValue(elementContent);
-    }
+public class ArtifactUnmarshaller extends XSStringUnmarshaller {
 
 }

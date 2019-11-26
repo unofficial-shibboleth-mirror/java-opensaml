@@ -21,18 +21,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AssertionURIRef}.
+ * A thread-safe Unmarshaller for {@link AssertionURIRef}.
  */
-public class AssertionURIRefUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final AssertionURIRef assertionURIRef = (AssertionURIRef) samlObject;
-        assertionURIRef.setAssertionURI(elementContent);
-    }
+public class AssertionURIRefUnmarshaller extends XSURIUnmarshaller {
+    
 }

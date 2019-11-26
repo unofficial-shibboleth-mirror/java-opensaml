@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
@@ -29,20 +30,20 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /**
  * SAML 2.0 Core Action.
  */
-public interface Action extends SAMLObject {
+public interface Action extends SAMLObject, XSString {
 
     /** Element local name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Action";
 
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ActionType";
 
     /** QName of the XSI type. */
-    static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Name of the Namespace attribute. */
@@ -115,20 +116,6 @@ public interface Action extends SAMLObject {
      * @param newNamespace the namespace scope of the specified action
      */
     void setNamespace(@Nullable final String newNamespace);
-
-    /**
-     * Gets the value of the action to be performed.
-     * 
-     * @return the value of the action to be performed
-     */
-    @Nullable String getValue();
-
-    /**
-     * Sets the value of the action to be performed.
-     * 
-     * @param value the value of the action to be performed
-     */
-    void setValue(@Nullable final String value);
     
     /**
      * Gets the value of the action to be performed.

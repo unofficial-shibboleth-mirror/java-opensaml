@@ -17,19 +17,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.NameIDType;
 
 /**
  * Abstract implementation of {@link org.opensaml.saml.saml2.core.NameIDType}.
  */
-public class AbstractNameIDType extends AbstractXMLObject implements NameIDType {
-
-    /** Name of the Name ID. */
-    private String name;
+public class AbstractNameIDType extends XSStringImpl implements NameIDType {
     
     /** Name Qualifier of the Name ID. */
     private String nameQualifier;
@@ -53,16 +47,6 @@ public class AbstractNameIDType extends AbstractXMLObject implements NameIDType 
     protected AbstractNameIDType(final String namespaceURI, final String elementLocalName,
             final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public String getValue() {
-        return name;
-    }
-    
-    /** {@inheritDoc} */
-    public void setValue(final String newName) {
-        this.name = prepareForAssignment(this.name, newName);
     }
     
     /** {@inheritDoc} */
@@ -104,9 +88,5 @@ public class AbstractNameIDType extends AbstractXMLObject implements NameIDType 
     public void setSPProvidedID(final String newSPProvidedID) {
         this.spProvidedID = prepareForAssignment(this.spProvidedID, newSPProvidedID);
     }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

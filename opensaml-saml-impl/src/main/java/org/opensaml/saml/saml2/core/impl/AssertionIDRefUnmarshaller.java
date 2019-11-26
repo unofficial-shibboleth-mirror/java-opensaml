@@ -21,18 +21,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
 
 /**
- * A thead-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AssertionIDRef}.
+ * A thead-safe Unmarshaller for {@link AssertionIDRef}.
  */
-public class AssertionIDRefUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final AssertionIDRef assertionIDRef = (AssertionIDRef) samlObject;
-        assertionIDRef.setAssertionID(elementContent);
-    }
+public class AssertionIDRefUnmarshaller extends XSStringUnmarshaller {
+    
 }

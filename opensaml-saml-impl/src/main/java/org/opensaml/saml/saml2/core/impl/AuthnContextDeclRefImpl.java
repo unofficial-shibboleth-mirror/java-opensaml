@@ -21,13 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -35,10 +32,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /**
  * A concrete implementation of {@link AuthnContextDeclRef}.
  */
-public class AuthnContextDeclRefImpl extends AbstractXMLObject implements AuthnContextDeclRef {
-
-    /** URI of the Authentication Context Declaration. */
-    @Nullable private String authnContextDeclRef;
+public class AuthnContextDeclRefImpl extends XSURIImpl implements AuthnContextDeclRef {
 
     /**
      * Constructor.
@@ -50,21 +44,6 @@ public class AuthnContextDeclRefImpl extends AbstractXMLObject implements AuthnC
     protected AuthnContextDeclRefImpl(@Nullable final String namespaceURI,
             @Nonnull @NotEmpty final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public String getURI() {
-        return authnContextDeclRef;
-    }
-
-    /** {@inheritDoc} */
-    public void setURI(@Nullable final String uri) {
-        authnContextDeclRef = prepareForAssignment(authnContextDeclRef, uri);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
-        return null;
     }
     
 }

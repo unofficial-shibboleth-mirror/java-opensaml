@@ -21,13 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.Audience;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -35,10 +32,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /**
  * Concrete implementation of {@link Audience}.
  */
-public class AudienceImpl extends AbstractXMLObject implements Audience {
-
-    /** URI of this Audience. */
-    private String audienceURI;
+public class AudienceImpl extends XSURIImpl implements Audience {
 
     /**
      * Constructor.
@@ -50,21 +44,6 @@ public class AudienceImpl extends AbstractXMLObject implements Audience {
     protected AudienceImpl(@Nullable @NotEmpty final String namespaceURI,
             @Nonnull @NotEmpty final String elementLocalName, @Nullable @NotEmpty final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public String getURI() {
-        return audienceURI;
-    }
-
-    /** {@inheritDoc} */
-    public void setURI(@Nullable final String uri) {
-        audienceURI = prepareForAssignment(audienceURI, uri);
-    }
-
-    /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
-        return null;
     }
     
 }

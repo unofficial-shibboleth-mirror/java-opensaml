@@ -35,14 +35,14 @@ public class UsagePolicyTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         UsagePolicy policy = (UsagePolicy) unmarshallElement(singleElementFile);
         Assert.assertEquals(policy.getXMLLang(), "en");
-        Assert.assertEquals(policy.getValue(), "https://www.aai.dfn.de/en/join/");
+        Assert.assertEquals(policy.getURI(), "https://www.aai.dfn.de/en/join/");
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
         UsagePolicy policy = (UsagePolicy) buildXMLObject(UsagePolicy.DEFAULT_ELEMENT_NAME);
 
-        policy.setValue("https://www.aai.dfn.de/en/join/");
+        policy.setURI("https://www.aai.dfn.de/en/join/");
         policy.setXMLLang("en");
 
         assertXMLEquals(expectedDOM, policy);

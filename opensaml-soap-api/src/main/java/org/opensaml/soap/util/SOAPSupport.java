@@ -427,7 +427,7 @@ public final class SOAPSupport {
         if (faultActor != null) {
             final FaultActor faultActorObj =  (FaultActor) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME)
                 .buildObject(FaultActor.DEFAULT_ELEMENT_NAME);
-            faultActorObj.setValue(faultActor);
+            faultActorObj.setURI(faultActor);
             faultObj.setActor(faultActorObj);
         }
             

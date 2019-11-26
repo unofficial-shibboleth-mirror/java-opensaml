@@ -75,7 +75,7 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<OrganizationURL>getBuilderOrThrow(
                         OrganizationURL.DEFAULT_ELEMENT_NAME);
         OrganizationURL newOrgURL = orgURLBuilder.buildObject();    
-        newOrgURL.setValue("http://org.url.edu");
+        newOrgURL.setURI("http://org.url.edu");
         newOrgURL.setXMLLang("en");
         organization.getURLs().add(newOrgURL);
         

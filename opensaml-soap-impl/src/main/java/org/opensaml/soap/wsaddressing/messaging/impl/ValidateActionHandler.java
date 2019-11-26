@@ -95,7 +95,7 @@ public class ValidateActionHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
         final Action header = getAction(messageContext);
-        final String headerValue = header != null ? StringSupport.trimOrNull(header.getValue()) : null;
+        final String headerValue = header != null ? StringSupport.trimOrNull(header.getURI()) : null;
         log.debug("Checking inbound message WS-Addressing Action URI value: {}", headerValue);
         if (Objects.equals(getExpectedActionURI(), headerValue)) {
             log.debug("Inbound WS-Addressing Action URI matched expected value");

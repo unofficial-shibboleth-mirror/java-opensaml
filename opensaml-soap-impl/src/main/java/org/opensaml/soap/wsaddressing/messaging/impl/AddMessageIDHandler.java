@@ -78,7 +78,7 @@ public class AddMessageIDHandler extends AbstractHeaderGeneratingMessageHandler 
         final String id = getMessageID(messageContext);
         log.debug("Issuing WS-Addressing MessageID: {}", id);
         final MessageID messageID = (MessageID) XMLObjectSupport.buildXMLObject(MessageID.ELEMENT_NAME);
-        messageID.setValue(id);
+        messageID.setURI(id);
         decorateGeneratedHeader(messageContext, messageID);
         SOAPMessagingSupport.addHeaderBlock(messageContext, messageID);
     }

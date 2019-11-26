@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.AssertionIDRef}.
+ * Concrete implementation of {@link AssertionIDRef}.
  */
-public class AssertionIDRefImpl extends AbstractXMLObject implements AssertionIDRef {
-
-    /** ID Ref of the Assertion. */
-    private String assertionID;
+public class AssertionIDRefImpl extends XSStringImpl implements AssertionIDRef {
 
     /**
      * Constructor.
@@ -47,18 +41,4 @@ public class AssertionIDRefImpl extends AbstractXMLObject implements AssertionID
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc} */
-    public String getAssertionID() {
-        return assertionID;
-    }
-
-    /** {@inheritDoc} */
-    public void setAssertionID(final String newIDRef) {
-        this.assertionID = prepareForAssignment(this.assertionID, newIDRef);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
 }

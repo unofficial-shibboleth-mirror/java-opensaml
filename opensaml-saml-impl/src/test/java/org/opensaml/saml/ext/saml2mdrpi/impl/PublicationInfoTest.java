@@ -85,10 +85,10 @@ public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(info.getPublisher(), expectedPublisher);
         UsagePolicy policy = info.getUsagePolicies().get(0);
         Assert.assertEquals(policy.getXMLLang(), langs[0]);
-        Assert.assertEquals(policy.getValue(), uris[0]);
+        Assert.assertEquals(policy.getURI(), uris[0]);
         policy = info.getUsagePolicies().get(1);
         Assert.assertEquals(policy.getXMLLang(), langs[1]);
-        Assert.assertEquals(policy.getValue(), uris[1]);
+        Assert.assertEquals(policy.getURI(), uris[1]);
     }
 
     @Test
@@ -99,7 +99,7 @@ public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
         for (int i = 0; i < 2; i++) {
 
             UsagePolicy policy = (UsagePolicy) buildXMLObject(UsagePolicy.DEFAULT_ELEMENT_NAME);
-            policy.setValue(uris[i]);
+            policy.setURI(uris[i]);
             policy.setXMLLang(langs[i]);
             info.getUsagePolicies().add(policy);
         }

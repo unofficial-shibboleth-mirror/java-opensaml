@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.GetComplete;
 
 /**
  * Concrete implementation of {@link GetComplete}.
  */
-public class GetCompleteImpl extends AbstractXMLObject implements GetComplete {
-
-    /** URI element content. */
-    private String getComplete;
+public class GetCompleteImpl extends XSURIImpl implements GetComplete {
 
     /**
      * Constructor.
@@ -46,19 +40,4 @@ public class GetCompleteImpl extends AbstractXMLObject implements GetComplete {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc} */
-    public String getURI() {
-        return getComplete;
-    }
-
-    /** {@inheritDoc} */
-    public void setURI(final String uri) {
-        getComplete = prepareForAssignment(getComplete, uri);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // No children
-        return null;
-    }
 }

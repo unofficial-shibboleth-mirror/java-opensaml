@@ -24,7 +24,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.http.HttpEntity;
@@ -65,13 +64,10 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
     
     /** Constructor. */
     public HttpClientRequestSOAP11Encoder() {
-        super();
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
-        envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.getBuilder(Envelope.DEFAULT_ELEMENT_NAME);
-        bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.getBuilder(Body.DEFAULT_ELEMENT_NAME);
-        
-        Constraint.isNotNull(envBuilder, "Envelope Builder cannot be null");
-        Constraint.isNotNull(bodyBuilder, "Body Builder cannot be null");
+        envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.<Envelope>getBuilderOrThrow(
+                Envelope.DEFAULT_ELEMENT_NAME);
+        bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.<Body>getBuilderOrThrow(Body.DEFAULT_ELEMENT_NAME);
     }
     
     /** {@inheritDoc}
@@ -229,9 +225,8 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
         final List<XMLObject> objList = header.getUnknownXMLObjects(Action.ELEMENT_NAME);
         if (objList == null || objList.isEmpty()) {
             return null;
-        } else {
-            return ((Action)objList.get(0)).getValue();
         }
+        return ((Action)objList.get(0)).getURI();
     }
     
     /** {@inheritDoc} */

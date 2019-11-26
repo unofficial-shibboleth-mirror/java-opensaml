@@ -25,19 +25,22 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AssertionURIRef}.
+ * A thread-safe Marshaller for {@link AssertionURIRef}.
  */
-public class AssertionURIRefMarshaller extends AbstractSAMLObjectMarshaller {
+public class AssertionURIRefMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final AssertionURIRef assertionURIRef = (AssertionURIRef) samlObject;
-        ElementSupport.appendTextContent(domElement, assertionURIRef.getAssertionURI());
+        
+        if (assertionURIRef.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, assertionURIRef.getURI());
+        }
     }
 }

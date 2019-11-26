@@ -25,22 +25,22 @@ import net.shibboleth.utilities.java.support.xml.ElementSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.saml.saml2.core.RequesterID;
 import org.w3c.dom.Element;
 
 /**
  * A thread safe Marshaller for {@link RequesterID} objects.
  */
-public class RequesterIDMarshaller extends AbstractSAMLObjectMarshaller {
+public class RequesterIDMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
             throws MarshallingException {
         final RequesterID reqID = (RequesterID) samlObject;
 
-        if (reqID.getValue() != null) {
-            ElementSupport.appendTextContent(domElement, reqID.getValue());
+        if (reqID.getURI() != null) {
+            ElementSupport.appendTextContent(domElement, reqID.getURI());
         }
     }
 }

@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
@@ -29,7 +30,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 /**
  * SAML 2.0 Core Audience.
  */
-public interface Audience extends SAMLObject {
+public interface Audience extends SAMLObject, XSURI {
 
     /** Element local name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Audience";
@@ -37,31 +38,6 @@ public interface Audience extends SAMLObject {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-
-    /** Local name of the XSI type. */
-    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AudienceType";
-
-    /** QName of the XSI type. */
-    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
-            SAMLConstants.SAML20_PREFIX);
-
-    /**
-     * Gets the URI of the audience for the assertion.
-     * 
-     * @return the URI of the audience for the assertion
-     * 
-     * @since 4.0.0
-     */
-    @Nullable String getURI();
-
-    /**
-     * Sets the URI of the audience for the assertion.
-     * 
-     * @param uri the URI of the audience for the assertion
-     * 
-     * @since 4.0.0
-     */
-    void setURI(@Nullable final String uri);
 
     /**
      * Gets the URI of the audience for the assertion.

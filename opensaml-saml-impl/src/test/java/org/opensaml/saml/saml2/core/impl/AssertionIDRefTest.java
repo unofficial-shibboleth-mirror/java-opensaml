@@ -49,7 +49,7 @@ public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AssertionIDRef assertionIDRef = (AssertionIDRef) unmarshallElement(singleElementFile);
 
-        String assertionID = assertionIDRef.getAssertionID();
+        String assertionID = assertionIDRef.getValue();
         Assert.assertEquals(assertionID, expectedAssertionID,
                 "AssertionID was " + assertionID + ", expected " + expectedAssertionID);
     }
@@ -66,7 +66,7 @@ public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
         QName qname = new QName(SAMLConstants.SAML20_NS, AssertionIDRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         AssertionIDRef assertionIDRef = (AssertionIDRef) buildXMLObject(qname);
 
-        assertionIDRef.setAssertionID(expectedAssertionID);
+        assertionIDRef.setValue(expectedAssertionID);
         assertXMLEquals(expectedDOM, assertionIDRef);
     }
 

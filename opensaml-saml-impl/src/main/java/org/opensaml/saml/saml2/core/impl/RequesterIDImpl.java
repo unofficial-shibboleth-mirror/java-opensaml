@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.RequesterID;
 
 /**
  * Concrete implementation of {@link RequesterID}.
  */
-public class RequesterIDImpl extends AbstractXMLObject implements RequesterID {
-
-    /** ID of the requester. */
-    private String requesterID;
+public class RequesterIDImpl extends XSURIImpl implements RequesterID {
 
     /**
      * Constructor.
@@ -45,20 +39,5 @@ public class RequesterIDImpl extends AbstractXMLObject implements RequesterID {
     protected RequesterIDImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getValue() {
-        return requesterID;
-    }
-
-    /** {@inheritDoc} */
-    public void setValue(final String value) {
-        requesterID = prepareForAssignment(requesterID, value);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // No children
-        return null;
-    }
+    
 }

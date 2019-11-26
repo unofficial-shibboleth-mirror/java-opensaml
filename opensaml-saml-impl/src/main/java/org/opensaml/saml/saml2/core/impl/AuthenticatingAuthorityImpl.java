@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 
 /**
  * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthenticatingAuthority}.
  */
-public class AuthenticatingAuthorityImpl extends AbstractXMLObject implements AuthenticatingAuthority {
-
-    /** URI of the Authenticating Authority. */
-    private String uri;
+public class AuthenticatingAuthorityImpl extends XSURIImpl implements AuthenticatingAuthority {
 
     /**
      * Constructor.
@@ -47,18 +41,4 @@ public class AuthenticatingAuthorityImpl extends AbstractXMLObject implements Au
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-    /** {@inheritDoc} */
-    public String getURI() {
-        return uri;
-    }
-
-    /** {@inheritDoc} */
-    public void setURI(final String newURI) {
-        this.uri = prepareForAssignment(this.uri, newURI);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
 }

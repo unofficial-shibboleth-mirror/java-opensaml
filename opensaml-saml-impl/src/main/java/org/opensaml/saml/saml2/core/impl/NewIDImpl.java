@@ -21,19 +21,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.NewID;
 
 /**
  * Concrete implementation of {@link NewID}.
  */
-public class NewIDImpl extends AbstractXMLObject implements NewID {
-
-    /** The new NameID. */
-    private String newID;
+public class NewIDImpl extends XSStringImpl implements NewID {
 
     /**
      * Constructor.
@@ -45,20 +39,5 @@ public class NewIDImpl extends AbstractXMLObject implements NewID {
     protected NewIDImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getValue() {
-        return newID;
-    }
-
-    /** {@inheritDoc} */
-    public void setValue(final String value) {
-        newID = prepareForAssignment(newID, value);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // no children
-        return null;
-    }
+    
 }
