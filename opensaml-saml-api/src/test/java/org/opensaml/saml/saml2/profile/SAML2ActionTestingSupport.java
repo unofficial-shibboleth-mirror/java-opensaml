@@ -18,10 +18,12 @@
 package org.opensaml.saml.saml2.profile;
 
 import java.time.Instant;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -34,6 +36,8 @@ import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.IDPEntry;
+import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -41,6 +45,7 @@ import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.LogoutResponse;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.Scoping;
 import org.opensaml.saml.saml2.core.Subject;
 
 /**
@@ -308,6 +313,44 @@ public class SAML2ActionTestingSupport {
         request.setVersion(SAMLVersion.VERSION_20);
 
         return request;
+    }
+    
+    /**
+     * Build a {@Scoping}.
+     * 
+     * @param count proxy count
+     * @param idplist list of IdP entityIDs
+     * 
+     * @return populated {@link Scoping}
+     * 
+     * @since 4.0.0
+     */
+    @Nonnull public static Scoping buildScoping(@Nullable final Integer count,
+            @Nullable @NonnullElements Set<String> idplist) {
+        final SAMLObjectBuilder<Scoping> scopingBuilder = (SAMLObjectBuilder<Scoping>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>getBuilderOrThrow(
+                        Scoping.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<IDPList> idpListBuilder = (SAMLObjectBuilder<IDPList>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<IDPList>getBuilderOrThrow(
+                        IDPList.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<IDPEntry> idpBuilder = (SAMLObjectBuilder<IDPEntry>)
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<IDPEntry>getBuilderOrThrow(
+                        IDPEntry.DEFAULT_ELEMENT_NAME);
+        
+        final Scoping scoping = scopingBuilder.buildObject();
+        scoping.setProxyCount(count);
+        
+        if (idplist != null && !idplist.isEmpty()) {
+            final IDPList idps = idpListBuilder.buildObject();
+            for (final String idp : idplist) {
+                final IDPEntry entry = idpBuilder.buildObject();
+                entry.setProviderID(idp);
+                idps.getIDPEntrys().add(entry);
+            }
+            scoping.setIDPList(idps);
+        }
+        
+        return scoping;
     }
 
     /**
