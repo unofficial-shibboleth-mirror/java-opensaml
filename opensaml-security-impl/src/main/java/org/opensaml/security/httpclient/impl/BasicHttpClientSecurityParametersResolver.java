@@ -85,7 +85,7 @@ public class BasicHttpClientSecurityParametersResolver implements HttpClientSecu
     }
     
     /**
-     * Resolve and populate all parametersu.
+     * Resolve and populate all parameters.
      * 
      * @param params the parameters instance to populate
      * @param criteria the criteria to process
