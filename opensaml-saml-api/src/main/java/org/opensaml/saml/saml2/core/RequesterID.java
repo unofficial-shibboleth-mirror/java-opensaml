@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core RequesterID.
@@ -43,10 +45,10 @@ public interface RequesterID extends SAMLObject, XSURI {
      * Gets the RequesterID value.
      * 
      * @return RequesterID value
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getRequesterID() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getRequesterID", RequesterID.class.toString(), "getURI");
         return getURI();
     }
 
@@ -54,10 +56,10 @@ public interface RequesterID extends SAMLObject, XSURI {
      * Sets the RequesterID value.
      * 
      * @param value the RequesterID value
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setRequesterID(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setRequesterID", RequesterID.class.toString(), "setURI");
         setURI(value);
     }
     

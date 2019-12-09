@@ -30,6 +30,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core Artifact.
@@ -47,10 +49,10 @@ public interface Artifact extends SAMLObject, XSString {
      * Get artifact value.
      * 
      * @return the artifact value
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getArtifact() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getArtifact", Artifact.class.toString(), "getValue");
         return getValue();
     }
 
@@ -58,10 +60,10 @@ public interface Artifact extends SAMLObject, XSString {
      * Set artifact value.
      * 
      * @param value new artifact value
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setArtifact(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setArtifact", Artifact.class.toString(), "setValue");
         setValue(value);
     }
 

@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core AuthnContextDeclRef.
@@ -43,10 +45,11 @@ public interface AuthnContextDeclRef extends SAMLObject, XSURI {
      * Gets the URI reference to an authentication context declaration.
      * 
      * @return authentication context declaration reference URI
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getAuthnContextDeclRef() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getAuthnContextDeclRef", AuthnContextDeclRef.class.toString(),
+                "getURI");
         return getURI();
     }
 
@@ -54,10 +57,11 @@ public interface AuthnContextDeclRef extends SAMLObject, XSURI {
      * Sets the URI reference to an authentication context declaration.
      * 
      * @param uri the new AuthnContextDeclRef URI
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setAuthnContextDeclRef(@Nullable String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setAuthnContextDeclRef", AuthnContextDeclRef.class.toString(),
+                "setURI");
         setURI(uri);
     }
     

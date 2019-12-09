@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core GetComplete.
@@ -43,10 +45,10 @@ public interface GetComplete extends SAMLObject, XSURI {
      * Gets the GetComplete URI value.
      * 
      * @return GetComplete URI
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getGetComplete() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getGetComplete", GetComplete.class.toString(), "getURI");
         return getURI();
     }
 
@@ -54,10 +56,10 @@ public interface GetComplete extends SAMLObject, XSURI {
      * Sets the GetComplete URI.
      * 
      * @param uri the GetComplete URI
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setGetComplete(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setGetComplete", GetComplete.class.toString(), "setURI");
         setURI(uri);
     }
 

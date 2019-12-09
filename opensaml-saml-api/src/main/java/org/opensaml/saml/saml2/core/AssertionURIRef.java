@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core AssertionURIRef.
@@ -43,10 +45,10 @@ public interface AssertionURIRef extends SAMLObject, XSURI, Evidentiary {
      * Gets the URI of the assertion this references.
      * 
      * @return the URI of the assertion this references
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getAssertionURI() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getAssertionURI", AssertionURIRef.class.toString(), "getURI");
         return getURI();
     }
 
@@ -54,10 +56,10 @@ public interface AssertionURIRef extends SAMLObject, XSURI, Evidentiary {
      * Sets the URI of the assertion this references.
      * 
      * @param uri the URI of the assertion this references
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setAssertionURI(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setAssertionURI", AssertionURIRef.class.toString(), "setURI");
         setURI(uri);
     }
     

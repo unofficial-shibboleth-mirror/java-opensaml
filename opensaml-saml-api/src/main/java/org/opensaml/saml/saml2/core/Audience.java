@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core Audience.
@@ -43,10 +45,10 @@ public interface Audience extends SAMLObject, XSURI {
      * Gets the URI of the audience for the assertion.
      * 
      * @return the URI of the audience for the assertion
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getAudienceURI() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getAudienceURI", Audience.class.toString(), "getURI");
         return getURI();
     }
 
@@ -54,10 +56,10 @@ public interface Audience extends SAMLObject, XSURI {
      * Sets the URI of the audience for the assertion.
      * 
      * @param uri the URI of the audience for the assertion
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setAudienceURI(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setAudienceURI", Audience.class.toString(), "setURI");
         setURI(uri);
     }
     

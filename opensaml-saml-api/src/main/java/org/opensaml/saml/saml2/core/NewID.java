@@ -30,6 +30,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core NewID.
@@ -47,10 +49,10 @@ public interface NewID extends SAMLObject, XSString {
      * Get NewID value.
      * 
      * @return NewID value
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getNewID() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getNewID", NewID.class.toString(), "getValue");
         return getValue();
     }
 
@@ -58,10 +60,10 @@ public interface NewID extends SAMLObject, XSString {
      * Set NewID value.
      * 
      * @param value the new NewID value
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setNewID(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setNewID", NewID.class.toString(), "setValue");
         setValue(value);
     }
 

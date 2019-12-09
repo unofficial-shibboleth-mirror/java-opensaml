@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core StatusMessage.
@@ -43,10 +45,10 @@ public interface StatusMessage extends SAMLObject, XSString {
      * Gets the Message of this Status Message.
      * 
      * @return StatusMessage message
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getMessage() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getMessage", StatusMessage.class.toString(), "getValue");
         return getValue();
     }
 
@@ -54,10 +56,11 @@ public interface StatusMessage extends SAMLObject, XSString {
      * Sets the Message of this Status Message.
      * 
      * @param value the Message of this Status Message
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setMessage(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setMessage", StatusMessage.class.toString(), "setValue");
         setValue(value);
     }
+
 }

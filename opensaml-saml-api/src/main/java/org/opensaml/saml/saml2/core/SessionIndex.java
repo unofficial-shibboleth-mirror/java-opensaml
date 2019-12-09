@@ -30,6 +30,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core SessionIndex.
@@ -47,10 +49,10 @@ public interface SessionIndex extends SAMLObject, XSString {
      * Gets the session index value of the request.
      * 
      * @return the session index value of the request
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getSessionIndex() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getSessionIndex", SessionIndex.class.toString(), "getValue");
         return getValue();
     }
 
@@ -58,10 +60,10 @@ public interface SessionIndex extends SAMLObject, XSString {
      * Sets the session index value of the request.
      * 
      * @param value the new session index value of the request
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setSessionIndex(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setSessionIndex", SessionIndex.class.toString(), "setValue");
         setValue(value);
     }
 

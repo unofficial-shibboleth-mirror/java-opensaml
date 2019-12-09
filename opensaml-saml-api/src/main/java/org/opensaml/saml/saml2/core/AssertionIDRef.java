@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core AssertionIDRef.
@@ -43,10 +45,10 @@ public interface AssertionIDRef extends SAMLObject, XSString, Evidentiary {
      * Gets the ID of the assertion this references.
      * 
      * @return the ID of the assertion this references
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getAssertionID() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getAssertionID", AssertionIDRef.class.toString(), "getValue");
         return getValue();
     }
 
@@ -54,10 +56,11 @@ public interface AssertionIDRef extends SAMLObject, XSString, Evidentiary {
      * Sets the ID of the assertion this references.
      * 
      * @param value the ID of the assertion this references
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setAssertionID(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setAssertionID", AssertionIDRef.class.toString(), "setValue");
         setValue(value);
     }
+
 }
