@@ -26,6 +26,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * Localized logo type.
@@ -62,10 +64,10 @@ public interface Logo extends LocalizedURI, SAMLObject {
      * Gets the URL.
      * 
      * @return the URL
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getURL() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getURL", Logo.class.toString(), "getURI");
         return getURI();
     }
     
@@ -73,10 +75,10 @@ public interface Logo extends LocalizedURI, SAMLObject {
      * Sets the URL.
      * 
      * @param uri the URL
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setURL(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setURL", Logo.class.toString(), "setURI");
         setURI(uri);
     }
 

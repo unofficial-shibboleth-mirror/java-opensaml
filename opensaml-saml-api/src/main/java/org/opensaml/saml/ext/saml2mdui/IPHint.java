@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * IPHint.
@@ -47,13 +49,13 @@ public interface IPHint extends SAMLObject, XSString {
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**
-     * Gets the Hint.
+     * Gets the hint.
      * 
-     * @return the Hint
-     * 
-     * @deprecated
+     * @return the hint
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getHint() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getHint", IPHint.class.toString(), "getValue");
         return getValue();
     }
     
@@ -61,10 +63,10 @@ public interface IPHint extends SAMLObject, XSString {
      * Sets the hint.
      * 
      * @param value hint
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setHint(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setHint", IPHint.class.toString(), "setValue");
         setValue(value);
     }
 

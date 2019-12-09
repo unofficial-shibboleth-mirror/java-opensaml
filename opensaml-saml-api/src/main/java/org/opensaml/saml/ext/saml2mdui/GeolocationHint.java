@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * GeolocationHint.
@@ -48,13 +50,13 @@ public interface GeolocationHint extends SAMLObject, XSURI {
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**
-     * Gets the Hint.
+     * Gets the hint.
      * 
      * @return the Hint
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getHint() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getHint", GeolocationHint.class.toString(), "getURI");
         return getURI();
     }
     
@@ -62,10 +64,10 @@ public interface GeolocationHint extends SAMLObject, XSURI {
      * Sets the hint.
      * 
      * @param value hint
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setHint(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setHint", GeolocationHint.class.toString(), "setURI");
         setURI(value);
     }
 }
