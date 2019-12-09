@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata EmailAddress.
@@ -43,10 +45,10 @@ public interface EmailAddress extends SAMLObject, XSURI {
      * Gets the email address.
      * 
      * @return the email address
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getAddress() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getAddress", EmailAddress.class.toString(), "getURI");
         return getURI();
     }
 
@@ -54,10 +56,10 @@ public interface EmailAddress extends SAMLObject, XSURI {
      * Sets the email address.
      * 
      * @param value email address
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setAddress(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setAddress", EmailAddress.class.toString(), "setURI");
         setURI(value);
     }
     

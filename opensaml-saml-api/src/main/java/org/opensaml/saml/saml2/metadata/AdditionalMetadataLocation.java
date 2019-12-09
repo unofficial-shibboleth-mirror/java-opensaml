@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata AdditionalMetadataLocation.
@@ -53,10 +55,11 @@ public interface AdditionalMetadataLocation extends SAMLObject, XSURI {
      * Gets the location URI.
      * 
      * @return the location URI
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getLocationURI() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getLocationURI", AdditionalMetadataLocation.class.toString(),
+                "getURI");
         return getURI();
     }
 
@@ -64,10 +67,11 @@ public interface AdditionalMetadataLocation extends SAMLObject, XSURI {
      * Sets the location URI.
      * 
      * @param uri the location URI
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setLocationURI(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setLocationURI", AdditionalMetadataLocation.class.toString(),
+                "setURI");
         setURI(uri);
     }
 

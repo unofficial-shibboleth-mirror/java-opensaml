@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata GivenName.
@@ -43,10 +45,10 @@ public interface GivenName extends SAMLObject, XSString {
      * Gets the name.
      * 
      * @return the name
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getName() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getName", GivenName.class.toString(), "getValue");
         return getValue();
     }
 
@@ -54,10 +56,11 @@ public interface GivenName extends SAMLObject, XSString {
      * Sets the name.
      * 
      * @param value the name
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setName(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setName", GivenName.class.toString(), "setValue");
         setValue(value);
     }
+    
 }

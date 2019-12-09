@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata AffiliateMember.
@@ -50,10 +52,10 @@ public interface AffiliateMember extends SAMLObject, XSURI {
      * Gets the member's entity ID.
      * 
      * @return the member's ID
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getID() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getID", AffiliateMember.class.toString(), "getURI");
         return getURI();
     }
 
@@ -61,10 +63,10 @@ public interface AffiliateMember extends SAMLObject, XSURI {
      * Sets the member's entity ID.
      * 
      * @param uri the member's ID
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setID(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setID", AffiliateMember.class.toString(), "setURI");
         setURI(uri);
     }
 

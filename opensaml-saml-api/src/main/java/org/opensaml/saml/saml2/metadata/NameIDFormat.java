@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata NameIDFormat.
@@ -43,10 +45,10 @@ public interface NameIDFormat extends SAMLObject, XSURI {
      * Gets the format of the NameID.
      * 
      * @return the format of the NameID
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getFormat() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getFormat", NameIDFormat.class.toString(), "getURI");
         return getURI();
     }
 
@@ -54,10 +56,10 @@ public interface NameIDFormat extends SAMLObject, XSURI {
      * Sets the format of the NameID.
      * 
      * @param uri the format of the NameID
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setFormat(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setFormat", NameIDFormat.class.toString(), "setURI");
         setURI(uri);
     }
     

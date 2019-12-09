@@ -26,6 +26,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata AttributeProfile.
@@ -43,10 +45,10 @@ public interface AttributeProfile extends SAMLObject, XSURI {
      * Gets the URI of this attribute profile.
      * 
      * @return the URI of this attribute profile
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     @Nullable default String getProfileURI() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getProfileURI", AttributeProfile.class.toString(), "getURI");
         return getURI();
     }
 
@@ -54,10 +56,10 @@ public interface AttributeProfile extends SAMLObject, XSURI {
      * Sets the URI of this attribute profile.
      * 
      * @param uri the URI of this attribute profile
-     * 
-     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.0.0")
     default void setProfileURI(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setProfileURI", AttributeProfile.class.toString(), "setURI");
         setURI(uri);
     }
 }
