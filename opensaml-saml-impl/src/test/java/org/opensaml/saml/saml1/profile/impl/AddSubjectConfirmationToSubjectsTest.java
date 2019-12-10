@@ -105,7 +105,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getSubjectConfirmation());
         Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 1);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getConfirmationMethod(),
+        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
 
         assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
@@ -113,7 +113,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getSubjectConfirmation());
         Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 1);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getConfirmationMethod(),
+        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
     }
 
@@ -131,9 +131,9 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getSubjectConfirmation());
         Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 2);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getConfirmationMethod(),
+        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(1).getConfirmationMethod(),
+        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(1).getURI(),
                 ConfirmationMethod.METHOD_SENDER_VOUCHES);
 
         assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
@@ -141,9 +141,9 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getSubjectConfirmation());
         Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 2);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getConfirmationMethod(),
+        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(1).getConfirmationMethod(),
+        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(1).getURI(),
                 ConfirmationMethod.METHOD_SENDER_VOUCHES);
     }
     
@@ -163,7 +163,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertNotNull(subject);
         Assert.assertNotNull(subject.getSubjectConfirmation());
         Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 1);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getConfirmationMethod(),
+        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_ARTIFACT);
     }
     

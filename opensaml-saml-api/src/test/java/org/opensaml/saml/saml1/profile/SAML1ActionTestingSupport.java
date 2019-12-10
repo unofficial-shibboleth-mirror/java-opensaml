@@ -201,7 +201,7 @@ public class SAML1ActionTestingSupport {
         if (artifacts != null) {
             for (final String artifact : artifacts) {
                 final AssertionArtifact aa = artifactBuilder.buildObject();
-                aa.setAssertionArtifact(artifact);
+                aa.setValue(artifact);
                 request.getAssertionArtifacts().add(aa);
             }
         }

@@ -17,19 +17,13 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * Concrete Implementation of {@link org.opensaml.saml.saml1.core.AssertionIDReference} Object.
+ * Concrete Implementation of {@link AssertionIDReference} Object.
  */
-public class AssertionIDReferenceImpl extends AbstractXMLObject implements AssertionIDReference {
-
-    /** String to contain the ncName. */
-    private String ncName;
+public class AssertionIDReferenceImpl extends XSStringImpl implements AssertionIDReference {
 
     /**
      * Constructor.
@@ -42,20 +36,5 @@ public class AssertionIDReferenceImpl extends AbstractXMLObject implements Asser
             final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getReference() {
-        return ncName;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setReference(final String name) {
-        ncName = prepareForAssignment(ncName, name);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

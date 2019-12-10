@@ -20,57 +20,68 @@
  */
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * This interface defines how the object representing a SAML1 <code> ConfirmationMethod </code> element behaves.
  */
-public interface ConfirmationMethod extends SAMLObject {
+public interface ConfirmationMethod extends SAMLObject, XSURI {
     
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ConfirmationMethod";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ConfirmationMethod";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-    
-    /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ConfirmationMethodType"; 
         
-    /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
-            new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-    
     /** Bearer confirmation method. */
-    public static final String METHOD_BEARER = "urn:oasis:names:tc:SAML:1.0:cm:bearer";
+    @Nonnull @NotEmpty static final String METHOD_BEARER = "urn:oasis:names:tc:SAML:1.0:cm:bearer";
 
     /** Artifact confirmation method. */
-    public static final String METHOD_ARTIFACT = "urn:oasis:names:tc:SAML:1.0:cm:artifact";
+    @Nonnull @NotEmpty static final String METHOD_ARTIFACT = "urn:oasis:names:tc:SAML:1.0:cm:artifact";
 
     /** Deprecated Artifact confirmation method. */
     @Deprecated
-    public static final String METHOD_ARTIFACT_DEPRECATED = "urn:oasis:names:tc:SAML:1.0:cm:artifact-01";
+    @Nonnull @NotEmpty static final String METHOD_ARTIFACT_DEPRECATED = "urn:oasis:names:tc:SAML:1.0:cm:artifact-01";
     
     /** Holder of Key confirmation method. */
-    public static final String METHOD_HOLDER_OF_KEY = "urn:oasis:names:tc:SAML:1.0:cm:holder-of-key";
+    @Nonnull @NotEmpty static final String METHOD_HOLDER_OF_KEY = "urn:oasis:names:tc:SAML:1.0:cm:holder-of-key";
 
     /** Sender-Vouches confirmation method. */
-    public static final String METHOD_SENDER_VOUCHES = "urn:oasis:names:tc:SAML:1.0:cm:sender-vouches";
+    @Nonnull @NotEmpty static final String METHOD_SENDER_VOUCHES = "urn:oasis:names:tc:SAML:1.0:cm:sender-vouches";
     
     /**
      * Gets the confirmation method.
      * 
      * @return the confirmation method
      */
-    public String getConfirmationMethod();
+    @Deprecated(forRemoval=true, since="4.0.0")
+    @Nullable default String getConfirmationMethod() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getConfirmationMethod", ConfirmationMethod.class.toString(),
+                "getURI");
+        return getURI();
+    }
     
     /**
      * Sets the confirmation method.
      * 
-     * @param confirmationMethod the confirmation method
+     * @param uri the confirmation method
      */
-    public void setConfirmationMethod(String confirmationMethod);
+    @Deprecated(forRemoval=true, since="4.0.0")
+    default void setConfirmationMethod(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setConfirmationMethod", ConfirmationMethod.class.toString(),
+                "setURI");
+        setURI(uri);
+    }
+    
 }

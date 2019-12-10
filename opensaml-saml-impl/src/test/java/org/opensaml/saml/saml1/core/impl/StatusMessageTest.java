@@ -55,7 +55,7 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementFile);
-        Assert.assertNull(statusMessage.getMessage(), "Contents");
+        Assert.assertNull(statusMessage.getValue(), "Contents");
     }
 
     /** {@inheritDoc} */
@@ -63,7 +63,7 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementOptionalAttributesFile);
-        Assert.assertEquals(statusMessage.getMessage(), contents, "Contents");
+        Assert.assertEquals(statusMessage.getValue(), contents, "Contents");
     }
 
     /** {@inheritDoc} */
@@ -79,7 +79,7 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesMarshall() {
         StatusMessage statusMessage = (StatusMessage) buildXMLObject(qname);
 
-        statusMessage.setMessage(contents);
+        statusMessage.setValue(contents);
         assertXMLEquals(expectedOptionalAttributesDOM, statusMessage);
     }
 }

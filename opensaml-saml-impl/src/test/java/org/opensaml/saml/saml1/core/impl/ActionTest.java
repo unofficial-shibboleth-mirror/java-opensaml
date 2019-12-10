@@ -56,7 +56,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementFile);
         Assert.assertNull(action.getNamespace(), "namespace attribute present");
-        Assert.assertNull(action.getContents(), "Contents present");
+        Assert.assertNull(action.getValue(), "Contents present");
     }
 
     /** {@inheritDoc} */
@@ -65,7 +65,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
         Assert.assertEquals(action.getNamespace(), expectedNamespace, "namespace attribute ");
-        Assert.assertEquals(action.getContents(), expectedContents, "Contents ");
+        Assert.assertEquals(action.getValue(), expectedContents, "Contents ");
     }
 
     /** {@inheritDoc} */
@@ -81,7 +81,7 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesMarshall() {
         Action action =(Action) buildXMLObject(qname);
         action.setNamespace(expectedNamespace);
-        action.setContents(expectedContents);
+        action.setValue(expectedContents);
         assertXMLEquals(expectedOptionalAttributesDOM, action);
     }
 }

@@ -17,19 +17,13 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml1.core.Audience;
 
 /**
- * Concrete class implementation of {@link org.opensaml.saml.saml1.core.Audience}.
+ * Concrete class implementation of {@link Audience}.
  */
-public class AudienceImpl extends AbstractXMLObject implements Audience {
-
-    /** String to hold the URI. */
-    private String uri;
+public class AudienceImpl extends XSURIImpl implements Audience {
 
     /**
      * Constructor.
@@ -41,20 +35,5 @@ public class AudienceImpl extends AbstractXMLObject implements Audience {
     protected AudienceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getUri() {
-        return uri;
-    }
-
-    /** {@inheritDoc} */
-    public void setUri(final String s) {
-
-        uri = prepareForAssignment(uri, s);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

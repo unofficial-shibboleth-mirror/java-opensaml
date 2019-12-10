@@ -192,7 +192,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
 // Checkstyle: ModifiedControlVariable ON
             }
             final ConfirmationMethod newMethod = confirmationMethodBuilder.buildObject();
-            newMethod.setConfirmationMethod(method);
+            newMethod.setURI(method);
             confirmation.getConfirmationMethods().add(newMethod);
         }
         
@@ -247,7 +247,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         
         for (final ConfirmationMethod method : confirmation.getConfirmationMethods()) {
             final ConfirmationMethod newMethod = confirmationMethodBuilder.buildObject();
-            newMethod.setConfirmationMethod(method.getConfirmationMethod());
+            newMethod.setURI(method.getURI());
             clone.getConfirmationMethods().add(newMethod);
         }
         

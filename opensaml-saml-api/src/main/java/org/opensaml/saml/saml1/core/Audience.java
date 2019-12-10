@@ -21,35 +21,50 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * This interface describes how an object representing a SAML1 <code>Audience</code> element will behave.
  */
-public interface Audience extends SAMLObject {
+public interface Audience extends SAMLObject, XSURI {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Audience";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Audience";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-
-    /** 
-     * Return the audience URI.
+    
+    /**
+     * Gets the URI of the audience for the assertion.
      * 
-     * @return the audience URI
+     * @return the URI of the audience for the assertion
      */
-    public String getUri();
+    @Deprecated(forRemoval=true, since="4.0.0")
+    @Nullable default String getUri() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getUri", Audience.class.toString(), "getURI");
+        return getURI();
+    }
 
     /**
-     * Set the audience URI.
+     * Sets the URI of the audience for the assertion.
      * 
-     * @param uri the audience URI
+     * @param uri the URI of the audience for the assertion
      */
-    public void setUri(String uri);
-    
+    @Deprecated(forRemoval=true, since="4.0.0")
+    default void setUri(@Nullable final String uri) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setUri", Audience.class.toString(), "setURI");
+        setURI(uri);
+    }
+
 }

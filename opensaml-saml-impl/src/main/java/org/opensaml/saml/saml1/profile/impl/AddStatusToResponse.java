@@ -273,7 +273,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusMessage>getBuilderOrThrow(
                         StatusMessage.DEFAULT_ELEMENT_NAME);
         final StatusMessage sm = statusMessageBuilder.buildObject();
-        sm.setMessage(message);
+        sm.setValue(message);
         status.setStatusMessage(sm);
     }
     

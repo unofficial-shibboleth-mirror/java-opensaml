@@ -94,8 +94,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
         final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
-        Assert.assertEquals(audcond.getAudiences().get(0).getUri(), AUDIENCE1);
-        Assert.assertEquals(audcond.getAudiences().get(1).getUri(), AUDIENCE2);
+        Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
+        Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
     /**
@@ -123,8 +123,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
         final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
-        Assert.assertEquals(audcond.getAudiences().get(0).getUri(), AUDIENCE1);
-        Assert.assertEquals(audcond.getAudiences().get(1).getUri(), AUDIENCE2);
+        Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
+        Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
     /** Test that an addition condition is not added if an assertion already contains one. */
@@ -155,8 +155,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
         final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
-        Assert.assertEquals(audcond.getAudiences().get(0).getUri(), AUDIENCE1);
-        Assert.assertEquals(audcond.getAudiences().get(1).getUri(), AUDIENCE2);
+        Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
+        Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
     /** Test that the condition is properly added if there are multiple assertions in the response. */
@@ -179,8 +179,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
             Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
             final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
             Assert.assertEquals(audcond.getAudiences().size(), 2);
-            Assert.assertEquals(audcond.getAudiences().get(0).getUri(), AUDIENCE1);
-            Assert.assertEquals(audcond.getAudiences().get(1).getUri(), AUDIENCE2);
+            Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
+            Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
         }
     }
     

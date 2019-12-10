@@ -54,7 +54,7 @@ public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementFile);
         
-        Assert.assertNull(artifact.getAssertionArtifact(), "AssertionArtifact contents present");
+        Assert.assertNull(artifact.getValue(), "AssertionArtifact contents present");
     }
 
     /** {@inheritDoc} */
@@ -62,7 +62,7 @@ public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertEquals(artifact.getAssertionArtifact(), expectedAssertionArtifact, "AssertionArtifact contents present");
+        Assert.assertEquals(artifact.getValue(), expectedAssertionArtifact, "AssertionArtifact contents present");
     }
 
     /** {@inheritDoc} */
@@ -75,7 +75,7 @@ public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
         AssertionArtifact artifact = (AssertionArtifact) buildXMLObject(qname);
-        artifact.setAssertionArtifact(expectedAssertionArtifact);
+        artifact.setValue(expectedAssertionArtifact);
         assertXMLEquals(expectedOptionalAttributesDOM, artifact);
     }
 }

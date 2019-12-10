@@ -17,22 +17,16 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml1.core.Action;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml1.core.Action}.
+ * Concrete implementation of {@link Action}.
  */
-public class ActionImpl extends AbstractXMLObject implements Action {
+public class ActionImpl extends XSStringImpl implements Action {
 
     /** Place to store the namespace. */
     private String namespace;
-
-    /** Where to store the contents. */
-    private String contents;
     
     /**
      * Constructor.
@@ -57,22 +51,4 @@ public class ActionImpl extends AbstractXMLObject implements Action {
         namespace = prepareForAssignment(namespace, ns);
     }
 
-    /** {@inheritDoc} */
-    @Override
-    public String getContents() {
-        return contents;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void setContents(final String c) {
-        contents = prepareForAssignment(contents, c);
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        // No elements
-        return null;
-    }
 }

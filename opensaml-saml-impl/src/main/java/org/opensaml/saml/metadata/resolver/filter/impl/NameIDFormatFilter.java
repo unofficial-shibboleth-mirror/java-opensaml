@@ -173,7 +173,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
         
         for (final String format : formats) {
             final NameIDFormat nif = formatBuilder.buildObject();
-            nif.setFormat(format);
+            nif.setURI(format);
             log.info("Adding NameIDFormat '{}' to EntityDescriptor '{}'", format,
                     ((EntityDescriptor) role.getParent()).getEntityID());
             roleFormats.add(nif);

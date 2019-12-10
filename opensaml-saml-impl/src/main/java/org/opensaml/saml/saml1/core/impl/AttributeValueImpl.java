@@ -15,27 +15,33 @@
  * limitations under the License.
  */
 
+/**
+ * 
+ */
+
 package org.opensaml.saml.saml1.core.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.saml1.core.AssertionArtifact;
-import org.w3c.dom.Element;
+import org.opensaml.core.xml.schema.impl.XSAnyImpl;
+import org.opensaml.saml.saml1.core.AttributeValue;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AssertionArtifact} objects.
+ * A concrete implementation of {@link AttributeValue}.
  */
-public class AssertionArtifactMarshaller extends AbstractSAMLObjectMarshaller {
+public class AttributeValueImpl extends XSAnyImpl implements AttributeValue {
 
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
-            throws MarshallingException {
-        final AssertionArtifact assertionArtifact = (AssertionArtifact) samlObject;
-        if (assertionArtifact.getAssertionArtifact() != null) {
-            ElementSupport.appendTextContent(domElement, assertionArtifact.getAssertionArtifact());
-        }
+    /**
+     * Constructor.
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
+     */
+    protected AttributeValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

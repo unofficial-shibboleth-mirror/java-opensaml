@@ -47,8 +47,8 @@
         <!-- AssertionIDReference -->
         <ObjectProvider qualifiedName="saml1:AssertionIDReference">
             <BuilderClass className="org.opensaml.saml.saml1.core.impl.AssertionIDReferenceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml1.core.impl.AssertionIDReferenceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml1.core.impl.AssertionIDReferenceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
         
         <!-- Attribute -->
@@ -62,6 +62,13 @@
             <BuilderClass className="org.opensaml.saml.saml1.core.impl.AttributeBuilder"/>
             <MarshallingClass className="org.opensaml.saml.saml1.core.impl.AttributeMarshaller"/>
             <UnmarshallingClass className="org.opensaml.saml.saml1.core.impl.AttributeUnmarshaller"/>
+        </ObjectProvider>
+        
+        <!-- AttributeValue -->
+        <ObjectProvider qualifiedName="saml1:AttributeValue">
+            <BuilderClass className="org.opensaml.saml.saml1.core.impl.AttributeValueBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller"/>
         </ObjectProvider>
         
         <!-- AttributeDesignator -->
@@ -93,8 +100,8 @@
         <!-- Audience -->
         <ObjectProvider qualifiedName="saml1:Audience">
             <BuilderClass className="org.opensaml.saml.saml1.core.impl.AudienceBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml1.core.impl.AudienceMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml1.core.impl.AudienceUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- saml1:AudienceRestrictionCondition -->
@@ -165,8 +172,8 @@
         <!-- ConfirmationMethod -->
         <ObjectProvider qualifiedName="saml1:ConfirmationMethod">
             <BuilderClass className="org.opensaml.saml.saml1.core.impl.ConfirmationMethodBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml1.core.impl.ConfirmationMethodMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml1.core.impl.ConfirmationMethodUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSURIUnmarshaller"/>
         </ObjectProvider>
         
         <!-- DoNotCacheCondition -->
@@ -232,6 +239,13 @@
             <BuilderClass className="org.opensaml.saml.saml1.core.impl.SubjectConfirmationBuilder"/>
             <MarshallingClass className="org.opensaml.saml.saml1.core.impl.SubjectConfirmationMarshaller"/>
             <UnmarshallingClass className="org.opensaml.saml.saml1.core.impl.SubjectConfirmationUnmarshaller"/>
+        </ObjectProvider>
+
+        <!-- SubjectConfirmationData -->
+        <ObjectProvider qualifiedName="saml1:SubjectConfirmationData">
+            <BuilderClass className="org.opensaml.saml.saml1.core.impl.SubjectConfirmationDataBuilder"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller"/>
         </ObjectProvider>
 
         <!-- SubjectLocality -->

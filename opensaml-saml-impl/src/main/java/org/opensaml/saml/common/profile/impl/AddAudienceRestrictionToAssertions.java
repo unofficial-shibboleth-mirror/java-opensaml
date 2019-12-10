@@ -210,7 +210,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
         for (final String audienceId : audiences) {
             log.debug("{} Adding {} as an Audience of the AudienceRestrictionCondition", getLogPrefix(), audienceId);
             final org.opensaml.saml.saml1.core.Audience audience = audienceBuilder.buildObject();
-            audience.setUri(audienceId);
+            audience.setURI(audienceId);
             condition.getAudiences().add(audience);
         }
     }

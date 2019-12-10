@@ -8,8 +8,8 @@
         <!-- AssertionArtifact -->
         <ObjectProvider qualifiedName="saml1p:AssertionArtifact">
             <BuilderClass className="org.opensaml.saml.saml1.core.impl.AssertionArtifactBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml1.core.impl.AssertionArtifactMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml1.core.impl.AssertionArtifactUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
         
         <!-- AttributeQuery -->
@@ -101,8 +101,8 @@
         <!-- StatusMessage -->
         <ObjectProvider qualifiedName="saml1p:StatusMessage">
             <BuilderClass className="org.opensaml.saml.saml1.core.impl.StatusMessageBuilder"/>
-            <MarshallingClass className="org.opensaml.saml.saml1.core.impl.StatusMessageMarshaller"/>
-            <UnmarshallingClass className="org.opensaml.saml.saml1.core.impl.StatusMessageUnmarshaller"/>
+            <MarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringMarshaller"/>
+            <UnmarshallingClass className="org.opensaml.core.xml.schema.impl.XSStringUnmarshaller"/>
         </ObjectProvider>
 
     </ObjectProviders>

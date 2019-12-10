@@ -15,20 +15,33 @@
  * limitations under the License.
  */
 
+/**
+ * 
+ */
+
 package org.opensaml.saml.saml1.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
-import org.opensaml.saml.saml1.core.StatusMessage;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import org.opensaml.core.xml.schema.impl.XSAnyImpl;
+import org.opensaml.saml.saml1.core.SubjectConfirmationData;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.StatusMessage} objects.
+ * A concrete implementation of {@link SubjectConfirmationData}.
  */
-public class StatusMessageUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class SubjectConfirmationDataImpl extends XSAnyImpl implements SubjectConfirmationData {
 
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final StatusMessage statusMessage = (StatusMessage) samlObject;
-        statusMessage.setMessage(elementContent);
+    /**
+     * Constructor.
+     * 
+     * @param namespaceURI the namespace the element is in
+     * @param elementLocalName the local name of the XML element this Object represents
+     * @param namespacePrefix the prefix for the given namespace
+     */
+    protected SubjectConfirmationDataImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
+        super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

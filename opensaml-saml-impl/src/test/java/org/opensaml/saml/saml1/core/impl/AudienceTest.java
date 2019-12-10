@@ -55,7 +55,7 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Audience audience = (Audience) unmarshallElement(singleElementFile);
         
-        Assert.assertNull(audience.getUri(), "Uri is non-null");
+        Assert.assertNull(audience.getURI(), "Uri is non-null");
     }
 
     /** {@inheritDoc} */
@@ -64,7 +64,7 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         Audience audience = (Audience) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertEquals(audience.getUri(), expectedUri, "Uri");
+        Assert.assertEquals(audience.getURI(), expectedUri, "Uri");
     }
 
     /** {@inheritDoc} */
@@ -80,7 +80,7 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesMarshall() {
         Audience audience = (Audience) buildXMLObject(qname);
         
-        audience.setUri(expectedUri);
+        audience.setURI(expectedUri);
         assertXMLEquals(expectedOptionalAttributesDOM, audience);
         
     }

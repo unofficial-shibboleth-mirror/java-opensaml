@@ -56,7 +56,7 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementFile);
         
-        Assert.assertNull(confirmationMethod.getConfirmationMethod(), "Contents of Confirmation Method");
+        Assert.assertNull(confirmationMethod.getURI(), "Contents of Confirmation Method");
 
     }
 
@@ -66,7 +66,7 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesUnmarshall() {
         ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertEquals(confirmationMethod.getConfirmationMethod(), expectedConfirmationMethod, "Contents of Confirmation Method");
+        Assert.assertEquals(confirmationMethod.getURI(), expectedConfirmationMethod, "Contents of Confirmation Method");
     }
 
     /** {@inheritDoc} */
@@ -81,7 +81,7 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
         ConfirmationMethod confirmationMethod = (ConfirmationMethod) buildXMLObject(qname);
-        confirmationMethod.setConfirmationMethod(expectedConfirmationMethod);
+        confirmationMethod.setURI(expectedConfirmationMethod);
         
         assertXMLEquals(expectedOptionalAttributesDOM, confirmationMethod);
     }

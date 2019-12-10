@@ -15,26 +15,31 @@
  * limitations under the License.
  */
 
+/**
+ * 
+ */
+
 package org.opensaml.saml.saml1.core.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.saml1.core.Audience;
-import org.w3c.dom.Element;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml1.core.SubjectConfirmationData;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Audience} objects.
+ * Builder for {@link SubjectConfirmationData} objects.
  */
-public class AudienceMarshaller extends AbstractSAMLObjectMarshaller {
+public class SubjectConfirmationDataBuilder extends AbstractSAMLObjectBuilder<SubjectConfirmationData> {
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
-            throws MarshallingException {
-        final Audience audience = (Audience) samlObject;
-
-        ElementSupport.appendTextContent(domElement, audience.getUri());
+    public SubjectConfirmationData buildObject() {
+        return buildObject(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20_PREFIX);
     }
+
+    /** {@inheritDoc} */
+    public SubjectConfirmationData buildObject(final String namespaceURI, final String localName,
+            final String namespacePrefix) {
+        return new SubjectConfirmationDataImpl(namespaceURI, localName, namespacePrefix);
+    }
+    
 }

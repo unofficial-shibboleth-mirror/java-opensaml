@@ -22,14 +22,17 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * This interface is for the SAML1 <code> AssertionArtifact </code> element.
  */
-public interface AssertionArtifact extends SAMLObject {
+public interface AssertionArtifact extends XSString, SAMLObject {
 
     /** Element name, no namespace. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionArtifact";
@@ -37,19 +40,29 @@ public interface AssertionArtifact extends SAMLObject {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
-
-    /**
-     * Get the contents of the artifact.
-     * 
-     * @return contents of the artifact
-     */
-    @Nullable String getAssertionArtifact();
-
-    /**
-     * Set the contents of the artifact.
-     * 
-     * @param assertionArtifact contents of the artifact
-     */
-    void setAssertionArtifact(@Nullable final String assertionArtifact);
     
+    /**
+     * Get artifact value.
+     * 
+     * @return the artifact value
+     */
+    @Deprecated(forRemoval=true, since="4.0.0")
+    @Nullable default String getAssertionArtifact() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getAssertionArtifact", AssertionArtifact.class.toString(),
+                "getValue");
+        return getValue();
+    }
+
+    /**
+     * Set artifact value.
+     * 
+     * @param value new artifact value
+     */
+    @Deprecated(forRemoval=true, since="4.0.0")
+    default void setAssertionArtifact(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setAssertionArtifact", AssertionArtifact.class.toString(),
+                "setValue");
+        setValue(value);
+    }
+
 }

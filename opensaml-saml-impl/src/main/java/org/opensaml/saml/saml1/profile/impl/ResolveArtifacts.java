@@ -215,15 +215,15 @@ public class ResolveArtifacts extends AbstractProfileAction {
         
         try {
             for (final AssertionArtifact artifact : request.getAssertionArtifacts()) {
-                final SAMLArtifactMapEntry entry = artifactMap.get(artifact.getAssertionArtifact());
+                final SAMLArtifactMapEntry entry = artifactMap.get(artifact.getValue());
                 if (entry == null) {
                     log.warn("{} Unresolvable AssertionArtifact '{}' from relying party '{}'", getLogPrefix(),
-                            artifact.getAssertionArtifact(), requesterId);
+                            artifact.getValue(), requesterId);
                     success = false;
                     break;
                 }
                 
-                artifactMap.remove(artifact.getAssertionArtifact());
+                artifactMap.remove(artifact.getValue());
                 
                 if (!entry.getIssuerId().equals(issuerId)) {
                     log.warn("{} Artifact issuer mismatch, issued by '{}' but IdP has entityID of '{}'",
@@ -237,7 +237,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
                     break;
                 } else if (!(entry.getSamlMessage() instanceof Assertion)) {
                     log.warn("{} Artifact '{}' resolved to a non-Assertion object", getLogPrefix(),
-                            artifact.getAssertionArtifact());
+                            artifact.getValue());
                     success = false;
                     break;
                 }
@@ -255,10 +255,10 @@ public class ResolveArtifacts extends AbstractProfileAction {
             // Make sure we remove everything requested.
             for (final AssertionArtifact artifact : request.getAssertionArtifacts()) {
                 try {
-                    artifactMap.remove(artifact.getAssertionArtifact());
+                    artifactMap.remove(artifact.getValue());
                 } catch (final IOException e) {
                     log.error("{} Error removing mapping for artifact '{}'", getLogPrefix(),
-                            artifact.getAssertionArtifact());
+                            artifact.getValue());
                 }
             }
             

@@ -19,11 +19,12 @@ package org.opensaml.saml.saml1.core;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /** Interface to define how a NameIdentifier element behaves. */
-public interface NameIdentifier extends SAMLObject {
+public interface NameIdentifier extends SAMLObject, XSString {
 
     /** Element name, no namespace. */
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIdentifier";
@@ -85,19 +86,5 @@ public interface NameIdentifier extends SAMLObject {
      * @param format format of this identifier
      */
     public void setFormat(String format);
-
-    /**
-     * Gets the identifier.
-     * 
-     * @return the identifier
-     */
-    public String getValue();
-
-    /**
-     * Sets the identifier.
-     * 
-     * @param nameIdentifier the identifier.
-     */
-    public void setValue(String nameIdentifier);
 
 }

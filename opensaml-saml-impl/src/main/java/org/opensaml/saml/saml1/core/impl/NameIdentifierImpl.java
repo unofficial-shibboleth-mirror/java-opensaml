@@ -17,25 +17,19 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 
 /**
- * Complete implementation of {@link org.opensaml.saml.saml1.core.NameIdentifier}.
+ * Complete implementation of {@link NameIdentifier}.
  */
-public class NameIdentifierImpl extends AbstractXMLObject implements NameIdentifier {
+public class NameIdentifierImpl extends XSStringImpl implements NameIdentifier {
 
     /** Contents of the NameQualifierAttribute. */
     private String nameQualifier;
 
     /** Contents of the Format. */
     private String format;
-
-    /** Contents of the element body. */
-    private String nameIdentifier;
 
     /**
      * Constructor.
@@ -58,11 +52,6 @@ public class NameIdentifierImpl extends AbstractXMLObject implements NameIdentif
     public String getFormat() {
         return this.format;
     }
-
-    /** {@inheritDoc} */
-    public String getValue() {
-        return nameIdentifier;
-    }
     
     /** {@inheritDoc} */
     public void setNameQualifier(final String qualifier) {
@@ -74,13 +63,4 @@ public class NameIdentifierImpl extends AbstractXMLObject implements NameIdentif
         format = prepareForAssignment(format, fmt);
     }
 
-    /** {@inheritDoc} */
-    public void setValue(final String id) {
-        nameIdentifier = prepareForAssignment(nameIdentifier, id);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
 }

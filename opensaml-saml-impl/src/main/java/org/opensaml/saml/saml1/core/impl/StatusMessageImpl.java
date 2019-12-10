@@ -17,21 +17,13 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.List;
-
-import org.opensaml.core.xml.AbstractXMLObject;
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Concrete implementation of org.opensaml.saml.saml1.core StatusMessage object.
+ * Concrete implementation of {@link StatusMessage} object.
  */
-public class StatusMessageImpl extends AbstractXMLObject implements StatusMessage {
-
-    /**
-     * Contents of the element.
-     */
-    private String message;
+public class StatusMessageImpl extends XSStringImpl implements StatusMessage {
 
     /**
      * Constructor.
@@ -44,19 +36,5 @@ public class StatusMessageImpl extends AbstractXMLObject implements StatusMessag
             final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
-
-    /** {@inheritDoc} */
-    public String getMessage() {
-        return message;
-    }
-
-    /** {@inheritDoc} */
-    public void setMessage(final String msg) {
-        message = prepareForAssignment(message, msg);
-    }
-
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
+    
 }

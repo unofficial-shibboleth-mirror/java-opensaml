@@ -17,20 +17,25 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * This interface defines how the object representing a SAML 1 <code> AttributeValue </code> element behaves.
  */
-public interface AttributeValue extends SAMLObject  {
+public interface AttributeValue extends SAMLObject, XSAny  {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeValue";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeValue";
  
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+
 }

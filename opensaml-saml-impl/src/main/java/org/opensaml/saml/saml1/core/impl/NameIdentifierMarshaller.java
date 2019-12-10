@@ -17,18 +17,16 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.NameIdentifier} objects.
+ * A thread safe Marshaller for {@link NameIdentifier} objects.
  */
-public class NameIdentifierMarshaller extends AbstractSAMLObjectMarshaller {
+public class NameIdentifierMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
     protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
@@ -44,14 +42,5 @@ public class NameIdentifierMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, NameIdentifier.FORMAT_ATTRIB_NAME, nameIdentifier.getFormat());
         }
     }
-
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
-            throws MarshallingException {
-        final NameIdentifier nameIdentifier = (NameIdentifier) samlObject;
-
-        if (nameIdentifier.getValue() != null) {
-            ElementSupport.appendTextContent(domElement, nameIdentifier.getValue());
-        }
-    }
+    
 }

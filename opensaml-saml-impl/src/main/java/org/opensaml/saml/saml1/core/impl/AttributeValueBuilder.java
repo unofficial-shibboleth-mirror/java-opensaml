@@ -15,27 +15,31 @@
  * limitations under the License.
  */
 
+/**
+ * 
+ */
+
 package org.opensaml.saml.saml1.core.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.opensaml.saml.saml1.core.StatusMessage;
-import org.w3c.dom.Element;
+import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
+import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.saml1.core.AttributeValue;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.StatusMessage} objects.
+ * Builder for {@link AttributeValue} objects.
  */
-public class StatusMessageMarshaller extends AbstractSAMLObjectMarshaller {
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
-            throws MarshallingException {
-        final StatusMessage statusMessage = (StatusMessage) samlObject;
+public class AttributeValueBuilder extends AbstractSAMLObjectBuilder<AttributeValue> {
 
-        if (statusMessage.getMessage() != null) {
-            ElementSupport.appendTextContent(domElement, statusMessage.getMessage());
-        }
+    /** {@inheritDoc} */
+    public AttributeValue buildObject() {
+        return buildObject(SAMLConstants.SAML20_NS, AttributeValue.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML20_PREFIX);
     }
+
+    /** {@inheritDoc} */
+    public AttributeValue buildObject(final String namespaceURI, final String localName,
+            final String namespacePrefix) {
+        return new AttributeValueImpl(namespaceURI, localName, namespacePrefix);
+    }
+    
 }

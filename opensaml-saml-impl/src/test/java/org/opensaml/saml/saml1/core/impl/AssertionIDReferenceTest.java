@@ -60,7 +60,7 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementFile);
 
         Assert.assertNull(assertionIDReference
-                .getReference(), "NCName was " + assertionIDReference.getReference() + " expected null");
+                .getValue(), "NCName was " + assertionIDReference.getValue() + " expected null");
     }
 
     /** {@inheritDoc} */
@@ -71,7 +71,7 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementOptionalAttributesFile);
 
-        Assert.assertEquals(assertionIDReference.getReference(), expectedNCName, "NCName ");
+        Assert.assertEquals(assertionIDReference.getValue(), expectedNCName, "NCName ");
     }
 
     /** {@inheritDoc} */
@@ -87,7 +87,7 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementOptionalAttributesMarshall() {
         AssertionIDReference assertionIDReference = (AssertionIDReference) buildXMLObject(qname);
 
-        assertionIDReference.setReference(expectedNCName);
+        assertionIDReference.setValue(expectedNCName);
         assertXMLEquals(expectedOptionalAttributesDOM, assertionIDReference);
     }
 }

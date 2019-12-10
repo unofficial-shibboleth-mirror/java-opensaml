@@ -19,20 +19,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml1.core.Action;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Action} objects.
+ * A thread-safe Unmarshaller for {@link Action} objects.
  */
-public class ActionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final Action action = (Action) samlObject;
-        action.setContents(elementContent);
-    }
+public class ActionUnmarshaller extends XSStringUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {

@@ -26,14 +26,16 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
-import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * This interface defines how the object representing a SAML 1 <code>AssertionIDReference</code> element behaves.
  */
-public interface AssertionIDReference extends SAMLObject, Evidentiary {
+public interface AssertionIDReference extends XSString, Evidentiary {
 
     /** Element name, no namespace. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDReference";
@@ -41,19 +43,27 @@ public interface AssertionIDReference extends SAMLObject, Evidentiary {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-
-    /**
-     * Get the reference.
-     * 
-     * @return the reference
-     */
-    @Nullable String getReference();
-
-    /**
-     * Set the reference.
-     * 
-     * @param newReference the reference
-     */
-    void setReference(@Nullable final String newReference);
     
+    /**
+     * Gets the ID of the assertion this references.
+     * 
+     * @return the ID of the assertion this references
+     */
+    @Deprecated(forRemoval=true, since="4.0.0")
+    @Nullable default String getReference() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getReference", AssertionIDReference.class.toString(), "getValue");
+        return getValue();
+    }
+
+    /**
+     * Sets the ID of the assertion this references.
+     * 
+     * @param value the ID of the assertion this references
+     */
+    @Deprecated(forRemoval=true, since="4.0.0")
+    default void setReference(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setReference", AssertionIDReference.class.toString(), "setValue");
+        setValue(value);
+    }
+
 }

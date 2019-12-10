@@ -86,7 +86,7 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler {
             return;
         }
         
-        final String artifact = request.getAssertionArtifacts().get(0).getAssertionArtifact();
+        final String artifact = request.getAssertionArtifacts().get(0).getValue();
         try {
             final SAMLArtifactMapEntry entry = artifactMap.get(artifact);
             if (entry == null) {

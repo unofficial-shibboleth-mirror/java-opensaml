@@ -19,14 +19,14 @@ package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.w3c.dom.Attr;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml1.core.NameIdentifier} objects.
+ * A thread safe Unmarshaller for {@link NameIdentifier} objects.
  */
-public class NameIdentifierUnmarshaller extends AbstractSAMLObjectUnmarshaller {
+public class NameIdentifierUnmarshaller extends XSStringUnmarshaller {
 
     /** {@inheritDoc} */
     protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
@@ -43,12 +43,6 @@ public class NameIdentifierUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         } else {
             super.processAttribute(samlObject, attribute);
         }
-    }
-
-    /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final NameIdentifier nameIdentifier = (NameIdentifier) samlObject;
-        nameIdentifier.setValue(elementContent);
     }
     
 }

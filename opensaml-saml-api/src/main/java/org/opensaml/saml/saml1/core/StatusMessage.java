@@ -17,21 +17,26 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * This interface defines how the object representing a SAML1 <code> StatusMessage </code> element behaves. 
  */
-public interface StatusMessage extends SAMLObject {
+public interface StatusMessage extends SAMLObject, XSString {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusMessage";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusMessage";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /**
@@ -39,12 +44,19 @@ public interface StatusMessage extends SAMLObject {
      * 
      * @return  the message
      */
-    String getMessage();
+    @Deprecated(forRemoval=true, since="4.0.0")
+    @Nullable default String getMessage() {
+        return getValue();
+    }
 
     /**
      * Set the message.
      * 
-     * @param message  the message
+     * @param value  the message
      */
-    void setMessage(String message);
+    @Deprecated(forRemoval=true, since="4.0.0")
+    default void setMessage(@Nullable final String value) {
+        setValue(value);
+    }
+
 }

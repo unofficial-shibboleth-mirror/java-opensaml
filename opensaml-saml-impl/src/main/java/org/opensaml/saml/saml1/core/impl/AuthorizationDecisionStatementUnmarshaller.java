@@ -23,17 +23,12 @@ import org.opensaml.saml.saml1.core.Action;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml.saml1.core.DecisionTypeEnumeration;
 import org.opensaml.saml.saml1.core.Evidence;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.impl.AuthorizationDecisionStatementImpl} objects.
  */
 public class AuthorizationDecisionStatementUnmarshaller extends SubjectStatementUnmarshaller {
-
-    /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AuthorizationDecisionStatementUnmarshaller.class);
 
     /** {@inheritDoc} */
     protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
@@ -59,16 +54,16 @@ public class AuthorizationDecisionStatementUnmarshaller extends SubjectStatement
 
         if (attribute.getNamespaceURI() == null) {
             if (AuthorizationDecisionStatement.DECISION_ATTRIB_NAME.equals(attribute.getLocalName())) {
-                final String value = attribute.getValue();
-                if (value.equals(DecisionTypeEnumeration.PERMIT.toString())) {
-                    authorizationDecisionStatement.setDecision(DecisionTypeEnumeration.PERMIT);
-                } else if (value.equals(DecisionTypeEnumeration.DENY.toString())) {
-                    authorizationDecisionStatement.setDecision(DecisionTypeEnumeration.DENY);
-                } else if (value.equals(DecisionTypeEnumeration.INDETERMINATE.toString())) {
-                    authorizationDecisionStatement.setDecision(DecisionTypeEnumeration.INDETERMINATE);
-                } else {
-                    log.error("Unknown value for DecisionType '" + value + "'");
-                    throw new UnmarshallingException("Unknown value for DecisionType '" + value + "'");
+                try {
+                    if (attribute.getValue() != null) {
+                        authorizationDecisionStatement.setDecision(
+                                DecisionTypeEnumeration.valueOf(attribute.getValue().toUpperCase()));
+                    } else {
+                        throw new UnmarshallingException("Saw an empty value for Decision attribute");
+                    }
+                } catch (final IllegalArgumentException e) {
+                    throw new UnmarshallingException("Saw an invalid value for Decision attribute: "
+                            + attribute.getValue());
                 }
             } else if (AuthorizationDecisionStatement.RESOURCE_ATTRIB_NAME.equals(attribute.getLocalName())) {
                 authorizationDecisionStatement.setResource(attribute.getValue());

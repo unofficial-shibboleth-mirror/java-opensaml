@@ -97,7 +97,7 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
 
         final Status status = response.getStatus();
         Assert.assertNotNull(status);
-        Assert.assertEquals(status.getStatusMessage().getMessage(), "Foo");
+        Assert.assertEquals(status.getStatusMessage().getValue(), "Foo");
     }
     
  }

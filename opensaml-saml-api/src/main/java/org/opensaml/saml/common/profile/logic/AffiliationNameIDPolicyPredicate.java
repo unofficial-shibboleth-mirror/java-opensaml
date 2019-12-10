@@ -93,7 +93,7 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
                 final AffiliationDescriptor descriptor = affiliation.getAffiliationDescriptor();
                 if (descriptor != null) {
                     for (final AffiliateMember member : descriptor.getMembers()) {
-                        if (Objects.equals(member.getID(), requesterId)) {
+                        if (Objects.equals(member.getURI(), requesterId)) {
                             log.debug("Entity {} is authorized as a member of Affiliation {}", requesterId,
                                     spNameQualifier);
                             return true;

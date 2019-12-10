@@ -26,14 +26,17 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
+import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 /**
  * Interface describing how a SAML1.1 <code> Action </code> element behaves.
  */
-public interface Action extends SAMLObject {
+public interface Action extends SAMLObject, XSString {
 
     /** Default element name, no namespace. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Action";
@@ -67,17 +70,25 @@ public interface Action extends SAMLObject {
     void setNamespace(@Nullable final String namespace);
 
     /**
-     * Return the contents.
+     * Gets the value of the action to be performed.
      * 
-     * @return the action contents
+     * @return the value of the action to be performed
      */
-    @Nullable String getContents();
+    @Deprecated(forRemoval=true, since="4.0.0")
+    @Nullable default String getContents() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getContents", Action.class.toString(), "getValue");
+        return getValue();
+    }
 
     /**
-     * Set the contents.
+     * Sets the value of the action to be performed.
      * 
-     * @param contents what to set
+     * @param value the value of the action to be performed
      */
-    void setContents(@Nullable final String contents);
+    @Deprecated(forRemoval=true, since="4.0.0")
+    default void setContents(@Nullable final String value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setContents", Action.class.toString(), "setValue");
+        setValue(value);
+    }
     
 }
