@@ -61,7 +61,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), "urn:test:action1");
+        Assert.assertEquals(action.getURI(), "urn:test:action1");
     }
 
     @Test
@@ -73,7 +73,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), "urn:test:action1");
+        Assert.assertEquals(action.getURI(), "urn:test:action1");
     }
 
     @Test
@@ -86,7 +86,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), "urn:test:action2");
+        Assert.assertEquals(action.getURI(), "urn:test:action2");
     }
     
     @Test
@@ -101,7 +101,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), "urn:test:action1");
+        Assert.assertEquals(action.getURI(), "urn:test:action1");
     }
 
     @Test
@@ -116,7 +116,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), "urn:test:action1");
+        Assert.assertEquals(action.getURI(), "urn:test:action1");
     }
 
     @Test
@@ -132,7 +132,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), "urn:test:action2");
+        Assert.assertEquals(action.getURI(), "urn:test:action2");
     }
 
     @Test
@@ -145,7 +145,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), WSAddressingConstants.ACTION_URI_SOAP_FAULT);
+        Assert.assertEquals(action.getURI(), WSAddressingConstants.ACTION_URI_SOAP_FAULT);
     }
 
     @Test
@@ -158,7 +158,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).isEmpty());
         Action action = (Action) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Action.ELEMENT_NAME).get(0);
-        Assert.assertEquals(action.getValue(), WSAddressingConstants.ACTION_URI_FAULT);
+        Assert.assertEquals(action.getURI(), WSAddressingConstants.ACTION_URI_FAULT);
     }
 
 }

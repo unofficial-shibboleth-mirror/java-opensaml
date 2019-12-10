@@ -83,7 +83,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     @Test
     public void testAuthenticationType() throws Exception {
         AuthenticationType authenticationType= buildXMLObject(AuthenticationType.ELEMENT_NAME);
-        authenticationType.setValue("urn:mace:switch.ch:SWITCHaai:loa:3");
+        authenticationType.setURI("urn:mace:switch.ch:SWITCHaai:loa:3");
         marshallAndUnmarshall(authenticationType);
     }
 
@@ -123,7 +123,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     @Test
     public void testCanonicalizationAlgorithm() throws Exception {
         CanonicalizationAlgorithm canonicalizationAlgorithm= buildXMLObject(CanonicalizationAlgorithm.ELEMENT_NAME);
-        canonicalizationAlgorithm.setValue("CanonicalizationAlgorithmValue");
+        canonicalizationAlgorithm.setURI("CanonicalizationAlgorithmValue");
         marshallAndUnmarshall(canonicalizationAlgorithm);
     }
 
@@ -143,7 +143,7 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     @Test
     public void testCode() throws Exception {
         Code code= buildXMLObject(Code.ELEMENT_NAME);
-        code.setValue(Code.VALID);
+        code.setURI(Code.VALID);
         marshallAndUnmarshall(code);
     }
 
@@ -156,14 +156,14 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     @Test
     public void testComputedKey() throws Exception {
         ComputedKey computedKey= buildXMLObject(ComputedKey.ELEMENT_NAME);
-        computedKey.setValue(ComputedKey.PSHA1);
+        computedKey.setURI(ComputedKey.PSHA1);
         marshallAndUnmarshall(computedKey);
     }
 
     @Test
     public void testComputedKeyAlgorithm() throws Exception {
         ComputedKeyAlgorithm computedKeyAlgorithm= buildXMLObject(ComputedKeyAlgorithm.ELEMENT_NAME);
-        computedKeyAlgorithm.setValue("ComputedKeyAlgorithmValue");
+        computedKeyAlgorithm.setURI("ComputedKeyAlgorithmValue");
         marshallAndUnmarshall(computedKeyAlgorithm);
     }
 
@@ -319,10 +319,10 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         String context= "Context-" + System.currentTimeMillis();
         rst.setContext(context);
         RequestType requestType= buildXMLObject(RequestType.ELEMENT_NAME);
-        requestType.setValue(RequestType.ISSUE);
+        requestType.setURI(RequestType.ISSUE);
         rst.getUnknownXMLObjects().add(requestType);
         TokenType tokenType= buildXMLObject(TokenType.ELEMENT_NAME);
-        tokenType.setValue("http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0");
+        tokenType.setURI("http://docs.oasis-open.org/wss/oasis-wss-saml-token-profile-1.1#SAMLV2.0");
         rst.getUnknownXMLObjects().add(tokenType);
         
         Claims claims= createClaims();

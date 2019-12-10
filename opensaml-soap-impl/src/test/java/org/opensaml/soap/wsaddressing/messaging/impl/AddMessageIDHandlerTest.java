@@ -31,9 +31,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
 public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
     
     private AddMessageIDHandler handler;
@@ -50,7 +47,7 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
         MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
-        Assert.assertTrue(messageID.getValue().startsWith("urn:uuid:"));
+        Assert.assertTrue(messageID.getURI().startsWith("urn:uuid:"));
     }
 
     @Test
@@ -73,7 +70,7 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
         MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
-        Assert.assertEquals(messageID.getValue(), "urn:test:abc123");
+        Assert.assertEquals(messageID.getURI(), "urn:test:abc123");
     }
     
     @Test
@@ -85,7 +82,7 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
         MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
-        Assert.assertEquals(messageID.getValue(), "urn:test:abc123");
+        Assert.assertEquals(messageID.getURI(), "urn:test:abc123");
     }
 
     @Test
@@ -94,9 +91,8 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
             @Nonnull public String generateIdentifier(boolean xmlSafe) {
                 if (xmlSafe) {
                     return "urn:test:abc123:xmlsafe";
-                } else {
-                    return "urn:test:abc123";
                 }
+                return "urn:test:abc123";
             }
             @Nonnull public String generateIdentifier() {
                 return generateIdentifier(true);
@@ -110,7 +106,7 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
         MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
-        Assert.assertEquals(messageID.getValue(), "urn:test:def456");
+        Assert.assertEquals(messageID.getURI(), "urn:test:def456");
     }
 
 }

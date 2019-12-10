@@ -48,7 +48,7 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         AffiliateMember member = (AffiliateMember)unmarshallElement(singleElementFile);
         
-        String memberID = member.getID();
+        String memberID = member.getURI();
         Assert.assertEquals(memberID, expectedMemberID, "Affiliation memeber ID was " + memberID + ", expected " + expectedMemberID);
     }
 
@@ -65,7 +65,7 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
         }
 
         try {
-            member.setID(stringBuilder.toString());
+            member.setURI(stringBuilder.toString());
             Assert.fail();
         } catch (IllegalArgumentException e) {
             //OK
@@ -74,7 +74,7 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
         
         member = (new AffiliateMemberBuilder()).buildObject();
         
-        member.setID(expectedMemberID);
+        member.setURI(expectedMemberID);
         
         assertXMLEquals(expectedDOM, member);
     }

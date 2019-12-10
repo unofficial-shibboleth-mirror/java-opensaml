@@ -78,8 +78,8 @@ public class ExtractProxiedRequestersHandler extends AbstractMessageHandler {
             }
             
             for (final RequesterID id : scoping.getRequesterIDs()) {
-                if (id != null && id.getRequesterID() != null) {
-                    proxyContext.getRequesters().add(id.getRequesterID());
+                if (id != null && id.getURI() != null) {
+                    proxyContext.getRequesters().add(id.getURI());
                 }
             }
         }

@@ -43,7 +43,7 @@ public class ExtractMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
     @Test
     public void testHeaderPresent() throws ComponentInitializationException, MessageHandlerException {
         MessageID messageID = buildXMLObject(MessageID.ELEMENT_NAME);
-        messageID.setValue("abc123");
+        messageID.setURI("abc123");
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), messageID);
         
         handler.initialize();

@@ -127,7 +127,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         
         FaultActor actor = fault.getActor();
         Assert.assertNotNull(actor, "FaultActor was null");
-        Assert.assertEquals(actor.getValue(), expectedFaultActor, "FaultActor had unexpected value");
+        Assert.assertEquals(actor.getURI(), expectedFaultActor, "FaultActor had unexpected value");
         
         FaultCode code = fault.getCode();
         Assert.assertNotNull(code, "FaultCode was null");
@@ -174,7 +174,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         fault.setMessage(faultString);
         
         FaultActor faultActor = (FaultActor) buildXMLObject(FaultActor.DEFAULT_ELEMENT_NAME);
-        faultActor.setValue(expectedFaultActor);
+        faultActor.setURI(expectedFaultActor);
         fault.setActor(faultActor);
         
         Detail detail = (Detail) buildXMLObject(Detail.DEFAULT_ELEMENT_NAME);

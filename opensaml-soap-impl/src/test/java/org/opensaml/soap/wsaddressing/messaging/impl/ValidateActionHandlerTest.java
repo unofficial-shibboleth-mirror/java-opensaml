@@ -43,7 +43,7 @@ public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
     @Test
     public void testNoExpected() throws ComponentInitializationException, MessageHandlerException {
         Action action = buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:action1");
+        action.setURI("urn:test:action1");
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), action);
         
         handler.initialize();
@@ -55,7 +55,7 @@ public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
     @Test
     public void testLocalExpected() throws ComponentInitializationException, MessageHandlerException {
         Action action = buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:action1");
+        action.setURI("urn:test:action1");
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), action);
         
         handler.setExpectedActionURI("urn:test:action1");
@@ -69,7 +69,7 @@ public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
     @Test
     public void testContextExpected() throws ComponentInitializationException, MessageHandlerException {
         Action action = buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:action1");
+        action.setURI("urn:test:action1");
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), action);
         
         getMessageContext().getSubcontext(WSAddressingContext.class, true).setActionURI("urn:test:action1");
@@ -83,7 +83,7 @@ public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
     @Test
     public void testContextOverride() throws ComponentInitializationException, MessageHandlerException {
         Action action = buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:action1");
+        action.setURI("urn:test:action1");
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), action);
         
         handler.setExpectedActionURI("urn:test:action2");
@@ -98,7 +98,7 @@ public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoMatch() throws ComponentInitializationException, MessageHandlerException {
         Action action = buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:action1");
+        action.setURI("urn:test:action1");
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), action);
         
         handler.setExpectedActionURI("urn:test:action2");

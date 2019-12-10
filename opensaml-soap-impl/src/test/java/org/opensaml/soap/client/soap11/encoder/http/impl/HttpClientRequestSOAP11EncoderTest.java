@@ -88,7 +88,7 @@ public class HttpClientRequestSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         // "For real" this would be added by a MessageHandler.  Here just add manually.
         Action action = buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:action:foo");
+        action.setURI("urn:test:action:foo");
         if (envelope.getHeader() == null) {
             envelope.setHeader((Header) buildXMLObject(Header.DEFAULT_ELEMENT_NAME));
         }

@@ -62,7 +62,7 @@ public class AddRelatesToHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
         RelatesTo relatesTo = (RelatesTo) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).get(0);
-        Assert.assertEquals(relatesTo.getValue(), "urn:test:abc123");
+        Assert.assertEquals(relatesTo.getURI(), "urn:test:abc123");
         Assert.assertEquals(relatesTo.getRelationshipType(), RelatesTo.RELATIONSHIP_TYPE_REPLY);
     }
     
@@ -80,7 +80,7 @@ public class AddRelatesToHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).isEmpty());
         RelatesTo relatesTo = (RelatesTo) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), RelatesTo.ELEMENT_NAME).get(0);
-        Assert.assertEquals(relatesTo.getValue(), "urn:test:def456");
+        Assert.assertEquals(relatesTo.getURI(), "urn:test:def456");
         Assert.assertEquals(relatesTo.getRelationshipType(), "urn:test:foo");
     }
 

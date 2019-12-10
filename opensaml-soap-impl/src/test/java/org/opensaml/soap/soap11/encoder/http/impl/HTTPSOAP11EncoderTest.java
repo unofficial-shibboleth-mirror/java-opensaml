@@ -235,7 +235,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         envelope.setHeader(header);
         
         Action action = buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:soap:action");
+        action.setURI("urn:test:soap:action");
         header.getUnknownXMLObjects().add(action);
         
         XMLObjectBuilder<XSAny> xsAnyBuilder = getBuilder(XSAny.TYPE_NAME);

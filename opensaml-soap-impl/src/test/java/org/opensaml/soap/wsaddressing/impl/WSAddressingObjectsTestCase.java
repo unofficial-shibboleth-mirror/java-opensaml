@@ -38,14 +38,14 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
     @Test
     public void testAction() throws Exception {
         Action action= buildXMLObject(Action.ELEMENT_NAME);
-        action.setValue("urn:test:foo:bar");
+        action.setURI("urn:test:foo:bar");
         marshallAndUnmarshall(action);
     }
 
     @Test
     public void testAddress() throws Exception {
         Address address= buildXMLObject(Address.ELEMENT_NAME);
-        address.setValue(Address.ANONYMOUS);
+        address.setURI(Address.ANONYMOUS);
         marshallAndUnmarshall(address);
     }
 
@@ -53,7 +53,7 @@ public class WSAddressingObjectsTestCase extends WSBaseTestCase {
     public void testEndpointReference() throws Exception {
         EndpointReference epr= buildXMLObject(EndpointReference.ELEMENT_NAME);
         Address address= buildXMLObject(Address.ELEMENT_NAME);
-        address.setValue(Address.ANONYMOUS);
+        address.setURI(Address.ANONYMOUS);
         ReferenceParameters referenceParameters= buildXMLObject(ReferenceParameters.ELEMENT_NAME);
         Metadata metadata= buildXMLObject(Metadata.ELEMENT_NAME);
         epr.setAddress(address);

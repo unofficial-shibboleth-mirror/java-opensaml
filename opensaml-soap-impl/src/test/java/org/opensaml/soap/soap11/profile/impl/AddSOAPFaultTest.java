@@ -161,7 +161,7 @@ public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
         
         Assert.assertEquals(fault.getMessage().getValue(), "TheClientError");
         
-        Assert.assertEquals(fault.getActor().getValue(), "TheFaultActor");
+        Assert.assertEquals(fault.getActor().getURI(), "TheFaultActor");
         
         Assert.assertNotNull(fault.getDetail());
         Assert.assertEquals(fault.getDetail().getUnknownXMLObjects().size(), 1);
