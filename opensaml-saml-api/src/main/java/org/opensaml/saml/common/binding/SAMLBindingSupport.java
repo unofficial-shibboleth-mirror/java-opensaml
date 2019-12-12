@@ -31,6 +31,7 @@ import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
+import org.opensaml.saml.common.messaging.context.SAMLMessageReceivedEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
@@ -302,6 +303,12 @@ public final class SAMLBindingSupport {
                     throws MessageException {
         Constraint.isNotNull(request, "HttpServletRequest cannot be null");
         
+        final SAMLMessageReceivedEndpointContext receivedEnpointContext =
+                messageContext.getSubcontext(SAMLMessageReceivedEndpointContext.class);
+        if (receivedEnpointContext != null) {
+            return receivedEnpointContext.getRequestURL();
+        }
+
         return request.getRequestURL().toString();
     }
     
