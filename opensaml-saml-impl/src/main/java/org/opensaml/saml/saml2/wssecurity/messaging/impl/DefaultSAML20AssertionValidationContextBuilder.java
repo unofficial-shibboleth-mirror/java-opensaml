@@ -194,7 +194,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
         
         if (getSignatureCriteriaSetFunction() != null) {
             final CriteriaSet dynamicCriteria = getSignatureCriteriaSetFunction().apply(
-                    new Pair<MessageContext, Assertion>());
+                    new Pair<>(input.getMessageContext(), input.getAssertion()));
             if (dynamicCriteria != null) {
                 criteriaSet.addAll(dynamicCriteria);
             }
