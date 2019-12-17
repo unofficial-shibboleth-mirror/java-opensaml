@@ -80,6 +80,16 @@ import org.w3c.dom.Element;
  * with the above values.
  * </li>
  * <li>
+ * {@link SAML2AssertionValidationParameters#SIGNATURE_VALIDATION_TRUST_ENGINE}:
+ * Optional.
+ * If not supplied, defaults to the locally-injected instance.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SIGNATURE_VALIDATION_PREVALIDATOR}:
+ * Optional.
+ * If not supplied, defaults to the locally-injected instance.
+ * </li>
+ * <li>
  * {@link SAML2AssertionValidationParameters#CLOCK_SKEW}:
  * Optional.
  * If not present the default clock skew of {@link SAML20AssertionValidator#DEFAULT_CLOCK_SKEW} 
@@ -313,12 +323,6 @@ public class SAML20AssertionValidator {
             return ValidationResult.VALID;
         }
         
-        if (trustEngine == null) {
-            log.warn("Signature validation was necessary, but no signature trust engine was available");
-            context.setValidationFailureMessage("Assertion signature could not be evaluated due to internal error");
-            return ValidationResult.INDETERMINATE;
-        }
-        
         return performSignatureValidation(token, context);
     }
     
@@ -334,6 +338,14 @@ public class SAML20AssertionValidator {
      */
     @Nonnull protected ValidationResult performSignatureValidation(@Nonnull final Assertion token, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
+
+        final SignatureTrustEngine signatureTrustEngine = getSignatureValidationTrustEngine(token, context);
+        if (signatureTrustEngine == null) {
+            log.warn("Signature validation was necessary, but no signature trust engine was available");
+            context.setValidationFailureMessage("Assertion signature could not be evaluated due to internal error");
+            return ValidationResult.INDETERMINATE;
+        }
+
         final Signature signature = token.getSignature();
         
         String tokenIssuer = null;
@@ -345,7 +357,12 @@ public class SAML20AssertionValidator {
                 token.getID(), tokenIssuer);
         
         try {
-            signaturePrevalidator.validate(signature);
+            final SignaturePrevalidator prevalidator = getSignatureValidationPrevalidator(token, context);
+            if (prevalidator != null) {
+                prevalidator.validate(signature);
+            } else {
+                log.warn("No SignaturePrevalidator was available, skipping pre-validation");
+            }
         } catch (final SignatureException e) {
             final String msg = String.format("Assertion Signature failed pre-validation: %s", e.getMessage());
             log.warn(msg);
@@ -356,7 +373,7 @@ public class SAML20AssertionValidator {
         final CriteriaSet criteriaSet = getSignatureValidationCriteriaSet(token, context);
         
         try {
-            if (trustEngine.validate(signature, criteriaSet)) {
+            if (signatureTrustEngine.validate(signature, criteriaSet)) {
                 log.debug("Validation of signature of Assertion '{}' from Issuer '{}' was successful",
                         token.getID(), tokenIssuer);
                 return ValidationResult.VALID;
@@ -375,6 +392,46 @@ public class SAML20AssertionValidator {
             return ValidationResult.INDETERMINATE;
         }
         
+    }
+
+    /**
+     * Get the signature trust engine that will be used in evaluating the Assertion signature.
+     *
+     * @param token assertion whose signature will be validated
+     * @param context current validation context
+     * @return the criteria set to use
+     */
+    @Nonnull protected SignatureTrustEngine getSignatureValidationTrustEngine(@Nonnull final Assertion token,
+            @Nonnull final ValidationContext context) {
+
+        final SignatureTrustEngine contextEngine = (SignatureTrustEngine) context.getStaticParameters()
+               .get(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_TRUST_ENGINE);
+
+        if (contextEngine != null) {
+            return contextEngine;
+        }
+
+        return trustEngine;
+    }
+
+    /**
+     * Get the signature trust engine that will be used in evaluating the Assertion signature.
+     *
+     * @param token assertion whose signature will be validated
+     * @param context current validation context
+     * @return the criteria set to use
+     */
+    @Nonnull protected SignaturePrevalidator getSignatureValidationPrevalidator(@Nonnull final Assertion token,
+            @Nonnull final ValidationContext context) {
+
+        final SignaturePrevalidator contextPrevalidator = (SignaturePrevalidator) context.getStaticParameters()
+               .get(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_PREVALIDATOR);
+
+        if (contextPrevalidator != null) {
+            return contextPrevalidator;
+        }
+
+       return signaturePrevalidator;
     }
 
     /**

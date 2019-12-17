@@ -57,6 +57,19 @@ public final class SAML2AssertionValidationParameters {
     public static final String SIGNATURE_VALIDATION_CRITERIA_SET = STD_PREFIX + ".SignatureValidationCriteriaSet";
 
     /**
+     * Carries a {@link org.opensaml.xmlsec.signature.support.SignatureTrustEngine} which will be used
+     * to validate the Assertion signature.
+     */
+    public static final String SIGNATURE_VALIDATION_TRUST_ENGINE = STD_PREFIX + ".SignatureValidationTrustEngine";
+
+    /**
+     * Carries a {@link org.opensaml.xmlsec.signature.support.SignaturePrevalidator} which will be used
+     * to pre-validate the Assertion signature.
+     * 
+     */
+    public static final String SIGNATURE_VALIDATION_PREVALIDATOR = STD_PREFIX + ".SignatureValidationPrevalidator";
+
+    /**
      * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.lang.String}<code>&gt;</code>
      * whose values are the acceptable 
      * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} recipients.

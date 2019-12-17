@@ -223,6 +223,48 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     }
     
     @Test
+    public void testWithTrustedSignatureAndContextTrustEngine() throws AssertionValidationException, SecurityException, MarshallingException, SignatureException {
+        trustedCredentials.add(cred1);
+        signAssertion(getAssertion(), cred1);
+        
+        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, signaturePrevalidator);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_TRUST_ENGINE, signatureTrustEngine);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
+        
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
+                assertion.getSubject().getSubjectConfirmations().get(0));
+    }
+    
+    @Test
+    public void testWithTrustedSignatureAndContextPrevalidator() throws AssertionValidationException, SecurityException, MarshallingException, SignatureException {
+        trustedCredentials.add(cred1);
+        signAssertion(getAssertion(), cred1);
+        
+        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, signatureTrustEngine, null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_PREVALIDATOR, signaturePrevalidator);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
+        
+        Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
+                assertion.getSubject().getSubjectConfirmations().get(0));
+    }
+    
+    @Test
     public void testWithSignatureAndUntrustedCredential() throws AssertionValidationException, SecurityException, MarshallingException, SignatureException {
         trustedCredentials.add(cred2);
         signAssertion(getAssertion(), cred1);
