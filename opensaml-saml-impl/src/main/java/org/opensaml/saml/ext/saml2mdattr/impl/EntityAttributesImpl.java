@@ -17,9 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdattr.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -29,11 +28,13 @@ import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 
+import com.google.common.base.Predicates;
+
 /** Concrete implementation of {@link EntityAttributes}. */
 public class EntityAttributesImpl extends AbstractXMLObject implements EntityAttributes {
 
     /** Extension data. */
-    private final IndexedXMLObjectChildrenList<? extends SAMLObject> attributeInfo;
+    private final IndexedXMLObjectChildrenList<SAMLObject> attributeInfo;
 
     /**
      * Constructor.
@@ -59,20 +60,20 @@ public class EntityAttributesImpl extends AbstractXMLObject implements EntityAtt
     }
     
     /** {@inheritDoc} */
-    public List<? extends SAMLObject> getEntityAttributesChildren() {
+    public List<SAMLObject> getEntityAttributesChildren() {
         return attributeInfo;
     }
 
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (attributeInfo.size() == 0) {
             return null;
         }
 
-        children.addAll(attributeInfo);
-
-        return Collections.unmodifiableList(children);
+        return attributeInfo
+                .stream()
+                .filter(Predicates.or(Assertion.class::isInstance, Attribute.class::isInstance))
+                .collect(Collectors.toUnmodifiableList());
     }
 }

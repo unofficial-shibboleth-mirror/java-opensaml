@@ -50,7 +50,7 @@ public interface EntityAttributes extends SAMLObject {
      * 
      * @since 4.0.0
      */
-    public List<? extends SAMLObject> getEntityAttributesChildren();
+    public List<SAMLObject> getEntityAttributesChildren();
     
     /**
      * Gets the attributes about the entity.

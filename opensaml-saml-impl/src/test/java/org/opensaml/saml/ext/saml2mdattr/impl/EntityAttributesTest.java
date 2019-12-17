@@ -26,6 +26,7 @@ import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
+import org.opensaml.saml.saml2.core.Issuer;
 
 /** Unit test for {@link EntityAttributes}. */
 public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
@@ -78,8 +79,12 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
         Attribute attrib3 = (Attribute) buildXMLObject(Attribute.DEFAULT_ELEMENT_NAME);
         attrib3.setName("attrib3");
         
+        Issuer bogus = (Issuer) buildXMLObject(Issuer.DEFAULT_ELEMENT_NAME);
+        bogus.setValue("foo");
+        
         EntityAttributes attributes = (EntityAttributes) buildXMLObject(EntityAttributes.DEFAULT_ELEMENT_NAME);
         attributes.getAssertions().add(assertion1);
+        attributes.getEntityAttributesChildren().add(bogus);    // will not be marshalled due to type checking later
         attributes.getAttributes().add(attrib1);
         attributes.getAssertions().add(assertion2);
         attributes.getAttributes().add(attrib2);

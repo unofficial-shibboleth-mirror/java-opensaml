@@ -213,8 +213,8 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
             if (!entityAttributesCollection.isEmpty()) {
                 final EntityAttributes entityAttributes =
                         (EntityAttributes) entityAttributesCollection.iterator().next();
-                final List<? extends SAMLObject> attributes = entityAttributes.getEntityAttributesChildren();
-                final Iterator<? extends SAMLObject> iter = attributes.iterator();
+                final List<SAMLObject> attributes = entityAttributes.getEntityAttributesChildren();
+                final Iterator<SAMLObject> iter = attributes.iterator();
                 while (iter.hasNext()) {
                     final SAMLObject attribute = iter.next();
                     if (attribute instanceof Attribute) {
