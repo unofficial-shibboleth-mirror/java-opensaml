@@ -57,6 +57,12 @@ public final class SAMLEventIds {
     /** ID of event returned if SAML subject-id requirement is not met. */
     @Nonnull @NotEmpty public static final String SUBJECT_ID_REQ_FAILED = "SubjectIDReqFailed";
 
+    /** ID of event returned if there was a fatal error attempting to validate a SAML Assertion. */
+    @Nonnull @NotEmpty public static final String UNABLE_VALIDATE_ASSERTION = "UnableToValidateAssertion";
+
+    /** ID of event returned if a SAML Assertion was invalid. */
+    @Nonnull @NotEmpty public static final String ASSERTION_INVALID = "AssertionInvalid";
+
     /** Constructor. */
     private SAMLEventIds() {
         
