@@ -36,7 +36,7 @@ import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.Object
  *
  * @author Rod Widdowson August 2010
  * 
- * The <GeolocationHint> element specifies the geographic coordinates associated 
+ * The &lt;GeolocationHint&gt; element specifies the geographic coordinates associated 
  *  with, or serviced by, the entity.  Coordinates are given in decimal form using
  *  the World Geodetic System (2d) coordinate system.
  */

@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * Supports the following {@link ValidationContext} static parameters:
+ * </p>
  * <ul>
  * <li>
  * {@link SAML2AssertionValidationParameters#COND_ONE_TIME_USE_EXPIRES}:
@@ -56,14 +57,13 @@ import org.slf4j.LoggerFactory;
  * the default value, as retrieved via {@link #getReplayCacheExpires()}.
  * </li>
  * </ul>
- * </p>
  * 
  * <p>
  * Supports the following {@link ValidationContext} dynamic parameters:
- * <ul>
- * None.
- * </ul>
  * </p>
+ * <ul>
+ *   <li>None.</li>
+ * </ul>
  */
 @ThreadSafe
 public class OneTimeUseConditionValidator implements ConditionValidator {

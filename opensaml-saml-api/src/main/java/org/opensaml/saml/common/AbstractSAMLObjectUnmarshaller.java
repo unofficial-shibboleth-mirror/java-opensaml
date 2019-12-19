@@ -25,8 +25,8 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.w3c.dom.Attr;
 
 /**
- * An thread safe abstract unmarshaller. This abstract unmarshaller only works with
- * {@link org.opensaml.saml.common.AbstractSAMLObject}.
+ * A thread safe abstract unmarshaller. This abstract unmarshaller only works with
+ * {@link SAMLObject}.
  */
 @ThreadSafe
 public abstract class AbstractSAMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {

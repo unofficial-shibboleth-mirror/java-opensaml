@@ -50,10 +50,10 @@ import org.slf4j.LoggerFactory;
  * <p>
  * In addition to the {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs documented in 
  * {@link BasicSignatureSigningParametersResolver}, the following inputs are also supported:
+ * </p>
  * <ul>
  * <li>{@link RoleDescriptorCriterion} - optional</li> 
  * </ul>
- * </p>
  */
 public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatureSigningParametersResolver {
     

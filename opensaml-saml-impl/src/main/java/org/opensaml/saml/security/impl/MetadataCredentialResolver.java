@@ -66,8 +66,9 @@ import org.slf4j.LoggerFactory;
  * <p>
  * The following resolution modes and associated {@link net.shibboleth.utilities.java.support.resolver.Criterion}
  * inputs are supported:
+ * </p>
  * 
- * Direct resolution from a supplied {@link RoleDescriptor}:
+ * <p>Direct resolution from a supplied {@link RoleDescriptor}:</p>
  * 
  * <ul> 
  * <li>{@link RoleDescriptorCriterion} - required</li>
@@ -75,7 +76,7 @@ import org.slf4j.LoggerFactory;
  *     {@link UsageType#UNSPECIFIED} will be used for credential resolution.</li>
  * </ul>
  * 
- * Resolution from a metadata source using a {@link RoleDescriptorResolver}:
+ * <p>Resolution from a metadata source using a {@link RoleDescriptorResolver}:</p>
  * 
  * <ul>
  * <li>{@link EntityIdCriterion} - required</li>
@@ -85,7 +86,6 @@ import org.slf4j.LoggerFactory;
  * <li>{@link UsageCriterion} - optional; if absent, the effective value 
  *     {@link UsageType#UNSPECIFIED} will be used for credential resolution.</li>
  * </ul>
- * </p>
  * 
  * <p>
  * In order to support resolution from a metadata source using {@link EntityIdCriterion} + {@link EntityRoleCriterion}, 

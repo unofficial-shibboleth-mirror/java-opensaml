@@ -33,12 +33,12 @@ import org.slf4j.LoggerFactory;
  * <p>
  * This implementation supports selecting an AttributeConsumingService from parent role descriptors of the following
  * types:
+ * </p>
  * 
  * <ol>
  * <li>the standard SAML 2 metadata type {@link SPSSODescriptor}</li>
  * <li>the extension type {@link AttributeQueryDescriptorType}</li>
  * </ol>
- * </p>
  * 
  * <p>
  * Subclasses should override {@link #getCandidates()} if support for additional sources of attribute consuming services
@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * The selection algorithm is:
+ * </p>
  * <ol>
  * <li>If an index is supplied, the service with that index is returned. If no such service exists in metadata: if
  * {@link #isOnBadIndexUseDefault()} is true, then the default service is returned as described below; otherwise null is
@@ -55,7 +56,6 @@ import org.slf4j.LoggerFactory;
  * isDefault of true is returned. If no such service exists, then the first service without an explicit isDefault is
  * returned. If no service is yet selected, then the first service listed in metadata is returned.</li>
  * </ol>
- * </p>
  */
 public class AttributeConsumingServiceSelector {
 
@@ -163,12 +163,12 @@ public class AttributeConsumingServiceSelector {
      * <p>
      * This implementation supports selecting an AttributeConsumingService from parent role descriptors of the following
      * types:
+     * </p>
      * 
      * <ol>
      * <li>the standard SAML 2 metadata type {@link SPSSODescriptor}</li>
      * <li>the extension type {@link AttributeQueryDescriptorType}</li>
      * </ol>
-     * </p>
      * 
      * <p>
      * Subclasses should override if support for additional sources of attribute consuming services is needed.

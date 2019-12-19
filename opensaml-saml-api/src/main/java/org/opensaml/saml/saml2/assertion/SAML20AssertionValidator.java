@@ -62,6 +62,8 @@ import org.w3c.dom.Element;
  * 
  * <p>
  * Supports the following {@link ValidationContext} static parameters:
+ * </p>
+ *
  * <ul>
  * <li>
  * {@link SAML2AssertionValidationParameters#SIGNATURE_REQUIRED}:
@@ -84,10 +86,11 @@ import org.w3c.dom.Element;
  * will be used.
  * </li>
  * </ul>
- * </p>
  * 
  * <p>
  * Supports the following {@link ValidationContext} dynamic parameters:
+ * </p>
+ *
  * <ul>
  * <li>
  * {@link SAML2AssertionValidationParameters#CONFIRMED_SUBJECT_CONFIRMATION}:
@@ -95,9 +98,7 @@ import org.w3c.dom.Element;
  * Will be present after validation iff subject confirmation was successfully performed.
  * </li>
  * </ul>
- * </p>
- * 
- * */
+ */
 public class SAML20AssertionValidator {
 
     /** Default clock skew of 5 minutes. */
@@ -246,7 +247,7 @@ public class SAML20AssertionValidator {
      * Log the Assertion which is being validated, along with the supplied validation context parameters.
      * 
      * @param assertion the SAML 2 Assertion being validated
-     * @param context 
+     * @param context current validation context
      */
     protected void log(@Nonnull final Assertion assertion, @Nonnull final ValidationContext context) {
         if (log.isTraceEnabled()) {

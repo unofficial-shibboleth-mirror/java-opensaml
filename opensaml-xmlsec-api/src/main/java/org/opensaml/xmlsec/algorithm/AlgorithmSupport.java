@@ -362,7 +362,7 @@ public final class AlgorithmSupport {
      * 
      * @param algorithmURI The XML Encryption algorithm URI
      * @return a basic credential containing a randomly generated symmetric key
-     * @throws KeyException 
+     * @throws KeyException thrown if the length of key to generate could not be determined
      * @throws NoSuchAlgorithmException algorithm not found
      */
     @Nonnull public static Credential generateSymmetricKeyAndCredential(@Nonnull final String algorithmURI) 

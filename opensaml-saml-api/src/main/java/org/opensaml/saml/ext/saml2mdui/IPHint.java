@@ -36,7 +36,7 @@ import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.Object
  *
  * @author Rod Widdowson August 2010
  * 
- * The <IPHint> element specifies a set of [CIDR] blocks associated with, 
+ * The &lt;IPHint&gt; element specifies a set of [CIDR] blocks associated with, 
  *  or serviced by, the entity.  Both IPv4 and IPv6 CIDR blocks MUST be supported.
  */
 public interface IPHint extends SAMLObject, XSString {

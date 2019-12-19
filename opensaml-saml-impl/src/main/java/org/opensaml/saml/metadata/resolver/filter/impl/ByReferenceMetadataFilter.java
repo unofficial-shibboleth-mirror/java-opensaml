@@ -38,7 +38,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * A {@link MetadataFilter} that associates other filters with specific
- * {@link MetadataResolver} instances by ID.
+ * {@link org.opensaml.saml.metadata.resolver.MetadataResolver} instances by ID.
  * 
  * <p>The {@link MetadataFilterContext} is used to identify which resolver is actually
  * running, to properly identify which filters to apply.</p>

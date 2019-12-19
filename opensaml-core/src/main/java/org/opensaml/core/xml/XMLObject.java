@@ -210,7 +210,7 @@ public interface XMLObject {
      * element content, but not element attributes.
      * </p>
      * 
-     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils"/>
+     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils">XML Schema: Nil Values</a>
      * 
      * @return whether the object's content model is null
      */
@@ -233,7 +233,7 @@ public interface XMLObject {
      * element content, but not element attributes.
      * </p>
      * 
-     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils/>
+     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils">XML Schema: Nil Values</a>
      * 
      * @return whether the object's content model is null
      */
@@ -255,7 +255,7 @@ public interface XMLObject {
      * element content, but not element attributes.
      * </p>
      * 
-     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils/>
+     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils">XML Schema: Nil Values</a>
      * 
      * @param newNil whether the object's content model is expressed as null
      */
@@ -277,7 +277,7 @@ public interface XMLObject {
      * element content, but not element attributes.
      * </p>
      * 
-     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils/>
+     * @see <a href="http://www.w3.org/TR/xmlschema-0/#Nils">XML Schema: Nil Values</a>
      * 
      * @param newNil whether the object's content model is expressed as null
      */

@@ -106,7 +106,6 @@ public interface StatusCode extends SAMLObject {
      * Sets the second level status code.
      * 
      * @param statusCode second level status code
-     * @throws IllegalArgumentException
      */
     public void setStatusCode(StatusCode statusCode);
 }

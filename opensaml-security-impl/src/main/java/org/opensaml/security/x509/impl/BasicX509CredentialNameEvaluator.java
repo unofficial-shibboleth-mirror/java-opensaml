@@ -49,12 +49,12 @@ import com.google.common.base.Strings;
  * 
  * <p>
  * Supported types of entity certificate-derived names for name checking purposes are:
+ * </p>
  * <ol>
  * <li>Subject alternative names.</li>
  * <li>The first (i.e. most specific) common name (CN) from the subject distinguished name.</li>
  * <li>The complete subject distinguished name.</li>
  * </ol>
- * </p>
  * 
  * <p>
  * Name checking is enabled by default for all of the supported name types. The types of subject alternative names to

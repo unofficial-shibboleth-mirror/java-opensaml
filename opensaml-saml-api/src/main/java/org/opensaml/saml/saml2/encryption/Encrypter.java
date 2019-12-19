@@ -78,11 +78,15 @@ import com.google.common.base.Strings;
  * <p>
  * Support is also provided for differing placement options for any associated EncryptedKeys that may be generated. The
  * options are:
+ * </p>
+ *
  * <ul>
  * <li><code>INLINE</code>: EncryptedKeys will placed inside the KeyInfo element of the EncryptedData element</li>
  * <li><code>PEER</code>: EncryptedKeys will be placed as peer elements of the EncryptedData inside the
  * EncryptedElementType element</li>
  * </ul>
+ *
+ * <p>
  * The default placement is <code>PEER</code>.
  * </p>
  * 

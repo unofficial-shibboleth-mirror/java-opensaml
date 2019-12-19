@@ -183,11 +183,11 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
     /**
      * <p>
      * This implementation performs the following actions on the context's {@link HttpRequest}:
+     * </p>
      * <ol>
      *   <li>Sets the SOAPAction HTTP header the value returned by {@link #getSOAPAction()}, if
      *   that returns non-null.</li>
      * </ol>
-     * </p>
      * 
      * <p>
      * Subclasses should NOT set the SOAPAction HTTP header in this method. Instead, they should override 

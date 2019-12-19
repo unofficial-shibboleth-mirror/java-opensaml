@@ -50,11 +50,11 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
+ * </p>
  * <ul>
  * <li>{@link SignatureSigningConfigurationCriterion} - required</li> 
  * <li>{@link KeyInfoGenerationProfileCriterion} - optional</li> 
  * </ul>
- * </p>
  */
 public class BasicSignatureSigningParametersResolver 
         extends AbstractSecurityParametersResolver<SignatureSigningParameters> 

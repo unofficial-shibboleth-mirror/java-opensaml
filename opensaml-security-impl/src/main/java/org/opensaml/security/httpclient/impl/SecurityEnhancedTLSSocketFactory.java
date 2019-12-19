@@ -60,6 +60,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
  * 
  * <p>
  * This implementation wraps an existing TLS socket factory instance, decorating it with additional support for:
+ * </p>
  * <ul>
  *     <li>Verifying the server TLS certificate and chain via a
  *         {@link TrustEngine}<code>&lt;</code>{@link org.opensaml.security.credential.Credential}<code>&gt;</code>
@@ -67,10 +68,10 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
  *         
  *     <li>Loading and clearing a thread-local instance of {@link X509Credential} used for client TLS.</li>
  * </ul>
- * </p>
  * 
  * <p>
  * The context keys used by this component are as follows, defined in {@link HttpClientSecurityConstants}:
+ * </p>
  * <ul>
  *   <li>{@link HttpClientSecurityConstants#CONTEXT_KEY_TRUST_ENGINE}: The trust engine instance used. 
  *        Supplied by the HttpClient caller. Must be an instance of
@@ -85,7 +86,6 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
  *   <li>{@link HttpClientSecurityConstants#CONTEXT_KEY_CLIENT_TLS_CREDENTIAL}: The client TLS credential used.
  *        Supplied by the HttpClient caller. Must be an instance of {@link X509Credential}.</li>
  * </ul>
- * </p>
  * 
  * <p>
  * If the trust engine context attribute is not populated by the caller and {@link #isTrustEngineRequired()} 

@@ -140,25 +140,32 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * 
      * <p>
      * For all TLS-related parameters, must be used in conjunction with an HttpClient instance 
-     * which is configured with either a:
+     * which is configured with either:
+     * </p>
      * <ul>
      * <li>
      * a {@link net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory}
      * </li>
      * <li>
-     * {@link org.opensaml.security.httpclient.impl.SecurityEnhancedTLSSocketFactory} which wraps
+     * a {@link org.opensaml.security.httpclient.impl.SecurityEnhancedTLSSocketFactory} which wraps
      * an instance of {@link net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory}, with
      * the latter likely configured in a "no trust" configuration.  This variant is required if either a
      * trust engine or a client TLS credential is to be used.
      * </li>
+     * </ul>
+     *
+     * <p>
      * For convenience methods for building a 
      * {@link net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory}, 
      * see {@link net.shibboleth.utilities.java.support.httpclient.HttpClientSupport}.
-     * </ul>
+     * </p>
+     *
+     * <p>
      * If the appropriate TLS socket factory is not configured and a trust engine is specified,
      * then this will result in no TLS trust evaluation being performed and a 
      * {@link ResolverException} will ultimately be thrown.
      * </p>
+     *
      * @param params the security parameters
      */
     public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {

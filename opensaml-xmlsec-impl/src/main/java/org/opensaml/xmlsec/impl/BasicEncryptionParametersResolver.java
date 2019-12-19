@@ -55,12 +55,12 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * 
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
+ * </p>
  * <ul>
  * <li>{@link EncryptionConfigurationCriterion} - required</li> 
  * <li>{@link KeyInfoGenerationProfileCriterion} - optional</li> 
  * <li>{@link EncryptionOptionalCriterion} - optional</li> 
  * </ul>
- * </p>
  */
 public class BasicEncryptionParametersResolver extends AbstractSecurityParametersResolver<EncryptionParameters> 
         implements EncryptionParametersResolver {

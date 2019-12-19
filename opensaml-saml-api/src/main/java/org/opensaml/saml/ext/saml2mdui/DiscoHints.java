@@ -49,22 +49,25 @@ public interface DiscoHints extends SAMLObject {
             new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** 
-     * The <IPHint> element specifies a set of [CIDR] blocks associated with, 
-     *  or serviced by, the entity.  Both IPv4 and IPv6 CIDR blocks MUST be supported.
+     * The &lt;IPHint&gt; element specifies a set of [CIDR] blocks associated with, 
+     * or serviced by, the entity.  Both IPv4 and IPv6 CIDR blocks MUST be supported.
      * 
      * @return hints
      */
     public List <IPHint> getIPHints();
     
-    /** The <DomainHint> element specifies a set of DNS domains associated with, 
+    /**
+     * The &lt;DomainHint&gt; element specifies a set of DNS domains associated with, 
      * or serviced by, the entity.
+     *
      * @return hints.
      */
     public List <DomainHint> getDomainHints();
     
-    /** The <GeolocationHint> element specifies the geographic coordinates associated 
-     *  with, or serviced by, the entity.  Coordinates are given in decimal form using
-     *  the World Geodetic System (2d) coordinate system.
+    /**
+     * The &lt;GeolocationHint&gt; element specifies the geographic coordinates associated 
+     * with, or serviced by, the entity.  Coordinates are given in decimal form using
+     * the World Geodetic System (2d) coordinate system.
      * 
      * @return hints
      */

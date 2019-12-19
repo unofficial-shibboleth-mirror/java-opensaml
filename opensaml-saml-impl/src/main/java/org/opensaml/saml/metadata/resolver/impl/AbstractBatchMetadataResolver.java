@@ -321,11 +321,11 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * 
      * <p>
      * Adds the following to parent impl:
+     * </p>
      * <ol>
      * <li>capable of storing the original metadata document on which the backing store is based</li>
      * <li>stores data for any secondary indexes defined</li>
      * </ol>
-     * </p>
      */
     protected class BatchEntityBackingStore extends EntityBackingStore {
         

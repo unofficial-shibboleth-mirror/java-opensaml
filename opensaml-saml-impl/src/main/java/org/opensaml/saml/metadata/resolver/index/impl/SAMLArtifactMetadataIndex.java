@@ -73,12 +73,12 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
      * 
      * <p>
      * The descriptor indexing functions will be:
+     * </p>
      * <ul>
      *   <li>{@link EntityIDToSHA1SourceIDIndexingFunction}</li>
      *   <li>{@link SourceIDExtensionIndexingFunction}</li>
      *   <li>{@link SourceLocationIndexingFunction}</li>
      * </ul>
-     * </p>
      */
     public SAMLArtifactMetadataIndex() {
         this(Arrays.asList(

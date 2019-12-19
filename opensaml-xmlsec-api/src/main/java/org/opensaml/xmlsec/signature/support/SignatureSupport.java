@@ -81,6 +81,7 @@ public final class SignatureSupport {
      * 
      * <p>
      * The following Signature values will be added:
+     * </p>
      * <ul>
      * <li>signing credential</li>
      * <li>signature algorithm URI</li>
@@ -89,7 +90,6 @@ public final class SignatureSupport {
      * <li>HMAC output length (if applicable and a value is configured)</li>
      * <li>a {@link KeyInfo} element representing the signing credential</li>
      * </ul>
-     * </p>
      * 
      * <p>
      * Existing (non-null) values of these parameters on the specified signature will <strong>NOT</strong> be

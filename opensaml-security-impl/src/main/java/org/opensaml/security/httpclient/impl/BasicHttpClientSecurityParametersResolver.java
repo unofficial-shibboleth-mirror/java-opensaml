@@ -44,10 +44,10 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * 
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
+ * </p>
  * <ul>
  * <li>{@link HttpClientSecurityConfigurationCriterion} - required</li> 
  * </ul>
- * </p>
  */
 public class BasicHttpClientSecurityParametersResolver implements HttpClientSecurityParametersResolver {
     

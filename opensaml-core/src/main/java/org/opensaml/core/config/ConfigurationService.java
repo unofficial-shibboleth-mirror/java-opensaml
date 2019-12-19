@@ -91,7 +91,7 @@ public class ConfigurationService {
      * Register a configuration instance.
      * 
      * @param <T> the type of configuration being registered
-     * @param <I> the configuration object instance type being registered, which must be an instance of <T>
+     * @param <I> the configuration object instance type being registered, which must be an instance of {@link T}
      * 
      * @param configClass the type of configuration being registered
      * @param configInstance the configuration object instance being registered

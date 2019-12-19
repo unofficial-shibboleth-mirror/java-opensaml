@@ -53,6 +53,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * 
  * <p>
  * Resolution proceeds as follows:
+ * </p>
  * <ol>
  *   <li>Any credential resolved via the standard {@link BasicProviderKeyInfoCredentialResolver}
  *       resolution process which is not a local credential will be removed
@@ -66,7 +67,6 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  *       be used as resolution criteria for local credentials and the resultant credentials
  *       added to the set to be returned.</li>
  * </ol>
- * </p>
  */
 public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredentialResolver {
     

@@ -40,10 +40,10 @@ import org.opensaml.security.x509.tls.ClientTLSValidationParametersResolver;
  * 
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
+ * </p>
  * <ul>
  * <li>{@link ClientTLSValidationConfigurationCriterion} - required</li> 
  * </ul>
- * </p>
  */
 public class BasicClientTLSValidationParametersResolver implements ClientTLSValidationParametersResolver {
 

@@ -71,6 +71,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * 
  * <p>
  * Processing of the supplied KeyInfo element proceeds as follows:
+ * </p>
  * <ol>
  * <li>A {@link KeyInfoResolutionContext} is instantiated. This resolution context is used to hold state shared amongst
  * all the providers and processing hooks which run within the resolver.</li>
@@ -103,8 +104,6 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * default set of credentials, or to use non-KeyInfo-derived criteria or contextual information to determine the
  * credential or credentials to return.</li>
  * </ol>
- * </p>
- * 
  */
 public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilteringCredentialResolver implements
         KeyInfoCredentialResolver {

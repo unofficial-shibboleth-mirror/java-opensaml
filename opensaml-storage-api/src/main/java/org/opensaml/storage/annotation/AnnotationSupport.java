@@ -156,12 +156,12 @@ public final class AnnotationSupport {
      * 
      * <p>The value is returned as a long, in milliseconds since the beginning of the Unix epoch.
      * The following data types are supported:
+     * </p>
      *  <ul>
      *     <li><code>long</code></li>
      *     <li>{@link Date}</li>
-     *     <li>{@link ReadableInstant}</li>
+     *     <li>{@link Instant}</li>
      *  </ul>
-     * </p>
      *
      * @param target Object from which to get expiration
      * 
@@ -189,12 +189,12 @@ public final class AnnotationSupport {
      *
      * <p>The expiration is expressed in milliseconds since the beginning of the Unix epoch.
      * The following data types are supported:
+     * </p>
      *  <ul>
      *     <li><code>long</code></li>
      *     <li>{@link Date}</li>
-     *     <li>{@link ReadableInstant}</li>
+     *     <li>{@link Instant}</li>
      *  </ul>
-     * </p>
      *
      * @param target object on which to set expiration
      * @param expiration value to set

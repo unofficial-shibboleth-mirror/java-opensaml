@@ -38,17 +38,17 @@ public interface AttributedDateTime extends XSString, IdBearing, AttributeExtens
         new QName(WSSecurityConstants.WSU_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
     
     /**
-     * Returns the DateTime content or attribute value.
+     * Returns the Instant content or attribute value.
      * 
-     * @return the {@link DateTime} object.
+     * @return the {@link Instant} object.
      */
     public Instant getDateTime();
 
     /**
-     * Sets the DateTime content or attribute value.
+     * Sets the Instant content or attribute value.
      * 
      * @param dateTime
-     *            the {@link DateTime} object to set.
+     *            the {@link Instant} object to set.
      */
     public void setDateTime(Instant dateTime);
     

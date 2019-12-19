@@ -116,12 +116,12 @@ public interface SPSSODescriptor extends SSODescriptor {
      * 
      * <p>
      * The selection algorithm used is:
+     * </p>
      * <ol>
      * <li>Select the first service with an explicit <code>isDefault=true</code></li>
      * <li>Select the first service with no explicit <code>isDefault</code></li>
      * <li>Select the first service</li>
      * </ol>
-     * </p>
      * 
      * @return default assertion consumer service (or null if there are no assertion consumer services defined)
      */
@@ -139,12 +139,12 @@ public interface SPSSODescriptor extends SSODescriptor {
      * 
      * <p>
      * The selection algorithm used is:
+     * </p>
      * <ol>
      * <li>Select the first service with an explicit <code>isDefault=true</code></li>
      * <li>Select the first service with no explicit <code>isDefault</code></li>
      * <li>Select the first service</li>
      * </ol>
-     * </p>
      * 
      * @return default attribute consuming service (or null if there are no attribute consuming services defined)
      */

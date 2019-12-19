@@ -49,6 +49,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * Supports the following {@link ValidationContext} static parameters:
+ * </p>
  * <ul>
  * <li>
  * {@link SAML2AssertionValidationParameters#SC_VALID_ADDRESSES}:
@@ -59,14 +60,13 @@ import org.slf4j.LoggerFactory;
  * Required.
  * </li>
  * </ul>
- * </p>
  * 
  * <p>
  * Supports the following {@link ValidationContext} dynamic parameters:
- * <ul>
- * None.
- * </ul>
  * </p>
+ * <ul>
+ *   <li>None.</li>
+ * </ul>
  */
 @ThreadSafe
 public abstract class AbstractSubjectConfirmationValidator implements SubjectConfirmationValidator {

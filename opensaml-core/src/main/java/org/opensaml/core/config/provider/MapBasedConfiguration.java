@@ -55,7 +55,7 @@ public class MapBasedConfiguration implements Configuration {
      * Register a configuration instance.
      * 
      * @param <T> the type of configuration being registered, typically an interface
-     * @param <I> the configuration implementation being registered, which will be an instance of <T>
+     * @param <I> the configuration implementation being registered, which will be an instance of {@link T}
      * 
      * @param configClass the type of configuration class being registered, typically an interface
      * @param configuration the configuration implementation instance being registered

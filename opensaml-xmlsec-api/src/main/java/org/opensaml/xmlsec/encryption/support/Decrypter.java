@@ -83,6 +83,8 @@ import com.google.common.base.Strings;
  * 
  * <p>
  * Details on the components specified as constructor options are as follows:
+ * </p>
+ *
  * <ol>
  * 
  * <li>
@@ -110,7 +112,6 @@ import com.google.common.base.Strings;
  * </li>
  * 
  * </ol>
- * </p>
  * 
  * <p>
  * XML Encryption can encrypt either a single {@link Element} or the contents of an Element. The caller of this class
@@ -190,9 +191,6 @@ public class Decrypter {
     /** Unmarshaller factory, used in decryption of EncryptedData objects. */
     private final UnmarshallerFactory unmarshallerFactory;
 
-    /** Load-and-Save DOM Implementation singleton. */
-    // private DOMImplementationLS domImplLS;
-    
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(Decrypter.class);
 

@@ -55,6 +55,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  * A subject confirmation is considered confirmed if one of the
  * following checks has passed:
+ * </p>
  * <ul>
  * <li>
  * the presenter's public key (either given explicitly or extracted from the given certificate) matches a
@@ -65,6 +66,7 @@ import org.slf4j.LoggerFactory;
  * {@link KeyInfo} entries in the confirmation data
  * </li>
  * </ul>
+ * <p>
  * In both cases a "match" is determined via Java <code>equals()</code> comparison.
  * </p>
  * 
@@ -75,6 +77,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * Supports the following {@link ValidationContext} static parameters:
+ * </p>
  * <ul>
  * <li>
  * {@link SAML2AssertionValidationParameters#SC_HOK_PRESENTER_CERT}:
@@ -85,12 +88,14 @@ import org.slf4j.LoggerFactory;
  * Optional if certificate is supplied, otherwise required.
  * </li>
  * </ul>
+ * <p>
  * If both key and certificate are supplied, the public key of the supplied certificate must match the
  * supplied public key, otherwise a evaluation results in {@link ValidationResult#INDETERMINATE}. 
  * </p>
  * 
  * <p>
  * Supports the following {@link ValidationContext} dynamic parameters:
+ * </p>
  * <ul>
  * <li>
  * {@link SAML2AssertionValidationParameters#SC_HOK_CONFIRMED_KEYINFO}:
@@ -98,7 +103,6 @@ import org.slf4j.LoggerFactory;
  * Will be present after validation iff Holder of Key subject confirmation was successfully performed.
  * </li>
  * </ul>
- * </p>
  */
 @ThreadSafe
 public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConfirmationValidator {
@@ -322,8 +326,6 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      * @param keyValues candidate KeyValue elements
      * 
      * @return true if the public key in the certificate matches one of the key values, false otherwise
-     * 
-     * @throws AssertionValidationException thrown if there is a problem matching the key value
      */
     protected boolean matchesKeyValue(@Nonnull final PublicKey key, @Nullable final List<KeyValue> keyValues)  {
         
@@ -363,8 +365,6 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      * @param derEncodedKeyValues candidate DEREncodedKeyValue elements
      * 
      * @return true if the public key in the certificate matches one of the DER-encoded key values, false otherwise
-     * 
-     * @throws AssertionValidationException thrown if there is a problem matching the key value
      */
     protected boolean matchesDEREncodedKeyValue(@Nonnull final PublicKey key, 
             @Nullable final List<DEREncodedKeyValue> derEncodedKeyValues)  {

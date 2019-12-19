@@ -36,7 +36,7 @@ import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.Object
  *
  * @author Rod Widdowson August 2010
  * 
- * The <DomainHint> element specifies a set of DNS domains associated with, 
+ * The &lt;DomainHint&gt; element specifies a set of DNS domains associated with, 
  * or serviced by, the entity. 
  */
 public interface DomainHint extends SAMLObject, XSString {

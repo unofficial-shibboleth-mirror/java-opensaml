@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Action that encodes an outbound response from the outbound {@link MessageContext}. 
  * 
- * <p>The {@link MessageEncoderFactory} is used to obtain a new {@link MessageEncoder} to
+ * <p>The {@link #encoderFactory} is used to obtain a new {@link MessageEncoder} to
  * use, and the encoder is destroyed upon completion.</p>
  *
  * 

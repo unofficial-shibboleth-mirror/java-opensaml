@@ -52,17 +52,22 @@ public interface UIInfo extends SAMLObject {
     /** 
      * Get the Display Names
      * 
-     * The <DisplayName> element specifies a set of localized names fit for 
+     * <p>
+     * The &lt;DisplayName&gt; element specifies a set of localized names fit for 
      * display to users.  Such names are meant to allow a user to distinguish 
      * and identify the entity acting in a particular role.
+     * </p>
+     *
      * @return the names
      */
     public List <DisplayName> getDisplayNames();
     
     /** 
      * Get the keywords.
-     * 
-     * The <Keywords> element specifies a set of keywords associated with the entity.
+     *
+     * <p>
+     * The &lt;Keywords&gt; element specifies a set of keywords associated with the entity.
+     * </p>
      *  
      * @return a list of keywords
      */
@@ -70,13 +75,16 @@ public interface UIInfo extends SAMLObject {
     
     /**
      * Return the descriptions.
-     * 
-     * The <Description> element specifies a set of brief, localized descriptions 
+     *
+     * <p>
+     * The &lt;Description&gt; element specifies a set of brief, localized descriptions 
      * fit for display to users. In the case of service providers this SHOULD be a 
      * description of the service being offered.  In the case of an identity provider 
      * this SHOULD be a description of the community serviced.  In all cases this text 
      * SHOULD be standalone, meaning it is not meant to be filled in to some template 
      * text (e.g. 'This service offers $description').
+     * </p>
+     *
      * @return descriptions
      */
     public List <Description> getDescriptions();
@@ -84,7 +92,7 @@ public interface UIInfo extends SAMLObject {
     /** 
      * Get the logos.
      * 
-     * The <Logo> element specifies a set of localized logos fit for display to users.
+     * <p>The &lt;Logo&gt; element specifies a set of localized logos fit for display to users.</p>
      *  
      * @return a list of logos
      */
@@ -92,23 +100,27 @@ public interface UIInfo extends SAMLObject {
     
     /** 
      * Get the URLs.
-     * 
-     * The <InformationURL> specifies URLs to localized information, about the entity 
+     *
+     * <p>
+     * The &lt;InformationURL&gt; specifies URLs to localized information, about the entity 
      * acting in a given role, meant to be viewed by users.  The contents found at 
      * these URLs SHOULD give a more complete set of information about than what is 
-     * provided by the <Description> element 
-     * 
+     * provided by the &lt;Description&gt; element. 
+     * </p>
+     *
      * @return the URLs
      */
     public List <InformationURL> getInformationURLs();
     
     /**
      * Get the Privacy Statement URLs.
-     * 
-     * The <PrivacyStatementURL> specifies URLs to localized privacy statements.  
+     *
+     * <p>
+     * The &lt;PrivacyStatementURL&gt; specifies URLs to localized privacy statements.  
      * Such statements are meant to provide a user with information about how 
-     * information will be used and managed by the entity
-     * 
+     * information will be used and managed by the entity.
+     * </p>
+     *
      * @return the URLs
      */
     public List <PrivacyStatementURL> getPrivacyStatementURLs(); 

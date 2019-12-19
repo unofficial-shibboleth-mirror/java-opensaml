@@ -43,17 +43,17 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
  * 
  * <p>
  * Supports the following {@link ValidationContext} static parameters:
- * <ul>
- * None.
- * </ul>
  * </p>
+ * <ul>
+ *   <li>None.</li>
+ * </ul>
  * 
  * <p>
  * Supports the following {@link ValidationContext} dynamic parameters:
- * <ul>
- * None.
- * </ul>
  * </p>
+ * <ul>
+ *   <li>None.</li>
+ * </ul>
  */
 @ThreadSafe
 public class ProxyRestrictionConditionValidator implements ConditionValidator {

@@ -136,7 +136,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @param className the name of the class type to obtain
      * @return the held instance of the class, or null
-     * @throws ClassNotFoundException 
+     * @throws ClassNotFoundException if the named class does not exist
      */ 
     @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className)
             throws ClassNotFoundException {
@@ -155,7 +155,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param className the name of the class type to obtain
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * @return the held instance of the class, or null
-     * @throws ClassNotFoundException 
+     * @throws ClassNotFoundException if the named class does not exist
      */ 
     @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate)
             throws ClassNotFoundException {

@@ -36,7 +36,6 @@ public abstract class AbstractWSSecurityObjectUnmarshaller extends AbstractXMLOb
 
     /**
      * Constructor.
-     * <p>
      */
     protected AbstractWSSecurityObjectUnmarshaller() {
         super();

@@ -36,13 +36,12 @@ public final class SAML2MetadataSupport {
      * 
      * <p>
      * The algorithm used is:
+     * </p>
      * <ol>
      * <li>Select the first endpoint with an explicit <code>isDefault=true</code></li>
      * <li>Select the first endpoint with no explicit <code>isDefault</code></li>
      * <li>Select the first endpoint</li>
      * </ol>
-     * </p>
-     * 
      * 
      * @param candidates the list of candidate indexed endpoints
      * @return the selected candidate (or null if the list is null or empty)

@@ -43,20 +43,20 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * Supports the following {@link ValidationContext} static parameters:
+ * </p>
  * <ul>
  * <li>
  * {@link SAML2AssertionValidationParameters#COND_VALID_AUDIENCES}:
  * Required.
  * </li>
  * </ul>
- * </p>
  * 
  * <p>
  * Supports the following {@link ValidationContext} dynamic parameters:
- * <ul>
- * None.
- * </ul>
  * </p>
+ * <ul>
+ *   <li>None.</li>
+ * </ul>
  * 
  */
 @ThreadSafe

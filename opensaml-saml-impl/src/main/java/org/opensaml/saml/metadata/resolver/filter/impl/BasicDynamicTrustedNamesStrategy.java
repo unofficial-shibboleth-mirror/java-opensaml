@@ -39,6 +39,7 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
  * 
  * <p>
  * Names are extracted as follows from these signed metadata element types:
+ * </p>
  * <ul>
  * <li><code>EntityDescriptor</code>: the <code>entityID</code> attribute</li> 
  * <li><code>EntitiesDescriptor</code>: the <code>Name</code> attribute</li> 
@@ -47,7 +48,6 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
  * <li><code>AffiliationDescriptor</code>: 1) the <code>affiliationOwnerID</code> attribute and 
  *     2) the <code>entityID</code> attribute of the parent <code>EntityDescriptor</code></li> 
  * </ul>
- * </p>
  */
 public class BasicDynamicTrustedNamesStrategy implements Function<XMLObject, Set<String>> {
 

@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
  * using a simple map.
  * 
  * <p>Abstract methods supply the map of data to manipulate and the lock to use, which allows
- * optimizations in cases where locking isn't required or data isn't shared.<p> 
+ * optimizations in cases where locking isn't required or data isn't shared.</p> 
  */
 public abstract class AbstractMapBackedStorageService extends AbstractStorageService {
 

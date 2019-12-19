@@ -40,10 +40,10 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
+ * </p>
  * <ul>
  * <li>{@link DecryptionConfigurationCriterion} - required</li> 
  * </ul>
- * </p>
  */
 public class BasicDecryptionParametersResolver extends AbstractSecurityParametersResolver<DecryptionParameters> 
         implements DecryptionParametersResolver {

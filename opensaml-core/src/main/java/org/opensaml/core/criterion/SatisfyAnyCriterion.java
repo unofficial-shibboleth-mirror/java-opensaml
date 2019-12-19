@@ -34,9 +34,6 @@ public class SatisfyAnyCriterion implements Criterion {
     
     /**
      * Constructor.
-     * 
-     * <p></p>
-     *
      */
     public SatisfyAnyCriterion() {
         satisfyAny = Boolean.TRUE;

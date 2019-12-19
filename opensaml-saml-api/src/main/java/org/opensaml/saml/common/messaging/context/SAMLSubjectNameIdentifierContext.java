@@ -37,14 +37,13 @@ import org.slf4j.LoggerFactory;
  * {@link #getSAML2SubjectNameID()} will attempt to dynamically resolve the appropriate data from 
  * the SAML message held in the parent message context if the data has not been set statically by 
  * the corresponding setter method. This evaluation will be attempted only if:
+ * </p>
  * <ul>
  * <li>this context instance is an immediate child of a {@link MessageContext} as returned by {@link #getParent()}
  * <li>that message context holds a SAML 1 or 2 protocol message as an instance of {@link SAMLObject}</li>
  * <li>that SAML message is a type that may carry a subject: {@link org.opensaml.saml.saml1.core.SubjectQuery},
  *   {@link org.opensaml.saml.saml2.core.SubjectQuery} or {@link org.opensaml.saml.saml2.core.AuthnRequest}.
  * </ul>
- * </p>
- *
  */
 public final class SAMLSubjectNameIdentifierContext extends BaseContext {
     

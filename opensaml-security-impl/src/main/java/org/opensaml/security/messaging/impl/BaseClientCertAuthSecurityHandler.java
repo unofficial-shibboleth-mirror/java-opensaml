@@ -340,6 +340,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      * <p>
      * Configured certificate name types are derived as candidate presenter entity ID's and processed in the following
      * order:
+     * </p>
      * <ol>
      * <li>The certificate subject DN string as serialized by the X500DNHandler obtained via
      * {@link CertificateNameOptions#getX500DNHandler()} and using the output format indicated by
@@ -348,7 +349,6 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      * Note that this is a LinkedHashSet, so the order of evaluation is the order of insertion.</li>
      * <li>The first common name (CN) value appearing in the certificate subject DN.</li>
      * </ol>
-     * </p>
      * 
      * <p>
      * The first one of the above which is successfully evaluated by the trust engine using criteria built from

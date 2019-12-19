@@ -44,6 +44,7 @@ import org.slf4j.LoggerFactory;
  * 
  * <p>
  * The runtime logic is effectively:
+ * </p>
  * <blockquote><pre>
  * Pattern pattern = Pattern.compile(regex);
  * Matcher matcher = pattern.matcher(entityID);
@@ -53,7 +54,6 @@ import org.slf4j.LoggerFactory;
  *   return null;
  * }
  * </pre></blockquote>
- * </p>
  * 
  * <p>
  * For supported regular expression syntax see {@link Pattern}. For details on the replacement operation,

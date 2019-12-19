@@ -36,7 +36,7 @@ import org.opensaml.core.xml.XMLObject;
  * <p>
  * If a filter wishes to completely remove the top-level document element, or otherwise indicate that it
  * has successfully produced an empty data set from the input document, <code>null</code> may be returned
- * by the filter's {@link #filter(XMLObject)} method.
+ * by the filter's {@link #filter(XMLObject, MetadataFilterContext)} method.
  * </p>
  */
 public interface MetadataFilter {
