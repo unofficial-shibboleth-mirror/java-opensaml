@@ -115,7 +115,7 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
         try {
             ref = apacheSig.getSignedInfo().item(0);
         } catch (final XMLSecurityException e) {
-            log.error("Apache XML Security exception obtaining Reference", e);
+            log.error("Apache XML Security exception obtaining Reference: {}", e.getMessage());
             throw new SignatureException("Could not obtain Reference from Signature/SignedInfo", e);
         }
         if (ref == null) {
@@ -207,7 +207,7 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
         try {
             transforms = reference.getTransforms();
         } catch (final XMLSecurityException e) {
-            log.error("Apache XML Security error obtaining Transforms instance", e);
+            log.error("Apache XML Security error obtaining Transforms instance: {}", e.getMessage());
             throw new SignatureException("Apache XML Security error obtaining Transforms instance", e);
         }
 
@@ -228,7 +228,7 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
             try {
                 transform = transforms.item(i);
             } catch (final TransformationException e) {
-                log.error("Error obtaining transform instance", e);
+                log.error("Error obtaining transform instance: {}", e.getMessage());
                 throw new SignatureException("Error obtaining transform instance", e);
             }
             final String uri = transform.getURI();

@@ -140,7 +140,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
                 throw new MessageHandlerException("Extract of SAMLRequest or SAMLResponse from form control data");
             }
         } catch (final UnsupportedEncodingException e) {
-            // All JVM's required to support UTF-8
+            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
+            throw new MessageHandlerException("Unable to process message, UTF-8 encoding is not supported");
         }
 
         if (request.getParameter("RelayState") != null) {
@@ -159,9 +160,9 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
         try {
             return constructed.getBytes("UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            // All JVM's required to support UTF-8
+            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
+            throw new MessageHandlerException("Unable to process message, UTF-8 encoding is not supported");
         }
-        return null;
     }
 
     /** {@inheritDoc} */
@@ -188,10 +189,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
             final Document doc = getParserPool().parse(is);
             keyInfo = (KeyInfo) unmarshaller.unmarshall(doc.getDocumentElement());
         } catch (final XMLParserException e) {
-            log.warn("Error parsing KeyInfo data", e);
+            log.warn("Error parsing KeyInfo data: {}", e.getMessage());
             throw new MessageHandlerException("Error parsing KeyInfo data", e);
         } catch (final UnmarshallingException e) {
-            log.warn("Error unmarshalling KeyInfo data", e);
+            log.warn("Error unmarshalling KeyInfo data: {}", e.getMessage());
             throw new MessageHandlerException("Error unmarshalling KeyInfo data", e);
         }
 
@@ -207,7 +208,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
                 credentials.add(cred);
             }
         } catch (final ResolverException e) {
-            log.warn("Error resolving credentials from KeyInfo", e);
+            log.warn("Error resolving credentials from KeyInfo: {}", e.getMessage());
             throw new MessageHandlerException("Error resolving credentials from KeyInfo", e);
         }
 

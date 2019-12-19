@@ -121,10 +121,10 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
             }
             return null;
         } catch (final SecurityException e) {
-            log.error("Error generating KeyInfo from signing credential", e);
+            log.error("Error generating KeyInfo from signing credential: {}", e.getMessage());
             throw new MessageEncodingException("Error generating KeyInfo from signing credential", e);
         } catch (final MarshallingException e) {
-            log.error("Error marshalling KeyInfo based on signing credential", e);
+            log.error("Error marshalling KeyInfo based on signing credential: {}", e.getMessage());
             throw new MessageEncodingException("Error marshalling KeyInfo based on signing credential", e);
         }
     }
@@ -224,10 +224,11 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
             b64Signature = Base64Support.encode(rawSignature, Base64Support.UNCHUNKED);
             log.debug("Generated digital signature value (base64-encoded) {}", b64Signature);
         } catch (final SecurityException e) {
-            log.error("Error during URL signing process", e);
+            log.error("Error during URL signing process: {}", e.getMessage());
             throw new MessageEncodingException("Unable to sign form control string", e);
         } catch (final UnsupportedEncodingException e) {
-            // UTF-8 encoding is required to be supported by all JVMs
+            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
+            throw new MessageEncodingException("Unable to encode message, UTF-8 encoding is not supported");
         }
 
         return b64Signature;

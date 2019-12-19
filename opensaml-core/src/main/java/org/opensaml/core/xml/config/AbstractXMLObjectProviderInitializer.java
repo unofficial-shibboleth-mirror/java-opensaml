@@ -57,7 +57,7 @@ public abstract class AbstractXMLObjectProviderInitializer implements Initialize
                 }
             }
         } catch (final XMLConfigurationException e) {
-            log.error("Problem loading configuration resource", e);
+            log.error("Problem loading configuration resource: {}", e.getMessage());
             throw new InitializationException("Problem loading configuration resource", e);
         }
     }

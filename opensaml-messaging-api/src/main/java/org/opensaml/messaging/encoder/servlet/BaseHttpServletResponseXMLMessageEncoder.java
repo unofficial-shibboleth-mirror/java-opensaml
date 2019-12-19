@@ -98,7 +98,7 @@ public abstract class BaseHttpServletResponseXMLMessageEncoder  extends Abstract
         try {
             return XMLObjectSupport.marshall(message);
         } catch (final MarshallingException e) {
-            log.error("Error marshalling message", e);
+            log.error("Error marshalling message: {}", e.getMessage());
             throw new MessageEncodingException("Error marshalling message", e);
         }
     }

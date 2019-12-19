@@ -285,7 +285,8 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
             log.warn("{} Signature validation using request-derived credentials failed", getLogPrefix());
             return false;
         } catch (final SecurityException e) {
-            log.warn("{} Error evaluating the request's simple signature using the trust engine", getLogPrefix(), e);
+            log.warn("{} Error evaluating the request's simple signature using the trust engine: {}", getLogPrefix(),
+                    e.getMessage());
             throw new MessageHandlerException("Error during trust engine evaluation of the simple signature", e);
         }
     }

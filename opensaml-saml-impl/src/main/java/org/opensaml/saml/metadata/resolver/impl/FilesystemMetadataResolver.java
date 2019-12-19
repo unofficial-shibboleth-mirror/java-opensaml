@@ -123,7 +123,7 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
             return null;
         } catch (final IOException e) {
             final String errMsg = "Unable to read metadata file " + metadataFile.getAbsolutePath();
-            log.error("{} " + errMsg, getLogPrefix(), e);
+            log.error("{} {}: {}", getLogPrefix(), errMsg, e.getMessage());
             throw new ResolverException(errMsg, e);
         }
     }

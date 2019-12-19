@@ -129,11 +129,11 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
             }
             return newPipeline();
         } catch (final SOAPException e) {
-            log.warn("Problem resolving pipeline instance with name: {}", resolvedPipelineName, e);
+            log.warn("Problem resolving pipeline instance with name {}: {}", resolvedPipelineName, e.getMessage());
             throw e;
         } catch (final Exception e) {
             // This is to handle RuntimeExceptions, for example thrown by Spring dynamic factory approaches
-            log.warn("Problem resolving pipeline instance with name: {}", resolvedPipelineName, e);
+            log.warn("Problem resolving pipeline instance with name {}: {}", resolvedPipelineName, e.getMessage());
             throw new SOAPException("Could not resolve pipeline with name: " + resolvedPipelineName, e);
         }
     }

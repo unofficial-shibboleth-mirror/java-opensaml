@@ -68,9 +68,9 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandler extends BaseSAMLSi
         try {
             return constructed.getBytes("UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            // JVM is required to support UTF-8
+            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
+            throw new MessageHandlerException("Unable to process message, UTF-8 encoding is not supported");
         }
-        return null;
     }
 
     /**

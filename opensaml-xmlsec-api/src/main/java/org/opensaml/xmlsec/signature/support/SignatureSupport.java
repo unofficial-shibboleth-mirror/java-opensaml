@@ -170,7 +170,7 @@ public final class SignatureSupport {
                     final KeyInfo keyInfo = kiGenerator.generate(signature.getSigningCredential());
                     signature.setKeyInfo(keyInfo);
                 } catch (final SecurityException e) {
-                    log.error("Error generating KeyInfo from credential", e);
+                    log.error("Error generating KeyInfo from credential: {}", e.getMessage());
                     throw e;
                 }
             } else {

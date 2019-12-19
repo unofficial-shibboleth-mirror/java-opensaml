@@ -79,7 +79,7 @@ public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
         try {
             pubKey = KeyInfoSupport.getRSAKey(keyValue);
         } catch (final KeyException e) {
-            log.error("Error extracting RSA key value", e);
+            log.error("Error extracting RSA key value: {}", e.getMessage());
             throw new SecurityException("Error extracting RSA key value", e);
         }
         final BasicCredential cred = new BasicCredential(pubKey);

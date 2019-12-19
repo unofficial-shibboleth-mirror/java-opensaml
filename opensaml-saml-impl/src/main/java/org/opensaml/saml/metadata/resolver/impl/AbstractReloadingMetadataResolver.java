@@ -447,7 +447,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             return unmarshallMetadata(new ByteArrayInputStream(metadataBytes));
         } catch (final UnmarshallingException e) {
             final String errorMsg = "Unable to unmarshall metadata";
-            log.error("{} " + errorMsg, getLogPrefix());
+            log.error("{} {}: {}", getLogPrefix(), errorMsg, e.getMessage());
             throw new ResolverException(errorMsg, e);
         }
     }
@@ -534,7 +534,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             newBackingStore = preProcessNewMetadata(metadata);
         } catch (final FilterException e) {
             final String errMsg = "Error filtering metadata from " + metadataIdentifier;
-            log.error("{} " + errMsg, getLogPrefix(), e);
+            log.error("{} {}: {}", getLogPrefix(), errMsg, e.getMessage());
             throw new ResolverException(errMsg, e);
         }
 

@@ -242,7 +242,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
                 backupFile.createNewFile();
             } catch (final IOException e) {
                 final String msg = "Unable to create backup file " + backupFile.getAbsolutePath();
-                log.error("{} " + msg, getLogPrefix(), e);
+                log.error("{} {}: {}", getLogPrefix(), msg, e.getMessage());
                 throw new ResolverException(msg, e);
             } finally {
                 // Don't leave the empty test file lying around if it didin't originally exist.
@@ -310,7 +310,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
                 } catch (final IOException ioe) {
                     final String errMsg = "Unable to retrieve metadata from backup file "
                             + metadataBackupFile.getAbsolutePath();
-                    log.error("{} " + errMsg, getLogPrefix(), ioe);
+                    log.error("{} {}: {}", getLogPrefix(), errMsg, ioe.getMessage());
                     throw new ResolverException(errMsg, ioe);
                 }
             }

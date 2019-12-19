@@ -102,7 +102,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
             }
             
         } catch (final IOException e) {
-            log.error("Unable to obtain input stream from HttpResponse", e);
+            log.error("Unable to obtain input stream from HttpResponse: {}", e.getMessage());
             throw new MessageDecodingException("Unable to obtain input stream from HttpResponse", e);
         } finally {
             if (response instanceof CloseableHttpResponse) {
@@ -117,7 +117,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
         try {
             getBodyHandler().invoke(messageContext);
         } catch (final MessageHandlerException e) {
-            log.error("Error processing SOAP Envelope body", e);
+            log.error("Error processing SOAP Envelope body: {}", e.getMessage());
             throw new MessageDecodingException("Error processing SOAP Envelope body", e);
         }
         
@@ -203,12 +203,9 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
             final List<XMLObject> faults = soapMessage.getBody().getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
             if (!faults.isEmpty()) {
                 return (Fault) faults.get(0);
-            } else {
-                return null;
             }
-        } else {
-            return null;
         }
+        return null;
     }
 
     /** {@inheritDoc} */

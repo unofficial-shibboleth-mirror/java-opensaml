@@ -305,7 +305,7 @@ public class Encrypter {
             try {
                 encryptedKey.setKeyInfo(generator.generate(kekParams.getEncryptionCredential()));
             } catch (final SecurityException e) {
-                log.error("Error during EncryptedKey KeyInfo generation", e);
+                log.error("Error during EncryptedKey KeyInfo generation: {}", e.getMessage());
                 throw new EncryptionException("Error during EncryptedKey KeyInfo generation", e);
             }
         }
@@ -349,7 +349,7 @@ public class Encrypter {
         try {
             xmlCipher = buildXMLCipher(encryptionKey, encryptionAlgorithmURI, rsaOAEPParams);
         } catch (final XMLEncryptionException e) {
-            log.error("Error initializing cipher instance on key encryption", e);
+            log.error("Error initializing cipher instance on key encryption: {}", e.getMessage());
             throw new EncryptionException("Error initializing cipher instance on key encryption", e);
         }
 
@@ -365,7 +365,7 @@ public class Encrypter {
             postProcessApacheEncryptedKey(apacheEncryptedKey, targetKey, encryptionKey, encryptionAlgorithmURI,
                     containingDocument);
         } catch (final XMLEncryptionException e) {
-            log.error("Error encrypting element on key encryption", e);
+            log.error("Error encrypting element on key encryption: {}", e.getMessage());
             throw new EncryptionException("Error encrypting element on key encryption", e);
         }
 
@@ -373,7 +373,7 @@ public class Encrypter {
             final Element encKeyElement = xmlCipher.martial(containingDocument, apacheEncryptedKey);
             return (EncryptedKey) encryptedKeyUnmarshaller.unmarshall(encKeyElement);
         } catch (final UnmarshallingException e) {
-            log.error("Error unmarshalling EncryptedKey element", e);
+            log.error("Error unmarshalling EncryptedKey element: {}", e.getMessage());
             throw new EncryptionException("Error unmarshalling EncryptedKey element");
         }
     }
@@ -529,7 +529,7 @@ public class Encrypter {
             }
             xmlCipher.init(XMLCipher.ENCRYPT_MODE, encryptionKey);
         } catch (final XMLEncryptionException e) {
-            log.error("Error initializing cipher instance on XMLObject encryption", e);
+            log.error("Error initializing cipher instance on XMLObject encryption: {}", e.getMessage());
             throw new EncryptionException("Error initializing cipher instance", e);
         }
 
@@ -537,7 +537,7 @@ public class Encrypter {
         try {
             apacheEncryptedData = xmlCipher.encryptData(ownerDocument, targetElement, encryptContentMode);
         } catch (final Exception e) {
-            log.error("Error encrypting XMLObject", e);
+            log.error("Error encrypting XMLObject: {}", e.getMessage());
             throw new EncryptionException("Error encrypting XMLObject", e);
         }
 
@@ -545,7 +545,7 @@ public class Encrypter {
             final Element encDataElement = xmlCipher.martial(ownerDocument, apacheEncryptedData);
             return (EncryptedData) encryptedDataUnmarshaller.unmarshall(encDataElement);
         } catch (final UnmarshallingException e) {
-            log.error("Error unmarshalling EncryptedData element", e);
+            log.error("Error unmarshalling EncryptedData element: {}", e.getMessage());
             throw new EncryptionException("Error unmarshalling EncryptedData element", e);
         }
     }
@@ -586,7 +586,7 @@ public class Encrypter {
             try {
                 encryptedData.setKeyInfo(generator.generate(encParams.getEncryptionCredential()));
             } catch (final SecurityException e) {
-                log.error("Error during EncryptedData KeyInfo generation", e);
+                log.error("Error during EncryptedData KeyInfo generation: {}", e.getMessage());
                 throw new EncryptionException("Error during EncryptedData KeyInfo generation", e);
             }
         }
@@ -620,7 +620,7 @@ public class Encrypter {
                 }
                 targetElement = marshaller.marshall(xmlObject);
             } catch (final MarshallingException e) {
-                log.error("Error marshalling target XMLObject", e);
+                log.error("Error marshalling target XMLObject: {}", e.getMessage());
                 throw new EncryptionException("Error marshalling target XMLObject", e);
             }
         }

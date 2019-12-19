@@ -172,7 +172,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
             try {
                 artifactMap.put(artifactString, requester, issuer, assertion);
             } catch (final IOException e) {
-                log.error("Unable to store assertion mapping for artifact", e);
+                log.error("Unable to store assertion mapping for artifact: {}", e.getMessage());
                 throw new MessageEncodingException("Unable to store assertion mapping for artifact", e);
             }
             queryParams.add(new Pair<>("SAMLart", artifactString));

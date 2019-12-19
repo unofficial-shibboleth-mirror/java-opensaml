@@ -208,7 +208,7 @@ public class X509Support {
             return altNames;
         } catch (final EncodingException e) {
             final Logger log = getLogger();
-            log.warn("Could not extract alt names from certificate", e);
+            log.warn("Could not extract alt names from certificate: {}", e.getMessage());
             throw e;
         }
     }

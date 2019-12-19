@@ -235,7 +235,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             return rawMetadata;
         } catch (final IOException e) {
             final String errMsg = "Error retrieving metadata from " + metadataURI;
-            log.error("{} " + errMsg, getLogPrefix(), e);
+            log.error("{} {}: {}", getLogPrefix(), errMsg, e.getMessage());
             throw new ResolverException(errMsg, e);
         } finally {
             try {
@@ -318,7 +318,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
             final InputStream ins = response.getEntity().getContent();
             return inputstreamToByteArray(ins);
         } catch (final IOException e) {
-            log.error("{} Unable to read response", getLogPrefix(), e);
+            log.error("{} Unable to read response: {}", getLogPrefix(), e.getMessage());
             throw new ResolverException("Unable to read response", e);
         } finally {
             // Make sure entity has been completely consumed.

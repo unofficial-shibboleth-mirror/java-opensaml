@@ -277,11 +277,11 @@ public abstract class AbstractPipelineHttpSOAPClient
         try {
             return newPipeline();
         } catch (final SOAPException e) {
-            log.warn("Problem resolving pipeline instance", e);
+            log.warn("Problem resolving pipeline instance: {}", e.getMessage());
             throw e;
         } catch (final Exception e) {
             // This is to handle RuntimeExceptions, for example thrown by Spring dynamic factory approaches
-            log.warn("Problem resolving pipeline instance", e);
+            log.warn("Problem resolving pipeline instance: {}", e.getMessage());
             throw new SOAPException("Could not resolve pipeline", e);
         }
     }

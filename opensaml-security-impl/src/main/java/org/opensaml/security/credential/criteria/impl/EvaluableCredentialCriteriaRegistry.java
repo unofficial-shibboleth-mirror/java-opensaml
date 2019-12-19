@@ -89,7 +89,7 @@ public final class EvaluableCredentialCriteriaRegistry {
 
             } catch (final java.lang.SecurityException | InstantiationException | IllegalAccessException 
                     | IllegalArgumentException | InvocationTargetException | NoSuchMethodException e) {
-                log.error("Error instantiating new EvaluableCredentialCriterion instance", e);
+                log.error("Error instantiating new EvaluableCredentialCriterion instance: {}", e.getMessage());
                 throw new SecurityException("Could not create new EvaluableCredentialCriterion", e);
             }
         }

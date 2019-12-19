@@ -71,11 +71,11 @@ public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
             setBackingStore(newBackingStore);
         } catch (final UnmarshallingException e) {
             final String errorMsg = "Unable to unmarshall metadata element";
-            log.error("{} " + errorMsg, getLogPrefix(), e);
+            log.error("{} {}: {}", getLogPrefix(), errorMsg, e.getMessage());
             throw new ComponentInitializationException(errorMsg, e);
         } catch (final FilterException e) {
             final String errorMsg = "Unable to filter metadata";
-            log.error("{} " + errorMsg, getLogPrefix(), e);
+            log.error("{} {}: {}", getLogPrefix(), errorMsg, e.getMessage());
             throw new ComponentInitializationException(errorMsg, e);
         }
     }

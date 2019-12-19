@@ -288,7 +288,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             b64Signature = Base64Support.encode(rawSignature, Base64Support.UNCHUNKED);
             log.debug("Generated digital signature value (base64-encoded) {}", b64Signature);
         } catch (final SecurityException e) {
-            log.error("Error during URL signing process", e);
+            log.error("Error during URL signing process: {}", e.getMessage());
             throw new MessageEncodingException("Unable to sign URL query string", e);
         } catch (final UnsupportedEncodingException e) {
             // UTF-8 encoding is required to be supported by all JVMs

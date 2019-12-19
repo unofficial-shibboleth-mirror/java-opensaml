@@ -222,7 +222,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
             log.debug("{} {} HttpClientSecurityParameters", getLogPrefix(),
                     params != null ? "Resolved" : "Failed to resolve");
         } catch (final ResolverException e) {
-            log.error("{} Error resolving HttpClientSecurityParameters", getLogPrefix(), e);
+            log.error("{} Error resolving HttpClientSecurityParameters: {}", getLogPrefix(), e.getMessage());
             throw new MessageHandlerException("Error resolving HttpClientSecurityParameters", e);
         }
     }

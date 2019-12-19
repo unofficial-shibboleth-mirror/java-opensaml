@@ -161,7 +161,7 @@ public class XMLConfigurator {
             final Document configuration = parserPool.parse(configurationStream);
             load(configuration);
         } catch (final XMLParserException e) {
-            log.error("Invalid configuration file", e);
+            log.error("Invalid configuration file: {}", e.getMessage());
             throw new XMLConfigurationException("Unable to create DocumentBuilder", e);
         }
 
@@ -251,7 +251,7 @@ public class XMLConfigurator {
 
                 log.debug("{} initialized and configuration cached", objectProviderName);
             } catch (final XMLConfigurationException e) {
-                log.error("Error initializing object provier {}", objectProvider, e);
+                log.error("Error initializing object provier {}: {}", objectProvider, e.getMessage());
                 // clean up any parts of the object provider that might have been registered before the failure
                 getRegistry().deregisterObjectProvider(objectProviderName);
                 throw e;
@@ -314,7 +314,7 @@ public class XMLConfigurator {
             return constructor.newInstance();
         } catch (final Throwable t) {
             final String errorMsg = "Cannot create instance of " + className;
-            log.error(errorMsg, t);
+            log.error(errorMsg + ": {}", t.getMessage());
             throw new XMLConfigurationException(errorMsg, t);
         }
     }
@@ -333,11 +333,11 @@ public class XMLConfigurator {
         } catch (final IOException e) {
             // Should never get here as the DOM is already in memory
             final String errorMsg = "Unable to read configuration file DOM";
-            log.error(errorMsg, e);
+            log.error(errorMsg + ": {}", e.getMessage());
             throw new XMLConfigurationException(errorMsg, e);
         } catch (final SAXException e) {
             final String errorMsg = "Configuration file does not validate against schema";
-            log.error(errorMsg, e);
+            log.error(errorMsg + ": {}", e.getMessage());
             throw new XMLConfigurationException(errorMsg, e);
         }
     }

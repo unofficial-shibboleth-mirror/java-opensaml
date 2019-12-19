@@ -102,7 +102,7 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
             return null;
         } catch (final IOException e) {
             final String errorMsg = "Unable to read metadata file";
-            log.error("{} " + errorMsg, getLogPrefix(), e);
+            log.error("{} {}: {}", getLogPrefix(), errorMsg, e.getMessage());
             throw new ResolverException(errorMsg, e);
         }
     }

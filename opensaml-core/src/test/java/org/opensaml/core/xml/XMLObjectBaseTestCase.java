@@ -82,7 +82,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
             marshallerFactory = XMLObjectProviderRegistrySupport.getMarshallerFactory();
             unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         } catch (Exception e) {
-            log.error("Can not initialize XMLObjectBaseTestCase", e);
+            log.error("Can not initialize XMLObjectBaseTestCase: {}", e.getMessage());
             throw e;
         }
     }

@@ -55,7 +55,7 @@ public class InitializationService {
             try {
                 initializer.init();
             } catch (final InitializationException e) {
-                log.error("Error initializing module", e);
+                log.error("Error initializing module: {}", e.getMessage());
                 throw e;
             }
         }

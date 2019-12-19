@@ -131,8 +131,8 @@ public class SignatureAlgorithmValidator {
      */
     protected void checkDOM(@Nonnull final Signature signature) throws SignatureException {
         if (signature.getDOM() == null) {
-            log.warn("Signgaure does not have a cached DOM Element.");
-            throw new SignatureException("Signature does not have a cached DOM Element.");
+            log.warn("Signature does not have a cached DOM Element");
+            throw new SignatureException("Signature does not have a cached DOM Element");
         }
     }
     

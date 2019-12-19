@@ -303,23 +303,9 @@ public abstract class BaseContext implements Iterable<BaseContext> {
         try {
             constructor = clazz.getConstructor();
             return constructor.newInstance();
-        } catch (final SecurityException e) {
-            log.error("Security error on creating subcontext", e);
-            throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (final NoSuchMethodException e) {
-            log.error("No such method error on creating subcontext", e);
-            throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (final IllegalArgumentException e) {
-            log.error("Illegal argument error on creating subcontext", e);
-            throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (final InstantiationException e) {
-            log.error("Instantiation error on creating subcontext", e);
-            throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (final IllegalAccessException e) {
-            log.error("Illegal access error on creating subcontext", e);
-            throw new MessageRuntimeException("Error creating subcontext", e);
-        } catch (final InvocationTargetException e) {
-            log.error("Invocation target error on creating subcontext", e);
+        } catch (final SecurityException|NoSuchMethodException|IllegalArgumentException|InstantiationException|
+                    IllegalAccessException|InvocationTargetException e) {
+            log.error("Error creating subcontext: {}", e.getMessage());
             throw new MessageRuntimeException("Error creating subcontext", e);
         }
     }

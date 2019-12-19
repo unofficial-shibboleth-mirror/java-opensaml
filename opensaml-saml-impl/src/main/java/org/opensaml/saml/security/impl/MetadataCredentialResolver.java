@@ -445,7 +445,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             return getRoleDescriptorResolver().resolve(criteria);
 
         } catch (final ResolverException e) {
-            log.error("Unable to resolve information from metadata", e);
+            log.error("Unable to resolve information from metadata: {}", e.getMessage());
             throw new ResolverException("Unable to resolve information from metadata", e);
         }
     }

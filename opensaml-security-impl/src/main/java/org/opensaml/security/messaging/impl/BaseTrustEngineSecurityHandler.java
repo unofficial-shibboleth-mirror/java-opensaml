@@ -126,7 +126,8 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType> extends Abstract
         try {
             return getTrustEngine().validate(token, criteriaSet);
         } catch (final SecurityException e) {
-            log.error("{} There was an error evaluating the request's token using the trust engine", getLogPrefix(), e);
+            log.error("{} There was an error evaluating the request's token using the trust engine: {}", getLogPrefix(),
+                    e.getMessage());
             throw new MessageHandlerException("Error during trust engine evaluation of the token", e);
         }
     }

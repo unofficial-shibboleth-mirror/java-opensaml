@@ -134,7 +134,7 @@ public class SignatureMarshaller implements Marshaller {
 
         } catch (final XMLSecurityException e) {
             final String msg = "Unable to construct signature Element " + signature.getElementQName(); 
-            log.error(msg, e);
+            log.error(msg + ": {}", e.getMessage());
             throw new MarshallingException(msg, e);
         }
     }

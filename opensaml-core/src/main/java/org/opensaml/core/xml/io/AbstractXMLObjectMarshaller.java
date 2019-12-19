@@ -422,7 +422,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             } catch (final DOMException e) {
                 final String errorMsg = "Unable to root namespaces of cached DOM element, "
                         + domCachingObject.getElementQName();
-                log.error(errorMsg, e);
+                log.error(errorMsg + ": {}", e.getMessage());
                 throw new MarshallingException(errorMsg, e);
             }
 

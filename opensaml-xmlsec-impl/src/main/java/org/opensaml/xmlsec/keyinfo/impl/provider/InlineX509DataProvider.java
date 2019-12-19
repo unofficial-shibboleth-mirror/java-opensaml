@@ -167,7 +167,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         try {
             crls = KeyInfoSupport.getCRLs(x509Data);
         } catch (final CRLException e) {
-            log.error("Error extracting CRLs from X509Data", e);
+            log.error("Error extracting CRLs from X509Data: {}", e.getMessage());
             throw new SecurityException("Error extracting CRLs from X509Data", e);
         }
 
@@ -188,7 +188,7 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         try {
             certs = KeyInfoSupport.getCertificates(x509Data);
         } catch (final CertificateException e) {
-            log.error("Error extracting certificates from X509Data", e);
+            log.error("Error extracting certificates from X509Data: {}", e.getMessage());
             throw new SecurityException("Error extracting certificates from X509Data", e);
         }
         log.debug("Found {} X509Certificates", certs.size());

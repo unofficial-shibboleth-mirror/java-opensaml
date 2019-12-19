@@ -246,7 +246,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
                     params != null ? "Resolved" : "Failed to resolve");
             paramsCtx.setSignatureSigningParameters(params);
         } catch (final ResolverException e) {
-            log.error("{} Error resolving SignatureSigningParameters", getLogPrefix(), e);
+            log.error("{} Error resolving SignatureSigningParameters: {}", getLogPrefix(), e.getMessage());
             throw new MessageHandlerException("Error resolving SignatureSigningParameters", e);
         }
     }

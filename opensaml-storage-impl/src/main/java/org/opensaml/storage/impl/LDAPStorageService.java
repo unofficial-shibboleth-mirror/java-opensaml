@@ -120,7 +120,7 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
             merge(entry);
             return true;
         } catch (final LdapException e) {
-            log.error("LDAP merge operation failed", e);
+            log.error("LDAP merge operation failed: {}", e.getMessage());
             throw new IOException(e);
         }
     }
@@ -133,7 +133,7 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
             result = search(context, key).getResult();
         } catch (final LdapException e) {
             if (e.getResultCode() != ResultCode.NO_SUCH_OBJECT) {
-                log.error("LDAP search operation failed", e);
+                log.error("LDAP search operation failed: {}", e.getMessage());
                 throw new IOException(e);
             }
         }
@@ -168,7 +168,7 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
             merge(entry);
             return true;
         } catch (final LdapException e) {
-            log.error("LDAP merge operation failed", e);
+            log.error("LDAP merge operation failed: {}", e.getMessage());
             throw new IOException(e);
         }
     }
@@ -194,7 +194,7 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
             deleteAttribute(context, key);
             return true;
         } catch (final LdapException e) {
-            log.error("LDAP modify operation failed", e);
+            log.error("LDAP modify operation failed: {}", e.getMessage());
             throw new IOException(e);
         }
     }
@@ -236,15 +236,11 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      * @throws LdapException if the operation fails
      */
     @Nonnull private Response<Void> merge(@Nonnull final LdapEntry entry) throws LdapException {
-        Connection conn = null;
-        try {
-            conn = connectionFactory.getConnection();
+        try (final Connection conn = connectionFactory.getConnection()) {
             final MergeOperation merge = new MergeOperation(conn);
             final MergeRequest request = new MergeRequest(entry);
             request.setIncludeAttributes(entry.getAttributeNames());
             return merge.execute(request);
-        } finally {
-            conn.close();
         }
     }
 
@@ -260,13 +256,9 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      */
     @Nonnull private Response<SearchResult> search(@Nonnull final String dn, final String... attrs)
             throws LdapException {
-        Connection conn = null;
-        try {
-            conn = connectionFactory.getConnection();
+        try (final Connection conn = connectionFactory.getConnection()) {
             final SearchOperation search = new SearchOperation(conn);
             return search.execute(SearchRequest.newObjectScopeSearchRequest(dn, attrs));
-        } finally {
-            conn.close();
         }
     }
 
@@ -282,14 +274,10 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      */
     @Nonnull private Response<Void> deleteAttribute(@Nonnull final String dn, @Nonnull final String attrName)
             throws LdapException {
-        Connection conn = null;
-        try {
-            conn = connectionFactory.getConnection();
+        try (final Connection conn = connectionFactory.getConnection()) {
             final ModifyOperation modify = new ModifyOperation(conn);
             return modify.execute(new ModifyRequest(dn, new AttributeModification(AttributeModificationType.REMOVE,
                     new LdapAttribute(attrName))));
-        } finally {
-            conn.close();
         }
     }
 
@@ -303,13 +291,9 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      * @throws LdapException if the operation fails
      */
     @Nonnull private Response<Void> delete(@Nonnull final String dn) throws LdapException {
-        Connection conn = null;
-        try {
-            conn = connectionFactory.getConnection();
+        try (final Connection conn = connectionFactory.getConnection()) {
             final DeleteOperation delete = new DeleteOperation(conn);
             return delete.execute(new DeleteRequest(dn));
-        } finally {
-            conn.close();
         }
     }
 

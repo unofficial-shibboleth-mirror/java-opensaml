@@ -105,7 +105,7 @@ public class TrustEngineX509TrustManager implements X509TrustManager {
                 throw new CertificateException("Trust engine could not establish trust of TLS credential");
             }
         } catch (final SecurityException e) {
-            log.error("Trust engine error evaluating credential", e);
+            log.error("Trust engine error evaluating credential: {}", e.getMessage());
             throw new CertificateException("Trust engine error evaluating credential", e);
         }
     }

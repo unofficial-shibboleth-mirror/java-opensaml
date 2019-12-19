@@ -790,10 +790,10 @@ public class KeyInfoSupport {
             return keyFactory.generatePublic(keySpec);
         } catch (final NoSuchAlgorithmException e) {
             final String msg = keyAlgorithm + " algorithm is not supported by this JCE"; 
-            log.error(msg, e);
+            log.error(msg + ": {}", e.getMessage());
             throw new KeyException(msg, e);
         } catch (final InvalidKeySpecException e) {
-            log.error("Invalid key information", e);
+            log.error("Invalid key information: {}", e.getMessage());
             throw new KeyException("Invalid key information", e);
         }
     }

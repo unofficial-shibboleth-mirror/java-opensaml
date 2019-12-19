@@ -175,7 +175,7 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
         try {
             xmlObject = decryptData(encElement.getEncryptedData(), isRootInNewDocument());
         } catch (final DecryptionException e) {
-            log.error("SAML Decrypter encountered an error decrypting element content", e);
+            log.error("SAML Decrypter encountered an error decrypting element content: {}", e.getMessage());
             throw e; 
         }
         

@@ -139,7 +139,8 @@ public class KeyStoreCredentialResolver extends AbstractCriteriaFilteringCredent
             log.error("Check for invalid keystore entityID/alias entry password");
             throw new ResolverException("Could not retrieve entry from keystore", e);
         } catch (final GeneralSecurityException e) {
-            log.error("Unable to retrieve keystore entry for entityID (keystore alias): {}", entityID, e);
+            log.error("Unable to retrieve keystore entry for entityID (keystore alias): {}: {}", entityID,
+                    e.getMessage());
             throw new ResolverException("Could not retrieve entry from keystore", e);
         }
 

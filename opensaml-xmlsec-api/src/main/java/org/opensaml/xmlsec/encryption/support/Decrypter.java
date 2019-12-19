@@ -463,7 +463,7 @@ public class Decrypter {
                 try {
                     newDoc = parserPool.newDocument();
                 } catch (final XMLParserException e) {
-                    log.error("There was an error creating a new DOM Document", e);
+                    log.error("There was an error creating a new DOM Document: {}", e.getMessage());
                     throw new DecryptionException("Error creating new DOM Document", e);
                 }
                 newDoc.adoptNode(element);
@@ -485,7 +485,7 @@ public class Decrypter {
                 }
                 xmlObject = unmarshaller.unmarshall(element);
             } catch (final UnmarshallingException e) {
-                log.error("There was an error during unmarshalling of the decrypted element", e);
+                log.error("There was an error during unmarshalling of the decrypted element: {}", e.getMessage());
                 throw new DecryptionException("Unmarshalling error during decryption", e);
             }
 
@@ -583,21 +583,21 @@ public class Decrypter {
             }
             xmlCipher.init(XMLCipher.DECRYPT_MODE, dataEncKey);
         } catch (final XMLEncryptionException e) {
-            log.error("Error initialzing cipher instance on data decryption", e);
-            throw new DecryptionException("Error initialzing cipher instance on data decryption", e);
+            log.error("Error initializing cipher instance on data decryption: {}", e.getMessage());
+            throw new DecryptionException("Error initializing cipher instance on data decryption", e);
         }
 
         byte[] bytes = null;
         try {
             bytes = xmlCipher.decryptToByteArray(targetElement);
         } catch (final XMLEncryptionException e) {
-            log.error("Error decrypting the encrypted data element", e);
+            log.error("Error decrypting the encrypted data element: {}", e.getMessage());
             throw new DecryptionException("Error decrypting the encrypted data element", e);
         } catch (final Exception e) {
             // Catch anything else, esp. unchecked RuntimeException, and convert to our checked type.
             // BouncyCastle in particular is known to throw unchecked exceptions for what we would 
             // consider "routine" failures.
-            throw new DecryptionException("Probable runtime exception on decryption:" + e.getMessage(), e);
+            throw new DecryptionException("Probable runtime exception on decryption", e);
         }
         if (bytes == null) {
             throw new DecryptionException("EncryptedData could not be decrypted");
@@ -623,8 +623,8 @@ public class Decrypter {
             log.warn("No KEK KeyInfo credential resolver is available, cannot attempt EncryptedKey decryption");
             throw new DecryptionException("No KEK KeyInfo resolver is available for EncryptedKey decryption");
         } else if (Strings.isNullOrEmpty(algorithm)) {
-            log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
-            throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
+            log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed");
+            throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed");
         }
 
         final CriteriaSet criteriaSet = buildCredentialCriteria(encryptedKey, kekResolverCriteria);
@@ -663,8 +663,8 @@ public class Decrypter {
             log.error("Data encryption key was null");
             throw new IllegalArgumentException("Data encryption key cannot be null");
         } else if (Strings.isNullOrEmpty(algorithm)) {
-            log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
-            throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed.");
+            log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed");
+            throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed");
         }
         
         validateAlgorithms(encryptedKey);
@@ -672,7 +672,7 @@ public class Decrypter {
         try {
             checkAndMarshall(encryptedKey);
         } catch (final DecryptionException e) {
-            log.error("Error marshalling EncryptedKey for decryption", e);
+            log.error("Error marshalling EncryptedKey for decryption: {}", e.getMessage());
             throw e;
         }
         preProcessEncryptedKey(encryptedKey, algorithm, kek);
@@ -686,7 +686,7 @@ public class Decrypter {
             }
             xmlCipher.init(XMLCipher.UNWRAP_MODE, kek);
         } catch (final XMLEncryptionException e) {
-            log.error("Error initialzing cipher instance on key decryption", e);
+            log.error("Error initialzing cipher instance on key decryption: {}", e.getMessage());
             throw new DecryptionException("Error initialzing cipher instance on key decryption", e);
         }
 
@@ -695,7 +695,7 @@ public class Decrypter {
             final Element targetElement = encryptedKey.getDOM();
             encKey = xmlCipher.loadEncryptedKey(targetElement.getOwnerDocument(), targetElement);
         } catch (final XMLEncryptionException e) {
-            log.error("Error when loading library native encrypted key representation", e);
+            log.error("Error when loading library native encrypted key representation: {}", e.getMessage());
             throw new DecryptionException("Error when loading library native encrypted key representation", e);
         } 
 
@@ -706,13 +706,13 @@ public class Decrypter {
             }
             return key;
         } catch (final XMLEncryptionException e) {
-            log.error("Error decrypting encrypted key", e);
+            log.error("Error decrypting encrypted key: {}", e.getMessage());
             throw new DecryptionException("Error decrypting encrypted key", e);
         }  catch (final Exception e) {
             // Catch anything else, esp. unchecked RuntimeException, and convert to our checked type.
             // BouncyCastle in particular is known to throw unchecked exceptions for what we would 
             // consider "routine" failures.
-            throw new DecryptionException("Probable runtime exception on decryption:" + e.getMessage(), e);
+            throw new DecryptionException("Probable runtime exception on decryption", e);
         }
     }
 
@@ -803,7 +803,7 @@ public class Decrypter {
         try {
             newDocument = parserPool.parse(input);
         } catch (final XMLParserException e) {
-            log.error("Error parsing decrypted input stream", e);
+            log.error("Error parsing decrypted input stream: {}", e.getMessage());
             throw new DecryptionException("Error parsing input stream", e);
         }
 
@@ -956,7 +956,7 @@ public class Decrypter {
             try {
                 targetElement = marshaller.marshall(xmlObject);
             } catch (final MarshallingException e) {
-                log.error("Error marshalling target XMLObject", e);
+                log.error("Error marshalling target XMLObject: {}", e.getMessage());
                 throw new DecryptionException("Error marshalling target XMLObject", e);
             }
         }

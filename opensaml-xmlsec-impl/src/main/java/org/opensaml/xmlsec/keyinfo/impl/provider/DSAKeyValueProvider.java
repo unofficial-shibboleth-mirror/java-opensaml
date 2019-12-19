@@ -81,7 +81,7 @@ public class DSAKeyValueProvider extends AbstractKeyInfoProvider {
             //TODO deal with case of incomplete DSAParams, need hook to resolve those
             pubKey = KeyInfoSupport.getDSAKey(keyValue);
         } catch (final KeyException e) {
-            log.error("Error extracting DSA key value", e);
+            log.error("Error extracting DSA key value: {}", e.getMessage());
             throw new SecurityException("Error extracting DSA key value", e);
         }
         final BasicCredential cred = new BasicCredential(pubKey);

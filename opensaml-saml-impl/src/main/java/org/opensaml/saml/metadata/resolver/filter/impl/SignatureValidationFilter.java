@@ -452,7 +452,8 @@ public class SignatureValidationFilter implements MetadataFilter {
             try {
                 getSignaturePrevalidator().validate(signature);
             } catch (final SignatureException e) {
-                log.error("Signature on metadata entry '{}' failed signature pre-validation", metadataEntryName);
+                log.error("Signature on metadata entry '{}' failed signature pre-validation: {}", metadataEntryName,
+                        e.getMessage());
                 throw new FilterException("Metadata instance signature failed signature pre-validation", e);
             }
         }

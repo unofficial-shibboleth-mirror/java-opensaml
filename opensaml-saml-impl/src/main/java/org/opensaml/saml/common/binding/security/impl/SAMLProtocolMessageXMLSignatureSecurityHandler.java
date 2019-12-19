@@ -164,7 +164,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
             try {
                 getSignaturePrevalidator().validate(signature);
             } catch (final SignatureException e) {
-                log.debug("{} Protocol message signature failed signature pre-validation", getLogPrefix(), e);
+                log.debug("{} Protocol message signature failed signature pre-validation: {}", getLogPrefix(),
+                        e.getMessage());
                 throw new MessageHandlerException("Protocol message signature failed signature pre-validation", e);
             }
         }

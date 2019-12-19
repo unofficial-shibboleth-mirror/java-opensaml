@@ -311,7 +311,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
                 log.debug("Credential evaluated as untrusted, failure indicated as non-fatal");
             }
         } catch (final SecurityException e) {
-            log.error("Trust engine error evaluating credential", e);
+            log.error("Trust engine error evaluating credential: {}", e.getMessage());
             throw new IOException("Trust engine error evaluating credential", e);
         }
         

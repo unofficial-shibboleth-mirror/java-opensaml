@@ -177,7 +177,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
                 newAcs.getRequestedAttributes().add(
                         XMLObjectSupport.cloneXMLObject(attribute, CloneOutputOption.DropDOM));
             } catch (final MarshallingException | UnmarshallingException e) {
-                log.warn("{} Error cloning requested Attributes", getLogPrefix(), e);
+                log.warn("{} Error cloning requested Attributes: {}", getLogPrefix(), e.getMessage());
                 throw new MessageHandlerException(e);
             }
         }

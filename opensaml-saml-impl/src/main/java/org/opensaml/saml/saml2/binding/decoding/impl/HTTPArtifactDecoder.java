@@ -406,8 +406,8 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
         
         final String encodedArtifact = StringSupport.trimOrNull(request.getParameter("SAMLart"));
         if (encodedArtifact == null) {
-            log.error("URL SAMLart parameter was missing or did not contain a value.");
-            throw new MessageDecodingException("URL SAMLart parameter was missing or did not contain a value.");
+            log.error("URL SAMLart parameter was missing or did not contain a value");
+            throw new MessageDecodingException("URL SAMLart parameter was missing or did not contain a value");
         }
         
         try {

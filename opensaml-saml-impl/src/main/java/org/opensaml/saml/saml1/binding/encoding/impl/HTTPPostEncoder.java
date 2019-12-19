@@ -187,10 +187,10 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, out);
             out.flush();
         } catch (final UnsupportedEncodingException e) {
-            log.error("UTF-8 encoding is not supported, this VM is not Java compliant.");
+            log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
             throw new MessageEncodingException("Unable to encode message, UTF-8 encoding is not supported");
         } catch (final Exception e) {
-            log.error("Error invoking velocity template", e);
+            log.error("Error invoking velocity template: {}", e.getMessage());
             throw new MessageEncodingException("Error creating output document", e);
         }
     }

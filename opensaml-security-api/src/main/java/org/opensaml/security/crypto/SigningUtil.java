@@ -110,7 +110,7 @@ public final class SigningUtil {
             log.debug("Computed signature: {}", Hex.encodeHex(rawSignature));
             return rawSignature;
         } catch (final GeneralSecurityException e) {
-            log.error("Error during signature generation", e);
+            log.error("Error during signature generation: {}", e.getMessage());
             throw new SecurityException("Error during signature generation", e);
         }
     }
@@ -145,7 +145,7 @@ public final class SigningUtil {
             log.debug("Computed MAC: {}", Hex.encodeHexString(rawMAC));
             return rawMAC;
         } catch (final GeneralSecurityException e) {
-            log.error("Error during MAC generation", e);
+            log.error("Error during MAC generation: {}", e.getMessage());
             throw new SecurityException("Error during MAC generation", e);
         }
     }
@@ -217,7 +217,7 @@ public final class SigningUtil {
             sig.update(input);
             return sig.verify(signature);
         } catch (final GeneralSecurityException e) {
-            log.error("Error during signature verification", e);
+            log.error("Error during signature verification: {}", e.getMessage());
             throw new SecurityException("Error during signature verification", e);
         }
     }

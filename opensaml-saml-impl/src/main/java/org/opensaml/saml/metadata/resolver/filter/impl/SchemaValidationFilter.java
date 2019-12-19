@@ -70,14 +70,14 @@ public class SchemaValidationFilter implements MetadataFilter {
         try {
             schemaValidator = samlSchemaBuilder.getSAMLSchema().newValidator();
         } catch (final SAXException e) {
-            log.error("Unable to build metadata validation schema", e);
+            log.error("Unable to build metadata validation schema: {}", e.getMessage());
             throw new FilterException("Unable to build metadata validation schema", e);
         }
 
         try {
             schemaValidator.validate(new DOMSource(metadata.getDOM()));
         } catch (final Exception e) {
-            log.error("Incoming metadata was not schema valid", e);
+            log.error("Incoming metadata was not schema valid: {}", e.getMessage());
             throw new FilterException("Incoming metadata was not schema valid", e);
         }
         

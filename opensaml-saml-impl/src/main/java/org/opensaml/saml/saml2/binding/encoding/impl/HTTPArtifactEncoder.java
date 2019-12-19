@@ -257,7 +257,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, outWriter);
             outWriter.flush();
         } catch (final Exception e) {
-            log.error("Error invoking velocity template to create POST form", e);
+            log.error("Error invoking velocity template to create POST form: {}", e.getMessage());
             throw new MessageEncodingException("Error creating output document", e);
         }
     }
@@ -349,7 +349,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         try {
             artifactMap.put(encodedArtifact, requester, issuer, samlObject);
         } catch (final IOException e) {
-            log.error("Unable to store message mapping for artifact", e);
+            log.error("Unable to store message mapping for artifact: {}", e.getMessage());
             throw new MessageEncodingException("Unable to store message mapping for artifact", e);
         }
 

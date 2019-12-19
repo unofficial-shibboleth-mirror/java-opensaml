@@ -105,10 +105,11 @@ public class SchemaValidateXMLMessage extends AbstractMessageHandler {
             final Validator schemaValidator = validationSchema.newValidator();
             schemaValidator.validate(new DOMSource(message.getDOM()));
         } catch (final SAXException e) {
-            log.debug("{} Message {} is not schema-valid", getLogPrefix(), message.getElementQName(), e);
+            log.debug("{} Message {} is not schema-valid: {}", getLogPrefix(), message.getElementQName(),
+                    e.getMessage());
             throw new MessageHandlerException("Message is not schema-valid.", e);
         } catch (final IOException e) {
-            log.debug("{} Unable to read message", getLogPrefix(), e);
+            log.debug("{} Unable to read message: {}", getLogPrefix(), e.getMessage());
             throw new MessageHandlerException("Unable to read message.", e);
         }
 

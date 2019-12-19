@@ -51,14 +51,14 @@ public class ApacheSantuarioSignerProviderImpl implements SignerProvider {
 
             if (xmlSignature == null) {
                 log.error("Unable to compute signature, Signature XMLObject does not have the XMLSignature "
-                        + "created during marshalling.");
+                        + "created during marshalling");
                 throw new SignatureException(
                         "XMLObject does not have XMLSignature instance, unable to compute signature");
             }
             log.debug("Computing signature over XMLSignature object");
             xmlSignature.sign(CredentialSupport.extractSigningKey(signature.getSigningCredential()));
         } catch (final XMLSecurityException e) {
-            log.error("An error occured computing the digital signature", e);
+            log.error("An error occured computing the digital signature: {}", e.getMessage());
             throw new SignatureException("Signature computation error", e);
         }
     }

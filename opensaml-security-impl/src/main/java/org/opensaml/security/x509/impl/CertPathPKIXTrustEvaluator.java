@@ -161,7 +161,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
             }
             return false;
         } catch (final GeneralSecurityException e) {
-            log.error("PKIX validation failure", e);
+            log.error("PKIX validation failure: {}", e.getMessage());
             throw new SecurityException("PKIX validation failure", e);
         }
     }

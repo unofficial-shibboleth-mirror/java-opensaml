@@ -153,7 +153,7 @@ public class PopulateSignatureValidationParametersHandler extends AbstractMessag
             log.debug("{} {} SignatureValidationParameters", getLogPrefix(),
                     params != null ? "Resolved" : "Failed to resolve");
         } catch (final ResolverException e) {
-            log.error("{} Error resolving SignatureValidationParameters", getLogPrefix(), e);
+            log.error("{} Error resolving SignatureValidationParameters: {}", getLogPrefix(), e.getMessage());
             throw new MessageHandlerException("Error resolving SignatureValidationParameters");
         }
     }

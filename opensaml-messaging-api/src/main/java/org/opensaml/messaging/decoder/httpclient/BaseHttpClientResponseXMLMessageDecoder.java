@@ -146,10 +146,10 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
             final XMLObject message = XMLObjectSupport.unmarshallFromInputStream(getParserPool(), messageStream);
             return message;
         } catch (final XMLParserException e) {
-            log.error("Error unmarshalling message from input stream", e);
+            log.error("Error unmarshalling message from input stream: {}", e.getMessage());
             throw new MessageDecodingException("Error unmarshalling message from input stream", e);
         } catch (final UnmarshallingException e) {
-            log.error("Error unmarshalling message from input stream", e);
+            log.error("Error unmarshalling message from input stream: {}", e.getMessage());
             throw new MessageDecodingException("Error unmarshalling message from input stream", e);
         }
     }

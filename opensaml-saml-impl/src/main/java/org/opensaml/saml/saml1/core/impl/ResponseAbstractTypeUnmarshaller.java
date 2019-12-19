@@ -90,7 +90,7 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
                         throw new UnmarshallingException("MajorVersion was invalid, must be 1");
                     }
                 } catch (final NumberFormatException n) {
-                    log.error("Failed to parse major version", n);
+                    log.error("Failed to parse major version: {}", n.getMessage());
                     throw new UnmarshallingException(n);
                 }
             } else if (attribute.getLocalName().equals(ResponseAbstractType.MINORVERSION_ATTRIB_NAME)) {
@@ -98,7 +98,7 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
                 try {
                     minor = Integer.parseInt(attribute.getValue());
                 } catch (final NumberFormatException n) {
-                    log.error("Failed to parse minor version", n);
+                    log.error("Failed to parse minor version: {}", n.getMessage());
                     throw new UnmarshallingException(n);
                 }
                 if (minor == 0) {
