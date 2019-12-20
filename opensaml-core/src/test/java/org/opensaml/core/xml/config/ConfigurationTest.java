@@ -54,6 +54,8 @@ public class ConfigurationTest {
     
     /**
      * Tests that a schema invalid configuration file is properly identified as such.
+     * 
+     * @throws Exception if something bad happens
      */
     @Test
     public void testInvalidConfiguration() throws Exception {
@@ -71,6 +73,8 @@ public class ConfigurationTest {
 
     /**
      * Tests loading of multiple configuration files.
+     * 
+     * @throws Exception if something bad happens
      */
     @Test
     public void testObjectProviderConfiguration() throws Exception {

@@ -33,6 +33,9 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests unmarshalling unknown content into the element proxy.
+     * 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallUnknownContent() throws XMLParserException, UnmarshallingException{

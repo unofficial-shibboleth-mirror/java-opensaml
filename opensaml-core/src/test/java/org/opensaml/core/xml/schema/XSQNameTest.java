@@ -51,8 +51,9 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests Marshalling a QName type.
-     * @throws MarshallingException 
-     * @throws XMLParserException 
+     * 
+     * @throws MarshallingException ...
+     * @throws XMLParserException ...
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
@@ -70,8 +71,8 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
     /**
      * Tests Unmarshalling a QName type.
      * 
-     * @throws XMLParserException 
-     * @throws UnmarshallingException 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{

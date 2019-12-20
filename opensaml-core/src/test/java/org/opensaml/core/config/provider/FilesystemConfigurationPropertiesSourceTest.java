@@ -43,8 +43,11 @@ public class FilesystemConfigurationPropertiesSourceTest {
     /** Actual target file test runs against. */
     private File targetFile;
     
-    /** Constructor. 
-     * @throws IOException */
+    /**
+     * Constructor.
+     *  
+     * @throws IOException ...
+     */
     public FilesystemConfigurationPropertiesSourceTest() throws IOException {
         masterFile = new File("src/test/resources/opensaml-config.properties");
         targetFile = File.createTempFile("opensaml-config.properties", "");

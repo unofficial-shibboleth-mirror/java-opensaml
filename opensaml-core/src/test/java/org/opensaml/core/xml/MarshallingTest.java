@@ -50,8 +50,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
     /**
      * Tests marshalling an object that has DOM Attrs.
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException
+     * @throws XMLParserException ...
      */
     @Test
     public void testMarshallingWithAttributes() throws XMLParserException {
@@ -71,7 +70,7 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
     /**
      * Tests marshalling an object that has DOM Element textual content.
      * 
-     * @throws XMLParserException
+     * @throws XMLParserException ...
      */
     @Test
     public void testMarshallingWithElementContent() throws XMLParserException {
@@ -105,8 +104,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
     /**
      * Tests marshalling an object that has DOM Element children
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException
+     * @throws XMLParserException ...
+     * @throws MarshallingException ...
      */
     @Test
     public void testMarshallingWithChildElements() throws XMLParserException, MarshallingException {
@@ -128,8 +127,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
     /**
      * Tests marshalling a fragment of an already marshalled tree into an existing, but different, DOM tree.
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException 
+     * @throws XMLParserException ...
+     * @throws MarshallingException ...
      */
     @Test
     public void testMarshallingXMLFragment() throws XMLParserException, MarshallingException {
@@ -162,8 +161,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      * Tests marshalling into an existing new empty document. Marshalled DOM should become the 
      * new root element of the document.
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException 
+     * @throws XMLParserException ...
+     * @throws MarshallingException ...
      */
     @Test
     public void testMarshallingExistingEmptyDocument() throws XMLParserException, MarshallingException {
@@ -182,8 +181,8 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      * Tests marshalling into an existing document which already has a document root element.  Existing
      * root element should be replaced.
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException 
+     * @throws XMLParserException ...
+     * @throws MarshallingException ...
      */
     @Test
     public void testMarshallingReplaceDocumentRoot() throws XMLParserException, MarshallingException {

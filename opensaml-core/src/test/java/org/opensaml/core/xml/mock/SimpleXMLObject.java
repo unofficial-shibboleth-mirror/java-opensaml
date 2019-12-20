@@ -71,6 +71,10 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
     
     /**
      * Constructor
+     * 
+     * @param namspaceURI namespace for the node
+     * @param localName local name for the node
+     * @param namespacePrefix namespace prefix for the node 
      */
     public SimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
         super(namspaceURI, localName, namespacePrefix);

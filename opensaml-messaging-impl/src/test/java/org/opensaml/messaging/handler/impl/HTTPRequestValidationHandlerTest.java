@@ -70,7 +70,8 @@ public class HTTPRequestValidationHandlerTest {
 
     /**
      * Test all parameters valid.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testAllGood() throws MessageHandlerException {
@@ -79,7 +80,8 @@ public class HTTPRequestValidationHandlerTest {
 
     /**
      * Bad request content type.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testContentTypeBad() throws MessageHandlerException {
@@ -89,7 +91,8 @@ public class HTTPRequestValidationHandlerTest {
 
     /**
      * Bad request method.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testRequestMethodBad() throws MessageHandlerException {
@@ -99,7 +102,8 @@ public class HTTPRequestValidationHandlerTest {
     
     /**
      * Bad request secure flag.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testRequireSecureBad() throws MessageHandlerException {

@@ -30,7 +30,11 @@ import com.google.common.base.Predicates;
 public class AbstractMessageHandlerTest {
 
 
-    /** Test a successful action run. */
+    /**
+     * Test a successful action run.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test
     public void testSuccess() throws Exception {
 
@@ -43,7 +47,11 @@ public class AbstractMessageHandlerTest {
         Assert.assertTrue(handler.didPost);
     }
 
-    /** Test a failure in the preexec step. */
+    /**
+     * Test a failure in the preexec step.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test
     public void testPreFailure() throws Exception {
 
@@ -59,7 +67,11 @@ public class AbstractMessageHandlerTest {
         }
     }
 
-    /** Test a failure in the exec step. */
+    /**
+     * Test a failure in the exec step.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test
     public void testExecFailure() throws Exception {
 
@@ -76,7 +88,11 @@ public class AbstractMessageHandlerTest {
         }
     }
 
-    /** Test an unchecked error in the exec step. */
+    /**
+     * Test an unchecked error in the exec step.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test
     public void testExecUnchecked() throws Exception {
 
@@ -93,7 +109,11 @@ public class AbstractMessageHandlerTest {
         }
     }
 
-    /** Test a failure in the post step. */
+    /**
+     * Test a failure in the post step.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test
     public void testPostFailure() throws Exception {
 

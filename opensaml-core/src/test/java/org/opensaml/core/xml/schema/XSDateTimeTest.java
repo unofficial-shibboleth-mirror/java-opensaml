@@ -54,8 +54,8 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
     /**
      * Tests Marshalling a dateTime type.
      * 
-     * @throws MarshallingException 
-     * @throws XMLParserException 
+     * @throws MarshallingException ...
+     * @throws XMLParserException ...
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
@@ -75,8 +75,8 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
     /**
      * Tests Unmarshalling a dateTime type.
      * 
-     * @throws XMLParserException 
-     * @throws UnmarshallingException 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
@@ -96,8 +96,8 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
     /**
      * Tests Unmarshalling a dateTime type in canonical form, i.e. no trailing zeros in fractional seconds.
      * 
-     * @throws XMLParserException 
-     * @throws UnmarshallingException 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallCanonical() throws XMLParserException, UnmarshallingException{
@@ -117,8 +117,8 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
     /**
      * Tests Unmarshalling a dateTime type that has no fractional seconds.
      * 
-     * @throws XMLParserException 
-     * @throws UnmarshallingException 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallNoFractional() throws XMLParserException, UnmarshallingException{

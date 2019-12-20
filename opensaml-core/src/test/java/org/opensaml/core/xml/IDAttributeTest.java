@@ -300,8 +300,8 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     /**
      * Tests that attributes registered globally on {@link org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport} are being
      * handled properly in the AttributeMap.
-     * @throws XMLParserException 
-     * @throws UnmarshallingException 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testGlobalIDRegistration() throws XMLParserException, UnmarshallingException {

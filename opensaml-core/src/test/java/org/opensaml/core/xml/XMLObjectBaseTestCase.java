@@ -128,8 +128,9 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * Builds the requested XMLObject.
      * 
      * @param name name of the XMLObject
+     * @param <T> type of the result
      * 
-     * @return the build XMLObject
+     * @return the built XMLObject
      */
     protected <T extends XMLObject> T buildXMLObject(QName name) {
         final XMLObjectBuilder<T> builder = getBuilder(name);
@@ -143,6 +144,9 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     
     /**
      * Unmarshalls an element file into its XMLObject.
+     * 
+     * @param elementFile the element file to unmarshall
+     * @param <T> expected type
      * 
      * @return the XMLObject from the file
      */
@@ -159,9 +163,14 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     /**
      * Unmarshalls an element file into its XMLObject.
      * 
+     * @param elementFile the element file to unmarshall
      * @param propagateErrors if true, checked exceptions will be thrown, if false then they cause assertion of test failure
+     * @param <T> expected type
+     * 
      * @return the XMLObject from the file
      * 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     protected <T extends XMLObject> T unmarshallElement(String elementFile, boolean propagateErrors) 
             throws XMLParserException, UnmarshallingException {
@@ -191,6 +200,8 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * For convenience when testing, pretty-print the specified DOM node to a file, or to 
      * the console if filename is null.
      * 
+     * @param node node to print
+     * @param filename name of file to print to
      */
     protected void printXML(Node node, String filename) {
         try {
@@ -204,6 +215,8 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * For convenience when testing, pretty-print the specified XMLObject to a file, or to 
      * the console if filename is null.
      * 
+     * @param xmlObject {@link XMLObject} to print
+     * @param filename name of file to print to
      */
     protected void printXML(XMLObject xmlObject, String filename) {
         Element elem = null;
@@ -217,7 +230,10 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
 
     /**
      * Lookup the XMLObjectBuilder for a QName.
+     * 
      * @param qname the QName for which to find the builder
+     * @param <T> type of result for the {@link XMLObjectBuilder}
+     * 
      * @return the XMLObjectBuilder
      */
     protected <T extends XMLObject> XMLObjectBuilder<T> getBuilder(QName qname) {

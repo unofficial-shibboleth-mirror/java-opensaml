@@ -29,7 +29,7 @@ public abstract class OpenSAMLInitBaseTestCase {
     /**
      *  Initialize OpenSAML.
      *  
-     * @throws InitializationException 
+     * @throws InitializationException ...
      */
     @BeforeSuite(groups={"opensaml.init"})
     public void initOpenSAML() throws InitializationException {

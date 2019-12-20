@@ -55,7 +55,7 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
     /**
      * Build the schema.
      * 
-     * @throws Exception
+     * @throws Exception if something bad happens
      */
     @BeforeClass public void setUp() throws Exception {
 
@@ -65,7 +65,11 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
         schema = schemaBuilder.buildSchema();
     }
 
-    /** Test a null inbound message context. */
+    /**
+     * Test a null inbound message context.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNullInboundMessageContext() throws Exception {
 
@@ -77,7 +81,11 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
         handler.invoke(messageContext);
     }
 
-    /** Test a null dom. */
+    /**
+     * Test a null dom.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNullDom() throws Exception {
 
@@ -93,7 +101,11 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
         handler.invoke(messageContext);
     }
 
-    /** Test validation of an invalid xml file. */
+    /**
+     * Test validation of an invalid xml file.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidSchema() throws Exception {
 
@@ -112,7 +124,11 @@ public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {
         handler.invoke(messageContext);
     }
 
-    /** Test validation of a valid xml file. */
+    /**
+     * Test validation of a valid xml file.
+     * 
+     * @throws Exception if something bad happens
+     */
     @Test public void testValidSchema() throws Exception {
 
         final SchemaValidateXMLMessage handler = new SchemaValidateXMLMessage(schema);

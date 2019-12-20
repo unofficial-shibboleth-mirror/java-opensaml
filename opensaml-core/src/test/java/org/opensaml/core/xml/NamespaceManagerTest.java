@@ -224,8 +224,6 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     }
     
     
-    /**********************/
-    
     private void checkPrefixes(NamespaceManager manager, String ... controlPrefixes) {
         Set<String> nonVisiblePrefixes = manager.getNonVisibleNamespacePrefixes();
         

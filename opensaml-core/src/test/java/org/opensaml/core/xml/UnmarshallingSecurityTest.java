@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml;
 
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -51,8 +50,8 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with comment in content with default parser.
      * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallingWithCommentInElementContentDefaults() throws XMLParserException, UnmarshallingException {
@@ -68,8 +67,8 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with comment in content with insecure parser.
      * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test(expectedExceptions=UnmarshallingException.class)
     public void testUnmarshallingWithCommentInElementContentInsecure() throws XMLParserException, UnmarshallingException {
@@ -83,8 +82,8 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with CDATA in content with default parser.
      * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallingWithCDATAInElementContentDefaults() throws XMLParserException, UnmarshallingException {
@@ -100,8 +99,8 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with CDATA in content with insecure parser.
      * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test(expectedExceptions=UnmarshallingException.class)
     public void testUnmarshallingWithCDATAInElementContentInsecure() throws XMLParserException, UnmarshallingException {
@@ -115,8 +114,8 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with comment between child elements with default parser.
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallingWithCommentBetweenChildElementsDefaults() throws XMLParserException, UnmarshallingException {
@@ -132,8 +131,8 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with comment between child elements with insecure parser.
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test(expectedExceptions=UnmarshallingException.class)
     public void testUnmarshallingWithCommentBetweenChildElementsInsecure() throws XMLParserException, UnmarshallingException {

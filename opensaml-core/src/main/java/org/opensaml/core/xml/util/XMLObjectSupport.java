@@ -93,12 +93,12 @@ public final class XMLObjectSupport {
      * 
      * 
      * @param originalXMLObject the object to be cloned
+     * @param <T> the type of object being cloned
+     * 
      * @return a clone of the original object
      * 
      * @throws MarshallingException if original object can not be marshalled
      * @throws UnmarshallingException if cloned object tree can not be unmarshalled
-     * 
-     * @param <T> the type of object being cloned
      */
     public static <T extends XMLObject> T cloneXMLObject(final T originalXMLObject)
             throws MarshallingException, UnmarshallingException {
@@ -116,12 +116,12 @@ public final class XMLObjectSupport {
      * 
      * @param originalXMLObject the object to be cloned
      * @param cloneOutputOption  the option for handling the cloned object output
+     * @param <T> the type of object being cloned
+     * 
      * @return a clone of the original object
      * 
      * @throws MarshallingException if original object can not be marshalled
      * @throws UnmarshallingException if cloned object tree can not be unmarshalled
-     * 
-     * @param <T> the type of object being cloned
      */
     @Nullable public static <T extends XMLObject> T cloneXMLObject(@Nullable final T originalXMLObject,
             @Nonnull final CloneOutputOption cloneOutputOption) throws MarshallingException, UnmarshallingException {

@@ -50,8 +50,8 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests Marshalling a boolean type.
-     * @throws MarshallingException 
-     * @throws XMLParserException 
+     * @throws MarshallingException ...
+     * @throws XMLParserException ...
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
@@ -69,8 +69,8 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
     /**
      * Tests Unmarshalling a boolean type.
      * 
-     * @throws XMLParserException 
-     * @throws UnmarshallingException 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ... 
      */
     @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{

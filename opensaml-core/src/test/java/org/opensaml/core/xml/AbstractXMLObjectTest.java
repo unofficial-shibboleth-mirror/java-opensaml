@@ -37,8 +37,8 @@ public class AbstractXMLObjectTest extends XMLObjectBaseTestCase {
     /**
      * Tests of DOM and XMLObjectSource drop.
      * 
-     * @throws MarshallingException
-     * @throws IOException
+     * @throws MarshallingException ...
+     * @throws IOException ...
      */
     @Test
     public void testDOMAndXMLObjectSourceDropOnMutateContent() throws MarshallingException, IOException {
@@ -63,8 +63,8 @@ public class AbstractXMLObjectTest extends XMLObjectBaseTestCase {
     /**
      * Tests of DOM and XMLObjectSource drop.
      * 
-     * @throws MarshallingException
-     * @throws IOException
+     * @throws MarshallingException ...
+     * @throws IOException ...
      */
     @Test
     public void testDOMAndXMLObjectSourceDropOnMutateAttribute() throws MarshallingException, IOException {
@@ -90,8 +90,8 @@ public class AbstractXMLObjectTest extends XMLObjectBaseTestCase {
     /**
      * Tests of DOM and XMLObjectSource drop.
      * 
-     * @throws MarshallingException
-     * @throws IOException
+     * @throws MarshallingException ...
+     * @throws IOException ...
      */
     @Test
     public void testDOMAndXMLObjectSourceDropOnMutateChildElements() throws MarshallingException, IOException {

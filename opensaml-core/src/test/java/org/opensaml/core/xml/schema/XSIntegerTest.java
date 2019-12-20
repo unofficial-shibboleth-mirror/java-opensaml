@@ -51,8 +51,9 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests Marshalling a integer type.
-     * @throws MarshallingException 
-     * @throws XMLParserException 
+     * 
+     * @throws MarshallingException ...
+     * @throws XMLParserException ...
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
@@ -70,8 +71,8 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
     /**
      * Tests Marshalling a integer type.
      * 
-     * @throws XMLParserException 
-     * @throws UnmarshallingException 
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{

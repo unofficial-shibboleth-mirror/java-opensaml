@@ -17,17 +17,16 @@
 
 package org.opensaml.core.xml;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Unit test for unmarshalling functions.
@@ -44,8 +43,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element that has attributes.
      * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallingWithAttributes() throws XMLParserException, UnmarshallingException {
@@ -63,8 +62,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with content.
      * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallingWithElementContent() throws XMLParserException, UnmarshallingException {
@@ -98,8 +97,8 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an element with child elements.
      * 
-     * @throws XMLParserException
-     * @throws MarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testUnmarshallingWithChildElements() throws XMLParserException, UnmarshallingException {
