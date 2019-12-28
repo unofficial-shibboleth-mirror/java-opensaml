@@ -33,7 +33,12 @@ import org.testng.annotations.Test;
 /** {@link ExtractConsentFromRequestHandler} unit test. */
 public class ExtractConsentFromRequestHandlerTest extends OpenSAMLInitBaseTestCase {
     
-    /** Test that the handler errors on a missing request. */
+    /**
+     * Test that the handler errors on a missing request.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingContext() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
@@ -44,7 +49,12 @@ public class ExtractConsentFromRequestHandlerTest extends OpenSAMLInitBaseTestCa
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));

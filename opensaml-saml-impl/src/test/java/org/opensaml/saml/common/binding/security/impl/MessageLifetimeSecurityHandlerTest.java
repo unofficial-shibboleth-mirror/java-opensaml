@@ -59,8 +59,9 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test valid issue instant.
-     * @throws MessageHandlerException 
+     * Test valid issue instant.
+     *  
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testValid() throws MessageHandlerException {
@@ -69,7 +70,8 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     /**
      * Test invalid when issued in future, beyond allowed clock skew.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidIssuedInFuture() throws MessageHandlerException {
@@ -78,8 +80,9 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test valid when issued in future, but within allowed clock skew.
-     * @throws MessageHandlerException 
+     * Test valid when issued in future, but within allowed clock skew.
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testValidIssuedInFutureWithinClockSkew() throws MessageHandlerException {
@@ -89,7 +92,8 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     /**
      * Test invalid when expired, beyond allowed clock skew.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidExpired() throws MessageHandlerException {
@@ -98,8 +102,9 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test valid when expired, but within allowed clock skew.
-     * @throws MessageHandlerException 
+     * Test valid when expired, but within allowed clock skew.
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testValidExpiredWithinClockSkew() throws MessageHandlerException {

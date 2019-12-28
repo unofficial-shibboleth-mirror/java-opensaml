@@ -193,8 +193,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test protocol null, and no usage.
      * Should get 3 credentials, 2 from protocolFoo and 1 from protocolBar.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testNoProtocolNoUsage() throws SecurityException, ResolverException {
@@ -231,8 +231,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test protocol null, and usage = encryption.
      * Should get 2 credentials, 1 from protocolFoo and 1 from protocolBar.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testNoProtocolUsageEncryption() throws SecurityException, ResolverException {
@@ -270,8 +270,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test protocol null, and usage = signing.
      * Should get 2 credentials, 1 from protocolFoo and 1 from protocolBar.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testNoProtocolUsageSigning() throws SecurityException, ResolverException {
@@ -308,8 +308,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test 1 protocol (FOO), and no usage .
      * Should get 2 credentials.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testProtocolFOONoUsage() throws SecurityException, ResolverException {
@@ -347,8 +347,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test 1 protocol (FOO), and usage = signing.
      * Should get 1 credentials.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testProtocolFOOUsageSigning() throws SecurityException, ResolverException {
@@ -385,8 +385,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test 1 protocol (FOO), and usage encryption.
      * Should get 1 credentials.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testProtocolFOOUsageEncryption() throws SecurityException, ResolverException {
@@ -423,8 +423,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test 1 protocol (BAR), and no usage.
      * Should get 1 credentials.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testProtocolBARNoUsage() throws SecurityException, ResolverException {
@@ -460,8 +460,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test 1 protocol (BAR), and usage = signing.
      * Should get 1 credentials.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testProtocolBARUsageSigning() throws SecurityException, ResolverException {
@@ -498,8 +498,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * Test 1 protocol (BAR), and usage = encryption.
      * Should get 1 credentials.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testProtocolBARUsageEncryption() throws SecurityException, ResolverException {
@@ -535,8 +535,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     /**
      * Test caching behavior across 2 resolutions.
      * 
-     * @throws SecurityException 
-     * @throws ResolverException 
+     * @throws SecurityException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testCaching() throws SecurityException, ResolverException {
@@ -563,9 +563,9 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     /**
      * Test resolving directly from a RoleDescriptor input.
      * 
-     * @throws ComponentInitializationException 
-     * @throws ResolverException 
-     * @throws CertificateEncodingException 
+     * @throws ComponentInitializationException ...
+     * @throws ResolverException ...
+     * @throws CertificateEncodingException ...
      */
     @Test 
     public void testDirectResolutionFromRoleDescriptor() throws ComponentInitializationException, ResolverException, CertificateEncodingException {
@@ -629,7 +629,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     /**
      * Test fails correctly when required inputs are missing.
      * 
-     * @throws ResolverException
+     * @throws ResolverException ...
      */
     @Test(expectedExceptions=ResolverException.class)
     public void testMissingRequiredInputs() throws ResolverException {
@@ -639,7 +639,7 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     /**
      * Test fails correctly when required KeyInfo credential resolver is not configured
      * 
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException ...
      */
     @Test(expectedExceptions=ComponentInitializationException.class)
     public void testMissingKeyInfoCredentialResolver() throws ComponentInitializationException {
@@ -650,8 +650,8 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     /**
      * Test that fails when entityID+role name are supplied, but no role descriptor resolver was configured.
      * 
-     * @throws ComponentInitializationException
-     * @throws ResolverException
+     * @throws ComponentInitializationException ...
+     * @throws ResolverException ...
      */
     @Test(expectedExceptions=ResolverException.class)
     public void testMissingRequiredRoleDescriptorResolver() throws ComponentInitializationException, ResolverException {

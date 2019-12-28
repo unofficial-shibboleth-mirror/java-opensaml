@@ -48,7 +48,11 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.initialize();
     }
     
-    /** Test that the handler does nothing on a missing Endpoint context. */
+    /**
+     * Test that the handler does nothing on a missing Endpoint context.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testMissingEndpointContext() throws MessageHandlerException {
 
         handler.invoke(messageCtx);
@@ -59,7 +63,11 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(headers.isEmpty());
     }
     
-    /** Test that the handler errors on a missing SOAP context. */
+    /**
+     * Test that the handler errors on a missing SOAP context.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException {
 
@@ -68,7 +76,11 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException {
 
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(

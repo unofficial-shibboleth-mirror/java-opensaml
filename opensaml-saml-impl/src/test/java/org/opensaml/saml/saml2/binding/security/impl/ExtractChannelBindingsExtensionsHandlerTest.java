@@ -49,7 +49,11 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
         messageCtx.getSubcontext(SAMLBindingContext.class, true).setHasBindingSignature(true);
     }
     
-    /** Test that the handler returns nothing on a missing message. */
+    /**
+     * Test that the handler returns nothing on a missing message.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testMissingMessage() throws MessageHandlerException {
 
         handler.invoke(messageCtx);
@@ -60,7 +64,11 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
         Assert.assertNull(messageCtx.getSubcontext(ChannelBindingsContext.class));
     }
 
-    /** Test that the handler does nothing when no extensions exist. */
+    /**
+     * Test that the handler does nothing when no extensions exist.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testNoExtensions() throws MessageHandlerException {
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         
@@ -68,7 +76,11 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
         Assert.assertNull(messageCtx.getSubcontext(ChannelBindingsContext.class));
     }
     
-    /** Test that the handler ignores unsigned bindings. */
+    /**
+     * Test that the handler ignores unsigned bindings.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testUnsigned() throws MessageHandlerException {
         final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
                 Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);
@@ -93,7 +105,11 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
         Assert.assertNull(cbCtx);
     }
     
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException {
         final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
                 Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);

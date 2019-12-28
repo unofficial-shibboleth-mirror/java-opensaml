@@ -156,7 +156,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     
     /**
      * Test context issuer set, valid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSuccess() throws MessageHandlerException {
@@ -172,9 +173,9 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     }
     
     /**
-     * 
      * Test blacklisted signature algorithm.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSigntureAlgorithm() throws MessageHandlerException {
@@ -187,7 +188,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testUntrustedCredential() throws MessageHandlerException {
@@ -196,7 +198,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     
     /**
      * Test context issuer set, invalid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidSignature() throws MessageHandlerException {
@@ -211,7 +214,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoContextIssuer() throws MessageHandlerException {
@@ -222,7 +226,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
     
     /**
      * Test no trust engine supplied.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoTrustEngine() throws MessageHandlerException {

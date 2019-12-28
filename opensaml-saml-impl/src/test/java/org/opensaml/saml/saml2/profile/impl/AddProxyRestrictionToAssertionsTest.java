@@ -54,7 +54,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(1,Set.of(AUDIENCE1, AUDIENCE2))));
     }
     
-    /** Test that action errors out properly if there is no response. */
+    /**
+     * Test that action errors out properly if there is no response.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testNoResponse() throws Exception {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
         
@@ -63,7 +67,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
-    /** Test that action behaves properly if there is no assertion in the response. */
+    /**
+     * Test that action behaves properly if there is no assertion in the response.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testNoAssertion() throws Exception {
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML2ActionTestingSupport.buildResponse()).buildProfileRequestContext();
@@ -77,7 +85,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
      * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
      * response with a count of zero.
      * 
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException ...
      */
     @Test public void testZeroCount() throws ComponentInitializationException {
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
@@ -106,7 +114,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
      * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
      * response with no audiences.
      * 
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException ...
      */
     @Test public void testCountOnly() throws ComponentInitializationException {
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
@@ -135,7 +143,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
      * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
      * response with no count.
      * 
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException ...
      */
     @Test public void testAudiencesOnly() throws ComponentInitializationException {
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
@@ -165,7 +173,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
      * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
      * response.
      * 
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException ...
      */
     @Test public void testSingleAssertion() throws ComponentInitializationException {
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
@@ -194,7 +202,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
      * Test that the condition is properly added if there is a single assertion, with a Conditions element, in the
      * response.
      * 
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException ...
      */
     @Test public void testSingleAssertionWithExistingCondition() throws ComponentInitializationException {
         final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
@@ -224,7 +232,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
 
     /** Test that the condition is properly added if there are multiple assertions in the response.
      * 
-     * @throws ComponentInitializationException
+     * @throws ComponentInitializationException ...
      */
     @Test public void testMultipleAssertion() throws ComponentInitializationException {
         final Response response = SAML2ActionTestingSupport.buildResponse();

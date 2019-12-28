@@ -37,7 +37,12 @@ import org.testng.annotations.Test;
 /** {@link AddRequestAuthenticatedHeaderHandler} unit test. */
 public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
     
-    /** Test that the handler does nothing on a missing context. */
+    /**
+     * Test that the handler does nothing on a missing context.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testUnauthenticated() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
 
@@ -58,7 +63,12 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
         Assert.assertTrue(headers.isEmpty());
     }
     
-    /** Test that the handler errors on a missing SOAP context. */
+    /**
+     * Test that the handler errors on a missing SOAP context.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
@@ -70,7 +80,12 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
         messageCtx.getSubcontext(ECPContext.class, true).setRequestAuthenticated(true);

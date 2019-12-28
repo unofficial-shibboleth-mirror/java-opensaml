@@ -101,6 +101,10 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
 
     /**
      * Validate whether the filter was or wasn't applied.
+     * 
+     * @param applied <code>true</code> if validating that the filter was applied, <code>false</code> otherwise
+     * 
+     * @throws ResolverException if something goes wrong
      */
     private void validate(final boolean applied) throws ResolverException {
         EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");

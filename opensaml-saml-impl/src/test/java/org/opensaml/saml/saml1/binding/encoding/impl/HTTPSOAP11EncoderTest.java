@@ -42,7 +42,11 @@ import org.testng.annotations.Test;
  */
 public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
 
-    /** Tests encoding a simple SAML message. */
+    /**
+     * Tests encoding a simple SAML message.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     @SuppressWarnings("unchecked")
     public void testEncoding() throws Exception {

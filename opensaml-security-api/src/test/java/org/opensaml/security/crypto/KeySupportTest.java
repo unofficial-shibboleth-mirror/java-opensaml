@@ -67,50 +67,82 @@ public class KeySupportTest {
     /** Location of non-encrypted, PEM formatted, EC private key. */
     private String ecPrivKeyPEMNoEncrypt = "/data/ec-privkey-nopass.pem";
 
-    /** Test decoding an RSA private key, in PEM format, without encryption. */
+    /**
+     * Test decoding an RSA private key, in PEM format, without encryption.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeRSAPrivateKeyPEMNoEncrypt() throws Exception {
         testPrivKey(rsaPrivKeyPEMNoEncrypt, null, "RSA");
     }
 
-    /** Test decoding an RSA private key, in PEM format, with encryption. */
+    /**
+     * Test decoding an RSA private key, in PEM format, with encryption.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeRSAPrivateKeyPEMEncrypt() throws Exception {
         testPrivKey(rsaPrivKeyPEMEncrypt, privKeyPassword, "RSA");
     }
 
-    /** Test decoding an RSA private key, in DER format, without encryption. */
+    /**
+     * Test decoding an RSA private key, in DER format, without encryption.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeRSAPrivateKeyDERNoEncrypt() throws Exception {
         testPrivKey(rsaPrivKeyDERNoEncrypt, null, "RSA");
     }
     
-    /** Test decoding an DSA private key, in PEM format, without encryption. */
+    /**
+     * Test decoding an DSA private key, in PEM format, without encryption.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeDSAPrivateKeyPEMNoEncrypt() throws Exception {
         testPrivKey(dsaPrivKeyPEMNoEncrypt, null, "DSA");
     }
 
-    /** Test decoding an DSA private key, in PEM format, with encryption. */
+    /**
+     * Test decoding an DSA private key, in PEM format, with encryption.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeDSAPrivateKeyPEMEncrypt() throws Exception {
         testPrivKey(dsaPrivKeyPEMEncrypt, privKeyPassword, "DSA");
     }
 
-    /** Test decoding an DSA private key, in DER format, without encryption. */
+    /**
+     * Test decoding an DSA private key, in DER format, without encryption.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeDSAPrivateKeyDERNoEncrypt() throws Exception {
         testPrivKey(dsaPrivKeyDERNoEncrypt, null, "DSA");
     }    
     
-    /** Test decoding an EC private key, in PEM format, without encryption. */
+    /**
+     * Test decoding an EC private key, in PEM format, without encryption.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeECPrivateKeyPEMNoEncrypt() throws Exception {
         testPrivKey(ecPrivKeyPEMNoEncrypt, null, "EC");
     }
     
     
-    /** Test deriving a public key from an RSA and DSA private key. */
+    /**
+     * Test deriving a public key from an RSA and DSA private key.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDerivePublicKey() throws Exception{
         PrivateKey privKey = testPrivKey(rsaPrivKeyPEMNoEncrypt, null, "RSA");
@@ -128,11 +160,13 @@ public class KeySupportTest {
     }
 
     
-    /** Test the evaluation that 2 keys are members of the same key pair. 
+    /**
+     * Test the evaluation that 2 keys are members of the same key pair. 
      * 
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
-     * @throws SecurityException */
+     * @throws NoSuchProviderException ...
+     * @throws NoSuchAlgorithmException ...
+     * @throws SecurityException ...
+     */
     @Test
     public void testKeyPairMatching() throws NoSuchAlgorithmException, NoSuchProviderException, SecurityException {
         final KeyPair kp1rsa = KeySupport.generateKeyPair("RSA", 1024, null);
@@ -269,7 +303,17 @@ public class KeySupportTest {
         Assert.assertEquals(secretKey.getEncoded(), key);
     }
 
-    /** Generic key testing. */
+    /**
+     * Generic key testing.
+     * 
+     * @param keyFile ...
+     * @param password ...
+     * @param algo ...
+     * 
+     * @return the private key
+     * 
+     * @throws Exception if something goes wrong
+     */
     protected PrivateKey testPrivKey(final String keyFile, final char[] password, final String algo) throws Exception {
         final InputStream keyInS = KeySupportTest.class.getResourceAsStream(keyFile);
 

@@ -59,7 +59,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
     /**
      * Tests encoding a SAML message to an servlet response.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     @SuppressWarnings("unchecked")
@@ -136,7 +136,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
     /**
      * Tests encoding a SAML message to an servlet response.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     @SuppressWarnings("unchecked")
@@ -217,7 +217,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
     /**
      * Tests encoding a SAML message to an servlet response.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     @SuppressWarnings("unchecked")
@@ -302,7 +302,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
     /**
      * Tests encoding a SAML message to an servlet response with simple sign.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     @SuppressWarnings("unchecked")
@@ -387,7 +387,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
      * Tests encoding a SAML message to an servlet response with simple sign, 
      * where the destination URL had existing non-disallowed query parameters.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     @SuppressWarnings("unchecked")

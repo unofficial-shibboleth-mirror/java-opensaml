@@ -63,7 +63,8 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests the {@link HTTPMetadataResolver#lookupEntityID(String)} method.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
@@ -75,8 +76,8 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
     /**
      * Tests failure mode of an invalid metadata file that does not exist.
      * 
-     * @throws ResolverException
-     * @throws ComponentInitializationException 
+     * @throws ResolverException ...
+     * @throws ComponentInitializationException ...
      */
     @Test(expectedExceptions = {ComponentInitializationException.class})
     public void testNonexistentMetadataFile() throws ResolverException, ComponentInitializationException {
@@ -88,9 +89,9 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
     /**
      * Tests failure mode of an invalid metadata file that is actually a directory.
      * 
-     * @throws IOException 
-     * @throws ResolverException
-     * @throws ComponentInitializationException 
+     * @throws IOException ...
+     * @throws ResolverException ...
+     * @throws ComponentInitializationException ...
      */
     @Test(expectedExceptions = {ComponentInitializationException.class})
     public void testInvalidMetadataFile() throws IOException, ResolverException, ComponentInitializationException {
@@ -114,9 +115,9 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
     /**
      * Tests failure mode of an invalid metadata file that is unreadable.
      * 
-     * @throws IOException 
-     * @throws ResolverException
-     * @throws ComponentInitializationException 
+     * @throws IOException ...
+     * @throws ResolverException ...
+     * @throws ComponentInitializationException ...
      */
     @Test(expectedExceptions = {ComponentInitializationException.class})
     public void testUnreadableMetadataFile() throws IOException, ResolverException, ComponentInitializationException {
@@ -138,8 +139,8 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
     /**
      * Tests failure mode of a metadata file which disappears after initial creation of the provider.
      * 
-     * @throws IOException 
-     * @throws ResolverException
+     * @throws IOException ...
+     * @throws ResolverException ...
      */
     @Test(expectedExceptions = {ResolverException.class})
     public void testDisappearingMetadataFile() throws IOException, ResolverException {
@@ -168,8 +169,8 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
     /**
      * Tests failfast init of false, with graceful recovery when file later appears.
      * 
-     * @throws IOException 
-     * @throws InterruptedException 
+     * @throws IOException ...
+     * @throws InterruptedException ...
      */
     @Test
     public void testRecoveryFromNoFailFast() throws IOException, InterruptedException {

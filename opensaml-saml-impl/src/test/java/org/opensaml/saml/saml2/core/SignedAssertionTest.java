@@ -97,14 +97,13 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
      * Creates a simple Assertion, signs it and then verifies the signature.
      * 
      * @throws MarshallingException thrown if the Assertion can not be marshalled into a DOM
-     * @throws ValidationException thrown if the Signature does not validate
-     * @throws SignatureException 
-     * @throws UnmarshallingException 
-     * @throws SecurityException 
+     * @throws SignatureException ...
+     * @throws UnmarshallingException ...
+     * @throws SecurityException ...
      */
     @Test
     public void testAssertionSignature() 
-        throws MarshallingException, SignatureException, UnmarshallingException, SecurityException{
+        throws MarshallingException, SignatureException, UnmarshallingException, SecurityException {
         Instant now = Instant.now();
         
         Assertion assertion = assertionBuilder.buildObject();

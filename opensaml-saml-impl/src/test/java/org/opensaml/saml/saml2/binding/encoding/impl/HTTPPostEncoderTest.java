@@ -71,7 +71,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
     /**
      * Tests encoding a SAML message to an servlet response.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testResponseEncoding() throws Exception {

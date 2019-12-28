@@ -28,7 +28,11 @@ import org.testng.annotations.Test;
 public class AbstractProfileActionTest {
 
 
-    /** Test a successful action run. */
+    /**
+     * Test a successful action run.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testSuccess() throws Exception {
 
@@ -41,7 +45,11 @@ public class AbstractProfileActionTest {
         Assert.assertTrue(action.didPost);
     }
 
-    /** Test a failure in the preexec step. */
+    /**
+     * Test a failure in the preexec step.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testPreFailure() throws Exception {
 
@@ -57,7 +65,11 @@ public class AbstractProfileActionTest {
         }
     }
 
-    /** Test a failure in the exec step. */
+    /**
+     * Test a failure in the exec step.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testExecFailure() throws Exception {
 
@@ -74,7 +86,11 @@ public class AbstractProfileActionTest {
         }
     }
 
-    /** Test an unchecked error in the exec step. */
+    /**
+     * Test an unchecked error in the exec step.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testExecUnchecked() throws Exception {
 
@@ -91,7 +107,11 @@ public class AbstractProfileActionTest {
         }
     }
 
-    /** Test a failure in the post step. */
+    /**
+     * Test a failure in the post step.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testPostFailure() throws Exception {
 

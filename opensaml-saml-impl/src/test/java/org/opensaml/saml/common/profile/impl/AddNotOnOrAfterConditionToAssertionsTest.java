@@ -99,6 +99,8 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
     /**
      * Test that the condition is properly added if there is a single assertion, with a Conditions element, in the
      * response.
+     * 
+     * @throws ComponentInitializationException ...
      */
     @Test
     public void testSingleAssertionWithExistingConditions() throws ComponentInitializationException {
@@ -128,7 +130,11 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
                 10 * 60 * 1000);
     }
 
-    /** Test that the condition is properly added if there are multiple assertions in the response. */
+    /**
+     * Test that the condition is properly added if there are multiple assertions in the response.
+     * 
+     * @throws ComponentInitializationException ...
+     */
     @Test
     public void testMultipleAssertion() throws ComponentInitializationException {
         final Response response = (Response) prc.getOutboundMessageContext().getMessage();

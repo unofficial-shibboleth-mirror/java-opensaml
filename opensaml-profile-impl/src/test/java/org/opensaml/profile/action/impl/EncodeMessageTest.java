@@ -76,7 +76,11 @@ public class EncodeMessageTest {
         action.initialize();
     }
     
-    /** Test that the action proceeds properly if the message can be decoded. */
+    /**
+     * Test that the action proceeds properly if the message can be decoded.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testDecodeMessage() throws Exception {
         EncodeMessage action = new EncodeMessage();
         action.setMessageEncoderFactory(new MockEncoderFactory());
@@ -88,7 +92,11 @@ public class EncodeMessageTest {
         Assert.assertEquals(encoder.getEncodedMessage(), expectedMessage);
     }
 
-    /** Test that the action errors out properly if the message can not be decoded. */
+    /**
+     * Test that the action errors out properly if the message can not be decoded.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testThrowException() throws Exception {
         encoder.setThrowException(true);
 

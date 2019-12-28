@@ -177,7 +177,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
     /**
      * Constructor.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     public SAML2HTTPPostSimpleSignSecurityHandlerTest() throws Exception {
         issuer = "SomeCoolIssuer";
@@ -231,7 +231,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /**
      * Test context issuer set, valid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSuccess() throws MessageHandlerException {
@@ -248,7 +249,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /**
      * Test blacklisted signature algorithm.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSignatureAlgorithm() throws MessageHandlerException {
@@ -261,7 +263,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testUntrustedCredential() throws MessageHandlerException {
@@ -270,7 +273,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /**
      * Test context issuer set, invalid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidSignature() throws MessageHandlerException {
@@ -284,7 +288,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /**
      * Test context issuer set, valid signature with untrusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoContextIssuer() throws MessageHandlerException {
@@ -294,7 +299,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /**
      * Test context issuer set, valid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSuccessNoKeyInfo() throws MessageHandlerException {
@@ -314,7 +320,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /**
      * Test context issuer set, valid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testFailureNoKeyInfo() throws MessageHandlerException {
@@ -326,7 +333,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
     
     /**
      * Test no trust engine supplied.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoTrustEngine() throws MessageHandlerException {
@@ -409,10 +417,11 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
      * Populate the HTTP servlet request object with the parameter info. Would be nice if Spring mock object actually
      * did this for you from populating the content string.... Oh well.
      * 
-     * @param request
-     * @param htmlContentString
-     * @throws XMLParserException
-     * @throws ComponentInitializationException 
+     * @param request ...
+     * @param htmlContentString ...
+     * 
+     * @throws XMLParserException ...
+     * @throws ComponentInitializationException ...
      */
     private void populateRequest(MockHttpServletRequest request, String htmlContentString) throws XMLParserException, ComponentInitializationException {
         request.setContent(htmlContentString.getBytes());

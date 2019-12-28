@@ -102,7 +102,7 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
      * Used by subclasses to populate the required attribute values
      * that this test expects.
      * 
-     * @param samlObject
+     * @param samlObject ...
      */
     protected void populateRequiredAttributes(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
@@ -117,7 +117,7 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
      * Used by subclasses to populate the optional attribute values
      * that this test expects. 
      * 
-     * @param samlObject
+     * @param samlObject ...
      */
     protected void populateOptionalAttributes(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;
@@ -131,8 +131,7 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
     /**
      * Used by subclasses to populate the child elements that this test expects.
      * 
-     * 
-     * @param samlObject
+     * @param samlObject ...
      */
     protected void populateChildElements(SAMLObject samlObject) {
         StatusResponseType sr = (StatusResponseType) samlObject;

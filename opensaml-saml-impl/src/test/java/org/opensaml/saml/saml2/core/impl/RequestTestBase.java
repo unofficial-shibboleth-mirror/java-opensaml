@@ -87,7 +87,7 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     /**
      * Used by subclasses to populate the required attribute values that this test expects.
      * 
-     * @param samlObject
+     * @param samlObject ...
      */
     protected void populateRequiredAttributes(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
@@ -101,7 +101,7 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     /**
      * Used by subclasses to populate the optional attribute values that this test expects.
      * 
-     * @param samlObject
+     * @param samlObject ...
      */
     protected void populateOptionalAttributes(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;
@@ -114,8 +114,7 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     /**
      * Used by subclasses to populate the child elements that this test expects.
      * 
-     * 
-     * @param samlObject
+     * @param samlObject ...
      */
     protected void populateChildElements(SAMLObject samlObject) {
         RequestAbstractType req = (RequestAbstractType) samlObject;

@@ -171,7 +171,8 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     /**
      * Test context issuer set, request with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSuccess() throws MessageHandlerException {
@@ -188,8 +189,9 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     /**
      * Test context issuer set, with non-default entity context class, request with trusted credential.
-     * @throws MessageHandlerException 
-     * @throws ComponentInitializationException 
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
      */
     @Test
     public void testSuccessNonDefaultEntityContextClass() throws MessageHandlerException, ComponentInitializationException {
@@ -216,7 +218,8 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     /**
      * Test context issuer set, request with untrusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testUntrustedCredential() throws MessageHandlerException {
@@ -225,8 +228,12 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     /**
      * Test context issuer not set, request with trusted credential.
+     * 
+     * <p>
      * Use a SAML 1 Request AttributeQuery, with no resource attrib containing the entityID.
-     * @throws MessageHandlerException 
+     * </p>
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testNoContextIssuer() throws MessageHandlerException {
@@ -253,7 +260,8 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     /**
      * Test context issuer not set explicitly, resolved dynamically by SAMLPeerEntityContext from SAML 2 message, 
      * request with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testDynamicContextIssuer() throws MessageHandlerException {
@@ -278,7 +286,8 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
     
     /**
      * Test case of no trust engine supplied.
-     * @throws MessageHandlerException
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoTrustEngine() throws MessageHandlerException {
@@ -292,7 +301,8 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
 
     /**
      * Test case of no cert name options supplied.
-     * @throws MessageHandlerException
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoNameOptions() throws MessageHandlerException {

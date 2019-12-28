@@ -139,11 +139,6 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
     
     public static class MockDynamicHTTPMetadataResolver extends AbstractDynamicHTTPMetadataResolver {
         
-        /**
-         * Constructor.
-         *
-         * @param client
-         */
         public MockDynamicHTTPMetadataResolver(HttpClient client) {
             super(null, client);
         }

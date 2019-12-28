@@ -96,7 +96,11 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertSame(ep, endpointCrit.getEndpoint());
     }
 
-    /** SP requests an endpoint but we don't support the binding. */
+    /**
+     * SP requests an endpoint but we don't support the binding.
+     * 
+     * @throws ResolverException ...
+     */
     @Test
     public void testSignedRequestBadBinding() throws ResolverException {
         final CriteriaSet crits = new CriteriaSet(new EndpointCriterion<>(endpointCrit.getEndpoint(), true),
@@ -105,7 +109,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(ep);
     }
     
-    /** An SP with no endpoints in metadata. */
+    /**
+     * An SP with no endpoints in metadata.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testNoEndpoints() throws UnmarshallingException, ResolverException {
         final RoleDescriptorCriterion roleCrit =
@@ -114,7 +123,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(ep);
     }
 
-    /** No endpoint with the location requested. */
+    /**
+     * No endpoint with the location requested.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testBadLocation() throws UnmarshallingException, ResolverException {
         final RoleDescriptorCriterion roleCrit =
@@ -124,7 +138,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(ep);
     }
 
-    /** No endpoint at a location with the right binding requested. */
+    /**
+     * No endpoint at a location with the right binding requested.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testBadBinding() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(LOCATION_POST);
@@ -136,7 +155,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(ep);
     }
 
-    /** Endpoint matches but we don't support the binding. */
+    /**
+     * Endpoint matches but we don't support the binding.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testUnsupportedBinding() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(LOCATION_POST);
@@ -148,7 +172,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(ep);
     }
     
-    /** No endpoint with a requested index. */
+    /**
+     * No endpoint with a requested index.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testBadIndex() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(null);
@@ -161,7 +190,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(ep);
     }
     
-    /** Requested location/binding are in metadata. */
+    /**
+     * Requested location/binding are in metadata.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testInMetadata() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(LOCATION_POST);
@@ -175,7 +209,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(ep.getIndex(), Integer.valueOf(2));
     }
 
-    /** Get the default endpoint. */
+    /**
+     * Get the default endpoint.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testDefault() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(null);
@@ -190,7 +229,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(ep.getIndex(), Integer.valueOf(4));
     }
 
-    /** Get the default endpoint with a binding. */
+    /**
+     * Get the default endpoint with a binding.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testDefaultForBinding() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(null);
@@ -206,7 +250,12 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(ep.getIndex(), Integer.valueOf(1));
     }
     
-    /** All endpoints of the right type. */
+    /**
+     * All endpoints of the right type.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testMultiple() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(null);
@@ -221,7 +270,11 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(eps.size(), 4);
     }
 
-    /** All endpoints of the right type and binding. */
+    /**
+     * All endpoints of the right type and binding.
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
     @Test
     public void testMultipleWithBinding() throws UnmarshallingException, ResolverException {
         endpointCrit.getEndpoint().setLocation(null);

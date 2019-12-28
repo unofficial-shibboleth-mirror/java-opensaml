@@ -157,8 +157,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     }
 
     /**
-     * Test an XML file with Children
-     * @throws MarshallingException 
+     * Test an XML file with Children.
      */
     @Test
     public void testChildElementsMarshall() {

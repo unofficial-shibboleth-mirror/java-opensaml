@@ -53,7 +53,7 @@ public class DecodeMessageTest {
     /**
      * Test that the action proceeds properly if the message can be decoded.
      *  
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException if something goes wrong
      */
     @Test public void testDecodeMessage() throws ComponentInitializationException {
         final DecodeMessage action = new DecodeMessage(decoder);
@@ -70,7 +70,7 @@ public class DecodeMessageTest {
     /**
      * Test that the action errors out properly if the message can not be decoded.
      * 
-     * @throws ComponentInitializationException 
+     * @throws ComponentInitializationException if something goes wrong
      */
     @Test public void testFailure() throws ComponentInitializationException {
         decoder.setThrowException(true);
@@ -84,7 +84,7 @@ public class DecodeMessageTest {
     }
 
     /**
-     * Mock implementation of {@link MessageDecoder } which either returns a  
+     * Mock implementation of {@link MessageDecoder} which either returns a  
      * {@link MessageContext} with a mock message or throws a {@link MessageDecodingException}.
      */
     class MockMessageDecoder extends AbstractMessageDecoder {
@@ -98,6 +98,7 @@ public class DecodeMessageTest {
         /**
          * Constructor.
          *
+         * @param mockMessage the mock message to produce
          */
         public MockMessageDecoder(MockMessage mockMessage) {
             message = mockMessage;

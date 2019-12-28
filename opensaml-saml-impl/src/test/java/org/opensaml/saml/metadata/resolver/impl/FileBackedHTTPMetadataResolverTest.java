@@ -93,8 +93,9 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests the basic success case.
-     * @throws ComponentInitializationException 
-     * @throws ResolverException 
+     * 
+     * @throws ComponentInitializationException ...
+     * @throws ResolverException ...
      */
     @Test
     public void testGetEntityDescriptor() throws Exception {
@@ -112,6 +113,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Test fail-fast = true with known bad metadata URL.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testFailFastBadURL() throws Exception {
@@ -130,6 +133,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Test fail-fast = false with known bad metadata URL.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testNoFailFastBadURL() throws Exception {
@@ -150,7 +155,9 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test fail-fast = true and bad backup file
+     * Test fail-fast = true and bad backup file
+     *  
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testFailFastBadBackupFile() throws Exception {
@@ -173,9 +180,9 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test case of fail-fast = false and bad backup file
+     * Test case of fail-fast = false and bad backup file
      *  
-     * @throws ResolverException
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testNoFailFastBadBackupFile() throws Exception {
@@ -202,9 +209,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests initialization from backup file, followed shortly by real refresh via HTTP.
-     * @throws ComponentInitializationException 
      * 
-     * @throws ResolverException, ComponentInitializationException
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testInitFromBackupFile() throws Exception {
@@ -250,9 +256,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * Tests initialization from backup file, followed shortly by real refresh via HTTP, for the special case
      * of a backup file that is already expired. See OSJ-261.  Issue there was the backupFileInitNextRefreshDelay
      * wasn't being honored.
-     * @throws ComponentInitializationException 
      * 
-     * @throws ResolverException, ComponentInitializationException
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testInitFromExpiredBackupFile() throws Exception {
@@ -296,9 +301,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      * Tests initialization from backup file, followed shortly by real refresh via HTTP, for the special case
      * of a backup file that throws during processing when fail-fast=false. See OSJ-261.
      * Issue there was the backupFileInitNextRefreshDelay wasn't being honored.
-     * @throws ComponentInitializationException 
      * 
-     * @throws ResolverException, ComponentInitializationException
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testInitFromBadBackupFileNonFailFast() throws Exception {
@@ -340,9 +344,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests that backup file is not loaded on a refresh when already have cached metadata.
-     * @throws ComponentInitializationException 
      * 
-     * @throws ResolverException, ComponentInitializationException
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testNoBackupFileLoadWhenMetadataCached() throws Exception {

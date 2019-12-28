@@ -52,7 +52,11 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.initialize();
     }
     
-    /** Test that the handler does nothing on a missing context. */
+    /**
+     * Test that the handler does nothing on a missing context.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testUnauthenticated() throws MessageHandlerException {
         
         handler.invoke(messageCtx);
@@ -69,8 +73,12 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(headers.isEmpty());
     }
     
-    /** Test that the handler errors on a missing SOAP context. 
-     * @throws NoSuchAlgorithmException */
+    /**
+     * Test that the handler errors on a missing SOAP context.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws NoSuchAlgorithmException ...
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException, NoSuchAlgorithmException {
 
@@ -80,8 +88,12 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler works. 
-     * @throws NoSuchAlgorithmException */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws NoSuchAlgorithmException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException, NoSuchAlgorithmException {
 
         final byte[] key = new byte[32];

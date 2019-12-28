@@ -47,7 +47,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
     /**
      * Tests encoding a SAML message to an servlet response.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     @SuppressWarnings("unchecked")

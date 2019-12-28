@@ -352,8 +352,9 @@ public class X509SupportTest {
     }
     
     /**
-     *  Test Subject Key Identifier (SKI) extraction from certificate.
-     * @throws DecoderException 
+     * Test Subject Key Identifier (SKI) extraction from certificate.
+     * 
+     * @throws DecoderException ...
      */
     @Test
     public void testGetSubjectKeyIdentifier() throws DecoderException {
@@ -367,7 +368,7 @@ public class X509SupportTest {
     /**
      * Tests that the entity cert is correctly identified in the collection.
      * 
-     * @throws Exception
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testDetermineEntityCertificate() throws Exception {
@@ -382,8 +383,8 @@ public class X509SupportTest {
     /**
      * Test 1 alt name: DNS.
      * 
-     * @throws SecurityException
-     * @throws CertificateParsingException
+     * @throws SecurityException ...
+     * @throws CertificateParsingException ...
      */
     @Test
     public void testGetSubjectAltNames1NameDNS() throws SecurityException, CertificateParsingException {
@@ -405,8 +406,8 @@ public class X509SupportTest {
     /**
      * Test 1 alt name: URI (URN).
      * 
-     * @throws SecurityException
-     * @throws CertificateParsingException
+     * @throws SecurityException ...
+     * @throws CertificateParsingException ...
      */
     @Test
     public void testGetSubjectAltNames1NameURN() throws SecurityException, CertificateParsingException {
@@ -428,8 +429,8 @@ public class X509SupportTest {
     /**
      * Test 1 alt name: URI (URL).
      * 
-     * @throws SecurityException
-     * @throws CertificateParsingException
+     * @throws SecurityException ...
+     * @throws CertificateParsingException ...
      */
     @Test
     public void testGetSubjectAltNames1NameURL() throws SecurityException, CertificateParsingException {
@@ -451,8 +452,8 @@ public class X509SupportTest {
     /**
      * Test 1 alt name: IP.
      * 
-     * @throws SecurityException
-     * @throws CertificateParsingException
+     * @throws SecurityException ...
+     * @throws CertificateParsingException ...
      */
     @Test
     public void testGetSubjectAltNames1NameIP() throws SecurityException, CertificateParsingException {
@@ -474,8 +475,8 @@ public class X509SupportTest {
     /**
      * Test 3 alt names: DNS, URI (URL), IP.
      * 
-     * @throws SecurityException
-     * @throws CertificateParsingException
+     * @throws SecurityException ...
+     * @throws CertificateParsingException ...
      */
     @Test
     public void testGetSubjectAltNames3NamesDNS_URL_IP() throws SecurityException, CertificateParsingException {
@@ -501,8 +502,8 @@ public class X509SupportTest {
     /**
      * Test 3 alt names: DNS, URI (URN), IP.
      * 
-     * @throws SecurityException
-     * @throws CertificateParsingException
+     * @throws SecurityException ...
+     * @throws CertificateParsingException ...
      */
     @Test
     public void testGetSubjectAltNames3NamesDNS_URN_IP() throws SecurityException, CertificateParsingException {
@@ -525,7 +526,11 @@ public class X509SupportTest {
         Assert.assertTrue(altNames.contains(altNameIP), "Failed to find expected KeyName value");
     }
 
-    /** Test decoding a PEM encoded cert. */
+    /**
+     * Test decoding a PEM encoded cert.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeCertPEM() throws Exception {
         InputStream certInS = X509SupportTest.class.getResourceAsStream(certPEM);
@@ -538,7 +543,11 @@ public class X509SupportTest {
         Assert.assertEquals(certs.size(), 2);
     }
 
-    /** Test decoding a DER encoded cert. */
+    /**
+     * Test decoding a DER encoded cert.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeCertDER() throws Exception {
         InputStream certInS = X509SupportTest.class.getResourceAsStream(certDER);
@@ -554,7 +563,11 @@ public class X509SupportTest {
         Assert.assertNotNull(cert);
     }
 
-    /** Test decoding a PEM encoded CRL. */
+    /**
+     * Test decoding a PEM encoded CRL.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeCRLPEM() throws Exception {
         InputStream crlInS = X509SupportTest.class.getResourceAsStream(crlPEM);
@@ -567,7 +580,11 @@ public class X509SupportTest {
         Assert.assertEquals(crls.size(), 1);
     }
 
-    /** Test decoding a DER encoded CRL. */
+    /**
+     * Test decoding a DER encoded CRL.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testDecodeCRLDER() throws Exception {
         InputStream crlInS = X509SupportTest.class.getResourceAsStream(crlDER);
@@ -584,6 +601,8 @@ public class X509SupportTest {
      * Test decoding and matching EC keypair.
      * 
      * TODO: enable once OpenJDK7/8 are unneeded.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test(enabled=false)
     public void testEC() throws Exception {

@@ -55,7 +55,11 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         action.initialize();
     }
     
-    /** Test that action errors out properly if there is no response. */
+    /**
+     * Test that action errors out properly if there is no response.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testNoResponse() throws Exception {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
         
@@ -63,7 +67,11 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
-    /** Test that action behaves properly if there is no assertion in the response. */
+    /**
+     * Test that action behaves properly if there is no assertion in the response.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testNoAssertion() throws Exception {
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
@@ -75,6 +83,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
     /**
      * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
      * response.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test public void testSingleAssertion() throws Exception {
         final Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
@@ -101,6 +111,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
     /**
      * Test that the condition is properly added if there is a single assertion, with a Conditions element, in the
      * response.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test public void testSingleAssertionWithExistingCondition() throws Exception {
         final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
@@ -127,7 +139,11 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
-    /** Test that an addition condition is not added if an assertion already contains one. */
+    /**
+     * Test that an addition condition is not added if an assertion already contains one.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testSingleAssertionWithExistingAudienceCondition() throws Exception {
         final SAMLObjectBuilder<AudienceRestrictionCondition> conditionBuilder = (SAMLObjectBuilder<AudienceRestrictionCondition>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<AudienceRestrictionCondition>getBuilderOrThrow(
@@ -159,7 +175,11 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
     }
 
-    /** Test that the condition is properly added if there are multiple assertions in the response. */
+    /**
+     * Test that the condition is properly added if there are multiple assertions in the response.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test public void testMultipleAssertion() throws Exception {
         final Response response = SAML1ActionTestingSupport.buildResponse();
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
@@ -187,6 +207,8 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
     /**
      * Test that the condition is properly added if there is a single assertion, without a Conditions element, in the
      * response.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test public void testSAML2Assertion() throws Exception {
         final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();

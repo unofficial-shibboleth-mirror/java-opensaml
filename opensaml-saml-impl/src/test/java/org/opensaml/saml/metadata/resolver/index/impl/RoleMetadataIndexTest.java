@@ -129,13 +129,6 @@ public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
         
         public static final QName TYPE_NAME = new QName("urn:test:metadata", "MyCustomRoleType", "custom");
 
-        /**
-         * Constructor.
-         *
-         * @param namespaceURI
-         * @param elementLocalName
-         * @param namespacePrefix
-         */
         protected MyCustomRoleType(String namespaceURI, String elementLocalName, String namespacePrefix) {
             super(namespaceURI, elementLocalName, namespacePrefix);
         }

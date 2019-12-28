@@ -37,7 +37,12 @@ import org.testng.annotations.Test;
 /** {@link ExtractChannelBindingsHeadersHandler} unit test. */
 public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTestCase {
     
-    /** Test that the handler returns nothing on a missing SOAP context. */
+    /**
+     * Test that the handler returns nothing on a missing SOAP context.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testMissingEnvelope() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
@@ -49,7 +54,12 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
         Assert.assertNull(messageCtx.getSubcontext(SOAP11Context.class));
     }
 
-    /** Test that the handler does nothing when no headers exist. */
+    /**
+     * Test that the handler does nothing when no headers exist.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testNoHeaders() throws MessageHandlerException, ComponentInitializationException {
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
@@ -67,7 +77,12 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
         Assert.assertNull(cbCtx);
     }
     
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
@@ -102,7 +117,12 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
         Assert.assertTrue("foo".equals(array[1].getValue()) || "bar".equals(array[1].getValue()));
     }
 
-    /** Test that the handler works with non-default actor flags. */
+    /**
+     * Test that the handler works with non-default actor flags.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testActor() throws MessageHandlerException, ComponentInitializationException {
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);

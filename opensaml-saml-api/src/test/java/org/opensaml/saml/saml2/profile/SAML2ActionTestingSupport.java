@@ -316,7 +316,7 @@ public class SAML2ActionTestingSupport {
     }
     
     /**
-     * Build a {@Scoping}.
+     * Build a {@link Scoping}.
      * 
      * @param count proxy count
      * @param idplist list of IdP entityIDs

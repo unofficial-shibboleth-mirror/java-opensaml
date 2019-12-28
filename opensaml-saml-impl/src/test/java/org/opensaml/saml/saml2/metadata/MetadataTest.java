@@ -46,8 +46,8 @@ public class MetadataTest extends XMLObjectBaseTestCase {
     /**
      * Tests unmarshalling an InCommon metadata document.
      * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
      */
     @Test
     public void testInCommonUnmarshall() throws XMLParserException, UnmarshallingException {
@@ -72,9 +72,6 @@ public class MetadataTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests unmarshalling an SWITCH metadata document.
-     * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
      */
     @Test
     public void testSWITCHUnmarshall() {
@@ -99,9 +96,6 @@ public class MetadataTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests unmarshalling an SWITCH metadata document.
-     * 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
      */
     @Test
     public void testUKFedUnmarshall() {

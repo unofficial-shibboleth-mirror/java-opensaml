@@ -55,7 +55,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     /**
      * Test decoding a SAML httpRequest.
      * 
-     * @throws MessageDecodingException 
+     * @throws MessageDecodingException ...
      */
     @Test
     public void testRequestDecoding() throws MessageDecodingException {
@@ -73,7 +73,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     /**
      * Test decoding a SAML response.
      * 
-     * @throws MessageDecodingException 
+     * @throws MessageDecodingException ...
      */
     @Test
     public void testResponseDecoding() throws MessageDecodingException {

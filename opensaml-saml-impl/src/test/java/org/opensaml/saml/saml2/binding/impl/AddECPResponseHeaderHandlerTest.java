@@ -41,7 +41,12 @@ import org.testng.annotations.Test;
 /** {@link AddECPResponseHeaderHandler} unit test. */
 public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
     
-    /** Test that the handler does nothing on a missing Endpoint context. */
+    /**
+     * Test that the handler does nothing on a missing Endpoint context.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testMissingEndpointContext() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildResponse());
@@ -57,7 +62,12 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(headers.isEmpty());
     }
     
-    /** Test that the handler errors on a missing SOAP context. */
+    /**
+     * Test that the handler errors on a missing SOAP context.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
@@ -76,7 +86,12 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);

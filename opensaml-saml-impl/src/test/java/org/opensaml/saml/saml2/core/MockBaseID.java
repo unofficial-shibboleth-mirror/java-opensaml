@@ -49,9 +49,9 @@ public class MockBaseID extends AbstractXMLObject implements BaseID, XSString {
     /**
      * Constructor.
      *
-     * @param namespaceURI
-     * @param elementLocalName
-     * @param namespacePrefix
+     * @param namespaceURI ...
+     * @param elementLocalName ...
+     * @param namespacePrefix ...
      */
     protected MockBaseID(String namespaceURI, String elementLocalName, String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);

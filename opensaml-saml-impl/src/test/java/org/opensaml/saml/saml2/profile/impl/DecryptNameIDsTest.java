@@ -108,8 +108,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     /**
      * Test decryption of an NameID as an EncryptedID.
      *  
-     * @throws EncryptionException
-     * @throws ComponentInitializationException 
+     * @throws EncryptionException ...
+     * @throws ComponentInitializationException ...
      */
     @Test
     public void testEncryptedNameIDNoParams() throws EncryptionException, ComponentInitializationException {
@@ -146,8 +146,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     /**
      * Test decryption of an NameID as an EncryptedID.
      *  
-     * @throws EncryptionException
-     * @throws ComponentInitializationException 
+     * @throws EncryptionException ...
+     * @throws ComponentInitializationException ...
      */
     @Test
     public void testEncryptedNameID() throws EncryptionException, ComponentInitializationException {
@@ -174,6 +174,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
     /**
      * Test failed decryption of an NameID as an EncryptedID.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testWrongKeyFatal() throws Exception {
@@ -204,6 +206,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
     /**
      * Test failed decryption of an NameID as an EncryptedID.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testWrongKeyNonFatal() throws Exception {

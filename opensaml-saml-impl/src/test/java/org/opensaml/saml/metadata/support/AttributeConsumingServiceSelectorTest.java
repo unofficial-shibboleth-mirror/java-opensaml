@@ -73,7 +73,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test valid index.
-     * @throws ResolverException
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testWithValidIndex() throws ResolverException {
@@ -94,7 +95,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test explicit isDefault="true".
-     * @throws ResolverException
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testExplicitDefault() throws ResolverException {
@@ -113,7 +115,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test default as first missing default.
-     * @throws ResolverException
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testFirstMissingDefault() throws ResolverException {
@@ -132,7 +135,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test default as first isDefault="false".
-     * @throws ResolverException
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testFirstFalseDefault() throws ResolverException {
@@ -151,7 +155,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test AttributeQueryDescriptorType.
-     * @throws ResolverException
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testAttributeQueryType() throws ResolverException {
@@ -172,7 +177,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test invalid index.
-     * @throws ResolverException
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testInvalidIndex() throws ResolverException {
@@ -191,7 +197,8 @@ public class AttributeConsumingServiceSelectorTest extends XMLObjectBaseTestCase
     
     /**
      * Test invalid index with onBadIndexUseDefault of true.
-     * @throws ResolverException
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testInvalidIndexWithUseDefault() throws ResolverException {

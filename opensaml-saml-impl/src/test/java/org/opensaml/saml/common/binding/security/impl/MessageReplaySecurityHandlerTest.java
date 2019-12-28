@@ -83,7 +83,8 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
     
     /**
      * Test valid message ID.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testNoReplay() throws MessageHandlerException {
@@ -92,7 +93,8 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
 
     /**
      * Test valid message ID, distinct ID.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testNoReplayDistinctIDs() throws MessageHandlerException {
@@ -104,7 +106,8 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
 
     /**
      * Test invalid replay of message ID.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testReplay() throws MessageHandlerException {
@@ -115,9 +118,9 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
     /**
      * Test valid replay of message ID due to replay cache expiration.
      * 
-     * @throws InterruptedException
-     * @throws MessageHandlerException 
-     * @throws ComponentInitializationException 
+     * @throws InterruptedException ...
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
      */
     @Test
     public void testReplayValidWithExpiration() throws InterruptedException, MessageHandlerException, ComponentInitializationException {

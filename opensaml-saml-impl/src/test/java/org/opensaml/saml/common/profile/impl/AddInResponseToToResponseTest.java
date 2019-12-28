@@ -44,7 +44,11 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
                 SAML1ActionTestingSupport.buildAttributeQueryRequest(null)).buildProfileRequestContext();
     }
 
-    /** Test that action errors out properly if there is no response. */
+    /**
+     * Test that action errors out properly if there is no response.
+     * 
+     * @throws ComponentInitializationException ...
+     */
     @Test
     public void testNoResponse() throws ComponentInitializationException {
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
@@ -54,7 +58,11 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
-    /** Test that action proceeds properly if there is no request ID. */
+    /**
+     * Test that action proceeds properly if there is no request ID.
+     * 
+     * @throws Exception if something goes wrong
+     */
     @Test
     public void testNoRequestID() throws Exception {
         ((RequestAbstractType) prc.getInboundMessageContext().getMessage()).setID(null);

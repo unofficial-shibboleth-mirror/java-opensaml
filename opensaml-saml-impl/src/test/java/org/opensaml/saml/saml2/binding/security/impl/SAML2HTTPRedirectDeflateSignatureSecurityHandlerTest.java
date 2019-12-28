@@ -165,9 +165,11 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     private SignatureValidationParameters sigValParams;
     
     
-    /** Constructor. 
-     * @throws CertificateException 
-     * @throws KeyException */
+    /** Constructor.
+     * 
+     * @throws CertificateException ...
+     * @throws KeyException ...
+     */
     public SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest() throws CertificateException, KeyException {
         issuer = "SomeCoolIssuer";
         signingCert = X509Support.decodeCertificate(signingCertBase64);
@@ -212,7 +214,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     
     /**
      * Test context issuer set, valid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSuccess() throws MessageHandlerException {
@@ -229,7 +232,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     
     /**
      * Test blacklisted signature algorithm.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSignatureAlgorithm() throws MessageHandlerException {
@@ -242,7 +246,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testUntrustedCredential() throws MessageHandlerException {
@@ -251,7 +256,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     
     /**
      * Test context issuer set, invalid signature with trusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidSignature() throws MessageHandlerException {
@@ -268,7 +274,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     
     /**
      * Test context issuer set, valid signature with untrusted credential.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoContextIssuer() throws MessageHandlerException {
@@ -279,7 +286,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
     
     /**
      * Test no trust engine supplied.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoTrustEngine() throws MessageHandlerException {

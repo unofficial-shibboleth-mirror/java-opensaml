@@ -80,7 +80,12 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
     }
     
-    /** Test that the handler accepts SAML 1.0 and 1.1 messages. */
+    /**
+     * Test that the handler accepts SAML 1.0 and 1.1 messages.
+     *
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test
     public void testSaml1Message() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
@@ -93,7 +98,12 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler errors out on SAML 2 messages. */
+    /**
+     * Test that the handler errors out on SAML 2 messages.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test(expectedExceptions = MessageHandlerException.class)
     public void testSaml2MessageFail() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
@@ -107,7 +117,12 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
     }
  
-    /** Test that the handler accepts SAML 2.0 messages. */
+    /**
+     * Test that the handler accepts SAML 2.0 messages.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test
     public void testSaml2Message() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
@@ -120,7 +135,12 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler errors out on SAML 1 messages. */
+    /**
+     * Test that the handler errors out on SAML 1 messages.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test(expectedExceptions = MessageHandlerException.class)
     public void testSaml1MessageFail() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();

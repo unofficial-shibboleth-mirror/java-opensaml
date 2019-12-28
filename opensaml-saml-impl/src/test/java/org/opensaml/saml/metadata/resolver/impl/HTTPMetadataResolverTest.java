@@ -98,6 +98,8 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Tests the {@link HTTPMetadataResolver#lookupEntityID(String)} method.
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
@@ -108,6 +110,8 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Test fail-fast = true with known bad metadata URL.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testFailFastBadURL() throws Exception {
@@ -127,6 +131,8 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     /**
      * Test fail-fast = false with known bad metadata URL.
+     * 
+     * @throws Exception if something goes wrong
      */
     @Test
     public void testNoFailFastBadURL() throws Exception {

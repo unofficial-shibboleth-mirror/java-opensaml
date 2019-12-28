@@ -52,7 +52,12 @@ public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCas
     }
     
     
-    /** Test that the handler errors on a missing request. */
+    /**
+     * Test that the handler errors on a missing request.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingRequest() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
@@ -63,7 +68,12 @@ public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCas
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());

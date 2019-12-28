@@ -59,7 +59,11 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         handler.initialize();
     }
     
-    /** Test that the handler does nothing on a missing CB context. */
+    /**
+     * Test that the handler does nothing on a missing CB context.
+     * 
+     * @throws MessageHandlerException ...
+     */
     @Test public void testNoBindings() throws MessageHandlerException {
         
         handler.invoke(messageCtx);
@@ -70,7 +74,12 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         Assert.assertTrue(headers.isEmpty());
     }
     
-    /** Test that the handler errors on a missing SOAP context. */
+    /**
+     * Test that the handler errors on a missing SOAP context.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException, ComponentInitializationException {
         messageCtx.addSubcontext(cbc);
@@ -78,7 +87,12 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         handler.invoke(messageCtx);
     }
 
-    /** Test that the handler works. */
+    /**
+     * Test that the handler works.
+     * 
+     * @throws MessageHandlerException ...
+     * @throws ComponentInitializationException ...
+     */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         messageCtx.addSubcontext(cbc);
 

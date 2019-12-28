@@ -59,7 +59,8 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     
     /**
      * Test message not signed, signing not required.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testNotSignedAndNotRequired() throws MessageHandlerException {
@@ -73,7 +74,8 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     
     /**
      * Test message not signed, signing required.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNotSignedAndRequired() throws MessageHandlerException {
@@ -88,7 +90,8 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     
     /**
      * Test message XML signed, signing not required.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSignedAndNotRequired() throws MessageHandlerException {
@@ -101,7 +104,8 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
  
     /**
      * Test message XML signed, signing required.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSignedAndRequired() throws MessageHandlerException {
@@ -116,7 +120,8 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     
     /**
      * Test message simple signed, signing not required.
-     * @throws MessageHandlerException 
+     * 
+     * @throws MessageHandlerException ...
      */
     @Test
     public void testSimpleSignedAndRequired() throws MessageHandlerException {
@@ -132,5 +137,3 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     }
     
 }
-
-

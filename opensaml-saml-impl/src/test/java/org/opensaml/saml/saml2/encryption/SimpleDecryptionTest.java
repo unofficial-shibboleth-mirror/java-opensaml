@@ -232,14 +232,13 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test error condition of invalid data decryption key.
-     * @throws EncryptionException 
-     *  
+     * Test error condition of invalid data decryption key.
+     * 
      * @throws XMLParserException  thrown if there is an error parsing the control XML file
      * @throws EncryptionException  thrown if there is an error encrypting the control XML
      * @throws NoSuchProviderException security provider was invalid
      * @throws NoSuchAlgorithmException security/key algorithm was invalid
-     * @throws KeyException 
+     * @throws KeyException ...
      */
     @Test
     public void testErrorInvalidDataDecryptionKey() 
