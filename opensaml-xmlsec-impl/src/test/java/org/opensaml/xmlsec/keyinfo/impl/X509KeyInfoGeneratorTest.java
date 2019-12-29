@@ -189,7 +189,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test no options - should produce null KeyInfo.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testNoOptions() throws SecurityException {
@@ -203,7 +203,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit public key.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
+     * @throws KeyException ...
      */
     @Test
     public void testEmitPublicKey() throws SecurityException, KeyException {
@@ -224,7 +225,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit credential key names.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitKeynames() throws SecurityException {
@@ -245,7 +246,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit entity ID as key name.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitEntityIDAsKeyName() throws SecurityException {
@@ -265,8 +266,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit entity cert.
      * 
-     * @throws SecurityException
-     * @throws CertificateException
+     * @throws SecurityException ...
+     * @throws CertificateException ...
      */
     @Test
     public void testEmitEntityCert() throws SecurityException, CertificateException {
@@ -288,8 +289,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit entity cert chain in X509Data.
      * 
-     * @throws SecurityException
-     * @throws CertificateException
+     * @throws SecurityException ...
+     * @throws CertificateException ...
      */
     @Test
     public void testEmitEntityCertChain() throws SecurityException, CertificateException {
@@ -312,8 +313,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test combo options of cert and chain - don't emit duplicate of entity cert.
      * 
-     * @throws SecurityException
-     * @throws CertificateException
+     * @throws SecurityException ...
+     * @throws CertificateException ...
      */
     @Test
     public void testEmitCertAndChainCombo() throws SecurityException, CertificateException {
@@ -337,8 +338,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit CRLs.
      * 
-     * @throws SecurityException
-     * @throws CRLException
+     * @throws SecurityException ...
+     * @throws CRLException ...
      */
     @Test
     public void testEmitCRLs() throws SecurityException, CRLException {
@@ -360,7 +361,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit subject name in X509Data.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitX509SubjectName() throws SecurityException {
@@ -382,7 +383,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit issuer name and serial number in X509Data.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitX509IssuerSerial() throws SecurityException {
@@ -409,7 +410,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit subject key identifier in X509Data.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitX509SKI() throws SecurityException {
@@ -431,7 +432,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     /**
      * Test emit X509Digest in X509Data.
-     * @throws SecurityException
+     * 
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitX509Digest() throws SecurityException {
@@ -456,7 +458,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit subject DN as key name.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitSubjectDNAsKeyName() throws SecurityException {
@@ -477,7 +479,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit subject CN as key name.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitSubjectCNAsKeyName() throws SecurityException {
@@ -497,8 +499,8 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emit subject alt names as key names.
      * 
-     * @throws SecurityException
-     * @throws CertificateParsingException
+     * @throws SecurityException ...
+     * @throws CertificateParsingException ...
      */
     @Test
     public void testEmitSubjectAltNamesAsKeyNames() throws SecurityException, CertificateParsingException {
@@ -546,7 +548,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test emitting combinations of key names.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitKeyNamesCombo() throws SecurityException {
@@ -580,7 +582,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * Test that the options passed to the generator are really cloned. After newInstance() is called, changes to the
      * factory options should not be reflected in the generator.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testProperOptionsCloning() throws SecurityException {

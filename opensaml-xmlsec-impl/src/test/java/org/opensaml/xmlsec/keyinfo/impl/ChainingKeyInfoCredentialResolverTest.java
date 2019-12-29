@@ -89,7 +89,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     
     /**
      * Test a single chain member, which returns no credentials.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testOneEmptyMember() throws ResolverException {
@@ -101,7 +102,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     
     /**
      * Test multiple chain members, all of which return no credentials.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testMultipleEmptyMember() throws ResolverException {
@@ -114,7 +116,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     
     /**
      * Test one chain member, returning credentials.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testOneMember() throws ResolverException {
@@ -126,7 +129,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     
     /**
      * Test multiple chain members, returning credentials.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testMultipleMembers() throws ResolverException {
@@ -140,7 +144,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     /**
      * Test that order of returned credentials is the expected ordering,
      * based on the ordering in the resolver chain.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test
     public void testOrderingMultipleMembers() throws ResolverException {
@@ -159,7 +164,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     
     /**
      * Test empty resolver chain, i.e. no underlying resolver members.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test(expectedExceptions=IllegalStateException.class)
     public void testEmptyResolverChain() throws ResolverException {
@@ -169,7 +175,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     
     /**
      * Test exception on attempt to call remove() on iterator.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testRemove() throws ResolverException {
@@ -183,7 +190,8 @@ public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase
     
     /**
      * Test exception on attempt to call next() on iterator when no more members.
-     * @throws ResolverException 
+     * 
+     * @throws ResolverException ...
      */
     @Test(expectedExceptions=NoSuchElementException.class)
     public void testNoMoreMembers() throws ResolverException {

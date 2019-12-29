@@ -151,7 +151,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
      * Test constructing and marshalling a SOAP fault message.
      * 
      * @throws MarshallingException  if the DOM can not b marshalled
-     * @throws XMLParserException 
+     * @throws XMLParserException ...
      */
     @Test
     public void testSOAPFaultConstructAndMarshall() throws MarshallingException, XMLParserException {

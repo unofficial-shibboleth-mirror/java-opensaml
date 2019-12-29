@@ -61,11 +61,11 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
     /**
      * Test basic encoding of a message in an envelope, using payload-oriented messaging.
      * 
-     * @throws ComponentInitializationException 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
-     * @throws MessageEncodingException
-     * @throws UnsupportedEncodingException 
+     * @throws ComponentInitializationException ...
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
+     * @throws MessageEncodingException ...
+     * @throws UnsupportedEncodingException ...
      */
     @Test
     public void testBasicEncodingAsPayload() throws ComponentInitializationException, MessageEncodingException, UnsupportedEncodingException, XMLParserException, UnmarshallingException {
@@ -107,11 +107,11 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
     /**
      * Test basic encoding of a message in an envelope, using SOAP-message oriented messaging.
      * 
-     * @throws ComponentInitializationException 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
-     * @throws MessageEncodingException
-     * @throws UnsupportedEncodingException 
+     * @throws ComponentInitializationException ...
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
+     * @throws MessageEncodingException ...
+     * @throws UnsupportedEncodingException ...
      */
     @Test
     public void testBasicEncodingAsSOAPEnvelope() throws ComponentInitializationException, MessageEncodingException, UnsupportedEncodingException, XMLParserException, UnmarshallingException {
@@ -161,11 +161,11 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
      * Test basic encoding of a message in an envelope, using payload-oriented messaging. 
      * Supply an Envelope and header via SOAP subcontext.
      * 
-     * @throws ComponentInitializationException 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
-     * @throws MessageEncodingException
-     * @throws UnsupportedEncodingException 
+     * @throws ComponentInitializationException ...
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
+     * @throws MessageEncodingException ...
+     * @throws UnsupportedEncodingException ...
      */
     @Test
     public void testEncodingAsPayloadWithHeader() throws ComponentInitializationException, MessageEncodingException, UnsupportedEncodingException, XMLParserException, UnmarshallingException {
@@ -218,11 +218,11 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
     /**
      * Test basic encoding of a message in an envelope, using payload-oriented messaging.
      * 
-     * @throws ComponentInitializationException 
-     * @throws XMLParserException
-     * @throws UnmarshallingException
-     * @throws MessageEncodingException
-     * @throws UnsupportedEncodingException 
+     * @throws ComponentInitializationException ...
+     * @throws XMLParserException ...
+     * @throws UnmarshallingException ...
+     * @throws MessageEncodingException ...
+     * @throws UnsupportedEncodingException ...
      */
     @Test
     public void testEncodingWithAction() throws ComponentInitializationException, MessageEncodingException, UnsupportedEncodingException, XMLParserException, UnmarshallingException {

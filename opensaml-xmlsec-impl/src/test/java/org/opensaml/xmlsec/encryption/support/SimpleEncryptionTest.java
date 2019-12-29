@@ -304,12 +304,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test basic encryption of a symmetric key into an EncryptedKey,
-     *  set key encrypting key name in passed KeyInfo object.
+     * Test basic encryption of a symmetric key into an EncryptedKey,
+     * set key encrypting key name in passed KeyInfo object.
+     * 
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
-     * @throws KeyException 
+     * @throws KeyException ...
      */
     @Test
     public void testEncryptKeySingleKEK() throws NoSuchAlgorithmException, NoSuchProviderException, 
@@ -331,12 +332,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test basic encryption of a symmetric key into an EncryptedKey,
-     *  set key encrypting key name in passed KeyInfo object.
+     * Test basic encryption of a symmetric key into an EncryptedKey,
+     * set key encrypting key name in passed KeyInfo object.
+     * 
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
-     * @throws KeyException 
+     * @throws KeyException ...
      */
     @Test
     public void testEncryptKeyMultipleKEK() throws NoSuchAlgorithmException, NoSuchProviderException, 
@@ -365,10 +367,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test basic encryption with auto-generated symmetric key.
-     *  
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
+     * Test basic encryption with auto-generated symmetric key.
      */
     @Test
     public void testAutoKeyGen() {
@@ -398,10 +397,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test failure with auto-generated symmetric key and no KEK(s).
-     *  
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
+     * Test failure with auto-generated symmetric key and no KEK(s).
      */
     @Test
     public void testAutoKeyGenNoKEK() {
@@ -436,7 +432,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
-     * @throws KeyException 
+     * @throws KeyException ...
      */
     @Test
     public void testEncryptKeyDigestMethodsRSAOAEP() throws NoSuchAlgorithmException, NoSuchProviderException, 
@@ -471,7 +467,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
-     * @throws KeyException 
+     * @throws KeyException ...
      */
     @Test
     public void testEncryptKeyDigestMethodsRSAv15() throws NoSuchAlgorithmException, NoSuchProviderException, 
@@ -494,10 +490,10 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test proper error handling of attempt to encrypt with a DSA key.
+     * Test proper error handling of attempt to encrypt with a DSA key.
      *  
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
+     * @throws NoSuchProviderException ...
+     * @throws NoSuchAlgorithmException ...
      */
     @Test
     public void testEncryptDataBadKEKDSA() throws NoSuchAlgorithmException, NoSuchProviderException {
@@ -516,13 +512,14 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test encryption of a symmetric key into an EncryptedKey,
-     *  using various RSAOAEPParameters options.
+     * Test encryption of a symmetric key into an EncryptedKey,
+     * using various RSAOAEPParameters options.
+     * 
      * @throws NoSuchProviderException bad JCA provider
      * @throws NoSuchAlgorithmException  bad JCA algorithm
      * @throws XMLParserException error creating new Document from pool
-     * @throws KeyException 
-     * @throws EncryptionException 
+     * @throws KeyException ...
+     * @throws EncryptionException ...
      */
     @Test
     public void testRSAOAEPParameters() throws NoSuchAlgorithmException, NoSuchProviderException, 

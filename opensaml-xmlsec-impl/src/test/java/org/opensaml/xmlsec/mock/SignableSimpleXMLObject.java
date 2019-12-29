@@ -79,6 +79,9 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     
     /**
      * Constructor
+     * @param namspaceURI ...
+     * @param localName ...
+     * @param namespacePrefix ...
      */
     public SignableSimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
         super(namspaceURI, localName, namespacePrefix);

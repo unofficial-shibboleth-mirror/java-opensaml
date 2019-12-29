@@ -19,8 +19,6 @@ package org.opensaml.xmlsec.signature.support;
 
 import java.security.KeyPair;
 
-import javax.xml.bind.ValidationException;
-
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -88,9 +86,8 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * Tests creating a detached signature within the same document as the element signed and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws ValidationException thrown if there is a problem attempting to validate the signature
      * @throws UnmarshallingException thrown if the signature can not be unmarshalled
-     * @throws SignatureException 
+     * @throws SignatureException ...
      */
     @Test
     public void testInternalSignatureAndVerification() throws MarshallingException, UnmarshallingException,
@@ -125,8 +122,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      * external references used are the InCommon and InQueue metadata files.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws ValidationException thrown if the signature verification fails
-     * @throws SignatureException 
+     * @throws SignatureException ...
      */
     @Test
     public void testExternalSignatureAndVerification() throws MarshallingException, SignatureException {

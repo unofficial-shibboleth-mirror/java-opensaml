@@ -61,10 +61,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     /**
      * Test basic no header case. Message will be an Envelope.
      * 
-     * @throws ComponentInitializationException 
-     * @throws MessageDecodingException
-     * @throws IOException 
-     * @throws SecurityException
+     * @throws ComponentInitializationException ...
+     * @throws MessageDecodingException ...
+     * @throws IOException ...
      */
     @Test
     public void testDecodeToEnvelope() throws ComponentInitializationException, MessageDecodingException, IOException {
@@ -85,10 +84,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     /**
      * Test basic no header case. Message will be an non-Envelope payload.
      * 
-     * @throws ComponentInitializationException 
-     * @throws MessageDecodingException
-     * @throws IOException 
-     * @throws SecurityException
+     * @throws ComponentInitializationException ...
+     * @throws MessageDecodingException ...
+     * @throws IOException ...
      */
     @Test
     public void testDecodeToPayload() throws ComponentInitializationException, MessageDecodingException, IOException {
@@ -109,10 +107,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     /**
      * Test missing content type.
      * 
-     * @throws ComponentInitializationException 
-     * @throws MessageDecodingException
-     * @throws IOException 
-     * @throws SecurityException
+     * @throws ComponentInitializationException ...
+     * @throws MessageDecodingException ...
+     * @throws IOException ...
      */
     @Test(expectedExceptions=MessageDecodingException.class)
     public void testmissingContentType() throws ComponentInitializationException, MessageDecodingException, IOException {
@@ -129,10 +126,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     /**
      * Test invalid content type.
      * 
-     * @throws ComponentInitializationException 
-     * @throws MessageDecodingException
-     * @throws IOException 
-     * @throws SecurityException
+     * @throws ComponentInitializationException ...
+     * @throws MessageDecodingException ...
+     * @throws IOException ...
      */
     @Test(expectedExceptions=MessageDecodingException.class)
     public void testInvalidContentType() throws ComponentInitializationException, MessageDecodingException, IOException {
@@ -153,9 +149,11 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     /**
      * Get a resource relative to a class.
      * 
-     * @param resourceName
-     * @return  resource content
-     * @throws IOException 
+     * @param resourceName ...
+     * 
+     * @return resource content
+     * 
+     * @throws IOException ...
      */
     private byte[] getServletRequestContent(String resourceName) throws IOException {
         return Resources.toByteArray(getClass().getResource(resourceName));

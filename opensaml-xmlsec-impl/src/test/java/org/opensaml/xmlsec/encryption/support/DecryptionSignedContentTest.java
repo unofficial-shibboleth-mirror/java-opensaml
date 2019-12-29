@@ -87,8 +87,13 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
     /**
      * Test decryption of signed object and then verify signature.
      * 
-     * @throws IOException
-     * @throws SignatureException 
+     * @throws MarshallingException ...
+     * @throws UnmarshallingException ...
+     * @throws EncryptionException ...
+     * @throws DecryptionException ...
+     * @throws XMLParserException ...
+     * @throws IOException ...
+     * @throws SignatureException ...
      */
     @Test
     public void testDecryptAndVerifySignedElement() throws MarshallingException, 
@@ -139,8 +144,13 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         SignatureValidator.validate(decryptedSignature, signingCredential);
     }
 
-    /** Just a sanity check that unit test is set up correctly. 
-     * @throws SignatureException */
+    /**
+     * Just a sanity check that unit test is set up correctly.
+     * 
+     * @throws MarshallingException ...
+     * @throws UnmarshallingException ...
+     * @throws SignatureException ...
+     */
     @Test
     public void testPlainRoundTripSignature() throws MarshallingException, UnmarshallingException, SignatureException {
         Element signedElement = getSignedElement();
@@ -160,8 +170,9 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      * Creates a signed SimpleXMLObject element.
      * 
      * @return a XMLObject that has a Signature child element
-     * @throws MarshallingException
-     * @throws SignatureException 
+     * 
+     * @throws MarshallingException ...
+     * @throws SignatureException ...
      */
     private Element getSignedElement() throws MarshallingException, SignatureException {
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);

@@ -494,9 +494,9 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     
     
-    /********************
-     * Helper methods.  *
-     ********************/
+    //*******************
+    //* Helper methods. *
+    //*******************
     
     @Test(enabled = false)
     private void testValidateSuccess(String message) {

@@ -72,7 +72,8 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     /**
      * Test no options - should produce null KeyInfo.
-     * @throws SecurityException
+     * 
+     * @throws SecurityException ...
      */
     @Test
     public void testNoOptions() throws SecurityException {
@@ -85,7 +86,9 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     /**
      * Test emit public key.
-     * @throws SecurityException
+     * 
+     * @throws SecurityException ...
+     * @throws KeyException ...
      */
     @Test
     public void testEmitPublicKey() throws SecurityException, KeyException {
@@ -110,7 +113,8 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     /**
      * Test emit credential key names.
-     * @throws SecurityException
+     * 
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitKeynames() throws SecurityException {
@@ -130,7 +134,8 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     /**
      * Test emit entity ID as key name.
-     * @throws SecurityException
+     * 
+     * @throws SecurityException ...
      */
     @Test
     public void testEmitEntityIDAsKeyName() throws SecurityException {
@@ -151,7 +156,9 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * Test that the options passed to the generator are really cloned. 
      * After newInstance() is called, changes to the factory options should not be 
      * reflected in the generator.
-     * @throws SecurityException */
+     * 
+     * @throws SecurityException ...
+     */
     @Test
     public void testProperOptionsCloning() throws SecurityException {
         generator = factory.newInstance();

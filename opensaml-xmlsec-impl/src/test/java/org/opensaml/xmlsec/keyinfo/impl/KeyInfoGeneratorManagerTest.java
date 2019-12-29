@@ -121,11 +121,12 @@ public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         }        
     }
     
-    /** Test lookup of factory from manager based on a credential instance. 
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
-     * @throws CryptException 
-     * @throws IOException */
+    /** Test lookup of factory from manager based on a credential instance.
+     * 
+     * @throws NoSuchProviderException ...
+     * @throws NoSuchAlgorithmException ...
+     * @throws IOException ...
+     */
     @Test
     public void testLookupFactory() throws NoSuchAlgorithmException, NoSuchProviderException, IOException {
         manager.registerFactory(basicFactory);

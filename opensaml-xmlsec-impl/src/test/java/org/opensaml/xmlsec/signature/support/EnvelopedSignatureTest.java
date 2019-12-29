@@ -90,11 +90,11 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * Tests creating an enveloped signature and then verifying it.
      * 
      * @throws MarshallingException thrown if the XMLObject tree can not be marshalled
-     * @throws ValidationException 
-     * @throws SignatureException 
+     * @throws ValidationException ...
+     * @throws SignatureException ...
      */
     @Test
-    public void testSigningAndVerification() throws MarshallingException, ValidationException, SignatureException{
+    public void testSigningAndVerification() throws MarshallingException, ValidationException, SignatureException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
@@ -122,7 +122,7 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
      * 
      * @throws XMLParserException thrown if the XML can not be parsed
      * @throws UnmarshallingException thrown if the DOM can not be unmarshalled
-     * @throws GeneralSecurityException 
+     * @throws GeneralSecurityException ...
      */
     @Test
     public void testUnmarshall() throws XMLParserException, UnmarshallingException, GeneralSecurityException {

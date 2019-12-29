@@ -156,8 +156,9 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedData decryption which should fail due to blacklist validation.
-     * @throws DecryptionException 
+     * Test EncryptedData decryption which should fail due to blacklist validation.
+     * 
+     * @throws DecryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedDataAlgorithmBlacklistFail() throws DecryptionException {
@@ -166,8 +167,9 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedData decryption which should fail due to whitelist validation.
-     * @throws DecryptionException 
+     * Test EncryptedData decryption which should fail due to whitelist validation.
+     * 
+     * @throws DecryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedDataAlgorithmWhitelistFail() throws DecryptionException {
@@ -176,9 +178,10 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedData decryption which should pass the whitelist validation b/c the list specifies
-     *  the algorithm in use.
-     * @throws DecryptionException 
+     * Test EncryptedData decryption which should pass the whitelist validation b/c the list specifies
+     * the algorithm in use.
+     * 
+     * @throws DecryptionException ...
      */
     @Test()
     public void testEncryptedDataAlgorithmWhitelistPass() throws DecryptionException {
@@ -187,8 +190,9 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedKey decryption which should fail due to blacklist validation.
-     * @throws DecryptionException 
+     * Test EncryptedKey decryption which should fail due to blacklist validation.
+     * 
+     * @throws DecryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyAlgorithmBlacklistFail() throws DecryptionException {
@@ -198,10 +202,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedKey decryption which should fail due to whitelist validation.
-     * @throws DecryptionException 
-     * @throws XMLParserException 
-     * @throws EncryptionException 
+     * Test EncryptedKey decryption which should fail due to whitelist validation.
+     * 
+     * @throws DecryptionException ...
+     * @throws XMLParserException ...
+     * @throws EncryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyDigestMethodBlacklistFail() throws DecryptionException, EncryptionException, XMLParserException {
@@ -225,10 +230,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedKey decryption which should fail due to whitelist validation.
-     * @throws DecryptionException 
-     * @throws XMLParserException 
-     * @throws EncryptionException 
+     * Test EncryptedKey decryption which should fail due to whitelist validation.
+     * 
+     * @throws DecryptionException ...
+     * @throws XMLParserException ...
+     * @throws EncryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyMGFBlacklistFail() throws DecryptionException, EncryptionException, XMLParserException {
@@ -252,10 +258,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedKey decryption which should fail due to whitelist validation.
-     * @throws DecryptionException 
-     * @throws XMLParserException 
-     * @throws EncryptionException 
+     * Test EncryptedKey decryption which should fail due to whitelist validation.
+     * 
+     * @throws DecryptionException ...
+     * @throws XMLParserException ...
+     * @throws EncryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyAlgorithmWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
@@ -265,10 +272,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedKey decryption which should fail due to whitelist validation.
-     * @throws DecryptionException 
-     * @throws XMLParserException 
-     * @throws EncryptionException 
+     * Test EncryptedKey decryption which should fail due to whitelist validation.
+     * 
+     * @throws DecryptionException ...
+     * @throws XMLParserException ...
+     * @throws EncryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyDigestMethodWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
@@ -296,10 +304,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedKey decryption which should fail due to whitelist validation.
-     * @throws DecryptionException 
-     * @throws XMLParserException 
-     * @throws EncryptionException 
+     * Test EncryptedKey decryption which should fail due to whitelist validation.
+     * 
+     * @throws DecryptionException ...
+     * @throws XMLParserException ...
+     * @throws EncryptionException ...
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyMGFWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
@@ -327,11 +336,12 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test EncryptedKey decryption which should pass the whitelist validation b/c the list specifies
-     *  the algorithms in use.
-     * @throws DecryptionException 
-     * @throws XMLParserException 
-     * @throws EncryptionException 
+     * Test EncryptedKey decryption which should pass the whitelist validation b/c the list specifies
+     * the algorithms in use.
+     * 
+     * @throws DecryptionException ...
+     * @throws XMLParserException ...
+     * @throws EncryptionException ...
      */
     @Test()
     public void testEncryptedKeyAlgorithmWhitelistPass() throws DecryptionException, EncryptionException, XMLParserException {
@@ -406,11 +416,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test error condition of invalid data decryption key.
+     * Test error condition of invalid data decryption key.
      *  
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
-     * @throws KeyException 
+     * @throws NoSuchProviderException ...
+     * @throws NoSuchAlgorithmException ...
+     * @throws KeyException ...
      */
     @Test
     public void testErrorInvalidDataDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException, KeyException {
@@ -430,10 +440,10 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     }
     
     /**
-     *  Test error condition of invalid key decryption key.
+     * Test error condition of invalid key decryption key.
      *  
-     * @throws NoSuchProviderException 
-     * @throws NoSuchAlgorithmException 
+     * @throws NoSuchProviderException ...
+     * @throws NoSuchAlgorithmException ...
      */
     @Test
     public void testErrorInvalidKeyDecryptionKey() throws NoSuchAlgorithmException, NoSuchProviderException {

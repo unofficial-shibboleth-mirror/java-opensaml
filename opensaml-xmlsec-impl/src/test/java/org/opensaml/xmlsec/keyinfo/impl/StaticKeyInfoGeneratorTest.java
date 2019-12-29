@@ -80,8 +80,8 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Simple test, should return the same instance every time.
      * 
-     * @throws SecurityException
-     * @throws KeyException
+     * @throws SecurityException ...
+     * @throws KeyException ...
      */
     @Test
     public void testSimple() throws SecurityException, KeyException {
@@ -103,8 +103,8 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test with cloning, original KeyInfo has no cached DOM.
      * 
-     * @throws SecurityException
-     * @throws KeyException
+     * @throws SecurityException ...
+     * @throws KeyException ...
      */
     @Test
     public void testWithCloningNoDOMCache() throws SecurityException, KeyException {
@@ -130,9 +130,9 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     /**
      * Test with cloning, original KeyInfo has a cached DOM.
      * 
-     * @throws SecurityException
-     * @throws KeyException
-     * @throws MarshallingException 
+     * @throws SecurityException ...
+     * @throws KeyException ...
+     * @throws MarshallingException ...
      */
     @Test
     public void testWithCloningWithDOMCache() throws SecurityException, KeyException, MarshallingException {

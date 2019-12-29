@@ -255,9 +255,9 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         testEvaluateFailure("Trusted name set was null", null, cred);
     }
     
-    /********************
-     * Helper methods.  *
-     ********************/
+    //********************
+    //* Helper methods.  *
+    //********************
     
     @Test(enabled = false)
     private void testEvaluateSuccess(String message, Set<String> trustedNames, X509Credential untrustedCred) {

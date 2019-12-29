@@ -189,7 +189,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test valid signature.
      * 
-     * @throws SecurityException 
+     * @throws SecurityException ...
      */
     @Test
     public void testSuccess() throws SecurityException {
@@ -203,7 +203,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test valid signature, untrusted signing credential.
      * 
-     * @throws SecurityException 
+     * @throws SecurityException ...
      */
     @Test
     public void testUntrustedCredential() throws SecurityException {
@@ -215,7 +215,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test invalid signature, trusted signing credential.
      * 
-     * @throws SecurityException 
+     * @throws SecurityException ...
      */
     @Test
     public void testInvalidSignature() throws SecurityException {
@@ -230,7 +230,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test whitelisted signature and digest method algorithm URIs.
      * 
-     * @throws SecurityException 
+     * @throws SecurityException ...
      */
     @Test
     public void testWhitelistedAlgorithms() throws SecurityException {
@@ -251,7 +251,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test blacklisted signature method algorithm URI.
      * 
-     * @throws SecurityException 
+     * @throws SecurityException ...
      */
     public void testBlacklistedSignatureAlgorithm() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
@@ -270,7 +270,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test blacklisted digest method algorithm URI.
      * 
-     * @throws SecurityException 
+     * @throws SecurityException ...
      */
     public void testBlacklistedDigestAlgorithm() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
@@ -289,7 +289,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test valid raw signature, trusted signing credential.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testRawSuccess() throws SecurityException {
@@ -307,7 +307,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test valid raw signature, untrusted signing credential.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testRawUntrustedCredential() throws SecurityException {
@@ -324,7 +324,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test invalid raw signature, trusted signing credential.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testRawInvalidSignature() throws SecurityException {
@@ -340,7 +340,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test valid raw signature with whitelisted signature algorithm.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testRawWhitelistedAlgorithm() throws SecurityException {
@@ -360,7 +360,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     /**
      * Test valid raw signature with whitelisted signature algorithm.
      * 
-     * @throws SecurityException
+     * @throws SecurityException ...
      */
     @Test
     public void testRawBlacklistedAlgorithm() throws SecurityException {
@@ -402,7 +402,8 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      * Build a signed object.
      * 
      * @return a signed object
-     * @throws SignatureException 
+     * 
+     * @throws SignatureException ...
      */
     protected SignableXMLObject buildSignedObject() throws SignatureException {
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);

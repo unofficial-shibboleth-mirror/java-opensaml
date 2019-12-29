@@ -60,11 +60,6 @@ public class BaseObligationHandlerTest {
             super(obligationId, handlerPrecedence);
         }
 
-        /**
-         * Constructor.
-         * 
-         * @param obligationId
-         */
         protected TestClass(String obligationId) {
             super(obligationId);
         }

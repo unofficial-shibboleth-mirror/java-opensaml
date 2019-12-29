@@ -275,7 +275,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     /**
      * Test converting XML X509Certificate to java.security.cert.X509Certificate.
      * 
-     * @throws CertificateException
+     * @throws CertificateException ...
      */
     @Test
     public void testCertConversionXMLtoJava() throws CertificateException {
@@ -319,8 +319,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     /**
      * Test converting XML X509CRL to java.security.cert.X509CRL.
      * 
-     * @throws CRLException
-     * @throws CertificateException
+     * @throws CRLException ...
+     * @throws CertificateException ...
      */
     @Test
     public void testCRLConversionXMLtoJava() throws CertificateException, CRLException {
@@ -360,7 +360,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     /**
      * Test converting java.security.cert.X509Certificate to XML X509Certificate.
      * 
-     * @throws CertificateException
+     * @throws CertificateException ...
      */
     @Test
     public void testCertConversionJavaToXML() throws CertificateException {
@@ -378,8 +378,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     /**
      * Test converting java.security.cert.X509CRL to XML X509CRL.
      * 
-     * @throws CRLException
-     * @throws CertificateException
+     * @throws CRLException ...
+     * @throws CertificateException ...
      */
     @Test
     public void testCRLConversionJavaToXML() throws CertificateException, CRLException {
@@ -611,7 +611,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     /**
      * Tests adding a certificate as a X509Data/X509Certificate to KeyInfo.
      * 
-     * @throws CertificateException
+     * @throws CertificateException ...
      */
     @Test
     public void testAddX509Certificate() throws CertificateException {
@@ -634,7 +634,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     /**
      * Tests adding a CRL as a X509Data/X509CRL to KeyInfo.
      * 
-     * @throws CRLException
+     * @throws CRLException ...
      */
     @Test
     public void testAddX509CRL() throws CRLException {
@@ -681,7 +681,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     /**
      * Tests building a new X509SKI from a certificate containing an SKI value.
      * 
-     * @throws CertificateException
+     * @throws CertificateException ...
      */
     @Test
     public void testBuildSubjectKeyIdentifier() throws CertificateException {
@@ -702,8 +702,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
 
     /**
      * Tests building a new X509Digest from a certificate.
-     * @throws CertificateException 
-     * @throws NoSuchAlgorithmException
+     * 
+     * @throws CertificateException ...
      */
     @Test
     public void testBuildDigest() throws CertificateException {

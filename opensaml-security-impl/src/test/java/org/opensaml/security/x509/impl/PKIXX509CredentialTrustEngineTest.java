@@ -169,9 +169,9 @@ public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
     }
     
     
-    /********************
-     * Helper methods.  *
-     ********************/
+    //********************
+    //* Helper methods.  *
+    //********************
     
     @Test(enabled = false)
     private void testValidateSuccess(String message) {

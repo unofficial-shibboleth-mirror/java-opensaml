@@ -118,7 +118,7 @@ public class ReplayCacheTest {
     /**
      * Test valid replayed message ID, setting expiration by short duration.
      * 
-     * @throws InterruptedException
+     * @throws InterruptedException ...
      */
     @Test
     public void testNonReplayValidByMillisecondExpiriation() throws InterruptedException {

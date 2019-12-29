@@ -190,8 +190,9 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     }
     
     /** Test lookup of factory from manager based on a credential instance. 
-     * @throws CryptException 
-     * @throws IOException */
+     * 
+     * @throws IOException ...
+     */
     @Test
     public void testLookupFactory() throws IOException {
         manager.registerFactory(nameFoo, basicFactoryFoo);
@@ -238,8 +239,9 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     }
     
     /** Test proper functioning of option to use the default manager for unnamed factories. 
-     * @throws CryptException 
-     * @throws IOException */
+     * 
+     * @throws IOException ...
+     */
     @Test
     public void testFallThroughToDefaultManager() throws IOException {
         KeyInfoGeneratorFactory defaultX509Factory = new X509KeyInfoGeneratorFactory();

@@ -372,9 +372,9 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Intermediate CA with policy mapping, but mapping is inhibited", info, cred, opts);
     }    
     
-    /********************
-     * Helper methods.  *
-     ********************/
+    //********************
+    //* Helper methods.  *
+    //********************
     
     @Test(enabled = false)
     private void testValidateSuccess(String message, PKIXValidationInformation info, X509Credential cred) {

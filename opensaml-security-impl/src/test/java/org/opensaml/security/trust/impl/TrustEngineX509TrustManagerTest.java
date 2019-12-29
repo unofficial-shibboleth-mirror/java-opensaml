@@ -60,7 +60,7 @@ public class TrustEngineX509TrustManagerTest {
      * Creates an UnboundID in-memory directory server. Leverages LDIF found in test resources.
      * 
      * @throws LDAPException if the in-memory directory server cannot be created
-     * @throws IOException 
+     * @throws IOException ...
      */
     @BeforeTest public void setupDirectoryServer() throws IOException, LDAPException {
         directoryServer = new InMemoryDirectory(new File(DATA_PATH + "test-ldap.ldif"), new File(DATA_PATH + "test-ldap.keystore"));
@@ -74,7 +74,11 @@ public class TrustEngineX509TrustManagerTest {
         directoryServer.stop();
     }
 
-    /** Make sure default trust fails. */
+    /**
+     * Make sure default trust fails.
+     * 
+     * @throws LdapException ...
+     */
     @Test(expectedExceptions=LdapException.class)
     public void testDefaultTrust() throws LdapException {
         final ConnectionConfig config = new ConnectionConfig();
@@ -89,7 +93,11 @@ public class TrustEngineX509TrustManagerTest {
         }
     }
     
-    /** No trust engine. */
+    /**
+     * No trust engine.
+     * 
+     * @throws LdapException ...
+     */
     @Test(expectedExceptions=LdapException.class)
     public void testNullTrust() throws LdapException {
         final TrustEngineX509TrustManager trustManager = new TrustEngineX509TrustManager();
@@ -108,7 +116,13 @@ public class TrustEngineX509TrustManagerTest {
         }
     }
     
-    /** Static trust engine. */
+    /**
+     * Static trust engine.
+     * 
+     * @throws LdapException ...
+     * @throws FileNotFoundException ...
+     * @throws IOException ...
+     */
     @Test
     public void testStaticTrust() throws LdapException, FileNotFoundException, IOException {
         final StaticCredentialResolver resolver;

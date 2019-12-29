@@ -74,6 +74,10 @@ public class JPAStorageServiceTest extends StorageServiceTest {
 
     /**
      * Creates an entity manager factory instance.
+     * 
+     * @return an entity manager factory instance
+     * 
+     * @throws ComponentInitializationException ...
      */
     private EntityManagerFactory createEntityManagerFactory() throws ComponentInitializationException
     {
