@@ -422,7 +422,7 @@ public abstract class AbstractPipelineHttpSOAPClient
                 criteriaSet.addAll(resolved);
             }
         }
-        if (!criteriaSet.contains(UsageType.class)) {
+        if (!criteriaSet.contains(UsageCriterion.class)) {
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
         return criteriaSet;
