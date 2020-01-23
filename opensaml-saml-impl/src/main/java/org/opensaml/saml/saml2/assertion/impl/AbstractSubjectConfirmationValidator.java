@@ -17,16 +17,11 @@
 
 package org.opensaml.saml.saml2.assertion.impl;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.time.Instant;
-import java.util.Arrays;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.concurrent.ThreadSafe;
-
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
@@ -38,6 +33,8 @@ import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * A base class for {@link SubjectConfirmationValidator} implementations. 
@@ -244,7 +241,6 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the address
      */
-    // Checkstyle: CyclomaticComplexity OFF
     @Nonnull protected ValidationResult validateAddress(@Nonnull final SubjectConfirmation confirmation, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
                     throws AssertionValidationException {
@@ -253,66 +249,17 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                 (Boolean) context.getStaticParameters().get(SAML2AssertionValidationParameters.SC_CHECK_ADDRESS);
 
         if (checkAddress != null && !checkAddress) {
-            log.debug("SubjectConfirmationData@Address check is disabled, skipping");
+            log.debug("SubjectConfirmationData/@Address check is disabled, skipping");
             return ValidationResult.VALID;
         }
 
         final String address = StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getAddress());
-        if (address == null) {
-            return ValidationResult.VALID;
-        }
-
-        log.debug("Evaluating SubjectConfirmationData@Address of : {}", address);
-
-        final InetAddress[] confirmingAddresses;
-        try {
-            confirmingAddresses = InetAddress.getAllByName(address);
-        } catch (final UnknownHostException e) {
-            log.warn("The subject confirmation address '{}' in assetion '{}' can not be resolved " 
-                    + "to a valid set of IP address(s)", address, assertion.getID());
-            context.setValidationFailureMessage(String.format(
-                    "Subject confirmation address '%s' is not resolvable hostname or IP address", address));
-            return ValidationResult.INDETERMINATE;
-        }
         
-        if (log.isDebugEnabled()) {
-            log.debug("SubjectConfirmationData/@Address was resolved to addresses: {}",
-                    Arrays.asList(confirmingAddresses));
-        }
-
-        final Set<InetAddress> validAddresses;
-        try {
-            validAddresses = (Set<InetAddress>) context.getStaticParameters().get(
-                    SAML2AssertionValidationParameters.SC_VALID_ADDRESSES);
-        } catch (final ClassCastException e) {
-            log.warn("The value of the static validation parameter '{}' was not java.util.Set<InetAddress>",
-                    SAML2AssertionValidationParameters.SC_VALID_ADDRESSES);
-            context.setValidationFailureMessage("Unable to determine list of valid subject confirmation addresses");
-            return ValidationResult.INDETERMINATE;
-        }
-        if (validAddresses == null || validAddresses.isEmpty()) {
-            log.warn("Set of valid addresses was not available from the validation context, " 
-                    + "unable to evaluate SubjectConfirmationData@Address");
-            context.setValidationFailureMessage("Unable to determine list of valid subject confirmation addresses");
-            return ValidationResult.INDETERMINATE;
-        }
-
-        for (final InetAddress confirmingAddress : confirmingAddresses) {
-            if (validAddresses.contains(confirmingAddress)) {
-                log.debug("Matched SubjectConfirmationData address '{}' to valid address",
-                        confirmingAddress.getHostAddress());
-                return ValidationResult.VALID;
-            }
-        }
-        
-        log.debug("Failed to match SubjectConfirmationData@Address to any supplied valid addresses", validAddresses);
-
-        context.setValidationFailureMessage(String.format(
-                "Subject confirmation address for asertion '%s' did not match any valid addresses", assertion
-                        .getID()));
-        return ValidationResult.INVALID;
+        return AssertionValidationSupport.checkAddress(context, address, 
+                SAML2AssertionValidationParameters.SC_VALID_ADDRESSES,
+                assertion,
+                "SubjectConfirmationData/@Address");
     }
-    // Checkstyle: CyclomaticComplexity ON
 
     /**
      * Performs any further validation required for the specific confirmation method implementation.

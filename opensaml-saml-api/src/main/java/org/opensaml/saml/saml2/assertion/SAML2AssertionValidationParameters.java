@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.assertion;
 
+import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.SubjectLocality;
+
 /**
  * Parameter keys used to store and retrieve static and dynamic parameters within a 
  * {@link org.opensaml.saml.common.assertion.ValidationContext}.
@@ -119,6 +122,27 @@ public final class SAML2AssertionValidationParameters {
      */
     public static final String COND_ONE_TIME_USE_EXPIRES = STD_PREFIX + COND_INFIX + ".OneTimeUseExpires";
     
+    /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether the
+     * Address attribute of the {@link SubjectLocality} of an {@link AuthnStatement}
+     * should be checked.
+     */
+    public static final String STMT_AUTHN_CHECK_ADDRESS = 
+            STD_PREFIX + STMT_INFIX + ".Authn.SubjectLocality.CheckAddress";
+
+    /**
+     * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.net.InetAddress}<code>&gt;</code>
+     * whose values are the acceptable 
+     * values for the Address attribute of the {@link SubjectLocality} of an {@link AuthnStatement}.
+     */
+    public static final String STMT_AUTHN_VALID_ADDRESSES = 
+            STD_PREFIX + STMT_INFIX + ".Authn.SubjectLocality.ValidAddresses";
+    
+    /**
+     * Carries a {@link java.time.Duration} used to evaluate the 
+     * allowed value of an AuthnInstant attribute of an {@link AuthnStatement}.
+     */
+    public static final String STMT_AUTHN_MAX_TIME = STD_PREFIX + STMT_INFIX + ".Authn.MaxTimeSinceAuthn";
     
     
     /** Constructor. */
