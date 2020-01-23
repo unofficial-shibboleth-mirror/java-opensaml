@@ -79,6 +79,18 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     }
     
     @Test
+    public void testInvalidAddressWithAddressCheckDisabled() throws AssertionValidationException {
+        subjectConfirmation.getSubjectConfirmationData().setAddress("1.2.3.4");
+
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_CHECK_ADDRESS, Boolean.FALSE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext),
+                ValidationResult.VALID);
+    }
+
+    @Test
     public void testInvalidAddressParamType() throws AssertionValidationException {
         Map<String,Object> staticParams = buildBasicStaticParameters();
         // It should be a Set<String>, not a String

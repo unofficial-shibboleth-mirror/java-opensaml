@@ -77,6 +77,12 @@ public final class SAML2AssertionValidationParameters {
     public static final String SC_VALID_RECIPIENTS = STD_PREFIX + SC_INFIX + ".ValidRecipients";
 
     /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether the
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} address should be checked.
+     */
+    public static final String SC_CHECK_ADDRESS = STD_PREFIX + SC_INFIX + ".CheckAddress";
+
+    /**
      * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.net.InetAddress}<code>&gt;</code>
      * whose values are the acceptable 
      * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} addresses.

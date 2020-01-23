@@ -52,8 +52,13 @@ import org.slf4j.LoggerFactory;
  * </p>
  * <ul>
  * <li>
+ * {@link SAML2AssertionValidationParameters#SC_CHECK_ADDRESS}:
+ * Optional.
+ * </li>
+ * <li>
  * {@link SAML2AssertionValidationParameters#SC_VALID_ADDRESSES}:
- * Required.
+ * Required if {@link SAML2AssertionValidationParameters#SC_CHECK_ADDRESS} is true or omitted,
+ * otherwise optional.
  * </li>
  * <li>
  * {@link SAML2AssertionValidationParameters#SC_VALID_RECIPIENTS}:
@@ -239,14 +244,24 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the address
      */
+    // Checkstyle: CyclomaticComplexity OFF
     @Nonnull protected ValidationResult validateAddress(@Nonnull final SubjectConfirmation confirmation, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
                     throws AssertionValidationException {
+
+        final Boolean checkAddress =
+                (Boolean) context.getStaticParameters().get(SAML2AssertionValidationParameters.SC_CHECK_ADDRESS);
+
+        if (checkAddress != null && !checkAddress) {
+            log.debug("SubjectConfirmationData@Address check is disabled, skipping");
+            return ValidationResult.VALID;
+        }
+
         final String address = StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getAddress());
         if (address == null) {
             return ValidationResult.VALID;
         }
-        
+
         log.debug("Evaluating SubjectConfirmationData@Address of : {}", address);
 
         final InetAddress[] confirmingAddresses;
@@ -297,6 +312,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                         .getID()));
         return ValidationResult.INVALID;
     }
+    // Checkstyle: CyclomaticComplexity ON
 
     /**
      * Performs any further validation required for the specific confirmation method implementation.
