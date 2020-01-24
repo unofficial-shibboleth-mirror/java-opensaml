@@ -20,6 +20,8 @@ package org.opensaml.security.x509;
 import java.io.InputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.cert.CRLException;
+import java.security.cert.CertificateException;
 import java.security.cert.CertificateParsingException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
@@ -242,6 +244,9 @@ public class X509SupportTest {
     
     /** An EC private key. */
     private String keyEC = "/data/ec-privkey-nopass.pem";
+    
+    /** Invalid base64 string as it has invalid trailing digits. */
+    private final static String INVALID_BASE64_TRAILING = "AB==";
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -541,6 +546,11 @@ public class X509SupportTest {
         Collection<X509Certificate> certs = X509Support.decodeCertificates(certBytes);
         Assert.assertNotNull(certs);
         Assert.assertEquals(certs.size(), 2);
+    }
+    
+    @Test(expectedExceptions = CRLException.class)
+    public void testDecodeCRLWithInvalidBase64() throws CertificateException, CRLException {
+        X509Support.decodeCRL(INVALID_BASE64_TRAILING);
     }
 
     /**

@@ -45,6 +45,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.xml.security.utils.XMLUtils;
@@ -752,8 +753,10 @@ public class KeyInfoSupport {
      * 
      * @param base64Value base64-encoded CryptoBinary value
      * @return the decoded BigInteger
+     * @throws DecodingException if the base64 value can not be decoded.
      */
-    @Nonnull public static final BigInteger decodeBigIntegerFromCryptoBinary(@Nonnull final String base64Value) {
+    @Nonnull public static final BigInteger decodeBigIntegerFromCryptoBinary(@Nonnull final String base64Value) 
+            throws DecodingException {
         return new BigInteger(1, Base64Support.decode(base64Value));
     }
 
@@ -814,7 +817,12 @@ public class KeyInfoSupport {
         if (keyValue.getValue() == null) {
             throw new KeyException("No data found in key value element");
         }
-        final byte[] encodedKey = Base64Support.decode(keyValue.getValue());
+        byte[] encodedKey = null;
+        try {
+            encodedKey = Base64Support.decode(keyValue.getValue());
+        } catch (final DecodingException e) {
+           throw new KeyException("DEREncodedKeyValue could not be base64 decoded",e);
+        }
 
         // Iterate over the supported key types until one produces a public key.
         for (final String keyType : supportedKeyTypes) {

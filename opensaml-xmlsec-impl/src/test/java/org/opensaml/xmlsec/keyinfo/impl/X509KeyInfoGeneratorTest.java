@@ -35,6 +35,7 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
@@ -411,9 +412,10 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * Test emit subject key identifier in X509Data.
      * 
      * @throws SecurityException ...
+     * @throws DecodingException if the base64 key identifier can not be decoded.
      */
     @Test
-    public void testEmitX509SKI() throws SecurityException {
+    public void testEmitX509SKI() throws SecurityException, DecodingException {
         factory.setEmitX509SKI(true);
 
         generator = factory.newInstance();
@@ -434,9 +436,10 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
      * Test emit X509Digest in X509Data.
      * 
      * @throws SecurityException ...
+     * @throws DecodingException if the base64 digest value can not be decoded.
      */
     @Test
-    public void testEmitX509Digest() throws SecurityException {
+    public void testEmitX509Digest() throws SecurityException, DecodingException {
         factory.setEmitX509Digest(true);
         factory.setX509DigestAlgorithmURI(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         

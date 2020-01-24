@@ -30,6 +30,7 @@ import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.xml.security.Init;
@@ -449,7 +450,7 @@ public class Encrypter {
                 return oaepParams;
             }
             return null;
-        } catch (final RuntimeException e) {
+        } catch (final DecodingException e) {
             throw new EncryptionException(String.format("Error decoding OAEPParams data '%s'", base64Params), e);
         }
     }

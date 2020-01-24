@@ -21,10 +21,12 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.saml1.binding.decoding.impl.HTTPPostDecoder;
@@ -44,6 +46,9 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     private HTTPPostDecoder decoder;
 
     private MockHttpServletRequest httpRequest;
+    
+    /** Invalid base64 string as it has invalid trailing digits. */
+    private final static String INVALID_BASE64_TRAILING = "AB==";
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -77,6 +82,25 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
+    }
+    
+    /**
+     * Test decoding a base64 invalid message. Should throw a {@link MessageDecodingException}
+     * wrapping a DecodingException.
+     * 
+     */
+    @Test
+    public void testDecodeInvalidResponse() {       
+        httpRequest.setParameter("SAMLResponse", INVALID_BASE64_TRAILING);
+        try {
+            decoder.decode();
+        } catch (MessageDecodingException e) {
+            if(e.getCause() instanceof DecodingException){
+                // pass
+            } else {
+                Assert.fail("Expected DecodingException type");
+            }
+        }
     }
 
     private void populateRequestURL(MockHttpServletRequest request, String requestURL) {

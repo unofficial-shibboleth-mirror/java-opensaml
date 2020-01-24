@@ -132,13 +132,8 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXMLMessage
     protected InputStream decodeMessage(final String message) throws MessageDecodingException {
         log.debug("Base64 decoding and inflating SAML message");
 
-        final byte[] decodedBytes = Base64Support.decode(message);
-        if(decodedBytes == null){
-            log.error("Unable to Base64 decode incoming message");
-            throw new MessageDecodingException("Unable to Base64 decode incoming message");
-        }
-        
         try {
+            final byte[] decodedBytes = Base64Support.decode(message);
             return new NoWrapAutoEndInflaterInputStream(new ByteArrayInputStream(decodedBytes));
         } catch (final Exception e) {
             log.error("Unable to Base64 decode and inflate SAML message: {}", e.getMessage());

@@ -26,6 +26,8 @@ import org.opensaml.xmlsec.signature.CryptoBinary;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.utilities.java.support.codec.DecodingException;
+
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.CryptoBinary}.
  */
@@ -49,7 +51,11 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
     @Override
     public BigInteger getValueBigInt() {
         if (bigIntValue == null && !Strings.isNullOrEmpty(getValue())) {
-            bigIntValue = KeyInfoSupport.decodeBigIntegerFromCryptoBinary(getValue());
+            try {
+                bigIntValue = KeyInfoSupport.decodeBigIntegerFromCryptoBinary(getValue());
+            } catch (final DecodingException e) {
+                //can not decode big integer from invalid value, return original even if null.                
+            }
         }
         return bigIntValue;
     }

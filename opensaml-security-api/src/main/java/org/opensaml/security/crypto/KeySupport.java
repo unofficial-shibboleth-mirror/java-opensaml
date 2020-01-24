@@ -56,6 +56,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -298,7 +299,7 @@ public final class KeySupport {
      */
     @Nonnull public static DSAPublicKey buildJavaDSAPublicKey(@Nonnull final String base64EncodedKey)
             throws KeyException {
-        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
+        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(base64DecodeOrThrow(base64EncodedKey));
         return (DSAPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_DSA);
     }
 
@@ -311,7 +312,7 @@ public final class KeySupport {
      */
     @Nonnull public static RSAPublicKey buildJavaRSAPublicKey(@Nonnull final String base64EncodedKey)
             throws KeyException {
-        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
+        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(base64DecodeOrThrow(base64EncodedKey));
         return (RSAPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_RSA);
     }
 
@@ -324,8 +325,24 @@ public final class KeySupport {
      */
     @Nonnull public static ECPublicKey buildJavaECPublicKey(@Nonnull final String base64EncodedKey)
             throws KeyException {
-        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(Base64Support.decode(base64EncodedKey));
+        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(base64DecodeOrThrow(base64EncodedKey));
         return (ECPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_EC);
+    }
+    
+    /**
+     * Base64 decode the input string, if it fails to decode throw a {@link KeyException} 
+     * wrapping the original exception.
+     * 
+     * @param base64EncodedKey base64-encoded key
+     * @return a base64 decoded byte array. Never {@literal null}.
+     * @throws KeyException if there is an error decoding the string. 
+     */
+    @Nonnull private static byte[] base64DecodeOrThrow(@Nonnull final String base64EncodedKey) throws KeyException {
+        try {
+            return Base64Support.decode(base64EncodedKey);
+        } catch (final DecodingException e) {
+            throw new KeyException("Unable to base64 decode key",e);
+        }
     }
 
     /**
@@ -383,7 +400,7 @@ public final class KeySupport {
      * @throws KeyException thrown if there is an error constructing key
      */
     @Nonnull public static PrivateKey buildJavaPrivateKey(@Nonnull final String base64EncodedKey) throws KeyException {
-        return decodePrivateKey(Base64Support.decode(base64EncodedKey), null);
+        return decodePrivateKey(base64DecodeOrThrow(base64EncodedKey), null);
     }
 
     /**

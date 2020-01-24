@@ -20,7 +20,11 @@ package org.opensaml.saml.saml1.binding.artifact;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 
 /**
  * Factory used to construct SAML 1 artifact builders.
@@ -63,8 +67,10 @@ public class SAML1ArtifactBuilderFactory {
      * @param base64Artifact Base64 encoded artifact to parse
      * 
      * @return constructed artifact
+     * 
+     * @throws DecodingException if the <code>base64Artifact</code> could not be base64-decoded.
      */
-    public SAML1Artifact buildArtifact(final String base64Artifact){
+    public SAML1Artifact buildArtifact(@Nonnull final String base64Artifact) throws DecodingException {
         return buildArtifact(Base64Support.decode(base64Artifact));
     }
 
@@ -75,8 +81,8 @@ public class SAML1ArtifactBuilderFactory {
      * 
      * @return constructed artifact
      */
-    public SAML1Artifact buildArtifact(final byte[] artifact) {
-        if(artifact == null){
+    @Nullable public SAML1Artifact buildArtifact(@Nullable final byte[] artifact) {
+        if(artifact == null) {
             return null;
         }
         

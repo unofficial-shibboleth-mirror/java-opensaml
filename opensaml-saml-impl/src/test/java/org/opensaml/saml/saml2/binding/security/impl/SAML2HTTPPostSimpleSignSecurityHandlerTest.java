@@ -28,6 +28,7 @@ import java.util.List;
 
 import javax.xml.XMLConstants;
 
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.ElementSupport;
@@ -173,6 +174,9 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
     /** Velocity template engine. */
     private VelocityEngine velocityEngine;
+    
+    /** Invalid base64 string as it has invalid trailing digits. */
+    private final static String INVALID_BASE64_TRAILING = "AB==";
 
     /**
      * Constructor.
@@ -284,6 +288,44 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         request.setParameter("RelayState", "AlteredData" + request.getParameter("RelayState"));
         
         handler.invoke(messageContext);
+    }
+    
+    /**
+     * Test invalid base64 encoded signature. Should throw a MessageHandlerException with wrapped
+     * {@link DecodingException}.
+     */
+    @Test
+    public void testInvalidBase64RequestSignature()  {  
+        try {
+            final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
+            request.setParameter("Signature", INVALID_BASE64_TRAILING);        
+            handler.invoke(messageContext);
+        } catch (MessageHandlerException e) {
+            if(e.getCause() instanceof DecodingException){
+                // pass
+            } else {
+                Assert.fail("Expected DecodingException type");
+            }
+        }
+    }
+    
+    /**
+     * Test invalid base64 encoded KeyInfo. Should throw a MessageHandlerException with wrapped
+     * {@link DecodingException}.
+     */
+    @Test
+    public void testInvalidBase64KeyInfo()  {  
+        try {
+            final MockHttpServletRequest request = (MockHttpServletRequest) handler.getHttpServletRequest();
+            request.setParameter("KeyInfo", INVALID_BASE64_TRAILING);        
+            handler.invoke(messageContext);
+        } catch (MessageHandlerException e) {
+            if(e.getCause() instanceof DecodingException){
+                // pass
+            } else {
+                Assert.fail("Expected DecodingException type");
+            }
+        }
     }
 
     /**

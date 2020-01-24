@@ -29,6 +29,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.utilities.java.support.codec.DecodingException;
+
 /**
  * Test case for HTTP POST decoders.
  */
@@ -39,6 +41,9 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
     private HTTPPostDecoder decoder;
     
     private MockHttpServletRequest httpRequest;
+    
+    /** Invalid base64 string as it has invalid trailing digits. */
+    private final static String INVALID_BASE64_TRAILING = "AB==";
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -68,6 +73,24 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
+    }
+    
+    /**
+     * Test decoding a Base64 invalid SAML Request. Should throw a {@link MessageDecodingException} wrapping
+     * a {@link DecodingException}.
+     */
+    @Test
+    public void testInvalidRequestDecoding()  {
+        httpRequest.setParameter("SAMLRequest", INVALID_BASE64_TRAILING);        
+        try {
+            decoder.decode();
+        } catch (MessageDecodingException e) {
+            if(e.getCause() instanceof DecodingException){
+                //pass
+            } else {
+                Assert.fail("Expected DecodingException type");
+            }
+        }        
     }
 
     /**

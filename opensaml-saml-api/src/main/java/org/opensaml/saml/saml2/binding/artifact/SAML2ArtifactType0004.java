@@ -64,7 +64,7 @@ public class SAML2ArtifactType0004 extends AbstractSAML2Artifact implements SAML
      * 
      * @return the type 0x0004 artifact created from the byte array
      * 
-     * @throws IllegalArgumentException thrown if the artifact is not the right type or lenght (44 bytes)
+     * @throws IllegalArgumentException thrown if the artifact is not the right type or length (44 bytes)
      */
     public static SAML2ArtifactType0004 parseArtifact(final byte[] artifact) {
         if (artifact.length != 44) {

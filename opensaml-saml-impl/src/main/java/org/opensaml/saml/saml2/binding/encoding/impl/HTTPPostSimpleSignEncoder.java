@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.binding.encoding.impl;
 import java.io.UnsupportedEncodingException;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.velocity.VelocityContext;
@@ -137,10 +138,12 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * @param messageContext the SAML message context being processed
      * @param sigAlgURI the signature algorithm URI
      * 
+     * @throws MessageEncodingException if there is an issue building the form to sign. 
+     * 
      * @return the form control data string for signature computation
      */
     protected String buildFormDataToSign(final VelocityContext velocityContext, final MessageContext messageContext,
-            final String sigAlgURI) {
+            final String sigAlgURI) throws MessageEncodingException {
         final StringBuilder builder = new StringBuilder();
 
         boolean isRequest = false;
@@ -154,12 +157,17 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         } else {
             msgB64 = (String) velocityContext.get("SAMLResponse");
         }
-
+       
         String msg = null;
         try {
             msg = new String(Base64Support.decode(msgB64), "UTF-8");
         } catch (final UnsupportedEncodingException e) {
-            // All JVM's required to support UTF-8
+            // Should never happen, all JVM's required to support UTF-8           
+            throw new MessageEncodingException("Unable to decode message as string, UTF-8 encoding is not supported",e);
+        } catch (final DecodingException e) { 
+            // Should never happen, original message is controlled and built by the IdP.
+            throw new MessageEncodingException("Error base64-decoding the "+
+                                            (isRequest ? "SAMLRequest" : "SAMLResponse"),e);
         }
 
         if (isRequest) {

@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
@@ -85,21 +86,21 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder imp
         final String relayState = request.getParameter("TARGET");
         log.debug("Decoded SAML relay state (TARGET parameter) of: {}", relayState);
         SAMLBindingSupport.setRelayState(messageContext, relayState);
-
-        final String base64Message = request.getParameter("SAMLResponse");
-        final byte[] decodedBytes = Base64Support.decode(base64Message);
-        if (decodedBytes == null) {
-            log.error("Unable to Base64 decode SAML message");
-            throw new MessageDecodingException("Unable to Base64 decode SAML message");
-        }
-
-        final SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(new ByteArrayInputStream(decodedBytes));
-        messageContext.setMessage(inboundMessage);
-        log.debug("Decoded SAML message");
-
-        populateBindingContext(messageContext);
         
-        setMessageContext(messageContext);
+        try {            
+            final String base64Message = request.getParameter("SAMLResponse");
+            final byte[] decodedBytes = Base64Support.decode(base64Message);   
+            
+            final SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(new ByteArrayInputStream(decodedBytes));
+            messageContext.setMessage(inboundMessage);
+            log.debug("Decoded SAML message");
+    
+            populateBindingContext(messageContext);
+            
+            setMessageContext(messageContext);            
+        }catch (final DecodingException e) {
+            throw new MessageDecodingException("Unable to Base64 decode SAML message",e);
+        } 
     }
     
     /**

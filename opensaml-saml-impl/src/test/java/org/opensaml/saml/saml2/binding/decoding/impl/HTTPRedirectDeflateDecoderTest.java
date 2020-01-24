@@ -52,6 +52,9 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
     private HTTPRedirectDeflateDecoder decoder;
 
     private MockHttpServletRequest httpRequest;
+    
+    /** Invalid base64 string as it has invalid trailing digits. */
+    private final static String INVALID_BASE64_TRAILING = "AB==";
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -63,7 +66,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         decoder.setParserPool(parserPool);
         decoder.setHttpServletRequest(httpRequest);
         decoder.initialize();
-    }
+    }      
 
     @Test
     public void testResponseDecoding() throws MessageDecodingException {
@@ -80,8 +83,8 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
-    }
-
+    }    
+   
     @Test
     public void testRequestDecoding() throws MessageDecodingException, MessageEncodingException, MarshallingException {
         AuthnRequest samlRequest =
@@ -96,6 +99,17 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
     }
+    
+    /**
+     * Test decoding a Base64 invalid SAML Request.
+     * 
+     * @throws MessageDecodingException decoding exception, which is expected.
+     */
+    @Test(expectedExceptions = MessageDecodingException.class)
+    public void testInvalidRequestDecoding() throws MessageDecodingException {
+        httpRequest.setParameter("SAMLRequest", INVALID_BASE64_TRAILING);        
+        decoder.decode();    
+    } 
 
     @Test
     public void testExplicitDefaultSAMLEncoding() 

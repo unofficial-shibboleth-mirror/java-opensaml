@@ -26,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
@@ -103,7 +104,8 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder imp
      * 
      * @return decoded message
      * 
-     * @throws MessageDecodingException thrown if the message does not contain a base64 encoded SAML message
+     * @throws MessageDecodingException thrown if the message does not contain a base64 encoded SAML message, 
+     *                                      or the message can not be base64-decoded.
      */
     protected InputStream getBase64DecodedMessage(final HttpServletRequest request) throws MessageDecodingException {
         log.debug("Getting Base64 encoded message from request");
@@ -118,15 +120,16 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder imp
             throw new MessageDecodingException("No SAML message present in request");
         }
 
-        log.trace("Base64 decoding SAML message:\n{}", encodedMessage);
-        final byte[] decodedBytes = Base64Support.decode(encodedMessage);
-        if(decodedBytes == null){
+        try {
+            log.trace("Base64 decoding SAML message:\n{}", encodedMessage);
+            final byte[] decodedBytes = Base64Support.decode(encodedMessage);            
+            log.trace("Decoded SAML message:\n{}", new String(decodedBytes));
+            return new ByteArrayInputStream(decodedBytes);
+            
+        } catch (final DecodingException e) {        
             log.error("Unable to Base64 decode SAML message");
-            throw new MessageDecodingException("Unable to Base64 decode SAML message");
-        }
-
-        log.trace("Decoded SAML message:\n{}", new String(decodedBytes));
-        return new ByteArrayInputStream(decodedBytes);
+            throw new MessageDecodingException("Unable to Base64 decode SAML message",e);
+        }      
     }
     
     /**

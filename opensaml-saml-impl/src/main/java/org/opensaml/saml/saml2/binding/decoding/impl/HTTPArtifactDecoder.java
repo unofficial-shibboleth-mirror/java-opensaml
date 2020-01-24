@@ -66,6 +66,7 @@ import org.slf4j.LoggerFactory;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -638,13 +639,19 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      */
     @Nonnull private SAML2Artifact parseArtifact(@Nonnull final String encodedArtifact) 
             throws MessageDecodingException {
-        
-        //TODO not sure if this handles well bad input.  Determine if can throw an unchecked and handle here.
-        final  SAML2Artifact artifact = artifactBuilderFactory.buildArtifact(encodedArtifact);
-        if (artifact == null) {
-            throw new MessageDecodingException("Could not build SAML2Artifact instance from encoded artifact");
+            
+        try {
+            final  SAML2Artifact artifact = artifactBuilderFactory.buildArtifact(encodedArtifact);
+            //TODO: can this ever be null.
+            if (artifact == null) {
+                throw new MessageDecodingException("Could not build SAML2Artifact instance from encoded artifact");
+            }
+            return artifact;
+        } catch (final DecodingException e) {
+            //any non-decoding fatal exceptions are caught upstream.
+            throw new MessageDecodingException("Could not base64 decode SAML2Artifact instance "
+                    + "from encoded artifact",e);
         }
-        return artifact;
     }
 
     /**

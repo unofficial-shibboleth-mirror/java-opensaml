@@ -37,6 +37,7 @@ import java.util.List;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.crypto.KeySupport;
@@ -682,9 +683,10 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      * Tests building a new X509SKI from a certificate containing an SKI value.
      * 
      * @throws CertificateException ...
+     * @throws DecodingException if an issue base64-decoding SKI values
      */
     @Test
-    public void testBuildSubjectKeyIdentifier() throws CertificateException {
+    public void testBuildSubjectKeyIdentifier() throws CertificateException, DecodingException {
         byte[] skiValue = Base64Support.decode(cert1SKIPlainBase64);
         X509SKI xmlSKI = KeyInfoSupport.buildX509SKI(javaCert1);
         Assert.assertNotNull(xmlSKI, "Constructed X509SKI was null");
@@ -704,9 +706,10 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      * Tests building a new X509Digest from a certificate.
      * 
      * @throws CertificateException ...
+     * @throws DecodingException if an issue base64-decoding digests.
      */
     @Test
-    public void testBuildDigest() throws CertificateException {
+    public void testBuildDigest() throws CertificateException, DecodingException {
         byte[] digestValue = Base64Support.decode(cert1DigestBase64);
         X509Digest xmlDigest = null;
         try {

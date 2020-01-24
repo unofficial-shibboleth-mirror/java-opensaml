@@ -30,6 +30,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -142,6 +143,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
         } catch (final UnsupportedEncodingException e) {
             log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
             throw new MessageHandlerException("Unable to process message, UTF-8 encoding is not supported");
+        } catch (final DecodingException e) {
+            log.error("Unable to Base64 decode either a SAMLRequest or a SAMLResponse from the form control data");
+            throw new MessageHandlerException("Unable to Base64 decode either a SAMLRequest or a SAMLResponse "
+                    + "from the form control data",e);
         }
 
         if (request.getParameter("RelayState") != null) {
@@ -183,7 +188,13 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
             throw new MessageHandlerException("Could not obtain a KeyInfo unmarshaller");
         }
 
-        final ByteArrayInputStream is = new ByteArrayInputStream(Base64Support.decode(kiBase64));
+        ByteArrayInputStream is = null;
+        try {
+            is = new ByteArrayInputStream(Base64Support.decode(kiBase64));
+        } catch (final DecodingException e) {
+            log.warn("Error base64 decoding KeyInfo data: {}", e.getMessage());
+            throw new MessageHandlerException("Error base64 decoding KeyInfo data", e);
+        }
         KeyInfo keyInfo = null;
         try {
             final Document doc = getParserPool().parse(is);

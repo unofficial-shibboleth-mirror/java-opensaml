@@ -32,6 +32,7 @@ import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -354,7 +355,11 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             @Nonnull final List<X509SKI> skis) {
         for (final X509SKI ski : skis) {
             if (!Strings.isNullOrEmpty(ski.getValue())) {
-                final byte[] xmlValue = Base64Support.decode(ski.getValue());
+                final byte[] xmlValue = base64DecodeOrNull(ski.getValue());
+                if (xmlValue==null) {
+                    log.warn("Could not base64 decode subject key identifier value, skipping");
+                    continue;
+                }
                 for (final X509Certificate cert : certs) {
                     final byte[] certValue = X509Support.getSubjectKeyIdentifier(cert);
                     if (certValue != null && Arrays.equals(xmlValue, certValue)) {
@@ -365,6 +370,22 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
         }
         return null;
     }
+    
+    /**
+     * Base64 decode the input, returning {@literal null} if there is an issue with decoding. 
+     * 
+     * @param base64Encoded the base64 encoded string.
+     * @return the base64 decoded byte array, or {@literal null} if there is an issue decoding. 
+     */
+    @Nullable private byte[] base64DecodeOrNull(@Nonnull final String base64Encoded) {
+        try {
+            return Base64Support.decode(base64Encoded);
+        } catch (final DecodingException e) {
+            //swallow exception, null is reported upstream and method is private.
+          return null;
+        }
+    }
+    
 
     /**
      * Find the certificate from the chain that matches one of the specified digests.
@@ -383,7 +404,11 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
                     log.warn("Algorithm {} not supported", digest.getAlgorithm());
                     continue;
                 }
-                final byte[] xmlValue = Base64Support.decode(digest.getValue());
+                final byte[] xmlValue = base64DecodeOrNull(digest.getValue());
+                if (xmlValue==null) {
+                    log.warn("Could not base64 decode digest, skipping");
+                    continue;
+                }
                 for (final X509Certificate cert : certs) {
                     try {
                         final byte[] certValue = X509Support.getX509Digest(cert, alg);

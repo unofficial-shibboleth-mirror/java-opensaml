@@ -28,6 +28,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -320,7 +321,11 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
         if (Strings.isNullOrEmpty(signature)) {
             return null;
         }
-        return Base64Support.decode(signature);
+        try {
+            return Base64Support.decode(signature);
+        } catch (final DecodingException e) {
+           throw new MessageHandlerException("Signature could not be base64 decoded",e);
+        }
     }
 
     /**

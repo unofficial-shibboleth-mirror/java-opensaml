@@ -66,6 +66,9 @@ public class KeySupportTest {
 
     /** Location of non-encrypted, PEM formatted, EC private key. */
     private String ecPrivKeyPEMNoEncrypt = "/data/ec-privkey-nopass.pem";
+    
+    /** An invalid base64 string.*/
+    private static final String INVALID_BASE64_KEY="AB==";
 
     /**
      * Test decoding an RSA private key, in PEM format, without encryption.
@@ -301,6 +304,18 @@ public class KeySupportTest {
         Assert.assertNotNull(secretKey);
         Assert.assertEquals(secretKey.getAlgorithm(), algorithm);
         Assert.assertEquals(secretKey.getEncoded(), key);
+    }
+    
+    @Test(expectedExceptions = KeyException.class) public void testBuildJavaDSAPublicKeyWithInvalidBase64() throws KeyException {
+        KeySupport.buildJavaDSAPublicKey(INVALID_BASE64_KEY);        
+    }
+    
+    @Test(expectedExceptions = KeyException.class) public void testBuildJavaRSAPublicKeyWithInvalidBase64() throws KeyException {
+        KeySupport.buildJavaRSAPublicKey(INVALID_BASE64_KEY);        
+    }
+    
+    @Test(expectedExceptions = KeyException.class) public void testBuildJavaECPublicKeyWithInvalidBase64() throws KeyException {
+        KeySupport.buildJavaECPublicKey(INVALID_BASE64_KEY);        
     }
 
     /**
