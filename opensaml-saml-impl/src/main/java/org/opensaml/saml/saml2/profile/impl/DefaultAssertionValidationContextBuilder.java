@@ -441,6 +441,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * <p>
      * This implementation returns a set containing the 2 values;
+     * </p>
      * <ol>
      * <li>
      * {@link javax.servlet.http.HttpServletRequest#getRequestURL()}
@@ -449,7 +450,6 @@ public class DefaultAssertionValidationContextBuilder
      * if present, {@link SAMLSelfEntityContext#getEntityId()}
      * </li>
      * </ol>
-     * </p>
      * 
      * @param input the assertion validation input
      * 
