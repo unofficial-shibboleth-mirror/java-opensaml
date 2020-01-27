@@ -438,7 +438,7 @@ public class ValidateAssertions extends AbstractProfileAction {
         }
 
         /**
-         * Get the HTTP servlet request input.
+         * Get the {@link HttpServletRequest} input.
          * 
          * @return the HTTP servlet request input
          */

@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.collection.LazySet;
