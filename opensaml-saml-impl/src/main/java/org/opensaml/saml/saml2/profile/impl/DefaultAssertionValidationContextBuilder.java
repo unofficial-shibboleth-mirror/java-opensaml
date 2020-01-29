@@ -94,6 +94,9 @@ public class DefaultAssertionValidationContextBuilder
     /** Predicate for determining whether to include the self entityID as a valid Recipient. */
     private Predicate<ProfileRequestContext> includeSelfEntityIDAsRecipient;
     
+    /** Function for determining additional valid audience values. */
+    private Function<ProfileRequestContext, Set<String>> additionalAudiences;
+
     /** Resolver for security parameters context. */
     private Function<ProfileRequestContext, SecurityParametersContext> securityParametersLookupStrategy;
 
@@ -205,6 +208,32 @@ public class DefaultAssertionValidationContextBuilder
      */
     public void setCheckAddress(final @Nonnull Predicate<ProfileRequestContext> predicate) {
         checkAddress = Constraint.isNotNull(predicate, "Check address predicate was null");
+    }
+
+    /**
+     * Get the function for determining additional audience values.
+     *
+     * <p>
+     * Defaults to null.
+     * </p>
+     *
+     * @return the function
+     */
+    public Function<ProfileRequestContext,Set<String>> getAdditionalAudiences() {
+        return additionalAudiences;
+    }
+
+    /**
+     * Set the function for determining additional audience values.
+     *
+     * <p>
+     * Defaults to null.
+     * </p>
+     *
+     * @param function the function, may be null
+     */
+    public void setAdditionalAudiences(final @Nonnull Function<ProfileRequestContext,Set<String>> function) {
+        additionalAudiences = function;
     }
 
     /**
@@ -565,9 +594,12 @@ public class DefaultAssertionValidationContextBuilder
      * Get the valid audiences for attestation.
      * 
      * <p>
-     * This implementation returns a set containing the single entityID held by the message context's 
-     * {@link SAMLSelfEntityContext#getEntityId()}, if present.  Otherwise an empty set is returned.
+     * This implementation returns a set containing the union of:
      * </p>
+     * <ol>
+     * <li>the result of {@link #getSelfEntityID(AssertionValidationInput)}, if non-null</li>
+     * <li>the result of evaluating {@link #getAdditionalAudiences()}, if non-null</li>
+     * </ol>
      * 
      * @param input the assertion validation input
      * 
@@ -579,6 +611,13 @@ public class DefaultAssertionValidationContextBuilder
         final String selfEntityID = getSelfEntityID(input);
         if (selfEntityID != null) {
             validAudiences.add(selfEntityID);
+        }
+        
+        if (getAdditionalAudiences() != null) {
+            final Set<String> additional = getAdditionalAudiences().apply(input.getProfileRequestContext());
+            if (additional != null) {
+                validAudiences.addAll(additional);
+            }
         }
         
         log.debug("Resolved valid audiences set: {}", validAudiences);
