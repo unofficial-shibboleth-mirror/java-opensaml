@@ -91,6 +91,9 @@ public class DefaultAssertionValidationContextBuilder
     /** Function for determining the max allowed time since authentication. */
     private Function<ProfileRequestContext, Duration> maximumTimeSinceAuthn;
 
+    /** Predicate for determining whether to include the self entityID as a valid Recipient. */
+    private Predicate<ProfileRequestContext> includeSelfEntityIDAsRecipient;
+    
     /** Resolver for security parameters context. */
     private Function<ProfileRequestContext, SecurityParametersContext> securityParametersLookupStrategy;
 
@@ -99,6 +102,7 @@ public class DefaultAssertionValidationContextBuilder
      */
     public DefaultAssertionValidationContextBuilder() {
         signatureRequired = Predicates.alwaysTrue();
+        includeSelfEntityIDAsRecipient = Predicates.alwaysFalse();
         checkAddress = Predicates.alwaysTrue();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
@@ -125,6 +129,32 @@ public class DefaultAssertionValidationContextBuilder
                 Constraint.isNotNull(strategy, "SecurityParametersContext lookup strategy was null") ;
     }
 
+    /**
+     * Get the predicate which determines whether to include the self entityID as a valid Recipient.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     */
+    public Predicate<ProfileRequestContext> getIncludeSelfEntityIDAsRecipient() {
+        return includeSelfEntityIDAsRecipient;
+    }
+
+    /**
+     * Set the predicate which determines whether to include the self entityID as a valid Recipient.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     */
+    public void setIncludeSelfEntityIDAsRecipient(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+        includeSelfEntityIDAsRecipient = Constraint.isNotNull(predicate, "Signature required predicate was null");
+    }
+    
     /**
      * Get the predicate which determines whether an Assertion signature is required.
      * 
@@ -444,10 +474,13 @@ public class DefaultAssertionValidationContextBuilder
      * </p>
      * <ol>
      * <li>
-     * {@link javax.servlet.http.HttpServletRequest#getRequestURL()}
+     * the result of evaluating
+     * {@link SAMLBindingSupport#getActualReceiverEndpointURI(MessageContext, javax.servlet.http.HttpServletRequest)}
      * </li>
      * <li>
-     * if present, {@link SAMLSelfEntityContext#getEntityId()}
+     * if enabled via the eval of {@link #getIncludeSelfEntityIDAsRecipient()}, the value from evaluating
+     * {@link #getSelfEntityID(AssertionValidationInput)} if non-null
+     * 
      * </li>
      * </ol>
      * 
@@ -468,9 +501,11 @@ public class DefaultAssertionValidationContextBuilder
             log.warn("Attempt to resolve recipient endpoint failed", e);
         }
         
-        final String selfEntityID = getSelfEntityID(input);
-        if (selfEntityID != null) {
-            validRecipients.add(selfEntityID);
+        if (getIncludeSelfEntityIDAsRecipient().test(input.getProfileRequestContext())) {
+            final String selfEntityID = getSelfEntityID(input);
+            if (selfEntityID != null) {
+                validRecipients.add(selfEntityID);
+            }
         }
         
         log.debug("Resolved valid subject confirmation recipients set: {}", validRecipients);
