@@ -186,8 +186,9 @@ public final class SAMLBindingSupport {
      * Determine whether the SAML message represented by the message context is digitally signed.
      * 
      * <p>
-     * First the SAML protocol message is examined as to whether an XML signature is present.
-     * If not, then the presence of a binding signature is evaluated by looking at 
+     * First the SAML protocol message is examined as to whether an XML signature is present
+     * at the DOM level; if yes return true.
+     * Finally, the presence of a binding signature is evaluated by looking at 
      * {@link SAMLBindingContext#hasBindingSignature()}.
      * </p>
      * 
@@ -195,10 +196,37 @@ public final class SAMLBindingSupport {
      * @return true if the message is considered to be digitally signed, false otherwise
      */
     public static boolean isMessageSigned(@Nonnull final MessageContext messageContext) {
+        return isMessageSigned(messageContext, false);
+    }
+    
+    /**
+     * Determine whether the SAML message represented by the message context is digitally signed.
+     * 
+     * <p>
+     * First the SAML protocol message is examined as to whether an XML signature is present
+     * at the DOM level; if yes return true.
+     * Next if <code>presenceSatisfies</code> is true, then {@link SignableSAMLObject#getSignature()}
+     * is evaluated for a non-null value; if yes return true.
+     * Finally, the presence of a binding signature is evaluated by looking at 
+     * {@link SAMLBindingContext#hasBindingSignature()}.
+     * </p>
+     * 
+     * @param messageContext current message context
+     * @param presenceSatisfies whether the presence of a non-null {@link Signature} member satisfies the evaluation
+     * @return true if the message is considered to be digitally signed, false otherwise
+     */
+    public static boolean isMessageSigned(@Nonnull final MessageContext messageContext,
+            final boolean presenceSatisfies) {
         final Object samlMessage = Constraint.isNotNull(messageContext.getMessage(),
                 "SAML message was not present in message context");
-        if (samlMessage instanceof SignableSAMLObject && ((SignableSAMLObject)samlMessage).isSigned()) {
-            return true;
+        if (samlMessage instanceof SignableSAMLObject) {
+            final SignableSAMLObject signable = (SignableSAMLObject) samlMessage;
+            if (presenceSatisfies && signable.getSignature() != null) {
+                return true;
+            }
+            if (signable.isSigned()) {
+                return true;
+            }
         }
         
         final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class);

@@ -28,13 +28,25 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
  * A predicate which evaluates whether an inbound SAML message is signed.
  */
 public class InboundMessageSignedPredicate implements Predicate<ProfileRequestContext> {
+    
+    /** Flag indicating whether the presence of a non-null {@link Signature} member satisfies the evaluation. */
+    private boolean presenceSatisfies;
+
+    /**
+     * Set whether the presence of a non-null {@link Signature} member satisfies the evaluation.
+     * 
+     * @param flag whether the presence of a non-null {@link Signature} is considered
+     */
+    public void setPresenceSatisfies(final boolean flag) {
+        presenceSatisfies = flag;
+    }
 
     /** {@inheritDoc} */
     public boolean test(@Nullable final ProfileRequestContext prc) {
         if (prc == null || prc.getInboundMessageContext() == null) {
             return false;
         }
-        return SAMLBindingSupport.isMessageSigned(prc.getInboundMessageContext());
+        return SAMLBindingSupport.isMessageSigned(prc.getInboundMessageContext(), presenceSatisfies);
     }
 
 }
