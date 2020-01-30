@@ -24,9 +24,9 @@ import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
@@ -491,7 +491,7 @@ public class DefaultAssertionValidationContextBuilder
     @Nonnull protected Map<String,Object> buildStaticParameters(
             @Nonnull final AssertionValidationInput input) {
         
-        final HashMap<String, Object> staticParams = new HashMap<>();
+        final TreeMap<String, Object> staticParams = new TreeMap<>();
         
         //For signature validation
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, 
