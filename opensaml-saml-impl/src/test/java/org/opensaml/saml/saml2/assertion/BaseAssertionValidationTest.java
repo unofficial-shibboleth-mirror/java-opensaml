@@ -128,6 +128,8 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
         
         params.put(SAML2AssertionValidationParameters.CLOCK_SKEW, CLOCK_SKEW);
         
+        params.put(SAML2AssertionValidationParameters.VALID_ISSUERS, Collections.singleton(ISSUER));
+        
         params.put(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO, SUBJECT_CONFIRMATION_IN_RESPONSE_TO);
         
         params.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, 

@@ -550,6 +550,38 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
     }
     
+    @Test
+    public void testInvalidIssuer() throws AssertionValidationException {
+        getAssertion().getIssuer().setValue("invalid");
+        
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testNoIssuer() throws AssertionValidationException {
+        getAssertion().setIssuer(null);
+        
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
+    }
+    
 
     
     

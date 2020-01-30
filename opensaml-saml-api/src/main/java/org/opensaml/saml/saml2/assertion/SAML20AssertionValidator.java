@@ -44,6 +44,7 @@ import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Condition;
 import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.Statement;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
@@ -236,6 +237,11 @@ public class SAML20AssertionValidator {
             return result;
         }
 
+        result = validateIssuer(assertion, context);
+        if (result != ValidationResult.VALID) {
+            return result;
+        }
+
         result = validateSignature(assertion, context);
         if (result != ValidationResult.VALID) {
             return result;
@@ -292,6 +298,63 @@ public class SAML20AssertionValidator {
             return ValidationResult.INVALID;
         }
         return ValidationResult.VALID;
+    }
+
+    /**
+     * Validates the Assertion {@link Issuer}.
+     * 
+     * @param assertion the assertion to validate
+     * @param context current validation context
+     * 
+     * @return the result of the validation evaluation
+     * 
+     * @throws AssertionValidationException if there is a problem validating the Issuer
+     */
+    protected ValidationResult validateIssuer(@Nonnull final Assertion assertion,
+            @Nonnull final ValidationContext context) throws AssertionValidationException {
+        
+        String issuer = null;
+        if (assertion.getIssuer() != null) {
+            issuer = StringSupport.trimOrNull(assertion.getIssuer().getValue());
+        }
+        if (issuer == null) {
+            log.warn("Assertion Issuer was missing and was required");
+            context.setValidationFailureMessage("Assertion Issuer was missing and was required");
+            return ValidationResult.INVALID;
+        }
+        
+        log.debug("Evaluating Assertion Issuer of : {}", issuer);
+
+        final Set<String> validIssuers;
+        try {
+            validIssuers = (Set<String>) context.getStaticParameters()
+                    .get(SAML2AssertionValidationParameters.VALID_ISSUERS);
+        } catch (final ClassCastException e) {
+            log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
+                    SAML2AssertionValidationParameters.VALID_ISSUERS);
+            context.setValidationFailureMessage("Unable to determine list of valid issuers");
+            return ValidationResult.INDETERMINATE;
+        }
+        if (validIssuers == null || validIssuers.isEmpty()) {
+            log.warn("Set of valid issuers was not available from the validation context, unable to evaluate Issuer");
+            return ValidationResult.VALID;
+            /* TODO this should really be indeterminate, but would change the behavior for older code.
+               Need to update that first.
+            context.setValidationFailureMessage("Unable to determine list of valid issuers");
+            return ValidationResult.INDETERMINATE;
+            */
+        }
+
+        if (validIssuers.contains(issuer)) {
+            log.debug("Matched valid issuer: {}", issuer);
+            return ValidationResult.VALID;
+        }
+        
+        log.debug("Failed to match Issuer to any supplied valid issuers: {}", validIssuers);
+
+        context.setValidationFailureMessage(String.format(
+                "Issuer of Assertion '%s' did not match any valid issuers", assertion.getID()));
+        return ValidationResult.INVALID;
     }
 
     /**

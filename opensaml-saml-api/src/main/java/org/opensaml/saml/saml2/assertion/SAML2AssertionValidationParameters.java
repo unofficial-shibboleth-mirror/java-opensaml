@@ -47,6 +47,13 @@ public final class SAML2AssertionValidationParameters {
      * Carries the {@link org.opensaml.saml.saml2.core.SubjectConfirmation} that confirmed the subject.
      */
     public static final String CONFIRMED_SUBJECT_CONFIRMATION = STD_PREFIX + ".ConfirmedSubjectConfirmation";
+    
+    /**
+     * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.lang.String}<code>&gt;</code>
+     * whose values are the acceptable 
+     * {@link org.opensaml.saml.saml2.core.Issuer} values.
+     */
+    public static final String VALID_ISSUERS = STD_PREFIX + ".ValidIssuers";
 
     /**
      * Carries a {@link java.lang.Boolean} flag which indicates whether the Assertion is required to be signed.

@@ -50,6 +50,8 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.opensaml.saml.common.binding.security.impl.MessageContextEntityIDLookup;
+import org.opensaml.saml.common.binding.security.impl.MessageContextEntityIDLookup.Direction;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
@@ -100,6 +102,9 @@ public class DefaultAssertionValidationContextBuilder
     /** Function for determining additional valid audience values. */
     private Function<ProfileRequestContext, Set<String>> additionalAudiences;
     
+    /** Function for determining additional valid Issuer values. */
+    private Function<ProfileRequestContext, Set<String>> validIssuers;
+    
     /** Function for determining the valid InResponseTo value. */
     private Function<ProfileRequestContext, String> inResponseTo;
     
@@ -138,6 +143,7 @@ public class DefaultAssertionValidationContextBuilder
         notBeforeRequired = Predicates.alwaysFalse();
         addressRequired = Predicates.alwaysFalse();
         requiredConditions = Collections.emptySet();
+        validIssuers = new DefaultValidIssuersLookupFunction();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
                 .compose(new InboundMessageContextLookup());
@@ -446,6 +452,32 @@ public class DefaultAssertionValidationContextBuilder
     }
 
     /**
+     * Get the function for determining the valid Issuer values
+     *
+     * <p>
+     * Defaults to an implementation which resolves the outbound SAML peer entityID.
+     * </p>
+     *
+     * @return the function
+     */
+    public Function<ProfileRequestContext,Set<String>> getValidIssuers() {
+        return validIssuers;
+    }
+
+    /**
+     * Set the function for determining the valid Issuer values
+     *
+     * <p>
+     * Defaults to an implementation which resolves the outbound SAML peer entityID.
+     * </p>
+     *
+     * @param function the function, may be null
+     */
+    public void setValidIssuers(final @Nonnull Function<ProfileRequestContext,Set<String>> function) {
+        validIssuers = Constraint.isNotNull(function, "Valied Issuers function was null");
+    }
+
+    /**
      * Get the function for determining the max allowed time since authentication.
      *
      * <p>
@@ -518,6 +550,10 @@ public class DefaultAssertionValidationContextBuilder
             @Nonnull final AssertionValidationInput input) {
         
         final TreeMap<String, Object> staticParams = new TreeMap<>();
+        
+        // For Issuer
+        staticParams.put(SAML2AssertionValidationParameters.VALID_ISSUERS,
+                getValidIssuers().apply(input.getProfileRequestContext()));
         
         //For signature validation
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, 
@@ -900,6 +936,40 @@ public class DefaultAssertionValidationContextBuilder
                 return null;
             }
             return RequestAbstractType.class.cast(prc.getOutboundMessageContext().getMessage()).getID();
+        }
+        
+    }
+    
+    /** 
+     * Default strategy for resolving the valid Issuers.
+     * 
+     * <p>
+     * Resolves the entityID from the {@link SAMLPeerEntityContext} child of the outbound {@link MessageContext}.
+     * </p>
+     * */
+    public static class DefaultValidIssuersLookupFunction implements Function<ProfileRequestContext, Set<String>> {
+        
+        /** The lookup delegate. */
+        private MessageContextEntityIDLookup delegate;
+
+        /** Constructor. */
+        public DefaultValidIssuersLookupFunction() {
+            delegate = new MessageContextEntityIDLookup(SAMLPeerEntityContext.class);
+            delegate.setDirection(Direction.OUTBOUND);
+        }
+
+        /** {@inheritDoc} */
+        public Set<String> apply(ProfileRequestContext prc) {
+            if (prc == null || prc.getInboundMessageContext() == null) {
+                return null;
+            }
+            
+            // Note: Doesn't matter whether we apply to inbound or outbound
+            final String entityID = delegate.apply(prc.getInboundMessageContext());
+            if (entityID != null) {
+                return Collections.singleton(entityID);
+            }
+            return Collections.emptySet();
         }
         
     }
