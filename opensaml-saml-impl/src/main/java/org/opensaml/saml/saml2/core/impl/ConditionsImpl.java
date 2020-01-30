@@ -70,6 +70,11 @@ public class ConditionsImpl extends AbstractXMLObject implements Conditions {
     }
 
     /** {@inheritDoc} */
+    public List<Condition> getConditions(QName typeOrName) {
+        return (List<Condition>) conditions.subList(typeOrName);
+    }
+    
+    /** {@inheritDoc} */
     public List<AudienceRestriction> getAudienceRestrictions() {
         final QName conditionQName = new QName(SAMLConstants.SAML20_NS, AudienceRestriction.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
@@ -128,4 +133,5 @@ public class ConditionsImpl extends AbstractXMLObject implements Conditions {
 
         return Collections.unmodifiableList(children);
     }
+
 }

@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.core;
 import java.time.Instant;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -92,6 +93,13 @@ public interface Conditions extends SAMLObject {
      * @return all the conditions on the assertion
      */
     List<Condition> getConditions();
+
+    /**
+     * Gets the list of conditions that match a particular QName.
+     * 
+     * @param typeOrName the QName of the conditions to return
+     */
+    List<Condition> getConditions(@Nonnull final QName typeOrName);
 
     /**
      * Gets the audience restriction conditions for the assertion.

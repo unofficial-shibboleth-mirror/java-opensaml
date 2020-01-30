@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -85,8 +86,8 @@ public class ConditionsImpl extends AbstractXMLObject implements Conditions {
     }
 
     /** {@inheritDoc} */
-    public List<Condition> getConditions(final QName typeOrName) {
-        return conditions;
+    public List<Condition> getConditions(@Nonnull final QName typeOrName) {
+        return (List<Condition>) conditions.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
