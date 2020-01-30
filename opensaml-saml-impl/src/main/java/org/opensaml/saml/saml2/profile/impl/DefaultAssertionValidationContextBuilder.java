@@ -57,6 +57,7 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.profile.impl.ValidateAssertions.AssertionValidationInput;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
@@ -96,6 +97,12 @@ public class DefaultAssertionValidationContextBuilder
     
     /** Function for determining additional valid audience values. */
     private Function<ProfileRequestContext, Set<String>> additionalAudiences;
+    
+    /** Predicate for determining whether an Assertion's InResponseTo is required. */
+    private Predicate<ProfileRequestContext> inResponseToRequired;
+    
+    /** Function for determining the valid InResponseTo value. */
+    private Function<ProfileRequestContext, String> inResponseTo;
 
     /** Resolver for security parameters context. */
     private Function<ProfileRequestContext, SecurityParametersContext> securityParametersLookupStrategy;
@@ -107,6 +114,8 @@ public class DefaultAssertionValidationContextBuilder
         signatureRequired = Predicates.alwaysTrue();
         includeSelfEntityIDAsRecipient = Predicates.alwaysFalse();
         checkAddress = Predicates.alwaysTrue();
+        inResponseToRequired = Predicates.alwaysFalse();
+        inResponseTo = new DefaultValidInResponseToLookupFunction();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
                 .compose(new InboundMessageContextLookup());
@@ -182,6 +191,58 @@ public class DefaultAssertionValidationContextBuilder
      */
     public void setSignatureRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
         signatureRequired = Constraint.isNotNull(predicate, "Signature required predicate was null");
+    }
+
+    /**
+     * Get the predicate which determines whether an Assertion's InResponseTo is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     */
+    public Predicate<ProfileRequestContext> getInResponseToRequired() {
+        return inResponseToRequired;
+    }
+
+    /**
+     * Set the predicate which determines whether an Assertion's InResponseTo is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     */
+    public void setInResponseToRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+        inResponseToRequired = Constraint.isNotNull(predicate, "InResponseTo required predicate was null");
+    }
+    
+    /**
+     * Set the function for determining the valid InResponseTo.
+     *
+     * <p>
+     * Defaults to null.
+     * </p>
+     *
+     * @param function the function, may be null
+     */
+    public void setInResponseTo(final @Nonnull Function<ProfileRequestContext,String> function) {
+        inResponseTo = function;
+    }
+    
+    /**
+     * Get the function for determining the valid InResponseTo.
+     *
+     * <p>
+     * Defaults to null.
+     * </p>
+     *
+     * @return the function
+     */
+    public Function<ProfileRequestContext,String> getInResponseTo() {
+        return inResponseTo;
     }
 
     /**
@@ -339,6 +400,12 @@ public class DefaultAssertionValidationContextBuilder
         staticParams.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, getValidRecipients(input));
         staticParams.put(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES, validAddresses);
         staticParams.put(SAML2AssertionValidationParameters.SC_CHECK_ADDRESS, checkAddressEnabled);
+        staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED,
+                Boolean.valueOf(getInResponseToRequired().test(input.getProfileRequestContext())));
+        if (getInResponseTo() != null) {
+            staticParams.put(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO,
+                    getInResponseTo().apply(input.getProfileRequestContext()));
+        }
         
         // For Audience Condition
         staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, getValidAudiences(input));
@@ -641,6 +708,22 @@ public class DefaultAssertionValidationContextBuilder
         }
         
         return null;
+    }
+    
+    /** Default strategy for resolving the valid InResponseTo value. */
+    public static class DefaultValidInResponseToLookupFunction implements Function<ProfileRequestContext, String> {
+
+        /** {@inheritDoc} */
+        public String apply(@Nullable final ProfileRequestContext prc) {
+            if (prc == null 
+                    || prc.getOutboundMessageContext() == null 
+                    || prc.getOutboundMessageContext().getMessage() == null
+                    || ! RequestAbstractType.class.isInstance(prc.getOutboundMessageContext().getMessage())) {
+                return null;
+            }
+            return RequestAbstractType.class.cast(prc.getOutboundMessageContext().getMessage()).getID();
+        }
+        
     }
 
 }

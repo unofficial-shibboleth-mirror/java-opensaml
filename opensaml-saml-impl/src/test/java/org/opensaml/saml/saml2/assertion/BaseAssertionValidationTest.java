@@ -70,6 +70,8 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     
     public static final String SUBJECT_CONFIRMATION_ADDRESS = "10.1.2.3";
     
+    public static final String SUBJECT_CONFIRMATION_IN_RESPONSE_TO = "id-123";
+    
     private Assertion assertion;
     
     protected Assertion getAssertion() {
@@ -112,6 +114,7 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
        else {
            scd = buildXMLObject(SubjectConfirmationData.DEFAULT_ELEMENT_NAME); 
        }
+       scd.setInResponseTo(SUBJECT_CONFIRMATION_IN_RESPONSE_TO);
        scd.setRecipient(SUBJECT_CONFIRMATION_RECIPIENT);
        scd.setAddress(SUBJECT_CONFIRMATION_ADDRESS);
        Instant now = Instant.now();
@@ -124,6 +127,8 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
         HashMap<String,Object> params = new HashMap<>();
         
         params.put(SAML2AssertionValidationParameters.CLOCK_SKEW, CLOCK_SKEW);
+        
+        params.put(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO, SUBJECT_CONFIRMATION_IN_RESPONSE_TO);
         
         params.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, 
                 Collections.singleton(SUBJECT_CONFIRMATION_RECIPIENT));

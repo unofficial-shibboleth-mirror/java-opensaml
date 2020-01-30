@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.assertion.impl;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -34,6 +35,7 @@ import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.utilities.java.support.primitive.ObjectSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
@@ -61,6 +63,10 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
  * {@link SAML2AssertionValidationParameters#SC_VALID_RECIPIENTS}:
  * Required.
  * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_VALID_IN_RESPONSE_TO}:
+ * Required.
+ * </li>
  * </ul>
  * 
  * <p>
@@ -84,6 +90,8 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     @Nonnull public ValidationResult validate(@Nonnull final SubjectConfirmation confirmation, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
             throws AssertionValidationException {
+        
+        final boolean inResponseToRequired = isInResponseToRequired(context);
 
         if (confirmation.getSubjectConfirmationData() != null) {
             ValidationResult result = validateNotBefore(confirmation, assertion, context);
@@ -105,9 +113,88 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             if (result != ValidationResult.VALID) {
                 return result;
             }
+            
+            result = validateInResponseTo(confirmation, assertion, context, inResponseToRequired);
+            if (result != ValidationResult.VALID) {
+                return result;
+            }
+        } else {
+            if (inResponseToRequired) {
+                return ValidationResult.INVALID;
+            }
         }
 
         return doValidate(confirmation, assertion, context);
+    }
+
+    protected boolean isInResponseToRequired(final ValidationContext context) {
+        return ObjectSupport.firstNonNull(
+                (Boolean) context.getStaticParameters().get(
+                        SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED),
+                Boolean.FALSE);
+    }
+
+    /**
+     * Validates the <code>InResponseTo</code> condition of the
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData}, if any is present.
+     * 
+     * @param confirmation confirmation method, with {@link org.opensaml.saml.saml2.core.SubjectConfirmationData},
+     *  being validated
+     * @param assertion assertion bearing the confirmation method
+     * @param context current validation context
+     * @param required whether the inResponseTo value is required
+     * 
+     * @return the result of the validation evaluation
+     * 
+     * @throws AssertionValidationException thrown if there is a problem determining the validity of the NotBefore
+     */
+    protected ValidationResult validateInResponseTo(@Nonnull final SubjectConfirmation confirmation,
+            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required)
+                    throws AssertionValidationException {
+        
+        final String inResponseTo = 
+                StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getInResponseTo());
+        if (inResponseTo == null) {
+            if (required) {
+                log.warn("SubjectConfirmationData/@InResponseTo was missing and was required");
+                context.setValidationFailureMessage(
+                        "SubjectConfirmationData/@InResponseTo was missing and was required");
+                return ValidationResult.INVALID;
+            }
+            return ValidationResult.VALID;
+        }
+        
+        log.debug("Evaluating SubjectConfirmationData@InResponseTo of: {}", inResponseTo);
+
+        final String validInResponseTo;
+        try {
+            validInResponseTo = (String) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO);
+        } catch (final ClassCastException e) {
+            log.warn("The value of the static validation parameter '{}' was not java.lang.String",
+                    SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO);
+            context.setValidationFailureMessage(
+                    "Unable to determine valid subject confirmation InResponseTo");
+            return ValidationResult.INDETERMINATE;
+        }
+        if (validInResponseTo == null) {
+            log.warn("Valid InResponseTo was not available from the validation context, " 
+                    + "unable to evaluate SubjectConfirmationData@InResponseTo");
+            context.setValidationFailureMessage("Unable to determine valid subject confirmation InResponseTo");
+            return ValidationResult.INDETERMINATE;
+        }
+
+        if (Objects.equals(inResponseTo, validInResponseTo)) {
+            log.debug("Matched valid InResponseTo: {}", inResponseTo);
+            return ValidationResult.VALID;
+        }
+        
+        log.debug("Failed to match SubjectConfirmationData@InResponse to the valid value: {}", validInResponseTo);
+
+        context.setValidationFailureMessage(String.format(
+                "Subject confirmation InResponseTo for assertion '%s' did not match the valid value",
+                assertion.getID()));
+        return ValidationResult.INVALID;
     }
 
     /**

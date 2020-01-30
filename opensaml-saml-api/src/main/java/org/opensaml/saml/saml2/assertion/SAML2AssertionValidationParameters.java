@@ -93,6 +93,18 @@ public final class SAML2AssertionValidationParameters {
     public static final String SC_VALID_ADDRESSES = STD_PREFIX + SC_INFIX + ".ValidAddresses";
     
     /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} InResponseTo is required.
+     */
+    public static final String SC_IN_RESPONSE_TO_REQUIRED = STD_PREFIX + SC_INFIX + ".InResponseToRequired";
+    
+    /**
+     * Carries a {@link java.lang.String} whose value is the acceptable 
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} InResponseTo.
+     */
+    public static final String SC_VALID_IN_RESPONSE_TO = STD_PREFIX + SC_INFIX + ".ValidInResponseTo";
+    
+    /**
      * Carries the {@link java.security.PublicKey} used by the presenter.
      */
     public static final String SC_HOK_PRESENTER_KEY = STD_PREFIX + SC_INFIX + ".HoK.PresenterKey";
