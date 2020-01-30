@@ -551,11 +551,39 @@ public class DefaultAssertionValidationContextBuilder
         
         final TreeMap<String, Object> staticParams = new TreeMap<>();
         
-        // For Issuer
+        // Issuer
         staticParams.put(SAML2AssertionValidationParameters.VALID_ISSUERS,
                 getValidIssuers().apply(input.getProfileRequestContext()));
         
-        //For signature validation
+        // Signature
+        populateSignatureParameters(staticParams, input);
+        
+        // Conditions
+        populateConditionsParameters(staticParams, input);
+        
+        final Set<InetAddress> validAddresses = getValidAddresses(input);
+        final Boolean checkAddressEnabled = Boolean.valueOf(getCheckAddress().test(input.getProfileRequestContext()));
+        
+        // SubjectConfirmation
+        populateSubjectConfirmationParameters(staticParams, input, validAddresses, checkAddressEnabled);
+        
+        // Statements
+        populateStatementParams(staticParams, input, validAddresses, checkAddressEnabled);
+        
+        log.trace("Built static parameters map: {}", staticParams);
+        
+        return staticParams;
+    }
+
+
+    /**
+     *  Populate the static signature parameters.
+     * @param staticParams the parameters being populated
+     * @param input validation input
+     */
+    private void populateSignatureParameters(@Nonnull final Map<String, Object> staticParams,
+            @Nonnull final AssertionValidationInput input) {
+        
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, 
                 Boolean.valueOf(getSignatureRequired().test(input.getProfileRequestContext())));
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_CRITERIA_SET, 
@@ -566,6 +594,34 @@ public class DefaultAssertionValidationContextBuilder
             staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_TRUST_ENGINE,
                     securityParameters.getSignatureValidationParameters().getSignatureTrustEngine());
         }
+    }
+    
+    /**
+     * Populate the static Conditions parameters.
+     * @param staticParams the parameters being populated
+     * @param input validation input
+     */
+    private void populateConditionsParameters(@Nonnull final Map<String, Object> staticParams,
+            @Nonnull final AssertionValidationInput input) {
+        
+        // For general Conditions
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, getRequiredConditions(input));
+        
+        // For Audience Condition
+        staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, getValidAudiences(input));
+    }
+
+    /**
+     * Populate the static SubjectConfirmation parameters.
+     * 
+     * @param staticParams the parameters being populated
+     * @param input validation input
+     * @param validAddresses the valid addresses
+     * @param checkAddressEnabled whether address checking is enabled
+     */
+    private void populateSubjectConfirmationParameters(@Nonnull final Map<String, Object> staticParams,
+            @Nonnull final AssertionValidationInput input, @Nonnull final Set<InetAddress> validAddresses,
+            @Nonnull final Boolean checkAddressEnabled) {
         
         // For HoK subject confirmation
         final X509Certificate attesterCertificate = getAttesterCertificate(input);
@@ -576,9 +632,6 @@ public class DefaultAssertionValidationContextBuilder
         if (attesterPublicKey != null) {
             staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_KEY, attesterPublicKey);
         }
-        
-        final Set<InetAddress> validAddresses = getValidAddresses(input);
-        final Boolean checkAddressEnabled = Boolean.valueOf(getCheckAddress().test(input.getProfileRequestContext()));
         
         // For SubjectConfirmationData
         staticParams.put(SAML2AssertionValidationParameters.SC_RECIPIENT_REQUIRED,
@@ -601,12 +654,18 @@ public class DefaultAssertionValidationContextBuilder
                 Boolean.valueOf(getNotBeforeRequired().test(input.getProfileRequestContext())));
         staticParams.put(SAML2AssertionValidationParameters.SC_NOT_ON_OR_AFTER_REQUIRED,
                 Boolean.valueOf(getNotOnOrAfterRequired().test(input.getProfileRequestContext())));
-        
-        // For general Conditions
-        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, getRequiredConditions(input));
-        
-        // For Audience Condition
-        staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, getValidAudiences(input));
+    }
+
+    /**
+     * Populate the static Statement params.
+     * @param staticParams the parameters being populated
+     * @param input validation input
+     * @param validAddresses the valid addresses
+     * @param checkAddressEnabled whether address checking is enabled
+     */
+    private void populateStatementParams(@Nonnull final Map<String, Object> staticParams,
+            @Nonnull final AssertionValidationInput input, @Nonnull final Set<InetAddress> validAddresses,
+            @Nonnull final Boolean checkAddressEnabled) {
         
         // For AuthnStatement
         staticParams.put(SAML2AssertionValidationParameters.STMT_AUTHN_VALID_ADDRESSES, validAddresses);
@@ -615,10 +674,6 @@ public class DefaultAssertionValidationContextBuilder
             staticParams.put(SAML2AssertionValidationParameters.STMT_AUTHN_MAX_TIME, 
                     getMaximumTimeSinceAuthn().apply(input.getProfileRequestContext()));
         }
-        
-        log.trace("Built static parameters map: {}", staticParams);
-        
-        return staticParams;
     }
     
     /**
@@ -959,7 +1014,7 @@ public class DefaultAssertionValidationContextBuilder
         }
 
         /** {@inheritDoc} */
-        public Set<String> apply(ProfileRequestContext prc) {
+        public Set<String> apply(@Nullable final ProfileRequestContext prc) {
             if (prc == null || prc.getInboundMessageContext() == null) {
                 return null;
             }
