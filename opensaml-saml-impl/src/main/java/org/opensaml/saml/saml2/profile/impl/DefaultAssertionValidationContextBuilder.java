@@ -25,10 +25,12 @@ import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -116,7 +118,8 @@ public class DefaultAssertionValidationContextBuilder
     /** Predicate for determining whether an Assertion SubjectConfirmationData Address is required. */
     private Predicate<ProfileRequestContext> addressRequired;
     
-    
+    /** The set of required Conditions. */
+    private Set<QName> requiredConditions;
 
     /** Resolver for security parameters context. */
     private Function<ProfileRequestContext, SecurityParametersContext> securityParametersLookupStrategy;
@@ -134,6 +137,7 @@ public class DefaultAssertionValidationContextBuilder
         notOnOrAfterRequired = Predicates.alwaysFalse();
         notBeforeRequired = Predicates.alwaysFalse();
         addressRequired = Predicates.alwaysFalse();
+        requiredConditions = Collections.emptySet();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
                 .compose(new InboundMessageContextLookup());
@@ -157,6 +161,28 @@ public class DefaultAssertionValidationContextBuilder
             @Nonnull final Function<ProfileRequestContext, SecurityParametersContext> strategy) {
         securityParametersLookupStrategy =
                 Constraint.isNotNull(strategy, "SecurityParametersContext lookup strategy was null") ;
+    }
+
+    /**
+     * Get the set of required Conditions.
+     * 
+     * @return the required conditions, may be null
+     */
+    @Nonnull public Set<QName> getRequiredConditions() {
+        return requiredConditions;
+    }
+
+    /**
+     * Set the set of required Conditions.
+     * 
+     * @param conditions the required conditions
+     */
+    public void setRequiredConditions(@Nullable final Set<QName> conditions) {
+        if (conditions != null) {
+            requiredConditions = conditions.stream().filter(Objects::nonNull).collect(Collectors.toUnmodifiableSet());
+        } else {
+            requiredConditions = Collections.emptySet();
+        }
     }
 
     /**
@@ -540,6 +566,9 @@ public class DefaultAssertionValidationContextBuilder
         staticParams.put(SAML2AssertionValidationParameters.SC_NOT_ON_OR_AFTER_REQUIRED,
                 Boolean.valueOf(getNotOnOrAfterRequired().test(input.getProfileRequestContext())));
         
+        // For general Conditions
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, getRequiredConditions(input));
+        
         // For Audience Condition
         staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, getValidAudiences(input));
         
@@ -556,6 +585,22 @@ public class DefaultAssertionValidationContextBuilder
         return staticParams;
     }
     
+    /**
+     * Get the set of required Conditions.
+     * 
+     * <p>
+     * The default behavior is to return the locally-configured data via {@link #getRequiredConditions()}.
+     * </p>
+     * 
+     * @param input the assertion validation input
+     * 
+     * @return the set of required Condition names, may be null
+     */
+    @Nonnull protected Set<QName> getRequiredConditions(@Nonnull final AssertionValidationInput input) {
+        // Subclasses may override
+        return getRequiredConditions();
+    }
+
     /**
      * Get the signature validation criteria set.
      * 

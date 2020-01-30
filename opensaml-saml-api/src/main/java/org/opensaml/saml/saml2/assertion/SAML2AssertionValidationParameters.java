@@ -145,6 +145,12 @@ public final class SAML2AssertionValidationParameters {
     public static final String SC_HOK_CONFIRMED_KEYINFO = STD_PREFIX + SC_INFIX + ".HoK.ConfirmedKeyInfo";
 
     /**
+     * Carries a {@link java.util.Set}<code>&lt;</code>{@link javax.xml.QName}<code>&gt;</code>
+     * of required conditions which must be present in the assertion.
+     */
+    public static final String COND_REQUIRED_CONDITIONS = STD_PREFIX + COND_INFIX + ".RequiredConditions";
+
+    /**
      * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.lang.String}<code>&gt;</code>
      * whose values are the acceptable 
      * {@link org.opensaml.saml.saml2.core.AudienceRestriction} {@link org.opensaml.saml.saml2.core.Audience}

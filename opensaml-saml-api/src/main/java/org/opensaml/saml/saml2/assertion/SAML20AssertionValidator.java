@@ -21,6 +21,7 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -482,6 +483,11 @@ public class SAML20AssertionValidator {
     @Nonnull protected ValidationResult validateConditions(@Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
+        final ValidationResult requiredConditionsResult = validateRequiredConditions(assertion, context);
+        if (requiredConditionsResult != ValidationResult.VALID) {
+            return requiredConditionsResult;
+        }
+                
         final Conditions conditions = assertion.getConditions();
         if (conditions == null) {
             log.debug("Assertion contained no Conditions element");
@@ -524,6 +530,51 @@ public class SAML20AssertionValidator {
         return ValidationResult.VALID;
     }
     
+    /**
+     * Validate that all conditions indicated to be required are present in the assertion.
+     * 
+     * @param assertion the assertion whose conditions will be evaluated
+     * @param context current validation context
+     * 
+     * @return the result of the validation evaluation
+     */
+    protected ValidationResult validateRequiredConditions(@Nonnull final Assertion assertion,
+            @Nonnull final ValidationContext context) {
+        
+        @SuppressWarnings("unchecked")
+        final Set<QName> requiredConditions = (Set<QName>) context.getStaticParameters()
+                .get(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS);
+        
+        if (requiredConditions == null || requiredConditions.isEmpty()) {
+            log.debug("No Conditions were indicated as required");
+            return ValidationResult.VALID;
+        }
+        
+        final Conditions conditions = assertion.getConditions();
+        if (conditions == null || conditions.getConditions().isEmpty()) {
+            log.warn("At least 1 Condition was indicated as required, but Assertion contained no Conditions");
+            context.setValidationFailureMessage(
+                    "At least 1 Condition was indicated as required, but Assertion contained no Conditions");
+            return ValidationResult.INVALID;
+        }
+        
+        for (final QName requiredCondition : requiredConditions) {
+            final List<Condition> found = conditions.getConditions(requiredCondition);
+            if (found == null || found.isEmpty()) {
+                String msg = String.format("Condition '%s' was required, but was not found in assertion '%s'",
+                        requiredCondition, assertion.getID());
+                if (context.getValidationFailureMessage() != null) {
+                    msg = msg + ": " + context.getValidationFailureMessage();
+                }
+                log.warn(msg);
+                context.setValidationFailureMessage(msg);
+                return ValidationResult.INVALID;
+            }
+        }
+        
+        return ValidationResult.VALID;
+    }
+
     /**
      * Validates the NotBefore and NotOnOrAfter Conditions constraints on the assertion.
      * 
@@ -655,4 +706,5 @@ public class SAML20AssertionValidator {
 
         return ValidationResult.VALID;
     }
+
 }

@@ -37,8 +37,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
+import org.opensaml.core.xml.AbstractXMLObject;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.assertion.AssertionValidationException;
@@ -65,6 +65,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import com.google.common.collect.Sets;
+
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 
 public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
@@ -371,6 +375,64 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     }
     
     @Test
+    public void testNoConditionsWithRequired() throws AssertionValidationException {
+        getAssertion().setConditions(null);
+        
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, Sets.newHashSet(MockCondition.ELEMENT_NAME));
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testConditionsWithRequiredPresent() throws AssertionValidationException {
+        getAssertion().getConditions().getConditions().add(new MockCondition());
+        getAssertion().getConditions().getConditions().add(new MockCondition2());
+        
+        conditionValidators.add(new MockConditionValidator());
+        conditionValidators.add(new MockCondition2Validator());
+        
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, Sets.newHashSet(MockCondition.ELEMENT_NAME));
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
+    }
+    
+    @Test
+    public void testConditionsWithRequiredMissing() throws AssertionValidationException {
+        getAssertion().getConditions().getConditions().add(new MockCondition2());
+        
+        conditionValidators.add(new MockConditionValidator());
+        conditionValidators.add(new MockCondition2Validator());
+        
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, Sets.newHashSet(MockCondition.ELEMENT_NAME));
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
+    }
+    
+    @Test
     public void testInvalidConditionsNotBefore() throws AssertionValidationException {
         getAssertion().getConditions().setNotBefore(Instant.now().plus(30, ChronoUnit.MINUTES));
         getAssertion().getConditions().setNotOnOrAfter(Instant.now().plus(60, ChronoUnit.MINUTES));
@@ -496,6 +558,73 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     private SAML20AssertionValidator getCurrentValidator() {
         return new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, signatureTrustEngine, signaturePrevalidator);
     }
+    
+    public static class MockCondition extends AbstractXMLObject implements Condition {
+        
+        public static final QName ELEMENT_NAME = new QName("urn:test:conditions", "MockCondition", "mock");
+        
+        public MockCondition() {
+            this(ELEMENT_NAME.getNamespaceURI(), ELEMENT_NAME.getLocalPart(), ELEMENT_NAME.getPrefix());
+        }
 
+        protected MockCondition(String namespaceURI, String elementLocalName, String namespacePrefix) {
+            super(namespaceURI, elementLocalName, namespacePrefix);
+        }
+
+        /** {@inheritDoc} */
+        public List<XMLObject> getOrderedChildren() {
+            return null;
+        }
+        
+    }
+    
+    public static class MockCondition2 extends AbstractXMLObject implements Condition {
+        
+        public static final QName ELEMENT_NAME = new QName("urn:test:conditions", "MockCondition2", "mock");
+        
+        public MockCondition2() {
+            this(ELEMENT_NAME.getNamespaceURI(), ELEMENT_NAME.getLocalPart(), ELEMENT_NAME.getPrefix());
+        }
+
+        protected MockCondition2(String namespaceURI, String elementLocalName, String namespacePrefix) {
+            super(namespaceURI, elementLocalName, namespacePrefix);
+        }
+
+        /** {@inheritDoc} */
+        public List<XMLObject> getOrderedChildren() {
+            return null;
+        }
+        
+    }
+    
+    public static class MockConditionValidator implements ConditionValidator {
+        
+        /** {@inheritDoc} */
+        public QName getServicedCondition() {
+            return MockCondition.ELEMENT_NAME;
+        }
+
+        /** {@inheritDoc} */
+        public ValidationResult validate(Condition condition, Assertion assertion, ValidationContext context)
+                throws AssertionValidationException {
+            return ValidationResult.VALID;
+        }
+        
+    }
+
+    public static class MockCondition2Validator implements ConditionValidator {
+        
+        /** {@inheritDoc} */
+        public QName getServicedCondition() {
+            return MockCondition2.ELEMENT_NAME;
+        }
+
+        /** {@inheritDoc} */
+        public ValidationResult validate(Condition condition, Assertion assertion, ValidationContext context)
+                throws AssertionValidationException {
+            return ValidationResult.VALID;
+        }
+        
+    }
 
 }
