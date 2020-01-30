@@ -73,11 +73,35 @@ public final class SAML2AssertionValidationParameters {
     public static final String SIGNATURE_VALIDATION_PREVALIDATOR = STD_PREFIX + ".SignatureValidationPrevalidator";
 
     /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} NotBefore is required.
+     */
+    public static final String SC_NOT_BEFORE_REQUIRED = STD_PREFIX + SC_INFIX + ".NotBeforeRequired";
+    
+    /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} NotOnOrAfter is required.
+     */
+    public static final String SC_NOT_ON_OR_AFTER_REQUIRED = STD_PREFIX + SC_INFIX + ".NoOnOrAfterRequired";
+    
+    /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} Recipient is required.
+     */
+    public static final String SC_RECIPIENT_REQUIRED = STD_PREFIX + SC_INFIX + ".RecipientRequired";
+    
+    /**
      * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.lang.String}<code>&gt;</code>
      * whose values are the acceptable 
      * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} recipients.
      */
     public static final String SC_VALID_RECIPIENTS = STD_PREFIX + SC_INFIX + ".ValidRecipients";
+
+    /**
+     * Carries a {@link java.lang.Boolean} flag which indicates whether the
+     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} Address is required.
+     */
+    public static final String SC_ADDRESS_REQUIRED = STD_PREFIX + SC_INFIX + ".AddressRequired";
 
     /**
      * Carries a {@link java.lang.Boolean} flag which indicates whether the

@@ -98,11 +98,25 @@ public class DefaultAssertionValidationContextBuilder
     /** Function for determining additional valid audience values. */
     private Function<ProfileRequestContext, Set<String>> additionalAudiences;
     
-    /** Predicate for determining whether an Assertion's InResponseTo is required. */
-    private Predicate<ProfileRequestContext> inResponseToRequired;
-    
     /** Function for determining the valid InResponseTo value. */
     private Function<ProfileRequestContext, String> inResponseTo;
+    
+    /** Predicate for determining whether an Assertion SubjectConfirmationData InResponseTo is required. */
+    private Predicate<ProfileRequestContext> inResponseToRequired;
+    
+    /** Predicate for determining whether an Assertion SubjectConfirmationData Recipient is required. */
+    private Predicate<ProfileRequestContext> recipientRequired;
+    
+    /** Predicate for determining whether an Assertion SubjectConfirmationData NotBefore is required. */
+    private Predicate<ProfileRequestContext> notBeforeRequired;
+    
+    /** Predicate for determining whether an Assertion SubjectConfirmationData NotOnOrAfter is required. */
+    private Predicate<ProfileRequestContext> notOnOrAfterRequired;
+    
+    /** Predicate for determining whether an Assertion SubjectConfirmationData Address is required. */
+    private Predicate<ProfileRequestContext> addressRequired;
+    
+    
 
     /** Resolver for security parameters context. */
     private Function<ProfileRequestContext, SecurityParametersContext> securityParametersLookupStrategy;
@@ -114,8 +128,12 @@ public class DefaultAssertionValidationContextBuilder
         signatureRequired = Predicates.alwaysTrue();
         includeSelfEntityIDAsRecipient = Predicates.alwaysFalse();
         checkAddress = Predicates.alwaysTrue();
-        inResponseToRequired = Predicates.alwaysFalse();
         inResponseTo = new DefaultValidInResponseToLookupFunction();
+        inResponseToRequired = Predicates.alwaysFalse();
+        recipientRequired = Predicates.alwaysFalse();
+        notOnOrAfterRequired = Predicates.alwaysFalse();
+        notBeforeRequired = Predicates.alwaysFalse();
+        addressRequired = Predicates.alwaysFalse();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
                 .compose(new InboundMessageContextLookup());
@@ -194,32 +212,6 @@ public class DefaultAssertionValidationContextBuilder
     }
 
     /**
-     * Get the predicate which determines whether an Assertion's InResponseTo is required.
-     * 
-     * <p>
-     * Defaults to an always false predicate;
-     * </p>
-     * 
-     * @return the predicate
-     */
-    public Predicate<ProfileRequestContext> getInResponseToRequired() {
-        return inResponseToRequired;
-    }
-
-    /**
-     * Set the predicate which determines whether an Assertion's InResponseTo is required.
-     * 
-     * <p>
-     * Defaults to an always false predicate.
-     * </p>
-     * 
-     * @param predicate the predicate, must be non-null
-     */
-    public void setInResponseToRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
-        inResponseToRequired = Constraint.isNotNull(predicate, "InResponseTo required predicate was null");
-    }
-    
-    /**
      * Set the function for determining the valid InResponseTo.
      *
      * <p>
@@ -243,6 +235,136 @@ public class DefaultAssertionValidationContextBuilder
      */
     public Function<ProfileRequestContext,String> getInResponseTo() {
         return inResponseTo;
+    }
+    
+    /**
+     * Get the predicate which determines whether an Assertion SubjectConfirmationData InResponseTo is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     */
+    public Predicate<ProfileRequestContext> getInResponseToRequired() {
+        return inResponseToRequired;
+    }
+
+    /**
+     * Set the predicate which determines whether an Assertion SubjectConfirmationData InResponseTo is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     */
+    public void setInResponseToRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+        inResponseToRequired = Constraint.isNotNull(predicate, "InResponseTo required predicate was null");
+    }
+
+    /**
+     * Get the predicate which determines whether an Assertion SubjectConfirmationData Recipient is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     */
+    public Predicate<ProfileRequestContext> getRecipientRequired() {
+        return recipientRequired;
+    }
+
+    /**
+     * Set the predicate which determines whether an Assertion SubjectConfirmationData Recipient is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     */
+    public void setRecipientRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+        recipientRequired = Constraint.isNotNull(predicate, "Recipient required predicate was null");
+    }
+
+    /**
+     * Get the predicate which determines whether an Assertion SubjectConfirmationData NotBefore is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     */
+    public Predicate<ProfileRequestContext> getNotBeforeRequired() {
+        return notBeforeRequired;
+    }
+
+    /**
+     * Set the predicate which determines whether an Assertion SubjectConfirmationData NotBefore is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     */
+    public void setNotBeforeRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+        notBeforeRequired = Constraint.isNotNull(predicate, "NotBefore required predicate was null");
+    }
+
+    /**
+     * Get the predicate which determines whether an Assertion SubjectConfirmationData NotOnOrAfter is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     */
+    public Predicate<ProfileRequestContext> getNotOnOrAfterRequired() {
+        return notOnOrAfterRequired;
+    }
+
+    /**
+     * Set the predicate which determines whether an Assertion SubjectConfirmationData NotOnOrAfter is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     */
+    public void setNotOnOrAfterRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+        notOnOrAfterRequired = Constraint.isNotNull(predicate, "NotOnOrAfter required predicate was null");
+    }
+
+    /**
+     * Get the predicate which determines whether an Assertion SubjectConfirmationData Address is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate;
+     * </p>
+     * 
+     * @return the predicate
+     */
+    public Predicate<ProfileRequestContext> getAddressRequired() {
+        return addressRequired;
+    }
+
+    /**
+     * Set the predicate which determines whether an Assertion SubjectConfirmationData Address is required.
+     * 
+     * <p>
+     * Defaults to an always false predicate.
+     * </p>
+     * 
+     * @param predicate the predicate, must be non-null
+     */
+    public void setAddressRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+        addressRequired = Constraint.isNotNull(predicate, "Address required predicate was null");
     }
 
     /**
@@ -397,15 +519,26 @@ public class DefaultAssertionValidationContextBuilder
         final Boolean checkAddressEnabled = Boolean.valueOf(getCheckAddress().test(input.getProfileRequestContext()));
         
         // For SubjectConfirmationData
+        staticParams.put(SAML2AssertionValidationParameters.SC_RECIPIENT_REQUIRED,
+                Boolean.valueOf(getRecipientRequired().test(input.getProfileRequestContext())));
         staticParams.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, getValidRecipients(input));
+        
+        staticParams.put(SAML2AssertionValidationParameters.SC_ADDRESS_REQUIRED,
+                Boolean.valueOf(getAddressRequired().test(input.getProfileRequestContext())));
         staticParams.put(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES, validAddresses);
         staticParams.put(SAML2AssertionValidationParameters.SC_CHECK_ADDRESS, checkAddressEnabled);
+        
         staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED,
                 Boolean.valueOf(getInResponseToRequired().test(input.getProfileRequestContext())));
         if (getInResponseTo() != null) {
             staticParams.put(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO,
                     getInResponseTo().apply(input.getProfileRequestContext()));
         }
+        
+        staticParams.put(SAML2AssertionValidationParameters.SC_NOT_BEFORE_REQUIRED,
+                Boolean.valueOf(getNotBeforeRequired().test(input.getProfileRequestContext())));
+        staticParams.put(SAML2AssertionValidationParameters.SC_NOT_ON_OR_AFTER_REQUIRED,
+                Boolean.valueOf(getNotOnOrAfterRequired().test(input.getProfileRequestContext())));
         
         // For Audience Condition
         staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, getValidAudiences(input));

@@ -51,6 +51,10 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
  * </p>
  * <ul>
  * <li>
+ * {@link SAML2AssertionValidationParameters#SC_ADDRESS_REQUIRED}:
+ * Optional.
+ * </li>
+ * <li>
  * {@link SAML2AssertionValidationParameters#SC_CHECK_ADDRESS}:
  * Optional.
  * </li>
@@ -60,12 +64,28 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
  * otherwise optional.
  * </li>
  * <li>
+ * {@link SAML2AssertionValidationParameters#SC_RECIPIENT_REQUIRED}:
+ * Optional.
+ * </li>
+ * <li>
  * {@link SAML2AssertionValidationParameters#SC_VALID_RECIPIENTS}:
  * Required.
  * </li>
  * <li>
+ * {@link SAML2AssertionValidationParameters#SC_IN_RESPONSE_TO_REQUIRED}:
+ * Optional.
+ * </li>
+ * <li>
  * {@link SAML2AssertionValidationParameters#SC_VALID_IN_RESPONSE_TO}:
  * Required.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_NOT_BEFORE_REQUIRED}:
+ * Optional.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#SC_NOT_ON_OR_AFTER_REQUIRED}:
+ * Optional.
  * </li>
  * </ul>
  * 
@@ -87,29 +107,34 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     }
 
     /** {@inheritDoc} */
+    // Checkstyle: CyclomaticComplexity OFF
     @Nonnull public ValidationResult validate(@Nonnull final SubjectConfirmation confirmation, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
             throws AssertionValidationException {
         
+        final boolean addressRequired = isAddressRequired(context);
         final boolean inResponseToRequired = isInResponseToRequired(context);
+        final boolean recipientRequired = isRecipientRequired(context);
+        final boolean notOnOrAfterRequired = isNotOnOrAfterRequired(context);
+        final boolean notBeforeRequired = isNotBeforeRequired(context);
 
         if (confirmation.getSubjectConfirmationData() != null) {
-            ValidationResult result = validateNotBefore(confirmation, assertion, context);
+            ValidationResult result = validateNotBefore(confirmation, assertion, context, notBeforeRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
 
-            result = validateNotOnOrAfter(confirmation, assertion, context);
+            result = validateNotOnOrAfter(confirmation, assertion, context, notOnOrAfterRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
 
-            result = validateRecipient(confirmation, assertion, context);
+            result = validateRecipient(confirmation, assertion, context, recipientRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
 
-            result = validateAddress(confirmation, assertion, context);
+            result = validateAddress(confirmation, assertion, context, addressRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
@@ -119,14 +144,82 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                 return result;
             }
         } else {
-            if (inResponseToRequired) {
+            if (inResponseToRequired || recipientRequired || notOnOrAfterRequired || notBeforeRequired 
+                    || addressRequired) {
+                log.warn("SubjectConfirmationData was null, and one of more data elements were required");
+                context.setValidationFailureMessage(
+                        "SubjectConfirmationData was null and one or more data elements were required");
                 return ValidationResult.INVALID;
             }
         }
 
         return doValidate(confirmation, assertion, context);
     }
+    // Checkstyle: CyclomaticComplexity ON
 
+    /**
+     * Determine whether Address is required.
+     * 
+     * @param context current validation context
+     * 
+     * @return true if required, false if not
+     */
+    protected boolean isAddressRequired(final ValidationContext context) {
+        return ObjectSupport.firstNonNull(
+                (Boolean) context.getStaticParameters().get(
+                        SAML2AssertionValidationParameters.SC_ADDRESS_REQUIRED),
+                Boolean.FALSE);
+    }
+
+    /**
+     * Determine whether Recipient is required.
+     * 
+     * @param context current validation context
+     * 
+     * @return true if required, false if not
+     */
+    protected boolean isRecipientRequired(final ValidationContext context) {
+        return ObjectSupport.firstNonNull(
+                (Boolean) context.getStaticParameters().get(
+                        SAML2AssertionValidationParameters.SC_RECIPIENT_REQUIRED),
+                Boolean.FALSE);
+    }
+
+    /**
+     * Determine whether NotBefore is required.
+     * 
+     * @param context current validation context
+     * 
+     * @return true if required, false if not
+     */
+    protected boolean isNotBeforeRequired(final ValidationContext context) {
+        return ObjectSupport.firstNonNull(
+                (Boolean) context.getStaticParameters().get(
+                        SAML2AssertionValidationParameters.SC_NOT_BEFORE_REQUIRED),
+                Boolean.FALSE);
+    }
+
+    /**
+     * Determine whether NotOnOrAfter is required.
+     * 
+     * @param context current validation context
+     * 
+     * @return true if required, false if not
+     */
+    protected boolean isNotOnOrAfterRequired(final ValidationContext context) {
+        return ObjectSupport.firstNonNull(
+                (Boolean) context.getStaticParameters().get(
+                        SAML2AssertionValidationParameters.SC_NOT_ON_OR_AFTER_REQUIRED),
+                Boolean.FALSE);
+    }
+
+    /**
+     * Determine whether InResponseTo is required.
+     * 
+     * @param context current validation context
+     * 
+     * @return true if required, false if not
+     */
     protected boolean isInResponseToRequired(final ValidationContext context) {
         return ObjectSupport.firstNonNull(
                 (Boolean) context.getStaticParameters().get(
@@ -142,7 +235,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      *  being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
-     * @param required whether the inResponseTo value is required
+     * @param required whether the InResponseTo value is required
      * 
      * @return the result of the validation evaluation
      * 
@@ -205,16 +298,28 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      *  being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
+     * @param required 
      * 
      * @return the result of the validation evaluation
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the NotBefore
      */
     @Nonnull protected ValidationResult validateNotBefore(@Nonnull final SubjectConfirmation confirmation, 
-            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
-                    throws AssertionValidationException {
-        final Instant skewedNow = Instant.now().plus(SAML20AssertionValidator.getClockSkew(context));
+            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context,
+            final boolean required) throws AssertionValidationException {
+        
         final Instant notBefore = confirmation.getSubjectConfirmationData().getNotBefore();
+        if (notBefore == null) {
+            if (required) {
+                log.warn("SubjectConfirmationData/@NotBefore was missing and was required");
+                context.setValidationFailureMessage(
+                        "SubjectConfirmationData/@NotBefore was missing and was required");
+                return ValidationResult.INVALID;
+            }
+            return ValidationResult.VALID;
+        }
+        
+        final Instant skewedNow = Instant.now().plus(SAML20AssertionValidator.getClockSkew(context));
         
         log.debug("Evaluating SubjectConfirmationData NotBefore '{}' against 'skewed now' time '{}'",
                 notBefore, skewedNow);
@@ -236,16 +341,28 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      *  being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
+     * @param required whether the NotOnOrAfter value is required
      * 
      * @return the result of the validation evaluation
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the NotOnOrAFter
      */
     @Nonnull protected ValidationResult validateNotOnOrAfter(@Nonnull final SubjectConfirmation confirmation, 
-            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
+            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required) 
                     throws AssertionValidationException {
-        final Instant skewedNow = Instant.now().minus(SAML20AssertionValidator.getClockSkew(context));
+        
         final Instant notOnOrAfter = confirmation.getSubjectConfirmationData().getNotOnOrAfter();
+        if (notOnOrAfter == null) {
+            if (required) {
+                log.warn("SubjectConfirmationData/@NotOnOrAfter was missing and was required");
+                context.setValidationFailureMessage(
+                        "SubjectConfirmationData/@NotOnOrAfter was missing and was required");
+                return ValidationResult.INVALID;
+            }
+            return ValidationResult.VALID;
+        }
+        
+        final Instant skewedNow = Instant.now().minus(SAML20AssertionValidator.getClockSkew(context));
         
         log.debug("Evaluating SubjectConfirmationData NotOnOrAfter '{}' against 'skewed now' time '{}'",
                 notOnOrAfter, skewedNow);
@@ -266,16 +383,25 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * @param confirmation confirmation method being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
+     * @param required whether the Recipient value is required
      * 
      * @return the result of the validation evaluation
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the recipient
      */
     @Nonnull protected ValidationResult validateRecipient(@Nonnull final SubjectConfirmation confirmation, 
-            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
+            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required)
                     throws AssertionValidationException {
-        final String recipient = StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getRecipient());
+        
+        final String recipient = 
+                StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getRecipient());
         if (recipient == null) {
+            if (required) {
+                log.warn("SubjectConfirmationData/@Recipient was missing and was required");
+                context.setValidationFailureMessage(
+                        "SubjectConfirmationData/@Recipient was missing and was required");
+                return ValidationResult.INVALID;
+            }
             return ValidationResult.VALID;
         }
         
@@ -299,8 +425,6 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                     "Unable to determine list of valid subject confirmation recipient endpoints");
             return ValidationResult.INDETERMINATE;
         }
-        
-        
 
         if (validRecipients.contains(recipient)) {
             log.debug("Matched valid recipient: {}", recipient);
@@ -311,7 +435,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                 validRecipients);
 
         context.setValidationFailureMessage(String.format(
-                "Subject confirmation recipient for asertion '%s' did not match any valid recipients", assertion
+                "Subject confirmation recipient for assertion '%s' did not match any valid recipients", assertion
                         .getID()));
         return ValidationResult.INVALID;
     }
@@ -323,13 +447,14 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * @param confirmation confirmation method being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
+     * @param required whether the Address value is required
      * 
      * @return the result of the validation evaluation
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the address
      */
     @Nonnull protected ValidationResult validateAddress(@Nonnull final SubjectConfirmation confirmation, 
-            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
+            @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required) 
                     throws AssertionValidationException {
 
         final Boolean checkAddress =
@@ -341,6 +466,15 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         }
 
         final String address = StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getAddress());
+        if (address == null) {
+            if (required) {
+                log.warn("SubjectConfirmationData/@Address was missing and was required");
+                context.setValidationFailureMessage(
+                        "SubjectConfirmationData/@Address was missing and was required");
+                return ValidationResult.INVALID;
+            }
+            return ValidationResult.VALID;
+        }
         
         return AssertionValidationSupport.checkAddress(context, address, 
                 SAML2AssertionValidationParameters.SC_VALID_ADDRESSES,

@@ -124,6 +124,30 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     }
     
     @Test
+    public void testNoAddressAndRequired() throws AssertionValidationException {
+        subjectConfirmation.getSubjectConfirmationData().setAddress(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_ADDRESS_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);        
+    }
+    
+    @Test
+    public void testNoConfirmationDataAndAddressRequired() throws AssertionValidationException {
+        subjectConfirmation.setSubjectConfirmationData(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_ADDRESS_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);        
+    }
+    
+    @Test
     public void testInvalidRecipient() throws AssertionValidationException {
         subjectConfirmation.getSubjectConfirmationData().setRecipient("https://bogussp.example.com");
         
@@ -167,6 +191,30 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     }
     
     @Test
+    public void testNoRecipientAndRequired() throws AssertionValidationException {
+        subjectConfirmation.getSubjectConfirmationData().setRecipient(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_RECIPIENT_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testNoConfirmationDataAndRecipientRequired() throws AssertionValidationException {
+        subjectConfirmation.setSubjectConfirmationData(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_RECIPIENT_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);
+    }
+    
+    @Test
     public void testInvalidNotBefore() throws AssertionValidationException {
         // Adjust them both just so they make sense
         subjectConfirmation.getSubjectConfirmationData().setNotBefore(Instant.now().plus(30, ChronoUnit.MINUTES));
@@ -189,6 +237,30 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
     }
     
     @Test
+    public void testNoNotBeforeAndRequired() throws AssertionValidationException {
+        subjectConfirmation.getSubjectConfirmationData().setNotBefore(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_NOT_BEFORE_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);        
+    }
+    
+    @Test
+    public void testNoConfirmationDataAndNotBeforeRequired() throws AssertionValidationException {
+        subjectConfirmation.setSubjectConfirmationData(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_NOT_BEFORE_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);        
+    }
+    
+    @Test
     public void testInvalidNotOnOrAfter() throws AssertionValidationException {
         // Adjust them both just so they make sense
         subjectConfirmation.getSubjectConfirmationData().setNotBefore(Instant.now().minus(60, ChronoUnit.MINUTES));
@@ -208,6 +280,30 @@ public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValid
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.VALID);        
+    }
+    
+    @Test
+    public void testNoNotOnOrAfterAndRequired() throws AssertionValidationException {
+        subjectConfirmation.getSubjectConfirmationData().setNotOnOrAfter(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_NOT_ON_OR_AFTER_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);        
+    }
+    
+    @Test
+    public void testNoConfirmationDataAndNotOnOrAfterRequired() throws AssertionValidationException {
+        subjectConfirmation.setSubjectConfirmationData(null);
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_NOT_ON_OR_AFTER_REQUIRED, Boolean.TRUE);
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
+                ValidationResult.INVALID);        
     }
     
     @Test
