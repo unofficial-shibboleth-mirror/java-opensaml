@@ -20,6 +20,7 @@ package org.opensaml.saml.common.binding.impl;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.util.function.Function;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -35,7 +36,9 @@ import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;
@@ -56,6 +59,11 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
     private SAMLMetadataLookupHandler handler;
     private MessageContext messageContext;
     
+    private SAMLMetadataContext existingMetadataContext;
+    private EntityDescriptor existingEntityDescriptor;
+    private RoleDescriptor existingRoleDescriptor;
+    private Function<MessageContext, SAMLMetadataContext> copyContextStrategy;
+
     @BeforeClass
     public void classSetUp() throws ResolverException, URISyntaxException, ComponentInitializationException {
         final URL mdURL = SAMLMetadataLookupHandlerTest.class
@@ -75,6 +83,16 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
     public void setUp() {
         handler = new SAMLMetadataLookupHandler();
         messageContext = new MessageContext();
+
+        existingEntityDescriptor = buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
+        existingEntityDescriptor.setEntityID("urn:mace:incommon:osu.edu");
+        existingRoleDescriptor = buildXMLObject(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+
+        existingMetadataContext = new SAMLMetadataContext();
+        existingMetadataContext.setEntityDescriptor(existingEntityDescriptor);
+        existingMetadataContext.setRoleDescriptor(existingRoleDescriptor);
+
+        copyContextStrategy = mc -> { return existingMetadataContext; };
     }
     
     @Test
@@ -202,4 +220,138 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(mdCtx.getEntityDescriptor());
     }
     
+    @Test
+    public void testCopySuccess() throws ComponentInitializationException, MessageHandlerException {
+        handler.setRoleDescriptorResolver(roleResolver);
+        handler.setCopyContextStrategy(copyContextStrategy);
+        handler.initialize();
+
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML11P_NS);
+
+        Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
+        ((AttributeQuery) request.getQuery()).setResource("urn:mace:incommon:osu.edu");
+        messageContext.setMessage(request);
+
+        handler.invoke(messageContext);
+
+        SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        Assert.assertNotNull(mdCtx);
+        Assert.assertNotSame(mdCtx, existingMetadataContext);
+        Assert.assertNotNull(mdCtx.getRoleDescriptor());
+        Assert.assertSame(mdCtx.getRoleDescriptor(), existingMetadataContext.getRoleDescriptor());
+        Assert.assertNotNull(mdCtx.getEntityDescriptor());
+        Assert.assertSame(mdCtx.getEntityDescriptor(), existingMetadataContext.getEntityDescriptor());
+    }
+
+    @Test
+    public void testCopyFailMissingExistingEntityDescriptor() throws ComponentInitializationException, MessageHandlerException {
+        existingMetadataContext.setEntityDescriptor(null);
+
+        handler.setRoleDescriptorResolver(roleResolver);
+        handler.setCopyContextStrategy(copyContextStrategy);
+        handler.initialize();
+
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML11P_NS);
+
+        Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
+        ((AttributeQuery) request.getQuery()).setResource("urn:mace:incommon:osu.edu");
+        messageContext.setMessage(request);
+
+        handler.invoke(messageContext);
+
+        SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        Assert.assertNotNull(mdCtx);
+        Assert.assertNotSame(mdCtx, existingMetadataContext);
+        Assert.assertNotNull(mdCtx.getRoleDescriptor());
+        Assert.assertNotSame(mdCtx.getRoleDescriptor(), existingMetadataContext.getRoleDescriptor());
+        Assert.assertNotNull(mdCtx.getEntityDescriptor());
+        Assert.assertNotSame(mdCtx.getEntityDescriptor(), existingMetadataContext.getEntityDescriptor());
+    }
+
+    @Test
+    public void testCopyFailMissingExistingRoleDescriptor() throws ComponentInitializationException, MessageHandlerException {
+        existingMetadataContext.setRoleDescriptor(null);
+
+        handler.setRoleDescriptorResolver(roleResolver);
+        handler.setCopyContextStrategy(copyContextStrategy);
+        handler.initialize();
+
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML11P_NS);
+
+        Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
+        ((AttributeQuery) request.getQuery()).setResource("urn:mace:incommon:osu.edu");
+        messageContext.setMessage(request);
+
+        handler.invoke(messageContext);
+
+        SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        Assert.assertNotNull(mdCtx);
+        Assert.assertNotSame(mdCtx, existingMetadataContext);
+        Assert.assertNotNull(mdCtx.getRoleDescriptor());
+        Assert.assertNotSame(mdCtx.getRoleDescriptor(), existingMetadataContext.getRoleDescriptor());
+        Assert.assertNotNull(mdCtx.getEntityDescriptor());
+        Assert.assertNotSame(mdCtx.getEntityDescriptor(), existingMetadataContext.getEntityDescriptor());
+    }
+
+    @Test
+    public void testCopyFailEntityIDMismatch() throws ComponentInitializationException, MessageHandlerException {
+        existingEntityDescriptor.setEntityID("https://bogus.example.org");
+
+        handler.setRoleDescriptorResolver(roleResolver);
+        handler.setCopyContextStrategy(copyContextStrategy);
+        handler.initialize();
+
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML11P_NS);
+
+        Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
+        ((AttributeQuery) request.getQuery()).setResource("urn:mace:incommon:osu.edu");
+        messageContext.setMessage(request);
+
+        handler.invoke(messageContext);
+
+        SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        Assert.assertNotNull(mdCtx);
+        Assert.assertNotSame(mdCtx, existingMetadataContext);
+        Assert.assertNotNull(mdCtx.getRoleDescriptor());
+        Assert.assertNotSame(mdCtx.getRoleDescriptor(), existingMetadataContext.getRoleDescriptor());
+        Assert.assertNotNull(mdCtx.getEntityDescriptor());
+        Assert.assertNotSame(mdCtx.getEntityDescriptor(), existingMetadataContext.getEntityDescriptor());
+    }
+
+    @Test
+    public void testCopyFailRoleMismatch() throws ComponentInitializationException, MessageHandlerException {
+        existingMetadataContext.setRoleDescriptor(buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME));
+
+        handler.setRoleDescriptorResolver(roleResolver);
+        handler.setCopyContextStrategy(copyContextStrategy);
+        handler.initialize();
+
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML11P_NS);
+
+        Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
+        ((AttributeQuery) request.getQuery()).setResource("urn:mace:incommon:osu.edu");
+        messageContext.setMessage(request);
+
+        handler.invoke(messageContext);
+
+        SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        Assert.assertNotNull(mdCtx);
+        Assert.assertNotSame(mdCtx, existingMetadataContext);
+        Assert.assertNotNull(mdCtx.getRoleDescriptor());
+        Assert.assertNotSame(mdCtx.getRoleDescriptor(), existingMetadataContext.getRoleDescriptor());
+        Assert.assertNotNull(mdCtx.getEntityDescriptor());
+        Assert.assertNotSame(mdCtx.getEntityDescriptor(), existingMetadataContext.getEntityDescriptor());
+    }
+
+
 }

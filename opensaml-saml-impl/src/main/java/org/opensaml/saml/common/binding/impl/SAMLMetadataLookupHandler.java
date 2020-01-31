@@ -17,7 +17,12 @@
 
 package org.opensaml.saml.common.binding.impl;
 
+import java.util.Objects;
+import java.util.function.Function;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -44,13 +49,25 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Handler for inbound SAML protocol messages that attempts to locate SAML metadata for
- * a SAML entity, and attaches it with a {@link SAMLMetadataContext} as a child of a 
- * pre-existing concrete instance of {@link AbstractSAMLEntityContext}. The entity context class is configurable
- * and defaults to {@link SAMLPeerEntityContext}.
+ * a SAML entity, and attaches it as a {@link SAMLMetadataContext} child of a
+ * pre-existing concrete instance of {@link AbstractSAMLEntityContext}.
+ *
+ * <p>
+ * The entity context class is configurable and defaults to {@link SAMLPeerEntityContext}.
+ * The handler will no-op in the absence of an existing {@link AbstractSAMLEntityContext}
+ * child of the message context with non-null values for both entityID and role.
+ * </p>
  * 
- * <p>The handler will no-op in the absence of a populated {@link AbstractSAMLEntityContext} instance 
- * with an entityID and role to look up. A protocol from a {@link SAMLProtocolContext}
- * will be added to the lookup, if available.</p>
+ * <p>
+ * If the optional copy strategy is configured via {@link #setCopyContextStrategy(Function)},
+ * and if that lookup finds an existing metadata context with compatible data (matching entityID and role),
+ * then its data will be re-used.
+ * </p>
+ *
+ * <p>
+ * Otherwise an attempt to resolve metadata will be performed with the configured {@link RoleDescriptorResolver}.
+ * A protocol from a {@link SAMLProtocolContext} will be added to the lookup, if available.
+ * </p>
  */
 public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     
@@ -63,7 +80,21 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     /** The context class representing the SAML entity whose data is to be resolved. 
      * Defaults to: {@link SAMLPeerEntityContext}. */
     @Nonnull private Class<? extends AbstractSAMLEntityContext> entityContextClass = SAMLPeerEntityContext.class;
-    
+
+    /** Optional strategy for resolving an existing metadata context from which to copy data. */
+    @Nullable private Function<MessageContext, SAMLMetadataContext> copyContextStrategy;
+
+    /**
+     * Set the optional strategy for resolving an existing metadata context from which to copy data.
+     *
+     * @param strategy the strategy function
+     */
+    public void setCopyContextStrategy(@Nullable final Function<MessageContext, SAMLMetadataContext> strategy) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        copyContextStrategy = strategy;
+    }
+
     /**
      * Set the class type holding the SAML entity data.
      * 
@@ -98,25 +129,32 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
         }
     }
 
-// Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
 
         final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
-        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class);
-     
+
         if (entityCtx == null || entityCtx.getEntityId() == null || entityCtx.getRole() == null) {
             log.info("{} SAML entity context class '{}' missing or did not contain an entityID or role", getLogPrefix(),
                     entityContextClass.getName());
             return;
         }
-        
+
+        final SAMLMetadataContext existingMetadataCtx = resolveExisting(messageContext,
+                entityCtx.getEntityId(), entityCtx.getRole());
+        if (existingMetadataCtx != null) {
+            log.info("{} Resolved existing metadata context, re-using it", getLogPrefix());
+            entityCtx.addSubcontext(existingMetadataCtx);
+            return;
+        }
+
         final EntityIdCriterion entityIdCriterion = new EntityIdCriterion(entityCtx.getEntityId());
         final EntityRoleCriterion roleCriterion = new EntityRoleCriterion(entityCtx.getRole());
         
         ProtocolCriterion protocolCriterion = null;
+        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class);
         if (protocolCtx != null && protocolCtx.getProtocol() != null) {
             protocolCriterion = new ProtocolCriterion(protocolCtx.getProtocol());
         }
@@ -127,11 +165,11 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             if (roleMetadata == null) {
                 if (protocolCriterion != null) {
                     log.info("{} No metadata returned for {} in role {} with protocol {}",
-                            new Object[]{getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),
-                                protocolCriterion.getProtocol(),});
+                            getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),
+                            protocolCriterion.getProtocol());
                 } else {
                     log.info("{} No metadata returned for {} in role {}",
-                            new Object[]{getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),});
+                            getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole());
                 }
                 return;
             }
@@ -148,6 +186,52 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             log.error("{} ResolverException thrown during metadata lookup", getLogPrefix(), e);
         }
     }
-// Checkstyle: ReturnCount OFF
+
+    /**
+     * Attempt to resolve an existing {@link SAMLMetadataContext} from which to copy.
+     *
+     * <p>
+     * The returned context will always be a fresh parent-less instance, suitable for the caller to
+     * directly store in the current message context.
+     * </p>
+     *
+     * @param messageContext the current message context
+     * @param entityID the entityID against which to match
+     * @param role the entity role against which to match
+     *
+     * @return a new instance of {@link SAMLMetadataContext}, or null if one can not be resolved
+     */
+    @Nullable protected SAMLMetadataContext resolveExisting(@Nonnull final MessageContext messageContext,
+            @Nonnull final String entityID, @Nonnull final QName role) {
+
+        if (copyContextStrategy == null) {
+            return null;
+        }
+
+        final SAMLMetadataContext existing = copyContextStrategy.apply(messageContext);
+        if (existing != null) {
+            if (existing.getEntityDescriptor() != null && existing.getRoleDescriptor() != null) {
+                // Validate that existing data has the same entityID and role
+                if (Objects.equals(existing.getEntityDescriptor().getEntityID(), entityID)
+                        && (Objects.equals(existing.getRoleDescriptor().getElementQName(), role)
+                                || Objects.equals(existing.getRoleDescriptor().getSchemaType(), role))
+                        ) {
+                    log.debug("{} Found an existing and suitable SAMLMetadataContext from which to copy ",
+                            getLogPrefix());
+                    final SAMLMetadataContext copy = new SAMLMetadataContext();
+                    copy.setEntityDescriptor(existing.getEntityDescriptor());
+                    copy.setRoleDescriptor(existing.getRoleDescriptor());
+                    return copy;
+                }
+                log.debug("{} Existing SAMLMetadataContext was resolved, but was either the entityID "
+                        + "or role did not match the entity context data", getLogPrefix());
+            }
+            log.debug("{} Existing SAMLMetadataContext was resolved, but was missing EntityDescriptor "
+                    + "or RoleDescriptor data", getLogPrefix());
+        } else {
+            log.debug("{} No existing SAMLMetadataContext was resolved", getLogPrefix());
+        }
+        return null;
+    }
 
 }
