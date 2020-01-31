@@ -36,6 +36,7 @@ import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -212,7 +213,8 @@ public final class SAMLBindingSupport {
      * </p>
      * 
      * @param messageContext current message context
-     * @param presenceSatisfies whether the presence of a non-null {@link Signature} member satisfies the evaluation
+     * @param presenceSatisfies whether the presence of a non-null {@link org.opensaml.xmlsec.signature.Signature}
+     *        member satisfies the evaluation
      * @return true if the message is considered to be digitally signed, false otherwise
      */
     public static boolean isMessageSigned(@Nonnull final MessageContext messageContext,

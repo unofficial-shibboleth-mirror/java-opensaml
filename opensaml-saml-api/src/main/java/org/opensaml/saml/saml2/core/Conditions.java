@@ -98,6 +98,8 @@ public interface Conditions extends SAMLObject {
      * Gets the list of conditions that match a particular QName.
      * 
      * @param typeOrName the QName of the conditions to return
+     * 
+     * @return the list of conditions that match the specified QName
      */
     List<Condition> getConditions(@Nonnull final QName typeOrName);
 

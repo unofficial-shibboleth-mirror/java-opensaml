@@ -29,13 +29,15 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
  */
 public class InboundMessageSignedPredicate implements Predicate<ProfileRequestContext> {
     
-    /** Flag indicating whether the presence of a non-null {@link Signature} member satisfies the evaluation. */
+    /** Flag indicating whether the presence of a non-null {@link org.opensaml.xmlsec.signature.Signature}
+     *  member satisfies the evaluation. */
     private boolean presenceSatisfies;
 
     /**
-     * Set whether the presence of a non-null {@link Signature} member satisfies the evaluation.
+     * Set whether the presence of a non-null {@link org.opensaml.xmlsec.signature.Signature}
+     * member satisfies the evaluation.
      * 
-     * @param flag whether the presence of a non-null {@link Signature} is considered
+     * @param flag whether the presence of a non-null {@link org.opensaml.xmlsec.signature.Signature} is considered
      */
     public void setPresenceSatisfies(final boolean flag) {
         presenceSatisfies = flag;

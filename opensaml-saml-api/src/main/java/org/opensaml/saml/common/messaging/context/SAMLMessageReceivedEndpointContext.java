@@ -56,7 +56,7 @@ public class SAMLMessageReceivedEndpointContext extends BaseContext {
      * relevant information to the properties of this class.
      * </p>
      *
-     * @param request
+     * @param request the HTTP request
      */
     public SAMLMessageReceivedEndpointContext(@Nonnull final HttpServletRequest request) {
         super();
