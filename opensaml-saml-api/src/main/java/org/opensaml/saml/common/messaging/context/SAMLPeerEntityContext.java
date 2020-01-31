@@ -27,7 +27,6 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
-import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 import org.opensaml.saml.saml2.core.Issuer;
@@ -133,25 +132,71 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
      */
     @Nullable protected String processSaml2Request(
             @Nonnull final org.opensaml.saml.saml2.core.RequestAbstractType request) {
-        if (request.getIssuer() != null) {
-            return processSaml2Issuer(request.getIssuer());
-        }
-        return null;
+
+        return processSaml2Issuer(request.getIssuer());
     }
 
     /**
      * Resolve the SAML entity ID from a SAML 2 response.
      * 
-     * @param response the response
+     * @param statusResponse the response
      * 
      * @return the entity ID, or null if it could not be resolved
      */
     @Nullable protected String processSaml2Response(
-            @Nonnull final org.opensaml.saml.saml2.core.StatusResponseType response) {
-        if (response.getIssuer() != null) {
-            return processSaml2Issuer(response.getIssuer());
+            @Nonnull final org.opensaml.saml.saml2.core.StatusResponseType statusResponse) {
+        if (statusResponse.getIssuer() != null) {
+            return processSaml2Issuer(statusResponse.getIssuer());
         }
+
+        if (statusResponse instanceof org.opensaml.saml.saml2.core.Response) {
+            processSaml2ResponseAssertions((org.opensaml.saml.saml2.core.Response)statusResponse);
+
+        }
+
         return null;
+    }
+
+    /**
+     * Resolve the SAML entity ID from the Assertions of a SAML 2 response.
+     *
+     * @param response the response
+     *
+     * @return the entity ID, or null if it could not be resolved
+     */
+    @Nullable protected String processSaml2ResponseAssertions(
+            @Nonnull final org.opensaml.saml.saml2.core.Response response) {
+
+        String issuer = null;
+        final List<org.opensaml.saml.saml2.core.Assertion> assertions = response.getAssertions();
+        if (assertions != null && assertions.size() > 0) {
+            log.info("Attempting to extract issuer from enclosed SAML 2.x Assertion(s)");
+
+            if (response.getEncryptedAssertions() != null && response.getEncryptedAssertions().size() > 0) {
+                log.warn("SAML 2.x Response '{}' contained both Assertions and EncryptedAssertions, "
+                        + "can not currently dynamically resolve SAML peer entity ID on that basis",
+                        response.getID());
+                return null;
+            }
+
+            for (final org.opensaml.saml.saml2.core.Assertion assertion : assertions) {
+                if (assertion != null) {
+                    final String current = processSaml2Issuer(assertion.getIssuer());
+                    if (issuer != null && !issuer.equals(current)) {
+                        log.warn("SAML 2.x assertions within response '{}' contain different issuer IDs, "
+                                + "can not dynamically resolve SAML peer entity ID", response.getID());
+                        return null;
+                    }
+                    issuer = current;
+                }
+            }
+        }
+
+        if (issuer == null) {
+            log.warn("Issuer could not be extracted from standard SAML 2.x Response message via Assertions");
+        }
+
+        return issuer;
     }
     
     /**
@@ -161,7 +206,11 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
      * 
      * @return the entity ID, or null if it could not be resolved
      */
-    @Nullable protected String processSaml2Issuer(@Nonnull final Issuer issuer) {
+    @Nullable protected String processSaml2Issuer(@Nullable final Issuer issuer) {
+        if (issuer == null) {
+            return null;
+        }
+
         if (issuer.getFormat() == null || issuer.getFormat().equals(NameIDType.ENTITY)) {
             return issuer.getValue();
         }
@@ -179,13 +228,13 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
      */
     @Nullable protected String processSaml1Response(@Nonnull final org.opensaml.saml.saml1.core.Response response) {
         String issuer = null;
-        final List<Assertion> assertions = response.getAssertions();
+        final List<org.opensaml.saml.saml1.core.Assertion> assertions = response.getAssertions();
         if (assertions != null && assertions.size() > 0) {
             log.info("Attempting to extract issuer from enclosed SAML 1.x Assertion(s)");
-            for (final Assertion assertion : assertions) {
+            for (final org.opensaml.saml.saml1.core.Assertion assertion : assertions) {
                 if (assertion != null && assertion.getIssuer() != null) {
                     if (issuer != null && !issuer.equals(assertion.getIssuer())) {
-                        log.warn("SAML 1.x assertions, within response '{}' contain different issuer IDs, " 
+                        log.warn("SAML 1.x assertions within response '{}' contain different issuer IDs, "
                                 + "can not dynamically resolve SAML peer entity ID", response.getID());
                         return null;
                     }
