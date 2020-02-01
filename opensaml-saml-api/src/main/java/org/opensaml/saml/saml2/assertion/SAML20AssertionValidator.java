@@ -68,6 +68,10 @@ import org.w3c.dom.Element;
  *
  * <ul>
  * <li>
+ * {@link SAML2AssertionValidationParameters#VALID_ISSUERS}:
+ * Optional.
+ * </li>
+ * <li>
  * {@link SAML2AssertionValidationParameters#SIGNATURE_REQUIRED}:
  * Optional.
  * If not supplied, defaults to 'true'. If an Assertion is signed, the signature is always evaluated 
@@ -96,6 +100,10 @@ import org.w3c.dom.Element;
  * Optional.
  * If not present the default clock skew of {@link SAML20AssertionValidator#DEFAULT_CLOCK_SKEW} 
  * will be used.
+ * </li>
+ * <li>
+ * {@link SAML2AssertionValidationParameters#COND_REQUIRED_CONDITIONS}:
+ * Optional.
  * </li>
  * </ul>
  * 
@@ -338,8 +346,9 @@ public class SAML20AssertionValidator {
         if (validIssuers == null || validIssuers.isEmpty()) {
             log.warn("Set of valid issuers was not available from the validation context, unable to evaluate Issuer");
             return ValidationResult.VALID;
-            /* TODO this should really be indeterminate, but would change the behavior for older code.
-               Need to update that first.
+            /* TODO this should really be indeterminate, but would change the behavior for older code. Need to update:
+               org.opensaml.saml.saml2.wssecurity.messaging.impl.DefaultSAML20AssertionValidationContextBuilder.
+               Also change Javadocs on this class to indicate 'Required' rather than 'Optional'.
             context.setValidationFailureMessage("Unable to determine list of valid issuers");
             return ValidationResult.INDETERMINATE;
             */
