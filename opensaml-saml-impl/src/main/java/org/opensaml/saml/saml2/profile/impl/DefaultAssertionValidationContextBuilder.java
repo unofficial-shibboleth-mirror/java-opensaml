@@ -36,32 +36,28 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
+import org.opensaml.messaging.context.navigate.MessageContextLookup;
+import org.opensaml.messaging.context.navigate.MessageContextLookup.Direction;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.InboundMessageContextLookup;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.binding.security.impl.MessageContextEntityIDLookup;
-import org.opensaml.saml.common.binding.security.impl.MessageContextEntityIDLookup.Direction;
+import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.messaging.context.SAMLSelfEntityContext;
+import org.opensaml.saml.common.messaging.context.navigate.SAMLEntityIDFunction;
+import org.opensaml.saml.common.messaging.context.navigate.SAMLMessageInfoContextIDFunction;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
-import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.profile.impl.ValidateAssertions.AssertionValidationInput;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
@@ -73,6 +69,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  *  Function which implements default behavior for building an instance of {@link ValidationContext}
@@ -982,17 +984,26 @@ public class DefaultAssertionValidationContextBuilder
     /** Default strategy for resolving the valid InResponseTo value. */
     public static class DefaultValidInResponseToLookupFunction implements Function<ProfileRequestContext, String> {
 
+        /** The lookup delegate. */
+        private Function<MessageContext, String> delegate;
+
+        /** Constructor. */
+        public DefaultValidInResponseToLookupFunction() {
+            delegate = new SAMLMessageInfoContextIDFunction().compose(
+                    new ChildContextLookup<>(SAMLMessageInfoContext.class).compose(
+                            new MessageContextLookup<>(Direction.OUTBOUND)));
+        }
+
         /** {@inheritDoc} */
         public String apply(@Nullable final ProfileRequestContext prc) {
-            if (prc == null 
-                    || prc.getOutboundMessageContext() == null 
-                    || prc.getOutboundMessageContext().getMessage() == null
-                    || ! RequestAbstractType.class.isInstance(prc.getOutboundMessageContext().getMessage())) {
+            if (prc == null || prc.getInboundMessageContext() == null) {
                 return null;
             }
-            return RequestAbstractType.class.cast(prc.getOutboundMessageContext().getMessage()).getID();
+
+            //Note: Doesn't matter whether we apply to inbound or outbound
+            return delegate.apply(prc.getInboundMessageContext());
         }
-        
+
     }
     
     /** 
@@ -1005,12 +1016,13 @@ public class DefaultAssertionValidationContextBuilder
     public static class DefaultValidIssuersLookupFunction implements Function<ProfileRequestContext, Set<String>> {
         
         /** The lookup delegate. */
-        private MessageContextEntityIDLookup delegate;
+        private Function<MessageContext, String> delegate;
 
         /** Constructor. */
         public DefaultValidIssuersLookupFunction() {
-            delegate = new MessageContextEntityIDLookup(SAMLPeerEntityContext.class);
-            delegate.setDirection(Direction.OUTBOUND);
+            delegate = new SAMLEntityIDFunction().compose(
+                    new ChildContextLookup<>(SAMLPeerEntityContext.class).compose(
+                            new MessageContextLookup<>(Direction.OUTBOUND)));
         }
 
         /** {@inheritDoc} */

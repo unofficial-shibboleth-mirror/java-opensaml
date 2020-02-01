@@ -99,6 +99,7 @@ public final class SAMLMessageInfoContext extends BaseContext {
      */
     @Nullable protected String resolveMessageId() {
         final SAMLObject samlMessage = resolveSAMLMessage();
+        //SAML 2 Request
         if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
             final org.opensaml.saml.saml2.core.RequestAbstractType request =  
                     (org.opensaml.saml.saml2.core.RequestAbstractType) samlMessage;
