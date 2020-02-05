@@ -298,7 +298,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      *  being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
-     * @param required 
+     * @param required whether the NotBefore value is required
      * 
      * @return the result of the validation evaluation
      * 
