@@ -21,6 +21,7 @@ import java.io.UnsupportedEncodingException;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.velocity.VelocityContext;
@@ -127,6 +128,9 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         } catch (final MarshallingException e) {
             log.error("Error marshalling KeyInfo based on signing credential: {}", e.getMessage());
             throw new MessageEncodingException("Error marshalling KeyInfo based on signing credential", e);
+        } catch (final EncodingException e) {
+            log.error("Error base64 encoding KeyInfo from signing credential: {}", e.getMessage());
+            throw new MessageEncodingException("Error base64 encoding KeyInfo from signing credential", e);
         }
     }
 
@@ -237,6 +241,9 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         } catch (final UnsupportedEncodingException e) {
             log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
             throw new MessageEncodingException("Unable to encode message, UTF-8 encoding is not supported");
+        } catch (final EncodingException e) {
+            log.error("Error base64 encoding signature of form control data: {}",e.getMessage());
+            throw new MessageEncodingException("Unable to base64 encode signature of form control data",e);
         }
 
         return b64Signature;

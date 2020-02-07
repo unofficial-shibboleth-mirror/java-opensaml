@@ -24,6 +24,7 @@ import java.io.Writer;
 import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -212,6 +213,9 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
         } catch (final UnsupportedEncodingException e) {
             log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
             throw new MessageEncodingException("Unable to encode message, UTF-8 encoding is not supported");
+        } catch (final EncodingException e) {
+            log.error("Unable to base64 encode SAML message: {}",e.getMessage());
+            throw new MessageEncodingException("Unable to base64 encode SAML message",e);
         }
 
         final String relayState = SAMLBindingSupport.getRelayState(messageContext);

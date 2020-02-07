@@ -29,6 +29,7 @@ import javax.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -193,8 +194,9 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
                         getLogPrefix());
                 log.debug(Base64Support.encode(requestCredential.getEntityCertificate().getEncoded(),
                         Base64Support.UNCHUNKED));
-            } catch (final CertificateEncodingException e) {
-                // do nothing
+            } catch (final CertificateEncodingException | EncodingException e) {
+                // do nothing other than complete debug log
+                log.debug("{} Could not encode certificate for debug output",getLogPrefix());
             }
         }
         

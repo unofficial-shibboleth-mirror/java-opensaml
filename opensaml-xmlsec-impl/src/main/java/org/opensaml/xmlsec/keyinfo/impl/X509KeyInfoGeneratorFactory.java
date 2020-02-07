@@ -551,9 +551,10 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          * 
          * @param x509Data the X509Data element being processed.
          * @param cert the certificate being processed
+         * @throws SecurityException  if there is an error in generating the subject key identifier
          */ 
         protected void processCertX509SKI(@Nonnull final X509Data x509Data,
-                @Nonnull final java.security.cert.X509Certificate cert) {
+                @Nonnull final java.security.cert.X509Certificate cert) throws SecurityException {
             if (options.emitX509SKI) {
                 final X509SKI xmlSKI = KeyInfoSupport.buildX509SKI(cert);
                 if (xmlSKI != null) {

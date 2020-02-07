@@ -40,6 +40,7 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
@@ -684,9 +685,10 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      * 
      * @throws CertificateException ...
      * @throws DecodingException if an issue base64-decoding SKI values
+     * @throws SecurityException if an issue building X509SKI.
      */
     @Test
-    public void testBuildSubjectKeyIdentifier() throws CertificateException, DecodingException {
+    public void testBuildSubjectKeyIdentifier() throws CertificateException, DecodingException, SecurityException {
         byte[] skiValue = Base64Support.decode(cert1SKIPlainBase64);
         X509SKI xmlSKI = KeyInfoSupport.buildX509SKI(javaCert1);
         Assert.assertNotNull(xmlSKI, "Constructed X509SKI was null");

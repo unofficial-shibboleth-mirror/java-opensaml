@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
@@ -140,16 +141,21 @@ public class AddGeneratedKeyToAssertions extends AbstractConditionalProfileActio
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<GeneratedKey>getBuilderOrThrow(
                         GeneratedKey.DEFAULT_ELEMENT_NAME);
 
-        final String key = Base64Support.encode(ecpContext.getSessionKey(), false);
-        
-        for (final Assertion assertion : response.getAssertions()) {
-            final Advice advice = SAML2ActionSupport.addAdviceToAssertion(this, assertion);
-            final GeneratedKey gk = keyBuilder.buildObject();
-            gk.setValue(key);
-            advice.getChildren().add(gk);
+        try {
+            final String key = Base64Support.encode(ecpContext.getSessionKey(), false);
+            
+            for (final Assertion assertion : response.getAssertions()) {
+                final Advice advice = SAML2ActionSupport.addAdviceToAssertion(this, assertion);
+                final GeneratedKey gk = keyBuilder.buildObject();
+                gk.setValue(key);
+                advice.getChildren().add(gk);
+            }        
+            log.debug("{} Added GeneratedKey to Advice", getLogPrefix());
+        } catch(final EncodingException e) {
+            //should never happen
+            log.error("{} Error, could not add GeneratedKey to Advice", getLogPrefix(),e);
+            ActionSupport.buildEvent(profileRequestContext, EventIds.MESSAGE_PROC_ERROR);
         }
-        
-        log.debug("{} Added GeneratedKey to Advice", getLogPrefix());
     }
 
 }

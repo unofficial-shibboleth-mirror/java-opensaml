@@ -28,6 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -168,14 +169,20 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
                 throw new MessageEncodingException("Unable to build artifact for message to relying party");
             }
 
-            final String artifactString = Base64Support.encode(artifact.getArtifactBytes(), Base64Support.UNCHUNKED);
+           
             try {
+                final String artifactString = Base64Support.encode(artifact.getArtifactBytes(), 
+                        Base64Support.UNCHUNKED);
                 artifactMap.put(artifactString, requester, issuer, assertion);
+                queryParams.add(new Pair<>("SAMLart", artifactString));
             } catch (final IOException e) {
                 log.error("Unable to store assertion mapping for artifact: {}", e.getMessage());
                 throw new MessageEncodingException("Unable to store assertion mapping for artifact", e);
+            } catch (final EncodingException e) {
+                log.error("Unable to base64 encode artifact for message to relying party: {}", e.getMessage());
+                throw new MessageEncodingException("Unable to base64 encode artifact for message to relying party", e);
             }
-            queryParams.add(new Pair<>("SAMLart", artifactString));
+            
         }
 
         final String encodedEndpoint = urlBuilder.buildURL();

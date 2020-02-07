@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
@@ -85,9 +86,10 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
     /**
      * Test that the advice is properly added if there is a single assertion, without an Advice element, in the
      * response.
+     * @throws EncodingException if the ecp session key can not be base64 encoded.
      */
     @Test
-    public void testSingleAssertion() {
+    public void testSingleAssertion() throws EncodingException {
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
 
         final Response response = SAML2ActionTestingSupport.buildResponse();
@@ -112,9 +114,10 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
     /**
      * Test that the advice is properly added if there is a single assertion, with an Advice element, in the
      * response.
+     * @throws EncodingException if the ecp session key can not be base64 encoded.
      */
     @Test
-    public void testSingleAssertionWithExistingCondition() {
+    public void testSingleAssertionWithExistingCondition() throws EncodingException {
 
         final Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
         SAML2ActionSupport.addAdviceToAssertion(action, assertion);
@@ -135,9 +138,10 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(key.getValue(), Base64Support.encode(ecp.getSessionKey(), false));
     }
 
-    /** Test that the advice is properly added if there are multiple assertions in the response. */
+    /** Test that the advice is properly added if there are multiple assertions in the response. 
+     * @throws EncodingException if the ecp session key can not be base64 encoded.*/
     @Test
-    public void testMultipleAssertion() {
+    public void testMultipleAssertion() throws EncodingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());

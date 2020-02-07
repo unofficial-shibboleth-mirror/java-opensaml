@@ -67,6 +67,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -466,7 +467,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
             }
             throw new MessageDecodingException("SOAP message payload was not an instance of ArtifactResponse: " 
                     + response.getClass().getName());
-        } catch (final MessageException | SOAPException | SecurityException e) {
+        } catch (final MessageException | SOAPException | SecurityException | EncodingException e) {
             throw new MessageDecodingException("Error dereferencing artifact", e);
         }
     }
@@ -506,10 +507,11 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param peerRoleDescriptor the peer RoleDescriptor
      * @param selfEntityID the entityID of this party, the issuer of the protocol request message
      * @return the SAML protocol message for artifact resolution
+     * @throws EncodingException if the artifact can not be base64 encoded.
      */
     @Nonnull private ArtifactResolve buildArtifactResolveRequestMessage(@Nonnull final SAML2Artifact artifact, 
             @Nonnull final String endpoint, @Nonnull final RoleDescriptor peerRoleDescriptor, 
-            @Nonnull final String selfEntityID) {
+            @Nonnull final String selfEntityID) throws EncodingException  {
         
         final ArtifactResolve request = 
                 (ArtifactResolve) XMLObjectSupport.buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);

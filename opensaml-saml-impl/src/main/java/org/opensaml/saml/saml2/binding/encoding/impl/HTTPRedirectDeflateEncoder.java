@@ -33,6 +33,7 @@ import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.net.URLBuilder;
@@ -147,10 +148,10 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
                 deflaterStream.finish();
 
                 return Base64Support.encode(bytesOut.toByteArray(), Base64Support.UNCHUNKED);
-            }
-        } catch (final IOException e) {
+            }            
+        } catch (final IOException | EncodingException e) {
             throw new MessageEncodingException("Unable to DEFLATE and Base64 encode SAML message", e);
-        }
+        } 
     }
 
     /**
@@ -292,6 +293,9 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
             throw new MessageEncodingException("Unable to sign URL query string", e);
         } catch (final UnsupportedEncodingException e) {
             // UTF-8 encoding is required to be supported by all JVMs
+        } catch (final EncodingException e) {
+            log.error("Error during URL signing process: {}", e.getMessage());
+            throw new MessageEncodingException("Unable to base64 encode signature of URL query string", e);
         }
 
         return b64Signature;

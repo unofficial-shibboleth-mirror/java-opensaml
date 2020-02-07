@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.CryptoBinary;
 import com.google.common.base.Strings;
 
 import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 
 /**
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.CryptoBinary}.
@@ -66,7 +67,19 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
         if (bigInt == null) {
             setValue(null);
         } else {
-            setValue(KeyInfoSupport.encodeCryptoBinaryFromBigInteger(bigInt));
+            try {
+                setValue(KeyInfoSupport.encodeCryptoBinaryFromBigInteger(bigInt));
+            } catch (final EncodingException e) { 
+                /*
+                 * Should never happen, but if for some reason the bigInt
+                 * is not null but can not be converted and encoded as 
+                 * base64, set both the string value to null and the
+                 * bigIntValue to null so they are consistent. 
+                 */
+                setValue(null);
+                bigIntValue=null;
+                return;
+            }
         }
         bigIntValue = bigInt;
     }

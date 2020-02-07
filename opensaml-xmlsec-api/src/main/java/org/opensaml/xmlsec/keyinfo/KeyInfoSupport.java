@@ -46,12 +46,14 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
@@ -351,14 +353,20 @@ public class KeyInfoSupport {
             throws CertificateEncodingException {
         Constraint.isNotNull(cert, "X.509 certificate cannot be null");
         
+       
         final XMLObjectBuilder<org.opensaml.xmlsec.signature.X509Certificate> xmlCertBuilder =
                     XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
                             org.opensaml.xmlsec.signature.X509Certificate.DEFAULT_ELEMENT_NAME);
         final org.opensaml.xmlsec.signature.X509Certificate xmlCert =
                 xmlCertBuilder.buildObject(org.opensaml.xmlsec.signature.X509Certificate.DEFAULT_ELEMENT_NAME);
-        xmlCert.setValue(Base64Support.encode(cert.getEncoded(), Base64Support.CHUNKED));
-
-        return xmlCert;
+        
+        try {
+            xmlCert.setValue(Base64Support.encode(cert.getEncoded(), Base64Support.CHUNKED));  
+            return xmlCert;
+        } catch (final EncodingException e) {
+            throw new CertificateEncodingException("X.509 certificate could not be base64 encoded");
+        }
+        
     }
 
     /**
@@ -378,9 +386,13 @@ public class KeyInfoSupport {
                             org.opensaml.xmlsec.signature.X509CRL.DEFAULT_ELEMENT_NAME);
         final org.opensaml.xmlsec.signature.X509CRL xmlCRL =
                 xmlCRLBuilder.buildObject(org.opensaml.xmlsec.signature.X509CRL.DEFAULT_ELEMENT_NAME);
-        xmlCRL.setValue(Base64Support.encode(crl.getEncoded(), Base64Support.CHUNKED));
-
-        return xmlCRL;
+        
+        try {
+            xmlCRL.setValue(Base64Support.encode(crl.getEncoded(), Base64Support.CHUNKED));
+            return xmlCRL;
+        } catch (final EncodingException e) {
+            throw new CRLException("X.509CRL could not be base64 encoded");
+        } 
     }
 
     /**
@@ -434,10 +446,15 @@ public class KeyInfoSupport {
      * Build an {@link X509SKI} containing the subject key identifier extension value contained within a certificate.
      * 
      * @param javaCert the Java X509Certificate from which to extract the subject key identifier value.
-     * @return a new X509SKI object, or null if the certificate did not contain the subject key identifier extension
+     * @return a new X509SKI object, or null if the certificate did not contain the subject key identifier extension, 
+     *         or the subject key identifier binary can not be base64-encoded.
+     * @throws SecurityException if there is a problem building the subject key identifier. 
      */
-    @Nullable public static X509SKI buildX509SKI(@Nonnull final X509Certificate javaCert) {
+    @Nullable public static X509SKI buildX509SKI(@Nonnull final X509Certificate javaCert) throws SecurityException {
         final byte[] skiPlainValue = X509Support.getSubjectKeyIdentifier(javaCert);
+        
+        final Logger log = getLogger();
+        
         if (skiPlainValue == null || skiPlainValue.length == 0) {
             return null;
         }
@@ -445,9 +462,15 @@ public class KeyInfoSupport {
         final XMLObjectBuilder<X509SKI> xmlSKIBuilder =
                 XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(X509SKI.DEFAULT_ELEMENT_NAME);
         final X509SKI xmlSKI = xmlSKIBuilder.buildObject(X509SKI.DEFAULT_ELEMENT_NAME);
-        xmlSKI.setValue(Base64Support.encode(skiPlainValue, Base64Support.CHUNKED));
-
-        return xmlSKI;
+        
+        
+        try {
+            xmlSKI.setValue(Base64Support.encode(skiPlainValue, Base64Support.CHUNKED));
+            return xmlSKI;
+        } catch (final EncodingException e) {
+            log.warn("X.509 subject key identifier could not be base64 encoded",e);
+            throw new SecurityException("X.509 subject key identifier could not be base64 encoded",e);
+        }        
     }
 
     /**
@@ -474,9 +497,13 @@ public class KeyInfoSupport {
                 XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(X509Digest.DEFAULT_ELEMENT_NAME);
         final X509Digest xmlDigest = builder.buildObject(X509Digest.DEFAULT_ELEMENT_NAME);
         xmlDigest.setAlgorithm(algorithmURI);
-        xmlDigest.setValue(Base64Support.encode(hash, Base64Support.CHUNKED));
         
-        return xmlDigest;
+        try {
+            xmlDigest.setValue(Base64Support.encode(hash, Base64Support.CHUNKED));
+            return xmlDigest;
+        } catch (final EncodingException e) {
+            throw new CertificateEncodingException("X509Digest could not be base64 encoded");
+        }
     }    
     
     /**
@@ -601,7 +628,12 @@ public class KeyInfoSupport {
         
         final KeyFactory keyFactory = KeyFactory.getInstance(pk.getAlgorithm());
         final X509EncodedKeySpec keySpec = keyFactory.getKeySpec(pk, X509EncodedKeySpec.class);
-        keyValue.setValue(Base64Support.encode(keySpec.getEncoded(), Base64Support.CHUNKED));
+        
+        try {
+            keyValue.setValue(Base64Support.encode(keySpec.getEncoded(), Base64Support.CHUNKED));
+        } catch (final EncodingException e) {
+           throw new InvalidKeySpecException("X509 Key spec could not be base64 encoded",e);
+        }
         
         keyInfo.getDEREncodedKeyValues().add(keyValue);
     }
@@ -765,8 +797,10 @@ public class KeyInfoSupport {
      * 
      * @param bigInt the BigInteger value
      * @return the encoded CryptoBinary value
+     * @throws EncodingException if the BigInteger as bytes can not be base64 encoded.
      */
-    @Nonnull public static final String encodeCryptoBinaryFromBigInteger(@Nonnull final BigInteger bigInt) {
+    @Nonnull public static final String encodeCryptoBinaryFromBigInteger(@Nonnull final BigInteger bigInt) 
+            throws EncodingException {
         Constraint.isNotNull(bigInt, "BigInteger cannot be null");
         
         // This code is really complicated, for now just use the Apache xmlsec lib code directly.

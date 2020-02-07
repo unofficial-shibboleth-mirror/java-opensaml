@@ -22,6 +22,7 @@ import java.security.SecureRandom;
 import java.util.List;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
@@ -93,8 +94,9 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
      * 
      * @throws MessageHandlerException ...
      * @throws NoSuchAlgorithmException ...
+     * @throws EncodingException on failure to base64 encode the key.
      */
-    @Test public void testSuccess() throws MessageHandlerException, NoSuchAlgorithmException {
+    @Test public void testSuccess() throws MessageHandlerException, NoSuchAlgorithmException, EncodingException {
 
         final byte[] key = new byte[32];
         SecureRandom.getInstance("SHA1prng").nextBytes(key);

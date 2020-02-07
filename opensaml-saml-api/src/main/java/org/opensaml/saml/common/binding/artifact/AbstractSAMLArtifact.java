@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.commons.codec.binary.Hex;
@@ -85,8 +86,9 @@ public abstract class AbstractSAMLArtifact implements SAMLArtifact {
      * Gets the Base64 encoded artifact.
      * 
      * @return Base64 encoded artifact.
+     * @throws EncodingException if the artifact could not be base64 encoded.
      */
-    @Nonnull @NotEmpty public String base64Encode() {
+    @Nonnull @NotEmpty public String base64Encode() throws EncodingException {
         return Base64Support.encode(getArtifactBytes(), Base64Support.UNCHUNKED);
     }
 
@@ -120,6 +122,12 @@ public abstract class AbstractSAMLArtifact implements SAMLArtifact {
 
     /** {@inheritDoc} */
     public String toString() {
-        return base64Encode();
+        try {
+            return base64Encode();
+        } catch (final EncodingException e) {
+            //very unlikely.
+            //TODO: not clear this is the right thing to do here. could throw RT exception.
+            return e.getMessage()!=null ? this.getClass().getSimpleName()+"#toString() threw "+e.getMessage(): "";
+        }
     }
 }

@@ -40,6 +40,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
@@ -86,7 +87,8 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
     }    
    
     @Test
-    public void testRequestDecoding() throws MessageDecodingException, MessageEncodingException, MarshallingException {
+    public void testRequestDecoding() throws MessageDecodingException, MessageEncodingException, 
+                                                            MarshallingException, EncodingException {
         AuthnRequest samlRequest =
                 (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         samlRequest.setDestination(null);
@@ -113,7 +115,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testExplicitDefaultSAMLEncoding() 
-            throws MessageDecodingException, MessageEncodingException, MarshallingException {
+            throws MessageDecodingException, MessageEncodingException, MarshallingException, EncodingException {
         AuthnRequest samlRequest =
                 (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         samlRequest.setDestination(null);
@@ -130,7 +132,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
     @Test(expectedExceptions=MessageDecodingException.class)
     public void testUnsupportedSAMLEncoding() 
-            throws MessageDecodingException, MessageEncodingException, MarshallingException {
+            throws MessageDecodingException, MessageEncodingException, MarshallingException, EncodingException {
         AuthnRequest samlRequest =
                 (AuthnRequest) unmarshallElement("/org/opensaml/saml/saml2/binding/AuthnRequest.xml");
         samlRequest.setDestination(null);
@@ -163,7 +165,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
         request.setQueryString(url.getQuery());
     }
 
-    protected String encodeMessage(SAMLObject message) throws MessageEncodingException, MarshallingException {
+    protected String encodeMessage(SAMLObject message) throws MessageEncodingException, MarshallingException, EncodingException {
         try {
             marshallerFactory.getMarshaller(message).marshall(message);
             String messageStr = SerializeSupport.nodeToString(message.getDOM());

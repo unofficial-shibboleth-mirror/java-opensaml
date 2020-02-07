@@ -59,13 +59,11 @@ public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
         final SAMLObjectBuilder<GeneratedKey> builder = (SAMLObjectBuilder<GeneratedKey>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<GeneratedKey>getBuilderOrThrow(
                         GeneratedKey.DEFAULT_ELEMENT_NAME);
-        
-        final GeneratedKey header = builder.buildObject();
-        header.setValue(Base64Support.encode(messageContext.getSubcontext(ECPContext.class).getSessionKey(), false));
-        
-        SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);
-        
         try {
+            final GeneratedKey header = builder.buildObject();
+            header.setValue(Base64Support.encode(messageContext.getSubcontext(ECPContext.class).getSessionKey(),
+                    false));
+            SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);      
             SOAPMessagingSupport.addHeaderBlock(messageContext, header);
         } catch (final Exception e) {
             throw new MessageHandlerException(e);
