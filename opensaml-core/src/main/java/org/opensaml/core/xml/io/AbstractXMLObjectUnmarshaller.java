@@ -21,8 +21,10 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
@@ -49,16 +51,30 @@ import org.w3c.dom.Text;
  * <li>Unmarshalling schema instance type (xsi:type) declaration attributes</li>
  * <li>Delegating to child classes element, text, and attribute processing</li>
  * </ul>
- * 
+ *
+ * <p>
+ * <strong>WARNING:</strong> As of OpenSAML v3.4 you must not surface comment or CDATA Node instances in the parsed DOM
+ * which is to be unmarshalled. DOM elements containing either comment or CDATA Node children will be rejected,
+ * resulting in a thrown {@link UnmarshallingException}. When using a JAXP parser, this may be accomplished by setting
+ * both {@link DocumentBuilderFactory#setIgnoringComments(boolean)} and
+ * {@link DocumentBuilderFactory#setCoalescing(boolean)} to <code>true</code>. Our {@link BasicParserPool}
+ * implementation defaults both of these appropriately and we highly recommend its use.
+ * </p>
+ *
+ * <p>
  * <strong>WARNING:</strong> In the case of Text nodes this unmarshaller will use
- * {@link org.w3c.dom.Text#getWholeText()} * to retrieve the content. This is acceptable
- * if and only if our XML parsing classes are used in their default (safe) configuration
- * on the Java platforms we officially support. If you need to deal with elements that contain multiple
- * text node children, or you intend to rely on your own XML parser and/or JAXP implementation,
- * you will need to override {@link #unmarshallTextContent(XMLObject, Text)} and do "the right thing"
- * for your implementation.
+ * {@link org.w3c.dom.Text#getData()} to retrieve the content. This is acceptable
+ * if and only if XML parsing is done in a manner consistent with the above warning,
+ * such that multiple adjacent Text nodes are not surfaced in the DOM.
+ * If you need to deal with elements that contain multiple Text node children, or you intend to rely on your own XML
+ * parser and/or JAXP implementation, you will need to override {@link #unmarshallTextContent(XMLObject, Text)}
+ * and do "the right thing" for your implementation.
+ * </p>
  * 
- * Failure to adhere to this warning will very likely lead to security bugs.
+ * <p>
+ * Failure to adhere to either of these warnings will very likely lead to security bugs and/or
+ * incorrect unmarshalling behavior.
+ * </p>
  */
 public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
 
@@ -322,18 +338,18 @@ public abstract class AbstractXMLObjectUnmarshaller implements Unmarshaller {
     }
 
     /**
-     * Unmarshalls the given Text node into a usable string by way of {@link Text#getWholeText()} and passes it off to
+     * Unmarshalls the given Text node into a usable string by way of {@link Text#getData()} and passes it off to
      * {@link AbstractXMLObjectUnmarshaller#processElementContent(XMLObject, String)} if the string is not null and
      * contains something other than whitespace.
      * 
-     * @param xmlObject the XMLObject recieving the element content
+     * @param xmlObject the XMLObject receiving the element content
      * @param content the textual content
      * 
      * @throws UnmarshallingException thrown if there is a problem unmarshalling the text node
      */
     protected void unmarshallTextContent(@Nonnull final XMLObject xmlObject, @Nonnull final Text content)
             throws UnmarshallingException {
-        final String textContent = StringSupport.trimOrNull(content.getWholeText());
+        final String textContent = StringSupport.trimOrNull(content.getData());
         if (textContent != null) {
             processElementContent(xmlObject, textContent);
         }
