@@ -55,6 +55,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
+ * @event {@link EventIds#MESSAGE_PROC_ERROR}
  */
 public class AddGeneratedKeyToAssertions extends AbstractConditionalProfileAction {
 
