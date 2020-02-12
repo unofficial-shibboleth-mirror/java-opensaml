@@ -27,11 +27,16 @@ import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.apache.commons.codec.binary.Hex;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Base class for SAML artifacts.
  */
 public abstract class AbstractSAMLArtifact implements SAMLArtifact {
+    
+    /** Class logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractSAMLArtifact.class);
 
     /** 2 byte artifact type code. */
     private byte[] typeCode;
@@ -125,9 +130,8 @@ public abstract class AbstractSAMLArtifact implements SAMLArtifact {
         try {
             return base64Encode();
         } catch (final EncodingException e) {
-            //very unlikely.
-            //TODO: not clear this is the right thing to do here. could throw RT exception.
-            return e.getMessage()!=null ? this.getClass().getSimpleName()+"#toString() threw "+e.getMessage(): "";
+            log.warn("Could not base64 encode SAML artifact for toString representation: {}",e.getMessage());
+            return "";
         }
     }
 }
