@@ -17,11 +17,15 @@
 
 package org.opensaml.xmlsec.algorithm;
 
+import java.util.Objects;
+import java.util.Set;
+
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;
 import org.opensaml.xmlsec.config.GlobalAlgorithmRegistryInitializer;
@@ -70,6 +74,28 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         
         registry.deregister(SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA256));
+    }
+    
+    @Test
+    public void testTypeIndexing() {
+        AlgorithmRegistry registry = new AlgorithmRegistry();
+        
+        Assert.assertNull(registry.get(SignatureConstants.ALGO_ID_DIGEST_SHA256));
+        
+        Assert.assertTrue(registry.getRegisteredURIsByType(AlgorithmType.MessageDigest).isEmpty());
+        Assert.assertTrue(registry.getRegisteredByType(AlgorithmType.MessageDigest).isEmpty());
+        
+        registry.register(new DigestSHA256());
+        
+        Assert.assertEquals(registry.getRegisteredURIsByType(AlgorithmType.MessageDigest).size(), 1);
+        Assert.assertTrue(registry.getRegisteredURIsByType(AlgorithmType.MessageDigest).contains(SignatureConstants.ALGO_ID_DIGEST_SHA256));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.MessageDigest).size(), 1);
+        Assert.assertTrue(DigestSHA256.class.isInstance(registry.getRegisteredByType(AlgorithmType.MessageDigest).iterator().next()));
+        
+        registry.deregister(new DigestSHA256());
+        
+        Assert.assertTrue(registry.getRegisteredURIsByType(AlgorithmType.MessageDigest).isEmpty());
+        Assert.assertTrue(registry.getRegisteredByType(AlgorithmType.MessageDigest).isEmpty());
     }
     
     @Test
@@ -165,6 +191,82 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
         Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
         
+    }
+    
+    @Test
+    public void testGlobalRegistryGetByType() {
+        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+        Assert.assertNotNull(registry);
+        
+        // Test all expected types from default auto-loaded set
+        Set<String> byType = null;
+        
+        // BlockEncryption
+        byType = registry.getRegisteredURIsByType(AlgorithmType.BlockEncryption);
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.BlockEncryption).stream().filter(Objects::nonNull).count(), byType.size());
+        
+        // Digest
+        byType = registry.getRegisteredURIsByType(AlgorithmType.MessageDigest);
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_RIPEMD160));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA256));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA384));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_DIGEST_SHA512));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.MessageDigest).stream().filter(Objects::nonNull).count(), byType.size());
+        
+        // HMAC
+        byType = registry.getRegisteredURIsByType(AlgorithmType.Mac);
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_RIPEMD160));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_SHA1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.Mac).stream().filter(Objects::nonNull).count(), byType.size());
+        
+        // KeyTransport
+        byType = registry.getRegisteredURIsByType(AlgorithmType.KeyTransport);
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.KeyTransport).stream().filter(Objects::nonNull).count(), byType.size());
+        
+        // Signature
+        byType = registry.getRegisteredURIsByType(AlgorithmType.Signature);
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_RIPEMD160));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA384));
+        Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.Signature).stream().filter(Objects::nonNull).count(), byType.size());
+        
+        // SymmetricKeyWrap
+        byType = registry.getRegisteredURIsByType(AlgorithmType.SymmetricKeyWrap);
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYWRAP_AES192));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.SymmetricKeyWrap).stream().filter(Objects::nonNull).count(), byType.size());
+
     }
     
     @Test(dataProvider = "loadBCTestData")

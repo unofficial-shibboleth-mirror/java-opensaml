@@ -20,11 +20,13 @@ package org.opensaml.xmlsec.algorithm;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,9 +34,13 @@ import javax.crypto.Cipher;
 import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -52,6 +58,9 @@ public class AlgorithmRegistry {
     /** Map of registered algorithm descriptors. */
     private Map<String, AlgorithmDescriptor> descriptors;
     
+    /** Index of registered AlgorithmType to algorithm URI. */
+    private Map<AlgorithmType, Set<String>> types;
+
     /** Set containing algorithms which are supported by the runtime environment. */
     private Set<String> runtimeSupported;
     
@@ -64,6 +73,7 @@ public class AlgorithmRegistry {
     /** Constructor. */
     public  AlgorithmRegistry() {
         descriptors = new HashMap<>();
+        types = new HashMap<>();
         runtimeSupported = new HashSet<>();
         digestAlgorithms = new HashMap<>();
         signatureAlgorithms = new HashMap<>();
@@ -194,12 +204,51 @@ public class AlgorithmRegistry {
     }
 
     /**
+     * Get the set of algorithm URIs registered for the given type.
+     *
+     * @param type the algorithm type
+     *
+     * @return the set of URIs for the given type, may be empty
+     */
+    @Unmodifiable @NonnullElements @NotLive
+    public Set<String> getRegisteredURIsByType(@Nonnull final AlgorithmType type) {
+        Constraint.isNotNull(type, "AlgorithmType was null");
+        final Set<String> byType = types.get(type);
+        if (byType != null) {
+            return Set.copyOf(byType);
+        }
+        return Collections.emptySet();
+    }
+
+    /**
+     * Get the set of {@link AlgorithmDescriptor} registered for the given type.
+     *
+     * @param type the algorithm type
+     *
+     * @return the set of descriptors for the given type, may be empty
+     */
+    @Unmodifiable @NonnullElements @NotLive
+    public Set<AlgorithmDescriptor> getRegisteredByType(@Nonnull final AlgorithmType type) {
+        return getRegisteredURIsByType(type).stream()
+                .map(this::get)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toUnmodifiableSet());
+    }
+
+    /**
      * Add the algorithm descriptor to the indexes which support the various lookup methods 
      * available via the registry's API.
      * 
      * @param descriptor the algorithm
      */
     private void index(final AlgorithmDescriptor descriptor) {
+        Set<String> byType = types.get(descriptor.getType());
+        if (byType == null) {
+            byType = new HashSet<>();
+            types.put(descriptor.getType(), byType);
+        }
+        byType.add(descriptor.getURI());
+
         if (checkRuntimeSupports(descriptor)) {
             runtimeSupported.add(descriptor.getURI());
         } else {
@@ -226,6 +275,11 @@ public class AlgorithmRegistry {
      * @param descriptor the algorithm
      */
     private void deindex(final AlgorithmDescriptor descriptor) {
+        final Set<String> byType = types.get(descriptor.getType());
+        if (byType != null) {
+            byType.remove(descriptor.getURI());
+        }
+
         runtimeSupported.remove(descriptor.getURI());
         
         if (descriptor instanceof DigestAlgorithm) {
