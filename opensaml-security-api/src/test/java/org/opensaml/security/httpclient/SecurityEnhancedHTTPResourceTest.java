@@ -18,12 +18,10 @@
 package org.opensaml.security.httpclient;
 
 import java.io.IOException;
-import java.security.cert.X509Certificate;
 import java.util.Collections;
 
-import javax.net.ssl.SSLException;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
-import javax.net.ssl.SSLSocket;
 
 import net.shibboleth.ext.spring.resource.HTTPResource;
 import net.shibboleth.ext.spring.resource.ResourceTestHelper;
@@ -32,7 +30,6 @@ import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 import net.shibboleth.utilities.java.support.repository.RepositorySupport;
 
 import org.apache.http.client.HttpClient;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -75,18 +72,9 @@ public class SecurityEnhancedHTTPResourceTest {
         final HTTPResource existsResource = new HTTPResource(client, existsHttps);
         existsResource.setHttpClientContextHandler(handler);
         
-        params.setHostnameVerifier(new X509HostnameVerifier() {
+        params.setHostnameVerifier(new HostnameVerifier() {
             public boolean verify(String arg0, SSLSession arg1) {
                 return false;
-            }
-            public void verify(String host, SSLSocket ssl) throws IOException {
-                throw new IOException("Rejecting hostname for test");
-            }
-            public void verify(String host, X509Certificate cert) throws SSLException {
-                throw new SSLException("Rejecting hostname for test");
-            }
-            public void verify(String host, String[] cns, String[] subjectAlts) throws SSLException {
-                throw new SSLException("Rejecting hostname for test");
             }
         });
         

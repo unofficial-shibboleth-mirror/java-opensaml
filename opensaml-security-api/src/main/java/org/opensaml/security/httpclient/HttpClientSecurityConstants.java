@@ -56,7 +56,7 @@ public final class HttpClientSecurityConstants {
      * Must be an instance of {@link java.util.List}<code>&lt;</code>{@link String}<code>&gt;</code>. */
     public static final String CONTEXT_KEY_TLS_CIPHER_SUITES = TLSSocketFactory.CONTEXT_KEY_TLS_CIPHER_SUITES;
     
-    /** HttpContext key for an instance of {@link org.apache.http.conn.ssl.X509HostnameVerifier}. */
+    /** HttpContext key for an instance of {@link javax.net.ssl.HostnameVerifier}. */
     public static final String CONTEXT_KEY_HOSTNAME_VERIFIER = TLSSocketFactory.CONTEXT_KEY_HOSTNAME_VERIFIER;
     
     /** Constructor. */

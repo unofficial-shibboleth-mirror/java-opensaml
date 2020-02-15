@@ -20,9 +20,9 @@ package org.opensaml.security.httpclient;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.net.ssl.HostnameVerifier;
 
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 
@@ -64,7 +64,7 @@ public interface HttpClientSecurityConfiguration {
      * 
      * @return the hostname verifier, or null
      */
-    @Nullable public X509HostnameVerifier getHostnameVerifier();
+    @Nullable public HostnameVerifier getHostnameVerifier();
     
     /**
      * Get the optional client TLS credential.

@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nullable;
+import javax.net.ssl.HostnameVerifier;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -30,7 +31,6 @@ import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.AuthCache;
 import org.apache.http.client.CredentialsProvider;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
@@ -59,7 +59,7 @@ public class HttpClientSecurityParameters {
     @Nullable private List<String> tlsCipherSuites;
     
     /** The hostname verifier. */
-    @Nullable private X509HostnameVerifier hostnameVerifier;
+    @Nullable private HostnameVerifier hostnameVerifier;
     
     /** The X509 credential used for client TLS. */
     @Nullable private X509Credential clientTLSCredential;
@@ -241,7 +241,7 @@ public class HttpClientSecurityParameters {
      * 
      * @return the hostname verifier, or null
      */
-    @Nullable public X509HostnameVerifier getHostnameVerifier() {
+    @Nullable public HostnameVerifier getHostnameVerifier() {
         return hostnameVerifier;
     }
 
@@ -250,7 +250,7 @@ public class HttpClientSecurityParameters {
      * 
      * @param verifier the hostname verifier, or null
      */
-    public void setHostnameVerifier(@Nullable final X509HostnameVerifier verifier) {
+    public void setHostnameVerifier(@Nullable final HostnameVerifier verifier) {
         hostnameVerifier = verifier;
     }
 

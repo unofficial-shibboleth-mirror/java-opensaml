@@ -27,6 +27,7 @@ import java.util.Collections;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
@@ -34,7 +35,6 @@ import javax.net.ssl.SSLSocket;
 import org.apache.http.HttpHost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.ssl.X509HostnameVerifier;
 import org.apache.http.protocol.HttpContext;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
@@ -129,7 +129,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
     @Nonnull private LayeredConnectionSocketFactory wrappedFactory;
     
     /** The hostname verifier evaluated by this implementation. */
-    @Nullable private X509HostnameVerifier hostnameVerifier;
+    @Nullable private HostnameVerifier hostnameVerifier;
     
     /** Flag indicating whether a context trust engine attribute is required for TLS server validation. 
      * Default: true. */
@@ -169,7 +169,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
      * @param verifier the hostname verifier evaluated by this implementation
      */
     public SecurityEnhancedTLSSocketFactory(@Nonnull final LayeredConnectionSocketFactory factory, 
-            @Nullable final X509HostnameVerifier verifier) {
+            @Nullable final HostnameVerifier verifier) {
         this(factory, verifier, true);
     }
     /**
@@ -181,7 +181,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
      *         for TLS server validation.
      */
     public SecurityEnhancedTLSSocketFactory(@Nonnull final LayeredConnectionSocketFactory factory, 
-            @Nullable final X509HostnameVerifier verifier, final boolean trustEngineRequired) {
+            @Nullable final HostnameVerifier verifier, final boolean trustEngineRequired) {
         wrappedFactory = Constraint.isNotNull(factory, "Socket factory was null");
         hostnameVerifier = verifier;
         engineRequired = trustEngineRequired;
@@ -354,7 +354,9 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
     protected void performHostnameVerification(final Socket socket, final String hostname, final HttpContext context)
             throws IOException {
         if (hostnameVerifier != null && socket instanceof SSLSocket) {
-            hostnameVerifier.verify(hostname, (SSLSocket) socket);
+            if (! hostnameVerifier.verify(hostname, ((SSLSocket) socket).getSession())) {
+                throw new SSLPeerUnverifiedException("TLS hostname verification failed for hostname: " + hostname);
+            }
         }
     }
     
