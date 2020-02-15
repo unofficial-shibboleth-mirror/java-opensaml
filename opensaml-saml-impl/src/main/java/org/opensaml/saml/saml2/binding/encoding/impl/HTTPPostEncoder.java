@@ -169,9 +169,10 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
             HttpServletSupport.setUTF8Encoding(response);
             HttpServletSupport.setContentType(response, "text/html");
             
-            final Writer out = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
-            velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, out);
-            out.flush();
+            try (final Writer out = new OutputStreamWriter(response.getOutputStream(), "UTF-8")) {
+                velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, out);
+                out.flush();
+            }
         } catch (final Exception e) {
             log.error("Error invoking Velocity template: {}", e.getMessage());
             throw new MessageEncodingException("Error creating output document", e);

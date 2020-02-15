@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.binding.decoding.impl;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
@@ -87,10 +88,15 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder imp
         log.debug("Decoded SAML relay state of: {}", relayState);
         SAMLBindingSupport.setRelayState(messageContext, relayState);
 
-        final InputStream base64DecodedMessage = getBase64DecodedMessage(request);
-        final SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(base64DecodedMessage);
-        messageContext.setMessage(inboundMessage);
-        log.debug("Decoded SAML message");
+        // The default impl is a ByteArrayInputStream, which really doesn't need to be closed.  But this could
+        // be overridden, so be safe and make sure it gets closed.  Also for style and consistency.
+        try (final InputStream base64DecodedMessage = getBase64DecodedMessage(request)) {
+            final SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(base64DecodedMessage);
+            messageContext.setMessage(inboundMessage);
+            log.debug("Decoded SAML message");
+        } catch (final IOException e) {
+            throw new MessageDecodingException(e);
+        }
 
         populateBindingContext(messageContext);
         

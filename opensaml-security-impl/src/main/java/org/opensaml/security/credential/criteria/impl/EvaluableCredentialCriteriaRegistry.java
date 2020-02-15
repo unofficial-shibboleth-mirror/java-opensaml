@@ -173,31 +173,31 @@ public final class EvaluableCredentialCriteriaRegistry {
         initialized = true;
     }
 
-// Checkstyle: ReturnCount OFF    
     /**
      * Load the default set of criteria-evaluator mappings from the default mappings properties file.
      */
     public static synchronized void loadDefaultMappings() {
         final Logger log = getLogger();
         log.debug("Loading default evaluable credential criteria mappings");
-        final InputStream inStream =
-                EvaluableCredentialCriteriaRegistry.class.getResourceAsStream(DEFAULT_MAPPINGS_FILE);
-        if (inStream == null) {
-            log.error("Could not open resource stream from default mappings file '{}'", DEFAULT_MAPPINGS_FILE);
-            return;
-        }
+        try (final InputStream inStream =
+                EvaluableCredentialCriteriaRegistry.class.getResourceAsStream(DEFAULT_MAPPINGS_FILE) ) {
 
-        final Properties defaultMappings = new Properties();
-        try {
+            if (inStream == null) {
+                log.error("Could not open resource stream from default mappings file '{}'", DEFAULT_MAPPINGS_FILE);
+                return;
+            }
+
+            final Properties defaultMappings = new Properties();
             defaultMappings.load(inStream);
+
+            loadMappings(defaultMappings);
+
         } catch (final IOException e) {
             log.error("Error loading properties file from resource stream", e);
             return;
         }
 
-        loadMappings(defaultMappings);
     }
-// Checkstyle: ReturnCount OFF
 
     /**
      * Load a set of criteria-evaluator mappings from the supplied properties set.

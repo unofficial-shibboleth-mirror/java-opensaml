@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.common.xml;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
@@ -35,6 +38,8 @@ import org.opensaml.core.xml.XMLRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
+
+import com.google.common.io.ByteStreams;
 
 /**
  * A convenience builder for creating {@link Schema}s for validating SAML 1.0, 1.1, and 2.0.
@@ -246,13 +251,22 @@ public class SAMLSchemaBuilder {
     private void addSchemaToBuilder(@Nonnull final String source) {
         final Class<SAMLSchemaBuilder> clazz = SAMLSchemaBuilder.class;
         
-        final InputStream stream = clazz.getResourceAsStream(source);
-        if (stream != null) {
-            schemaBuilder.addSchema(stream);
-        } else {
-            log.error("Failed to locate schema resource: {}", source);
+        // To be safe, rather than pass the resource InputStream directly to the consumer,
+        // copy the bytes and ensure that the resource stream is closed.
+        try (final InputStream stream = clazz.getResourceAsStream(source)) {
+            if (stream != null) {
+                final ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                ByteStreams.copy(stream, baos);
+                schemaBuilder.addSchema(new ByteArrayInputStream(baos.toByteArray()));
+            } else {
+                log.error("Failed to locate schema resource: {}", source);
+                if (unresolvedSchemaFatal) {
+                    throw new XMLRuntimeException("Failed to locate schema resource: " + source);
+                }
+            }
+        } catch (final IOException e) {
             if (unresolvedSchemaFatal) {
-                throw new XMLRuntimeException("Failed to locate schema resource: " + source);
+                throw new XMLRuntimeException("Error loading schema resource: " + source);
             }
         }
     }

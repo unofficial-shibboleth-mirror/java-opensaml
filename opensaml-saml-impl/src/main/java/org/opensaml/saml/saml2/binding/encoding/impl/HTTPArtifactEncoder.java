@@ -259,9 +259,10 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         try {
             log.debug("Invoking velocity template");
             final HttpServletResponse response = getHttpServletResponse();
-            final OutputStreamWriter outWriter = new OutputStreamWriter(response.getOutputStream());
-            velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, outWriter);
-            outWriter.flush();
+            try (final OutputStreamWriter outWriter = new OutputStreamWriter(response.getOutputStream())) {
+                velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, outWriter);
+                outWriter.flush();
+            }
         } catch (final Exception e) {
             log.error("Error invoking velocity template to create POST form: {}", e.getMessage());
             throw new MessageEncodingException("Error creating output document", e);

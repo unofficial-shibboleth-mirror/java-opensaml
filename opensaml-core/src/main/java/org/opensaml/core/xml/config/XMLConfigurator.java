@@ -132,20 +132,24 @@ public class XMLConfigurator {
             return;
         }
 
-        try {
-            if (configurationFile.isDirectory()) {
-                final File[] configurations = configurationFile.listFiles();
-                for (int i = 0; i < configurations.length; i++) {
-                    log.debug("Parsing configuration file {}", configurations[i].getAbsolutePath());
-                    load(new FileInputStream(configurations[i]));
+        if (configurationFile.isDirectory()) {
+            final File[] configurations = configurationFile.listFiles();
+            for (int i = 0; i < configurations.length; i++) {
+                log.debug("Parsing configuration file {}", configurations[i].getAbsolutePath());
+                try (final FileInputStream fis = new FileInputStream(configurations[i])) {
+                    load(fis);
+                } catch (final IOException e) {
+                    throw new XMLConfigurationException("Error loading config file: " + configurations[i]);
                 }
-            } else {
-                // Given file is not a directory so try to load it directly
-                log.debug("Parsing configuration file {}", configurationFile.getAbsolutePath());
-                load(new FileInputStream(configurationFile));
             }
-        } catch (final FileNotFoundException e) {
-            // ignore, we already have the files
+        } else {
+            // Given file is not a directory so try to load it directly
+            log.debug("Parsing configuration file {}", configurationFile.getAbsolutePath());
+            try (final FileInputStream fis = new FileInputStream(configurationFile)) {
+                load(fis);
+            } catch (final IOException e) {
+                throw new XMLConfigurationException("Error loading config file: " + configurationFile);
+            }
         }
     }
 

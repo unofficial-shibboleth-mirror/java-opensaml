@@ -184,9 +184,10 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             HttpServletSupport.setUTF8Encoding(response);
             HttpServletSupport.setContentType(response, "text/html");
 
-            final Writer out = new OutputStreamWriter(response.getOutputStream(), "UTF-8");
-            velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, out);
-            out.flush();
+            try (final Writer out = new OutputStreamWriter(response.getOutputStream(), "UTF-8")) {
+                velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, out);
+                out.flush();
+            }
         } catch (final UnsupportedEncodingException e) {
             log.error("UTF-8 encoding is not supported, this VM is not Java compliant");
             throw new MessageEncodingException("Unable to encode message, UTF-8 encoding is not supported");

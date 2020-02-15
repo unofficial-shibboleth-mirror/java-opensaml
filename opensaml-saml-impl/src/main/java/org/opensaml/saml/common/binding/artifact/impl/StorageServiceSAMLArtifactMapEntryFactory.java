@@ -144,7 +144,10 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
         }
         
         try {
-            final Element rootElement = getParserPool().parse(new StringReader(value)).getDocumentElement();
+            Element rootElement = null;
+            try (final StringReader sr = new StringReader(value)) {
+                rootElement = getParserPool().parse(sr).getDocumentElement();
+            }
             final Node messageElement = rootElement.getFirstChild();
             if (!ElementSupport.isElementNamed(rootElement, null, "Mapping")) {
                 throw new IOException("SAMLArtifactMapEntry XML not rooted by expected element");

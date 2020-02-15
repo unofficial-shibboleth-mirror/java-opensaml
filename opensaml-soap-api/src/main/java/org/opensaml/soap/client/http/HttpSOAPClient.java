@@ -42,6 +42,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.entity.ContentType;
@@ -211,17 +212,28 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
         try {
             post = createPostMethod(endpoint, soapRequestParams, soapCtx.getEnvelope());
 
-            final HttpResponse result = httpClient.execute(post);
-            final int code = result.getStatusLine().getStatusCode();
-            log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", code, endpoint);
+            HttpResponse response = null;
+            try {
+                response = httpClient.execute(post);
+                final int code = response.getStatusLine().getStatusCode();
+                log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", code, endpoint);
 
-            if (code == HttpStatus.SC_OK) {
-                processSuccessfulResponse(result, context);
-            } else if (code == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
-                processFaultResponse(result, context);
-            } else {
-                throw new SOAPClientException("Received " + code + " HTTP response status code from HTTP request to "
-                        + endpoint);
+                if (code == HttpStatus.SC_OK) {
+                    processSuccessfulResponse(response, context);
+                } else if (code == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
+                    processFaultResponse(response, context);
+                } else {
+                    throw new SOAPClientException("Received " + code + " HTTP response status code from HTTP request to "
+                            + endpoint);
+                }
+            } finally {
+                try {
+                    if (response != null && response instanceof CloseableHttpResponse) {
+                        ((CloseableHttpResponse)response).close();
+                    }
+                } catch (final IOException e) {
+                    log.error("Error closing HttpResponse", e);
+                }
             }
         } catch (final IOException e) {
             throw new SOAPClientException("Unable to send request to " + endpoint, e);

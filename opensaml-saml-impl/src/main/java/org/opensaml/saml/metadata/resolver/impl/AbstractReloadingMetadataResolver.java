@@ -625,7 +625,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     /**
      * Converts an InputStream into a byte array.
      * 
-     * @param ins input stream to convert
+     * @param ins input stream to convert. The stream will be closed after its data is consumed.
      * 
      * @return resultant byte array
      * 
@@ -642,11 +642,18 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                 output.write(buffer, 0, n);
             }
 
-            ins.close();
             return output.toByteArray();
         } catch (final IOException e) {
             throw new ResolverException(e);
+        } finally {
+            try {
+                ins.close();
+            } catch (final IOException e) {
+                // Ignore here.  If the read() threw also, then that should be reported, not this.
+                // If the close() throws, we don't care b/c we've already read the bytes.
+            }
         }
+
     }
 
     /** Background task that refreshes metadata. */

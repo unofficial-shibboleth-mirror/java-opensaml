@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.config;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 import org.opensaml.core.config.InitializationException;
@@ -49,11 +50,15 @@ public abstract class AbstractXMLObjectProviderInitializer implements Initialize
                 }
                 // Checkstyle: ModifiedControlVariable ON
                 log.debug("Loading XMLObject provider configuration from resource '{}'", resource);
-                final InputStream is = Thread.currentThread().getContextClassLoader().getResourceAsStream(resource);
-                if (is != null) {
-                    configurator.load(is);
-                } else {
-                    throw new XMLConfigurationException("Resource not found");
+                try (final InputStream is =
+                        Thread.currentThread().getContextClassLoader().getResourceAsStream(resource)) {
+                    if (is != null) {
+                        configurator.load(is);
+                    } else {
+                        throw new XMLConfigurationException("Resource not found: " + resource);
+                    }
+                } catch (final IOException e) {
+                    throw new XMLConfigurationException("Error loading resource: " + resource, e);
                 }
             }
         } catch (final XMLConfigurationException e) {
