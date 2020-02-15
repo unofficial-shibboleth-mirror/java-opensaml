@@ -156,14 +156,20 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     }
     
     /** {@inheritDoc} */
+    // Checkstyle: CyclomaticComplexity ON
+    
+    /** {@inheritDoc} */
     public boolean isServerSide() {
         return false;
     }
+    
+    /** {@inheritDoc} */
 
     /** {@inheritDoc} */
     public boolean isClustered() {
         return true;
     }
+    
 
     /**
      * Set the servlet request in which to manage per-request data.
@@ -544,7 +550,8 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 return;
             }
             
-            try (final JsonReader reader = Json.createReader(new StringReader(raw))) {
+            try {
+                final JsonReader reader = Json.createReader(new StringReader(raw));
                 final JsonStructure st = reader.read();
                 if (!(st instanceof JsonObject)) {
                     throw new JsonException("Found invalid data structure while parsing context map");
@@ -644,8 +651,9 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
             final long now = System.currentTimeMillis();
             boolean empty = true;
 
-            try (final StringWriter sink = new StringWriter(128);
-                    final JsonGenerator gen = Json.createGenerator(sink)) {
+            try {
+                final StringWriter sink = new StringWriter(128);
+                final JsonGenerator gen = Json.createGenerator(sink);
                 
                 gen.writeStartObject();
                 for (final Map.Entry<String,Map<String, MutableStorageRecord<?>>> context : contextMap.entrySet()) {
