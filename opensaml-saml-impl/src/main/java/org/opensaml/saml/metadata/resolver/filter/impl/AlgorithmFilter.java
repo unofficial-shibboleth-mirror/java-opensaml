@@ -98,34 +98,33 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         Constraint.isNotNull(rules, "Rules map cannot be null");
         
+        rules.values().stream()
+            .flatMap(Collection::stream)
+            .filter(DigestMethod.class::isInstance)
+            .map(DigestMethod.class::cast)
+            .map(DigestMethod::getAlgorithm)
+            .distinct()
+            .forEach(uri -> checkDigestMethod(uri));
+
+        rules.values().stream()
+            .flatMap(Collection::stream)
+            .filter(SigningMethod.class::isInstance)
+            .map(SigningMethod.class::cast)
+            .map(SigningMethod::getAlgorithm)
+            .distinct()
+            .forEach(uri -> checkSigningMethod(uri));
+
+        rules.values().stream()
+            .flatMap(Collection::stream)
+            .filter(EncryptionMethod.class::isInstance)
+            .map(EncryptionMethod.class::cast)
+            .map(EncryptionMethod::getAlgorithm)
+            .distinct()
+            .forEach(uri -> checkEncryptionMethod(uri));
+
         applyMap = ArrayListMultimap.create(rules.size(), 1);
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<XMLObject>> entry : rules.entrySet()) {
             if (entry.getKey() != null && entry.getValue() != null) {
-                
-                entry.getValue()
-                    .stream()
-                    .filter(DigestMethod.class::isInstance)
-                    .map(DigestMethod.class::cast)
-                    .map(DigestMethod::getAlgorithm)
-                    .distinct()
-                    .forEach(uri -> checkDigestMethod(uri));
-
-                entry.getValue()
-                    .stream()
-                    .filter(SigningMethod.class::isInstance)
-                    .map(SigningMethod.class::cast)
-                    .map(SigningMethod::getAlgorithm)
-                    .distinct()
-                    .forEach(uri -> checkSigningMethod(uri));
-
-                entry.getValue()
-                    .stream()
-                    .filter(EncryptionMethod.class::isInstance)
-                    .map(EncryptionMethod.class::cast)
-                    .map(EncryptionMethod::getAlgorithm)
-                    .distinct()
-                    .forEach(uri -> checkEncryptionMethod(uri));
-                
                 applyMap.putAll(entry.getKey(), List.copyOf(entry.getValue()));
             }
         }

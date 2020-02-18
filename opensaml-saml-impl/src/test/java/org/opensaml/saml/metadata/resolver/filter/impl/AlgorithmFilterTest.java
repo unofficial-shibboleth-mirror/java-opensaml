@@ -106,7 +106,7 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         final Collection<XMLObject> algs = List.of(digest1, digest2, signing1, signing2, enc, digest3, signing3, enc2);
         
         final AlgorithmFilter filter = new AlgorithmFilter();
-        filter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<XMLObject>>singletonMap(this, algs));
+        filter.setRules(Collections.singletonMap(this, algs));
         filter.initialize();
         
         metadataProvider.setMetadataFilter(filter);
