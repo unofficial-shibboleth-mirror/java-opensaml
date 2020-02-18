@@ -210,7 +210,7 @@ public class AlgorithmRegistry {
      *
      * @return the set of URIs for the given type, may be empty
      */
-    @Unmodifiable @NonnullElements @NotLive
+    @Nonnull @NonnullElements @Unmodifiable @NotLive
     public Set<String> getRegisteredURIsByType(@Nonnull final AlgorithmType type) {
         Constraint.isNotNull(type, "AlgorithmType was null");
         final Set<String> byType = types.get(type);
@@ -227,7 +227,7 @@ public class AlgorithmRegistry {
      *
      * @return the set of descriptors for the given type, may be empty
      */
-    @Unmodifiable @NonnullElements @NotLive
+    @Nonnull @NonnullElements @Unmodifiable @NotLive
     public Set<AlgorithmDescriptor> getRegisteredByType(@Nonnull final AlgorithmType type) {
         return getRegisteredURIsByType(type).stream()
                 .map(this::get)
