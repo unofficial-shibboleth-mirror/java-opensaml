@@ -21,7 +21,6 @@ import static org.testng.Assert.*;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
@@ -76,15 +75,21 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         final DigestMethod digest2 = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         digest2.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
 
+        final DigestMethod digest3 = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        digest3.setAlgorithm("foo");
+
         final SigningMethod signing1 = buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
         signing1.setAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
 
         final SigningMethod signing2 = buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
         signing2.setAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
-        
+
+        final SigningMethod signing3 = buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
+        signing3.setAlgorithm("foo");
+
         final EncryptionMethod enc = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
         enc.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
-        
+
         final org.opensaml.xmlsec.signature.DigestMethod embeddedDigest =
                 buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         embeddedDigest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
@@ -94,7 +99,11 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         mgf.setAlgorithm(EncryptionConstants.ALGO_ID_MGF1_SHA256);
         enc.getUnknownXMLObjects().add(mgf);
 
-        final Collection<XMLObject> algs = Arrays.asList(digest1, digest2, signing1, signing2, enc);
+        final EncryptionMethod enc2 = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
+        enc2.setAlgorithm("foo");
+
+
+        final Collection<XMLObject> algs = List.of(digest1, digest2, signing1, signing2, enc, digest3, signing3, enc2);
         
         final AlgorithmFilter filter = new AlgorithmFilter();
         filter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<XMLObject>>singletonMap(this, algs));
@@ -111,24 +120,27 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         assertNotNull(exts);
         
         List<XMLObject> extElements = exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
-        assertEquals(extElements.size(), 2);
+        assertEquals(extElements.size(), 3);
         
         Iterator<XMLObject> digests = extElements.iterator();
         assertEquals(((DigestMethod) digests.next()).getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         assertEquals(((DigestMethod) digests.next()).getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        assertEquals(((DigestMethod) digests.next()).getAlgorithm(), "foo");
 
         extElements = exts.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME);
-        assertEquals(extElements.size(), 2);
+        assertEquals(extElements.size(), 3);
         
         Iterator<XMLObject> signings = extElements.iterator();
         assertEquals(((SigningMethod) signings.next()).getAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         assertEquals(((SigningMethod) signings.next()).getAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512);
+        assertEquals(((SigningMethod) signings.next()).getAlgorithm(), "foo");
 
         for (final RoleDescriptor role : entity.getRoleDescriptors()) {
             for (final KeyDescriptor key : role.getKeyDescriptors()) {
                 final List<EncryptionMethod> methods = key.getEncryptionMethods();
-                assertEquals(methods.size(), 1);
+                assertEquals(methods.size(), 2);
                 assertEquals(methods.get(0).getAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+                assertEquals(methods.get(1).getAlgorithm(), "foo");
                 
                 final List<XMLObject> encDigests = methods.get(0).getUnknownXMLObjects(
                         org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);

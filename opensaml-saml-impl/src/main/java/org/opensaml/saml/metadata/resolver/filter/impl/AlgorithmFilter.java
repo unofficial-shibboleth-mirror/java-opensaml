@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -27,6 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -49,6 +49,9 @@ import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.credential.UsageType;
+import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
+import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -67,6 +70,9 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AlgorithmFilter.class);
 
+    /** Registry for sanity checking algorithms. */
+    @Nonnull private AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+    
     /** Rules for adding algorithms. */
     @Nonnull @NonnullElements private Multimap<Predicate<EntityDescriptor>,XMLObject> applyMap;
     
@@ -81,6 +87,8 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         applyMap = ArrayListMultimap.create();
     }
     
+    
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Set the mappings from {@link Predicate} to extensions of various types to apply.
      * 
@@ -93,10 +101,36 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         applyMap = ArrayListMultimap.create(rules.size(), 1);
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<XMLObject>> entry : rules.entrySet()) {
             if (entry.getKey() != null && entry.getValue() != null) {
+                
+                entry.getValue()
+                    .stream()
+                    .filter(DigestMethod.class::isInstance)
+                    .map(DigestMethod.class::cast)
+                    .map(DigestMethod::getAlgorithm)
+                    .distinct()
+                    .forEach(uri -> checkDigestMethod(uri));
+
+                entry.getValue()
+                    .stream()
+                    .filter(SigningMethod.class::isInstance)
+                    .map(SigningMethod.class::cast)
+                    .map(SigningMethod::getAlgorithm)
+                    .distinct()
+                    .forEach(uri -> checkSigningMethod(uri));
+
+                entry.getValue()
+                    .stream()
+                    .filter(EncryptionMethod.class::isInstance)
+                    .map(EncryptionMethod.class::cast)
+                    .map(EncryptionMethod::getAlgorithm)
+                    .distinct()
+                    .forEach(uri -> checkEncryptionMethod(uri));
+                
                 applyMap.putAll(entry.getKey(), List.copyOf(entry.getValue()));
             }
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
     @Override
@@ -210,4 +244,53 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         }
     }
     
+    /**
+     * Check the input method for "known" and "supported" status for logging purposes.
+     * 
+     * @param uri input method
+     */
+    private void checkDigestMethod(@Nonnull @NotEmpty final String uri) {
+        if (registry != null) {
+            if (!registry.getRegisteredURIsByType(AlgorithmType.MessageDigest).contains(uri)) {
+                log.warn("DigestMethod {} unrecognized by algorithm registry", uri);
+            } else if (!registry.isRuntimeSupported(uri)) {
+                log.warn("DigestMethod {} unsupported by runtime", uri);
+            }
+        }
+    }
+    
+    /**
+     * Check the input method for "known" and "supported" status for logging purposes.
+     * 
+     * @param uri input method
+     */
+    private void checkSigningMethod(@Nonnull @NotEmpty final String uri) {
+        if (registry != null) {
+            if (!registry.getRegisteredURIsByType(AlgorithmType.Signature).contains(uri) &&
+                    !registry.getRegisteredURIsByType(AlgorithmType.Mac).contains(uri)) {
+                log.warn("SigningMethod {} unrecognized by algorithm registry", uri);
+            } else if (!registry.isRuntimeSupported(uri)) {
+                log.warn("SigningMethod {} unsupported by runtime", uri);
+            }
+        }
+    }
+
+    /**
+     * Check the input method for "known" and "supported" status for logging purposes.
+     * 
+     * @param uri input method
+     */
+    private void checkEncryptionMethod(@Nonnull @NotEmpty final String uri) {
+        if (registry != null) {
+            if (!registry.getRegisteredURIsByType(AlgorithmType.BlockEncryption).contains(uri) &&
+                    !registry.getRegisteredURIsByType(AlgorithmType.KeyTransport).contains(uri) &&
+                    !registry.getRegisteredURIsByType(AlgorithmType.KeyAgreement).contains(uri) &&
+                    !registry.getRegisteredURIsByType(AlgorithmType.SymmetricKeyWrap).contains(uri)) {
+                log.warn("EncryptionMethod {} unrecognized by algorithm registry", uri);
+            } else if (!registry.isRuntimeSupported(uri)) {
+                log.warn("EncryptionMethod {} unsupported by runtime", uri);
+            }
+        }
+    }
+
 }
