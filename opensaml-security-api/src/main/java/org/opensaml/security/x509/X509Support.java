@@ -53,7 +53,7 @@ import org.bouncycastle.asn1.ASN1Primitive;
 import org.bouncycastle.asn1.DEROctetString;
 import org.bouncycastle.asn1.x509.GeneralName;
 import org.bouncycastle.asn1.x509.GeneralNames;
-import org.bouncycastle.x509.extension.X509ExtensionUtil;
+import org.bouncycastle.cert.jcajce.JcaX509ExtensionUtils;
 import org.cryptacular.EncodingException;
 import org.cryptacular.util.CertUtil;
 import org.cryptacular.util.CodecUtil;
@@ -255,7 +255,7 @@ public class X509Support {
         }
 
         try {
-            final ASN1Primitive ski = X509ExtensionUtil.fromExtensionValue(derValue);
+            final ASN1Primitive ski = JcaX509ExtensionUtils.parseExtensionValue(derValue);
             return ((DEROctetString) ski).getOctets();
         } catch (final IOException e) {
             getLogger().error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
