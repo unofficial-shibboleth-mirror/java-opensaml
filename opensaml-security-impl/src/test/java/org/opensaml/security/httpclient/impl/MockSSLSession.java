@@ -24,7 +24,6 @@ import java.util.List;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSessionContext;
-import javax.security.cert.X509Certificate;
 
 /**
  *  Mock impl of {@link SSLSession} used in testing hostname verifiers and SSL socket factories.
@@ -39,10 +38,12 @@ public class MockSSLSession implements SSLSession {
         this.peerHost = host;
     }
     
+    @Override
     public Certificate[] getPeerCertificates() throws SSLPeerUnverifiedException {
         return peerCertificates.toArray(new Certificate[0]);
     }
 
+    @Override
     public String getPeerHost() {
         return peerHost;
     }
@@ -51,76 +52,96 @@ public class MockSSLSession implements SSLSession {
     
     // Methods below here are just unimplemented stubs    
 
+    @Override
     public int getApplicationBufferSize() {
         return 0;
     }
 
+    @Override
     public String getCipherSuite() {
         return null;
     }
 
+    @Override
     public long getCreationTime() {
         return 0;
     }
 
+    @Override
     public byte[] getId() {
         return null;
     }
 
+    @Override
     public long getLastAccessedTime() {
         return 0;
     }
 
+    @Override
     public Certificate[] getLocalCertificates() {
         return null;
     }
 
+    @Override
     public Principal getLocalPrincipal() {
         return null;
     }
 
+    @Override
     public int getPacketBufferSize() {
         return 0;
     }
 
-    public X509Certificate[] getPeerCertificateChain() throws SSLPeerUnverifiedException {
+    @Deprecated
+    @Override
+    public javax.security.cert.X509Certificate[] getPeerCertificateChain() throws SSLPeerUnverifiedException {
         return null;
     }
 
+    @Override
     public int getPeerPort() {
         return 0;
     }
 
+    @Override
     public Principal getPeerPrincipal() throws SSLPeerUnverifiedException {
         return null;
     }
 
+    @Override
     public String getProtocol() {
         return null;
     }
 
+    @Override
     public SSLSessionContext getSessionContext() {
         return null;
     }
 
+    @Override
     public Object getValue(String name) {
         return null;
     }
 
+    @Override
     public String[] getValueNames() {
         return null;
     }
 
+    @Override
     public void invalidate() {
     }
 
+    @Override
     public boolean isValid() {
         return false;
     }
 
+    @Override
     public void putValue(String name, Object value) {
     }
 
+    @Override
     public void removeValue(String name) {
     }
     
