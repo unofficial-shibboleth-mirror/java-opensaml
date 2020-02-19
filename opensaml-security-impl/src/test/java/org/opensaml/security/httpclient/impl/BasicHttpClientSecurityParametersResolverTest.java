@@ -22,7 +22,7 @@ import java.net.URISyntaxException;
 import java.security.KeyException;
 import java.security.cert.CertificateException;
 
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.CredentialSupport;
@@ -232,7 +232,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         BasicHttpClientSecurityConfiguration config = new BasicHttpClientSecurityConfiguration();
         config.setClientTLSCredential(x509Credential);
         config.setCredentialsProvider(new BasicCredentialsProvider());
-        config.setHostnameVerifier(new StrictHostnameVerifier());
+        config.setHostnameVerifier(new DefaultHostnameVerifier());
         config.setTLSCipherSuites(Lists.newArrayList("test"));
         config.setTLSProtocols(Lists.newArrayList("test"));
         config.setTLSTrustEngine(new MockTrustEngine());

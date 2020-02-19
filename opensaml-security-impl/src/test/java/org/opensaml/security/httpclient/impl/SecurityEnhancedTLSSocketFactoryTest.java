@@ -33,7 +33,7 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import org.apache.http.HttpHost;
 import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.protocol.HttpContext;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
@@ -117,7 +117,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
        
        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
        
        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
@@ -133,7 +133,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
        
        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
        
        try {
@@ -153,7 +153,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL, Boolean.TRUE);
        
        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
        
        try {
@@ -173,7 +173,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL, Boolean.FALSE);
        
        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname), new DefaultHostnameVerifier());
        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
        
        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
@@ -187,7 +187,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
        httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
        
        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               Collections.singletonList((Certificate)cred.getEntityCertificate()), "bogus.example.com"), new StrictHostnameVerifier());
+               Collections.singletonList((Certificate)cred.getEntityCertificate()), "bogus.example.com"), new DefaultHostnameVerifier());
        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
        
        
@@ -207,7 +207,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
        
        // Pass an empty cert list, to simulate unlikely condition of SSLSession not having any peerCertificates
        securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-               new ArrayList<Certificate>(), hostname), new StrictHostnameVerifier());
+               new ArrayList<Certificate>(), hostname), new DefaultHostnameVerifier());
        Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
        
        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
@@ -218,9 +218,8 @@ public class SecurityEnhancedTLSSocketFactoryTest {
     private LayeredConnectionSocketFactory buildInnerSSLFactory(List<Certificate> certs, String host) {
         if (certs == null) {
             return new MockTLSSocketFactory();
-        } else {
-            return new MockTLSSocketFactory(certs, host);
         }
+        return new MockTLSSocketFactory(certs, host);
     }
     
     private BasicX509Credential getCredential(String entityCertFileName, String ... chainMembers) {

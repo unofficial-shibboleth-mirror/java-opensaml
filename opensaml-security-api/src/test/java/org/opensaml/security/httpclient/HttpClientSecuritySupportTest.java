@@ -43,7 +43,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import org.apache.http.client.CredentialsProvider;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
@@ -108,7 +108,7 @@ public class HttpClientSecuritySupportTest {
         params.setTLSProtocols(Lists.newArrayList("foo"));
         params.setTLSCipherSuites(Lists.newArrayList("foo"));
         params.setClientTLSCredential(new BasicX509Credential(cert));
-        params.setHostnameVerifier(new StrictHostnameVerifier());
+        params.setHostnameVerifier(new DefaultHostnameVerifier());
         params.setServerTLSFailureFatal(Boolean.TRUE);
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, params, false);
@@ -134,7 +134,7 @@ public class HttpClientSecuritySupportTest {
         context.setAttribute(CONTEXT_KEY_TLS_PROTOCOLS, Lists.newArrayList("foo"));
         context.setAttribute(CONTEXT_KEY_TLS_CIPHER_SUITES, Lists.newArrayList("foo"));
         context.setAttribute(CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, new BasicX509Credential(cert));
-        context.setAttribute(CONTEXT_KEY_HOSTNAME_VERIFIER, new StrictHostnameVerifier());
+        context.setAttribute(CONTEXT_KEY_HOSTNAME_VERIFIER, new DefaultHostnameVerifier());
         context.setAttribute(CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL, Boolean.FALSE);
         
         HttpClientSecurityParameters params = new HttpClientSecurityParameters();
@@ -144,7 +144,7 @@ public class HttpClientSecuritySupportTest {
         params.setTLSProtocols(Lists.newArrayList("foo"));
         params.setTLSCipherSuites(Lists.newArrayList("foo"));
         params.setClientTLSCredential(new BasicX509Credential(cert));
-        params.setHostnameVerifier(new StrictHostnameVerifier());
+        params.setHostnameVerifier(new DefaultHostnameVerifier());
         params.setServerTLSFailureFatal(Boolean.TRUE);
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, params, true);
@@ -169,7 +169,7 @@ public class HttpClientSecuritySupportTest {
         List<String> protocols = Lists.newArrayList("foo");
         List<String> cipherSuites = Lists.newArrayList("foo");
         X509Credential clientTLSCred = new BasicX509Credential(cert);
-        HostnameVerifier verifier = new StrictHostnameVerifier();
+        HostnameVerifier verifier = new DefaultHostnameVerifier();
         
         context.setCredentialsProvider(credProvider);
         context.setAttribute(CONTEXT_KEY_TRUST_ENGINE, trustEngine);
@@ -187,7 +187,7 @@ public class HttpClientSecuritySupportTest {
         params.setTLSProtocols(Lists.newArrayList("foo"));
         params.setTLSCipherSuites(Lists.newArrayList("foo"));
         params.setClientTLSCredential(new BasicX509Credential(cert));
-        params.setHostnameVerifier(new StrictHostnameVerifier());
+        params.setHostnameVerifier(new DefaultHostnameVerifier());
         params.setServerTLSFailureFatal(Boolean.TRUE);
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, params, false);

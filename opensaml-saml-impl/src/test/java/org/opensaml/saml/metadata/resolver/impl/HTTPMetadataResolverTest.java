@@ -54,6 +54,7 @@ import com.google.common.io.ByteStreams;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientSupport;
+import net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory;
 import net.shibboleth.utilities.java.support.repository.RepositorySupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -361,7 +362,7 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     public static LayeredConnectionSocketFactory buildTrustEngineSocketFactory(boolean trustEngineRequired) {
         SecurityEnhancedTLSSocketFactory factory = new SecurityEnhancedTLSSocketFactory(
                 HttpClientSupport.buildNoTrustTLSSocketFactory(),
-                SSLConnectionSocketFactory.STRICT_HOSTNAME_VERIFIER,
+                TLSSocketFactory.STRICT_HOSTNAME_VERIFIER,
                 trustEngineRequired
                 );
         return factory;

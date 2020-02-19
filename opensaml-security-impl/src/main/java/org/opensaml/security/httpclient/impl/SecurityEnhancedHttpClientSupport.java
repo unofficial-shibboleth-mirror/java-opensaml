@@ -27,8 +27,8 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.ssl.AllowAllHostnameVerifier;
-import org.apache.http.conn.ssl.StrictHostnameVerifier;
+import org.apache.http.conn.ssl.DefaultHostnameVerifier;
+import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialKeyManager;
 
@@ -126,7 +126,7 @@ public final class SecurityEnhancedHttpClientSupport {
         final TLSSocketFactoryBuilder wrappedFactoryBuilder = new TLSSocketFactoryBuilder();
         
         if (supportTrustEngine || supportClientTLS) {
-            wrappedFactoryBuilder.setHostnameVerifier(new AllowAllHostnameVerifier());
+            wrappedFactoryBuilder.setHostnameVerifier(new NoopHostnameVerifier());
             
             if (supportTrustEngine) {
                 wrappedFactoryBuilder.setTrustManagers(
@@ -138,13 +138,12 @@ public final class SecurityEnhancedHttpClientSupport {
                         Collections.<KeyManager>singletonList(new ThreadLocalX509CredentialKeyManager()));
             }
             
-            return new SecurityEnhancedTLSSocketFactory(wrappedFactoryBuilder.build(), new StrictHostnameVerifier(), 
+            return new SecurityEnhancedTLSSocketFactory(wrappedFactoryBuilder.build(), new DefaultHostnameVerifier(), 
                     supportTrustEngine);
             
-        } else {
-            return HttpClientSupport.buildStrictTLSSocketFactory();
         }
         
+        return HttpClientSupport.buildStrictTLSSocketFactory();
     }
 
 }
