@@ -27,7 +27,6 @@ import org.apache.xml.security.signature.XMLSignature;
 import org.apache.xml.security.transforms.Transform;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
-import org.apache.xml.security.utils.IdResolver;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
@@ -44,7 +43,6 @@ import com.google.common.base.Strings;
  * A validator for instances of {@link Signature}, which validates that the signature meets security-related
  * requirements indicated by the SAML profile of XML Signature.
  */
-@SuppressWarnings("deprecation")
 public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
 
     /** Class logger. */
@@ -154,10 +152,10 @@ public class SAMLSignatureProfileValidator implements SignaturePrevalidator {
         }
         final Document doc = expected.getOwnerDocument();
         
-        final Element resolved = IdResolver.getElementById(doc, uriID);
+        final Element resolved = doc.getElementById(uriID);
         if (resolved == null) {
-            log.error("Apache xmlsec IdResolver could not resolve the Element for id reference: {}", uriID);
-            throw new SignatureException("Apache xmlsec IdResolver could not resolve the Element for id reference: "
+            log.error("DOM Document getElementById could not resolve the Element for id reference: {}", uriID);
+            throw new SignatureException("DOM Document getElementById could not resolve the Element for id reference: "
                     + uriID);
         }
         

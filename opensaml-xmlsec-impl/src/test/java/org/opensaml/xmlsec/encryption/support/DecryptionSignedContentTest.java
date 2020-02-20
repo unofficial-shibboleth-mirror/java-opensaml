@@ -28,7 +28,6 @@ import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.apache.xml.security.utils.IdResolver;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -132,13 +131,12 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         Signature decryptedSignature = decryptedSXO.getSignature();
 
-        // Sanity check that DOM-based ID resolution using Apache XML Security IdResolver
+        // Sanity check that DOM-based ID resolution using Document getElementById
         // is working correctly
-        Element apacheResolvedElement = IdResolver.getElementById(decryptedSignature.getDOM().getOwnerDocument(),
-                idValue);
-        Assert.assertNotNull(apacheResolvedElement, "Apache ID resolver found no element");
+        Element resolvedElement = decryptedSignature.getDOM().getOwnerDocument().getElementById(idValue);
+        Assert.assertNotNull(resolvedElement, "Document getElementById found no element");
         Assert.assertTrue(decryptedSXO.getDOM()
-                .isSameNode(apacheResolvedElement), "Apache ID resolver found different element");
+                .isSameNode(resolvedElement), "Document getElementById found different element");
 
         // Verify signature of the decrypted content - this is where bug was reported.
         SignatureValidator.validate(decryptedSignature, signingCredential);
