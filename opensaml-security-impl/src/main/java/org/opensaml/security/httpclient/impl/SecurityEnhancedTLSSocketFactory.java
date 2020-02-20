@@ -100,9 +100,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
  * 
  * <p>
  * Since this implementation may typically be used with and wrap a "no trust" SSL socket factory,
- * an optional instance of {@link X509HostnameVerifier} may also be supplied.  If supplied, hostname 
- * verification will be performed against the new {@link SSLSocket} via 
- * {@link X509HostnameVerifier#verify(String, SSLSocket)}.
+ * an optional instance of {@link javax.net.ssl.HostnameVerifier} may also be supplied.
  * </p>
  * 
  * <p>
