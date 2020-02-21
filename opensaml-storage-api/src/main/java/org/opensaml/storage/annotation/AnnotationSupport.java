@@ -291,9 +291,8 @@ public final class AnnotationSupport {
         if (field == null) {
             try {
                 field = targetClass.getDeclaredField(fieldName);
-                if (!field.isAccessible()) {
-                    // Try to make it accessible
-                    field.setAccessible(true);
+                if (!(field.canAccess(target) || field.trySetAccessible())) {
+                  throw new IllegalStateException("Field " + field + " is not accessible and cannot be mutated");
                 }
                 FIELD_CACHE.put(key, field);
             } catch (final NoSuchFieldException e) {

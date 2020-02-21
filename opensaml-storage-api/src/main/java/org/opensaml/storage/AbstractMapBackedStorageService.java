@@ -292,6 +292,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
      * @return  a pair consisting of the version of the record read back, if any, and the record itself
      * @throws IOException  if errors occur in the read process 
      */
+    @SuppressWarnings("unchecked")
     @Nonnull protected <T> Pair<Long,StorageRecord<T>> readImpl(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key, @Nullable final Long version) throws IOException {
 
