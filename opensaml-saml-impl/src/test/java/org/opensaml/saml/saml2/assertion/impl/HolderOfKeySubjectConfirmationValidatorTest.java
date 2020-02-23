@@ -42,6 +42,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.utilities.java.support.codec.EncodingException;
+
 /**
  *
  */
@@ -80,7 +82,7 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
     }
 
     @Test
-    public void testValidPublicKeyViaKeyValue() throws AssertionValidationException {
+    public void testValidPublicKeyViaKeyValue() throws AssertionValidationException, EncodingException {
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
@@ -110,7 +112,7 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
     }
     
     @Test
-    public void testInvalidPublicKey() throws AssertionValidationException {
+    public void testInvalidPublicKey() throws AssertionValidationException, EncodingException {
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
@@ -170,7 +172,7 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
     }
     
     @Test
-    public void testMissingPresenterParams() throws AssertionValidationException {
+    public void testMissingPresenterParams() throws AssertionValidationException, EncodingException {
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
@@ -210,7 +212,7 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
     }
     
     @Test
-    public void testCertAndKeyParamMismatch() throws AssertionValidationException {
+    public void testCertAndKeyParamMismatch() throws AssertionValidationException, EncodingException {
         KeyInfoSupport.addPublicKey(keyInfo, publicKey1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();

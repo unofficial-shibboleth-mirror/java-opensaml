@@ -515,8 +515,10 @@ public class KeyInfoSupport {
      * 
      * @param keyInfo the {@link KeyInfo} element to which to add the key
      * @param pk the native Java {@link PublicKey} to add
+     * @throws EncodingException if base64 encoding the components of the public key <code>pk</code> fails
      */
-    public static void addPublicKey(@Nonnull final KeyInfo keyInfo, @Nullable final PublicKey pk) {
+    public static void addPublicKey(@Nonnull final KeyInfo keyInfo, @Nullable final PublicKey pk) 
+            throws EncodingException {
         Constraint.isNotNull(keyInfo, "KeyInfo cannot be null");
         
         final XMLObjectBuilder<KeyValue> keyValueBuilder =
@@ -541,8 +543,10 @@ public class KeyInfoSupport {
      * 
      * @param rsaPubKey a native Java {@link RSAPublicKey}
      * @return an {@link RSAKeyValue} XMLObject
+     * @throws EncodingException if the RSA public key modulus/exponent can not be base64 encoded
      */
-    @Nonnull public static RSAKeyValue buildRSAKeyValue(@Nonnull final RSAPublicKey rsaPubKey) {
+    @Nonnull public static RSAKeyValue buildRSAKeyValue(@Nonnull final RSAPublicKey rsaPubKey) 
+            throws EncodingException {
         Constraint.isNotNull(rsaPubKey, "RSA public key cannot be null");
         
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
@@ -572,8 +576,10 @@ public class KeyInfoSupport {
      * 
      * @param dsaPubKey a native Java {@link DSAPublicKey}
      * @return an {@link DSAKeyValue} XMLObject
+     * @throws EncodingException if the DSA public key parameters can not be base64 encoded
      */
-    @Nonnull public static DSAKeyValue buildDSAKeyValue(@Nonnull final DSAPublicKey dsaPubKey) {
+    @Nonnull public static DSAKeyValue buildDSAKeyValue(@Nonnull final DSAPublicKey dsaPubKey) 
+            throws EncodingException {
         Constraint.isNotNull(dsaPubKey, "DSA public key cannot be null");
         
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();

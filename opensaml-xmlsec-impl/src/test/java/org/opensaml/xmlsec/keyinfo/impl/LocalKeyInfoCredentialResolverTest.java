@@ -25,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -83,7 +84,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     }
 
     @Test
-    public void testKeyInfoWithKnownPublicKey() throws ResolverException {
+    public void testKeyInfoWithKnownPublicKey() throws ResolverException, EncodingException {
         KeyInfoSupport.addPublicKey(keyInfo, keyPair.getPublic());
         
         CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo) );
@@ -94,7 +95,7 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testKeyInfoWithUnknownPublicKey() throws IllegalArgumentException,
-        NoSuchAlgorithmException, NoSuchProviderException, ResolverException {
+        NoSuchAlgorithmException, NoSuchProviderException, ResolverException, EncodingException {
         
         KeyInfoSupport.addPublicKey(keyInfo, 
                 KeySupport.generateKeyPair("RSA", 1024, null).getPublic());

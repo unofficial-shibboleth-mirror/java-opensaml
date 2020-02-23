@@ -36,6 +36,8 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.utilities.java.support.codec.EncodingException;
+
 
 /**
  * A factory implementation which produces instances of {@link KeyInfoGenerator} capable of 
@@ -249,7 +251,11 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
             throws SecurityException {
             if (credential.getPublicKey() != null) {
                 if (options.emitPublicKeyValue) {
-                    KeyInfoSupport.addPublicKey(keyInfo, credential.getPublicKey());
+                    try {
+                        KeyInfoSupport.addPublicKey(keyInfo, credential.getPublicKey());
+                    } catch (final EncodingException e) {
+                        throw new SecurityException("Can't add public key to key info",e);
+                    }
                 }
                 if (options.emitPublicDEREncodedKeyValue) {
                     try {

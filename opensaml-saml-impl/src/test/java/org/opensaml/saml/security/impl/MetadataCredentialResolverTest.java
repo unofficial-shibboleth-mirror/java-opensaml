@@ -26,6 +26,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -566,9 +567,10 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * @throws ComponentInitializationException ...
      * @throws ResolverException ...
      * @throws CertificateEncodingException ...
+     * @throws EncodingException on base64 encoding error
      */
     @Test 
-    public void testDirectResolutionFromRoleDescriptor() throws ComponentInitializationException, ResolverException, CertificateEncodingException {
+    public void testDirectResolutionFromRoleDescriptor() throws ComponentInitializationException, ResolverException, CertificateEncodingException, EncodingException {
         // Use a new instance that does not have a role descriptor resolver, just for good measure.
         mdCredResolver = new MetadataCredentialResolver();
         mdCredResolver.setKeyInfoCredentialResolver(SAMLTestSupport.buildBasicInlineKeyInfoResolver());

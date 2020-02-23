@@ -38,6 +38,7 @@ import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
@@ -444,9 +445,10 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(rsaKey, javaRSAPubKey1, "Generated key was not the expected value");
     }
 
-    /** Test conversion of DSA public keys from Java security native type to XML. */
+    /** Test conversion of DSA public keys from Java security native type to XML. 
+     * @throws EncodingException on base64 encoding error*/
     @Test
-    public void testDSAConversionJavaToXML() {
+    public void testDSAConversionJavaToXML() throws EncodingException {
         DSAKeyValue dsaKeyValue = KeyInfoSupport.buildDSAKeyValue(javaDSAPubKey1);
         Assert.assertNotNull("Generated DSAKeyValue was null");
         Assert.assertEquals(dsaKeyValue
@@ -459,9 +461,10 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
                 "Generated DSAKeyValue G component was not the expected value");
     }
 
-    /** Test conversion of RSA public keys from Java security native type to XML. */
+    /** Test conversion of RSA public keys from Java security native type to XML. 
+     * @throws EncodingException on base64 encoding error*/
     @Test
-    public void testRSAConversionJavaToXML() {
+    public void testRSAConversionJavaToXML() throws EncodingException {
         RSAKeyValue rsaKeyValue = KeyInfoSupport.buildRSAKeyValue(javaRSAPubKey1);
         Assert.assertNotNull("Generated RSAKeyValue was null");
         Assert.assertEquals(rsaKeyValue.getModulus().getValueBigInt(), javaRSAPubKey1.getModulus(),
@@ -510,9 +513,10 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         keyValue.setRSAKeyValue(null);
     }
 
-    /** Tests adding a public key as a KeyValue to KeyInfo. */
+    /** Tests adding a public key as a KeyValue to KeyInfo. 
+     * @throws EncodingException on base64 encoding error*/
     @Test
-    public void testAddDSAPublicKey() {
+    public void testAddDSAPublicKey() throws EncodingException {
         keyInfo.getKeyValues().clear();
 
         KeyInfoSupport.addPublicKey(keyInfo, javaDSAPubKey1);
@@ -533,9 +537,10 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         keyInfo.getKeyValues().clear();
     }    
 
-    /** Tests adding a public key as a KeyValue to KeyInfo. */
+    /** Tests adding a public key as a KeyValue to KeyInfo. 
+     * @throws EncodingException on base64 encoding error*/
     @Test
-    public void testAddRSAPublicKey() {
+    public void testAddRSAPublicKey() throws EncodingException {
         keyInfo.getKeyValues().clear();
 
         KeyInfoSupport.addPublicKey(keyInfo, javaRSAPubKey1);

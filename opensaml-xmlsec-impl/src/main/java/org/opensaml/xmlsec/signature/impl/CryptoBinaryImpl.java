@@ -23,6 +23,8 @@ import java.util.Objects;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.CryptoBinary;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -33,6 +35,9 @@ import net.shibboleth.utilities.java.support.codec.EncodingException;
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.CryptoBinary}.
  */
 public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary {
+    
+    /** Class logger. */
+    private final Logger log = LoggerFactory.getLogger(CryptoBinaryImpl.class);
     
     /** The cached BigInteger representation of the element's base64-encoded value. */
     private BigInteger bigIntValue;
@@ -55,7 +60,8 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
             try {
                 bigIntValue = KeyInfoSupport.decodeBigIntegerFromCryptoBinary(getValue());
             } catch (final DecodingException e) {
-                //can not decode big integer from invalid value, return original even if null.                
+                //can not decode big integer from invalid value, return original even if null.    
+                log.warn("Could not decode big integer value, returning cached value",e);
             }
         }
         return bigIntValue;
@@ -63,23 +69,11 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
 
     /** {@inheritDoc} */
     @Override
-    public void setValueBigInt(final BigInteger bigInt) {
+    public void setValueBigInt(final BigInteger bigInt) throws EncodingException{
         if (bigInt == null) {
             setValue(null);
         } else {
-            try {
-                setValue(KeyInfoSupport.encodeCryptoBinaryFromBigInteger(bigInt));
-            } catch (final EncodingException e) { 
-                /*
-                 * Should never happen, but if for some reason the bigInt
-                 * is not null but can not be converted and encoded as 
-                 * base64, set both the string value to null and the
-                 * bigIntValue to null so they are consistent. 
-                 */
-                setValue(null);
-                bigIntValue=null;
-                return;
-            }
+            setValue(KeyInfoSupport.encodeCryptoBinaryFromBigInteger(bigInt));
         }
         bigIntValue = bigInt;
     }

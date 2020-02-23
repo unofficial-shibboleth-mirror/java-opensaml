@@ -32,6 +32,7 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -712,7 +713,11 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         for (Object contentItem : contentItems) {
             if (contentItem instanceof PublicKey) {
-                KeyInfoSupport.addPublicKey(keyInfo, (PublicKey) contentItem);
+                try {
+                    KeyInfoSupport.addPublicKey(keyInfo, (PublicKey) contentItem);
+                } catch (EncodingException e) {
+                    throw new RuntimeException("EncodingException adding public key to KeyInfo", e);
+                }
             } else if (contentItem instanceof X509Certificate) {
                 try {
                     KeyInfoSupport.addCertificate(keyInfo, (X509Certificate) contentItem);

@@ -25,6 +25,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.utilities.java.support.codec.EncodingException;
+
 /**
  * XMLObject representing XML Digital Signature, version 20020212, CryptoBinary simple type.
  */
@@ -48,7 +50,8 @@ public interface CryptoBinary extends XSBase64Binary {
      * Convenience method to set the value of the element as a BigInteger type.
      * 
      * @param bigInt the new BigInteger representation of the element's content
+     * @throws EncodingException if the byte value of the BigInteger can not be base64 encoded.
      */
-    public void setValueBigInt(@Nullable final BigInteger bigInt);
+    public void setValueBigInt(@Nullable final BigInteger bigInt) throws EncodingException;
 
 }
