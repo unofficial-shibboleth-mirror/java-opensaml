@@ -27,7 +27,6 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.client.HttpClient;
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.conn.ssl.NoopHostnameVerifier;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialKeyManager;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;
@@ -106,7 +105,7 @@ public final class SecurityEnhancedHttpClientSupport {
      * <p>
      * If <code>supportTrustEngine</code> is true, then the wrapped factory will be configured
      * with a {@link X509TrustManager} that supports per-request specification of a mandatory
-     * server TLS {@TrustEngine} and optional {@link CriteriaSet},
+     * server TLS {@link TrustEngine} and optional {@link CriteriaSet},
      * as documented in {@link SecurityEnhancedTLSSocketFactory}.
      * </p>
      * 
