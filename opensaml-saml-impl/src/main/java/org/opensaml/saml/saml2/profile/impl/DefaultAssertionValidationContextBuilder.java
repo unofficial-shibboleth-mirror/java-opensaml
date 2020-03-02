@@ -990,7 +990,7 @@ public class DefaultAssertionValidationContextBuilder
         /** Constructor. */
         public DefaultValidInResponseToLookupFunction() {
             delegate = new SAMLMessageInfoContextIDFunction().compose(
-                    new ChildContextLookup<>(SAMLMessageInfoContext.class).compose(
+                    new ChildContextLookup<>(SAMLMessageInfoContext.class, true).compose(
                             new MessageContextLookup<>(Direction.OUTBOUND)));
         }
 
