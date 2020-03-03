@@ -322,7 +322,7 @@ public class ValidateAssertions extends AbstractProfileAction {
 
         log.debug("{} Assertion validation result was: {}", getLogPrefix(), validationResult);
         if (validationResult != ValidationResult.VALID) {
-            log.debug("{} Assertion validation failure msg was: {}",
+            log.info("{} Assertion validation failure msg was: {}",
                     getLogPrefix(), validationContext.getValidationFailureMessage());
         }
 
