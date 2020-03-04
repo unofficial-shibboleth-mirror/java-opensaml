@@ -111,6 +111,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     /** Internal flag for tracking success during the refresh operation. */
     private boolean trackRefreshSuccess;
     
+    /** Reason for the failure of the last refresh.  Will be null if last refresh was success. */
+    @Nullable private Throwable lastFailureCause;
 
 
     /** Constructor. */
@@ -181,6 +183,11 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     /** {@inheritDoc} */
     @Nullable public Boolean wasLastRefreshSuccess() {
         return wasLastRefreshSuccess;
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Throwable getLastFailureCause() {
+        return lastFailureCause;
     }
 
     /**
@@ -302,6 +309,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         lastRefresh = null;
         lastUpdate = null;
         nextRefresh = null;
+        wasLastRefreshSuccess = null;
+        lastSuccessfulRefresh = null;
+        lastFailureCause = null;
         
         super.doDestroy();
     }
@@ -361,6 +371,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             }
         } catch (final Throwable t) {
             trackRefreshSuccess = false;
+            lastFailureCause = t;
             nextRefresh = Instant.now().plus(computeNextRefreshDelay(null));
             if (t instanceof Exception) {
                 log.error("{} Error occurred while attempting to refresh metadata from '{}'", getLogPrefix(), mdId);
@@ -375,6 +386,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             if (trackRefreshSuccess) {
                 wasLastRefreshSuccess = true;
                 lastSuccessfulRefresh = now;
+                lastFailureCause = null;
             } else {
                 wasLastRefreshSuccess = false;
             }
@@ -511,6 +523,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
 
         nextRefresh = Instant.now().plus(computeNextRefreshDelay(null));
         trackRefreshSuccess = false;
+        // Note: We don't throw this b/c it would change behavior wrt to init and failFast,
+        // but we still want to expose the failure cause to clients.
+        lastFailureCause = new ResolverException("Entire metadata document was already expired at time of loading");
     }
 
     /**

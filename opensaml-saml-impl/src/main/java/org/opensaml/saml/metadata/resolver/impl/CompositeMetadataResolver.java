@@ -235,6 +235,20 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
         return true;
     }
 
+    /** {@inheritDoc} */
+    public Throwable getLastFailureCause() {
+        for (final MetadataResolver resolver : resolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                final RefreshableMetadataResolver refreshable = (RefreshableMetadataResolver) resolver;
+                if (refreshable.getLastFailureCause() != null) {
+                    return refreshable.getLastFailureCause();
+                }
+            }
+        }
+
+        return null;
+    }
+
     /**
      * {@link Iterable} implementation that provides an {@link Iterator} that lazily iterates over each composed
      * resolver.

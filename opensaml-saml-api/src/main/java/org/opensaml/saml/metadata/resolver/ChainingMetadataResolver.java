@@ -235,6 +235,20 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     }
     
     /** {@inheritDoc} */
+    public Throwable getLastFailureCause() {
+        for (final MetadataResolver resolver : resolvers) {
+            if (resolver instanceof RefreshableMetadataResolver) {
+                final RefreshableMetadataResolver refreshable = (RefreshableMetadataResolver) resolver;
+                if (refreshable.getLastFailureCause() != null) {
+                    return refreshable.getLastFailureCause();
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /** {@inheritDoc} */
     @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         if (resolvers == null) {

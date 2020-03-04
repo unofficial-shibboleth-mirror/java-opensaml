@@ -70,4 +70,11 @@ public interface RefreshableMetadataResolver extends MetadataResolver {
      */
     @Nullable public Boolean wasLastRefreshSuccess();
     
+    /**
+     * Gets the reason the last refresh failed.
+     *
+     * @return reason the last refresh failed or null if the last refresh was successful
+     */
+    @Nullable public Throwable getLastFailureCause();
+
 }
