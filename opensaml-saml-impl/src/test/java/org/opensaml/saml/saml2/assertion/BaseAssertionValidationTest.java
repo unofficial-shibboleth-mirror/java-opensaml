@@ -40,9 +40,13 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
+import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
+import org.opensaml.saml.saml2.core.SubjectLocality;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.BasicCredential;
@@ -71,6 +75,9 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     public static final String SUBJECT_CONFIRMATION_ADDRESS = "10.1.2.3";
     
     public static final String SUBJECT_CONFIRMATION_IN_RESPONSE_TO = "id-123";
+    
+    public static final String AUTHN_STATEMENT_ADDRESS = "10.1.2.3";
+    
     
     private Assertion assertion;
     
@@ -123,6 +130,25 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
        return scd;
     }
     
+    protected AuthnStatement buildBasicAuthnStatement() {
+        AuthnStatement authnStatement = buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
+        
+        Instant now = Instant.now();
+        authnStatement.setAuthnInstant(now.minusSeconds(5));
+        
+        SubjectLocality sl = buildXMLObject(SubjectLocality.DEFAULT_ELEMENT_NAME);
+        sl.setAddress(AUTHN_STATEMENT_ADDRESS);
+        authnStatement.setSubjectLocality(sl);
+        
+        AuthnContextClassRef accr = buildXMLObject(AuthnContextClassRef.DEFAULT_ELEMENT_NAME);
+        accr.setURI(AuthnContext.PASSWORD_AUTHN_CTX);
+        AuthnContext ac = buildXMLObject(AuthnContext.DEFAULT_ELEMENT_NAME);
+        ac.setAuthnContextClassRef(accr);
+        authnStatement.setAuthnContext(ac);
+        
+        return authnStatement;
+    }
+    
     protected Map<String,Object> buildBasicStaticParameters() {
         HashMap<String,Object> params = new HashMap<>();
         
@@ -140,6 +166,16 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
         } catch(UnknownHostException e) {
             Assert.fail("Invalid address: " + SUBJECT_CONFIRMATION_ADDRESS);
         }
+        
+        params.put(SAML2AssertionValidationParameters.STMT_AUTHN_MAX_TIME, Duration.ofMinutes(5));
+        
+        try {
+            params.put(SAML2AssertionValidationParameters.STMT_AUTHN_VALID_ADDRESSES, 
+                    Collections.singleton(InetAddress.getByName(AUTHN_STATEMENT_ADDRESS)));
+        } catch(UnknownHostException e) {
+            Assert.fail("Invalid address: " + AUTHN_STATEMENT_ADDRESS);
+        }
+        
         return params;
     }
     

@@ -107,7 +107,9 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param function the new assertion resolver function
      */
     public void setAssertionResolver(@Nonnull final Function<ProfileRequestContext, List<Assertion>> function) {
-        assertionResolver = Constraint.isNotNull(function, "The Assertion resolver function may not be null");
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        assertionResolver = function;
     }
 
     /**
@@ -139,7 +141,7 @@ public class ValidateAssertions extends AbstractProfileAction {
             @Nonnull final Function<AssertionValidationInput, ValidationContext> builder) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        validationContextBuilder = Constraint.isNotNull(builder, "Validation context builder may not be null");
+        validationContextBuilder = builder;
     }
 
     /**
@@ -159,7 +161,7 @@ public class ValidateAssertions extends AbstractProfileAction {
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+        httpServletRequest = request;
     }
     
     /**
@@ -236,6 +238,10 @@ public class ValidateAssertions extends AbstractProfileAction {
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
+        if (getAssertionResolver() == null) {
+            throw new ComponentInitializationException("Assertion resolver function cannot be null");
+        }
+
         if (getValidationContextBuilder() == null) {
             throw new ComponentInitializationException("ValidationContext builder cannot be null");
         }
@@ -294,8 +300,8 @@ public class ValidateAssertions extends AbstractProfileAction {
                     sawNonValid = true;
                 }
                 processResult(validationContext, validationResult, assertion, profileContext);
-            } catch (final AssertionValidationException e) {
-                log.warn("{} There was a problem determining Assertion validity: {}", getLogPrefix(), e.getMessage());
+            } catch (final Throwable t) {
+                log.warn("{} There was a problem determining Assertion validity", getLogPrefix(), t);
                 ActionSupport.buildEvent(profileContext, SAMLEventIds.UNABLE_VALIDATE_ASSERTION);
                 return;
             }
