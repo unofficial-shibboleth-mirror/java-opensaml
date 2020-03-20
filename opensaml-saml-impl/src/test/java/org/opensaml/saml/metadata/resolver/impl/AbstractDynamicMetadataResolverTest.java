@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -258,6 +259,68 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))), ed1);
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2))), ed2);
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3))), ed3);
+    }
+    
+    @Test
+    public void testNegativeLookupCache() throws ComponentInitializationException, ResolverException, InterruptedException {
+        resolver.setNegativeLookupCacheDuration(Duration.ofSeconds(2));
+        
+        resolver.initialize();
+        
+        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        
+        Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
+        
+        Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
+        Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
+        
+        sourceMap.put(id1, ed1);
+        
+        Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
+        Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
+        
+        Thread.sleep(2500);
+        
+        Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))), ed1);
+        Assert.assertTrue(backingStore.getIndexedDescriptors().containsKey(id1));
+    }
+    
+    @Test
+    public void testGlobalClearWithNegativeLookupCache() throws ComponentInitializationException, ResolverException, InterruptedException {
+        resolver.initialize();
+        
+        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        
+        Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
+        
+        Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
+        Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
+        
+        sourceMap.put(id1, ed1);
+        
+        resolver.clear();
+        
+        Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))), ed1);
+        Assert.assertTrue(backingStore.getIndexedDescriptors().containsKey(id1));
+    }
+    
+    @Test
+    public void testEntityIDClearWithNegativeLookupCache() throws ComponentInitializationException, ResolverException, InterruptedException {
+        resolver.initialize();
+        
+        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        
+        Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
+        
+        Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
+        Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
+        
+        sourceMap.put(id1, ed1);
+        
+        resolver.clear(id1);
+        
+        Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))), ed1);
+        Assert.assertTrue(backingStore.getIndexedDescriptors().containsKey(id1));
     }
     
     @Test
