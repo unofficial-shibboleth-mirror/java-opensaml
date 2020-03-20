@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -266,7 +265,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testNegativeLookupCache() throws ComponentInitializationException, ResolverException, InterruptedException {
-        resolver.setNegativeLookupCacheDuration(Duration.ofSeconds(2));
+        resolver.setNegativeLookupCacheDuration(2000l);
         
         resolver.initialize();
         
