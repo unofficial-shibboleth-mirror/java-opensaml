@@ -1601,7 +1601,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         @Nonnull @NonnullElements @Unmodifiable @NotLive
         public Set<String> getManagementDataEntityIDs() {
             synchronized (this) {
-                return Set.copyOf(mgmtDataMap.keySet());
+                return ImmutableSet.copyOf(mgmtDataMap.keySet());
             }
         }
 
