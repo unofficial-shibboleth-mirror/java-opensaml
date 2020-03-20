@@ -615,20 +615,12 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     /** {@inheritDoc} */
     public void clear() throws ResolverException {
         final DynamicEntityBackingStore backingStore = getBackingStore();
-        final Map<String, List<EntityDescriptor>> indexedDescriptors = backingStore.getIndexedDescriptors();
+        final Set<String> entityIDs = new HashSet<>();
+        entityIDs.addAll(backingStore.getIndexedDescriptors().keySet());
+        entityIDs.addAll(backingStore.getManagementDataEntityIDs());
         
-        for (final String entityID : indexedDescriptors.keySet()) {
-            final EntityManagementData mgmtData = backingStore.getManagementData(entityID);
-            final Lock writeLock = mgmtData.getReadWriteLock().writeLock();
-            try {
-                writeLock.lock();
-                
-                removeByEntityID(entityID, backingStore);
-                backingStore.removeManagementData(entityID);
-                
-            } finally {
-                writeLock.unlock();
-            }
+        for (final String entityID : entityIDs) {
+            clear(entityID);
         }
     }
 
@@ -1602,6 +1594,18 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         }
         
         /**
+         * Get the set of entityIDs which currently have management data.
+         *
+         * @return set of entityIDs, may be empty
+         */
+        @Nonnull @NonnullElements @Unmodifiable @NotLive
+        public Set<String> getManagementDataEntityIDs() {
+            synchronized (this) {
+                return Set.copyOf(mgmtDataMap.keySet());
+            }
+        }
+
+        /**
          * Get the management data for the specified entityID.
          * 
          * @param entityID the input entityID
@@ -1832,9 +1836,11 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
             final DateTime earliestValidLastAccessed = now.minus(getMaxIdleEntityData());
             
             final DynamicEntityBackingStore backingStore = getBackingStore();
-            final Map<String, List<EntityDescriptor>> indexedDescriptors = backingStore.getIndexedDescriptors();
+            final Set<String> entityIDs = new HashSet<>();
+            entityIDs.addAll(backingStore.getIndexedDescriptors().keySet());
+            entityIDs.addAll(backingStore.getManagementDataEntityIDs());
             
-            for (final String entityID : indexedDescriptors.keySet()) {
+            for (final String entityID : entityIDs) {
                 final EntityManagementData mgmtData = backingStore.getManagementData(entityID);
                 final Lock writeLock = mgmtData.getReadWriteLock().writeLock();
                 try {
