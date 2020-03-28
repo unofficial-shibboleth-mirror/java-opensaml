@@ -91,10 +91,14 @@ public class ScriptedTrustedNamesFunction extends AbstractScriptEvaluator implem
      * @throws ScriptException if the compile fails
      * @throws IOException if the file doesn't exist.
      */
+    @SuppressWarnings("removal")
     @Nonnull static ScriptedTrustedNamesFunction resourceScript(@Nonnull @NotEmpty final String engineName,
             @Nonnull final Resource resource) throws ScriptException, IOException {
         try (final InputStream is = resource.getInputStream()) {
-            final EvaluableScript script = new EvaluableScript(engineName, is);
+            final EvaluableScript script = new EvaluableScript();
+            script.setEngineName(engineName);
+            script.setScript(is);
+            script.initializeWithScriptException();
             return new ScriptedTrustedNamesFunction(script, resource.getDescription());
         }
     }
@@ -120,9 +124,13 @@ public class ScriptedTrustedNamesFunction extends AbstractScriptEvaluator implem
      * @return the function
      * @throws ScriptException if the compile fails
      */
+    @SuppressWarnings("removal")
     @Nonnull static ScriptedTrustedNamesFunction inlineScript(@Nonnull @NotEmpty final String engineName,
             @Nonnull @NotEmpty final String scriptSource) throws ScriptException {
-        final EvaluableScript script = new EvaluableScript(engineName, scriptSource);
+        final EvaluableScript script = new EvaluableScript();
+        script.setEngineName(engineName);
+        script.setScript(scriptSource);
+        script.initializeWithScriptException();
         return new ScriptedTrustedNamesFunction(script, "Inline");
     }
 
