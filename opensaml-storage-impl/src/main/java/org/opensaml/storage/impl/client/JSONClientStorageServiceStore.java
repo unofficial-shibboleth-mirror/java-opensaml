@@ -1,0 +1,185 @@
+/*
+ * Licensed to the University Corporation for Advanced Internet Development,
+ * Inc. (UCAID) under one or more contributor license agreements.  See the
+ * NOTICE file distributed with this work for additional information regarding
+ * copyright ownership. The UCAID licenses this file to You under the Apache
+ * License, Version 2.0 (the "License"); you may not use this file except in
+ * compliance with the License.  You may obtain a copy of the License at
+ *
+ *    http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package org.opensaml.storage.impl.client;
+
+import java.io.IOException;
+import java.io.StringReader;
+import java.io.StringWriter;
+import java.time.Duration;
+import java.time.Instant;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+import javax.json.Json;
+import javax.json.JsonException;
+import javax.json.JsonObject;
+import javax.json.JsonReader;
+import javax.json.JsonStructure;
+import javax.json.JsonValue;
+import javax.json.stream.JsonGenerator;
+
+import org.opensaml.storage.MutableStorageRecord;
+import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.security.DataSealerException;
+
+/**
+ * JSON-based storage for {@link ClientStorageService}.
+ */
+public class JSONClientStorageServiceStore extends AbstractClientStorageServiceStore {
+
+    /** Class logger. */
+    @Nonnull private final Logger log = LoggerFactory.getLogger(JSONClientStorageServiceStore.class);
+
+    /**
+     * Reconstitute stored data.
+     * 
+     * <p>The dirty bit is set based on the result. If successful, the bit is cleared,
+     * but if an error occurs, it will be set.</p>
+     * 
+     * @param raw serialized data to load
+     * @param src data source
+     */
+    public JSONClientStorageServiceStore(@Nullable @NotEmpty final String raw,
+            @Nonnull final ClientStorageSource src) {
+        super(raw, src);
+    }
+    
+    /** {@inheritDoc} */
+    public void doLoad(@Nullable @NotEmpty final String raw) throws IOException {
+        try {
+            final JsonReader reader = Json.createReader(new StringReader(raw));
+            final JsonStructure st = reader.read();
+            if (!(st instanceof JsonObject)) {
+                throw new JsonException("Found invalid data structure while parsing context map");
+            }
+            final JsonObject obj = (JsonObject) st;
+            
+            for (final Map.Entry<String,JsonValue> context : obj.entrySet()) {
+                if (context.getValue().getValueType() != JsonValue.ValueType.OBJECT) {
+                    throw new JsonException("Found invalid data structure while parsing context map");
+                }
+                
+                // Create new context if necessary.
+                Map<String,MutableStorageRecord<?>> dataMap = getContextMap().get(context.getKey());
+                if (dataMap == null) {
+                    dataMap = new HashMap<>();
+                    getContextMap().put(context.getKey(), dataMap);
+                }
+                
+                final JsonObject contextRecords = (JsonObject) context.getValue();
+                for (final Map.Entry<String,JsonValue> record : contextRecords.entrySet()) {
+                
+                    final JsonObject fields = (JsonObject) record.getValue();
+                    Long exp = null;
+                    if (fields.containsKey("x")) {
+                        exp = fields.getJsonNumber("x").longValueExact();
+                    }
+                    
+                    dataMap.put(record.getKey(), new MutableStorageRecord<>(fields.getString("v"), exp));
+                }
+            }
+            setDirty(false);
+        } catch (final NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
+            getContextMap().clear();
+            // Setting this should force corrupt data in the client to be overwritten.
+            setDirty(true);
+            log.error("Found invalid data structure while parsing context map", e);
+        }
+    }
+
+//Checkstyle: CyclomaticComplexity OFF        
+    /** {@inheritDoc} */
+    @Nullable public ClientStorageServiceOperation save(@Nonnull final ClientStorageService storageService)
+            throws IOException {
+        
+        if (!isDirty()) {
+            log.trace("Storage state has not been modified, save operation skipped");
+            return null;
+        }
+        
+        if (getContextMap().isEmpty()) {
+            log.trace("Data is empty");
+            return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
+                    getSource());
+        }
+
+        long exp = 0L;
+        final long now = System.currentTimeMillis();
+        boolean empty = true;
+
+        try {
+            final StringWriter sink = new StringWriter(128);
+            final JsonGenerator gen = Json.createGenerator(sink);
+            
+            gen.writeStartObject();
+            for (final Map.Entry<String,Map<String, MutableStorageRecord<?>>> context
+                    : getContextMap().entrySet()) {
+                if (!context.getValue().isEmpty()) {
+                    gen.writeStartObject(context.getKey());
+                    for (final Map.Entry<String,MutableStorageRecord<?>> entry : context.getValue().entrySet()) {
+                        final MutableStorageRecord<?> record = entry.getValue();
+                        final Long recexp = record.getExpiration();
+                        if (recexp == null || recexp > now) {
+                            empty = false;
+                            gen.writeStartObject(entry.getKey())
+                                .write("v", record.getValue());
+                            if (recexp != null) {
+                                gen.write("x", record.getExpiration());
+                                exp = Math.max(exp, recexp);
+                            }
+                            gen.writeEnd();
+                        }
+                    }
+                    gen.writeEnd();
+                }
+            }
+            gen.writeEnd().close();
+
+            if (empty) {
+                log.trace(" Data is empty");
+                return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
+                        getSource());
+            }
+            
+            final String raw = sink.toString();
+            
+            log.trace("Size of data before encryption is {}", raw.length());
+            log.trace("Data before encryption is {}", raw);
+            try {
+                final String wrapped = storageService.getDataSealer().wrap(raw,
+                        exp > 0 ? Instant.ofEpochMilli(exp) : Instant.now().plus(Duration.ofDays(1)));
+                log.trace("Size of data after encryption is {}", wrapped.length());
+                setDirty(false);
+                return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(),
+                        wrapped, getSource());
+            } catch (final DataSealerException e) {
+                throw new IOException(e);
+            }
+        } catch (final JsonException e) {
+            throw new IOException(e);
+        }
+    }
+//Checkstyle: CyclomaticComplexity ON
+    
+}
