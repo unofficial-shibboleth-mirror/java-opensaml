@@ -114,12 +114,12 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
             throws IOException {
         
         if (!isDirty()) {
-            log.trace("Storage state has not been modified, save operation skipped");
+            log.trace("{} Storage state has not been modified, save operation skipped", storageService.getLogPrefix());
             return null;
         }
         
         if (getContextMap().isEmpty()) {
-            log.trace("Data is empty");
+            log.trace("{} Data is empty", storageService.getLogPrefix());
             return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
                     getSource());
         }
@@ -157,19 +157,19 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
             gen.writeEnd().close();
 
             if (empty) {
-                log.trace(" Data is empty");
+                log.trace("{} Data is empty", storageService.getLogPrefix());
                 return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
                         getSource());
             }
             
             final String raw = sink.toString();
             
-            log.trace("Size of data before encryption is {}", raw.length());
-            log.trace("Data before encryption is {}", raw);
+            log.trace("{} Size of data before encryption is {}", raw.length(), storageService.getLogPrefix());
+            log.trace("{} Data before encryption is {}", raw, storageService.getLogPrefix());
             try {
                 final String wrapped = storageService.getDataSealer().wrap(raw,
                         exp > 0 ? Instant.ofEpochMilli(exp) : Instant.now().plus(Duration.ofDays(1)));
-                log.trace("Size of data after encryption is {}", wrapped.length());
+                log.trace("{} Size of data after encryption is {}", wrapped.length(), storageService.getLogPrefix());
                 setDirty(false);
                 return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(),
                         wrapped, getSource());

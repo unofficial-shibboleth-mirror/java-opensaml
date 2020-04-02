@@ -509,7 +509,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @return  logging prefix
      */
-    @Nonnull @NotEmpty private String getLogPrefix() {
+    @Nonnull @NotEmpty String getLogPrefix() {
         return "StorageService " + getId() + ":";
     }
         
