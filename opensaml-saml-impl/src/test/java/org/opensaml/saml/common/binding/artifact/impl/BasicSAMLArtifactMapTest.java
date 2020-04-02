@@ -20,18 +20,16 @@ package org.opensaml.saml.common.binding.artifact.impl;
 import java.io.IOException;
 import java.time.Duration;
 
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
-
-import org.custommonkey.xmlunit.Diff;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
-import org.opensaml.saml.common.binding.artifact.impl.BasicSAMLArtifactMap;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 /**
  * Test the storage-backed SAML artifact map implementation.
@@ -45,12 +43,12 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
     private String rpId = "urn:test:rp";
 
     private SAMLObject samlObject;
-    private Document origDocument;
+    private Element origElement;
 
     @BeforeMethod
     protected void setUp() throws Exception {
         samlObject = (SAMLObject) unmarshallElement("/org/opensaml/saml/saml2/core/ResponseSuccessAuthnAttrib.xml");
-        origDocument = samlObject.getDOM().getOwnerDocument();
+        origElement = samlObject.getDOM();
         // Drop the DOM for a more realistic test, usually the artifact SAMLObject will be built, not unmarshalled
         samlObject.releaseChildrenDOM(true);
         samlObject.releaseDOM();
@@ -68,7 +66,7 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
         Assert.assertTrue(artifactMap.contains(artifact));
 
-        SAMLArtifactMapEntry entry = artifactMap.get(artifact);
+        final SAMLArtifactMapEntry entry = artifactMap.get(artifact);
         Assert.assertNotNull(entry);
 
         Assert.assertEquals(entry.getArtifact(), artifact, "Invalid value for artifact");
@@ -76,10 +74,12 @@ public class BasicSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(entry.getRelyingPartyId(), rpId, "Invalid value for relying party ID");
 
         // Test SAMLObject reconstitution
-        SAMLObject retrievedObject = entry.getSamlMessage();
-        Document newDocument =
-                marshallerFactory.getMarshaller(retrievedObject).marshall(retrievedObject).getOwnerDocument();
-        XMLAssertTestNG.assertXMLIdentical(new Diff(origDocument, newDocument), true);
+        final SAMLObject retrievedObject = entry.getSamlMessage();
+        final Element newElement =
+                marshallerFactory.getMarshaller(retrievedObject).marshall(retrievedObject);
+        
+        final Diff diff = DiffBuilder.compare(origElement).withTest(newElement).checkForIdentical().ignoreWhitespace().build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
     }
 
     @Test

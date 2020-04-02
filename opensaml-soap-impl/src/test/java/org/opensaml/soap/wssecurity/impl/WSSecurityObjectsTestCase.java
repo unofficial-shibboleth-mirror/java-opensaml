@@ -24,8 +24,6 @@ import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.List;
 
-import org.custommonkey.xmlunit.Diff;
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.soap.WSBaseTestCase;
@@ -46,6 +44,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 /**
  * WSSecurityObjectsTestCase is the base test case for the WS-Security
@@ -204,18 +204,18 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         String refId= "UsernameToken-007";
         String refDateTimeStr= "2007-12-19T09:53:08.335Z";
 
-        UsernameToken usernameToken= createUsernameToken("test", "test");
+        final UsernameToken usernameToken= createUsernameToken("test", "test");
         usernameToken.setWSUId(refId);
-        Instant refDateTime= Instant.parse(refDateTimeStr);
-        Created usernameCreated = (Created) usernameToken.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
+        final Instant refDateTime= Instant.parse(refDateTimeStr);
+        final Created usernameCreated = (Created) usernameToken.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
         usernameCreated.setDateTime(refDateTime);
 
         // check default password type
-        Password password= (Password) usernameToken.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
+        final Password password= (Password) usernameToken.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
         Assert.assertNotNull(password);
         Assert.assertEquals(password.getType(), Password.TYPE_PASSWORD_TEXT);
 
-        List<XMLObject> children= usernameToken.getOrderedChildren();
+        final List<XMLObject> children= usernameToken.getOrderedChildren();
         Assert.assertEquals(children.size(), 3);
 
         marshallAndUnmarshall(usernameToken);
@@ -225,25 +225,25 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         // unmarshallXML("/data/usernametoken.xml");
         // Document refDocument= refUsernameToken.getDOM().getOwnerDocument();
         // refUsernameToken.releaseDOM();
-        Document refDocument= parseXMLDocument("/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
+        final Element refElement = parseXMLDocument("/org/opensaml/soap/wssecurity/impl/UsernameToken.xml").getDocumentElement();
         //System.out.println("XXX: " + XMLHelper.nodeToString(refDocument.getDocumentElement()));
 
-        Marshaller marshaller= getMarshaller(usernameToken);
-        Element element= marshaller.marshall(usernameToken);
-        Document document= element.getOwnerDocument();
-
+        final Marshaller marshaller= getMarshaller(usernameToken);
+        final Element element= marshaller.marshall(usernameToken);
+        
         // compare with XMLUnit
-        XMLAssertTestNG.assertXMLIdentical(new Diff(refDocument, document), true);
+        final Diff diff = DiffBuilder.compare(refElement).withTest(element).checkForIdentical().ignoreWhitespace().build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
 
         // unmarshall directly from file
-        UsernameToken ut= unmarshallElement("/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
+        final UsernameToken ut= unmarshallElement("/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
         Assert.assertEquals(ut.getUsername().getValue(), "test");
-        Password utPassword = (Password) ut.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
+        final Password utPassword = (Password) ut.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
         Assert.assertNotNull(utPassword);
         Assert.assertEquals(utPassword.getValue(), "test");
-        Created utCreated = (Created) ut.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
+        final Created utCreated = (Created) ut.getUnknownXMLObjects(Created.ELEMENT_NAME).get(0);
         Assert.assertNotNull(utCreated);
-        Instant created= utCreated.getDateTime();
+        final Instant created= utCreated.getDateTime();
         System.out.println(created);
 
     }

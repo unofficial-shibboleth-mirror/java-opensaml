@@ -17,9 +17,6 @@
 
 package org.opensaml.saml.common;
 
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
-
-import org.custommonkey.xmlunit.Diff;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -30,9 +27,12 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
+import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 /**
  * Round trip messaging test case.
@@ -94,24 +94,27 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
     public void testRoundTrip() throws MarshallingException, UnmarshallingException{
 
         //Marshall the element
-        Element orgElement1 =  orgMarshaller.marshall(organization);
+        final Element orgElement1 =  orgMarshaller.marshall(organization);
         
         // Unmarshall it
-        Organization org2 = (Organization) orgUnmarshaller.unmarshall(orgElement1);
+        final Organization org2 = (Organization) orgUnmarshaller.unmarshall(orgElement1);
         
         // Drop DOM and remarshall
         org2.releaseDOM();
         org2.releaseChildrenDOM(true);
-        Element orgElement2 = orgMarshaller.marshall(org2);
-        XMLAssertTestNG.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement2.getOwnerDocument()), true);
+        final Element orgElement2 = orgMarshaller.marshall(org2);
+        
+        final Diff diff1 = DiffBuilder.compare(orgElement1).withTest(orgElement2).checkForIdentical().build();
+        Assert.assertFalse(diff1.hasDifferences(), diff1.toString());
         
         // Unmarshall again
-        Organization org3 = (Organization) orgUnmarshaller.unmarshall(orgElement2);
+        final Organization org3 = (Organization) orgUnmarshaller.unmarshall(orgElement2);
         
         // Drop DOM and remarshall
         org3.releaseDOM();
         org3.releaseChildrenDOM(true);
-        Element orgElement3 = orgMarshaller.marshall(org3);
-        XMLAssertTestNG.assertXMLIdentical(new Diff(orgElement1.getOwnerDocument(), orgElement3.getOwnerDocument()), true);
+        final Element orgElement3 = orgMarshaller.marshall(org3);
+        final Diff diff2 = DiffBuilder.compare(orgElement1).withTest(orgElement3).checkForIdentical().build();
+        Assert.assertFalse(diff2.hasDifferences(), diff2.toString());
     }
 }

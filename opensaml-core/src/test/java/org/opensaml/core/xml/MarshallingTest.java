@@ -23,14 +23,14 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.custommonkey.xmlunit.Diff;
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 /**
  * Unit test for marshalling functions.
@@ -152,7 +152,9 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
         // Marshall statement (with cached DOM) into SOAP Body element child
         Document expectedDocument = parserPool.parse(MarshallingTest.class.getResourceAsStream(expectedDocumentLocation));
         Element statementElem = marshaller.marshall(statement, soapBody);
-        XMLAssertTestNG.assertXMLIdentical(new Diff(expectedDocument, statementElem.getOwnerDocument()), true);
+        final Diff diff = DiffBuilder.compare(statementElem.getOwnerDocument()).withTest(expectedDocument)
+                .checkForIdentical().build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
         Assert.assertNull(response.getDOM(), "Parent of XML fragment DOM was not invalidated during marshalling");
         Assert.assertNotNull(statement.getDOM(), "XML fragment DOM was invalidated during marshalling");
     }

@@ -21,15 +21,13 @@ package org.opensaml.soap;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
-import org.custommonkey.xmlunit.Diff;
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.w3c.dom.Element;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 /**
  * WSBaseTestCase is the base test case for the WS-* packages.
@@ -50,7 +48,7 @@ public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
         Element element= marshaller.marshall(object);
         Assert.assertNotNull(element);
 
-        System.out.println(SerializeSupport.nodeToString(element));
+        //System.out.println(SerializeSupport.nodeToString(element));
 
         T object2= (T) unmarshaller.unmarshall(element);
         Assert.assertNotNull(object2);
@@ -64,14 +62,15 @@ public abstract class WSBaseTestCase extends XMLObjectBaseTestCase {
         Element element2= marshaller.marshall(object2);
         Assert.assertNotNull(element2);
 
-        System.out.println(SerializeSupport.nodeToString(element2));
+        //System.out.println(SerializeSupport.nodeToString(element2));
 
         // These need to be false, otherwise the test below is invalid
         //System.out.println("Element equals: " + element.isSameNode(element2)); 
         //System.out.println("Document equals: " + element.getOwnerDocument().isSameNode(element2.getOwnerDocument())); 
         
         // compare XML content
-        XMLAssertTestNG.assertXMLIdentical(new Diff(element.getOwnerDocument(), element2.getOwnerDocument()), true);
+        final Diff diff = DiffBuilder.compare(element).withTest(element2).checkForIdentical().build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
 
         return object2;
 

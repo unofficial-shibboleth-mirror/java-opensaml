@@ -19,20 +19,17 @@ package org.opensaml.saml.common.binding.artifact.impl;
 
 import java.io.IOException;
 
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
-
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.w3c.dom.Document;
-import org.custommonkey.xmlunit.Diff;
+import org.w3c.dom.Element;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntry;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
-import org.opensaml.saml.common.binding.artifact.impl.StorageServiceSAMLArtifactMap;
-import org.opensaml.saml.common.binding.artifact.impl.StorageServiceSAMLArtifactMapEntryFactory;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;
 
@@ -75,21 +72,22 @@ public class StorageServiceSAMLArtifactMapEntryFactoryTest extends XMLObjectBase
     
     @Test
     public void testWithSerialization() throws IOException, MarshallingException {
-        SAMLArtifactMapEntry entry = factory.newEntry(artifact, issuerId, rpId, samlObject);
-        BasicSAMLArtifactMapEntry basicEntry = (BasicSAMLArtifactMapEntry) entry;
+        final SAMLArtifactMapEntry entry = factory.newEntry(artifact, issuerId, rpId, samlObject);
+        final BasicSAMLArtifactMapEntry basicEntry = (BasicSAMLArtifactMapEntry) entry;
         
-        String s = factory.serialize(basicEntry);
-        BasicSAMLArtifactMapEntry newEntry = (BasicSAMLArtifactMapEntry) factory.deserialize(
+        final String s = factory.serialize(basicEntry);
+        final BasicSAMLArtifactMapEntry newEntry = (BasicSAMLArtifactMapEntry) factory.deserialize(
                 1, StorageServiceSAMLArtifactMap.STORAGE_CONTEXT, basicEntry.getArtifact(), s, null);
         
         Assert.assertEquals(basicEntry.getArtifact(), newEntry.getArtifact());
         Assert.assertEquals(basicEntry.getIssuerId(), newEntry.getIssuerId());
         Assert.assertEquals(basicEntry.getRelyingPartyId(), newEntry.getRelyingPartyId());
 
-        Document origDocument = samlObject.getDOM().getOwnerDocument();
-        origDocument.appendChild(samlObject.getDOM());
-        Document newDocument = newEntry.getSamlMessage().getDOM().getOwnerDocument();
-        XMLAssertTestNG.assertXMLIdentical(new Diff(origDocument, newDocument), true);
+        final Element origElement = samlObject.getDOM();
+        final Element newElement = newEntry.getSamlMessage().getDOM();
+        
+        final Diff diff = DiffBuilder.compare(origElement).withTest(newElement).checkForIdentical().ignoreWhitespace().build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
     }
 
 }

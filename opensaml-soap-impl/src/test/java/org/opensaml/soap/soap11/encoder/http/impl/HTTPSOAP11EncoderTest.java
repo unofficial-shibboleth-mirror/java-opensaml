@@ -24,10 +24,8 @@ import java.util.List;
 import javax.servlet.http.HttpServletResponse;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.custommonkey.xmlunit.Diff;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
@@ -44,7 +42,6 @@ import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.soap11.Header;
-import org.opensaml.soap.soap11.encoder.http.impl.HTTPSOAP11Encoder;
 import org.opensaml.soap.util.SOAPSupport;
 import org.opensaml.soap.wsaddressing.Action;
 import org.springframework.mock.web.MockHttpServletResponse;
@@ -52,6 +49,8 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 /**
  * Test basic SOAP 1.1 message encoding.
@@ -101,7 +100,11 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         String soapMessage = "/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
-        XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
+        final Diff diff = DiffBuilder.compare(controlEnv.getDOM()).withTest(encodedEnv.getDOM())
+                .checkForIdentical()
+                .ignoreWhitespace()
+                .build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
     }
     
     /**
@@ -154,7 +157,11 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         String soapMessage = "/org/opensaml/soap/soap11/SOAPNoHeaders.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
-        XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
+        final Diff diff = DiffBuilder.compare(controlEnv.getDOM()).withTest(encodedEnv.getDOM())
+                .checkForIdentical()
+                .ignoreWhitespace()
+                .build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
     }
     
     /**
@@ -212,7 +219,11 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         String soapMessage = "/org/opensaml/soap/soap11/SOAPHeaderMustUnderstand.xml";
         Envelope controlEnv = (Envelope) parseUnmarshallResource(soapMessage, false);
         
-        XMLAssertTestNG.assertXMLIdentical(new Diff(controlEnv.getDOM().getOwnerDocument(), encodedEnv.getDOM().getOwnerDocument()), true);
+        final Diff diff = DiffBuilder.compare(controlEnv.getDOM()).withTest(encodedEnv.getDOM())
+                .checkForIdentical()
+                .ignoreWhitespace()
+                .build();
+        Assert.assertFalse(diff.hasDifferences(), diff.toString());
     }
     
     /**

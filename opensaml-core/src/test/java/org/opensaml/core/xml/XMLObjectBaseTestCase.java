@@ -24,8 +24,6 @@ import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 
-import org.custommonkey.xmlunit.Diff;
-import org.custommonkey.xmlunit.XMLUnit;
 import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -42,11 +40,12 @@ import org.testng.annotations.BeforeClass;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.xmlunit.builder.DiffBuilder;
+import org.xmlunit.diff.Diff;
 
 import net.shibboleth.utilities.java.support.xml.ParserPool;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.xml.XMLAssertTestNG;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
@@ -74,8 +73,6 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
 
     @BeforeClass
 	protected void initXMLObjectSupport() throws Exception {
-        XMLUnit.setIgnoreWhitespace(true);
-
         try {
             parserPool = XMLObjectProviderRegistrySupport.getParserPool();
             builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
@@ -118,7 +115,11 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
             if (log.isDebugEnabled()) {
                 log.debug("Marshalled DOM was " + SerializeSupport.nodeToString(generatedDOM));
             }
-            XMLAssertTestNG.assertXMLIdentical(failMessage, new Diff(expectedDOM, generatedDOM.getOwnerDocument()), true);
+            final Diff diff = DiffBuilder.compare(expectedDOM).withTest(generatedDOM.getOwnerDocument())
+                    .ignoreWhitespace()
+                    .checkForIdentical()
+                    .build();
+            Assert.assertFalse(diff.hasDifferences(), failMessage);
         } catch (Exception e) {
             Assert.fail("Marshalling failed with the following error: " + e);
         }
