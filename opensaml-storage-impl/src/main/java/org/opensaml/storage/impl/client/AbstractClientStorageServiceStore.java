@@ -36,6 +36,8 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Base class for the storage and reconstitution of data for a {@link ClientStorageService}.
+ * 
+ * @since 4.1.0
  */
 public abstract class AbstractClientStorageServiceStore implements ClientStorageServiceStore {
 

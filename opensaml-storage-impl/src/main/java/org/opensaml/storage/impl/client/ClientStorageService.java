@@ -56,6 +56,8 @@ import net.shibboleth.utilities.java.support.security.DataSealerKeyStrategy;
 import org.opensaml.storage.AbstractMapBackedStorageService;
 import org.opensaml.storage.MutableStorageRecord;
 import org.opensaml.storage.StorageCapabilitiesEx;
+import org.opensaml.storage.impl.client.ClientStorageServiceStore.Factory;
+import org.opensaml.storage.impl.client.JSONClientStorageServiceStore.JSONClientStorageServiceStoreFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -66,7 +68,7 @@ import org.slf4j.LoggerFactory;
  * <p>The data for this service is managed in a {@link ClientStorageServiceStore} object, which must
  * be created by some operation within the container for this implementation to function. Actual
  * load/store of the data to/from that object is driven via companion classes. The serialization
- * of data via JSON is inside the storage object class, but the encryption/decryption is here.</p>
+ * of data is inside the storage object class, but the encryption/decryption is here.</p>
  */
 public class ClientStorageService extends AbstractMapBackedStorageService implements Filter, StorageCapabilitiesEx {
 
@@ -110,6 +112,9 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
 
     /** KeyStrategy enabling us to detect whether data has been sealed with an older key. */
     @Nullable private DataSealerKeyStrategy keyStrategy;
+    
+    /** Factory for backing store. */
+    @Nonnull private Factory storeFactory;
 
     /** Constructor. */
     public ClientStorageService() {
@@ -117,6 +122,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
         capabilityMap = new HashMap<>(2);
         capabilityMap.put(ClientStorageSource.COOKIE, 4096);
         capabilityMap.put(ClientStorageSource.HTML_LOCAL_STORAGE, 1024 * 1024);
+        storeFactory = new JSONClientStorageServiceStoreFactory();
     }
 
     /** {@inheritDoc} */
@@ -238,6 +244,17 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         keyStrategy = strategy;
+    }
+    
+    /**
+     * Set the backing store {@link Factory} to use. 
+     * 
+     * @param factory factory to use
+     */
+    public void setClientStorageServiceStoreFactory(@Nonnull final Factory factory) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        storeFactory = Constraint.isNotNull(factory, "Factory cannot be null");
     }
 
     /** {@inheritDoc} */
@@ -425,7 +442,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 
                 log.trace("{} Data after decryption: {}", getLogPrefix(), decrypted);
                 
-                storageObject = new JSONClientStorageServiceStore(decrypted, source);
+                storageObject = storeFactory.load(decrypted, source);
                 
                 if (keyStrategy != null) {
                     try {
@@ -441,16 +458,16 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 log.debug("{} Successfully decrypted and loaded storage state from client", getLogPrefix());
             } catch (final DataExpiredException e) {
                 log.debug("{} Secured data or key has expired", getLogPrefix());
-                storageObject = new JSONClientStorageServiceStore(null, source);
+                storageObject = storeFactory.load(null, source);
                 storageObject.setDirty(true);
             } catch (final DataSealerException e) {
                 log.error("{} Exception unwrapping secured data", getLogPrefix(), e);
-                storageObject = new JSONClientStorageServiceStore(null, source);
+                storageObject = storeFactory.load(null, source);
                 storageObject.setDirty(true);
             }
         } else {
             log.trace("{} Initializing empty storage state into session", getLogPrefix());
-            storageObject = new JSONClientStorageServiceStore(null, source);
+            storageObject = storeFactory.load(null, source);
         }
         
         // The object should be loaded, and marked "clean", or in the event of just about any failure

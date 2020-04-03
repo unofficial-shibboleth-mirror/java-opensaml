@@ -28,9 +28,12 @@ import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource
 
 import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * Abstraction for the storage and reconstitution of data for a {@link ClientStorageService}.
+ * 
+ * @since 4.1.0
  */
 public interface ClientStorageServiceStore {
 
@@ -72,5 +75,22 @@ public interface ClientStorageServiceStore {
      * @throws IOException if an error occurs
      */
     @Nullable ClientStorageServiceOperation save(@Nonnull final ClientStorageService storageService) throws IOException;
+    
+    /**
+     * A factory for producing new {@link ClientStorageServiceStore} instances.
+     */
+    interface Factory {
+        
+        /**
+         * Load raw data into a new {@link ClientStorageServiceStore} instance.
+         * 
+         * @param raw data to load
+         * @param src data source
+         * 
+         * @return new store instance
+         */
+        @Nonnull ClientStorageServiceStore load(@Nullable @NotEmpty final String raw,
+                @Nonnull final ClientStorageSource src);
+    }
     
 }

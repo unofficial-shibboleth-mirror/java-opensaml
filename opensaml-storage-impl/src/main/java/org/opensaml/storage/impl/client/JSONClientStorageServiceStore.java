@@ -101,10 +101,8 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
             }
             setDirty(false);
         } catch (final NullPointerException | ClassCastException | ArithmeticException | JsonException e) {
-            getContextMap().clear();
-            // Setting this should force corrupt data in the client to be overwritten.
-            setDirty(true);
             log.error("Found invalid data structure while parsing context map", e);
+            throw new IOException(e);
         }
     }
 
@@ -182,4 +180,14 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
     }
 //Checkstyle: CyclomaticComplexity ON
     
+    /** Factory for JSON-backed store. */
+    public static class JSONClientStorageServiceStoreFactory implements Factory {
+
+        /** {@inheritDoc} */
+        @Nonnull public ClientStorageServiceStore load(@Nullable @NotEmpty final String raw,
+                @Nonnull final ClientStorageSource src) {
+            return new JSONClientStorageServiceStore(raw, src);
+        }
+    }
+
 }
