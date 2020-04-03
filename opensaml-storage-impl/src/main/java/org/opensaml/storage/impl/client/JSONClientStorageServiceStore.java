@@ -50,21 +50,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(JSONClientStorageServiceStore.class);
-
-    /**
-     * Reconstitute stored data.
-     * 
-     * <p>The dirty bit is set based on the result. If successful, the bit is cleared,
-     * but if an error occurs, it will be set.</p>
-     * 
-     * @param raw serialized data to load
-     * @param src data source
-     */
-    public JSONClientStorageServiceStore(@Nullable @NotEmpty final String raw,
-            @Nonnull final ClientStorageSource src) {
-        super(raw, src);
-    }
-    
+        
     /** {@inheritDoc} */
     public void doLoad(@Nullable @NotEmpty final String raw) throws IOException {
         try {
@@ -162,12 +148,12 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
             
             final String raw = sink.toString();
             
-            log.trace("{} Size of data before encryption is {}", raw.length(), storageService.getLogPrefix());
-            log.trace("{} Data before encryption is {}", raw, storageService.getLogPrefix());
+            log.trace("{} Size of data before encryption is {}", storageService.getLogPrefix(), raw.length());
+            log.trace("{} Data before encryption is {}", storageService.getLogPrefix(), raw);
             try {
                 final String wrapped = storageService.getDataSealer().wrap(raw,
                         exp > 0 ? Instant.ofEpochMilli(exp) : Instant.now().plus(Duration.ofDays(1)));
-                log.trace("{} Size of data after encryption is {}", wrapped.length(), storageService.getLogPrefix());
+                log.trace("{} Size of data after encryption is {}", storageService.getLogPrefix(), wrapped.length());
                 setDirty(false);
                 return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(),
                         wrapped, getSource());
@@ -186,7 +172,9 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
         /** {@inheritDoc} */
         @Nonnull public ClientStorageServiceStore load(@Nullable @NotEmpty final String raw,
                 @Nonnull final ClientStorageSource src) {
-            return new JSONClientStorageServiceStore(raw, src);
+            final ClientStorageServiceStore store = new JSONClientStorageServiceStore();
+            store.load(raw, src);
+            return store;
         }
     }
 

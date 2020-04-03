@@ -48,32 +48,16 @@ public abstract class AbstractClientStorageServiceStore implements ClientStorage
     @Nonnull @NonnullElements private final Map<String, Map<String, MutableStorageRecord<?>>> contextMap;
     
     /** Data source. */
-    @Nonnull private final ClientStorageSource source;
+    @Nonnull private ClientStorageSource source;
     
     /** Dirty bit. */
     private boolean dirty;
 
     /**
      * Reconstitute stored data.
-     * 
-     * <p>The dirty bit is set based on the result. If successful, the bit is cleared,
-     * but if an error occurs, it will be set.</p>
-     * 
-     * @param raw serialized data to load
-     * @param src data source
      */
-    AbstractClientStorageServiceStore(@Nullable @NotEmpty final String raw, @Nonnull final ClientStorageSource src) {
-        source = Constraint.isNotNull(src, "ClientStorageSource cannot be null");
+    AbstractClientStorageServiceStore() {
         contextMap = new HashMap<>();
-        if (raw != null) {
-            try {
-                doLoad(raw);
-            } catch (final IOException e) {
-                contextMap.clear();
-                // Setting this should force corrupt data in the client to be overwritten.
-                setDirty(true);
-            }
-        }
     }
 
     /** {@inheritDoc} */
@@ -99,6 +83,24 @@ public abstract class AbstractClientStorageServiceStore implements ClientStorage
     @Nonnull @NonnullElements @Live public Map<String,Map<String,MutableStorageRecord<?>>> getContextMap() {
         return contextMap;
     }
+    
+    /** {@inheritDoc} */
+    public void load(@Nullable @NotEmpty final String raw, @Nonnull final ClientStorageSource src) {
+        
+        contextMap.clear();
+        source = Constraint.isNotNull(src, "ClientStorageSource cannot be null");
+        
+        if (raw != null) {
+            try {
+                doLoad(raw);
+            } catch (final IOException e) {
+                contextMap.clear();
+                // Setting this should force corrupt data in the client to be overwritten.
+                setDirty(true);
+            }
+        }
+    }
+
     
     /**
      * Reconstitute stored data.

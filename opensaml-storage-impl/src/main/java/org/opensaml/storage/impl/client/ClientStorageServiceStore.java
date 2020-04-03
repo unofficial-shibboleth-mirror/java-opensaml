@@ -66,6 +66,19 @@ public interface ClientStorageServiceStore {
     @Nonnull @NonnullElements @Live Map<String,Map<String,MutableStorageRecord<?>>> getContextMap();
     
     /**
+     * Reconstitute stored data.
+     * 
+     * <p>The dirty bit is set based on the result. If successful, the bit is cleared,
+     * but if an error occurs, it will be set.</p>
+     * 
+     * <p>By design this method should not throw under any non-catastrophic conditions.</p>
+     * 
+     * @param raw serialized data to load
+     * @param src storage source
+     */
+    void load(@Nullable @NotEmpty final String raw, @Nonnull final ClientStorageSource src);
+    
+    /**
      * Serialize current state of stored data into a storage operation.
      * 
      * @param storageService storage service
