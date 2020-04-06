@@ -55,10 +55,13 @@ public class DefaultEndpointResolver<EndpointType extends Endpoint> extends Abst
     @Override
     protected boolean doCheckEndpoint(@Nonnull final CriteriaSet criteria, @Nonnull final EndpointType endpoint) {
         
-        // Make sure the candidate binding, if set, is one of the bindings specified.
-        final BindingCriterion bindingCriterion = criteria.get(BindingCriterion.class);
-        if (bindingCriterion != null && !checkBindingCriterion(bindingCriterion, endpoint)) {
-            return false;
+        if (isInMetadataOrder()) {
+            // Make sure the candidate binding, if set, is one of the bindings specified.
+            // When the sort isn't based on metadata, this has already happened.
+            final BindingCriterion bindingCriterion = criteria.get(BindingCriterion.class);
+            if (bindingCriterion != null && !checkBindingCriterion(bindingCriterion, endpoint)) {
+                return false;
+            }
         }
         
         // Compare individual fields to a comparison template.

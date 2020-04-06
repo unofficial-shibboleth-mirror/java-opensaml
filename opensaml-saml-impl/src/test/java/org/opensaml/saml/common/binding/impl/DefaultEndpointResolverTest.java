@@ -25,6 +25,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
@@ -37,12 +38,12 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.saml.common.binding.impl.DefaultEndpointResolver;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
+import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -104,7 +105,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testSignedRequestBadBinding() throws ResolverException {
         final CriteriaSet crits = new CriteriaSet(new EndpointCriterion<>(endpointCrit.getEndpoint(), true),
-                new BindingCriterion(Collections.<String>emptyList()));
+                new BindingCriterion(Collections.emptyList()));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNull(ep);
     }
@@ -268,8 +269,73 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
             eps.add(ep);
         }
         Assert.assertEquals(eps.size(), 4);
+        Assert.assertEquals(
+                eps.stream().map(Endpoint::getBinding).collect(Collectors.toUnmodifiableList()),
+                List.of(SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
+                        SAMLConstants.SAML2_POST_BINDING_URI,
+                        SAMLConstants.SAML2_POST_BINDING_URI,
+                        SAMLConstants.SAML2_ARTIFACT_BINDING_URI));
     }
 
+    /**
+     * All endpoints of the right type in a supplied binding order.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
+    @Test
+    public void testMultipleBindingMetadataOrdered() throws UnmarshallingException, ResolverException {
+        endpointCrit.getEndpoint().setLocation(null);
+        endpointCrit.getEndpoint().setBinding(null);
+        final RoleDescriptorCriterion roleCrit =
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+        final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
+                new BindingCriterion(List.of(SAMLConstants.SAML2_POST_BINDING_URI, SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
+        final List<AssertionConsumerService> eps = new ArrayList<>();
+        for (final AssertionConsumerService ep : resolver.resolve(crits)) {
+            eps.add(ep);
+        }
+        Assert.assertEquals(eps.size(), 4);
+        Assert.assertEquals(
+                eps.stream().map(Endpoint::getBinding).collect(Collectors.toUnmodifiableList()),
+                List.of(SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
+                        SAMLConstants.SAML2_POST_BINDING_URI,
+                        SAMLConstants.SAML2_POST_BINDING_URI,
+                        SAMLConstants.SAML2_ARTIFACT_BINDING_URI));
+    }
+
+    /**
+     * All endpoints of the right type in a supplied binding order.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     * @throws ComponentInitializationException 
+     */
+    @Test
+    public void testMultipleBindingImposeOrdered() throws UnmarshallingException, ResolverException, ComponentInitializationException {
+        final DefaultEndpointResolver<AssertionConsumerService> overridden = new DefaultEndpointResolver<>();
+        overridden.setInMetadataOrder(false);
+        overridden.initialize();
+        
+        endpointCrit.getEndpoint().setLocation(null);
+        endpointCrit.getEndpoint().setBinding(null);
+        final RoleDescriptorCriterion roleCrit =
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
+        final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
+                new BindingCriterion(List.of(SAMLConstants.SAML2_POST_BINDING_URI, SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
+        final List<AssertionConsumerService> eps = new ArrayList<>();
+        for (final AssertionConsumerService ep : overridden.resolve(crits)) {
+            eps.add(ep);
+        }
+        Assert.assertEquals(eps.size(), 4);
+        Assert.assertEquals(
+                eps.stream().map(Endpoint::getBinding).collect(Collectors.toUnmodifiableList()),
+                List.of(SAMLConstants.SAML2_POST_BINDING_URI,
+                        SAMLConstants.SAML2_POST_BINDING_URI,
+                        SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
+                        SAMLConstants.SAML2_ARTIFACT_BINDING_URI));
+    }    
+    
     /**
      * All endpoints of the right type and binding.
      * @throws UnmarshallingException ...

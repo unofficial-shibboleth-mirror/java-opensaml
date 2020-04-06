@@ -43,9 +43,9 @@ public final class BindingCriterion implements Criterion {
     }
 
     /**
-     * Get the SAML binding URI.
+     * Get ordered list of SAML binding URIs.
      * 
-     * @return the SAML binding URI
+     * @return ordered list of SAML binding URIs
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getBindings() {
         return bindings;

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,9 +30,11 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.metadata.Endpoint;
@@ -50,16 +53,20 @@ import org.slf4j.LoggerFactory;
  * <p>The supported {@link net.shibboleth.utilities.java.support.resolver.Criterion} types and their use follows:</p>
  * 
  * <dl>
- *  <dt>{@link EndpointCriterion} (required)
+ *  <dt>{@link EndpointCriterion} (required)</dt>
  *  <dd>Contains a "template" for the eventual {@link Endpoint}(s) to resolve that identifies at minimum the
  *  type of endpoint object (via schema type or element name) to resolve. It MAY contain other attributes that
  *  will be used in matching candidate endpoints for suitability, such as index, binding, location, etc. If so
- *  marked, it may also be resolved as a trusted endpoint without additional verification required.
+ *  marked, it may also be resolved as a trusted endpoint without additional verification required.</dd>
  *  
- *  <dt>{@link RoleDescriptorCriterion}
+ *  <dt>{@link BindingCriterion}</dt>
+ *  <dd>Ordered list of bindings to filter and sort the endpoints. This overrides the ordering from the
+ *  metadata and possibly overrides the normal default endpoint in favor of higher-precedence bindings.</dd>
+ *  
+ *  <dt>{@link RoleDescriptorCriterion}</dt>
  *  <dd>If present, provides access to the candidate endpoint(s) to attempt resolution against. Strictly optional,
  *  but if absent, the supplied endpoint (from {@link EndpointCriterion}) is returned as the sole result,
- *  whatever its completeness/usability, allowing for subclass validation.
+ *  whatever its completeness/usability, allowing for subclass validation.</dd>
  * </dl>
  * 
  * <p>Subclasses should override the {{@link #doCheckEndpoint(CriteriaSet, Endpoint)} method to implement
@@ -73,11 +80,43 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AbstractEndpointResolver.class);
     
+    /** Sorting rule for results. */
+    private boolean inMetadataOrder;
+    
     /** Constructor. */
     public AbstractEndpointResolver() {
         super.setId(getClass().getName());
+        inMetadataOrder = true;
     }
 
+    /**
+     * Get whether the results should be sorted by metadata order or based on the order of
+     * bindings provided to the lookup.
+     * 
+     * @return true iff the {@link BindingCriterion} should be ignored for the purposes of sorting the results
+     * 
+     * @since 4.1.0
+     */
+    public boolean isInMetadataOrder() {
+        return inMetadataOrder;
+    }
+    
+    /**
+     * Set whether the results should be sorted by metadata order or based on the order of
+     * bindings provided to the lookup.
+     * 
+     * <p>Defaults to true</p>
+     * 
+     * @param flag flag to set
+     * 
+     * @since 4.1.0
+     */
+    public void setInMetadataOrder(final boolean flag) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        inMetadataOrder = flag;
+    }
+    
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements public Iterable<EndpointType> resolve(@Nullable final CriteriaSet criteria)
@@ -87,7 +126,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
         if (canUseRequestedEndpoint(criteria)) {
             final EndpointType endpoint = (EndpointType) criteria.get(EndpointCriterion.class).getEndpoint();
             if (doCheckEndpoint(criteria, endpoint)) {
-                return Collections.<EndpointType>singletonList(endpoint);
+                return Collections.singletonList(endpoint);
             }
             log.debug("{} Requested endpoint was rejected by extended validation process", getLogPrefix());
             return Collections.emptyList();
@@ -210,16 +249,37 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
             endpointType = epCriterion.getEndpoint().getElementQName();
         }
         
-        // Return the endpoints in the metadata of the candidate type.
         final List<Endpoint> endpoints = role.getRole().getEndpoints(endpointType);
+        
+        // Check for none.
         if (endpoints.isEmpty()) {
             log.debug("{} No endpoints in metadata of type {}", getLogPrefix(), endpointType);
-        } else {
+            return new ArrayList<>();
+        }
+
+        final BindingCriterion bindingCriterion = criteria.get(BindingCriterion.class);
+        if (inMetadataOrder || bindingCriterion == null || bindingCriterion.getBindings().isEmpty()) {
+            // No second-level sort. Return the endpoints in the metadata of the candidate type,
+            // default endpoint first.
             log.debug("{} Returning {} candidate endpoints of type {}", getLogPrefix(), endpoints.size(),
                     endpointType);
+            return sortCandidates(endpoints);
         }
         
-        return sortCandidates(endpoints);
+        // The binding(s) enforce a top-level sort on the endpoints, which is achieved
+        // by iterating over the full set multiple times with a binding filter applied.
+        
+        final List<EndpointType> sortedResults = new ArrayList<>(endpoints.size());
+        for (final String binding : bindingCriterion.getBindings()) {
+            sortedResults.addAll(
+                    sortCandidates(
+                            endpoints.stream()
+                                .filter(ep -> binding.equals(ep.getBinding()))
+                                .collect(Collectors.toUnmodifiableList())));
+        }
+        log.debug("{} Returning {} candidate endpoints of type {}", getLogPrefix(), sortedResults.size(),
+                endpointType);
+        return sortedResults;
     }
     
     /**
