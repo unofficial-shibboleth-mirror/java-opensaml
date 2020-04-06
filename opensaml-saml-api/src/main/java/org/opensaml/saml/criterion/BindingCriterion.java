@@ -17,17 +17,13 @@
 
 package org.opensaml.saml.criterion;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import com.google.common.collect.ImmutableList;
-
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
@@ -43,15 +39,7 @@ public final class BindingCriterion implements Criterion {
      * @param bindingURIs list of SAML binding URIs
      */
     public BindingCriterion(@Nonnull @NonnullElements final List<String> bindingURIs) {
-        Constraint.isNotNull(bindingURIs, "Binding list cannot be null");
-        
-        bindings = new ArrayList<>(bindingURIs.size());
-        for (final String binding : bindingURIs) {
-            final String trimmed = StringSupport.trimOrNull(binding);
-            if (trimmed != null) {
-                bindings.add(trimmed);
-            }
-        }
+        bindings = List.copyOf(StringSupport.normalizeStringCollection(bindingURIs));
     }
 
     /**
@@ -60,7 +48,7 @@ public final class BindingCriterion implements Criterion {
      * @return the SAML binding URI
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getBindings() {
-        return ImmutableList.copyOf(bindings);
+        return bindings;
     }
 
     /** {@inheritDoc} */
