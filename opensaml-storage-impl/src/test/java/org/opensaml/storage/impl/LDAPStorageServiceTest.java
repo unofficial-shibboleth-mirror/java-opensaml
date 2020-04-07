@@ -31,9 +31,7 @@ import org.ldaptive.pool.PooledConnectionFactory;
 import org.opensaml.storage.StorageRecord;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import com.unboundid.ldap.listener.InMemoryDirectoryServer;
@@ -56,23 +54,7 @@ public class LDAPStorageServiceTest {
     private final String context = "cn=Principal,ou=people,dc=shibboleth,dc=net";
 
     @BeforeClass
-    protected void setUp() throws ComponentInitializationException {
-        storageService = getStorageService();
-        storageService.initialize();
-    }
-    
-    @AfterClass
-    protected void tearDown() {
-        storageService.destroy();
-    }
-
-    /**
-     * Creates an UnboundID in-memory directory server. Leverages LDIF found in test resources.
-     * 
-     * @throws LDAPException if the in-memory directory server cannot be created
-     */
-    @BeforeTest public void setupDirectoryServer() throws LDAPException {
-
+    protected void setUp() throws ComponentInitializationException, LDAPException {
         InMemoryDirectoryServerConfig config = new InMemoryDirectoryServerConfig("dc=shibboleth,dc=net");
         config.setListenerConfigs(InMemoryListenerConfig.createLDAPConfig("default", 10389));
         config.addAdditionalBindCredentials("cn=Directory Manager", "password");
@@ -80,12 +62,14 @@ public class LDAPStorageServiceTest {
         directoryServer.importFromLDIF(true,
                 "src/test/resources/org/opensaml/storage/impl/LDAPStorageServiceTest.ldif");
         directoryServer.startListening();
-    }
 
-    /**
-     * Shutdown the in-memory directory server.
-     */
-    @AfterTest public void teardownDirectoryServer() {
+        storageService = getStorageService();
+        storageService.initialize();
+    }
+    
+    @AfterClass
+    protected void tearDown() {
+        storageService.destroy();
         directoryServer.shutDown(true);
     }
 

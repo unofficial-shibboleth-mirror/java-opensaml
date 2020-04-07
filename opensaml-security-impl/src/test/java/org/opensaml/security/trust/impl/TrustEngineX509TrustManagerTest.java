@@ -38,8 +38,8 @@ import org.ldaptive.ssl.SslConfig;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.testng.Assert;
-import org.testng.annotations.AfterTest;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import com.unboundid.ldap.sdk.LDAPException;
@@ -62,7 +62,7 @@ public class TrustEngineX509TrustManagerTest {
      * @throws LDAPException if the in-memory directory server cannot be created
      * @throws IOException ...
      */
-    @BeforeTest public void setupDirectoryServer() throws IOException, LDAPException {
+    @BeforeClass public void setupDirectoryServer() throws IOException, LDAPException {
         directoryServer = new InMemoryDirectory(new File(DATA_PATH + "test-ldap.ldif"), new File(DATA_PATH + "test-ldap.keystore"));
         directoryServer.start();
     }
@@ -70,7 +70,7 @@ public class TrustEngineX509TrustManagerTest {
     /**
      * Shutdown the in-memory directory server.
      */
-    @AfterTest public void teardownDirectoryServer() {
+    @AfterClass public void teardownDirectoryServer() {
         directoryServer.stop();
     }
 
