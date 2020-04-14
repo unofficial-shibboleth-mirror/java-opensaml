@@ -20,7 +20,9 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -171,12 +173,20 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
             roleFormats.clear();
         }
         
+        final Set<String> existingFormats =
+                roleFormats.stream().map(NameIDFormat::getURI).collect(Collectors.toUnmodifiableSet());
+        
         for (final String format : formats) {
-            final NameIDFormat nif = formatBuilder.buildObject();
-            nif.setURI(format);
-            log.info("Adding NameIDFormat '{}' to EntityDescriptor '{}'", format,
-                    ((EntityDescriptor) role.getParent()).getEntityID());
-            roleFormats.add(nif);
+            if (existingFormats.contains(format)) {
+                log.debug("Ignoring add of existing NameIDFormat '{}' on EntityDescriptor '{}'", format,
+                        ((EntityDescriptor) role.getParent()).getEntityID());
+            } else {
+                final NameIDFormat nif = formatBuilder.buildObject();
+                nif.setURI(format);
+                log.info("Adding NameIDFormat '{}' to EntityDescriptor '{}'", format,
+                        ((EntityDescriptor) role.getParent()).getEntityID());
+                roleFormats.add(nif);
+            }
         }
         
     }

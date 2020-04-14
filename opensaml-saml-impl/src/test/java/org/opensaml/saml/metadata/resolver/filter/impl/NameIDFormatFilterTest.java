@@ -19,10 +19,11 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.io.File;
 import java.net.URL;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -35,6 +36,7 @@ import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolverTest;
 import org.opensaml.saml.saml2.core.NameIDType;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -61,13 +63,13 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
         
         metadataFilter = new NameIDFormatFilter();
         
-        formats = Arrays.asList(NameIDType.EMAIL, NameIDType.KERBEROS);
+        formats = List.of(NameIDType.EMAIL, NameIDType.PERSISTENT);
     }
     
     @Test
     public void test() throws ComponentInitializationException, ResolverException {
         
-        metadataFilter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<String>>singletonMap(this, formats));
+        metadataFilter.setRules(Collections.singletonMap(this, formats));
         metadataFilter.initialize();
         
         metadataProvider.setMetadataFilter(metadataFilter);
@@ -77,8 +79,11 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
         EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
         Assert.assertNotNull(entity);
-        Assert.assertEquals(entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS).getNameIDFormats().size(), 3);
         
+        final List<NameIDFormat> attachedFormats = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS).getNameIDFormats();
+        Assert.assertEquals(attachedFormats.stream().map(NameIDFormat::getURI).collect(Collectors.toUnmodifiableList()),
+                List.of(NameIDType.PERSISTENT, NameIDType.EMAIL));
+                
         key = new EntityIdCriterion("https://cms.psu.edu/Shibboleth");
         entity = metadataProvider.resolveSingle(new CriteriaSet(key));
         Assert.assertNotNull(entity);
@@ -88,7 +93,7 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
     @Test
     public void testWithRemoval() throws ComponentInitializationException, ResolverException {
         
-        metadataFilter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<String>>singletonMap(this, formats));
+        metadataFilter.setRules(Collections.singletonMap(this, formats));
         metadataFilter.setRemoveExistingFormats(true);
         metadataFilter.initialize();
         
