@@ -21,6 +21,7 @@ import java.io.File;
 import java.net.URL;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Predicate;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -80,10 +81,18 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         final XSString value = valueBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
         value.setValue("bar");
         tag.getAttributeValues().add(value);
-        final Collection<Attribute> tags = Collections.singletonList(tag);
+
+        final Attribute tag2 = tagBuilder.buildObject();
+        tag2.setName("http://macedir.org/entity-category");
+        tag2.setNameFormat(Attribute.URI_REFERENCE);
+        final XSString value2 = valueBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
+        value2.setValue("http://refeds.org/category/research-and-scholarship");
+        tag2.getAttributeValues().add(value2);
+
+        final Collection<Attribute> tags = List.of(tag, tag2);
         
         final EntityAttributesFilter filter = new EntityAttributesFilter();
-        filter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<Attribute>>singletonMap(this, tags));
+        filter.setRules(Collections.singletonMap(this, tags));
         filter.initialize();
         
         metadataProvider.setMetadataFilter(filter);
@@ -101,7 +110,9 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         Assert.assertNotNull(extTags);
         Assert.assertEquals(extTags.getAttributes().size(), 2);
         Assert.assertEquals(extTags.getAttributes().get(0).getName(), "http://macedir.org/entity-category");
+        Assert.assertEquals(extTags.getAttributes().get(0).getAttributeValues().size(), 4);
         Assert.assertEquals(extTags.getAttributes().get(1).getName(), "foo");
+        Assert.assertEquals(extTags.getAttributes().get(1).getAttributeValues().size(), 1);
         
         key = new EntityIdCriterion("https://cms.psu.edu/Shibboleth");
         entity = metadataProvider.resolveSingle(new CriteriaSet(key));
@@ -121,7 +132,7 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         final Collection<Attribute> tags = Collections.singletonList(tag);
         
         final EntityAttributesFilter filter = new EntityAttributesFilter();
-        filter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<Attribute>>singletonMap(this, tags));
+        filter.setRules(Collections.singletonMap(this, tags));
         filter.setAttributeFilter(input -> "foo".equals(input.getName()));
         filter.initialize();
         

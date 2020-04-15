@@ -22,6 +22,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
@@ -165,19 +166,10 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
                 if (entityAttributesCollection.isEmpty()) {
                     entityAttributesCollection.add(entityAttributesBuilder.buildObject());
                 }
+                
                 final EntityAttributes entityAttributes =
                         (EntityAttributes) entityAttributesCollection.iterator().next();
-                
-                for (final Attribute attribute : entry.getValue()) {
-                    try {
-                        log.info("Adding EntityAttribute ({}) to EntityDescriptor ({})", attribute.getName(),
-                                descriptor.getEntityID());
-                        final Attribute copy = XMLObjectSupport.cloneXMLObject(attribute);
-                        entityAttributes.getAttributes().add(copy);
-                    } catch (final MarshallingException | UnmarshallingException e) {
-                        log.error("Error cloning Attribute", e);
-                    }
-                }
+                entry.getValue().forEach(a -> addEntityAttribute(descriptor, entityAttributes, a));
             }
         }
     }
@@ -197,6 +189,58 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
         // Next, check contained EntityDescriptors.
         for (final EntityDescriptor entity : descriptor.getEntityDescriptors()) {
             filterEntityDescriptor(entity);
+        }
+    }
+    
+    /**
+     * Get or create {@link Attribute} based on the input/template object.
+     * 
+     * @param descriptor parent entity
+     * @param container extension container
+     * @param input input object
+     */
+    @Nonnull private void addEntityAttribute(@Nonnull final EntityDescriptor descriptor,
+            @Nonnull final EntityAttributes container, @Nonnull final Attribute input) {
+        
+        Attribute toMutate = null;
+        
+        for (final Attribute attribute : container.getAttributes()) {
+            if (Objects.equals(input.getName(), attribute.getName())) {
+
+                String format1 = input.getNameFormat();
+                String format2 = attribute.getNameFormat();
+                
+                if (Attribute.UNSPECIFIED.equals(format1)) {
+                    format1 = null;
+                }
+                if (Attribute.UNSPECIFIED.equals(format2)) {
+                    format2 = null;
+                }
+                if (Objects.equals(format1, format2)) {
+                    toMutate = attribute;
+                    break;
+                }
+            }
+        }
+        
+        if (toMutate != null) {
+            for (final XMLObject newValue : input.getAttributeValues()) {
+                try {
+                    log.info("Adding value to existing EntityAttribute ({}) on EntityDescriptor ({})", input.getName(),
+                            descriptor.getEntityID());
+                    toMutate.getAttributeValues().add(XMLObjectSupport.cloneXMLObject(newValue));
+                } catch (final MarshallingException | UnmarshallingException e) {
+                    log.error("Error cloning AttributeValue", e);
+                }
+            }
+        } else {
+            try {
+                log.info("Adding new EntityAttribute ({}) to EntityDescriptor ({})", input.getName(),
+                        descriptor.getEntityID());
+                container.getAttributes().add(XMLObjectSupport.cloneXMLObject(input));
+            } catch (final MarshallingException | UnmarshallingException e) {
+                log.error("Error cloning Attribute", e);
+            }
         }
     }
 
