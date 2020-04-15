@@ -18,9 +18,13 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -148,6 +152,7 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         return metadata;
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Filters entity descriptor.
      * 
@@ -155,24 +160,52 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      */
     protected void filterEntityDescriptor(@Nonnull final EntityDescriptor descriptor) {
         
+        Set<String> existingDigests = Collections.emptySet();
+        Set<String> existingSignings = Collections.emptySet();
+        final Extensions exts = descriptor.getExtensions();
+        if (exts != null) {
+            existingDigests = exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME)
+                    .stream()
+                    .filter(DigestMethod.class::isInstance)
+                    .map(DigestMethod.class::cast)
+                    .map(DigestMethod::getAlgorithm)
+                    .distinct()
+                    .collect(Collectors.toUnmodifiableSet());
+            existingSignings = exts.getUnknownXMLObjects(SigningMethod.DEFAULT_ELEMENT_NAME)
+                    .stream()
+                    .filter(SigningMethod.class::isInstance)
+                    .map(SigningMethod.class::cast)
+                    .map(SigningMethod::getAlgorithm)
+                    .distinct()
+                    .collect(Collectors.toUnmodifiableSet());
+        }
+        
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<XMLObject>> entry : applyMap.asMap().entrySet()) {
             if (!entry.getValue().isEmpty() && entry.getKey().test(descriptor)) {
                 
                 for (final XMLObject xmlObject : entry.getValue()) {
                     try {
                         if (xmlObject instanceof DigestMethod) {
-                            log.info("Adding DigestMethod ({}) to EntityDescriptor ({})",
-                                    ((DigestMethod) xmlObject).getAlgorithm(), descriptor.getEntityID());
-                            getExtensions(descriptor).getUnknownXMLObjects().add(
-                                    XMLObjectSupport.cloneXMLObject(xmlObject));
+                            if (existingDigests.contains(((DigestMethod) xmlObject).getAlgorithm())) {
+                                log.debug("Skipping pre-existing DigestMethod ({}) on EntityDescriptor ({})",
+                                        ((DigestMethod) xmlObject).getAlgorithm(), descriptor.getEntityID());
+                            } else {
+                                log.info("Adding DigestMethod ({}) to EntityDescriptor ({})",
+                                        ((DigestMethod) xmlObject).getAlgorithm(), descriptor.getEntityID());
+                                getExtensions(descriptor).getUnknownXMLObjects().add(
+                                        XMLObjectSupport.cloneXMLObject(xmlObject));
+                            }
                         } else if (xmlObject instanceof SigningMethod) {
-                            log.info("Adding SigningMethod ({}) to EntityDescriptor ({})",
-                                    ((SigningMethod) xmlObject).getAlgorithm(), descriptor.getEntityID());
-                            getExtensions(descriptor).getUnknownXMLObjects().add(
-                                    XMLObjectSupport.cloneXMLObject(xmlObject));
+                            if (existingSignings.contains(((SigningMethod) xmlObject).getAlgorithm())) {
+                                log.debug("Skipping pre-existing SigningMethod ({}) on EntityDescriptor ({})",
+                                        ((SigningMethod) xmlObject).getAlgorithm(), descriptor.getEntityID());
+                            } else {
+                                log.info("Adding SigningMethod ({}) to EntityDescriptor ({})",
+                                        ((SigningMethod) xmlObject).getAlgorithm(), descriptor.getEntityID());
+                                getExtensions(descriptor).getUnknownXMLObjects().add(
+                                        XMLObjectSupport.cloneXMLObject(xmlObject));
+                            }
                         } else if (xmlObject instanceof EncryptionMethod) {
-                            log.info("Adding EncryptionMethod ({}) to EntityDescriptor ({})",
-                                    ((EncryptionMethod) xmlObject).getAlgorithm(), descriptor.getEntityID());
                             addEncryptionMethod(descriptor, (EncryptionMethod) xmlObject);
                         }
                         
@@ -183,6 +216,8 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
             }
         }
     }
+// Checkstyle: CyclomaticComplexity ON
+
     
     /**
      * Filters entities descriptor.
@@ -219,7 +254,7 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         
         return extensions;
     }
-
+    
     /**
      * Add {@link EncryptionMethod} extension to every {@link KeyDescriptor} found in
      * an entity.
@@ -233,8 +268,21 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         for (final RoleDescriptor role : descriptor.getRoleDescriptors()) {
             for (final KeyDescriptor key : role.getKeyDescriptors()) {
                 if (key.getUse() == null || key.getUse() != UsageType.SIGNING) {
+
+                    // Check if here already.
+                    final List<EncryptionMethod> existingMethods = key.getEncryptionMethods();
+                    for (final EncryptionMethod method : existingMethods) {
+                        if (Objects.equals(method.getAlgorithm(), encryptionMethod.getAlgorithm())) {
+                            log.debug("Skipping pre-existing EncryptionMethod ({}) on EntityDescriptor ({})",
+                                    encryptionMethod.getAlgorithm(), descriptor.getEntityID());
+                            return;
+                        }
+                    }
+                    
                     try {
-                        key.getEncryptionMethods().add(XMLObjectSupport.cloneXMLObject(encryptionMethod));
+                        log.info("Adding EncryptionMethod ({}) to EntityDescriptor ({})",
+                                encryptionMethod.getAlgorithm(), descriptor.getEntityID());
+                        existingMethods.add(XMLObjectSupport.cloneXMLObject(encryptionMethod));
                     } catch (final MarshallingException|UnmarshallingException e) {
                         log.error("Error cloning XMLObject", e);
                     }

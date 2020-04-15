@@ -59,7 +59,7 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
     protected void setUp() throws Exception {
 
         URL mdURL = FilesystemMetadataResolverTest.class
-                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+                .getResource("/org/opensaml/saml/metadata/resolver/filter/impl/EntityDescriptorWithAlgorithms.xml");
         mdFile = new File(mdURL.toURI());
 
         metadataProvider = new FilesystemMetadataResolver(mdFile);
@@ -87,23 +87,25 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         final SigningMethod signing3 = buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
         signing3.setAlgorithm("foo");
 
-        final EncryptionMethod enc = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
-        enc.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+        final EncryptionMethod enc1 = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
+        enc1.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
 
         final org.opensaml.xmlsec.signature.DigestMethod embeddedDigest =
                 buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         embeddedDigest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
-        enc.getUnknownXMLObjects().add(embeddedDigest);
+        enc1.getUnknownXMLObjects().add(embeddedDigest);
         
         final MGF mgf = buildXMLObject(MGF.DEFAULT_ELEMENT_NAME);
         mgf.setAlgorithm(EncryptionConstants.ALGO_ID_MGF1_SHA256);
-        enc.getUnknownXMLObjects().add(mgf);
+        enc1.getUnknownXMLObjects().add(mgf);
 
         final EncryptionMethod enc2 = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
         enc2.setAlgorithm("foo");
 
+        final EncryptionMethod enc3 = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
+        enc3.setAlgorithm(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
 
-        final Collection<XMLObject> algs = List.of(digest1, digest2, signing1, signing2, enc, digest3, signing3, enc2);
+        final Collection<XMLObject> algs = List.of(digest1, digest2, signing1, signing2, enc1, digest3, signing3, enc2, enc3);
         
         final AlgorithmFilter filter = new AlgorithmFilter();
         filter.setRules(Collections.singletonMap(this, algs));
@@ -113,7 +115,7 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         metadataProvider.setId("test");
         metadataProvider.initialize();
 
-        EntityIdCriterion crit = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
+        EntityIdCriterion crit = new EntityIdCriterion("https://foo.example.org/sp");
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(crit));
         assertNotNull(entity);
         final Extensions exts = entity.getExtensions();
@@ -138,31 +140,27 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         for (final RoleDescriptor role : entity.getRoleDescriptors()) {
             for (final KeyDescriptor key : role.getKeyDescriptors()) {
                 final List<EncryptionMethod> methods = key.getEncryptionMethods();
-                assertEquals(methods.size(), 2);
-                assertEquals(methods.get(0).getAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
-                assertEquals(methods.get(1).getAlgorithm(), "foo");
+                assertEquals(methods.size(), 3);
+                assertEquals(methods.get(0).getAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
+                assertEquals(methods.get(1).getAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
+                assertEquals(methods.get(2).getAlgorithm(), "foo");
                 
-                final List<XMLObject> encDigests = methods.get(0).getUnknownXMLObjects(
+                final List<XMLObject> encDigests = methods.get(1).getUnknownXMLObjects(
                         org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
                 assertEquals(encDigests.size(), 1);
                 assertEquals(((org.opensaml.xmlsec.signature.DigestMethod) encDigests.get(0)).getAlgorithm(),
                         SignatureConstants.ALGO_ID_DIGEST_SHA256);
 
-                final List<XMLObject> mgfs = methods.get(0).getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
+                final List<XMLObject> mgfs = methods.get(1).getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
                 assertEquals(mgfs.size(), 1);
                 assertEquals(((MGF) mgfs.get(0)).getAlgorithm(), EncryptionConstants.ALGO_ID_MGF1_SHA256);
             }
         }
-        
-        crit = new EntityIdCriterion("https://cms.psu.edu/Shibboleth");
-        entity = metadataProvider.resolveSingle(new CriteriaSet(crit));
-        assertNotNull(entity);
-        assertNull(entity.getExtensions());
     }
 
     /** {@inheritDoc} */
     public boolean test(final EntityDescriptor input) {
-        return input.getEntityID().equals("https://carmenwiki.osu.edu/shibboleth");
+        return input.getEntityID().equals("https://foo.example.org/sp");
     }
 
 }
