@@ -46,7 +46,7 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     private final int expectedDescriptionsCount = 1;
     
     /** Expected count of &lt;Keywords&gt;. */
-    private final int expectedKeywordsCount = 2;
+    private final int expectedKeywordsCount = 1;
     
     /** Expected count of &lt;Logo&gt;. */
     private final int expectedLogosCount = 1;
