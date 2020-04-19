@@ -20,13 +20,15 @@
  */
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Keywords;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -57,8 +59,15 @@ public class KeywordsTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
         Keywords name = (Keywords) unmarshallElement(singleElementFile);
         
-        Assert.assertEquals(name.getKeywords(), expectedWords, "Keyworks were not expected value");
-        Assert.assertEquals(name.getXMLLang(), expectedLang, "Language was not expected value");
+        assertEquals(name.getKeywords(), expectedWords, "Keyworks were not expected value");
+        assertEquals(name.getXMLLang(), expectedLang, "Language was not expected value");
+
+        Keywords keywords = (Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME);
+        assertNotEquals(keywords, name);
+        keywords.setXMLLang(expectedLang);
+        assertNotEquals(keywords, name);
+        keywords.setKeywords(expectedWords);
+        assertEquals(keywords, name);
     }
 
     /** {@inheritDoc} */

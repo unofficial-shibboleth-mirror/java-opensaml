@@ -17,7 +17,11 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.LangBearing;
@@ -34,7 +38,7 @@ public class KeywordsImpl extends AbstractXMLObject implements Keywords {
     /** The language. */
     private String lang;
     /** The data. */
-    private List<String> data;
+    @Nonnull private List<String> data = Collections.emptyList();
     /**
      * Constructor.
      *
@@ -78,11 +82,46 @@ public class KeywordsImpl extends AbstractXMLObject implements Keywords {
      * {@inheritDoc}
      */
     public int hashCode() {
-        int hash = lang.hashCode();
+        int hash = lang == null ? 12 :lang.hashCode();
         for (final String s: data) {
             hash = hash * 31 + s.hashCode();
         }
         return hash; 
+    }
+
+    /** {@inheritDoc} */
+    public boolean equals(final Object obj) {
+        if (!(obj instanceof Keywords)) {
+            return false;
+        }
+        final Keywords other = (Keywords) obj;
+
+        if (lang == null) {
+            if (other.getXMLLang() != null) {
+                return false;
+            }
+        } else if (!lang.equals(other.getXMLLang())) {
+            return false;
+        }
+
+        List<String> otherList = other.getKeywords();
+        if (otherList == null) {
+            otherList = Collections.emptyList();
+        }
+
+        if (otherList.size() != data.size()) {
+            return false;
+        }
+
+        final Iterator<String> me = data.iterator();
+        final Iterator<String> him = otherList.iterator();
+
+        while (me.hasNext()) {
+            if (!me.next().equals(him.next())) {
+                return false;
+            }
+        }
+        return true;
     }
 
 }
