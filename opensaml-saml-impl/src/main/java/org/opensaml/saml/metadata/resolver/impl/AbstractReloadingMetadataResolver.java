@@ -375,7 +375,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             nextRefresh = Instant.now().plus(computeNextRefreshDelay(null));
             if (t instanceof Exception) {
                 log.error("{} Error occurred while attempting to refresh metadata from '{}'", getLogPrefix(), mdId);
-                throw new ResolverException((Exception) t);
+                throw new ResolverException("Exception during refresh", (Exception) t);
             }
             log.error("{} Error occurred while attempting to refresh metadata from '{}'", getLogPrefix(), mdId, t);
             throw new ResolverException(String.format("Saw an error of type '%s' with message '%s'", 
