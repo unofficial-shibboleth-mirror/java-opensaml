@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.w3c.dom.Element;
 
@@ -33,7 +34,6 @@ public abstract class EncryptedTypeMarshaller extends AbstractXMLEncryptionMarsh
 
         if (et.getID() != null) {
             domElement.setAttributeNS(null, EncryptedType.ID_ATTRIB_NAME, et.getID());
-            domElement.setIdAttributeNS(null, EncryptedType.ID_ATTRIB_NAME, true);
         }
 
         if (et.getType() != null) {
@@ -48,6 +48,13 @@ public abstract class EncryptedTypeMarshaller extends AbstractXMLEncryptionMarsh
             domElement.setAttributeNS(null, EncryptedType.ENCODING_ATTRIB_NAME, et.getEncoding());
         }
 
+    }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        XMLObjectSupport.marshallAttributeIDness(null, EncryptedType.ID_ATTRIB_NAME, domElement, true);
     }
 
 }

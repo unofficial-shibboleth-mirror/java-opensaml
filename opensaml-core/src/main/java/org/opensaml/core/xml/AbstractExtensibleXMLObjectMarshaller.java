@@ -17,17 +17,10 @@
 
 package org.opensaml.core.xml;
 
-import java.util.Map.Entry;
-
 import javax.annotation.Nonnull;
-import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
-import org.w3c.dom.Attr;
-import org.w3c.dom.Document;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
 /**
@@ -49,18 +42,19 @@ public abstract class AbstractExtensibleXMLObjectMarshaller extends AbstractElem
     @Override
     protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
+
         final AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;
-        Attr attribute;
-        final Document document = domElement.getOwnerDocument();
-        for (final Entry<QName, String> entry : anyAttribute.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(document, entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || anyAttribute.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+
+        XMLObjectSupport.marshallAttributeMap(anyAttribute.getUnknownAttributes(), domElement);
+    }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        final AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;
+
+        XMLObjectSupport.marshallAttributeMapIDness(anyAttribute.getUnknownAttributes(), domElement);
     }
 
 }

@@ -418,6 +418,50 @@ public final class XMLObjectSupport {
     }
 
     /**
+     * Marshall the ID-ness of attributes represented by the indicated AttributeMap into the indicated DOM Element.
+     *
+     * @param attributeMap the AttributeMap
+     * @param domElement the target Element
+     */
+    public static void marshallAttributeMapIDness(final AttributeMap attributeMap, final Element domElement) {
+        for (final QName qname : attributeMap.keySet()) {
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(qname) || attributeMap.isIDAttribute(qname)) {
+                marshallAttributeIDness(qname, domElement, true);
+            }
+        }
+    }
+
+    /**
+     * Marshall the ID-ness of an attribute into the indicated DOM Element.
+     *
+     * @param attributeName the attribute QName
+     * @param domElement the target Element
+     * @param isIDAttribute true if attribute is an ID attribute, false if not
+     */
+    public static void marshallAttributeIDness(final QName attributeName, final Element domElement,
+            final boolean isIDAttribute) {
+
+        marshallAttributeIDness(attributeName.getNamespaceURI(), attributeName.getLocalPart(), domElement,
+                isIDAttribute);
+    }
+
+    /**
+     * Marshall the ID-ness of an attribute into the indicated DOM Element.
+     *
+     * @param namespaceURI the attribute name's namespace URI
+     * @param localPart the attribute name's local part
+     * @param domElement the target Element
+     * @param isIDAttribute true if attribute is an ID attribute, false if not
+     */
+    public static void marshallAttributeIDness(final String namespaceURI, final String localPart,
+            final Element domElement, final boolean isIDAttribute) {
+
+        if (domElement.hasAttributeNS(namespaceURI, localPart)) {
+            domElement.setIdAttributeNS(namespaceURI, localPart, isIDAttribute);
+        }
+    }
+
+    /**
      * Unmarshall a DOM Attr to an AttributeMap.
      * 
      * @param attributeMap the target AttributeMap
@@ -431,7 +475,7 @@ public final class XMLObjectSupport {
             attributeMap.registerID(attribQName);
         }
     }
-    
+
     /**
      * Build an XMLObject based on the element name.
      * 

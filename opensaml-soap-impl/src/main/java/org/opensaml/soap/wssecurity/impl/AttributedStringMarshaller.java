@@ -44,6 +44,13 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
         XMLObjectSupport.marshallAttributeMap(attributedString.getUnknownAttributes(), domElement);
         
     }
+    
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        XMLObjectSupport.marshallAttributeIDness(AttributedString.WSU_ID_ATTR_NAME, domElement, true);
+        
+        super.marshallAttributeIDness(xmlObject, domElement);
+    }
 
     /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)

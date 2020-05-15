@@ -23,6 +23,7 @@ package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.w3c.dom.Element;
@@ -50,7 +51,14 @@ public class AssertionMarshaller extends AbstractSAMLObjectMarshaller {
 
         if (assertion.getID() != null) {
             domElement.setAttributeNS(null, Assertion.ID_ATTRIB_NAME, assertion.getID());
-            domElement.setIdAttributeNS(null, Assertion.ID_ATTRIB_NAME, true);
         }
     }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        XMLObjectSupport.marshallAttributeIDness(null, Assertion.ID_ATTRIB_NAME, domElement, true);
+    }
+
 }

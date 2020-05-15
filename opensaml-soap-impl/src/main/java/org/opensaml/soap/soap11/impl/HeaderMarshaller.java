@@ -17,18 +17,11 @@
 
 package org.opensaml.soap.soap11.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.soap.soap11.Header;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
@@ -40,16 +33,7 @@ public class HeaderMarshaller extends AbstractXMLObjectMarshaller {
     protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
         final Header header = (Header) xmlObject;
 
-        Attr attribute;
-        for (final Entry<QName, String> entry : header.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) 
-                    || header.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        XMLObjectSupport.marshallAttributeMap(header.getUnknownAttributes(), domElement);
     }
 
     /** {@inheritDoc} */

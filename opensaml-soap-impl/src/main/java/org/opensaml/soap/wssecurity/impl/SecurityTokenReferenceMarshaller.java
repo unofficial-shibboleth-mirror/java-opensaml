@@ -49,5 +49,12 @@ public class SecurityTokenReferenceMarshaller extends AbstractWSSecurityObjectMa
         
         XMLObjectSupport.marshallAttributeMap(str.getUnknownAttributes(), domElement);
     }
+    
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        XMLObjectSupport.marshallAttributeIDness(SecurityTokenReference.WSU_ID_ATTR_NAME, domElement, true);
+        
+        super.marshallAttributeIDness(xmlObject, domElement);
+    }
 
 }

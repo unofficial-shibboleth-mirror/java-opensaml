@@ -17,17 +17,10 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.Map.Entry;
-
-import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
-import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
@@ -41,22 +34,23 @@ public class EncryptionPropertyMarshaller extends AbstractXMLEncryptionMarshalle
 
         if (ep.getID() != null) {
             domElement.setAttributeNS(null, EncryptionProperty.ID_ATTRIB_NAME, ep.getID());
-            domElement.setIdAttributeNS(null, EncryptionProperty.ID_ATTRIB_NAME, true);
         }
         if (ep.getTarget() != null) {
             domElement.setAttributeNS(null, EncryptionProperty.TARGET_ATTRIB_NAME, ep.getTarget());
         }
 
-        Attr attribute;
-        for (final Entry<QName, String> entry : ep.getUnknownAttributes().entrySet()) {
-            attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(), entry.getKey());
-            attribute.setValue(entry.getValue());
-            domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey())
-                    || ep.getUnknownAttributes().isIDAttribute(entry.getKey())) {
-                attribute.getOwnerElement().setIdAttributeNode(attribute, true);
-            }
-        }
+        XMLObjectSupport.marshallAttributeMap(ep.getUnknownAttributes(), domElement);
+    }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        final EncryptionProperty ep = (EncryptionProperty) xmlObject;
+
+        XMLObjectSupport.marshallAttributeIDness(null, EncryptionProperty.ID_ATTRIB_NAME, domElement, true);
+
+        super.marshallAttributeIDness(xmlObject, domElement);
     }
 
 }

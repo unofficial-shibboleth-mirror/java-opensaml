@@ -18,6 +18,8 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
@@ -32,14 +34,14 @@ import net.shibboleth.utilities.java.support.xml.AttributeSupport;
 public class EntitiesDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement) {
+    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+            throws MarshallingException {
 
         final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) samlElement;
 
         // Set the ID attribute
         if (entitiesDescriptor.getID() != null) {
             domElement.setAttributeNS(null, EntitiesDescriptor.ID_ATTRIB_NAME, entitiesDescriptor.getID());
-            domElement.setIdAttributeNS(null, EntitiesDescriptor.ID_ATTRIB_NAME, true);
         }
 
         // Set the validUntil attribute
@@ -59,4 +61,12 @@ public class EntitiesDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, EntitiesDescriptor.NAME_ATTRIB_NAME, entitiesDescriptor.getName());
         }
     }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        XMLObjectSupport.marshallAttributeIDness(null, EntitiesDescriptor.ID_ATTRIB_NAME, domElement, true);
+    }
+
 }

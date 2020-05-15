@@ -20,15 +20,19 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDMappingRequest;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  *
@@ -63,6 +67,21 @@ public class NameIDMappingRequestTest extends RequestTestBase {
         assertXMLEquals(expectedDOM, req);
     }
 
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(NameIDMappingRequest.DEFAULT_ELEMENT_NAME);
+
+        ((NameIDMappingRequest)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
+    }
+    
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {

@@ -21,6 +21,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
@@ -42,7 +43,6 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
         // Set the ID attribute
         if (roleDescriptor.getID() != null) {
             domElement.setAttributeNS(null, RoleDescriptor.ID_ATTRIB_NAME, roleDescriptor.getID());
-            domElement.setIdAttributeNS(null, RoleDescriptor.ID_ATTRIB_NAME, true);
         }
 
         // Set the validUntil attribute
@@ -77,4 +77,14 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
 
         marshallUnknownAttributes(roleDescriptor, domElement);
     }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        XMLObjectSupport.marshallAttributeIDness(null, RoleDescriptor.ID_ATTRIB_NAME, domElement, true);
+
+        super.marshallAttributeIDness(xmlObject, domElement);
+    }
+
 }

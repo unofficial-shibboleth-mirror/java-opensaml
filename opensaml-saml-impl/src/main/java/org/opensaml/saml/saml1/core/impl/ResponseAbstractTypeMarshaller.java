@@ -23,6 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
@@ -42,9 +43,6 @@ public abstract class ResponseAbstractTypeMarshaller extends AbstractSAMLObjectM
 
         if (response.getID() != null) {
             domElement.setAttributeNS(null, ResponseAbstractType.ID_ATTRIB_NAME, response.getID());
-            if (response.getVersion() != SAMLVersion.VERSION_10) {
-                domElement.setIdAttributeNS(null, ResponseAbstractType.ID_ATTRIB_NAME, true);
-            }
         }
 
         if (response.getInResponseTo() != null) {
@@ -63,6 +61,15 @@ public abstract class ResponseAbstractTypeMarshaller extends AbstractSAMLObjectM
 
         if (response.getRecipient() != null) {
             domElement.setAttributeNS(null, ResponseAbstractType.RECIPIENT_ATTRIB_NAME, response.getRecipient());
+        }
+    }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        if (((ResponseAbstractType)xmlObject).getVersion() != SAMLVersion.VERSION_10) {
+            XMLObjectSupport.marshallAttributeIDness(null, ResponseAbstractType.ID_ATTRIB_NAME, domElement, true);
         }
     }
 

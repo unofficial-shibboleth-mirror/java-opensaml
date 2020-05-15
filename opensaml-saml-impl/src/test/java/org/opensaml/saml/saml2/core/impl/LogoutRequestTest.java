@@ -20,18 +20,21 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-
 import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.SessionIndex;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  *
@@ -75,6 +78,21 @@ public class LogoutRequestTest extends RequestTestBase {
         super.populateRequiredAttributes(req);
         
         assertXMLEquals(expectedDOM, req);
+    }
+    
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(LogoutRequest.DEFAULT_ELEMENT_NAME);
+
+        ((LogoutRequest)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
     }
 
     /** {@inheritDoc} */

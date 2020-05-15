@@ -18,11 +18,15 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  *
@@ -76,6 +80,21 @@ public class DEREncodedKeyValueTest extends XMLObjectProviderBaseTestCase {
         der.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, der);
+    }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+
+        ((DEREncodedKeyValue)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
     }
     
     /** {@inheritDoc} */

@@ -19,6 +19,7 @@ package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.Advice;
@@ -43,7 +44,7 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         final Assertion assertion = (Assertion) super.unmarshall(domElement);
         if (assertion.getMinorVersion() != 0 && !Strings.isNullOrEmpty(assertion.getID())) {
-            domElement.setIdAttributeNS(null, Assertion.ID_ATTRIB_NAME, true);
+            XMLObjectSupport.marshallAttributeIDness(null, Assertion.ID_ATTRIB_NAME, domElement, true);
         }
         return assertion;
     }

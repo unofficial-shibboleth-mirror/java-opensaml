@@ -20,14 +20,10 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.testng.annotations.Test;
-
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -37,6 +33,11 @@ import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 import org.opensaml.saml.saml2.core.Scoping;
 import org.opensaml.saml.saml2.core.Subject;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Unit test for {@link AuthnRequest}.
@@ -100,6 +101,21 @@ public class AuthnRequestTest extends RequestTestBase {
         
         assertXMLEquals(expectedDOM, req);
 
+    }
+    
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME);
+
+        ((AuthnRequest)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
     }
     
     /** {@inheritDoc} */

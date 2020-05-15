@@ -45,5 +45,12 @@ public class PolicyMarshaller extends OperatorContentTypeMarshaller {
         
         XMLObjectSupport.marshallAttributeMap(policy.getUnknownAttributes(), domElement);
     }
+    
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        XMLObjectSupport.marshallAttributeIDness(IdBearing.WSU_ID_ATTR_NAME, domElement, true);
+        
+        super.marshallAttributeIDness(xmlObject, domElement);
+    }
 
 }

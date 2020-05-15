@@ -18,12 +18,16 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xmlsec.encryption.EncryptionProperties;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  *
@@ -89,6 +93,22 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
         
         assertXMLEquals(expectedDOM, ep);
     }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
+
+        ((EncryptionProperties)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
+    }
+
 
     /** {@inheritDoc} */
     @Test

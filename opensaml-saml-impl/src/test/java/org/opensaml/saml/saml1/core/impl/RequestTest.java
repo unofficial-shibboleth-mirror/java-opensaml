@@ -20,23 +20,23 @@
  */
 package org.opensaml.saml.saml1.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
-
 import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
-import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.AssertionArtifact;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.opensaml.saml.saml1.core.Request;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test in and around the {@link org.opensaml.saml.saml1.core.Request} interface
@@ -119,6 +119,21 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
+    }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+
+        ((Request)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
     }
 
     /** {@inheritDoc} */

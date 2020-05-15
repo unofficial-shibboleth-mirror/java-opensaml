@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.RequestAbstractType;
@@ -52,7 +53,7 @@ public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObject
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         final RequestAbstractType request = (RequestAbstractType) super.unmarshall(domElement);
         if (request.getVersion() != SAMLVersion.VERSION_10 && !Strings.isNullOrEmpty(request.getID())) {
-            domElement.setIdAttributeNS(null, RequestAbstractType.ID_ATTRIB_NAME, true);
+            XMLObjectSupport.marshallAttributeIDness(null, RequestAbstractType.ID_ATTRIB_NAME, domElement, true);
         }
         return request;
     }

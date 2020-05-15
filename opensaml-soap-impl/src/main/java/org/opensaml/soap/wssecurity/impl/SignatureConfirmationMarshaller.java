@@ -41,5 +41,12 @@ public class SignatureConfirmationMarshaller extends AbstractWSSecurityObjectMar
             domElement.setAttributeNS(null, SignatureConfirmation.VALUE_ATTRIB_NAME, sc.getValue());
         }
     }
+    
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        XMLObjectSupport.marshallAttributeIDness(SignatureConfirmation.WSU_ID_ATTR_NAME, domElement, true);
+        
+        super.marshallAttributeIDness(xmlObject, domElement);
+    }
 
 }

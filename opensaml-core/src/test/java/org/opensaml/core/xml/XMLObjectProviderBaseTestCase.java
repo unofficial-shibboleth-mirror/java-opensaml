@@ -17,10 +17,17 @@
 
 package org.opensaml.core.xml;
 
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Base test case for {@link org.opensaml.core.xml.XMLObject}s in XMLTooling for which we need a full set
@@ -145,6 +152,36 @@ public abstract class XMLObjectProviderBaseTestCase extends XMLObjectBaseTestCas
     @Test
 	public void testChildElementsMarshall() {
         Assert.assertNull(expectedChildElementsDOM, "No testSingleElementChildElementsMarshall");
+    }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    public void testAttributeIDnessMarshall(final XMLObject target, final String idValue) throws MarshallingException, XMLParserException {
+        // Test marshall of newly constructed object
+        Element origDOM = XMLObjectSupport.getMarshaller(target).marshall(target);
+        Element resolvedDOM = origDOM.getOwnerDocument().getElementById(idValue);
+        Assert.assertNotNull(resolvedDOM);
+        Assert.assertTrue(origDOM.isSameNode(resolvedDOM));
+
+        // Remarshall existing DOM into new Document
+        Document newDocument = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
+        origDOM = XMLObjectSupport.getMarshaller(target).marshall(target, newDocument);
+        resolvedDOM = newDocument.getElementById(idValue);
+        Assert.assertNotNull(resolvedDOM);
+        Assert.assertTrue(origDOM.isSameNode(resolvedDOM));
+
+        // Remarshall existing DOM as child of new parent Element in new Document
+        newDocument = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
+        Element parent = ElementSupport.constructElement(newDocument, "urn:test:foo", "Foo", "foo");
+        ElementSupport.setDocumentElement(newDocument, parent);
+        origDOM = XMLObjectSupport.getMarshaller(target).marshall(target, parent);
+        resolvedDOM = newDocument.getElementById(idValue);
+        Assert.assertNotNull(resolvedDOM);
+        Assert.assertTrue(origDOM.isSameNode(resolvedDOM));
     }
     
 }

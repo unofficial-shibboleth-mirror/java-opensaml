@@ -22,16 +22,18 @@ import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.ContactPerson;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
@@ -42,6 +44,8 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -207,6 +211,22 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
         assertXMLEquals(expectedDOM, descriptor);
     }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
+
+        ((EntityDescriptor)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
+    }
+
 
     @Test public void testSingleElementUnknownAttributesMarshall() {
         EntityDescriptor descriptor = (new EntityDescriptorBuilder()).buildObject();

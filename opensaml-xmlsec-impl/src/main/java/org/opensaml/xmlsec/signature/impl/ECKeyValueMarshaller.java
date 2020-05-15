@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.w3c.dom.Element;
 
@@ -33,8 +34,14 @@ public class ECKeyValueMarshaller extends AbstractXMLSignatureMarshaller {
 
         if (ec.getID() != null) {
             domElement.setAttributeNS(null, ECKeyValue.ID_ATTRIB_NAME, ec.getID());
-            domElement.setIdAttributeNS(null, ECKeyValue.ID_ATTRIB_NAME, true);
         }
     }
-    
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        XMLObjectSupport.marshallAttributeIDness(null, ECKeyValue.ID_ATTRIB_NAME, domElement, true);
+    }
+
 }

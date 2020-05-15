@@ -18,13 +18,17 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.NamedCurve;
 import org.opensaml.xmlsec.signature.PublicKey;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  *
@@ -86,6 +90,21 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
         ECKeyValue keyValue = (ECKeyValue) buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, keyValue);
+    }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+
+        ((ECKeyValue)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
     }
 
     /** {@inheritDoc} */

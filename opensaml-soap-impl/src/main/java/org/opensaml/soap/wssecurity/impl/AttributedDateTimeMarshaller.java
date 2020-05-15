@@ -47,6 +47,13 @@ public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarsha
     }
 
     /** {@inheritDoc} */
+    protected void marshallAttributeIDness(XMLObject xmlObject, Element domElement) throws MarshallingException {
+        XMLObjectSupport.marshallAttributeIDness(AttributedDateTime.WSU_ID_ATTR_NAME, domElement, true);
+        
+        super.marshallAttributeIDness(xmlObject, domElement);
+    }
+
+    /** {@inheritDoc} */
     protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
             throws MarshallingException {
         final AttributedDateTime dateTime = (AttributedDateTime) xmlObject;

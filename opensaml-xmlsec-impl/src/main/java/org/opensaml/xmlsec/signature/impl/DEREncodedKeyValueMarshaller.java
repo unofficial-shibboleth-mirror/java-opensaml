@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryMarshaller;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.w3c.dom.Element;
 
@@ -34,8 +35,14 @@ public class DEREncodedKeyValueMarshaller extends XSBase64BinaryMarshaller {
 
         if (der.getID() != null) {
             domElement.setAttributeNS(null, DEREncodedKeyValue.ID_ATTRIB_NAME, der.getID());
-            domElement.setIdAttributeNS(null, DEREncodedKeyValue.ID_ATTRIB_NAME, true);
         }
+    }
+
+    /** {@inheritDoc} */
+    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+            throws MarshallingException {
+
+        XMLObjectSupport.marshallAttributeIDness(null, DEREncodedKeyValue.ID_ATTRIB_NAME, domElement, true);
     }
 
 }

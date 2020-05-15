@@ -17,22 +17,25 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
-
 import java.time.Duration;
 import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
-import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
@@ -136,6 +139,22 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
 
         assertXMLEquals(expectedDOM, entitiesDescriptor);
     }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(EntitiesDescriptor.DEFAULT_ELEMENT_NAME);
+
+        ((EntitiesDescriptor)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
+    }
+
 
     /** {@inheritDoc} */
     @Test

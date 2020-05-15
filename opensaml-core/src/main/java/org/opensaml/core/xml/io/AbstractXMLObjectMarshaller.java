@@ -35,6 +35,7 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -103,6 +104,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             log.trace("Setting DOM of XMLObject as document element of given Document");
             setDocumentElement(document, domElement);
 
+            marshallAttributeIDness(xmlObject, domElement);
+
             return domElement;
         }
 
@@ -146,6 +149,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
             log.trace("Appending DOM of XMLObject {} as child of parent element {}", xmlObject.getElementQName(),
                     QNameSupport.getNodeQName(parentElement));
             ElementSupport.appendChildElement(parentElement, domElement);
+
+            marshallAttributeIDness(xmlObject, domElement);
 
             return domElement;
         }
@@ -208,6 +213,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         marshallNamespaces(xmlObject, targetElement);
 
         marshallAttributes(xmlObject, targetElement);
+
+        marshallAttributeIDness(xmlObject, targetElement);
 
         marshallChildElements(xmlObject, targetElement);
 
@@ -387,6 +394,27 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException{
         
+    }
+
+    /**
+     * Marshalls the IDness of the ID attribute present on the element, if any.
+     *
+     * The default implementation here handles the wildcard attributes in the {@link AttributeMap} if the XMLObject
+     * is an instance of {@link AttributeExtensibleXMLObject}, via {@link XMLObjectSupport.marshallAttributeMapIDness}.
+     *
+     * @param xmlObject the XMLObject to marshall
+     * @param domElement the W3C DOM element
+     *
+     * @throws MarshallingException thrown if there is a problem marshalling the element
+     */
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+
+        if (AttributeExtensibleXMLObject.class.isInstance(xmlObject)) {
+            XMLObjectSupport.marshallAttributeMapIDness(
+                    AttributeExtensibleXMLObject.class.cast(xmlObject).getUnknownAttributes(), domElement);
+        }
+
     }
 
     /**

@@ -21,20 +21,22 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
-
 import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test class for org.opensaml.saml.saml1.core.Response
@@ -130,6 +132,21 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementMarshall() {
         assertXMLEquals(expectedDOM, buildXMLObject(qname));
+    }
+
+    /**
+     * Test marshalling of attribute IDness.
+     *
+     * @throws MarshallingException
+     * @throws XMLParserException
+     * */
+    @Test
+    public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
+        XMLObject target = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
+
+        ((Response)target).setID("id123");
+
+        testAttributeIDnessMarshall(target, "id123");
     }
 
     /** {@inheritDoc} */
