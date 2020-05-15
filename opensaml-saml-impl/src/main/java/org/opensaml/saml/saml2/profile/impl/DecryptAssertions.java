@@ -26,6 +26,8 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
@@ -134,6 +136,17 @@ public class DecryptAssertions extends AbstractDecryptAction {
         
         response.getEncryptedAssertions().removeAll(encrypteds);
         response.getAssertions().addAll(decrypteds); 
+
+        // Re-marshall the response so that any ID attributes within the decrypted Assertions
+        // will have their ID-ness re-established at the DOM level.
+        if (!decrypteds.isEmpty()) {
+            try {
+                XMLObjectSupport.marshall(response);
+            } catch (final MarshallingException e) {
+                log.warn("Error re-marshalling Response after Assertion decryption", e);
+                throw new DecryptionException(e);
+            }
+        }
     }
     
 }
