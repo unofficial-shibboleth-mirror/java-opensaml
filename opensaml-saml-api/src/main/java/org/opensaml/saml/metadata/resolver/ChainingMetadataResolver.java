@@ -180,7 +180,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 final Instant lastUpdate = ((RefreshableMetadataResolver) resolver).getLastUpdate();
-                if (ret == null || ret.isBefore(lastUpdate)) {
+                if (ret == null || lastUpdate == null || ret.isBefore(lastUpdate)) {
                     ret = lastUpdate;
                 }
             }
@@ -196,7 +196,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 final Instant lastRefresh = ((RefreshableMetadataResolver) resolver).getLastRefresh();
-                if (ret == null || ret.isBefore(lastRefresh)) {
+                if (ret == null || lastRefresh == null || ret.isBefore(lastRefresh)) {
                     ret = lastRefresh;
                 }
             }
@@ -211,7 +211,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 final Instant lastSuccessRefresh = ((RefreshableMetadataResolver) resolver).getLastSuccessfulRefresh();
-                if (ret == null || ret.isBefore(lastSuccessRefresh)) {
+                if (ret == null || lastSuccessRefresh == null || ret.isBefore(lastSuccessRefresh)) {
                     ret = lastSuccessRefresh;
                 }
             }
