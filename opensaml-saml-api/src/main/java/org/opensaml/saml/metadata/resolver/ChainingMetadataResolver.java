@@ -173,30 +173,38 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         }
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * We iterate over all the children and return the earliest instant or null if one of them hasn't ever updated. */
     @Override
     @Nullable public Instant getLastUpdate() {
         Instant ret = null;
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 final Instant lastUpdate = ((RefreshableMetadataResolver) resolver).getLastUpdate();
-                if (ret == null || lastUpdate == null || ret.isBefore(lastUpdate)) {
+                if (lastUpdate == null) {
+                    return null;
+                }
+                if (ret == null || ret.isBefore(lastUpdate)) {
                     ret = lastUpdate;
                 }
             }
         }
-        
+
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+    * We iterate over all the children and return the earliest instant or null if one of them hasn't ever refreshed. */
     @Override
     @Nullable public Instant getLastRefresh() {
         Instant ret = null;
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 final Instant lastRefresh = ((RefreshableMetadataResolver) resolver).getLastRefresh();
-                if (ret == null || lastRefresh == null || ret.isBefore(lastRefresh)) {
+                if (lastRefresh == null) {
+                    return null;
+                }
+                if (ret == null || ret.isBefore(lastRefresh)) {
                     ret = lastRefresh;
                 }
             }
@@ -205,22 +213,28 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         return ret;
     }
     
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+    * We iterate over all the children and return the earliest instant or null if one of them
+    * hasn't ever refreshed successfully. */
     public Instant getLastSuccessfulRefresh() {
         Instant ret = null;
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
                 final Instant lastSuccessRefresh = ((RefreshableMetadataResolver) resolver).getLastSuccessfulRefresh();
-                if (ret == null || lastSuccessRefresh == null || ret.isBefore(lastSuccessRefresh)) {
+                if (lastSuccessRefresh == null) {
+                    return null;
+                }
+                if (ret == null || ret.isBefore(lastSuccessRefresh)) {
                     ret = lastSuccessRefresh;
                 }
             }
         }
-        
+
         return ret;
     }
 
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * We iterate over all children - a failure of any is a failure. */
     public Boolean wasLastRefreshSuccess() {
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
@@ -230,11 +244,12 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
                 }
             }
         }
-        
+
         return true;
     }
     
-    /** {@inheritDoc} */
+    /** {@inheritDoc}
+     * We iterate over all children and return the first failure we find. */
     public Throwable getLastFailureCause() {
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof RefreshableMetadataResolver) {
