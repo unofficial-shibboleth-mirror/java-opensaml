@@ -400,7 +400,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
      * Marshalls the IDness of the ID attribute present on the element, if any.
      *
      * The default implementation here handles the wildcard attributes in the {@link AttributeMap} if the XMLObject
-     * is an instance of {@link AttributeExtensibleXMLObject}, via {@link XMLObjectSupport.marshallAttributeMapIDness}.
+     * is an instance of {@link AttributeExtensibleXMLObject},
+     * via {@link XMLObjectSupport.marshallAttributeMapIDness(AttributeMap, Element)}.
      *
      * @param xmlObject the XMLObject to marshall
      * @param domElement the W3C DOM element
