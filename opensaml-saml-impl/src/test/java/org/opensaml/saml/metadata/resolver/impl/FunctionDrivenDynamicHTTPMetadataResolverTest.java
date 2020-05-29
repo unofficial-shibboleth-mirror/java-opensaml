@@ -171,7 +171,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     @Test
     public void testTemplateNonexistentPath() throws Exception {
         // Bad path, resulting in 404.  Should silently fail.
-        String template = "http://shibboleth.net/unittests/metadata?entityID=${entityID}";
+        String template = "http://test.shibboleth.net/unittests/metadata?entityID=${entityID}";
         String entityID = "https://www.example.org/sp";
         
         TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
@@ -220,7 +220,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testMDQ() throws Exception {
-        String baseURL = "http://shibboleth.net:9000";
+        String baseURL = "http://test.shibboleth.net:9000";
         String entityID = "https://foo1.example.org/idp/shibboleth";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL);
@@ -241,7 +241,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testMDQViaArtifact() throws Exception {
-        String baseURL = "http://shibboleth.net:9000";
+        String baseURL = "http://test.shibboleth.net:9000";
         String entityID = "https://foo1.example.org/idp/shibboleth";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL,
