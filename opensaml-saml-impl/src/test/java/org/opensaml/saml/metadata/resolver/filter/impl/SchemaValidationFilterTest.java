@@ -17,42 +17,51 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-import org.apache.http.client.params.AllClientPNames;
-import org.apache.http.impl.client.DefaultHttpClient;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLSchemaBuilder;
 import org.opensaml.saml.common.xml.SAMLSchemaBuilder.SAML1Version;
-import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver;
-import org.testng.annotations.BeforeMethod;
+import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
+import org.springframework.core.io.ClassPathResource;
+import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.repository.RepositorySupport;
+import net.shibboleth.ext.spring.resource.ResourceHelper;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  * Unit tests for {@link SchemaValidationFilter}.
  */
-@SuppressWarnings("deprecation")
 public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
-    
-    private DefaultHttpClient httpClient;
-
-    /** URL to InCommon metadata. */
-    private String inCommonMDURL;
-
-    @BeforeMethod
-    protected void setUp() throws Exception {
-        httpClient = new DefaultHttpClient();
-        httpClient.getParams().setIntParameter(AllClientPNames.CONNECTION_TIMEOUT, 1000 * 5);
-        
-        inCommonMDURL = RepositorySupport.buildHTTPResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml", false);
-    }
 
     @Test
-    public void test() throws Exception {
-        HTTPMetadataResolver metadataProvider = new HTTPMetadataResolver(httpClient, inCommonMDURL);
+    public void testValid() throws Exception {
+        final ResourceBackedMetadataResolver metadataProvider = new ResourceBackedMetadataResolver(
+                ResourceHelper.of(new ClassPathResource("org/opensaml/saml/saml2/metadata/valid-metadata.xml")));
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
         metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11)));
         metadataProvider.initialize();
     }
+    
+    @Test
+    public void testStrict() throws Exception {
+        final ResourceBackedMetadataResolver metadataProvider = new ResourceBackedMetadataResolver(
+                ResourceHelper.of(new ClassPathResource("org/opensaml/saml/saml2/metadata/valid-metadata.xml")));
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11, true)));
+        metadataProvider.initialize();
+    }
+    
+    @Test(expectedExceptions=ComponentInitializationException.class)
+    public void testStrictInvalid() throws Exception {
+        final ResourceBackedMetadataResolver metadataProvider = new ResourceBackedMetadataResolver(
+                ResourceHelper.of(new ClassPathResource("org/opensaml/saml/saml2/metadata/invalid-metadata.xml")));
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11, true)));
+        metadataProvider.initialize();
+        Assert.fail("Should have raised schema validation error");
+    }
+
 }

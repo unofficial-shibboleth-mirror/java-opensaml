@@ -128,6 +128,9 @@ public final class SAMLConstants {
     /** SAML 2.0 Assertion schema Id. */
     public static final String SAML20_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-assertion-2.0.xsd";
 
+    /** "Strict" SAML 2.0 Assertion schema Id. */
+    public static final String STRICT_SAML20_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-schema-assertion-2.1.xsd";
+
     /** SAML 2.0 Assertion XML Namespace. */
     public static final String SAML20_NS = "urn:oasis:names:tc:SAML:2.0:assertion";
 
@@ -137,12 +140,24 @@ public final class SAMLConstants {
     /** SAML 2.0 Protocol schema Id. */
     public static final String SAML20P_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-protocol-2.0.xsd";
 
+    /** "Strict" SAML 2.0 Protocol schema Id. */
+    public static final String STRICT_SAML20P_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-schema-protocol-2.1.xsd";
+
     /** SAML 2.0 Protocol XML Namespace. */
     public static final String SAML20P_NS = "urn:oasis:names:tc:SAML:2.0:protocol";
 
     /** SAML 2.0 Protocol QName prefix. */
     public static final String SAML20P_PREFIX = "saml2p";
 
+    /** SAML 2.0 Metadata schema Id. */
+    public static final String SAML20MD_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-metadata-2.0.xsd";
+
+    /** "Strict" SAML 2.0 Metadata schema Id. */
+    public static final String STRICT_SAML20MD_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-schema-metadata-2.1.xsd";
+
+    /** SAML 2.0 Metadata XML Namespace. */
+    public static final String SAML20MD_NS = "urn:oasis:names:tc:SAML:2.0:metadata";
+    
     /** SAML 2.0 Protocol Third-party extension schema Id. */
     public static final String SAML20PTHRPTY_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-protocol-ext-thirdparty.xsd";
 
@@ -167,17 +182,15 @@ public final class SAMLConstants {
     /** SAML SAML V2.0 "Protocol Extension For Requesting Attributes Per Request" prefix. */
     public static final String SAML20PREQ_ATTRR_PREFIX = "req-attr";
 
-    /** SAML 2.0 Metadata schema Id. */
-    public static final String SAML20MD_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-metadata-2.0.xsd";
-
-    /** SAML 2.0 Metadata XML Namespace. */
-    public static final String SAML20MD_NS = "urn:oasis:names:tc:SAML:2.0:metadata";
-
     /** SAML 2.0 Standalone Query Metadata extension XML namespace. */
     public static final String SAML20MDQUERY_NS = "urn:oasis:names:tc:SAML:metadata:ext:query";
 
     /** SAML 2.0 Standalone Query Metadata extension schema system Id. */
     public static final String SAML20MDQUERY_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-metadata-ext-query.xsd";
+
+    /** "Strict" SAML 2.0 Standalone Query Metadata extension schema system Id. */
+    public static final String STRICT_SAML20MDQUERY_SCHEMA_LOCATION =
+            SCHEMA_DIR + "strict/sstc-saml-metadata-ext-query.xsd";
 
     /** SAML 2.0 Standalone Query Metadata extension prefix. */
     public static final String SAML20MDQUERY_PREFIX = "query";
@@ -196,6 +209,9 @@ public final class SAMLConstants {
 
     /** SAML 2.0 Enhanced Client/Proxy SSO Profile schema Id. */
     public static final String SAML20ECP_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-ecp-2.0.xsd";
+
+    /** "Strict" SAML 2.0 Enhanced Client/Proxy SSO Profile schema Id. */
+    public static final String STRICT_SAML20ECP_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-schema-ecp-2.1.xsd";
 
     /** SAML 2.0 Enhanced Client/Proxy SSO Profile XML Namespace. */
     public static final String SAML20ECP_NS = "urn:oasis:names:tc:SAML:2.0:profiles:SSO:ecp";
@@ -224,6 +240,9 @@ public final class SAMLConstants {
     /** SAML 2.0 Metadata Extension for Discovery and Login UI schema Id. */
     public static final String SAML20MDUI_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-metadata-ui-v1.0.xsd";
 
+    /** "Strict" SAML 2.0 Metadata Extension for Discovery and Login UI schema Id. */
+    public static final String STRICT_SAML20MDUI_SCHEMA_LOCATION = SCHEMA_DIR + "strict/sstc-saml-metadata-ui-v1.1.xsd";
+
     /** SAML 2.0 Metadata Extension for Discovery and Login UI XML Namespace. */
     public static final String SAML20MDUI_NS = "urn:oasis:names:tc:SAML:metadata:ui";
 
@@ -238,6 +257,9 @@ public final class SAMLConstants {
 
     /** SAML 2.0 Metadata Extension for Registration and Publication Information schema Id. */
     public static final String SAML20MDRPI_SCHEMA_LOCATION = SCHEMA_DIR + "saml-metadata-rpi-v1.0.xsd";
+
+    /** "Strict" SAML 2.0 Metadata Extension for Registration and Publication Information schema Id. */
+    public static final String STRICT_SAML20MDRPI_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-metadata-rpi-v1.1.xsd";
 
     /** SAML 2.0 Metadata Extension for Registration and Publication Information XML Namespace. */
     public static final String SAML20MDRPI_NS = "urn:oasis:names:tc:SAML:metadata:rpi";
@@ -257,6 +279,9 @@ public final class SAMLConstants {
     /** SAML 2.0 DCE PAC Attribute Profile schema Id. */
     public static final String SAML20DCE_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-dce-2.0.xsd";
 
+    /** "Strict" SAML 2.0 DCE PAC Attribute Profile schema Id. */
+    public static final String STRICT_SAML20DCE_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-schema-dce-2.1.xsd";
+
     /** SAML 2.0 DCE PAC Attribute Profile XML Namespace. */
     public static final String SAML20DCE_NS = "urn:oasis:names:tc:SAML:2.0:profiles:attribute:DCE";
 
@@ -266,6 +291,9 @@ public final class SAMLConstants {
     /** SAML 2.0 X.500 Attribute Profile schema Id. */
     public static final String SAML20X500_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-x500-2.0.xsd";
 
+    /** "Strict" SAML 2.0 X.500 Attribute Profile schema Id. */
+    public static final String STRICT_SAML20X500_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-schema-x500-2.1.xsd";
+
     /** SAML 2.0 X.500 Attribute Profile XML Namespace. */
     public static final String SAML20X500_NS = "urn:oasis:names:tc:SAML:2.0:profiles:attribute:X500";
 
@@ -274,6 +302,9 @@ public final class SAMLConstants {
 
     /** SAML 2.0 XACML Attribute Profile schema Id. */
     public static final String SAML20XACML_SCHEMA_LOCATION = SCHEMA_DIR + "saml-schema-xacml-2.0.xsd";
+
+    /** "Strict" SAML 2.0 XACML Attribute Profile schema Id. */
+    public static final String STRICT_SAML20XACML_SCHEMA_LOCATION = SCHEMA_DIR + "strict/saml-schema-xacml-2.1.xsd";
 
     /** SAML 2.0 XACML Attribute Profile XML Namespace. */
     public static final String SAML20XACML_NS = "urn:oasis:names:tc:SAML:2.0:profiles:attribute:XACML";
@@ -320,7 +351,11 @@ public final class SAMLConstants {
     
     /** SAML 2.0 Metadata Profile for Algorithm Support schema Id. */
     public static final String SAML20ALG_SCHEMA_LOCATION = SCHEMA_DIR + "sstc-saml-metadata-algsupport-v1.0.xsd";
-    
+
+    /** "Strict" SAML 2.0 Metadata Profile for Algorithm Support schema Id. */
+    public static final String STRICT_SAML20ALG_SCHEMA_LOCATION =
+            SCHEMA_DIR + "strict/sstc-saml-metadata-algsupport-v1.1.xsd";
+
     /** SAML 2.0 Metadata Profile for Algorithm Support Namespace. */
     public static final String SAML20ALG_NS = "urn:oasis:names:tc:SAML:metadata:algsupport";
     
