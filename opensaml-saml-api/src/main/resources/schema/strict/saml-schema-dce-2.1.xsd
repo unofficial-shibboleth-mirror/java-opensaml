@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema xmlns:dce="urn:oasis:names:tc:SAML:2.0:profiles:attribute:DCE" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion" targetNamespace="urn:oasis:names:tc:SAML:2.0:profiles:attribute:DCE" elementFormDefault="unqualified" attributeFormDefault="unqualified" blockDefault="substitution" version="2.0">
+    
+    <annotation>
+        <documentation>
+            Document identifier: saml-schema-dce-2.1
+            Revision history:
+            V2.0 (March, 2005):
+                Custom schema for DCE attribute profile, first published in SAML 2.0.
+            V2.1 (June 2020):
+                Private Shibboleth version to tighten string and anyURI minLength.
+        </documentation>
+    </annotation>
+    
+    <import namespace="urn:oasis:names:tc:SAML:2.0:assertion" schemaLocation="saml-schema-assertion-2.1.xsd"/>
+    
+    <complexType name="DCEValueType">
+        <simpleContent>
+            <extension base="saml:anyURI">
+                <attribute ref="dce:Realm" use="optional"/>
+                <attribute ref="dce:FriendlyName" use="optional"/>
+            </extension>
+        </simpleContent>
+    </complexType>
+    <attribute name="Realm" type="saml:anyURI"/>
+    <attribute name="FriendlyName" type="saml:string"/>
+</schema>

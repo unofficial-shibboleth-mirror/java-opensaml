@@ -77,11 +77,8 @@ public class SAMLSchemaBuilder {
         SAMLConstants.SAML11P_SCHEMA_LOCATION,
         };
 
-    /** Classpath relative location of SAML 2_0 schemas. */
-    @Nonnull @NonnullElements @NotEmpty private static String[] saml20Schemas = {
-        SAMLConstants.SAML20_SCHEMA_LOCATION,
-        SAMLConstants.SAML20P_SCHEMA_LOCATION,
-        SAMLConstants.SAML20MD_SCHEMA_LOCATION,
+    /** Classpath relative location of the invariant SAML 2.0 schemas. */
+    @Nonnull @NonnullElements @NotEmpty private static String[] saml20CommonSchemas = {
         SAMLConstants.SAML20AC_SCHEMA_LOCATION,
         "/schema/saml-schema-authn-context-auth-telephony-2.0.xsd",
         "/schema/saml-schema-authn-context-ip-2.0.xsd",
@@ -107,23 +104,47 @@ public class SAMLSchemaBuilder {
         "/schema/saml-schema-authn-context-timesync-2.0.xsd",
         "/schema/saml-schema-authn-context-x509-2.0.xsd",
         "/schema/saml-schema-authn-context-xmldsig-2.0.xsd",
+        };
+
+    /** Classpath relative location of SAML 2_0 schemas. */
+    @Nonnull @NonnullElements @NotEmpty private static String[] saml20Schemas = {
+        SAMLConstants.SAML20_SCHEMA_LOCATION,
+        SAMLConstants.SAML20P_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MD_SCHEMA_LOCATION,
         SAMLConstants.SAML20DCE_SCHEMA_LOCATION,
         SAMLConstants.SAML20ECP_SCHEMA_LOCATION,
         SAMLConstants.SAML20X500_SCHEMA_LOCATION,
         SAMLConstants.SAML20XACML_SCHEMA_LOCATION,
+        // Start of extensions
+        SAMLConstants.SAML20MDQUERY_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MDUI_SCHEMA_LOCATION,
+        SAMLConstants.SAML20MDRPI_SCHEMA_LOCATION,
+        SAMLConstants.SAML20ALG_SCHEMA_LOCATION,
         };
 
+    /** Classpath relative location of SAML 2_0 schemas with strict string/anyURI types. */
+    @Nonnull @NonnullElements @NotEmpty private static String[] saml20StrictSchemas = {
+        SAMLConstants.STRICT_SAML20_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20P_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20MD_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20DCE_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20ECP_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20X500_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20XACML_SCHEMA_LOCATION,
+        // Start of extensions
+        SAMLConstants.STRICT_SAML20MDQUERY_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20MDUI_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20MDRPI_SCHEMA_LOCATION,
+        SAMLConstants.STRICT_SAML20ALG_SCHEMA_LOCATION,
+        };
+    
     /** Classpath relative location of SAML extension schemas. */
     @Nonnull @NonnullElements @NotEmpty private static String[] baseExtSchemas = {
         SAMLConstants.SAML1MD_SCHEMA_LOCATION,
         SAMLConstants.SAML_IDP_DISCO_SCHEMA_LOCATION,
         SAMLConstants.SAML20PTHRPTY_SCHEMA_LOCATION,
-        SAMLConstants.SAML20MDQUERY_SCHEMA_LOCATION,
         SAMLConstants.SAML20DEL_SCHEMA_LOCATION,
-        SAMLConstants.SAML20MDUI_SCHEMA_LOCATION,
         SAMLConstants.SAML20MDATTR_SCHEMA_LOCATION,
-        SAMLConstants.SAML20MDRPI_SCHEMA_LOCATION,
-        SAMLConstants.SAML20ALG_SCHEMA_LOCATION,
         SAMLConstants.SAML20CB_SCHEMA_LOCATION,
         SAMLConstants.SAML20PASLO_SCHEMA_LOCATION,
         SAMLConstants.SAMLEC_GSS_SCHEMA_LOCATION,
@@ -131,7 +152,7 @@ public class SAMLSchemaBuilder {
     
       
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SAMLSchemaBuilder.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SAMLSchemaBuilder.class);
     
     /** Flag indicating whether the failure to resolve a schema resource should be considered fatal. */
     private boolean unresolvedSchemaFatal;
@@ -141,7 +162,10 @@ public class SAMLSchemaBuilder {
 
     /** Reference to SAML 1.x schemas to apply. */
     @Nonnull @NonnullElements @NotEmpty private String[] saml1xSchemas;
-    
+
+    /** Reference to SAML 2.0 schemas to apply. */
+    @Nonnull @NonnullElements @NotEmpty private String[] saml2Schemas;
+
     /** The builder to use. */
     @Nonnull private SchemaBuilder schemaBuilder;
     
@@ -164,14 +188,33 @@ public class SAMLSchemaBuilder {
      * @param ver   the SAML 1.x version to use
      */
     public SAMLSchemaBuilder(@Nonnull @ParameterName(name="ver") final SAML1Version ver) {
+        this(ver, false);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * <p>A default {@link SchemaBuilder} is constructed, and injected with a
+     * {@link ClasspathResolver} for resolving supplementary schemas.
+     * 
+     * @param ver   the SAML 1.x version to use
+     * @param strict whether to apply modified schemas with strict string and anyURI type definitions
+     */
+    public SAMLSchemaBuilder(@Nonnull @ParameterName(name="ver") final SAML1Version ver,
+            @ParameterName(name="strict") final boolean strict) {
         unresolvedSchemaFatal = true;
         if (ver == SAML1Version.SAML_11) {
             saml1xSchemas = saml11Schemas;
         } else {
             saml1xSchemas = saml10Schemas;
         }
+        if (strict) {
+            saml2Schemas = saml20StrictSchemas;
+        } else {
+            saml2Schemas = saml20Schemas;
+        }
     }
-    
+
     /**
      * Set the flag indicating whether the failure to resolve a schema resource should be considered fatal.
      * 
@@ -234,10 +277,14 @@ public class SAMLSchemaBuilder {
             addSchemaToBuilder(source);
         }
 
-        for (final String source : saml20Schemas) {
+        for (final String source : saml2Schemas) {
             addSchemaToBuilder(source);
         }
 
+        for (final String source : saml20CommonSchemas) {
+            addSchemaToBuilder(source);
+        }
+        
         for (final String source : baseExtSchemas) {
             addSchemaToBuilder(source);
         }
