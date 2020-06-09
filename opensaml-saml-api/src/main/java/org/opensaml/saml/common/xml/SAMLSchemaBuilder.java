@@ -199,6 +199,8 @@ public class SAMLSchemaBuilder {
      * 
      * @param ver   the SAML 1.x version to use
      * @param strict whether to apply modified schemas with strict string and anyURI type definitions
+     * 
+     * @since 4.1.0
      */
     public SAMLSchemaBuilder(@Nonnull @ParameterName(name="ver") final SAML1Version ver,
             @ParameterName(name="strict") final boolean strict) {
