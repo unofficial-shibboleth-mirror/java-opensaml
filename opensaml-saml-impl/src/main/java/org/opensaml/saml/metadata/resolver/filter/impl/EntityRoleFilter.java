@@ -61,7 +61,7 @@ public class EntityRoleFilter implements MetadataFilter {
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityRoleFilter.class);
 
     /** List of roles that are NOT removed by this filter. */
-    @Nonnull @NonnullElements private List<QName> roleWhiteList;
+    @Nonnull @NonnullElements private List<QName> retainedRoles;
 
     /** Whether to keep entity descriptors that contain no roles; default value: true. */
     private boolean removeRolelessEntityDescriptors;
@@ -77,13 +77,12 @@ public class EntityRoleFilter implements MetadataFilter {
      * 
      * @param keptRoles list of roles NOT removed by this filter
      */
-    public EntityRoleFilter(@Nullable @ParameterName(name="keptRoles") final List<QName> keptRoles) {
-        roleWhiteList = new ArrayList<>();
-
+    public EntityRoleFilter(@Nullable @NonnullElements @ParameterName(name="keptRoles") final List<QName> keptRoles) {
         if (keptRoles != null) {
-            roleWhiteList.addAll(keptRoles);
+            retainedRoles = List.copyOf(keptRoles);
+        } else {
+            retainedRoles = Collections.emptyList();
         }
-        roleWhiteList = Collections.unmodifiableList(roleWhiteList);
 
         removeRolelessEntityDescriptors = true;
         removeEmptyEntitiesDescriptors = true;
@@ -95,9 +94,20 @@ public class EntityRoleFilter implements MetadataFilter {
      * Get the unmodifiable list of roles that are NOT removed by this filter.
      * 
      * @return unmodifiable list of roles that are NOT removed by this filter
+     * @deprecated
      */
+    @Deprecated(forRemoval=true, since="4.1.0")
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<QName> getRoleWhiteList() {
-        return roleWhiteList;
+        return getRetainedRoles();
+    }
+
+    /**
+     * Get the unmodifiable list of roles that are NOT removed by this filter.
+     * 
+     * @return unmodifiable list of roles that are NOT removed by this filter
+     */
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<QName> getRetainedRoles() {
+        return retainedRoles;
     }
 
     /**
@@ -229,7 +239,7 @@ public class EntityRoleFilter implements MetadataFilter {
             QName roleName;
             while (rolesItr.hasNext()) {
                 roleName = getRoleName(rolesItr.next());
-                if (!roleWhiteList.contains(roleName)) {
+                if (!retainedRoles.contains(roleName)) {
                     log.trace("Filtering out role {} from entity {}", roleName, descriptor.getEntityID());
                     rolesItr.remove();
                 }
