@@ -33,6 +33,7 @@ import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 /**
  * The configuration information to use when generating an XML signature.
  */
+@SuppressWarnings("removal")
 public interface SignatureSigningConfiguration extends WhitelistBlacklistConfiguration {
     
     /**

@@ -28,24 +28,24 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
+import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
 
 /**
- * Criterion which holds one or more instances of {@link WhitelistBlacklistConfiguration},
+ * Criterion which holds one or more instances of {@link AlgorithmPolicyConfiguration},
  * used exclusively for testing the {@link AbstractSecurityParametersResolver}.
  */
-public class WhitelistBlacklistConfigurationCriterion implements Criterion {
+public class AlgorithmPolicyConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    private List<WhitelistBlacklistConfiguration> configs;
+    private List<AlgorithmPolicyConfiguration> configs;
     
     /**
      * Constructor.
      *
      * @param configurations list of configuration instances
      */
-    public WhitelistBlacklistConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
-            List<WhitelistBlacklistConfiguration> configurations) {
+    public AlgorithmPolicyConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
+            final List<AlgorithmPolicyConfiguration> configurations) {
         configs = List.copyOf(Constraint.isNotNull(configurations, "List of configurations may not be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
         
@@ -56,8 +56,8 @@ public class WhitelistBlacklistConfigurationCriterion implements Criterion {
      *
      * @param configurations varargs array of configuration instances
      */
-    public WhitelistBlacklistConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
-            WhitelistBlacklistConfiguration... configurations) {
+    public AlgorithmPolicyConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
+            final AlgorithmPolicyConfiguration... configurations) {
         configs = List.of(Constraint.isNotNull(configurations, "List of configurations may not be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
@@ -67,7 +67,7 @@ public class WhitelistBlacklistConfigurationCriterion implements Criterion {
      * @return the list of configuration instances
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable @NotEmpty
-    public List<WhitelistBlacklistConfiguration> getConfigurations() {
+    public List<AlgorithmPolicyConfiguration> getConfigurations() {
         return configs;
     }
     
@@ -98,8 +98,8 @@ public class WhitelistBlacklistConfigurationCriterion implements Criterion {
             return false;
         }
 
-        if (obj instanceof WhitelistBlacklistConfigurationCriterion) {
-            return configs.equals(((WhitelistBlacklistConfigurationCriterion) obj).getConfigurations());
+        if (obj instanceof AlgorithmPolicyConfigurationCriterion) {
+            return configs.equals(((AlgorithmPolicyConfigurationCriterion) obj).getConfigurations());
         }
 
         return false;

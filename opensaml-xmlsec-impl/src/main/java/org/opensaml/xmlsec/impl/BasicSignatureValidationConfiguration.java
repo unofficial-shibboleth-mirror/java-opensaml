@@ -25,6 +25,7 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 /**
  * Basic implementation of {@link SignatureValidationConfiguration}.
  */
+@SuppressWarnings("removal")
 public class BasicSignatureValidationConfiguration extends BasicWhitelistBlacklistConfiguration
         implements SignatureValidationConfiguration {
     
@@ -32,11 +33,6 @@ public class BasicSignatureValidationConfiguration extends BasicWhitelistBlackli
     @Nullable private SignatureTrustEngine signatureTrustEngine;
     
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
-    
-    /** * Constructor. */
-    public BasicSignatureValidationConfiguration() {
-       super(); 
-    }
     
     /**
      * Get the signature trust engine to use.

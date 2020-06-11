@@ -25,14 +25,6 @@ import java.time.Instant;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.BaseComplexSAMLObjectTestCase;
 import org.opensaml.saml.common.SAMLVersion;
-import org.opensaml.saml.saml2.core.Audience;
-import org.opensaml.saml.saml2.core.AudienceRestriction;
-import org.opensaml.saml.saml2.core.AuthnContextClassRef;
-import org.opensaml.saml.saml2.core.AuthnRequest;
-import org.opensaml.saml.saml2.core.Conditions;
-import org.opensaml.saml.saml2.core.NameID;
-import org.opensaml.saml.saml2.core.RequestedAuthnContext;
-import org.opensaml.saml.saml2.core.Subject;
 
 /**
  * Tests unmarshalling and marshalling for various request messages.

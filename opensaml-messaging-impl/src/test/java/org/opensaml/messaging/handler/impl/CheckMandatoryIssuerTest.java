@@ -19,7 +19,6 @@ package org.opensaml.messaging.handler.impl;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.messaging.handler.impl.CheckMandatoryIssuer;
 import org.testng.annotations.Test;
 
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;

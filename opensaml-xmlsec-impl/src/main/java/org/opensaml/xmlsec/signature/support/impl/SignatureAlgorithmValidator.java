@@ -70,11 +70,11 @@ public class SignatureAlgorithmValidator {
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(SignatureAlgorithmValidator.class);
     
-    /** The collection of algorithm URI's which are whitelisted. */
-    private Collection<String> whitelistedAlgorithmURIs;
+    /** The collection of algorithm URIs which are included. */
+    private Collection<String> includedAlgorithmURIs;
     
-    /** The collection of algorithm URI's which are blacklisted. */
-    private Collection<String> blacklistedAlgorithmURIs;
+    /** The collection of algorithm URIs which are excluded. */
+    private Collection<String> excludedAlgorithmURIs;
     
     /**
      * Constructor.
@@ -84,21 +84,21 @@ public class SignatureAlgorithmValidator {
     public SignatureAlgorithmValidator(
             @Nonnull @ParameterName(name="params") final SignatureValidationParameters params) {
         Constraint.isNotNull(params, "SignatureValidationParameters may not be null");
-        whitelistedAlgorithmURIs = params.getWhitelistedAlgorithms();
-        blacklistedAlgorithmURIs = params.getBlacklistedAlgorithms();
+        includedAlgorithmURIs = params.getIncludedAlgorithms();
+        excludedAlgorithmURIs = params.getExcludedAlgorithms();
     }
     
     /**
      * Constructor.
      *
-     * @param whitelistAlgos the algorithm whitelist
-     * @param blacklistAlgos the algorithm blacklist
+     * @param includeAlgos the algorithm includes
+     * @param excludeAlgos the algorithm excludes
      */
     public SignatureAlgorithmValidator(
-            @Nullable @ParameterName(name="whitelistAlgos") final Collection<String> whitelistAlgos,
-            @Nullable @ParameterName(name="blacklistAlgos") final Collection<String> blacklistAlgos) {
-        whitelistedAlgorithmURIs = whitelistAlgos;
-        blacklistedAlgorithmURIs = blacklistAlgos;
+            @Nullable @ParameterName(name="includeAlgos") final Collection<String> includeAlgos,
+            @Nullable @ParameterName(name="excludeAlgos") final Collection<String> excludeAlgos) {
+        includedAlgorithmURIs = includeAlgos;
+        excludedAlgorithmURIs = excludeAlgos;
     }
 
     /**
@@ -195,9 +195,9 @@ public class SignatureAlgorithmValidator {
     protected void validateAlgorithmURI(@Nonnull final String algorithmURI) throws SignatureException {
         log.debug("Validating algorithm URI against whitelist and blacklist: "
                 + "algorithm: {}, whitelist: {}, blacklist: {}",
-                algorithmURI, whitelistedAlgorithmURIs, blacklistedAlgorithmURIs);
+                algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs);
         
-        if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, whitelistedAlgorithmURIs, blacklistedAlgorithmURIs)) {
+        if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs)) {
             throw new SignatureException("Algorithm failed whitelist/blacklist validation: " + algorithmURI);
         }
         

@@ -27,7 +27,6 @@ import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.common.binding.security.impl.ReceivedEndpointSecurityHandler;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnRequest;

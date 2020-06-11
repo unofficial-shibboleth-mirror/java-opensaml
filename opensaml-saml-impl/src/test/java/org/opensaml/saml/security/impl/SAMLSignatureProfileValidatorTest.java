@@ -22,7 +22,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.security.impl.SAMLSignatureProfileValidator;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
 import org.opensaml.xmlsec.signature.support.SignatureException;

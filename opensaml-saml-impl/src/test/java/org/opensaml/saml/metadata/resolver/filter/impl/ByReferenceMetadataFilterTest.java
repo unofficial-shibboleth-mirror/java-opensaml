@@ -29,8 +29,6 @@ import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
-import org.opensaml.saml.metadata.resolver.filter.impl.ByReferenceMetadataFilter;
-import org.opensaml.saml.metadata.resolver.filter.impl.NameIDFormatFilter;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml2.core.NameIDType;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;

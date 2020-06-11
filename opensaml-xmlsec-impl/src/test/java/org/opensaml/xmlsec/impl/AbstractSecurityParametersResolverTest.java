@@ -17,13 +17,15 @@
 
 package org.opensaml.xmlsec.impl;
 
+import static org.testng.Assert.*;
+
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -39,12 +41,11 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
-import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
-import org.opensaml.xmlsec.WhitelistBlacklistParameters;
+import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
+import org.opensaml.xmlsec.AlgorithmPolicyConfiguration.Precedence;
+import org.opensaml.xmlsec.AlgorithmPolicyParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
@@ -54,152 +55,152 @@ import org.testng.annotations.Test;
  */
 public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCase {
     
-    private WhitelistBlacklistParametersResolver resolver;
+    private DummyParametersResolver resolver;
     
-    private BasicWhitelistBlacklistConfiguration config1, config2, config3;
-    private  WhitelistBlacklistConfigurationCriterion criterion;
+    private BasicAlgorithmPolicyConfiguration config1, config2, config3;
+    private AlgorithmPolicyConfigurationCriterion criterion;
     private CriteriaSet criteriaSet;
     private Set<String> set1, set2, set3;
     
     @BeforeMethod
     public void setUp() {
-        resolver = new WhitelistBlacklistParametersResolver();
+        resolver = new DummyParametersResolver();
         
-        config1 = new BasicWhitelistBlacklistConfiguration();
-        config2 = new BasicWhitelistBlacklistConfiguration();
-        config3 = new BasicWhitelistBlacklistConfiguration();
+        config1 = new BasicAlgorithmPolicyConfiguration();
+        config2 = new BasicAlgorithmPolicyConfiguration();
+        config3 = new BasicAlgorithmPolicyConfiguration();
         
-        criterion = new WhitelistBlacklistConfigurationCriterion(config1, config2, config3);
+        criterion = new AlgorithmPolicyConfigurationCriterion(config1, config2, config3);
         
         criteriaSet = new CriteriaSet(criterion);
         
-        set1 = new HashSet<>(Arrays.asList("A", "B", "C", "D"));
-        set2 = new HashSet<>(Arrays.asList("X", "Y", "Z"));
-        set3 = new HashSet<>(Arrays.asList("foo", "bar", "baz"));
+        set1 = Set.of("A", "B", "C", "D");
+        set2 = Set.of("X", "Y", "Z");
+        set3 = Set.of("foo", "bar", "baz");
     }
     
     @Test
     public void testBlacklistOnlyDefaults() throws ResolverException {
-        config1.setBlacklistedAlgorithms(set1);
-        config2.setBlacklistedAlgorithms(set2);
+        config1.setExcludedAlgorithms(set1);
+        config2.setExcludedAlgorithms(set2);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set2);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), control);
+        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(control));
     }
     
     @Test
     public void testBlacklistOnlyNoMerge() throws ResolverException {
-        config1.setBlacklistedAlgorithms(set1);
-        config1.setBlacklistMerge(false);
-        config2.setBlacklistedAlgorithms(set2);
+        config1.setExcludedAlgorithms(set1);
+        config1.setExcludeMerge(false);
+        config2.setExcludedAlgorithms(set2);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), set1);
+        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(set1));
     }
     
     @Test
     public void testBlacklistOnlyWithSimpleMerge() throws ResolverException {
-        config1.setBlacklistedAlgorithms(set1);
-        config1.setBlacklistMerge(true);
-        config2.setBlacklistedAlgorithms(set2);
+        config1.setExcludedAlgorithms(set1);
+        config1.setExcludeMerge(true);
+        config2.setExcludedAlgorithms(set2);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set2);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), control);
+        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(control));
     }
     
     @Test
     public void testBlacklistOnlyWithTransitiveMerge() throws ResolverException {
-        config1.setBlacklistedAlgorithms(set1);
-        config1.setBlacklistMerge(true);
-        config2.setBlacklistMerge(true);
-        config3.setBlacklistedAlgorithms(set3);
+        config1.setExcludedAlgorithms(set1);
+        config1.setExcludeMerge(true);
+        config2.setExcludeMerge(true);
+        config3.setExcludedAlgorithms(set3);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set3);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), control);
+        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(control));
     }
     
     @Test
     public void testWhitelistOnlyDefaults() throws ResolverException {
-        config1.setWhitelistedAlgorithms(set1);
-        config2.setWhitelistedAlgorithms(set2);
+        config1.setIncludedAlgorithms(set1);
+        config2.setIncludedAlgorithms(set2);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), set1);
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
+        assertTrue(params.getIncludedAlgorithms().equals(set1));
+        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
     }
     
     @Test
     public void testWhitelistOnlyWithSimpleMerge() throws ResolverException {
-        config1.setWhitelistedAlgorithms(set1);
-        config1.setWhitelistMerge(true);
-        config2.setWhitelistedAlgorithms(set2);
+        config1.setIncludedAlgorithms(set1);
+        config1.setIncludeMerge(true);
+        config2.setIncludedAlgorithms(set2);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set2);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), control);
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
+        assertTrue(params.getIncludedAlgorithms().equals(control));
+        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
     }
     
     @Test
     public void testWhitelistOnlyWithTransitiveMerge() throws ResolverException {
-        config1.setWhitelistedAlgorithms(set1);
-        config1.setWhitelistMerge(true);
-        config2.setWhitelistMerge(true);
-        config3.setWhitelistedAlgorithms(set3);
+        config1.setIncludedAlgorithms(set1);
+        config1.setIncludeMerge(true);
+        config2.setIncludeMerge(true);
+        config3.setIncludedAlgorithms(set3);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set3);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), control);
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
+        assertTrue(params.getIncludedAlgorithms().equals(control));
+        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
     }
     
     @Test
     public void testPrecedence() throws ResolverException {
-        config1.setWhitelistedAlgorithms(set1);
-        config1.setBlacklistedAlgorithms(set2);
+        config1.setIncludedAlgorithms(set1);
+        config1.setExcludedAlgorithms(set2);
         
-        config1.setWhitelistBlacklistPrecedence(Precedence.WHITELIST);
+        config1.setIncludeExcludePrecedence(Precedence.INCLUDE);
         
-        WhitelistBlacklistParameters params = resolver.resolveSingle(criteriaSet);
+        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), set1);
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), Collections.emptySet());
+        assertTrue(params.getIncludedAlgorithms().equals(set1));
+        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
         
-        config1.setWhitelistBlacklistPrecedence(Precedence.BLACKLIST);
+        config1.setIncludeExcludePrecedence(Precedence.EXCLUDE);
         
         params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertEquals(params.getWhitelistedAlgorithms(), Collections.emptySet());
-        Assert.assertEquals(params.getBlacklistedAlgorithms(), set2);
+        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(set2));
     }
 
     
@@ -207,153 +208,153 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
     public void testResolvePredicate() {
         Predicate<String> predicate;
         
-        config1.setWhitelistedAlgorithms(set1);
-        config1.setBlacklistedAlgorithms(set2);
+        config1.setIncludedAlgorithms(set1);
+        config1.setExcludedAlgorithms(set2);
         
-        config1.setWhitelistBlacklistPrecedence(Precedence.WHITELIST);
+        config1.setIncludeExcludePrecedence(Precedence.INCLUDE);
         
-        predicate = resolver.resolveWhitelistBlacklistPredicate(criteriaSet, Arrays.asList(config1, config2, config3));
+        predicate = resolver.resolveIncludeExcludePredicate(criteriaSet, List.of(config1, config2, config3));
         
         // Note: Have effective whitelist based on set1
         
-        Assert.assertTrue(predicate.test("A"));
-        Assert.assertTrue(predicate.test("B"));
-        Assert.assertTrue(predicate.test("C"));
-        Assert.assertTrue(predicate.test("D"));
+        assertTrue(predicate.test("A"));
+        assertTrue(predicate.test("B"));
+        assertTrue(predicate.test("C"));
+        assertTrue(predicate.test("D"));
         
-        Assert.assertFalse(predicate.test("X"));
-        Assert.assertFalse(predicate.test("Y"));
-        Assert.assertFalse(predicate.test("Z"));
-        Assert.assertFalse(predicate.test("foo"));
-        Assert.assertFalse(predicate.test("bar"));
-        Assert.assertFalse(predicate.test("bax"));
+        assertFalse(predicate.test("X"));
+        assertFalse(predicate.test("Y"));
+        assertFalse(predicate.test("Z"));
+        assertFalse(predicate.test("foo"));
+        assertFalse(predicate.test("bar"));
+        assertFalse(predicate.test("bax"));
         
-        config1.setWhitelistBlacklistPrecedence(Precedence.BLACKLIST);
+        config1.setIncludeExcludePrecedence(Precedence.EXCLUDE);
         
-        predicate = resolver.resolveWhitelistBlacklistPredicate(criteriaSet, Arrays.asList(config1, config2, config3));
+        predicate = resolver.resolveIncludeExcludePredicate(criteriaSet, List.of(config1, config2, config3));
         
         // Note: Have effective blacklist based on set2
         
-        Assert.assertTrue(predicate.test("A"));
-        Assert.assertTrue(predicate.test("B"));
-        Assert.assertTrue(predicate.test("C"));
-        Assert.assertTrue(predicate.test("D"));
-        Assert.assertTrue(predicate.test("foo"));
-        Assert.assertTrue(predicate.test("bar"));
-        Assert.assertTrue(predicate.test("bax"));
+        assertTrue(predicate.test("A"));
+        assertTrue(predicate.test("B"));
+        assertTrue(predicate.test("C"));
+        assertTrue(predicate.test("D"));
+        assertTrue(predicate.test("foo"));
+        assertTrue(predicate.test("bar"));
+        assertTrue(predicate.test("bax"));
         
-        Assert.assertFalse(predicate.test("X"));
-        Assert.assertFalse(predicate.test("Y"));
-        Assert.assertFalse(predicate.test("Z"));
+        assertFalse(predicate.test("X"));
+        assertFalse(predicate.test("Y"));
+        assertFalse(predicate.test("Z"));
     }
     
     @Test
     public void testResolveEffectiveWhitelist() {
         Collection<String> whitelist;
         
-        whitelist = resolver.resolveEffectiveWhitelist(criteriaSet, criterion.getConfigurations());
-        Assert.assertTrue(whitelist.isEmpty());
+        whitelist = resolver.resolveEffectiveIncludes(criteriaSet, criterion.getConfigurations());
+        assertTrue(whitelist.isEmpty());
         
-        config1.setWhitelistedAlgorithms(set1);
-        config2.setWhitelistedAlgorithms(set2);
-        config3.setWhitelistedAlgorithms(set3);   
+        config1.setIncludedAlgorithms(set1);
+        config2.setIncludedAlgorithms(set2);
+        config3.setIncludedAlgorithms(set3);   
         
-        whitelist = resolver.resolveEffectiveWhitelist(criteriaSet, criterion.getConfigurations());
-        Assert.assertTrue(whitelist.containsAll(set1));
-        Assert.assertFalse(whitelist.containsAll(set2));
-        Assert.assertFalse(whitelist.containsAll(set3));
+        whitelist = resolver.resolveEffectiveIncludes(criteriaSet, criterion.getConfigurations());
+        assertTrue(whitelist.containsAll(set1));
+        assertFalse(whitelist.containsAll(set2));
+        assertFalse(whitelist.containsAll(set3));
         
-        config1.setWhitelistMerge(true);
+        config1.setIncludeMerge(true);
         
-        whitelist = resolver.resolveEffectiveWhitelist(criteriaSet, criterion.getConfigurations());
+        whitelist = resolver.resolveEffectiveIncludes(criteriaSet, criterion.getConfigurations());
         
-        Assert.assertTrue(whitelist.containsAll(set1));
-        Assert.assertTrue(whitelist.containsAll(set2));
-        Assert.assertFalse(whitelist.containsAll(set3));
+        assertTrue(whitelist.containsAll(set1));
+        assertTrue(whitelist.containsAll(set2));
+        assertFalse(whitelist.containsAll(set3));
         
-        config1.setWhitelistMerge(true);
-        config2.setWhitelistMerge(true);
+        config1.setIncludeMerge(true);
+        config2.setIncludeMerge(true);
         
-        whitelist = resolver.resolveEffectiveWhitelist(criteriaSet, criterion.getConfigurations());
+        whitelist = resolver.resolveEffectiveIncludes(criteriaSet, criterion.getConfigurations());
         
-        Assert.assertTrue(whitelist.containsAll(set1));
-        Assert.assertTrue(whitelist.containsAll(set2));
-        Assert.assertTrue(whitelist.containsAll(set3));
+        assertTrue(whitelist.containsAll(set1));
+        assertTrue(whitelist.containsAll(set2));
+        assertTrue(whitelist.containsAll(set3));
         
         
         // Set 1 and 2 empty
-        config1.setWhitelistedAlgorithms(new HashSet<String>());
-        config2.setWhitelistedAlgorithms(new HashSet<String>());
+        config1.setIncludedAlgorithms(new HashSet<String>());
+        config2.setIncludedAlgorithms(new HashSet<String>());
         
-        config1.setWhitelistMerge(true);
-        config2.setWhitelistMerge(true);
+        config1.setIncludeMerge(true);
+        config2.setIncludeMerge(true);
         
-        whitelist = resolver.resolveEffectiveWhitelist(criteriaSet, criterion.getConfigurations());
+        whitelist = resolver.resolveEffectiveIncludes(criteriaSet, criterion.getConfigurations());
         
-        Assert.assertFalse(whitelist.containsAll(set1));
-        Assert.assertFalse(whitelist.containsAll(set2));
-        Assert.assertTrue(whitelist.containsAll(set3));
+        assertFalse(whitelist.containsAll(set1));
+        assertFalse(whitelist.containsAll(set2));
+        assertTrue(whitelist.containsAll(set3));
     }
     
     @Test
     public void testResolveEffectiveBlacklist() {
         Collection<String> blacklist;
         
-        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
-        Assert.assertTrue(blacklist.isEmpty());
+        blacklist = resolver.resolveEffectiveExcludes(criteriaSet, criterion.getConfigurations());
+        assertTrue(blacklist.isEmpty());
         
-        config1.setBlacklistedAlgorithms(set1);
-        config2.setBlacklistedAlgorithms(set2);
-        config3.setBlacklistedAlgorithms(set3);   
+        config1.setExcludedAlgorithms(set1);
+        config2.setExcludedAlgorithms(set2);
+        config3.setExcludedAlgorithms(set3);   
         
-        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
-        Assert.assertTrue(blacklist.containsAll(set1));
-        Assert.assertTrue(blacklist.containsAll(set2));
-        Assert.assertTrue(blacklist.containsAll(set3));
+        blacklist = resolver.resolveEffectiveExcludes(criteriaSet, criterion.getConfigurations());
+        assertTrue(blacklist.containsAll(set1));
+        assertTrue(blacklist.containsAll(set2));
+        assertTrue(blacklist.containsAll(set3));
         
-        config2.setBlacklistMerge(false);
+        config2.setExcludeMerge(false);
         
-        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
+        blacklist = resolver.resolveEffectiveExcludes(criteriaSet, criterion.getConfigurations());
         
-        Assert.assertTrue(blacklist.containsAll(set1));
-        Assert.assertTrue(blacklist.containsAll(set2));
-        Assert.assertFalse(blacklist.containsAll(set3));
+        assertTrue(blacklist.containsAll(set1));
+        assertTrue(blacklist.containsAll(set2));
+        assertFalse(blacklist.containsAll(set3));
         
-        config1.setBlacklistMerge(false);
-        config2.setBlacklistMerge(false);
+        config1.setExcludeMerge(false);
+        config2.setExcludeMerge(false);
         
-        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
+        blacklist = resolver.resolveEffectiveExcludes(criteriaSet, criterion.getConfigurations());
         
-        Assert.assertTrue(blacklist.containsAll(set1));
-        Assert.assertFalse(blacklist.containsAll(set2));
-        Assert.assertFalse(blacklist.containsAll(set3));
+        assertTrue(blacklist.containsAll(set1));
+        assertFalse(blacklist.containsAll(set2));
+        assertFalse(blacklist.containsAll(set3));
         
         
         // Set 1 and 2 empty
-        config1.setBlacklistedAlgorithms(new HashSet<String>());
-        config2.setBlacklistedAlgorithms(new HashSet<String>());
+        config1.setExcludedAlgorithms(new HashSet<String>());
+        config2.setExcludedAlgorithms(new HashSet<String>());
         
-        config1.setBlacklistMerge(true);
-        config2.setBlacklistMerge(true);
+        config1.setExcludeMerge(true);
+        config2.setExcludeMerge(true);
         
-        blacklist = resolver.resolveEffectiveBlacklist(criteriaSet, criterion.getConfigurations());
+        blacklist = resolver.resolveEffectiveExcludes(criteriaSet, criterion.getConfigurations());
         
-        Assert.assertFalse(blacklist.containsAll(set1));
-        Assert.assertFalse(blacklist.containsAll(set2));
-        Assert.assertTrue(blacklist.containsAll(set3));
+        assertFalse(blacklist.containsAll(set1));
+        assertFalse(blacklist.containsAll(set2));
+        assertTrue(blacklist.containsAll(set3));
     }
     
     @Test
     public void testResolveEffectivePrecedence() {
-        WhitelistBlacklistConfiguration.Precedence precedence;
+        AlgorithmPolicyConfiguration.Precedence precedence;
         
-        config1.setWhitelistBlacklistPrecedence(Precedence.WHITELIST);
-        precedence = resolver.resolveWhitelistBlacklistPrecedence(criteriaSet, criterion.getConfigurations());
-        Assert.assertEquals(precedence, WhitelistBlacklistConfiguration.Precedence.WHITELIST);
+        config1.setIncludeExcludePrecedence(Precedence.INCLUDE);
+        precedence = resolver.resolveIncludeExcludePrecedence(criteriaSet, criterion.getConfigurations());
+        assertEquals(precedence, AlgorithmPolicyConfiguration.Precedence.INCLUDE);
         
-        config1.setWhitelistBlacklistPrecedence(Precedence.BLACKLIST);
-        precedence = resolver.resolveWhitelistBlacklistPrecedence(criteriaSet, criterion.getConfigurations());
-        Assert.assertEquals(precedence, WhitelistBlacklistConfiguration.Precedence.BLACKLIST);
+        config1.setIncludeExcludePrecedence(Precedence.EXCLUDE);
+        precedence = resolver.resolveIncludeExcludePrecedence(criteriaSet, criterion.getConfigurations());
+        assertEquals(precedence, AlgorithmPolicyConfiguration.Precedence.EXCLUDE);
     }
     
     @Test
@@ -365,26 +366,26 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         manager = new NamedKeyInfoGeneratorManager();
         manager.setUseDefaultManager(false);
         manager.registerDefaultFactory(new BasicKeyInfoGeneratorFactory());
-        Assert.assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, null));
-        Assert.assertNull(resolver.lookupKeyInfoGenerator(cred, manager, "test"));
+        assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, null));
+        assertNull(resolver.lookupKeyInfoGenerator(cred, manager, "test"));
         
         manager = new NamedKeyInfoGeneratorManager();
         manager.setUseDefaultManager(true);
         manager.registerDefaultFactory(new BasicKeyInfoGeneratorFactory());
-        Assert.assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, null));
-        Assert.assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, "test"));
+        assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, null));
+        assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, "test"));
         
         manager = new NamedKeyInfoGeneratorManager();
         manager.registerFactory("test", new BasicKeyInfoGeneratorFactory());
-        Assert.assertNull(resolver.lookupKeyInfoGenerator(cred, manager, null));
-        Assert.assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, "test"));
+        assertNull(resolver.lookupKeyInfoGenerator(cred, manager, null));
+        assertNotNull(resolver.lookupKeyInfoGenerator(cred, manager, "test"));
         
-        Assert.assertNull(resolver.lookupKeyInfoGenerator(cred, null, null));
-        Assert.assertNull(resolver.lookupKeyInfoGenerator(cred, null, "test"));
+        assertNull(resolver.lookupKeyInfoGenerator(cred, null, null));
+        assertNull(resolver.lookupKeyInfoGenerator(cred, null, "test"));
         
         try {
             resolver.lookupKeyInfoGenerator(null, manager, "test");
-            Assert.fail("Null credential should have thrown");
+            fail("Null credential should have thrown");
         } catch (ConstraintViolationException e) {
             // expected
         }
@@ -394,12 +395,12 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
     /* Supporting classes */
     
     /** Concrete class used for testing the abstract class. */
-    public class WhitelistBlacklistParametersResolver extends AbstractSecurityParametersResolver<WhitelistBlacklistParameters> {
+    public class DummyParametersResolver extends AbstractSecurityParametersResolver<AlgorithmPolicyParameters> {
 
         /** {@inheritDoc} */
         @Nonnull
-        public Iterable<WhitelistBlacklistParameters> resolve(CriteriaSet criteria) throws ResolverException {
-            WhitelistBlacklistParameters params = resolveSingle(criteria);
+        public Iterable<AlgorithmPolicyParameters> resolve(CriteriaSet criteria) throws ResolverException {
+            AlgorithmPolicyParameters params = resolveSingle(criteria);
             if (params != null) {
                 return Collections.singletonList(params);
             }
@@ -408,10 +409,10 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
 
         /** {@inheritDoc} */
         @Nullable
-        public WhitelistBlacklistParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
-            WhitelistBlacklistParameters params = new WhitelistBlacklistParameters();
-            resolveAndPopulateWhiteAndBlacklists(params, criteria, 
-                    criteria.get(WhitelistBlacklistConfigurationCriterion.class).getConfigurations());
+        public AlgorithmPolicyParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
+            AlgorithmPolicyParameters params = new AlgorithmPolicyParameters();
+            resolveAndPopulateIncludesExcludes(params, criteria, 
+                    criteria.get(AlgorithmPolicyConfigurationCriterion.class).getConfigurations());
             return params;
         }
         

@@ -25,6 +25,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 /**
  * The effective parameters to use when decrypting encrypted XML.
  */
+@SuppressWarnings("removal")
 public class DecryptionParameters extends WhitelistBlacklistParameters {
     
     /** The EncryptedData's KeyInfo credential resolver. */
@@ -36,11 +37,6 @@ public class DecryptionParameters extends WhitelistBlacklistParameters {
     /** The EncryptedKey resolver. */
     @Nullable private EncryptedKeyResolver encryptedKeyResolver;
         
-    /** Constructor. */
-    public DecryptionParameters() {
-        super();
-    }
-    
     /**
      * Get the KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
      * 

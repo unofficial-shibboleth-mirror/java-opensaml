@@ -24,10 +24,10 @@ import java.security.PublicKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nullable;
@@ -140,7 +140,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         config3 = new BasicEncryptionConfiguration();
         
         // Set these as defaults on the last config in the chain, just so don't have to set in every test.
-        config3.setDataEncryptionAlgorithms(Arrays.asList(
+        config3.setDataEncryptionAlgorithms(List.of(
                 defaultAES128DataAlgo,
                 defaultAES192DataAlgo,
                 defaultAES256DataAlgo,
@@ -149,7 +149,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM
                 ));
-        config3.setKeyTransportEncryptionAlgorithms(Arrays.asList(
+        config3.setKeyTransportEncryptionAlgorithms(List.of(
                 defaultRSAKeyTransportAlgo, 
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15,
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11,
@@ -245,7 +245,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     public void testWithBlacklist() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
         
-        config1.setBlacklistedAlgorithms(Arrays.asList(defaultRSAKeyTransportAlgo, defaultAES128DataAlgo, defaultAES192DataAlgo));
+        config1.setExcludedAlgorithms(List.of(defaultRSAKeyTransportAlgo, defaultAES128DataAlgo, defaultAES192DataAlgo));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -263,7 +263,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     public void testWithWhitelist() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
         
-        config1.setWhitelistedAlgorithms(Arrays.asList(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        config1.setIncludedAlgorithms(List.of(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -468,7 +468,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
         roleDesc.getKeyDescriptors().add(keyDescriptor);
         
-        config1.setBlacklistedAlgorithms(Arrays.asList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        config1.setExcludedAlgorithms(List.of(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -489,7 +489,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
         roleDesc.getKeyDescriptors().add(keyDescriptor);
         
-        config1.setWhitelistedAlgorithms(Arrays.asList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        config1.setIncludedAlgorithms(List.of(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -526,7 +526,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         roleDesc.getKeyDescriptors().add(keyDescriptor);
         
-        config1.setBlacklistedAlgorithms(Arrays.asList(SignatureConstants.ALGO_ID_DIGEST_SHA1));
+        config1.setExcludedAlgorithms(List.of(SignatureConstants.ALGO_ID_DIGEST_SHA1));
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
         

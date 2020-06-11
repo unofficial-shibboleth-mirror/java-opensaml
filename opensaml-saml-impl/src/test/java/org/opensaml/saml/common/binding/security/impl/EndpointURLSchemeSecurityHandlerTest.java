@@ -20,7 +20,6 @@ package org.opensaml.saml.common.binding.security.impl;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.binding.security.impl.EndpointURLSchemeSecurityHandler;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;

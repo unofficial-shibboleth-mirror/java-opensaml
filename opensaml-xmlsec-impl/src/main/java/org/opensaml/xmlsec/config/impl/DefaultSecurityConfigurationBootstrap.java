@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.config.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -66,11 +65,11 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicEncryptionConfiguration buildDefaultEncryptionConfiguration() {
         final BasicEncryptionConfiguration config = new BasicEncryptionConfiguration();
         
-        config.setBlacklistedAlgorithms(Collections.singletonList(
+        config.setExcludedAlgorithms(Collections.singletonList(
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15
                 ));
         
-        config.setDataEncryptionAlgorithms(Arrays.asList(
+        config.setDataEncryptionAlgorithms(List.of(
                 // The order of these is significant.
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192,
@@ -78,7 +77,7 @@ public class DefaultSecurityConfigurationBootstrap {
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES
                 ));
         
-        config.setKeyTransportEncryptionAlgorithms(Arrays.asList(
+        config.setKeyTransportEncryptionAlgorithms(List.of(
                 // The order of the RSA algos is significant.
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP,
                 
@@ -111,7 +110,7 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicDecryptionConfiguration buildDefaultDecryptionConfiguration() {
         final BasicDecryptionConfiguration config = new BasicDecryptionConfiguration();
         
-        config.setBlacklistedAlgorithms(Collections.singletonList(
+        config.setExcludedAlgorithms(Collections.singletonList(
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15
                 ));
         
@@ -128,13 +127,13 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicSignatureSigningConfiguration buildDefaultSignatureSigningConfiguration() {
         final BasicSignatureSigningConfiguration config = new BasicSignatureSigningConfiguration();
         
-        config.setBlacklistedAlgorithms(Arrays.asList(
+        config.setExcludedAlgorithms(List.of(
                 SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5,
                 SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5,
                 SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5
                 ));
         
-        config.setSignatureAlgorithms(Arrays.asList(
+        config.setSignatureAlgorithms(List.of(
                 // The order within each key group is significant.
                 // The order of the key groups themselves is not significant.
                 
@@ -160,7 +159,7 @@ public class DefaultSecurityConfigurationBootstrap {
                 SignatureConstants.ALGO_ID_MAC_HMAC_SHA1
                 ));
         
-        config.setSignatureReferenceDigestMethods(Arrays.asList(
+        config.setSignatureReferenceDigestMethods(List.of(
                 // The order of these is significant.
                 SignatureConstants.ALGO_ID_DIGEST_SHA256,
                 SignatureConstants.ALGO_ID_DIGEST_SHA384,
@@ -183,7 +182,7 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicSignatureValidationConfiguration buildDefaultSignatureValidationConfiguration() {
         final BasicSignatureValidationConfiguration config = new BasicSignatureValidationConfiguration();
         
-        config.setBlacklistedAlgorithms(Arrays.asList(
+        config.setExcludedAlgorithms(List.of(
                 SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5,
                 SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5,
                 SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5

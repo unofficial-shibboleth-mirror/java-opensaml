@@ -30,7 +30,6 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
-import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**

@@ -23,7 +23,6 @@ import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;
-import org.opensaml.saml.metadata.resolver.index.impl.MetadataIndexStore;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

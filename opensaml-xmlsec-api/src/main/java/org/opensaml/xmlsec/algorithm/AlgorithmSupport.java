@@ -393,42 +393,42 @@ public final class AlgorithmSupport {
     }
     
     /**
-     * Validate the supplied algorithm URI against the specified whitelist and blacklist.
+     * Validate the supplied algorithm URI against the specified includes and excludes.
      * 
      * @param algorithmURI the algorithm URI to evaluate
-     * @param whitelistedAlgorithmURIs the algorithm whitelist
-     * @param blacklistedAlgorithmURIs the algorithm blacklist
+     * @param includedAlgorithmURIs the algorithm include list
+     * @param excludedAlgorithmURIs the algorithm exclude list
      * 
-     * @return true if algorithm URI satisfies the specified whitelist and blacklist, otherwise false
+     * @return true if algorithm URI satisfies the specified includes and excludes, otherwise false
      */
     public static boolean validateAlgorithmURI(@Nonnull final String algorithmURI, 
-            @Nullable final Collection<String> whitelistedAlgorithmURIs,
-            @Nullable final Collection<String> blacklistedAlgorithmURIs) {
+            @Nullable final Collection<String> includedAlgorithmURIs,
+            @Nullable final Collection<String> excludedAlgorithmURIs) {
         
-        if (blacklistedAlgorithmURIs != null) {
-            LOG.debug("Saw non-null algorithm blacklist: {}", blacklistedAlgorithmURIs);
-            if (blacklistedAlgorithmURIs.contains(algorithmURI)) {
-                LOG.warn("Algorithm failed blacklist validation: {}", algorithmURI);
+        if (excludedAlgorithmURIs != null) {
+            LOG.debug("Saw non-null algorithm exclude list: {}", excludedAlgorithmURIs);
+            if (excludedAlgorithmURIs.contains(algorithmURI)) {
+                LOG.warn("Algorithm failed exclude list validation: {}", algorithmURI);
                 return false;
             }
-            LOG.debug("Algorithm passed blacklist validation: {}", algorithmURI);
+            LOG.debug("Algorithm passed exclude list validation: {}", algorithmURI);
         } else {
-            LOG.debug("Saw null algorithm blacklist, nothing to evaluate");
+            LOG.debug("Saw null algorithm exclude list, nothing to evaluate");
         }
         
-        if (whitelistedAlgorithmURIs != null) {
-            LOG.debug("Saw non-null algorithm whitelist: {}", whitelistedAlgorithmURIs);
-            if (!whitelistedAlgorithmURIs.isEmpty()) {
-                if (!whitelistedAlgorithmURIs.contains(algorithmURI)) {
-                    LOG.warn("Algorithm failed whitelist validation: {}", algorithmURI);
+        if (includedAlgorithmURIs != null) {
+            LOG.debug("Saw non-null algorithm include list: {}", includedAlgorithmURIs);
+            if (!includedAlgorithmURIs.isEmpty()) {
+                if (!includedAlgorithmURIs.contains(algorithmURI)) {
+                    LOG.warn("Algorithm failed include list validation: {}", algorithmURI);
                     return false;
                 }
-                LOG.debug("Algorithm passed whitelist validation: {}", algorithmURI);
+                LOG.debug("Algorithm passed include list validation: {}", algorithmURI);
             } else {
-               LOG.debug("Non-null algorithm whitelist was empty, skipping evaluation");
+               LOG.debug("Non-null algorithm include list was empty, skipping evaluation");
             }
         } else {
-            LOG.debug("Saw null algorithm whitelist, nothing to evaluate");
+            LOG.debug("Saw null algorithm include list, nothing to evaluate");
         }
         
         return true;

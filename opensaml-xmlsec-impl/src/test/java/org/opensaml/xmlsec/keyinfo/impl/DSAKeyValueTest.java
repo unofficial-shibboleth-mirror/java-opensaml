@@ -34,8 +34,6 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
-import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
-import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DSAKeyValueProvider;
 import org.opensaml.xmlsec.signature.KeyInfo;
 

@@ -34,9 +34,9 @@ import net.shibboleth.utilities.java.support.resolver.Resolver;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
-import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
-import org.opensaml.xmlsec.WhitelistBlacklistParameters;
+import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
+import org.opensaml.xmlsec.AlgorithmPolicyConfiguration.Precedence;
+import org.opensaml.xmlsec.AlgorithmPolicyParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
@@ -87,126 +87,124 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         return KeyInfoSupport.getKeyInfoGenerator(credential, manager, keyInfoProfileName);
     }
     
-// Checkstyle: ReturnCount OFF    
     /**
-     * Resolve and populate the effective whitelist or blacklist on the supplied instance of 
-     * {@link WhitelistBlacklistParameters}.
+     * Resolve and populate the effective includes or excludes on the supplied instance of 
+     * {@link AlgorithmPolicyParameters}.
      * 
-     * @param params the whitelist/blacklist parameters instance to populate
+     * @param params the include/exclude parameters instance to populate
      * @param criteria the input criteria being evaluated
-     * @param configs the effective list of {@link WhitelistBlacklistConfiguration} instances to consider
+     * @param configs the effective list of {@link AlgorithmPolicyConfiguration} instances to consider
      */
-    protected void resolveAndPopulateWhiteAndBlacklists(@Nonnull final WhitelistBlacklistParameters params, 
+    protected void resolveAndPopulateIncludesExcludes(@Nonnull final AlgorithmPolicyParameters params, 
             @Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
+            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
-        final Collection<String> whitelist = resolveEffectiveWhitelist(criteria, configs);
-        log.trace("Resolved effective whitelist: {}", whitelist);
+        final Collection<String> includes = resolveEffectiveIncludes(criteria, configs);
+        log.trace("Resolved effective includes: {}", includes);
         
-        final Collection<String> blacklist = resolveEffectiveBlacklist(criteria, configs);
-        log.trace("Resolved effective blacklist: {}", blacklist);
+        final Collection<String> excludes = resolveEffectiveExcludes(criteria, configs);
+        log.trace("Resolved effective excludes: {}", excludes);
         
-        if (whitelist.isEmpty() && blacklist.isEmpty()) {
+        if (includes.isEmpty() && excludes.isEmpty()) {
             log.trace("Both empty, nothing to populate");
             return;
         }
         
-        if (whitelist.isEmpty()) {
-            log.trace("Whitelist empty, populating blacklist");
-            params.setBlacklistedAlgorithms(blacklist);
+        if (includes.isEmpty()) {
+            log.trace("Includes empty, populating excludes");
+            params.setExcludedAlgorithms(excludes);
             return;
         }
         
-        if (blacklist.isEmpty()) {
-            log.trace("Blacklist empty, populating whitelist");
-            params.setWhitelistedAlgorithms(whitelist);
+        if (excludes.isEmpty()) {
+            log.trace("Excludes empty, populating includes");
+            params.setIncludedAlgorithms(includes);
             return;
         }
         
-        final WhitelistBlacklistConfiguration.Precedence precedence =
-                resolveWhitelistBlacklistPrecedence(criteria, configs);
+        final AlgorithmPolicyConfiguration.Precedence precedence =
+                resolveIncludeExcludePrecedence(criteria, configs);
         log.trace("Resolved effective precedence: {}", precedence);
         switch(precedence) {
-            case WHITELIST:
-                log.trace("Based on precedence, populating whitelist");
-                params.setWhitelistedAlgorithms(whitelist);
+            case INCLUDE:
+                log.trace("Based on precedence, populating includes");
+                params.setIncludedAlgorithms(includes);
                 break;
-            case BLACKLIST:
-                log.trace("Based on precedence, populating blacklist");
-                params.setBlacklistedAlgorithms(blacklist);
+            case EXCLUDE:
+                log.trace("Based on precedence, populating excludes");
+                params.setExcludedAlgorithms(excludes);
                 break;
             default:
-                throw new IllegalArgumentException("WhitelistBlacklistPrecedence value is unknown: " + precedence);
+                throw new IllegalArgumentException("Include/Exclude Precedence value is unknown: " + precedence);
                     
         }
         
     }
-// Checkstyle: ReturnCount ON
     
     /**
-     * Get a predicate which operates according to the effective configured whitelist and blacklist policy.
+     * Get a predicate which operates according to the effective configured include and exclude policy.
      * 
      * @param criteria the input criteria being evaluated
-     * @param configs the effective list of {@link WhitelistBlacklistConfiguration} instances to consider
+     * @param configs the effective list of {@link AlgorithmPolicyConfiguration} instances to consider
      * 
-     * @return a predicate instance which operates accordingly to the effective whitelist and blacklist policy
+     * @return a predicate instance which operates accordingly to the effective include and exclude policy
      */
-    @Nonnull protected Predicate<String> resolveWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
+    @Nonnull protected Predicate<String> resolveIncludeExcludePredicate(@Nonnull final CriteriaSet criteria, 
+            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
-        final Collection<String> whitelist = resolveEffectiveWhitelist(criteria, configs);
-        log.trace("Resolved effective whitelist: {}", whitelist);
+        final Collection<String> includes = resolveEffectiveIncludes(criteria, configs);
+        log.trace("Resolved effective includes: {}", includes);
         
-        final Collection<String> blacklist = resolveEffectiveBlacklist(criteria, configs);
-        log.trace("Resolved effective blacklist: {}", blacklist);
+        final Collection<String> excludes = resolveEffectiveExcludes(criteria, configs);
+        log.trace("Resolved effective excludes: {}", excludes);
         
-        if (whitelist.isEmpty() && blacklist.isEmpty()) {
+        if (includes.isEmpty() && excludes.isEmpty()) {
             log.trace("Both empty, returning alwaysTrue predicate");
             return Predicates.alwaysTrue();
         }
         
-        if (whitelist.isEmpty()) {
-            log.trace("Whitelist empty, returning BlacklistPredicate");
-            return new BlacklistPredicate(blacklist);
+        if (includes.isEmpty()) {
+            log.trace("Includes empty, returning ExcludedAlgorithmsPredicate");
+            return new ExcludedAlgorithmsPredicate(excludes);
         }
         
-        if (blacklist.isEmpty()) {
-            log.trace("Blacklist empty, returning WhitelistPredicate");
-            return new WhitelistPredicate(whitelist);
+        if (excludes.isEmpty()) {
+            log.trace("Excludes empty, returning IncludedAlgorithmsPredicate");
+            return new IncludedAlgorithmsPredicate(includes);
         }
         
-        final WhitelistBlacklistConfiguration.Precedence precedence =
-                resolveWhitelistBlacklistPrecedence(criteria, configs);
+        final AlgorithmPolicyConfiguration.Precedence precedence =
+                resolveIncludeExcludePrecedence(criteria, configs);
         log.trace("Resolved effective precedence: {}", precedence);
         switch(precedence) {
-            case WHITELIST:
-                log.trace("Based on precedence, returning WhitelistPredicate");
-                return new WhitelistPredicate(whitelist);
-            case BLACKLIST:
-                log.trace("Based on precedence, returning BlacklistPredicate");
-                return new BlacklistPredicate(blacklist);
+            case INCLUDE:
+                log.trace("Based on precedence, returning IncludedAlgorithmsPredicate");
+                return new IncludedAlgorithmsPredicate(includes);
+            case EXCLUDE:
+                log.trace("Based on precedence, returning ExcludedAlgorithmsPredicate");
+                return new ExcludedAlgorithmsPredicate(excludes);
             default:
-                throw new IllegalArgumentException("WhitelistBlacklistPrecedence value is unknown: " + precedence);
+                throw new IllegalArgumentException("Include/Exclude Precedence value is unknown: " + precedence);
                     
         }
         
     }
 
     /**
-     * Resolve and return the effective algorithm blacklist based on supplied configuration.
+     * Resolve and return the effective algorithm excludes based on supplied configuration.
      * 
      * @param criteria the input criteria being evaluated
-     * @param configs the effective list of {@link WhitelistBlacklistConfiguration} instances to consider
+     * @param configs the effective list of {@link AlgorithmPolicyConfiguration} instances to consider
      * 
-     * @return the effective algorithm blacklist
+     * @return the effective algorithm excludes
      */
-    @Nonnull protected Collection<String> resolveEffectiveBlacklist(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
+    @Nonnull protected Collection<String> resolveEffectiveExcludes(@Nonnull final CriteriaSet criteria, 
+            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
         final LazySet<String> accumulator = new LazySet<>();
-        for (final WhitelistBlacklistConfiguration config : configs) {
-            accumulator.addAll(config.getBlacklistedAlgorithms());
-            if (!config.isBlacklistMerge()) {
+        for (final AlgorithmPolicyConfiguration config : configs) {
+            accumulator.addAll(config.getExcludedAlgorithms());
+            if (!config.isExcludeMerge()) {
                 break;
             }
         }
@@ -214,20 +212,20 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
     }
 
     /**
-     * Resolve and return the effective algorithm whitelist based on supplied configuration.
+     * Resolve and return the effective algorithm includes based on supplied configuration.
      * 
      * @param criteria the input criteria being evaluated
-     * @param configs the effective list of {@link WhitelistBlacklistConfiguration} instances to consider
+     * @param configs the effective list of {@link AlgorithmPolicyConfiguration} instances to consider
      * 
-     * @return the effective algorithm whitelist
+     * @return the effective algorithm includes
      */
-    @Nonnull protected Collection<String> resolveEffectiveWhitelist(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
+    @Nonnull protected Collection<String> resolveEffectiveIncludes(@Nonnull final CriteriaSet criteria, 
+            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
         final LazySet<String> accumulator = new LazySet<>();
-        for (final WhitelistBlacklistConfiguration config : configs) {
-            accumulator.addAll(config.getWhitelistedAlgorithms());
-            if (!config.isWhitelistMerge()) {
+        for (final AlgorithmPolicyConfiguration config : configs) {
+            accumulator.addAll(config.getIncludedAlgorithms());
+            if (!config.isIncludeMerge()) {
                 break;
             }
         }
@@ -235,18 +233,18 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
     }
 
     /**
-     * Resolve and return the effective algorithm whitelist/blacklist precedence based 
+     * Resolve and return the effective algorithm include/exclude precedence based 
      * on supplied configuration.
      * 
      * @param criteria the input criteria being evaluated
-     * @param configs the effective list of {@link WhitelistBlacklistConfiguration} instances to consider
+     * @param configs the effective list of {@link AlgorithmPolicyConfiguration} instances to consider
      * 
-     * @return the effective algorithm whitelist/blacklist precedence
+     * @return the effective algorithm include/exclude precedence
      */
-    @Nonnull protected Precedence resolveWhitelistBlacklistPrecedence(@Nonnull final CriteriaSet criteria, 
-            @Nonnull @NonnullElements @NotEmpty final List<? extends WhitelistBlacklistConfiguration> configs) {
+    @Nonnull protected Precedence resolveIncludeExcludePrecedence(@Nonnull final CriteriaSet criteria, 
+            @Nonnull @NonnullElements @NotEmpty final List<? extends AlgorithmPolicyConfiguration> configs) {
         
-        return configs.get(0).getWhitelistBlacklistPrecedence();
+        return configs.get(0).getIncludeExcludePrecedence();
     }
 
 }

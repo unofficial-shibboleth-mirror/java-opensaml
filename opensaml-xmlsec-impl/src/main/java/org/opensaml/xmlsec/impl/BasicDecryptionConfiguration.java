@@ -26,6 +26,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 /**
  * Basic implementation of {@link DecryptionConfiguration}.
  */
+@SuppressWarnings("removal")
 public class BasicDecryptionConfiguration extends BasicWhitelistBlacklistConfiguration 
         implements DecryptionConfiguration {
     
@@ -37,14 +38,9 @@ public class BasicDecryptionConfiguration extends BasicWhitelistBlacklistConfigu
     
     /** The EncryptedKey resolver. */
     @Nullable private EncryptedKeyResolver encryptedKeyResolver;
-    
+
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
-    
-    /** * Constructor. */
-    public BasicDecryptionConfiguration() {
-       super(); 
-    }
-    
+
     /**
      * Get the KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
      * 

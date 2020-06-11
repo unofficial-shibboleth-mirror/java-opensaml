@@ -24,15 +24,11 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 /**
  * The effective parameters to use when validating an XML signature.
  */
+@SuppressWarnings("removal")
 public class SignatureValidationParameters extends WhitelistBlacklistParameters {
     
     /** The signature trust engine to use. */
     @Nullable private SignatureTrustEngine signatureTrustEngine;
-    
-    /** Constructor. */
-    public SignatureValidationParameters() {
-        super();
-    }
     
     /**
      * Get the signature trust engine to use.

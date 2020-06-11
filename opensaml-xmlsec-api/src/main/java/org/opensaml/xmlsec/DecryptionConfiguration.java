@@ -25,6 +25,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 /**
  * The configuration information to use when decrypting encrypted XML.
  */
+@SuppressWarnings("removal")
 public interface DecryptionConfiguration extends WhitelistBlacklistConfiguration {
     
     /**

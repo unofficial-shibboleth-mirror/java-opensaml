@@ -28,20 +28,20 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
- * Predicate which implements an algorithm URI blacklist policy.
+ * Predicate which implements an algorithm URI exclusion policy.
  */
-public class BlacklistPredicate implements Predicate<String> {
+public class ExcludedAlgorithmsPredicate implements Predicate<String> {
     
-    /** Blacklisted algorithms. */
-    @Nonnull @NonnullElements private Collection<String> blacklist;
+    /** Excluded algorithms. */
+    @Nonnull @NonnullElements private Collection<String> excludes;
     
     /**
      * Constructor.
      *
-     * @param algorithms collection of blacklisted algorithms
+     * @param algorithms collection of excluded algorithms
      */
-    public BlacklistPredicate(@Nonnull @NonnullElements final Collection<String> algorithms) {
-        blacklist = Set.copyOf(Constraint.isNotNull(algorithms, "Blacklist may not be null"));
+    public ExcludedAlgorithmsPredicate(@Nonnull @NonnullElements final Collection<String> algorithms) {
+        excludes = Set.copyOf(Constraint.isNotNull(algorithms, "Exclusions may not be null"));
     }
 
     /** {@inheritDoc} */
@@ -49,7 +49,7 @@ public class BlacklistPredicate implements Predicate<String> {
         if (input == null) {
             throw new IllegalArgumentException("Algorithm URI to evaluate may not be null");
         }
-        return ! blacklist.contains(input);
+        return ! excludes.contains(input);
     }
     
 }

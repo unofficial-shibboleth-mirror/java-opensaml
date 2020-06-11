@@ -29,7 +29,6 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.opensaml.saml.saml1.binding.decoding.impl.HTTPPostDecoder;
 import org.opensaml.saml.saml1.core.Response;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;

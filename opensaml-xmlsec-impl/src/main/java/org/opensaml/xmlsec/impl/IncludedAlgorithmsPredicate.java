@@ -28,21 +28,21 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
- * Predicate which implements an algorithm URI whitelist policy.
+ * Predicate which implements an algorithm URI inclusion policy.
  * 
  */
-public class WhitelistPredicate implements Predicate<String> {
+public class IncludedAlgorithmsPredicate implements Predicate<String> {
     
-    /** Whitelisted algorithms. */
-    @Nonnull @NonnullElements private Collection<String> whitelist;
+    /** Included algorithms. */
+    @Nonnull @NonnullElements private Collection<String> includes;
     
     /**
      * Constructor.
      *
-     * @param algorithms collection of whitelisted algorithms
+     * @param algorithms collection of included algorithms
      */
-    public WhitelistPredicate(@Nonnull final Collection<String> algorithms) {
-        whitelist = Set.copyOf(Constraint.isNotNull(algorithms, "Whitelist may not be null"));
+    public IncludedAlgorithmsPredicate(@Nonnull final Collection<String> algorithms) {
+        includes = Set.copyOf(Constraint.isNotNull(algorithms, "Inclusions may not be null"));
     }
 
     /** {@inheritDoc} */
@@ -50,10 +50,7 @@ public class WhitelistPredicate implements Predicate<String> {
         if (input == null) {
             throw new IllegalArgumentException("Algorithm URI to evaluate may not be null");
         }
-        if (whitelist.isEmpty()) {
-            return true;
-        }
-        return whitelist.contains(input);
+        return includes.isEmpty() || includes.contains(input);
     }
     
 }

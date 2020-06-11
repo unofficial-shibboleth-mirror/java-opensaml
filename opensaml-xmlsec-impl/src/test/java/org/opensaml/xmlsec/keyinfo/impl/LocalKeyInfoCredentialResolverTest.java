@@ -36,8 +36,6 @@ import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
-import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
-import org.opensaml.xmlsec.keyinfo.impl.LocalKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
 import org.opensaml.xmlsec.signature.KeyInfo;
 

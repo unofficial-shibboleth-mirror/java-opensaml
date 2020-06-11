@@ -17,9 +17,11 @@
 
 package org.opensaml.xmlsec.impl;
 
+import static org.testng.Assert.*;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -34,7 +36,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngine;
-import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -79,64 +80,64 @@ public class BasicSignatureValidationParametersResolverTest {
         SignatureTrustEngine trustEngine;
         
         trustEngine = resolver.resolveSignatureTrustEngine(criteriaSet);
-        Assert.assertNull(trustEngine);
+        assertNull(trustEngine);
         
         config1.setSignatureTrustEngine(controlTrustEngine1);
         config2.setSignatureTrustEngine(controlTrustEngine2);
         config3.setSignatureTrustEngine(controlTrustEngine3);
         
         trustEngine = resolver.resolveSignatureTrustEngine(criteriaSet);
-        Assert.assertTrue(trustEngine == controlTrustEngine1);
+        assertTrue(trustEngine == controlTrustEngine1);
         
         config1.setSignatureTrustEngine(null);
         
         trustEngine = resolver.resolveSignatureTrustEngine(criteriaSet);
-        Assert.assertTrue(trustEngine == controlTrustEngine2);
+        assertTrue(trustEngine == controlTrustEngine2);
         
         config2.setSignatureTrustEngine(null);
         
         trustEngine = resolver.resolveSignatureTrustEngine(criteriaSet);
-        Assert.assertTrue(trustEngine == controlTrustEngine3);
+        assertTrue(trustEngine == controlTrustEngine3);
     }
 
     @Test
     public void testResolve() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
+        config1.setExcludedAlgorithms(List.of("foo", "bar"));
         config1.setSignatureTrustEngine(controlTrustEngine1);
         
         Iterable<SignatureValidationParameters> paramsIter = resolver.resolve(criteriaSet);
-        Assert.assertNotNull(paramsIter);
+        assertNotNull(paramsIter);
         
         Iterator<SignatureValidationParameters> iterator = paramsIter.iterator();
-        Assert.assertNotNull(iterator);
+        assertNotNull(iterator);
         
-        Assert.assertTrue(iterator.hasNext());
+        assertTrue(iterator.hasNext());
         
         SignatureValidationParameters params =iterator.next();
         
-        Assert.assertNotNull(params);
-        Assert.assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
-        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
+        assertNotNull(params);
+        assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
+        assertTrue(params.getIncludedAlgorithms().isEmpty());
+        assertEquals(params.getExcludedAlgorithms().size(), 2);
+        assertTrue(params.getExcludedAlgorithms().contains("foo"));
+        assertTrue(params.getExcludedAlgorithms().contains("bar"));
         
-        Assert.assertFalse(iterator.hasNext());
+        assertFalse(iterator.hasNext());
     }
 
     @Test
     public void testResolveSingle() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
+        config1.setExcludedAlgorithms(List.of("foo", "bar"));
         config1.setSignatureTrustEngine(controlTrustEngine1);
         
         SignatureValidationParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
-        Assert.assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
-        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
+        assertNotNull(params);
+        assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
+        assertTrue(params.getIncludedAlgorithms().isEmpty());
+        assertEquals(params.getExcludedAlgorithms().size(), 2);
+        assertTrue(params.getExcludedAlgorithms().contains("foo"));
+        assertTrue(params.getExcludedAlgorithms().contains("bar"));
     }
 
     @Test(expectedExceptions=ConstraintViolationException.class)

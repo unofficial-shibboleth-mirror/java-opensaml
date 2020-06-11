@@ -179,7 +179,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSigntureAlgorithm() throws MessageHandlerException {
-        sigValParams.setBlacklistedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        sigValParams.setExcludedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         
         trustedCredentials.add(signingX509Cred);
         

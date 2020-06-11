@@ -94,8 +94,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     /**
      * Tests the basic success case.
      * 
-     * @throws ComponentInitializationException ...
-     * @throws ResolverException ...
+     * @throws Exception ...
      */
     @Test
     public void testGetEntityDescriptor() throws Exception {

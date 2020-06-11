@@ -17,43 +17,40 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.Arrays;
+import java.util.List;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
-public class WhitelistPredicateTest {
+public class ExcludedAlgorithmsPredicateTest {
 
     @Test
     public void testBasic() {
-        WhitelistPredicate predicate = new WhitelistPredicate(Arrays.asList("A", "B", "C", "D"));
+        ExcludedAlgorithmsPredicate predicate = new ExcludedAlgorithmsPredicate(List.of("A", "B", "C", "D"));
         
-        Assert.assertTrue(predicate.test("A"));
-        Assert.assertTrue(predicate.test("B"));
-        Assert.assertTrue(predicate.test("C"));
-        Assert.assertTrue(predicate.test("D"));
+        Assert.assertFalse(predicate.test("A"));
+        Assert.assertFalse(predicate.test("B"));
+        Assert.assertFalse(predicate.test("C"));
+        Assert.assertFalse(predicate.test("D"));
         
-        Assert.assertFalse(predicate.test("X"));
-        Assert.assertFalse(predicate.test("Y"));
-        Assert.assertFalse(predicate.test("Z"));
-        Assert.assertFalse(predicate.test("foo"));
-        Assert.assertFalse(predicate.test("bar"));
-        Assert.assertFalse(predicate.test("bax"));
+        Assert.assertTrue(predicate.test("X"));
+        Assert.assertTrue(predicate.test("Y"));
+        Assert.assertTrue(predicate.test("Z"));
+        Assert.assertTrue(predicate.test("foo"));
+        Assert.assertTrue(predicate.test("bar"));
+        Assert.assertTrue(predicate.test("bax"));
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void testNullSet() {
-        new WhitelistPredicate(null);
+        new ExcludedAlgorithmsPredicate(null);
     }
     
     @Test(expectedExceptions=IllegalArgumentException.class)
     public void testNullArg() {
-        WhitelistPredicate predicate = new WhitelistPredicate(Arrays.asList("A", "B", "C", "D"));
+        ExcludedAlgorithmsPredicate predicate = new ExcludedAlgorithmsPredicate(List.of("A", "B", "C", "D"));
         predicate.test(null);
     }
     

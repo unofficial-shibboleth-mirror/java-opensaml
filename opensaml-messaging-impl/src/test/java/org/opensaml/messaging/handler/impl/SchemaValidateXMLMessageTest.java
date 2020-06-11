@@ -21,8 +21,6 @@ import javax.xml.validation.Schema;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.messaging.handler.impl.SchemaValidateXMLMessage;
-
 import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
 
 import org.opensaml.core.xml.XMLObject;

@@ -44,7 +44,6 @@ import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.Exponent;

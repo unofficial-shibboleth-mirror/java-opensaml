@@ -126,7 +126,6 @@ public class PopulateSignatureValidationParametersHandler extends AbstractMessag
         }
     }
     
-// Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
@@ -157,6 +156,5 @@ public class PopulateSignatureValidationParametersHandler extends AbstractMessag
             throw new MessageHandlerException("Error resolving SignatureValidationParameters");
         }
     }
-// Checkstyle: ReturnCount ON
     
 }

@@ -23,7 +23,6 @@ import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLConsentContext;
-import org.opensaml.saml.saml2.binding.impl.AddConsentToResponseHandler;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
 import org.testng.Assert;

@@ -30,7 +30,6 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
-import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.w3c.dom.Element;

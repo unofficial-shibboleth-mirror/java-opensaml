@@ -18,94 +18,46 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
+import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
-import org.opensaml.xmlsec.WhitelistBlacklistConfiguration;
-
-import com.google.common.collect.ImmutableSet;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * Basic implementation of {@link WhitelistBlacklistConfiguration}.
  * 
  * <p>
- * The value returned by {@link #getWhitelistBlacklistPrecedence()} defaults to
+ * The value returned by {@link WhitelistBlacklistConfiguration#getWhitelistBlacklistPrecedence()} defaults to
  * {@link org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence#WHITELIST}.
  * </p>
+ * 
+ * @deprecated
  */
-public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistConfiguration {
-    
-    /** Default precedence. */
-    public static final Precedence DEFAULT_PRECEDENCE = Precedence.WHITELIST;
-    
-    /** Whitelisted algorithm URIs. */
-    private Collection<String> whitelist;
-    
-    /** Whitelist merge flag. */
-    private boolean whitelistMerge;
-    
-    /** Blacklisted algorithm URIs. */
-    private Collection<String> blacklist;
-    
-    /** Blacklist merge flag. */
-    private boolean blacklistMerge;
-    
-    /** Precedence flag. */
-    private Precedence precedence;
-    
-    /** Constructor. */
-    public BasicWhitelistBlacklistConfiguration() {
-        whitelist = Collections.emptySet();
-        blacklist = Collections.emptySet();
-        precedence = DEFAULT_PRECEDENCE;
-        
-        // These merging defaults are intended to be the more secure/conservative approach:
-        // - do merge blacklists by default since don't want to unintentionally miss blacklist from lower level
-        // - do not merge whitelists by default since don't want to unintentionally include algos from lower level
-        blacklistMerge = true;
-        whitelistMerge = false;
-    }
+@Deprecated(forRemoval=true, since="4.1.0")
+public class BasicWhitelistBlacklistConfiguration extends BasicAlgorithmPolicyConfiguration
+        implements WhitelistBlacklistConfiguration {
     
     /**
-     * Get the list of whitelisted algorithm URI's.
+     * Flag indicating whether to merge this configuration's whitelist with one of a lower order of precedence,
+     * or to treat this whitelist as authoritative.
      * 
-     * @return the list of algorithms
-     */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getWhitelistedAlgorithms() {
-        return ImmutableSet.copyOf(whitelist);
-    }
-    
-    /**
-     * Set the list of whitelisted algorithm URI's.
-     * 
-     * @param uris the list of algorithms
-     */
-    public void setWhitelistedAlgorithms(@Nullable final Collection<String> uris) {
-        if (uris == null) {
-            whitelist = Collections.emptySet();
-            return;
-        }
-        whitelist = new HashSet<>(StringSupport.normalizeStringCollection(uris));
-    }
-
-    /** 
-     * {@inheritDoc}
-     * 
-     * <p>Defaults to: <code>false</code>.</p>
+     * @return true if should merge, false otherwise
      */
     public boolean isWhitelistMerge() {
-        return whitelistMerge;
+        DeprecationSupport.warn(ObjectType.METHOD, "isWhitelistMerge", null, "isIncludeMerge");
+        return isIncludeMerge();
     }
     
+
     /**
      * Set the flag indicating whether to merge this configuration's whitelist with one of a lower order of precedence,
      * or to treat this whitelist as authoritative.
@@ -115,39 +67,42 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @param flag true if should merge, false otherwise
      */
     public void setWhitelistMerge(final boolean flag) {
-        whitelistMerge = flag;
+        DeprecationSupport.warn(ObjectType.METHOD, "setWhitelistMerge", null, "setIncludeMerge");
+        setIncludeMerge(flag);
     }
 
     /**
-     * Get the list of blacklisted algorithm URI's.
+     * Get the list of whitelisted algorithm URIs.
      * 
      * @return the list of algorithms
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithms() {
-        return ImmutableSet.copyOf(blacklist);
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getWhitelistedAlgorithms() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getWhitelistedAlgorithms", null, "getIncludedAlgorithms");
+        return getIncludedAlgorithms();
     }
     
+
     /**
-     * Set the list of blacklisted algorithm URI's.
+     * Set the list of whitelisted algorithm URIs.
      * 
      * @param uris the list of algorithms
      */
-    public void setBlacklistedAlgorithms(@Nullable final Collection<String> uris) {
-        if (uris == null) {
-            blacklist = Collections.emptySet();
-            return;
-        }
-        blacklist = new HashSet<>(StringSupport.normalizeStringCollection(uris));
+    public void setWhitelistedAlgorithms(@Nullable final Collection<String> uris) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setWhitelistedAlgorithms", null, "setIncludedAlgorithms");
+        setIncludedAlgorithms(uris);
     }
 
-    /** 
-     * {@inheritDoc}
+    /**
+     * Flag indicating whether to merge this configuration's blacklist with one of a lower order of precedence,
+     * or to treat this blacklist as authoritative.
      * 
-     * <p>Defaults to: <code>true</code>.</p>
+     * @return true if should merge, false otherwise
      */
     public boolean isBlacklistMerge() {
-        return blacklistMerge;
+        DeprecationSupport.warn(ObjectType.METHOD, "isBlacklistMerge", null, "isExcludeMerge");
+        return isExcludeMerge();
     }
+    
 
     /**
      * Set the flag indicating whether to merge this configuration's blacklist with one of a lower order of precedence,
@@ -158,21 +113,71 @@ public class BasicWhitelistBlacklistConfiguration implements WhitelistBlacklistC
      * @param flag true if should merge, false otherwise
      */
     public void setBlacklistMerge(final boolean flag) {
-        blacklistMerge = flag;
+        DeprecationSupport.warn(ObjectType.METHOD, "setBlacklistMerge", null, "setExcludeMerge");
+        setExcludeMerge(flag);
     }
 
-    /** {@inheritDoc} */
-    @Nonnull public Precedence getWhitelistBlacklistPrecedence() {
-        return precedence;
+    /**
+     * Get the list of blacklisted algorithm URIs.
+     * 
+     * @return the list of algorithms
+     */
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getBlacklistedAlgorithms() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getBlacklistedAlgorithms", null, "getExcludedAlgorithms");
+        return getExcludedAlgorithms();
+    }
+
+    /**
+     * Set the list of blacklisted algorithm URIs.
+     * 
+     * @param uris the list of algorithms
+     */
+    public void setBlacklistedAlgorithms(@Nullable final Collection<String> uris) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setBlacklistedAlgorithms", null, "setExcludedAlgorithms");
+        setExcludedAlgorithms(uris);
+    }
+
+    /**
+     * Get preference value indicating which should take precedence when both whitelist and blacklist are non-empty.
+     * 
+     * @return the configured precedence value.
+     */
+    @Nonnull public WhitelistBlacklistConfiguration.Precedence getWhitelistBlacklistPrecedence() {
+        DeprecationSupport.warn(ObjectType.METHOD, "getWhitelistBlacklistPrecedence", null,
+                "getIncludeExcludePrecedence");
+        
+        switch (getIncludeExcludePrecedence()) {
+            case INCLUDE:
+                return WhitelistBlacklistConfiguration.Precedence.WHITELIST;
+            case EXCLUDE:
+                return WhitelistBlacklistConfiguration.Precedence.BLACKLIST;
+            default:
+                throw new IllegalArgumentException("Unrecognized Precedence value");
+        }
     }
     
+
     /**
      * Set preference value indicating which should take precedence when both whitelist and blacklist are non-empty.
      * 
      * @param value the precedence value
      */
-    public void setWhitelistBlacklistPrecedence(@Nonnull final Precedence value) {
-        precedence = Constraint.isNotNull(value, "Precedence may not be null");
+    public void setWhitelistBlacklistPrecedence(@Nonnull final WhitelistBlacklistConfiguration.Precedence value) {
+        DeprecationSupport.warn(ObjectType.METHOD, "setWhitelistBlacklistPrecedence", null,
+                "setIncludeExcludePrecedence");
+        
+        switch(Constraint.isNotNull(value, "Precedence cannot be null")) {
+            case WHITELIST:
+                setIncludeExcludePrecedence(AlgorithmPolicyConfiguration.Precedence.INCLUDE);
+                break;
+                
+            case BLACKLIST:
+                setIncludeExcludePrecedence(AlgorithmPolicyConfiguration.Precedence.EXCLUDE);
+                break;
+                    
+            default:
+                throw new IllegalArgumentException("Unrecognized precedence value");
+        }
     }
 
 }

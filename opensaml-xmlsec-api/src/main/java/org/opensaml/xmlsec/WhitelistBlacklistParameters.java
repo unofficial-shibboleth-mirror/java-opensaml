@@ -18,8 +18,6 @@
 package org.opensaml.xmlsec;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,26 +25,18 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
-import com.google.common.collect.ImmutableSet;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * The whitelist and blacklist algorithm parameters.
+ * 
+ * <p>Replace with {@link AlgorithmPolicyParameters}.
+ * 
+ * @deprecated
  */
-public class WhitelistBlacklistParameters {
-    
-    /** Whitelisted algorithm URIs. */
-    @Nonnull @NonnullElements private Collection<String> whiteListedAlgorithmURIs;
-    
-    /** Blacklisted algorithm URIs. */
-    @Nonnull @NonnullElements private Collection<String> blackListedAlgorithmURIs;
-        
-    /** Constructor. */
-    public WhitelistBlacklistParameters() {
-        whiteListedAlgorithmURIs = Collections.emptySet();
-        blackListedAlgorithmURIs = Collections.emptySet();
-    }
+@Deprecated(forRemoval=true, since="4.1.0")
+public class WhitelistBlacklistParameters extends AlgorithmPolicyParameters {
     
     /**
      * Get the list of whitelisted algorithm URI's.
@@ -54,7 +44,8 @@ public class WhitelistBlacklistParameters {
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getWhitelistedAlgorithms() {
-        return ImmutableSet.copyOf(whiteListedAlgorithmURIs);
+        DeprecationSupport.warn(ObjectType.METHOD, "getWhitelistedAlgorithms", null, "getIncludedAlgorithms");
+        return getIncludedAlgorithms();
     }
     
     /**
@@ -63,11 +54,8 @@ public class WhitelistBlacklistParameters {
      * @param uris the list of algorithms
      */
     public void setWhitelistedAlgorithms(@Nullable final Collection<String> uris) {
-        if (uris == null) {
-            whiteListedAlgorithmURIs = Collections.emptySet();
-            return;
-        }
-        whiteListedAlgorithmURIs = new HashSet<>(StringSupport.normalizeStringCollection(uris));
+        DeprecationSupport.warn(ObjectType.METHOD, "setWhitelistedAlgorithms", null, "setIncludedAlgorithms");
+        setIncludedAlgorithms(uris);
     }
     
     /**
@@ -76,7 +64,8 @@ public class WhitelistBlacklistParameters {
      * @return the list of algorithms
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Collection<String> getBlacklistedAlgorithms() {
-        return ImmutableSet.copyOf(blackListedAlgorithmURIs);
+        DeprecationSupport.warn(ObjectType.METHOD, "getBlacklistedAlgorithms", null, "getExcludedAlgorithms");
+        return getExcludedAlgorithms();
     }
     
     /**
@@ -85,11 +74,8 @@ public class WhitelistBlacklistParameters {
      * @param uris the list of algorithms
      */
     public void setBlacklistedAlgorithms(@Nonnull @NonnullElements final Collection<String> uris) {
-        if (uris == null) {
-            blackListedAlgorithmURIs = Collections.emptySet();
-            return;
-        }
-        blackListedAlgorithmURIs = new HashSet<>(StringSupport.normalizeStringCollection(uris));
+        DeprecationSupport.warn(ObjectType.METHOD, "setBlacklistedAlgorithms", null, "setExcludedAlgorithms");
+        setExcludedAlgorithms(uris);
     }
     
 }

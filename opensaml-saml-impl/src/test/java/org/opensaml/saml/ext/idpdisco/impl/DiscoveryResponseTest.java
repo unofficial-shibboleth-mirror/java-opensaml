@@ -23,7 +23,6 @@ import org.testng.Assert;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
-import org.opensaml.saml.ext.idpdisco.impl.DiscoveryResponseImpl;
 
 /**
  * Test case for creating, marshalling, and unmarshalling {@link DiscoveryResponseImpl}.

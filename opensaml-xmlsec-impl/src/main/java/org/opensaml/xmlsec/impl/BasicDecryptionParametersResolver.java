@@ -70,7 +70,7 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
         
         final DecryptionParameters params = new DecryptionParameters();
         
-        resolveAndPopulateWhiteAndBlacklists(params, criteria, 
+        resolveAndPopulateIncludesExcludes(params, criteria, 
                 criteria.get(DecryptionConfigurationCriterion.class).getConfigurations());
         
         params.setDataKeyInfoCredentialResolver(resolveDataKeyInfoCredentialResolver(criteria));
@@ -91,8 +91,8 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
         if (log.isDebugEnabled()) {
             log.debug("Resolved DecryptionParameters:");
             
-            log.debug("\tAlgorithm whitelist: {}", params.getWhitelistedAlgorithms());
-            log.debug("\tAlgorithm blacklist: {}", params.getBlacklistedAlgorithms());
+            log.debug("\tAlgorithm includes: {}", params.getIncludedAlgorithms());
+            log.debug("\tAlgorithm excludes: {}", params.getExcludedAlgorithms());
             
             log.debug("\tData KeyInfoCredentialResolver: {}", 
                     params.getDataKeyInfoCredentialResolver() != null ? "present" : "null");
@@ -159,7 +159,5 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
         }
         return null;
     }
-
-
 
 }

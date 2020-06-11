@@ -27,58 +27,54 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 /**
  * Algorithm URI include/exclude policy configuration.
- * 
- * <p>Replace with {@link AlgorithmPolicyConfiguration}.</p> 
- * 
- * @deprecated
  */
-@Deprecated(forRemoval=true, since="4.1.0")
-public interface WhitelistBlacklistConfiguration extends AlgorithmPolicyConfiguration {
-
-    /** Whitelist/blacklist precedence values. */
+public interface AlgorithmPolicyConfiguration {
+    
+    /** Rule precedence values. */
     public enum Precedence {
-        /** Whitelist takes precedence over blacklist. */
-        WHITELIST,
+        /** Include takes precedence over exclude. */
+        INCLUDE,
         
-        /** Blacklist takes precedence over whitelist. */
-        BLACKLIST
+        /** Exclude takes precedence over include. */
+        EXCLUDE
     }
-
-    /**
-     * Get the list of whitelisted algorithm URIs.
-     * 
-     * @return the list of algorithms
-     */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive Collection<String> getWhitelistedAlgorithms();
     
     /**
-     * Flag indicating whether to merge this configuration's whitelist with one of a lower order of precedence,
-     * or to treat this whitelist as authoritative.
+     * Get the collection of included algorithm URIs.
      * 
-     * @return true if should merge, false otherwise
+     * @return the collection of algorithms
      */
-    boolean isWhitelistMerge();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getIncludedAlgorithms();
     
     /**
-     * Get the list of blacklisted algorithm URIs.
-     * 
-     * @return the list of algorithms
-     */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive Collection<String> getBlacklistedAlgorithms();
-    
-    /**
-     * Flag indicating whether to merge this configuration's blacklist with one of a lower order of precedence,
-     * or to treat this blacklist as authoritative.
+     * Flag indicating whether to merge this configuration's includes with one of a lower order of precedence,
+     * or to treat this include collection as authoritative.
      * 
      * @return true if should merge, false otherwise
      */
-    boolean isBlacklistMerge();
+    public boolean isIncludeMerge();
     
     /**
-     * Get preference value indicating which should take precedence when both whitelist and blacklist are non-empty.
+     * Get the collection of excluded algorithm URIs.
+     * 
+     * @return the collection of algorithms
+     */
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getExcludedAlgorithms();
+    
+    /**
+     * Flag indicating whether to merge this configuration's excludes with one of a lower order of precedence,
+     * or to treat this exclude collection as authoritative.
+     * 
+     * @return true if should merge, false otherwise
+     */
+    public boolean isExcludeMerge();
+    
+    /**
+     * Get preference value indicating which should take precedence when both include and exclude collections
+     * are non-empty.
      * 
      * @return the configured precedence value.
      */
-    @Nonnull Precedence getWhitelistBlacklistPrecedence();
+    @Nonnull public Precedence getIncludeExcludePrecedence();
 
 }

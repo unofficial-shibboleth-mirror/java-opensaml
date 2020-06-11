@@ -203,11 +203,11 @@ public class Decrypter {
     /** Resolver for EncryptedKey instances which contain the encrypted data encryption key. */
     private EncryptedKeyResolver encKeyResolver;
     
-    /** The collection of algorithm URI's which are whitelisted. */
-    private Collection<String> whitelistedAlgorithmURIs;
+    /** The collection of algorithm URIs which are included. */
+    private Collection<String> includedAlgorithmURIs;
     
-    /** The collection of algorithm URI's which are blacklisted. */
-    private Collection<String> blacklistedAlgorithmURIs;
+    /** The collection of algorithm URIs which are excluded. */
+    private Collection<String> excludedAlgorithmURIs;
 
     /** Additional criteria to use when resolving credentials based on an EncryptedData's KeyInfo. */
     private CriteriaSet resolverCriteria;
@@ -228,11 +228,11 @@ public class Decrypter {
      * @param params decryption parameters to use
      */
     public Decrypter(final DecryptionParameters params) {
-        this(   params.getDataKeyInfoCredentialResolver(), 
+        this(   params.getDataKeyInfoCredentialResolver(),
                 params.getKEKKeyInfoCredentialResolver(),
                 params.getEncryptedKeyResolver(),
-                params.getWhitelistedAlgorithms(),
-                params.getBlacklistedAlgorithms()
+                params.getIncludedAlgorithms(),
+                params.getExcludedAlgorithms()
                 );
     }
     
@@ -256,22 +256,22 @@ public class Decrypter {
      * @param newResolver resolver for data encryption keys.
      * @param newKEKResolver resolver for key encryption keys.
      * @param newEncKeyResolver resolver for EncryptedKey elements
-     * @param whitelistAlgos collection of whitelisted algorithm URIs
-     * @param blacklistAlgos collection of blacklisted algorithm URIs
+     * @param includeAlgos collection of included algorithm URIs
+     * @param excludeAlgos collection of excluded algorithm URIs
      */
     public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
             @Nullable final KeyInfoCredentialResolver newKEKResolver,
             @Nullable final EncryptedKeyResolver newEncKeyResolver,
-            @Nullable final Collection<String> whitelistAlgos,
-            @Nullable final Collection<String> blacklistAlgos) {
+            @Nullable final Collection<String> includeAlgos,
+            @Nullable final Collection<String> excludeAlgos) {
         
         this();
         
         resolver = newResolver;
         kekResolver = newKEKResolver;
         encKeyResolver = newEncKeyResolver;
-        whitelistedAlgorithmURIs = whitelistAlgos;
-        blacklistedAlgorithmURIs = blacklistAlgos;
+        includedAlgorithmURIs = includeAlgos;
+        excludedAlgorithmURIs = excludeAlgos;
     }
     
     /**
@@ -1042,9 +1042,9 @@ public class Decrypter {
     protected void validateAlgorithmURI(@Nonnull final String algorithmURI) throws DecryptionException {
         log.debug("Validating algorithm URI against whitelist and blacklist: "
                 + "algorithm: {}, whitelist: {}, blacklist: {}",
-                algorithmURI, whitelistedAlgorithmURIs, blacklistedAlgorithmURIs);
+                algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs);
         
-        if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, whitelistedAlgorithmURIs, blacklistedAlgorithmURIs)) {
+        if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs)) {
             throw new DecryptionException("Algorithm failed whitelist/blacklist validation: " + algorithmURI);
         }
         

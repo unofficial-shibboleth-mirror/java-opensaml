@@ -23,7 +23,6 @@ import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLVersion;
-import org.opensaml.saml.common.binding.impl.CheckMessageVersionHandler;
 import org.opensaml.saml.saml1.core.RequestAbstractType;
 import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.AttributeQuery;

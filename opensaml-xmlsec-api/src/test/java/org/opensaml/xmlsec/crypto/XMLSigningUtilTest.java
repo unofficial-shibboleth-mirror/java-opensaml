@@ -37,7 +37,6 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**

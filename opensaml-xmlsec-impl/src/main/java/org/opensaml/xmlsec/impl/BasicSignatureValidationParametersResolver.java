@@ -71,7 +71,7 @@ public class BasicSignatureValidationParametersResolver
         
         final SignatureValidationParameters params = new SignatureValidationParameters();
         
-        resolveAndPopulateWhiteAndBlacklists(params, criteria, 
+        resolveAndPopulateIncludesExcludes(params, criteria, 
                 criteria.get(SignatureValidationConfigurationCriterion.class).getConfigurations());
         
         params.setSignatureTrustEngine(resolveSignatureTrustEngine(criteria));
@@ -90,8 +90,8 @@ public class BasicSignatureValidationParametersResolver
         if (log.isDebugEnabled()) {
             log.debug("Resolved SignatureValidationParameters:");
             
-            log.debug("\tAlgorithm whitelist: {}", params.getWhitelistedAlgorithms());
-            log.debug("\tAlgorithm blacklist: {}", params.getBlacklistedAlgorithms());
+            log.debug("\tAlgorithm includes: {}", params.getIncludedAlgorithms());
+            log.debug("\tAlgorithm excludes: {}", params.getExcludedAlgorithms());
             
             log.debug("\tSignatureTrustEngine: {}", 
                     params.getSignatureTrustEngine() != null ? "present" : "null");

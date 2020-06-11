@@ -280,7 +280,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * @return a whitelist/blacklist predicate instance
      */
     @Nonnull protected Predicate<String> getWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria) {
-        return resolveWhitelistBlacklistPredicate(criteria, 
+        return resolveIncludeExcludePredicate(criteria, 
                 criteria.get(EncryptionConfigurationCriterion.class).getConfigurations());
     }
     

@@ -35,8 +35,6 @@ import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
-import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
-import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
 
 /**
  * Test the KeyInfoGeneratorFactory manager.

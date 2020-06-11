@@ -18,15 +18,18 @@
 
 package org.opensaml.xmlsec.impl;
 
+import static org.testng.Assert.*;
+
 import java.util.Arrays;
+import java.util.List;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
-import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("removal")
 public class BasicWhitelistBlacklistConfigurationTest {
     
     private BasicWhitelistBlacklistConfiguration config;
@@ -38,97 +41,97 @@ public class BasicWhitelistBlacklistConfigurationTest {
     
     @Test
     public void testDefaults() {
-        Assert.assertEquals(config.isWhitelistMerge(), false);
-        Assert.assertNotNull(config.getWhitelistedAlgorithms());
-        Assert.assertTrue(config.getWhitelistedAlgorithms().isEmpty());
+        assertEquals(config.isWhitelistMerge(), false);
+        assertNotNull(config.getWhitelistedAlgorithms());
+        assertTrue(config.getWhitelistedAlgorithms().isEmpty());
         
-        Assert.assertEquals(config.isBlacklistMerge(), true);
-        Assert.assertNotNull(config.getBlacklistedAlgorithms());
-        Assert.assertTrue(config.getBlacklistedAlgorithms().isEmpty());
+        assertEquals(config.isBlacklistMerge(), true);
+        assertNotNull(config.getBlacklistedAlgorithms());
+        assertTrue(config.getBlacklistedAlgorithms().isEmpty());
         
-        Assert.assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.WHITELIST);
+        assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.WHITELIST);
     }
     
     @Test
     public void testValidWhitelist() {
         config.setWhitelistedAlgorithms(Arrays.asList("  A   ", null, "   B   ", null, "   C   "));
         
-        Assert.assertEquals(config.getWhitelistedAlgorithms().size(), 3);
-        Assert.assertTrue(config.getWhitelistedAlgorithms().contains("A"));
-        Assert.assertTrue(config.getWhitelistedAlgorithms().contains("B"));
-        Assert.assertTrue(config.getWhitelistedAlgorithms().contains("C"));
+        assertEquals(config.getWhitelistedAlgorithms().size(), 3);
+        assertTrue(config.getWhitelistedAlgorithms().contains("A"));
+        assertTrue(config.getWhitelistedAlgorithms().contains("B"));
+        assertTrue(config.getWhitelistedAlgorithms().contains("C"));
     }
 
     @Test
     public void testNullWhitelist() {
         config.setWhitelistedAlgorithms(null);
-        Assert.assertNotNull(config.getWhitelistedAlgorithms());
-        Assert.assertTrue(config.getWhitelistedAlgorithms().isEmpty());
+        assertNotNull(config.getWhitelistedAlgorithms());
+        assertTrue(config.getWhitelistedAlgorithms().isEmpty());
     }
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testWhitelistImmutable() {
-        config.setWhitelistedAlgorithms(Arrays.asList("A", "B", "C"));
+        config.setWhitelistedAlgorithms(List.of("A", "B", "C"));
         config.getWhitelistedAlgorithms().add("D");
     }
 
     @Test
     public void testWhitelistMerge() {
         // Test default
-        Assert.assertFalse(config.isWhitelistMerge());
+        assertFalse(config.isWhitelistMerge());
         
         config.setWhitelistMerge(true);
-        Assert.assertTrue(config.isWhitelistMerge());
+        assertTrue(config.isWhitelistMerge());
         
         config.setWhitelistMerge(false);
-        Assert.assertFalse(config.isWhitelistMerge());
+        assertFalse(config.isWhitelistMerge());
     }
 
     @Test
     public void testValidBlacklist() {
         config.setBlacklistedAlgorithms(Arrays.asList("   A   ", null, "   B   ", null, "   C   "));
         
-        Assert.assertEquals(config.getBlacklistedAlgorithms().size(), 3);
-        Assert.assertTrue(config.getBlacklistedAlgorithms().contains("A"));
-        Assert.assertTrue(config.getBlacklistedAlgorithms().contains("B"));
-        Assert.assertTrue(config.getBlacklistedAlgorithms().contains("C"));
+        assertEquals(config.getBlacklistedAlgorithms().size(), 3);
+        assertTrue(config.getBlacklistedAlgorithms().contains("A"));
+        assertTrue(config.getBlacklistedAlgorithms().contains("B"));
+        assertTrue(config.getBlacklistedAlgorithms().contains("C"));
     }
     
     @Test
     public void testNullBlacklist() {
         config.setBlacklistedAlgorithms(null);
-        Assert.assertNotNull(config.getBlacklistedAlgorithms());
-        Assert.assertTrue(config.getBlacklistedAlgorithms().isEmpty());
+        assertNotNull(config.getBlacklistedAlgorithms());
+        assertTrue(config.getBlacklistedAlgorithms().isEmpty());
     }
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testBlacklistImmutable() {
-        config.setBlacklistedAlgorithms(Arrays.asList("A", "B", "C"));
+        config.setBlacklistedAlgorithms(List.of("A", "B", "C"));
         config.getBlacklistedAlgorithms().add("D");
     }
     
     @Test
     public void testBlacklistMerge() {
         // Test default
-        Assert.assertTrue(config.isBlacklistMerge());
+        assertTrue(config.isBlacklistMerge());
         
         config.setBlacklistMerge(false);
-        Assert.assertFalse(config.isBlacklistMerge());
+        assertFalse(config.isBlacklistMerge());
         
         config.setBlacklistMerge(true);
-        Assert.assertTrue(config.isBlacklistMerge());
+        assertTrue(config.isBlacklistMerge());
     }
 
     @Test
     public void testValidPrecedence() {
         // Test default
-        Assert.assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.WHITELIST);
+        assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.WHITELIST);
         
         config.setWhitelistBlacklistPrecedence(Precedence.WHITELIST);
-        Assert.assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.WHITELIST);
+        assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.WHITELIST);
         
         config.setWhitelistBlacklistPrecedence(Precedence.BLACKLIST);
-        Assert.assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.BLACKLIST);
+        assertEquals(config.getWhitelistBlacklistPrecedence(), Precedence.BLACKLIST);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

@@ -237,7 +237,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSignatureAlgorithm() throws MessageHandlerException {
-        sigValParams.setBlacklistedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        sigValParams.setExcludedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         
         trustedCredentials.add(signingX509Cred);
 

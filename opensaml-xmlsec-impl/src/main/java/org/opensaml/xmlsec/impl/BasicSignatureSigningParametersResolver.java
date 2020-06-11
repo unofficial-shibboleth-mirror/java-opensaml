@@ -193,14 +193,14 @@ public class BasicSignatureSigningParametersResolver
     }
 
     /**
-     * Get a predicate which implements the effective configured whitelist/blacklist policy.
+     * Get a predicate which implements the effective configured include/exclude policy.
      * 
      * @param criteria the input criteria being evaluated
      * 
      * @return a whitelist/blacklist predicate instance
      */
     @Nonnull protected Predicate<String> getWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria) {
-        return resolveWhitelistBlacklistPredicate(criteria, 
+        return resolveIncludeExcludePredicate(criteria, 
                 criteria.get(SignatureSigningConfigurationCriterion.class).getConfigurations());
     }
 

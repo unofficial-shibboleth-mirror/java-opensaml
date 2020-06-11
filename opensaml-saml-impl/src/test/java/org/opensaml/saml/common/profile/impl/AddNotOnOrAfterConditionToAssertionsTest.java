@@ -29,7 +29,6 @@ import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObjectBuilder;
-import org.opensaml.saml.common.profile.impl.AddNotOnOrAfterConditionToAssertions;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.Response;

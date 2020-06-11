@@ -138,7 +138,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
         
         SignatureValidationParameters sigParams = new SignatureValidationParameters();
-        sigParams.setBlacklistedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        sigParams.setExcludedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         CriteriaSet defaultCriteriaSet = new CriteriaSet(new SignatureValidationParametersCriterion(sigParams));
         filter.setDefaultCriteria(defaultCriteriaSet);
         

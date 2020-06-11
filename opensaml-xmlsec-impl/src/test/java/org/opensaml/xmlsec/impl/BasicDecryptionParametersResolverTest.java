@@ -18,14 +18,13 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Iterator;
+import java.util.List;
 
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
@@ -57,9 +56,9 @@ public class BasicDecryptionParametersResolverTest {
     
     @BeforeClass
     public void buildResolvers() {
-        controlKeyInfoResolver1 = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
-        controlKeyInfoResolver2 = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
-        controlKeyInfoResolver3 = new StaticKeyInfoCredentialResolver(new ArrayList<Credential>());
+        controlKeyInfoResolver1 = new StaticKeyInfoCredentialResolver(new ArrayList<>());
+        controlKeyInfoResolver2 = new StaticKeyInfoCredentialResolver(new ArrayList<>());
+        controlKeyInfoResolver3 = new StaticKeyInfoCredentialResolver(new ArrayList<>());
         
         controlEncKeyResolver1 = new InlineEncryptedKeyResolver();
         controlEncKeyResolver2 = new InlineEncryptedKeyResolver();
@@ -156,7 +155,7 @@ public class BasicDecryptionParametersResolverTest {
     
     @Test
     public void testResolve() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
+        config1.setExcludedAlgorithms(List.of("foo", "bar"));
         config1.setDataKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setKEKKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setEncryptedKeyResolver(controlEncKeyResolver1);
@@ -175,17 +174,17 @@ public class BasicDecryptionParametersResolverTest {
         Assert.assertTrue(params.getDataKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getKEKKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getEncryptedKeyResolver() == controlEncKeyResolver1);
-        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
+        Assert.assertTrue(params.getIncludedAlgorithms().isEmpty());
+        Assert.assertEquals(params.getExcludedAlgorithms().size(), 2);
+        Assert.assertTrue(params.getExcludedAlgorithms().contains("foo"));
+        Assert.assertTrue(params.getExcludedAlgorithms().contains("bar"));
         
         Assert.assertFalse(iterator.hasNext());
     }
     
     @Test
     public void testResolveSingle() throws ResolverException {
-        config1.setBlacklistedAlgorithms(Arrays.asList("foo", "bar"));
+        config1.setExcludedAlgorithms(List.of("foo", "bar"));
         config1.setDataKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setKEKKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setEncryptedKeyResolver(controlEncKeyResolver1);
@@ -196,10 +195,10 @@ public class BasicDecryptionParametersResolverTest {
         Assert.assertTrue(params.getDataKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getKEKKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getEncryptedKeyResolver() == controlEncKeyResolver1);
-        Assert.assertTrue(params.getWhitelistedAlgorithms().isEmpty());
-        Assert.assertEquals(params.getBlacklistedAlgorithms().size(), 2);
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("foo"));
-        Assert.assertTrue(params.getBlacklistedAlgorithms().contains("bar"));
+        Assert.assertTrue(params.getIncludedAlgorithms().isEmpty());
+        Assert.assertEquals(params.getExcludedAlgorithms().size(), 2);
+        Assert.assertTrue(params.getExcludedAlgorithms().contains("foo"));
+        Assert.assertTrue(params.getExcludedAlgorithms().contains("bar"));
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)
