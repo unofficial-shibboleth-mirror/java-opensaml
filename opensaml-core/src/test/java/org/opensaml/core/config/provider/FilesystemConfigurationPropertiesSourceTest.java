@@ -37,8 +37,8 @@ public class FilesystemConfigurationPropertiesSourceTest {
     /** The source test to test. */
     private ConfigurationPropertiesSource source;
     
-    /** Master file with test data. */
-    private File masterFile;
+    /** Main file with test data. */
+    private File mainFile;
     
     /** Actual target file test runs against. */
     private File targetFile;
@@ -49,15 +49,15 @@ public class FilesystemConfigurationPropertiesSourceTest {
      * @throws IOException ...
      */
     public FilesystemConfigurationPropertiesSourceTest() throws IOException {
-        masterFile = new File("src/test/resources/opensaml-config.properties");
+        mainFile = new File("src/test/resources/opensaml-config.properties");
         targetFile = File.createTempFile("opensaml-config.properties", "");
-        System.out.println(masterFile.getAbsolutePath());
+        System.out.println(mainFile.getAbsolutePath());
         System.out.println(targetFile.getAbsolutePath()); 
     }
     
     @BeforeMethod
     protected void setUp() throws Exception {
-        Files.copy(masterFile, targetFile);
+        Files.copy(mainFile, targetFile);
     }
 
     @AfterMethod
