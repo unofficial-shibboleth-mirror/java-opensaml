@@ -211,7 +211,7 @@ public class KeySupportTest {
         }
     }
     
-    @Test
+    @Test(enabled=false)
     public void testKeyLength() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair kp = null;
         
