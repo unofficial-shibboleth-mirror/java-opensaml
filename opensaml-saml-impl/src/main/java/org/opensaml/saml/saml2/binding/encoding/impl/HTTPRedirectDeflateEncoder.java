@@ -32,6 +32,7 @@ import java.util.zip.DeflaterOutputStream;
 import javax.annotation.Nonnull;
 import javax.servlet.http.HttpServletResponse;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.collection.Pair;
@@ -58,7 +59,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
-import com.google.common.collect.Sets;
 
 /**
  * SAML 2.0 HTTP Redirect encoder using the DEFLATE encoding method.
@@ -68,8 +68,8 @@ import com.google.common.collect.Sets;
 public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     
     /** Params which are disallowed from appearing in the input endpoint URL. */
-    private static final Set<String> DISALLOWED_ENDPOINT_QUERY_PARAMS = 
-            Sets.newHashSet("SAMLEncoding", "SAMLRequest", "SAMLResponse", "RelayState", "SigAlg", "Signature");
+    @Nonnull @NonnullElements private static final Set<String> DISALLOWED_ENDPOINT_QUERY_PARAMS = 
+            Set.of("SAMLEncoding", "SAMLRequest", "SAMLResponse", "RelayState", "SigAlg", "Signature");
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPRedirectDeflateEncoder.class);

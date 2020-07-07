@@ -18,7 +18,6 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -26,8 +25,6 @@ import javax.annotation.Nullable;
 
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationPolicy;
-
-import com.google.common.collect.ImmutableSet;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -50,7 +47,7 @@ public class RegistrationPolicyPredicate extends AbstractRegistrationInfoPredica
      * @param policies the policies to test for
      */
     public RegistrationPolicyPredicate(@Nullable @ParameterName(name="policies") final Collection<String> policies) {
-        policySet = new HashSet<>(StringSupport.normalizeStringCollection(policies));
+        policySet = Set.copyOf(StringSupport.normalizeStringCollection(policies));
     }
 
     /**
@@ -59,7 +56,7 @@ public class RegistrationPolicyPredicate extends AbstractRegistrationInfoPredica
      * @return  the policy criteria
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getPolicies() {
-        return ImmutableSet.copyOf(policySet);
+        return policySet;
     }
     
     /** {@inheritDoc} */

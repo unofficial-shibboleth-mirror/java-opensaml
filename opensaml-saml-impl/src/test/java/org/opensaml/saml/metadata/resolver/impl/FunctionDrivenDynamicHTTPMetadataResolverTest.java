@@ -20,12 +20,12 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Arrays;
+import java.util.Collections;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.binding.artifact.SAMLSourceIDArtifact;
 import org.opensaml.saml.criterion.ArtifactCriterion;
-import org.opensaml.saml.metadata.resolver.impl.MetadataQueryProtocolRequestURLBuilder.MetadataQueryProtocolURLBuilder;
 import org.opensaml.saml.metadata.resolver.impl.TemplateRequestURLBuilder.EncodingStyle;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactType0004;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -35,8 +35,6 @@ import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Lists;
 
 import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
@@ -245,7 +243,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         String entityID = "https://foo1.example.org/idp/shibboleth";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL,
-                Lists.<MetadataQueryProtocolURLBuilder>newArrayList(new SAMLArtifactURLBuilder()));
+                Collections.singletonList(new SAMLArtifactURLBuilder()));
         
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");

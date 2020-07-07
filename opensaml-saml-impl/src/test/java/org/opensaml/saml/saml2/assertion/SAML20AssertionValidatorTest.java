@@ -28,6 +28,7 @@ import java.security.cert.X509Certificate;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -65,8 +66,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Sets;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -382,7 +381,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
-        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, Sets.newHashSet(MockCondition.ELEMENT_NAME));
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS,
+                Collections.singleton(MockCondition.ELEMENT_NAME));
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -403,7 +403,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
-        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, Sets.newHashSet(MockCondition.ELEMENT_NAME));
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS,
+                Collections.singleton(MockCondition.ELEMENT_NAME));
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         
@@ -423,7 +424,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
-        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS, Sets.newHashSet(MockCondition.ELEMENT_NAME));
+        staticParams.put(SAML2AssertionValidationParameters.COND_REQUIRED_CONDITIONS,
+                Collections.singleton(MockCondition.ELEMENT_NAME));
         
         ValidationContext validationContext = new ValidationContext(staticParams);
         

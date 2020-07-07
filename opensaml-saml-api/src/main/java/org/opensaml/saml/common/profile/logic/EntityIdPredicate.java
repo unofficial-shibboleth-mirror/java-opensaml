@@ -18,15 +18,12 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
-
-import com.google.common.collect.ImmutableSet;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -49,7 +46,7 @@ public class EntityIdPredicate implements Predicate<EntityDescriptor> {
      * @param ids the entityIDs to check for
      */
     public EntityIdPredicate(@Nullable @ParameterName(name="ids") final Collection<String> ids) {
-        entityIds = new HashSet<>(StringSupport.normalizeStringCollection(ids));
+        entityIds = Set.copyOf(StringSupport.normalizeStringCollection(ids));
     }
     
     /**
@@ -58,7 +55,7 @@ public class EntityIdPredicate implements Predicate<EntityDescriptor> {
      * @return  the entityID criteria
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getEntityIds() {
-        return ImmutableSet.copyOf(entityIds);
+        return entityIds;
     }
     
     /** {@inheritDoc} */

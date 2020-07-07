@@ -19,7 +19,6 @@ package org.opensaml.saml.common.profile.logic;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -33,8 +32,6 @@ import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.common.collect.ImmutableSet;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -83,7 +80,7 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
     public EntityGroupNamePredicate(@Nullable @ParameterName(name="names") final Collection<String> names,
             @Nullable @ParameterName(name="resolver") final MetadataResolver resolver) {
         
-        groupNames = new HashSet<>(StringSupport.normalizeStringCollection(names));
+        groupNames = Set.copyOf(StringSupport.normalizeStringCollection(names));
         
         metadataResolver = resolver;
         if (resolver != null) {
@@ -100,7 +97,7 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
      * @return  the group name criteria
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getGroupNames() {
-        return ImmutableSet.copyOf(groupNames);
+        return groupNames;
     }
     
 // Checkstyle: CyclomaticComplexity OFF

@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.profile.impl;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Collections;
+import java.util.List;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
@@ -45,7 +46,6 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
-import com.google.common.collect.Lists;
 
 /** Unit test for self-encryption support in {@link AbstractEncryptAction} (using {@link EncryptNameIDs} as the concrete impl.) */
 public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
@@ -100,7 +100,7 @@ public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
         response.getAssertions().get(0).setSubject(SAML2ActionTestingSupport.buildSubject("morpheus"));
         
         action.setEncryptToSelf(Predicates.<ProfileRequestContext>alwaysTrue());
-        action.setEncryptToSelfParametersStrategy(FunctionSupport.constant(Lists.newArrayList(encParamsSelf1, encParamsSelf2)));
+        action.setEncryptToSelfParametersStrategy(FunctionSupport.constant(List.of(encParamsSelf1, encParamsSelf2)));
         action.setSelfRecipientLookupStrategy(FunctionSupport.constant("https://idp.example.org"));
         
         action.initialize();

@@ -22,6 +22,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 import java.util.Set;
@@ -44,7 +45,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
@@ -76,7 +76,7 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     
     @Test
     public void emptyDir() throws IOException {
-        testState(Sets.<String>newHashSet());
+        testState(Collections.emptySet());
     }
     
     @DataProvider
@@ -89,20 +89,20 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     
     @Test(dataProvider="saveLoadUpdateRemoveParams")
     public void saveLoadUpdateRemove(Boolean buildWithObjectSourceByteArray) throws IOException {
-        testState(Sets.<String>newHashSet());
+        testState(Collections.emptySet());
         
         Assert.assertNull(manager.load("bogus"));
         
         manager.save("foo", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
-        testState(Sets.newHashSet("foo"));
+        testState(Collections.singleton("foo"));
         
         manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
         manager.save("baz", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
-        testState(Sets.newHashSet("foo", "bar", "baz"));
+        testState(Set.of("foo", "bar", "baz"));
         
         // Duplicate with overwrite
         manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray), true);
-        testState(Sets.newHashSet("foo", "bar", "baz"));
+        testState(Set.of("foo", "bar", "baz"));
         
         // Duplicate without overwrite
         try {
@@ -111,17 +111,17 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         } catch (IOException e) {
             // expected, do nothing
         }
-        testState(Sets.newHashSet("foo", "bar", "baz"));
+        testState(Set.of("foo", "bar", "baz"));
         
         // Test again. Since checkModifyTime=false, we should get back data even though unmodified
-        testState(Sets.newHashSet("foo", "bar", "baz"));
+        testState(Set.of("foo", "bar", "baz"));
         
         Assert.assertTrue(manager.updateKey("foo", "foo2"));
-        testState(Sets.newHashSet("foo2", "bar", "baz"));
+        testState(Set.of("foo2", "bar", "baz"));
         
         // Doesn't exist anymore
         Assert.assertFalse(manager.updateKey("foo", "foo2"));
-        testState(Sets.newHashSet("foo2", "bar", "baz"));
+        testState(Set.of("foo2", "bar", "baz"));
         
         // Can't update to an existing name
         try {
@@ -130,18 +130,18 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         } catch (IOException e) {
             // expected, do nothing
         }
-        testState(Sets.newHashSet("foo2", "bar", "baz"));
+        testState(Set.of("foo2", "bar", "baz"));
         
         // Doesn't exist anymore
         Assert.assertFalse(manager.remove("foo"));
-        testState(Sets.newHashSet("foo2", "bar", "baz"));
+        testState(Set.of("foo2", "bar", "baz"));
         
         Assert.assertTrue(manager.remove("foo2"));
-        testState(Sets.newHashSet("bar", "baz"));
+        testState(Set.of("bar", "baz"));
         
         Assert.assertTrue(manager.remove("bar"));
         Assert.assertTrue(manager.remove("baz"));
-        testState(Sets.<String>newHashSet());
+        testState(Collections.emptySet());
     }
     
     @Test

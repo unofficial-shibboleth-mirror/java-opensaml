@@ -40,8 +40,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.Lists;
-
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
@@ -207,7 +205,7 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
         Assertion assertion1 = SAML2ActionTestingSupport.buildAssertion();
         resultsMap.put(assertion1, ValidationResult.VALID);
         
-        action.setAssertionResolver(input -> {return Lists.newArrayList(assertion1);});
+        action.setAssertionResolver(input -> {return Collections.singletonList(assertion1);});
         action.initialize();
         
         action.execute(prc);

@@ -47,8 +47,6 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.collect.Lists;
-
 /**
  *
  */
@@ -133,7 +131,7 @@ public class InlineSelfEncryptionParametersStrategyTest extends OpenSAMLInitBase
                 rsaParams.setDigestMethod(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
                 selfConfig.setRSAOAEPParameters(rsaParams);
                 selfConfig.setRSAOAEPParametersMerge(true);
-                return Lists.newArrayList(selfConfig, SecurityConfigurationSupport.getGlobalEncryptionConfiguration());
+                return List.of(selfConfig, SecurityConfigurationSupport.getGlobalEncryptionConfiguration());
         }};
         
         InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver, configStrategy);

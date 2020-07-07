@@ -18,15 +18,12 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
-
-import com.google.common.collect.ImmutableSet;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -49,7 +46,7 @@ public class RegistrationAuthorityPredicate  extends AbstractRegistrationInfoPre
      * @param names the authority names to test for
      */
     public RegistrationAuthorityPredicate(@Nullable@ParameterName(name="names") final Collection<String> names) {
-        authorities = new HashSet<>(StringSupport.normalizeStringCollection(names));
+        authorities = Set.copyOf(StringSupport.normalizeStringCollection(names));
     }
 
     /**
@@ -58,7 +55,7 @@ public class RegistrationAuthorityPredicate  extends AbstractRegistrationInfoPre
      * @return  the authority name criteria
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getAuthorities() {
-        return ImmutableSet.copyOf(authorities);
+        return authorities;
     }
     
     /** {@inheritDoc} */

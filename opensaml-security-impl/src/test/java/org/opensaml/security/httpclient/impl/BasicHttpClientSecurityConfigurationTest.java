@@ -20,6 +20,7 @@ package org.opensaml.security.httpclient.impl;
 import java.io.File;
 import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
+import java.util.Collections;
 
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
@@ -32,8 +33,6 @@ import org.opensaml.security.x509.X509Support;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Lists;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -56,8 +55,8 @@ public class BasicHttpClientSecurityConfigurationTest {
         config.setClientTLSCredential(x509Credential);
         config.setCredentialsProvider(new BasicCredentialsProvider());
         config.setHostnameVerifier(new DefaultHostnameVerifier());
-        config.setTLSCipherSuites(Lists.newArrayList("test"));
-        config.setTLSProtocols(Lists.newArrayList("test"));
+        config.setTLSCipherSuites(Collections.singletonList("test"));
+        config.setTLSProtocols(Collections.singletonList("test"));
         config.setTLSTrustEngine(new MockTrustEngine());
         
         Assert.assertNotNull(config.getClientTLSCredential());
@@ -71,8 +70,8 @@ public class BasicHttpClientSecurityConfigurationTest {
     @Test
     public void testEmptyLists() {
         BasicHttpClientSecurityConfiguration config = new BasicHttpClientSecurityConfiguration();
-        config.setTLSCipherSuites(Lists.<String>newArrayList());
-        config.setTLSProtocols(Lists.<String>newArrayList());
+        config.setTLSCipherSuites(Collections.emptyList());
+        config.setTLSProtocols(Collections.emptyList());
         
         Assert.assertNull(config.getTLSCipherSuites());
         Assert.assertNull(config.getTLSProtocols());

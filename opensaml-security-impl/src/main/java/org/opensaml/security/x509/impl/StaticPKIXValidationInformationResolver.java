@@ -81,13 +81,13 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
         if (info != null) {
             pkixInfo = new ArrayList<>(info);
         } else {
-            pkixInfo = Collections.EMPTY_LIST;
+            pkixInfo = Collections.emptyList();
         }
 
         if (names != null) {
             trustedNames = new HashSet<>(names);
         } else {
-            trustedNames = Collections.EMPTY_SET;
+            trustedNames = Collections.emptySet();
         }
         
         supportDynamicTrustedNames = supportDynamicNames;

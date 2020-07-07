@@ -37,8 +37,7 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
-
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -48,7 +47,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 public final class SignatureSupport {
     
     /** Set of known canonicalization algorithm URIs. */
-    private static final Set<String> C14N_ALGORITHMS = Sets.newHashSet(
+    @Nonnull @NonnullElements private static final Set<String> C14N_ALGORITHMS = Set.of(
             SignatureConstants.ALGO_ID_C14N11_OMIT_COMMENTS,
             SignatureConstants.ALGO_ID_C14N11_WITH_COMMENTS,
             SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS,

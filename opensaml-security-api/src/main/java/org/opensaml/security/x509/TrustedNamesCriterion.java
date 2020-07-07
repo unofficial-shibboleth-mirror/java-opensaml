@@ -18,7 +18,6 @@
 package org.opensaml.security.x509;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -29,8 +28,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
-
-import com.google.common.collect.ImmutableSet;
 
 /**
  * A criterion implementation for conveying a dynamically-generated set of trusted
@@ -57,7 +54,7 @@ public class TrustedNamesCriterion implements Criterion {
      * @return the set of trusted names
      */
     @Nonnull @NonnullElements @NotLive @Unmodifiable public Set<String> getTrustedNames() {
-        return ImmutableSet.copyOf(trustedNames);
+        return trustedNames;
     }
     
     /**
@@ -71,7 +68,7 @@ public class TrustedNamesCriterion implements Criterion {
             return;
         }
         
-        trustedNames = new HashSet<>(StringSupport.normalizeStringCollection(names));
+        trustedNames = Set.copyOf(StringSupport.normalizeStringCollection(names));
     }
     
     /** {@inheritDoc} */

@@ -19,9 +19,11 @@ package org.opensaml.soap.wsaddressing;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
-import com.google.common.collect.Sets;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * WS-Addressing 1.0 constants.
@@ -32,59 +34,59 @@ import com.google.common.collect.Sets;
 public final class WSAddressingConstants {
     
     /** WS-Addressing 1.0 namespace. */
-    public static final String WSA_NS= "http://www.w3.org/2005/08/addressing";
+    @Nonnull @NotEmpty public static final String WSA_NS= "http://www.w3.org/2005/08/addressing";
 
     /** WS-Addressing prefix. */
-    public static final String WSA_PREFIX= "wsa";
+    @Nonnull @NotEmpty public static final String WSA_PREFIX= "wsa";
     
     // SOAP fault codes
     
     /** WS-Addressing SOAP fault code: "wsa:InvalidAddressingHeader". */
-    public static final QName SOAP_FAULT_INVALID_ADDRESSING_HEADER =
+    @Nonnull public static final QName SOAP_FAULT_INVALID_ADDRESSING_HEADER =
         new QName(WSA_NS, "InvalidAddressingHeader", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:InvalidAddress". */
-    public static final QName SOAP_FAULT_INVALID_ADDRESS =
+    @Nonnull public static final QName SOAP_FAULT_INVALID_ADDRESS =
         new QName(WSA_NS, "InvalidAddress", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:InvalidEPR". */
-    public static final QName SOAP_FAULT_INVALID_EPR =
+    @Nonnull public static final QName SOAP_FAULT_INVALID_EPR =
         new QName(WSA_NS, "InvalidEPR", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:InvalidCardinality". */
-    public static final QName SOAP_FAULT_INVALID_CARDINALITY =
+    @Nonnull public static final QName SOAP_FAULT_INVALID_CARDINALITY =
         new QName(WSA_NS, "InvalidCardinality", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:MissingAddressInEPR". */
-    public static final QName SOAP_FAULT_MISSING_ADDRESS_IN_EPR =
+    @Nonnull public static final QName SOAP_FAULT_MISSING_ADDRESS_IN_EPR =
         new QName(WSA_NS, "MissingAddressInEPR", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:DuplicateMessageID". */
-    public static final QName SOAP_FAULT_DUPLICATE_MESSAGE_ID =
+    @Nonnull public static final QName SOAP_FAULT_DUPLICATE_MESSAGE_ID =
         new QName(WSA_NS, "DuplicateMessageID", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:ActionMismatch". */
-    public static final QName SOAP_FAULT_ACTION_MISMATCH =
+    @Nonnull public static final QName SOAP_FAULT_ACTION_MISMATCH =
         new QName(WSA_NS, "ActionMismatch", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:MessageAddressingHeaderRequired". */
-    public static final QName SOAP_FAULT_MESSAGE_ADDRESSING_HEADER_REQUIRED =
+    @Nonnull public static final QName SOAP_FAULT_MESSAGE_ADDRESSING_HEADER_REQUIRED =
         new QName(WSA_NS, "MessageAddressingHeaderRequired", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:DestinationUnreachable". */
-    public static final QName SOAP_FAULT_DESTINATION_UNREACHABLE =
+    @Nonnull public static final QName SOAP_FAULT_DESTINATION_UNREACHABLE =
         new QName(WSA_NS, "DestinationUnreachable", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:ActionNotSupported". */
-    public static final QName SOAP_FAULT_ACTION_NOT_SUPPORTED =
+    @Nonnull public static final QName SOAP_FAULT_ACTION_NOT_SUPPORTED =
         new QName(WSA_NS, "ActionNotSupported", WSA_PREFIX);
     
     /** WS-Addressing SOAP fault code: "wsa:EndpointUnavailable". */
-    public static final QName SOAP_FAULT_ENDPOINT_UNAVAILABLE =
+    @Nonnull public static final QName SOAP_FAULT_ENDPOINT_UNAVAILABLE =
         new QName(WSA_NS, "EndpointUnavailable", WSA_PREFIX);
     
     /** Set of all WS-Addressing SOAP fault codes. */
-    public static final Set<QName> WS_ADDRESSING_FAULTS = Sets.<QName>newHashSet(
+    @Nonnull @NonnullElements public static final Set<QName> WS_ADDRESSING_FAULTS = Set.of(
             SOAP_FAULT_INVALID_ADDRESSING_HEADER, 
             SOAP_FAULT_INVALID_ADDRESS,
             SOAP_FAULT_INVALID_EPR,
@@ -102,9 +104,10 @@ public final class WSAddressingConstants {
     // Fault Action URIs
     
     /** WS-Addressing Action URI for messages carrying WS-Addressing Faults ONLY. */
-    public static final String ACTION_URI_FAULT = "http://www.w3.org/2005/08/addressing/fault";
+    @Nonnull @NotEmpty public static final String ACTION_URI_FAULT = "http://www.w3.org/2005/08/addressing/fault";
     
     /** WS-Addressing Action URI for messages carrying non-WS-Addressing Faults. */
+    @Nonnull @NotEmpty
     public static final String ACTION_URI_SOAP_FAULT = "http://www.w3.org/2005/08/addressing/soap/fault";
     
     

@@ -21,6 +21,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.security.KeyException;
 import java.security.cert.CertificateException;
+import java.util.Collections;
 
 import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.impl.client.BasicCredentialsProvider;
@@ -36,8 +37,6 @@ import org.opensaml.security.x509.X509Support;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.collect.Lists;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -233,8 +232,8 @@ public class BasicHttpClientSecurityParametersResolverTest {
         config.setClientTLSCredential(x509Credential);
         config.setCredentialsProvider(new BasicCredentialsProvider());
         config.setHostnameVerifier(new DefaultHostnameVerifier());
-        config.setTLSCipherSuites(Lists.newArrayList("test"));
-        config.setTLSProtocols(Lists.newArrayList("test"));
+        config.setTLSCipherSuites(Collections.singletonList("test"));
+        config.setTLSProtocols(Collections.singletonList("test"));
         config.setTLSTrustEngine(new MockTrustEngine());
         config.setServerTLSFailureFatal(true);
         return config;

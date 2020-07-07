@@ -46,7 +46,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Predicates;
-import com.google.common.collect.Sets;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -179,7 +178,7 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testGenerateKeysFromDescriptorAlwaysFalseSelector() {
-        EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex(Predicates.<Endpoint>alwaysFalse());
+        EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex(Predicates.alwaysFalse());
         
         Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
         
@@ -228,7 +227,8 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
     @Test
     public void testGenerateKeysFromDescriptorIndexOnlyACS() {
         Map<QName, Set<QName>> indexableEndpoints = new HashMap<>();
-        indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME, Sets.newHashSet(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
+        indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME,
+                Collections.singleton(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
         EndpointMetadataIndex metadataIndex = 
                 new EndpointMetadataIndex(new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints));
         
@@ -257,17 +257,20 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         Assert.assertFalse(predicate.test(endpoint));
         
         indexableEndpoints = new HashMap<>();
-        indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME, Sets.newHashSet(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
+        indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME,
+                Collections.singleton(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints);
         Assert.assertFalse(predicate.test(endpoint));
         
         indexableEndpoints = new HashMap<>();
-        indexableEndpoints.put(IDPSSODescriptor.DEFAULT_ELEMENT_NAME, Sets.newHashSet(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
+        indexableEndpoints.put(IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
+                Collections.singleton(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints);
         Assert.assertFalse(predicate.test(endpoint));
         
         indexableEndpoints = new HashMap<>();
-        indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME, Sets.newHashSet(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
+        indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME,
+                Collections.singleton(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints);
         Assert.assertTrue(predicate.test(endpoint));
     }
