@@ -18,6 +18,7 @@
 package org.opensaml.soap.soap11.decoder.http.impl;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +34,6 @@ import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.collect.Sets;
 import com.google.common.net.MediaType;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -56,7 +56,7 @@ import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
 
     /** Valid Content-Type media types. */
-    private static final Set<MediaType> SUPPORTED_MEDIA_TYPES = Sets.newHashSet(MediaType.create("text", "xml"));
+    private static final Set<MediaType> SUPPORTED_MEDIA_TYPES = Collections.singleton(MediaType.create("text", "xml"));
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Decoder.class);
