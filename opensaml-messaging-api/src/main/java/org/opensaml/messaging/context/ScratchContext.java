@@ -26,6 +26,8 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 
 /**
  * A context subclass for holding arbitrary data in a map.
+ * 
+ * @since 3.4.0
  */
 public final class ScratchContext extends BaseContext {
 
