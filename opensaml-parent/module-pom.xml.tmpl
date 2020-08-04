@@ -30,5 +30,18 @@
 
         <!-- Managed Dependencies -->
     </dependencies>
-    
+
+    <scm>
+        <connection>${shibboleth.scm.connection}java-opensaml</connection>
+        <developerConnection>${shibboleth.scm.developerConnection}java-opensaml</developerConnection>
+        <url>${shibboleth.scm.url}java-opensaml.git</url>
+    </scm>
+
+    <distributionManagement>
+        <site>
+            <id>site</id>
+            <url>dav:${opensaml-module.site.url}</url>
+        </site>
+    </distributionManagement>
+
 </project>
