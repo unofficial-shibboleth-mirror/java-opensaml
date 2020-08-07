@@ -19,18 +19,17 @@ package org.opensaml.core.xml.persist;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
-import java.io.FileFilter;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
@@ -78,11 +77,12 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     /** The base directory used for storing individual serialized XML files. */
     private File baseDirectory;
     
+    /** Optional strategy function which produces the intermediate directory path(s) between
+     * the <code>baseDirectory</code> and the actual file. */
+    private Function<String, List<String>> intermediateDirectoryStrategy;
+
     /** Parser pool instance for deserializing XML from the filesystem. */
     private ParserPool parserPool;
-    
-    /** File filter used in filtering files in {@link #listKeys()} and {@link #listAll()}. */
-    private FileFilter fileFilter;
     
     /**
      * Constructor.
@@ -94,7 +94,48 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
         this(new File(Constraint.isNotNull(StringSupport.trimOrNull(baseDir), 
                 "Base directory string instance was null or empty")),
                 null,
-                false);
+                false,
+                null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param baseDir the base directory, must be an absolute path
+     * @param conditionalLoad whether {@link #load(String)} should behave
+     *      as defined in {@link ConditionalLoadXMLObjectLoadSaveManager}
+     */
+    public FilesystemLoadSaveManager(
+            @ParameterName(name="baseDir") @Nonnull final String baseDir,
+            @ParameterName(name="conditionalLoad") final boolean conditionalLoad) {
+        this(new File(Constraint.isNotNull(StringSupport.trimOrNull(baseDir), 
+                "Base directory string instance was null or empty")),
+                null,
+                conditionalLoad,
+                null);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param baseDir the base directory, must be an absolute path
+     */
+    public FilesystemLoadSaveManager(
+            @ParameterName(name="baseDirFile") @Nonnull final File baseDir) {
+        this(baseDir, null, false, null);
+    }
+    
+    /**
+     * Constructor.
+     *
+     * @param baseDir the base directory, must be an absolute path
+     * @param dirStrategy the intermediate directory strategy
+     */
+    public FilesystemLoadSaveManager(
+            @ParameterName(name="baseDirFile") @Nonnull final File baseDir,
+            @ParameterName(name="intermediateDirectoryStrategy")
+                @Nullable final Function<String, List<String>> dirStrategy) {
+        this(baseDir, null, false, dirStrategy);
     }
 
     /**
@@ -105,37 +146,27 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
      *      as defined in {@link ConditionalLoadXMLObjectLoadSaveManager}
      */
     public FilesystemLoadSaveManager(
-            @ParameterName(name="baseDir") @Nonnull final String baseDir, 
-            @ParameterName(name="conditionalLoad") final boolean conditionalLoad) {
-        this(new File(Constraint.isNotNull(StringSupport.trimOrNull(baseDir), 
-                "Base directory string instance was null or empty")),
-                null,
-                conditionalLoad);
-    }
-    
-    /**
-     * Constructor.
-     *
-     * @param baseDir the base directory, must be an absolute path
-     */
-    public FilesystemLoadSaveManager(
-            @ParameterName(name="baseDirFile") @Nonnull final File baseDir) {
-        this(baseDir, null, false);
-    }
-    
-    /**
-     * Constructor.
-     *
-     * @param baseDir the base directory, must be an absolute path
-     * @param conditionalLoad whether {@link #load(String)} should behave 
-     *      as defined in {@link ConditionalLoadXMLObjectLoadSaveManager}
-     */
-    public FilesystemLoadSaveManager(
             @ParameterName(name="baseDirFile") @Nonnull final File baseDir, 
             @ParameterName(name="conditionalLoad") final boolean conditionalLoad) {
-        this(baseDir, null, conditionalLoad);
+        this(baseDir, null, conditionalLoad, null);
     }
     
+    /**
+     * Constructor.
+     *
+     * @param baseDir the base directory, must be an absolute path
+     * @param conditionalLoad whether {@link #load(String)} should behave
+     *      as defined in {@link ConditionalLoadXMLObjectLoadSaveManager}
+     * @param dirStrategy the intermediate directory strategy
+     */
+    public FilesystemLoadSaveManager(
+            @ParameterName(name="baseDirFile") @Nonnull final File baseDir,
+            @ParameterName(name="conditionalLoad") final boolean conditionalLoad,
+            @ParameterName(name="intermediateDirectoryStrategy")
+                @Nullable final Function<String, List<String>> dirStrategy) {
+        this(baseDir, null, conditionalLoad, dirStrategy);
+    }
+
     /**
      * Constructor.
      *
@@ -148,7 +179,8 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
         this(new File(Constraint.isNotNull(StringSupport.trimOrNull(baseDir), 
                 "Base directory string instance was null or empty")),
                 pp, 
-                false);
+                false,
+                null);
     }
 
     /**
@@ -165,7 +197,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
             @ParameterName(name="conditionalLoad") final boolean conditionalLoad) {
         this(new File(Constraint.isNotNull(StringSupport.trimOrNull(baseDir), 
                 "Base directory string instance was null or empty")),
-                pp, conditionalLoad);
+                pp, conditionalLoad, null);
     }
     /**
      * Constructor.
@@ -176,22 +208,40 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     public FilesystemLoadSaveManager(
             @ParameterName(name="baseDirFile") @Nonnull final File baseDir, 
             @ParameterName(name="parserPool") @Nullable final ParserPool pp) {
-        this(baseDir, pp, false);
+        this(baseDir, pp, false, null);
     }
-    
+
     /**
      * Constructor.
      *
      * @param baseDir the base directory, must be an absolute path
      * @param pp the parser pool instance to use
-     * @param conditionalLoad whether {@link #load(String)} should behave 
+     * @param conditionalLoad whether {@link #load(String)} should behave
      *      as defined in {@link ConditionalLoadXMLObjectLoadSaveManager}
      */
     public FilesystemLoadSaveManager(
-            @ParameterName(name="baseDirFile") @Nonnull final File baseDir, 
+            @ParameterName(name="baseDirFile") @Nonnull final File baseDir,
             @ParameterName(name="parserPool") @Nullable final ParserPool pp,
             @ParameterName(name="conditionalLoad") final boolean conditionalLoad) {
-        
+        this(baseDir, pp, conditionalLoad, null);
+    }
+
+    /**
+     * Constructor.
+     *
+     * @param baseDir the base directory, must be an absolute path
+     * @param pp the parser pool instance to use
+     * @param conditionalLoad whether {@link #load(String)} should behave
+     *      as defined in {@link ConditionalLoadXMLObjectLoadSaveManager}
+     *  @param dirStrategy the intermediate directory strategy
+     */
+    public FilesystemLoadSaveManager(
+            @ParameterName(name="baseDirFile") @Nonnull final File baseDir,
+            @ParameterName(name="parserPool") @Nullable final ParserPool pp,
+            @ParameterName(name="conditionalLoad") final boolean conditionalLoad,
+            @ParameterName(name="intermediateDirectoryStrategy")
+                @Nullable final Function<String, List<String>> dirStrategy) {
+
         super(conditionalLoad);
         
         baseDirectory = Constraint.isNotNull(baseDir, "Base directory File instance was null");
@@ -207,18 +257,17 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
             parserPool = Constraint.isNotNull(XMLObjectProviderRegistrySupport.getParserPool(),
                     "Specified ParserPool was null and global ParserPool was not available");
         }
-        
-        fileFilter = new DefaultFileFilter();
+
+        intermediateDirectoryStrategy = dirStrategy;
     }
 
     /** {@inheritDoc} */
     public Set<String> listKeys() throws IOException {
-        final File[] files = baseDirectory.listFiles(fileFilter);
-        final HashSet<String> keys = new HashSet<>();
-        for (final File file : files) {
-            keys.add(file.getName());
-        }
-        return Collections.unmodifiableSet(keys);
+        return java.nio.file.Files.walk(baseDirectory.toPath())
+                .filter(java.nio.file.Files::isRegularFile)
+                .map(Path::getFileName)
+                .map(Path::toString)
+                .collect(Collectors.toUnmodifiableSet());
     }
 
     /** {@inheritDoc} */
@@ -280,6 +329,9 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
         }
         
         final File file = buildFile(key);
+
+        checkAndCreateIntermediateDirectories(file);
+
         try (FileOutputStream fos = new FileOutputStream(file)) {
             final List<XMLObjectSource> sources = xmlObject.getObjectMetadata().get(XMLObjectSource.class);
             if (sources.size() == 1) {
@@ -325,12 +377,34 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
         if (newFile.exists()) {
             throw new IOException(String.format("Specified new key already exists: %s", newKey));
         }
+
+        checkAndCreateIntermediateDirectories(newFile);
+
         Files.move(currentFile, newFile);
         updateLoadLastModified(newKey, getLoadLastModified(currentKey));
         clearLoadLastModified(currentKey);
         return true;
     }
-    
+
+    /**
+     * Check and create intermediate directories between the <code>baseDirectory</code> and the actual file,
+     * if necessary.
+     *
+     * @param file the target file whose path is to be evaluated
+     *
+     * @throws IOException if the intermediate directory creation fails
+     */
+    protected void checkAndCreateIntermediateDirectories(@Nonnull final File file) throws IOException {
+        final File parentDir = new File(file.getParent());
+
+        if (!baseDirectory.equals(parentDir) && !parentDir.exists()) {
+            if (!parentDir.mkdirs()) {
+                throw new IOException(String.format("Could not create intermediate directories for target file: %s",
+                        file.getAbsolutePath()));
+            }
+        }
+    }
+
     /**
      * Build the target file name from the specified index key and the configured base directory.
      * 
@@ -339,29 +413,23 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
      * @throws IOException if there is a fatal error constructing or evaluating the candidate target path
      */
     protected File buildFile(final String key) throws IOException {
-        final File path = new File(baseDirectory, 
+        File parentDirectory = baseDirectory;
+        if (intermediateDirectoryStrategy != null) {
+            final List<String> intermediateDirs = intermediateDirectoryStrategy.apply(key);
+            if (intermediateDirs != null && !intermediateDirs.isEmpty()) {
+                for (final String dir : intermediateDirs) {
+                    parentDirectory = new File(parentDirectory, dir);
+                }
+            }
+        }
+
+        final File path = new File(parentDirectory,
                 Constraint.isNotNull(StringSupport.trimOrNull(key), "Input key was null or empty"));
         if (path.exists() && !path.isFile()) {
             throw new IOException(String.format("Path exists based on specified key, but is not a file: %s", 
                     path.getAbsolutePath()));
         }
         return path;
-    }
-    
-    /**
-     * Default filter used to filter data returned in {@link FilesystemLoadSaveManager#listKeys()}
-     * and {@link FilesystemLoadSaveManager#listAll()}.
-     */
-    public static class DefaultFileFilter implements FileFilter {
-
-        /** {@inheritDoc} */
-        public boolean accept(final File pathname) {
-            if (pathname == null) {
-                return false;
-            }
-            return pathname.isFile();
-        }
-        
     }
     
     /**

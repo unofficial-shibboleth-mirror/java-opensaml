@@ -21,12 +21,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.Instant;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Iterator;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+import java.util.function.Function;
 
 import javax.xml.namespace.QName;
 
@@ -35,6 +39,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
+import org.opensaml.core.xml.persist.impl.PassthroughSourceStrategy;
+import org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategy;
 import org.opensaml.core.xml.util.XMLObjectSource;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
@@ -58,15 +64,21 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     
     private FilesystemLoadSaveManager<SimpleXMLObject> manager;
     
+    private Function<String, List<String>> intermediateDirectoryStrategy;
+    
     @BeforeMethod
     public void setUp() throws IOException {
         baseDir = new File(System.getProperty("java.io.tmpdir"), "load-save-manager-test");
         baseDir.deleteOnExit();
         log.debug("Using base directory: {}", baseDir.getAbsolutePath());
         resetBaseDir();
-        Assert.assertTrue(baseDir.mkdirs());
+        if (!baseDir.exists()) {
+            Assert.assertTrue(baseDir.mkdirs());
+        }
         
         manager = new FilesystemLoadSaveManager<>(baseDir);
+        
+        intermediateDirectoryStrategy = new SegmentingIntermediateDirectoryStrategy(1, 2, new PassthroughSourceStrategy());
     }
     
     @AfterMethod
@@ -144,6 +156,80 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         testState(Collections.emptySet());
     }
     
+    @Test(dataProvider="saveLoadUpdateRemoveParams")
+    public void saveLoadUpdateRemoveWithIntermediateDirs(Boolean buildWithObjectSourceByteArray) throws IOException {
+        manager = new FilesystemLoadSaveManager<>(baseDir, intermediateDirectoryStrategy);
+        
+        testState(Collections.emptySet());
+        
+        Assert.assertNull(manager.load("bogus"));
+        
+        Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo").exists());
+        manager.save("foo", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
+        testState(Collections.singleton("foo"));
+        Assert.assertTrue(new File(parentPath(baseDir, "fo"), "foo").exists());
+        
+        Assert.assertFalse(new File(parentPath(baseDir, "ba"), "bar").exists());
+        Assert.assertFalse(new File(parentPath(baseDir, "ba"), "baz").exists());
+        manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
+        manager.save("baz", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
+        testState(Set.of("foo", "bar", "baz"));
+        Assert.assertTrue(new File(parentPath(baseDir, "ba"), "bar").exists());
+        Assert.assertTrue(new File(parentPath(baseDir, "ba"), "baz").exists());
+        
+        // Duplicate with overwrite
+        manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray), true);
+        testState(Set.of("foo", "bar", "baz"));
+        
+        // Duplicate without overwrite
+        try {
+            manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray), false);
+            Assert.fail("Should have failed on duplicate save without overwrite");
+        } catch (IOException e) {
+            // expected, do nothing
+        }
+        testState(Set.of("foo", "bar", "baz"));
+        
+        // Test again. Since checkModifyTime=false, we should get back data even though unmodified
+        testState(Set.of("foo", "bar", "baz"));
+        
+        Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo2").exists());
+        Assert.assertTrue(manager.updateKey("foo", "foo2"));
+        testState(Set.of("foo2", "bar", "baz"));
+        Assert.assertTrue(new File(parentPath(baseDir, "fo"), "foo2").exists());
+        
+        // Doesn't exist anymore
+        Assert.assertFalse(manager.updateKey("foo", "foo2"));
+        testState(Set.of("foo2", "bar", "baz"));
+        
+        // Can't update to an existing name
+        try {
+            manager.updateKey("bar", "baz");
+            Assert.fail("updateKey should have failed to due existing new key name");
+        } catch (IOException e) {
+            // expected, do nothing
+        }
+        testState(Set.of("foo2", "bar", "baz"));
+        
+        // Doesn't exist anymore
+        Assert.assertFalse(manager.remove("foo"));
+        testState(Set.of("foo2", "bar", "baz"));
+        Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo").exists());
+        
+        Assert.assertTrue(new File(parentPath(baseDir, "fo"), "foo2").exists());
+        Assert.assertTrue(manager.remove("foo2"));
+        testState(Set.of("bar", "baz"));
+        Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo2").exists());
+        
+        Assert.assertTrue(new File(parentPath(baseDir, "ba"), "bar").exists());
+        Assert.assertTrue(new File(parentPath(baseDir, "ba"), "baz").exists());
+        Assert.assertTrue(manager.remove("bar"));
+        Assert.assertTrue(manager.remove("baz"));
+        testState(Collections.emptySet());
+        Assert.assertFalse(new File(parentPath(baseDir, "ba"), "bar").exists());
+        Assert.assertFalse(new File(parentPath(baseDir, "ba"), "baz").exists());
+    }
+    
     @Test
     public void checkCheckModifyTimeTracking() throws IOException {
         manager = new FilesystemLoadSaveManager<>(baseDir, true);
@@ -194,6 +280,13 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     public void buildTargetFileFromKey() throws IOException {
         File target = manager.buildFile("abc");
         Assert.assertEquals(target, new File(baseDir, "abc"));
+    }
+    
+    @Test
+    public void buildTargetFileFromKeyWithIntermediateDirs() throws IOException {
+        manager = new FilesystemLoadSaveManager<>(baseDir, intermediateDirectoryStrategy);
+        File target = manager.buildFile("abc");
+        Assert.assertEquals(target, new File(parentPath(baseDir, "ab"), "abc"));
     }
     
     @Test(expectedExceptions=IOException.class)
@@ -341,6 +434,14 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     
     // Helpers
     
+    private File parentPath(File base, String ... dirs) {
+        File parentPath = base;
+        for (String dir : dirs) {
+            parentPath = new File(parentPath, dir);
+        }
+        return parentPath;
+    }
+    
     private void testState(Set<String> expectedKeys) throws IOException {
         Assert.assertEquals(manager.listKeys().isEmpty(), expectedKeys.isEmpty() ? true : false);
         Assert.assertEquals(manager.listKeys(), expectedKeys);
@@ -365,11 +466,13 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     private void resetBaseDir() throws IOException {
         if (baseDir.exists()) {
             if (baseDir.isDirectory()) {
-                for (File child : baseDir.listFiles()) {
-                    Files.delete(child.toPath());
-                }
+                Files.walk(baseDir.toPath())
+                    .sorted(Comparator.reverseOrder())
+                    .map(Path::toFile)
+                    .forEach(File::delete);
+            } else {
+                baseDir.delete();
             }
-            Files.delete(baseDir.toPath());
         }
     }
     
