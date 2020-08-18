@@ -294,7 +294,7 @@ public class BasicX509CredentialNameEvaluator implements X509CredentialNameEvalu
             }
         }
 
-        log.error("Credential failed name check: {}", X509Support.getIdentifiersToken(credential, x500DNHandler));
+        log.info("Credential failed name check: {}", X509Support.getIdentifiersToken(credential, x500DNHandler));
         return false;
     }
 
