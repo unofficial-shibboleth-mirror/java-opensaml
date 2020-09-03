@@ -25,6 +25,7 @@ import java.util.Collections;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLPeerUnverifiedException;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.X509TrustManager;
 
 import org.apache.http.HttpHost;
@@ -39,6 +40,7 @@ import org.opensaml.security.x509.TrustedNamesCriterion;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialContext;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineContext;
+import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineSupport;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -144,7 +146,10 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
         log.trace("In connectSocket");
         try {
             setup(context, host.getHostName());
-            return wrappedFactory.connectSocket(connectTimeout, sock, host, remoteAddress, localAddress, context);
+            final Socket socket =
+                    wrappedFactory.connectSocket(connectTimeout, sock, host, remoteAddress, localAddress, context);
+            checkAndEvaluateServerTLS(socket);
+            return socket;
         } finally {
             teardown(context);
         }
@@ -157,12 +162,44 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
         log.trace("In createLayeredSocket");
         try {
             setup(context, target);
-            return wrappedFactory.createLayeredSocket(socket, target, port, context);
+            final Socket layeredSocket = wrappedFactory.createLayeredSocket(socket, target, port, context);
+            checkAndEvaluateServerTLS(socket);
+            return layeredSocket;
         } finally {
             teardown(context);
         }
     }
     
+    /**
+     * Check that the evaluation of the socket certificate using the data in
+     * {@link ThreadLocalX509TrustEngineContext} has been performed, if applicable,
+     * and if not, evaluate it.
+     *
+     * <p>
+     * This will usually be called only in the case of TLS session resumption, when the standard
+     * JSSE trust manager evaluation has not run.
+     * </p>
+     *
+     * @param socket the current socket being evaluated
+     * @throws IOException
+     */
+    protected void checkAndEvaluateServerTLS(@Nonnull final Socket socket) throws IOException {
+        if (!SSLSocket.class.isInstance(socket)) {
+           return;
+        }
+
+        if (ThreadLocalX509TrustEngineContext.getTrustEngine() != null) {
+            if (ThreadLocalX509TrustEngineContext.getTrusted() == null) {
+                log.trace("Have TrustEngine but was not previously evaluated, likely due to TLS session resumption. "
+                        + "Evaluating now.");
+                ThreadLocalX509TrustEngineSupport.evaluate(SSLSocket.class.cast(socket));
+            } else {
+                log.trace("Had TrustEngine and was previously evaluated as trusted={}",
+                        ThreadLocalX509TrustEngineContext.getTrusted());
+            }
+        }
+    }
+
     /**
      * Setup calling execution environment for server TLS and client TLS based on information supplied in the
      * {@link HttpContext}.
