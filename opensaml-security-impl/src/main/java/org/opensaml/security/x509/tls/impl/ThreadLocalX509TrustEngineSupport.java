@@ -63,15 +63,18 @@ public final class ThreadLocalX509TrustEngineSupport {
             throw new IllegalArgumentException("Certificate chain was null or empty");
         }
         
-        // Just sanity checking this
-        if (X509Certificate.class.isInstance(chain[0])) {
-            try {
-                evaluate((X509Certificate[]) chain);
-            } catch (final CertificateException e) {
-                throw new SSLPeerUnverifiedException(e.getMessage());
+        final X509Certificate[] x509Chain = new X509Certificate[chain.length];
+        for (int i=0; i<chain.length; i++) {
+            if (!X509Certificate.class.isInstance(chain[i])) {
+                throw new SSLPeerUnverifiedException("Certificate chain contained non-X509Certificate");
             }
-        } else {
-            throw new SSLPeerUnverifiedException("Certificate chain was not instance of X509Certificate");
+            x509Chain[i] = (X509Certificate) chain[i];
+        }
+
+        try {
+            evaluate(x509Chain);
+        } catch (final CertificateException e) {
+            throw new SSLPeerUnverifiedException(e.getMessage());
         }
     }
 
