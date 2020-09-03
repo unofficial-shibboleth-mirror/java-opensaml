@@ -68,7 +68,7 @@ public final class ThreadLocalX509TrustEngineSupport {
             if (!X509Certificate.class.isInstance(chain[i])) {
                 throw new SSLPeerUnverifiedException("Certificate chain contained non-X509Certificate");
             }
-            x509Chain[i] = (X509Certificate) chain[i];
+            x509Chain[i] = X509Certificate.class.cast(chain[i]);
         }
 
         try {
