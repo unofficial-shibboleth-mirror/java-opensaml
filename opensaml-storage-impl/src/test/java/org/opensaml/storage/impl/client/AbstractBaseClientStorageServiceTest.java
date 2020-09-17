@@ -25,9 +25,9 @@ import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
 import net.shibboleth.utilities.java.support.resource.Resource;
-import net.shibboleth.utilities.java.support.resource.TestResourceConverter;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.impl.BasicKeystoreKeyStrategy;
+import net.shibboleth.utilities.java.support.test.resource.TestResourceConverter;
 
 /** Base class for client storage tests. */
 public class AbstractBaseClientStorageServiceTest {

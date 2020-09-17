@@ -27,7 +27,7 @@ import net.shibboleth.ext.spring.resource.HTTPResource;
 import net.shibboleth.ext.spring.resource.ResourceTestHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
-import net.shibboleth.utilities.java.support.repository.RepositorySupport;
+import net.shibboleth.utilities.java.support.test.repository.RepositorySupport;
 
 import org.apache.http.client.HttpClient;
 import org.springframework.core.io.ClassPathResource;
