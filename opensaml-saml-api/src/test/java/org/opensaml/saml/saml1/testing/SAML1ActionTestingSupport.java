@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml1.profile;
+package org.opensaml.saml.saml1.testing;
 
 import java.time.Instant;
 
@@ -23,7 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.profile.action.ActionTestingSupport;
+import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.Assertion;

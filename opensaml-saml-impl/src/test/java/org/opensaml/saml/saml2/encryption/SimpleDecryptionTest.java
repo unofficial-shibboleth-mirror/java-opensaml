@@ -29,7 +29,7 @@ import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;

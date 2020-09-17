@@ -23,7 +23,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 
 /**

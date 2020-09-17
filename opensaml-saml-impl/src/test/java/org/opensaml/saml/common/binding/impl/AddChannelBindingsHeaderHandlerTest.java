@@ -21,7 +21,7 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;

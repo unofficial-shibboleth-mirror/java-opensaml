@@ -24,7 +24,7 @@ import java.net.URL;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;

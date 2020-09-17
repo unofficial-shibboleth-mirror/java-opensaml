@@ -15,8 +15,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml;
+package org.opensaml.core.testing;
 
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;

@@ -23,8 +23,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;

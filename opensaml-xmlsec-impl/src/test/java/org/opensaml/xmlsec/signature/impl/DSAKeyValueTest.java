@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.G;
 import org.opensaml.xmlsec.signature.J;

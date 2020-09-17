@@ -22,8 +22,8 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;

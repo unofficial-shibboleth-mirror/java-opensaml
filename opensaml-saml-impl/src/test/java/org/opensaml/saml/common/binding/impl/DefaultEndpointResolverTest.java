@@ -35,7 +35,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;

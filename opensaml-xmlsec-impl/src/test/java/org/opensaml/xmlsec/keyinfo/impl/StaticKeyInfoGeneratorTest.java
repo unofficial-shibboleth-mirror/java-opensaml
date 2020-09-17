@@ -23,7 +23,7 @@ import org.testng.Assert;
 import java.security.KeyException;
 import java.security.PublicKey;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.SecurityException;

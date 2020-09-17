@@ -27,7 +27,7 @@ import java.util.function.Predicate;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.criterion.EndpointCriterion;

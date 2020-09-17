@@ -36,7 +36,7 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.messaging.handler.MessageHandlerException;

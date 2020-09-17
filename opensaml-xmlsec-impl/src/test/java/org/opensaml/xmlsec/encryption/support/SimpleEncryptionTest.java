@@ -27,8 +27,8 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;

@@ -15,32 +15,25 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.config;
+package org.opensaml.core.testing;
 
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import java.util.Properties;
-
-import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
+import org.opensaml.core.config.InitializationException;
+import org.opensaml.core.config.InitializationService;
+import org.testng.annotations.BeforeSuite;
 
 /**
- * An abstract base class for initializer tests which ensures are using a unique configuration
- * partition via a thread-local properties source.
+ * Base test class for code that needs OpenSAML initialized before any tests are run.
  */
-public abstract class InitializerBaseTestCase {
+public abstract class OpenSAMLInitBaseTestCase {
     
-    @BeforeMethod
-    protected void setUp() throws Exception {
-        Properties props = new Properties();
-        
-        props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
-        
-        ThreadLocalConfigurationPropertiesHolder.setProperties(props);
-    }
-
-    @AfterMethod
-    protected void tearDown() throws Exception {
-        ThreadLocalConfigurationPropertiesHolder.clear();
+    /**
+     *  Initialize OpenSAML.
+     *  
+     * @throws InitializationException ...
+     */
+    @BeforeSuite(groups={"opensaml.init"})
+    public void initOpenSAML() throws InitializationException {
+        InitializationService.initialize();
     }
 
 }

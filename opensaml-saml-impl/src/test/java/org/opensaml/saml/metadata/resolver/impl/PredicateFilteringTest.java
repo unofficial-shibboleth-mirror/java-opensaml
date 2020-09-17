@@ -22,7 +22,7 @@ import java.net.URL;
 import java.util.Set;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.metadata.criteria.entity.impl.EvaluableEntityRoleEntityDescriptorCriterion;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;

@@ -20,7 +20,7 @@ package org.opensaml.soap.client.soap11.encoder.http.impl;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.apache.http.client.methods.HttpPost;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;

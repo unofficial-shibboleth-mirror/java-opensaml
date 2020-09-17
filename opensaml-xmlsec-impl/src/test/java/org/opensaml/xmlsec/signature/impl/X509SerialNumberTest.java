@@ -23,7 +23,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.math.BigInteger;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.signature.X509SerialNumber;
 
 /**

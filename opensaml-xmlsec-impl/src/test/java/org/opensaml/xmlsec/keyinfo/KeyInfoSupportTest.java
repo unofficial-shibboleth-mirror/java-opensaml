@@ -40,7 +40,7 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Support;

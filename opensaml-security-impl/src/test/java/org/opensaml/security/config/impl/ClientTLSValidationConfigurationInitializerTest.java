@@ -19,7 +19,7 @@ package org.opensaml.security.config.impl;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
-import org.opensaml.core.config.InitializerBaseTestCase;
+import org.opensaml.core.testing.InitializerBaseTestCase;
 import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;

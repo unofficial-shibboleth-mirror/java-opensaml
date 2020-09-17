@@ -23,7 +23,7 @@ package org.opensaml.saml.saml1.core.impl;
 import org.testng.annotations.Test;
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 

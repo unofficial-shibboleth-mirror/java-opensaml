@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.binding.decoding.impl;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;

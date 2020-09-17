@@ -33,7 +33,7 @@ import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;

@@ -23,10 +23,10 @@ import java.util.concurrent.locks.Lock;
 
 import javax.servlet.http.Cookie;
 
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;

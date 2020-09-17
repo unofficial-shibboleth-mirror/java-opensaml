@@ -27,8 +27,8 @@ import net.shibboleth.ext.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.testing.TestSupport;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;

@@ -18,8 +18,8 @@
 package org.opensaml.xmlsec.signature.impl;
 
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.testng.Assert;

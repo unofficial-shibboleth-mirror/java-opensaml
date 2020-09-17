@@ -17,9 +17,9 @@
 
 package org.opensaml.xmlsec.impl;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;

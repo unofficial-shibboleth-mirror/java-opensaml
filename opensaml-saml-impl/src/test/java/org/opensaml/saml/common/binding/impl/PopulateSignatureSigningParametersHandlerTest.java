@@ -19,13 +19,13 @@ package org.opensaml.saml.common.binding.impl;
 
 import java.util.Collections;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.profile.RequestContextBuilder;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.ParentProfileRequestContextLookup;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureSigningParametersResolver;
 import org.opensaml.xmlsec.context.SecurityParametersContext;

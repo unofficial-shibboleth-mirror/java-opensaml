@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.HashSet;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;

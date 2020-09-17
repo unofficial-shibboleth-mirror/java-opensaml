@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml.config;
+package org.opensaml.core.testing;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
@@ -24,7 +24,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
-import org.opensaml.core.config.InitializerBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistry;
 
 /**

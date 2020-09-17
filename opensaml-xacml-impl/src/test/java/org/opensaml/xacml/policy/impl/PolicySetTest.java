@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.xacml.policy.CombinerParametersType;
 import org.opensaml.xacml.policy.DefaultsType;
 import org.opensaml.xacml.policy.DescriptionType;

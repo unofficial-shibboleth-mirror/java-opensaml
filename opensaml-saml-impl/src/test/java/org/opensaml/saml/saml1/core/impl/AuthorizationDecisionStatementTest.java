@@ -27,8 +27,8 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Action;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;

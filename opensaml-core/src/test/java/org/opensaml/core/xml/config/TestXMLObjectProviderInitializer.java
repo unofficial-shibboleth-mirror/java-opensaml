@@ -17,8 +17,6 @@
 
 package org.opensaml.core.xml.config;
 
-import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
-
 /**
  * XMLObject provider initializer for module "core", for testing classes only.
  */

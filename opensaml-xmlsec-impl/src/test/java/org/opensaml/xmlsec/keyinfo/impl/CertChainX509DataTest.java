@@ -32,7 +32,7 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.KeySupport;

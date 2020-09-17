@@ -19,8 +19,8 @@ package org.opensaml.saml.saml2.binding.decoding.impl;
 
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.saml2.core.Response;

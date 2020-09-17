@@ -25,8 +25,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;

@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.CipherValue;

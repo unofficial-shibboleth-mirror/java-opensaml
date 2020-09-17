@@ -21,7 +21,7 @@ import java.util.Set;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;

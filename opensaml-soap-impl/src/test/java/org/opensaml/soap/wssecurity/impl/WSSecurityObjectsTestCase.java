@@ -26,7 +26,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Marshaller;
-import org.opensaml.soap.WSBaseTestCase;
+import org.opensaml.soap.testing.WSBaseTestCase;
 import org.opensaml.soap.wssecurity.BinarySecurityToken;
 import org.opensaml.soap.wssecurity.Created;
 import org.opensaml.soap.wssecurity.Embedded;

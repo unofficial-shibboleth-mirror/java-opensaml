@@ -20,9 +20,9 @@ package org.opensaml.xmlsec.algorithm;
 import java.util.Objects;
 import java.util.Set;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;

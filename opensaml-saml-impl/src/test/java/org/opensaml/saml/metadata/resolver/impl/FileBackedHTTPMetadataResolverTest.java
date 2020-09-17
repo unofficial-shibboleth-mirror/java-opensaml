@@ -27,8 +27,8 @@ import java.time.Duration;
 import java.time.Instant;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;

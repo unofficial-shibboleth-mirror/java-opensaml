@@ -40,7 +40,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SAMLTestSupport;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;

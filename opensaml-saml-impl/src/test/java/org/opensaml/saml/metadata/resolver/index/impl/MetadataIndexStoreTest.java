@@ -19,7 +19,7 @@ package org.opensaml.saml.metadata.resolver.index.impl;
 
 import java.util.Set;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;

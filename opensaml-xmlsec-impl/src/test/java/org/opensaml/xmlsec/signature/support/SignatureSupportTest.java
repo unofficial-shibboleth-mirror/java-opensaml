@@ -22,7 +22,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.List;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;

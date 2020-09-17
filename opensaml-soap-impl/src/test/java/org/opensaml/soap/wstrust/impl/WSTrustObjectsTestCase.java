@@ -31,7 +31,7 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
 import org.opensaml.core.xml.schema.impl.XSAnyMarshaller;
 import org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller;
-import org.opensaml.soap.WSBaseTestCase;
+import org.opensaml.soap.testing.WSBaseTestCase;
 import org.opensaml.soap.wssecurity.Created;
 import org.opensaml.soap.wssecurity.Password;
 import org.opensaml.soap.wssecurity.Timestamp;

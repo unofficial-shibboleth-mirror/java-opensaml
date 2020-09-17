@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AdditionalMetadataLocation;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

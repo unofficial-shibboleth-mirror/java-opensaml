@@ -29,8 +29,8 @@ import javax.crypto.SecretKey;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;

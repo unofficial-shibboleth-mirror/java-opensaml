@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;

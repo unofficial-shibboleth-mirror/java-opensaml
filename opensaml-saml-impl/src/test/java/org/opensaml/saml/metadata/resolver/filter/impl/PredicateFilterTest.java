@@ -23,7 +23,7 @@ import net.shibboleth.ext.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.profile.logic.EntityIdPredicate;
 import org.opensaml.saml.metadata.resolver.filter.impl.PredicateFilter.Direction;
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;

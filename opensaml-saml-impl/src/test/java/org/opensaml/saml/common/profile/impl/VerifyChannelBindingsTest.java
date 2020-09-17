@@ -19,12 +19,12 @@ package org.opensaml.saml.common.profile.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;

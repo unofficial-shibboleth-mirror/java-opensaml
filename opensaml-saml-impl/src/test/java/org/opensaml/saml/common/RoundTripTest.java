@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.common;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;

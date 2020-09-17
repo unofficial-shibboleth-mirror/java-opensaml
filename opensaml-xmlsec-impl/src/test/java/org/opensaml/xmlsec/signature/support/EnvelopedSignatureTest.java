@@ -27,7 +27,7 @@ import javax.xml.bind.ValidationException;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;

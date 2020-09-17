@@ -25,7 +25,7 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AuthenticationQuery;
 import org.opensaml.saml.saml1.core.Subject;

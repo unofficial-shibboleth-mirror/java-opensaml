@@ -22,7 +22,7 @@ import org.testng.Assert;
 
 import java.time.Instant;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;

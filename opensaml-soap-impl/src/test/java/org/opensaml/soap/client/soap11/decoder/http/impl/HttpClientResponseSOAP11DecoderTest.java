@@ -30,7 +30,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.message.BasicHttpResponse;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;

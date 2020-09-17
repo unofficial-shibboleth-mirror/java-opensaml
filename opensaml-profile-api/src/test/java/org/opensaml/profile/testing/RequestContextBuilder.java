@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.profile;
+package org.opensaml.profile.testing;
 
 import java.time.Instant;
 

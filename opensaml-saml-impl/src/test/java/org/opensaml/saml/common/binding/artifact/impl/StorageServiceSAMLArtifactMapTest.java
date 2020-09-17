@@ -20,7 +20,7 @@ package org.opensaml.saml.common.binding.artifact.impl;
 import java.io.IOException;
 import java.time.Duration;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;

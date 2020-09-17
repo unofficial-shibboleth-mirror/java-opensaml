@@ -19,7 +19,7 @@ package org.opensaml.saml.common.binding.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ParentContextLookup;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -27,11 +27,11 @@ import org.opensaml.saml.common.messaging.context.AttributeConsumingServiceConte
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
-import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

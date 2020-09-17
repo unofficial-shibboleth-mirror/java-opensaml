@@ -19,9 +19,9 @@ package org.opensaml.storage.impl.client;
 
 import java.util.Collections;
 
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;

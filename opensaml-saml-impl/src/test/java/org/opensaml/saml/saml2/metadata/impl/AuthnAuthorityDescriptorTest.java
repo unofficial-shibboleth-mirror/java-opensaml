@@ -28,7 +28,7 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;

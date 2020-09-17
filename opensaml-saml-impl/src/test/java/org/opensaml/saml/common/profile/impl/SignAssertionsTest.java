@@ -21,13 +21,13 @@ import java.security.KeyPair;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
-import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
+import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;

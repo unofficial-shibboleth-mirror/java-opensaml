@@ -15,10 +15,11 @@
  * limitations under the License.
  */
 
-package org.opensaml.profile.action;
+package org.opensaml.profile.testing;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.testng.Assert;

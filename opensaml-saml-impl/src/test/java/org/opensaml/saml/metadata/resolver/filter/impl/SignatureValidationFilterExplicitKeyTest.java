@@ -25,8 +25,8 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;

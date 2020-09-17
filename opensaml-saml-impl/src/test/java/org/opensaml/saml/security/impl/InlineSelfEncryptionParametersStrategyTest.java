@@ -27,9 +27,9 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.RequestContextBuilder;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.xmlsec.EncryptionConfiguration;

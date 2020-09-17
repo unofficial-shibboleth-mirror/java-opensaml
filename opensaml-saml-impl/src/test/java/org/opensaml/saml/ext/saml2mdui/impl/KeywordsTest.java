@@ -26,7 +26,7 @@ import static org.testng.Assert.assertNotEquals;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.Keywords;
 import org.testng.annotations.Test;
 

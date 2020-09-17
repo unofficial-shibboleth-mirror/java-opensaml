@@ -21,7 +21,7 @@ import java.io.File;
 import java.net.URL;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;

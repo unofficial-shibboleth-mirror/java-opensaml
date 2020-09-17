@@ -30,8 +30,8 @@ import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.ext.saml2alg.DigestMethod;
 import org.opensaml.saml.ext.saml2alg.SigningMethod;

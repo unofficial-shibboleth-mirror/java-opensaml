@@ -24,8 +24,8 @@ import java.util.List;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;

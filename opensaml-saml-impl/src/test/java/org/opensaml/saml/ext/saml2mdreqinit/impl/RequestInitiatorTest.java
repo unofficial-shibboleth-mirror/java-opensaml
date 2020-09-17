@@ -21,7 +21,7 @@
 
 package org.opensaml.saml.ext.saml2mdreqinit.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdreqinit.RequestInitiator;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

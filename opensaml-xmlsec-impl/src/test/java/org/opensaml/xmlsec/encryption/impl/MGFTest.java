@@ -18,8 +18,8 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.Parameters;

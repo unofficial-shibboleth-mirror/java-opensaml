@@ -28,13 +28,12 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSAny;
-import org.opensaml.core.xml.util.AttributeMap;
 
 /**
  * Test the NamespaceManger used by XMLObjects.

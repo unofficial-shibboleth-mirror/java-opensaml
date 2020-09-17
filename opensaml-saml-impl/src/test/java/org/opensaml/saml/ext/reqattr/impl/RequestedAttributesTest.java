@@ -19,7 +19,7 @@ package org.opensaml.saml.ext.reqattr.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.reqattr.RequestedAttributes;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;

@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

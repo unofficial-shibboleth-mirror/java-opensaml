@@ -15,14 +15,14 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap;
+package org.opensaml.soap.testing;
 
 
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.w3c.dom.Element;

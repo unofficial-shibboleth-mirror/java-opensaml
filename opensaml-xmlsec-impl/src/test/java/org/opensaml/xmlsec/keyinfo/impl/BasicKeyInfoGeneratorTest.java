@@ -24,7 +24,7 @@ import java.security.KeyException;
 import java.security.PublicKey;
 import java.util.List;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.crypto.KeySupport;

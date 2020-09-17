@@ -33,7 +33,7 @@ import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;

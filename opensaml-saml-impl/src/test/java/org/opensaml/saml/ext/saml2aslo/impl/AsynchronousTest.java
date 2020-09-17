@@ -20,7 +20,7 @@
  */
 package org.opensaml.saml.ext.saml2aslo.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2aslo.Asynchronous;
 import org.testng.Assert;
 import org.testng.annotations.Test;

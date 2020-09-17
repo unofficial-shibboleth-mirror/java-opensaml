@@ -29,10 +29,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
-import org.opensaml.core.xml.Namespace;
-import org.opensaml.core.xml.NamespaceManager;
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
 
 /**

@@ -28,8 +28,8 @@ import javax.annotation.Nullable;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -41,7 +41,7 @@ import org.opensaml.saml.saml2.assertion.SAML20AssertionValidator;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
-import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.saml.saml2.wssecurity.SAML20AssertionToken;
 import org.opensaml.security.SecurityException;
 import org.opensaml.soap.messaging.context.SOAP11Context;

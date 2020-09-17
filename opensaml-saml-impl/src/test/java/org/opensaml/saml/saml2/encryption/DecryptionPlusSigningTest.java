@@ -30,9 +30,9 @@ import java.time.Instant;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml.saml2.core.Issuer;

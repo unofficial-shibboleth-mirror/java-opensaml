@@ -26,7 +26,6 @@ import java.util.List;
 
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.core.xml.util.XMLObjectChildrenList;
 
 /**
  * Test case for {@link org.opensaml.core.xml.util.XMLObjectChildrenList}

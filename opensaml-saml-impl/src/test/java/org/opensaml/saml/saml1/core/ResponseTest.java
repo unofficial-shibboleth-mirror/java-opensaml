@@ -23,10 +23,10 @@ import java.io.InputStream;
 
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.w3c.dom.Document;
 
 /**

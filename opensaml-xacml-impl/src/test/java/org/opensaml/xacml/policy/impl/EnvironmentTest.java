@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.xacml.policy.EnvironmentMatchType;
 import org.opensaml.xacml.policy.EnvironmentType;
 import org.testng.Assert;

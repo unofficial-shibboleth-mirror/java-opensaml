@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml;
+package org.opensaml.core.testing;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -24,7 +24,9 @@ import java.io.InputStream;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;

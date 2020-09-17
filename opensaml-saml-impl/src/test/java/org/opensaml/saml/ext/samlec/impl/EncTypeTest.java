@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.samlec.EncType;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

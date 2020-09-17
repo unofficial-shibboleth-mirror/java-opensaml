@@ -24,7 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.HashSet;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.criterion.ArtifactCriterion;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.metadata.resolver.impl.AbstractBatchMetadataResolver;

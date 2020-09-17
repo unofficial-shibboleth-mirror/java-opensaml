@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.messaging.impl;
 
 import java.util.Collections;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.xmlsec.SignatureValidationParameters;

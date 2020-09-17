@@ -23,7 +23,7 @@ import java.util.Set;
 import java.util.function.Function;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;

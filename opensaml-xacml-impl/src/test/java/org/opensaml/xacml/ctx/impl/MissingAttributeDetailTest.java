@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.ctx.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.xacml.ctx.AttributeValueType;
 import org.opensaml.xacml.ctx.MissingAttributeDetailType;
 import org.testng.Assert;

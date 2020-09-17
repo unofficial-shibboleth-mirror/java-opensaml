@@ -23,7 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.x509.X509Credential;

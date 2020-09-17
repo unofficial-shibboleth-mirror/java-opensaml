@@ -36,7 +36,7 @@ import java.util.Map;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -47,7 +47,7 @@ import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.saml.saml2.core.SubjectLocality;
-import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;

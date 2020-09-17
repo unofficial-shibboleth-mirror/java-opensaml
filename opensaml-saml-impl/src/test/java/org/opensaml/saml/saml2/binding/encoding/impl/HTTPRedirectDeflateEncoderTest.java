@@ -24,7 +24,7 @@ import java.util.Map;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;

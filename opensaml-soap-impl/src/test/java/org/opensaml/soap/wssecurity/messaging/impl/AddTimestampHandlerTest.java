@@ -25,8 +25,8 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.soap.SOAPMessagingBaseTestCase;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
+import org.opensaml.soap.testing.SOAPMessagingBaseTestCase;
 import org.opensaml.soap.wssecurity.Security;
 import org.opensaml.soap.wssecurity.Timestamp;
 import org.opensaml.soap.wssecurity.messaging.WSSecurityContext;

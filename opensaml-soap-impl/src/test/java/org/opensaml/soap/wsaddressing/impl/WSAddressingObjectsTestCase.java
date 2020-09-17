@@ -18,7 +18,7 @@
 package org.opensaml.soap.wsaddressing.impl;
 
 import org.testng.annotations.Test;
-import org.opensaml.soap.WSBaseTestCase;
+import org.opensaml.soap.testing.WSBaseTestCase;
 import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.Address;
 import org.opensaml.soap.wsaddressing.EndpointReference;

@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;

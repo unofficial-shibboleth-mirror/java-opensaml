@@ -23,8 +23,8 @@ import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.persist.MapLoadSaveManager;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.crypto.JCAConstants;

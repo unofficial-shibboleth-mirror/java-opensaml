@@ -19,7 +19,7 @@ package org.opensaml.core.xml.util;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;

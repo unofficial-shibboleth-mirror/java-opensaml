@@ -22,8 +22,7 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdui.InformationURL;
 
 /**

@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml2alg.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.saml.ext.saml2alg.SigningMethod;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;

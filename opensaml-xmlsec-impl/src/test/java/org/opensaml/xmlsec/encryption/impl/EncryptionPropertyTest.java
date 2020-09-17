@@ -20,8 +20,8 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;

@@ -19,14 +19,14 @@ package org.opensaml.saml.common.binding.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.RequestAbstractType;
-import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.AttributeQuery;
-import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.annotations.Test;
 
 /** {@link CheckMessageVersionHandler} unit test. */

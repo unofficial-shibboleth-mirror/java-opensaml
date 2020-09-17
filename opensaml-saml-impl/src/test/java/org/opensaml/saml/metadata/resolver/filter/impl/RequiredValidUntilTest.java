@@ -24,7 +24,7 @@ import java.time.Instant;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;

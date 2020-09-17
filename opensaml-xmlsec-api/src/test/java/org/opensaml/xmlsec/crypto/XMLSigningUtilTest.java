@@ -32,7 +32,7 @@ import java.util.Arrays;
 import javax.crypto.Mac;
 import javax.crypto.SecretKey;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;

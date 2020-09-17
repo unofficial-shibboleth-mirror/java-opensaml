@@ -27,7 +27,7 @@ import java.util.Set;
 
 import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;

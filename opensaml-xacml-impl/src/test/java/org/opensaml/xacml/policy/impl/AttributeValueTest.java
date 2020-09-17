@@ -19,8 +19,8 @@ package org.opensaml.xacml.policy.impl;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.xacml.policy.ActionsType;
 import org.opensaml.xacml.policy.AttributeValueType;

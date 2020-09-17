@@ -20,7 +20,7 @@ package org.opensaml.xmlsec.signature.support;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.signature.Signature;

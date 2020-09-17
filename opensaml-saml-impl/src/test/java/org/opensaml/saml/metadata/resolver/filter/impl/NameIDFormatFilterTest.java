@@ -30,7 +30,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolverTest;

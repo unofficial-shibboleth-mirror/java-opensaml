@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.saml.saml2.ecp.SubjectConfirmation;
 import org.testng.Assert;

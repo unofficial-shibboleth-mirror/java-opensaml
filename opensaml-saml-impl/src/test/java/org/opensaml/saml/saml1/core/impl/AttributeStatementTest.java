@@ -27,7 +27,7 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Attribute;
 import org.opensaml.saml.saml1.core.AttributeStatement;

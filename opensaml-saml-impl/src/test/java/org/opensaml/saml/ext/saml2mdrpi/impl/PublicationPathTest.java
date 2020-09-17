@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdrpi.Publication;
 import org.opensaml.saml.ext.saml2mdrpi.PublicationPath;
 import org.testng.Assert;

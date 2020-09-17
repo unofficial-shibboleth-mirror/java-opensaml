@@ -23,7 +23,7 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.AttributeMap;

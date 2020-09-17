@@ -25,7 +25,7 @@ import org.testng.Assert;
 import org.w3c.dom.Element;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.BasicSAMLArtifactMapEntry;

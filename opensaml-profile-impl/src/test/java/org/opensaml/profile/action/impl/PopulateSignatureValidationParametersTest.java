@@ -24,11 +24,11 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.SignatureValidationParametersResolver;
 import org.opensaml.xmlsec.context.SecurityParametersContext;

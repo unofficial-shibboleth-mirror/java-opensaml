@@ -25,8 +25,8 @@ import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;

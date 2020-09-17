@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.common.binding.security.impl;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;

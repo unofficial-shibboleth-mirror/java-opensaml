@@ -20,7 +20,7 @@ package org.opensaml.saml.security.impl;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;

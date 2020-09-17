@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.common;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;

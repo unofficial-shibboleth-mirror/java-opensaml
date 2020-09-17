@@ -17,8 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;

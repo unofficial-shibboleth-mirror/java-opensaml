@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.springframework.core.io.FileSystemResource;
 import org.testng.Assert;

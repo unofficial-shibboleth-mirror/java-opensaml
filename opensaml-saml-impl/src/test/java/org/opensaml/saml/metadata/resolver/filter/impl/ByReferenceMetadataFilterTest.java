@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.function.Predicate;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;

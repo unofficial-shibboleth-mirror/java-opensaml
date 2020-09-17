@@ -17,7 +17,6 @@
 
 package org.opensaml.profile.context;
 
-import org.opensaml.profile.context.ProfileRequestContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

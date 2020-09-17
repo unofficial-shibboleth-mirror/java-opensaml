@@ -26,7 +26,6 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
-import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 
 /**
  * Test case for {@link org.opensaml.core.xml.util.IndexedXMLObjectChildrenList}. Note that this test only tests those

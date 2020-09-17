@@ -25,7 +25,7 @@ import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
 import org.opensaml.saml.saml2.core.Condition;

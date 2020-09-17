@@ -30,8 +30,8 @@ import java.util.concurrent.TimeUnit;
 
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;

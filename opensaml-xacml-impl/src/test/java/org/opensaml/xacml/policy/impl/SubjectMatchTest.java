@@ -17,7 +17,7 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.xacml.policy.AttributeDesignatorType;
 import org.opensaml.xacml.policy.AttributeSelectorType;
 import org.opensaml.xacml.policy.AttributeValueType;

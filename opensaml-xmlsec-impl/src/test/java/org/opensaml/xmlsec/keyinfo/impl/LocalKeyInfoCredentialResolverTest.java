@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;

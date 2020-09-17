@@ -31,7 +31,7 @@ import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.messaging.context.SAMLSelfEntityContext;
@@ -41,7 +41,7 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
-import org.opensaml.saml.saml2.profile.SAML2ActionTestingSupport;
+import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.x509.X509Support;

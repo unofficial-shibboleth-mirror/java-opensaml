@@ -19,20 +19,20 @@ package org.opensaml.saml.saml1.profile.impl;
 
 import java.io.IOException;
 
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
 import org.opensaml.saml.common.binding.artifact.impl.BasicSAMLArtifactMap;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.saml1.core.Response;
-import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

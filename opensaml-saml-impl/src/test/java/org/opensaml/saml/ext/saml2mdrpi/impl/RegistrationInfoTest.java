@@ -19,7 +19,7 @@ package org.opensaml.saml.ext.saml2mdrpi.impl;
 
 import java.time.Instant;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationPolicy;
 import org.testng.Assert;

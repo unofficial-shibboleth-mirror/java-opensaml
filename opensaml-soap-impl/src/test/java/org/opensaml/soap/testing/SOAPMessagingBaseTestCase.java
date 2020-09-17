@@ -15,10 +15,10 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap;
+package org.opensaml.soap.testing;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;

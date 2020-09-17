@@ -27,7 +27,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.utilities.java.support.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
-import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;

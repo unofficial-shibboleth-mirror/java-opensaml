@@ -21,12 +21,12 @@ import java.io.IOException;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.binding.artifact.impl.BasicSAMLArtifactMap;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
-import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

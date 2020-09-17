@@ -22,12 +22,12 @@ import java.util.Collections;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.FaultCode;

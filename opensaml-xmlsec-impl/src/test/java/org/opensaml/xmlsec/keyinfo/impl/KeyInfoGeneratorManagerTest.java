@@ -27,7 +27,7 @@ import java.security.NoSuchProviderException;
 import java.util.Collection;
 
 import org.cryptacular.util.CertUtil;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.KeySupport;

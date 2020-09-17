@@ -23,8 +23,8 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.core.xml.util.XMLObjectSupport;

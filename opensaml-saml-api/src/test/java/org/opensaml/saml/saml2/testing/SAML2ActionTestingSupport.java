@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.profile;
+package org.opensaml.saml.saml2.testing;
 
 import java.time.Instant;
 import java.util.Set;
@@ -27,7 +27,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.profile.action.ActionTestingSupport;
+import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Artifact;

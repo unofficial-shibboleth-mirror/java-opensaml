@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.Extensions;

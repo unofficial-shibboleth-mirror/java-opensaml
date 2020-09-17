@@ -26,7 +26,7 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import org.cryptacular.util.CertUtil;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.BasicX509Credential;

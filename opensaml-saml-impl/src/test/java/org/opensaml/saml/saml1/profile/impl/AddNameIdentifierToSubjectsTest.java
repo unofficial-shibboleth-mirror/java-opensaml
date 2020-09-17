@@ -25,10 +25,10 @@ import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
-import org.opensaml.profile.RequestContextBuilder;
-import org.opensaml.profile.action.ActionTestingSupport;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.testing.ActionTestingSupport;
+import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.profile.NameIdentifierGenerator;
 import org.opensaml.saml.saml1.core.Assertion;
@@ -36,7 +36,7 @@ import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.profile.AbstractSAML1NameIdentifierGenerator;
-import org.opensaml.saml.saml1.profile.SAML1ActionTestingSupport;
+import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

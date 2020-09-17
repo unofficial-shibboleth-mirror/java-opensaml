@@ -19,7 +19,7 @@ package org.opensaml.saml.common.messaging.context;
 
 import java.time.Instant;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.TestContext;
 import org.opensaml.saml.saml1.core.Request;

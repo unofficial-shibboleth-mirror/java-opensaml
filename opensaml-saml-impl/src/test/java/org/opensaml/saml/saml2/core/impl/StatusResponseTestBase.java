@@ -28,7 +28,7 @@ import java.time.Instant;
 
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.xml.SAMLConstants;

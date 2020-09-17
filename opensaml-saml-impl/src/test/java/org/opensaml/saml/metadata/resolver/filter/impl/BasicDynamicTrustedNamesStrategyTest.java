@@ -19,8 +19,8 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.Set;
 
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;

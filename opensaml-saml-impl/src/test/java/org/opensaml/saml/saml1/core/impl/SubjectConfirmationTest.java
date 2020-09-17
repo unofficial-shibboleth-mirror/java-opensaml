@@ -26,8 +26,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
-import org.opensaml.core.xml.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.ConfirmationMethod;

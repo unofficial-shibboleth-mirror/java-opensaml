@@ -19,7 +19,7 @@ package org.opensaml.soap.soap11.decoder.http.impl;
 
 import java.io.IOException;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;

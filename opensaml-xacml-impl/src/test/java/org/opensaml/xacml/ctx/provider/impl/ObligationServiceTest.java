@@ -23,7 +23,7 @@ import java.util.Collections;
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.xacml.ctx.DecisionType;
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
 import org.opensaml.xacml.ctx.ResultType;

@@ -26,7 +26,7 @@ import java.util.Collections;
 
 import javax.crypto.SecretKey;
 
-import org.opensaml.core.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.credential.Credential;

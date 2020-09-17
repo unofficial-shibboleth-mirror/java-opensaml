@@ -26,7 +26,7 @@ import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.schema.impl.XSAnyBuilder;
 import org.opensaml.core.xml.schema.impl.XSAnyMarshaller;
 import org.opensaml.core.xml.schema.impl.XSAnyUnmarshaller;
-import org.opensaml.soap.WSBaseTestCase;
+import org.opensaml.soap.testing.WSBaseTestCase;
 import org.opensaml.soap.wspolicy.All;
 import org.opensaml.soap.wspolicy.AppliesTo;
 import org.opensaml.soap.wspolicy.ExactlyOne;

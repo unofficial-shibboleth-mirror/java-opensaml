@@ -21,7 +21,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 
 import java.time.Duration;
 
-import org.opensaml.core.xml.XMLObjectBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
