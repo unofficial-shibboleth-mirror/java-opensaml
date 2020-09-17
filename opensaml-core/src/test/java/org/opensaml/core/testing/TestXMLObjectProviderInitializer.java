@@ -15,7 +15,9 @@
  * limitations under the License.
  */
 
-package org.opensaml.core.xml.config;
+package org.opensaml.core.testing;
+
+import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
  * XMLObject provider initializer for module "core", for testing classes only.
