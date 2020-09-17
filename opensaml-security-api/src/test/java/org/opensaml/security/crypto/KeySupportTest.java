@@ -211,7 +211,7 @@ public class KeySupportTest {
         }
     }
     
-    @Test(enabled=false)
+    @Test
     public void testKeyLength() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair kp = null;
         
@@ -239,16 +239,6 @@ public class KeySupportTest {
         
         // Asymmetric: EC
         try {
-            kp = KeySupport.generateKeyPair("EC", 112, null);
-            Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), Integer.valueOf(112));
-            Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), Integer.valueOf(112));
-        
-        } catch (final NoSuchAlgorithmException| InvalidParameterException e) {
-            // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
-            // Just ignore unsupported algorithm abd InvalidParameter failures here for now.
-            log.warn("EC-112 failed", e);
-        }
-        try {
             kp = KeySupport.generateKeyPair("EC", 256, null);
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), Integer.valueOf(256));
             Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), Integer.valueOf(256));
@@ -259,13 +249,23 @@ public class KeySupportTest {
             log.warn("EC-256 failed", e);
         }
         try {
-            kp = KeySupport.generateKeyPair("EC", 571, null);
-            Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), Integer.valueOf(571));
-            Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), Integer.valueOf(571));
+            kp = KeySupport.generateKeyPair("EC", 384, null);
+            Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), Integer.valueOf(384));
+            Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), Integer.valueOf(384));
+        
         } catch (final NoSuchAlgorithmException| InvalidParameterException e) {
             // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
             // Just ignore unsupported algorithm abd InvalidParameter failures here for now.
-            log.warn("EC-571 failed", e);
+            log.warn("EC-384 failed", e);
+        }
+        try {
+            kp = KeySupport.generateKeyPair("EC", 521, null);
+            Assert.assertEquals(KeySupport.getKeyLength(kp.getPublic()), Integer.valueOf(521));
+            Assert.assertEquals(KeySupport.getKeyLength(kp.getPrivate()), Integer.valueOf(521));
+        } catch (final NoSuchAlgorithmException| InvalidParameterException e) {
+            // EC support isn't universal, e.g. OpenJDK 7 doesn't ship with an EC provider out-of-the-box.
+            // Just ignore unsupported algorithm abd InvalidParameter failures here for now.
+            log.warn("EC-521 failed", e);
         }
         
         // Symmetric: AES
