@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.security;
+package org.opensaml.security.testing;
 
 import java.security.Security;
 

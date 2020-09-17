@@ -21,8 +21,8 @@ import javax.crypto.Cipher;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.security.SecurityProviderTestSupport;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
