@@ -24,7 +24,7 @@ import java.security.cert.X509Certificate;
 import java.util.Collection;
 
 import org.opensaml.security.SecurityException;
-import org.opensaml.security.trust.MockTrustEngine;
+import org.opensaml.security.testing.MockTrustEngine;
 import org.opensaml.security.x509.X509Support;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
