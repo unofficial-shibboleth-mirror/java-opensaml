@@ -24,7 +24,7 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import net.shibboleth.ext.spring.resource.HTTPResource;
-import net.shibboleth.ext.spring.resource.ResourceTestHelper;
+import net.shibboleth.ext.spring.testing.ResourceTestHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 import net.shibboleth.utilities.java.support.test.repository.RepositorySupport;
