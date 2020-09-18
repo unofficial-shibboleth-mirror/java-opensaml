@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.core;
+package org.opensaml.saml.saml2.core.tests;
 
 import java.util.List;
 

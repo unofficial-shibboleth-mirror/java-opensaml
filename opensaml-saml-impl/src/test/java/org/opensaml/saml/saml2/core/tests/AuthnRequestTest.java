@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.core;
+package org.opensaml.saml.saml2.core.tests;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
@@ -25,6 +25,17 @@ import java.time.Instant;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.testing.BaseComplexSAMLObjectTestCase;
+import org.opensaml.saml.saml2.core.Audience;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
+import org.opensaml.saml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
+import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDType;
+import org.opensaml.saml.saml2.core.RequestAbstractType;
+import org.opensaml.saml.saml2.core.RequestedAuthnContext;
+import org.opensaml.saml.saml2.core.Subject;
 
 /**
  * Tests unmarshalling and marshalling for various request messages.
