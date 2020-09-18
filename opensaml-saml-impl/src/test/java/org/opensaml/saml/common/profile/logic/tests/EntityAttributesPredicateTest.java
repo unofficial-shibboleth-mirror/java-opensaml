@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common.profile.logic;
+package org.opensaml.saml.common.profile.logic.tests;
 
 import java.util.Collections;
 import java.util.regex.Pattern;
@@ -25,6 +25,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.saml.common.profile.logic.EntityAttributesPredicate;
 import org.opensaml.saml.common.profile.logic.EntityAttributesPredicate.Candidate;
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
 import org.opensaml.saml.saml2.core.Attribute;

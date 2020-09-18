@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.metadata;
+package org.opensaml.saml.saml2.metadata.tests;
 
 import java.io.InputStream;
 

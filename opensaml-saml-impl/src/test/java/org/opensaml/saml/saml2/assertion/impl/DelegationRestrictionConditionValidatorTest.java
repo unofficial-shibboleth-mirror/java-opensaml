@@ -21,7 +21,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
-import org.opensaml.saml.saml2.assertion.BaseAssertionValidationTest;
+import org.opensaml.saml.saml2.assertion.tests.BaseAssertionValidationTest;
 import org.opensaml.saml.saml2.core.Condition;
 import org.opensaml.saml.saml2.core.OneTimeUse;
 import org.testng.Assert;

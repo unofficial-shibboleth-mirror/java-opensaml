@@ -23,8 +23,8 @@ import org.testng.Assert;
 import java.time.Instant;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
-import org.opensaml.saml.common.BaseComplexSAMLObjectTestCase;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.testing.BaseComplexSAMLObjectTestCase;
 
 /**
  * Tests unmarshalling and marshalling for various request messages.

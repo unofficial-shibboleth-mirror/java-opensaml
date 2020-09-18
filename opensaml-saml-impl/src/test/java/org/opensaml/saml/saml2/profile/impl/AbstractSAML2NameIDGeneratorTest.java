@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.profile;
+package org.opensaml.saml.saml2.profile.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
@@ -24,6 +24,7 @@ import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.profile.AbstractSAML2NameIDGenerator;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

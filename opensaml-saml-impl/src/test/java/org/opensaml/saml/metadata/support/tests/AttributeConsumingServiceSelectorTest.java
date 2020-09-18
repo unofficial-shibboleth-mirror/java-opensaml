@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.metadata.support;
+package org.opensaml.saml.metadata.support.tests;
 
 import java.io.File;
 import java.net.URL;
@@ -28,6 +28,7 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.PredicateRoleDescriptorResolver;
+import org.opensaml.saml.metadata.support.AttributeConsumingServiceSelector;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;

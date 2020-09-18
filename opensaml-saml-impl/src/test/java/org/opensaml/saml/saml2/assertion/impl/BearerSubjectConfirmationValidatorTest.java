@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.assertion.impl;
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
-import org.opensaml.saml.saml2.assertion.BaseAssertionValidationTest;
+import org.opensaml.saml.saml2.assertion.tests.BaseAssertionValidationTest;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;

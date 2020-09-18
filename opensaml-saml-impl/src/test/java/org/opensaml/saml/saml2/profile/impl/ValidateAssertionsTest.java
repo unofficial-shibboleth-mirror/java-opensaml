@@ -30,7 +30,7 @@ import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationProcessingData;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.common.profile.SAMLEventIds;
-import org.opensaml.saml.saml2.assertion.MockAssertionValidator;
+import org.opensaml.saml.saml2.assertion.tests.MockAssertionValidator;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;

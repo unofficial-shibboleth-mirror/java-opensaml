@@ -24,8 +24,8 @@ import java.time.Instant;
 
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSString;
-import org.opensaml.saml.common.BaseComplexSAMLObjectTestCase;
 import org.opensaml.saml.common.SAMLVersion;
+import org.opensaml.saml.common.testing.BaseComplexSAMLObjectTestCase;
 
 /**
  * Tests unmarshalling and marshalling for various response messages.

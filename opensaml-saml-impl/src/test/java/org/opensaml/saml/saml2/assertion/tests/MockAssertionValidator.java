@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.assertion;
+package org.opensaml.saml.saml2.assertion.tests;
 
 import java.util.Collections;
 import java.util.Map;
@@ -23,6 +23,7 @@ import java.util.Map;
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
+import org.opensaml.saml.saml2.assertion.SAML20AssertionValidator;
 import org.opensaml.saml.saml2.core.Assertion;
 
 import net.shibboleth.utilities.java.support.collection.Pair;

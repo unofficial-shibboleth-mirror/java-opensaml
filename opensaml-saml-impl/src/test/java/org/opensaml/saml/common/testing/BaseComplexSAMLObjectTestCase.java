@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common;
+package org.opensaml.saml.common.testing;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.testng.annotations.BeforeClass;

@@ -16,7 +16,7 @@
  */
 
 
-package org.opensaml.saml.saml2.assertion;
+package org.opensaml.saml.saml2.assertion.tests;
 
 import java.io.File;
 import java.net.InetAddress;
@@ -39,6 +39,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;

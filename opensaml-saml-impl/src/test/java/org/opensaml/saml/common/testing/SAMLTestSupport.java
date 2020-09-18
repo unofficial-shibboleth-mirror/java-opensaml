@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.common;
+package org.opensaml.saml.common.testing;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.saml2.encryption;
+package org.opensaml.saml.saml2.encryption.tests;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
@@ -28,6 +28,7 @@ import java.util.List;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
+import org.opensaml.saml.saml2.encryption.EncryptedElementTypeEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
