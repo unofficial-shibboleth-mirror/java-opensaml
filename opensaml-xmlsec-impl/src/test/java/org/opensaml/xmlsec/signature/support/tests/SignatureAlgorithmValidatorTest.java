@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.signature.support;
+package org.opensaml.xmlsec.signature.support.tests;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +24,8 @@ import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.impl.SignatureAlgorithmValidator;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;

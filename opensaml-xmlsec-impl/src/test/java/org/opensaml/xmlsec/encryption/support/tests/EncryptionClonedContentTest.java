@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption.support;
+package org.opensaml.xmlsec.encryption.support.tests;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
@@ -23,6 +23,10 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.Decrypter;
+import org.opensaml.xmlsec.encryption.support.Encrypter;
+import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.testng.Assert;

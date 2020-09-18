@@ -15,7 +15,10 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption.support;
+package org.opensaml.xmlsec.encryption.support.tests;
+
+import org.testng.annotations.Test;
+import org.testng.Assert;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,24 +30,22 @@ import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
-import org.opensaml.xmlsec.signature.KeyInfo;
-import org.opensaml.xmlsec.signature.KeyInfoReference;
-import org.testng.Assert;
-import org.testng.annotations.Test;
 
 /**
- * Test the encrypted key resolver which dereferences KeyInfoReferences.
+ * Test the encrypted key resolver which dereferences RetrievalMethods.
  */
-public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
+public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     
     /** The resolver instance to be tested. */
-    private SimpleKeyInfoReferenceEncryptedKeyResolver resolver;
+    private SimpleRetrievalMethodEncryptedKeyResolver resolver;
     
     /** No recipients specified to resolver, one EncryptedKey in instance. */
     @Test
     public void testSingleEKNoRecipient() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -53,12 +54,12 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME).isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver();
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -66,10 +67,10 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
-    /** One recipient specified to resolver, one EncryptedKey in instance. */
+    /** One recipients specified to resolver, one EncryptedKey in instance. */
     @Test
     public void testSingleEKWithRecipient() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -78,12 +79,12 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME).isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -91,10 +92,35 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
-    /** One recipient specified to resolver, three EncryptedKeys in instance, two KeyInfoReference references. */
+    /** One recipients specified to resolver, RetrievalMethod has Transforms, so should fail. */
+    @Test
+    public void testSingleEKWithTransform() {
+        String filename =  
+            "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingleWithTransforms.xml";
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        Assert.assertNotNull(sxo);
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        
+        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        
+        Assert.assertNotNull(encData.getKeyInfo());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        
+        List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
+        Assert.assertFalse(allKeys.isEmpty());
+        
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(Collections.singleton("foo"));
+        
+        List<EncryptedKey> resolved = generateList(encData, resolver);
+        Assert.assertEquals(resolved.size(), 0, "Incorrect number of resolved EncryptedKeys found");
+    }
+    
+    /** One recipients specified to resolver, three EncryptedKeys in instance, 
+     * two RetrievalMethod references. */
     @Test
     public void testMultiEKWithOneRecipient() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -103,12 +129,12 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getKeyInfoReferences().isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -116,13 +142,11 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
-    /**
-     * Two recipients specified to resolver, three EncryptedKeys in instance, 
-     * two RetrievalMethod references.
-     */
+    /** Two recipients specified to resolver, three EncryptedKeys in instance, 
+     * two RetrievalMethod references. */
     @Test
     public void testMultiEKWithTwoRecipients() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -131,12 +155,12 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getKeyInfoReferences().isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
+        resolver = new SimpleRetrievalMethodEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
@@ -154,8 +178,8 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
     private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
         List<EncryptedKey> allKeys = new ArrayList<>();
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
-           if (xmlObject instanceof KeyInfo)  {
-               allKeys.addAll(((KeyInfo) xmlObject).getEncryptedKeys());
+           if (xmlObject instanceof EncryptedKey)  {
+               allKeys.add((EncryptedKey) xmlObject);
            }
         }
         return allKeys;
@@ -175,5 +199,6 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         }
         return resolved;
     }
+
 
 }

@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec;
+package org.opensaml.xmlsec.testing;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -15,73 +15,38 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption.support;
+package org.opensaml.xmlsec.encryption.support.tests;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.SimpleKeyInfoReferenceEncryptedKeyResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
+import org.opensaml.xmlsec.signature.KeyInfo;
+import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.testng.Assert;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /**
- * Test the encrypted key resolver which dereferences RetrievalMethods.
+ * Test the encrypted key resolver which dereferences KeyInfoReferences.
  */
-public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
+public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     
     /** The resolver instance to be tested. */
-    private ChainingEncryptedKeyResolver resolver;
+    private SimpleKeyInfoReferenceEncryptedKeyResolver resolver;
     
-    private List<EncryptedKeyResolver> resolverChain;
-    
-    private Set<String> recipients;
-    
-    
-    @BeforeMethod
-    protected void setUp() throws Exception {
-        EncryptedKeyResolver inline = new InlineEncryptedKeyResolver();
-        EncryptedKeyResolver rm = new SimpleRetrievalMethodEncryptedKeyResolver();
-        resolverChain = Arrays.asList(inline, rm);
-        //resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
-        
-        recipients = new HashSet<>();
-    }
-    
-    /** Test error case of empty resolver chain. */
-    @Test(expectedExceptions=IllegalStateException.class)
-    public void testEmptyChain() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
-        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
-        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
-        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
-        
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertTrue(encData.getKeyInfo().getRetrievalMethods().isEmpty());
-        
-        List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
-        Assert.assertFalse(allKeys.isEmpty());
-        
-        resolver = new ChainingEncryptedKeyResolver(new ArrayList<EncryptedKeyResolver>());
-        
-        generateList(encData, resolver);
-    }
-    
-    /** One recipient specified to resolver, EncryptedKey in instance inline. */
+    /** No recipients specified to resolver, one EncryptedKey in instance. */
     @Test
-    public void testSingleEKInline() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
+    public void testSingleEKNoRecipient() {
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -90,15 +55,12 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertTrue(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME).isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        recipients.add("foo");
-        
-        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver();
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -106,10 +68,10 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
-    /** One recipient specified to resolver, EncryptedKey in instance via RetrievalMethod . */
+    /** One recipient specified to resolver, one EncryptedKey in instance. */
     @Test
-    public void testSingleEKRetrievalMethod() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleRetrievalMethod.xml";
+    public void testSingleEKWithRecipient() {
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverSingle.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -118,15 +80,12 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertTrue(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getXMLObjects(KeyInfoReference.DEFAULT_ELEMENT_NAME).isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        recipients.add("foo");
-        
-        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -134,10 +93,10 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
     }
     
-    /** One recipient specified to resolver, EncryptedKeys in instance inline and via RetrievalMethod . */
+    /** One recipient specified to resolver, three EncryptedKeys in instance, two KeyInfoReference references. */
     @Test
     public void testMultiEKWithOneRecipient() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
         Assert.assertNotNull(sxo);
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
@@ -146,67 +105,59 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
         Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        Assert.assertFalse(encData.getKeyInfo().getKeyInfoReferences().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        recipients.add("foo");
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
         
-        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
+        List<EncryptedKey> resolved = generateList(encData, resolver);
+        Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
+        
+        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
+    }
+    
+    /**
+     * Two recipients specified to resolver, three EncryptedKeys in instance, 
+     * two RetrievalMethod references.
+     */
+    @Test
+    public void testMultiEKWithTwoRecipients() {
+        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
+        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        Assert.assertNotNull(sxo);
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        
+        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        
+        Assert.assertNotNull(encData.getKeyInfo());
+        Assert.assertFalse(encData.getKeyInfo().getKeyInfoReferences().isEmpty());
+        
+        List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
+        Assert.assertFalse(allKeys.isEmpty());
+        
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
-        Assert.assertTrue(resolved.get(1) == allKeys.get(3), "Unexpected EncryptedKey instance found");
-    }
-    
-    /** Two recipients specified to resolver, EncryptedKeys in instance inline and via RetrievalMethod . */
-    @Test
-    public void testMultiEKWithTwoRecipients() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
-        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
-        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
-        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
-        
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
-        
-        List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
-        Assert.assertFalse(allKeys.isEmpty());
-        
-        recipients.add("foo");
-        recipients.add("baz");
-        
-        resolver = new ChainingEncryptedKeyResolver(resolverChain, recipients);
-        
-        List<EncryptedKey> resolved = generateList(encData, resolver);
-        Assert.assertEquals(resolved.size(), 4, "Incorrect number of resolved EncryptedKeys found");
-        
-        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
         Assert.assertTrue(resolved.get(1) == allKeys.get(2), "Unexpected EncryptedKey instance found");
-        Assert.assertTrue(resolved.get(2) == allKeys.get(3), "Unexpected EncryptedKey instance found");
-        Assert.assertTrue(resolved.get(3) == allKeys.get(5), "Unexpected EncryptedKey instance found");
     }
     
     /**
-     * Extract all the EncryptedKey's from the SignableSimpleXMLObject.
+     * Extract all the EncryptedKey's from the SimpleXMLObject.
      * 
      * @param sxo the mock object to process
      * @return a list of EncryptedKey elements
      */
     private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
         List<EncryptedKey> allKeys = new ArrayList<>();
-        allKeys.addAll(sxo.getSimpleXMLObjects().get(0).getEncryptedData().getKeyInfo().getEncryptedKeys());
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
-           if (xmlObject instanceof EncryptedKey)  {
-               allKeys.add((EncryptedKey) xmlObject);
+           if (xmlObject instanceof KeyInfo)  {
+               allKeys.addAll(((KeyInfo) xmlObject).getEncryptedKeys());
            }
         }
         return allKeys;
@@ -226,6 +177,5 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         }
         return resolved;
     }
-
 
 }

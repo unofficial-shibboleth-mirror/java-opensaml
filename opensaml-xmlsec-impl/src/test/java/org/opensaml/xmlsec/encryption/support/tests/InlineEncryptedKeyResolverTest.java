@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.encryption.support;
+package org.opensaml.xmlsec.encryption.support.tests;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
@@ -29,6 +29,8 @@ import java.util.List;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
 
 /**
  * Test the inline encrypted key resolver.
