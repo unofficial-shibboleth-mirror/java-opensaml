@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.soap.soap11;
+package org.opensaml.soap.testing;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
@@ -29,6 +29,14 @@ import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.soap.soap11.Body;
+import org.opensaml.soap.soap11.Detail;
+import org.opensaml.soap.soap11.Envelope;
+import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultActor;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
+import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.util.SOAPConstants;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
