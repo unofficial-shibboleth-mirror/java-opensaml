@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.storage;
+package org.opensaml.storage.testing;
 
 import java.io.IOException;
 import java.security.SecureRandom;

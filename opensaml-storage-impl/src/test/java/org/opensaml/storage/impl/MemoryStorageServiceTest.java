@@ -24,8 +24,8 @@ import javax.annotation.Nonnull;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.storage.StorageService;
-import org.opensaml.storage.StorageServiceTest;
 import org.opensaml.storage.impl.MemoryStorageService;
+import org.opensaml.storage.testing.StorageServiceTest;
 import org.testng.annotations.Test;
 
 /**

@@ -31,7 +31,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
-import org.opensaml.storage.StorageServiceTest;
+import org.opensaml.storage.testing.StorageServiceTest;
 import org.springframework.beans.factory.FactoryBean;
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
