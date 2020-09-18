@@ -21,7 +21,7 @@ import java.time.Instant;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.context.TestContext;
+import org.opensaml.messaging.context.testing.TestContext;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml2.core.AuthnRequest;

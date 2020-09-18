@@ -15,11 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.context;
-
 /**
- * A concrete test context implementation for use in unit tests.
+ * Utility testing classes.
  */
-public class TestContext extends BaseContext {
 
-}
+package org.opensaml.messaging.context.testing;
