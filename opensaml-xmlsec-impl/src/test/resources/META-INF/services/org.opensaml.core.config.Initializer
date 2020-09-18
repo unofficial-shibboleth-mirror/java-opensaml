@@ -1,1 +1,1 @@
-org.opensaml.xmlsec.config.impl.TestXMLObjectProviderInitializer
+org.opensaml.xmlsec.config.impl.testing.TestXMLObjectProviderInitializer

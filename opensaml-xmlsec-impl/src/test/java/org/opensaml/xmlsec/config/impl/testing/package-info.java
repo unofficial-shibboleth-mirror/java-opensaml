@@ -15,23 +15,8 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.config.impl;
-
-import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
-
 /**
- * XMLObject provider initializer for module "xmlsec", for testing classes only.
+ * Testing utility classes.
  */
-public class TestXMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
-    
-    /** Config resources. */
-    private static String[] configs = {
-        "/xmlsec-test-config.xml",
-        };
 
-    /** {@inheritDoc} */
-    protected String[] getConfigResources() {
-        return configs;
-    }
-
-}
+package org.opensaml.xmlsec.config.impl.testing;
