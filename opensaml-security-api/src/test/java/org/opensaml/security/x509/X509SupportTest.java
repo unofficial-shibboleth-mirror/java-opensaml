@@ -609,13 +609,10 @@ public class X509SupportTest {
     
     /**
      * Test decoding and matching EC keypair.
-     * 
-     * TODO this target cert is based on named curve secp256k1, which is no longer universally supported, e.g. not in OpenJDK 15.
-     *      Need to re-generate new keypair and cert test target based on a supported one, e.g. secp256r1.
      *
      * @throws Exception if something goes wrong
      */
-    @Test(enabled=false)
+    @Test()
     public void testEC() throws Exception {
         InputStream certInS = X509SupportTest.class.getResourceAsStream(certEC);
 
