@@ -169,6 +169,7 @@ public final class XMLObjectSupport {
                     + QNameSupport.getNodeQName(clonedElement));
         }
         
+        @SuppressWarnings("unchecked")
         final T clonedXMLObject = (T) unmarshaller.unmarshall(clonedElement);
         if (CloneOutputOption.DropDOM.equals(cloneOutputOption)) {
             clonedXMLObject.releaseDOM();

@@ -63,7 +63,7 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
         Assert.assertNull(clonedParentObj.getDOM(), "Cloned parent DOM node was not null");
         
         Assert.assertFalse(clonedParentObj.getSimpleXMLObjects().isEmpty(), "Cloned parent had no children");
-        SimpleXMLObject clonedChildObj = (SimpleXMLObject) clonedParentObj.getSimpleXMLObjects().get(0);
+        SimpleXMLObject clonedChildObj = clonedParentObj.getSimpleXMLObjects().get(0);
         
         Assert.assertFalse(origChildObj == clonedChildObj, "Child XMLObjects were the same reference");
         Assert.assertNull(clonedChildObj.getDOM(), "Cloned child DOM node was not null");
@@ -98,7 +98,7 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
                 "Parent DOM node was not cloned properly");
         
         Assert.assertFalse(clonedParentObj.getSimpleXMLObjects().isEmpty(), "Cloned parent had no children");
-        SimpleXMLObject clonedChildObj = (SimpleXMLObject) clonedParentObj.getSimpleXMLObjects().get(0);
+        SimpleXMLObject clonedChildObj = clonedParentObj.getSimpleXMLObjects().get(0);
         
         Assert.assertFalse(origChildObj == clonedChildObj, "Child XMLObjects were the same reference");
         Assert.assertNotNull(clonedChildObj.getDOM(), "Cloned child DOM node was null");
@@ -135,7 +135,7 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
                 "Parent DOM node was not cloned properly");
         
         Assert.assertFalse(clonedParentObj.getSimpleXMLObjects().isEmpty(), "Cloned parent had no children");
-        SimpleXMLObject clonedChildObj = (SimpleXMLObject) clonedParentObj.getSimpleXMLObjects().get(0);
+        SimpleXMLObject clonedChildObj = clonedParentObj.getSimpleXMLObjects().get(0);
         
         Assert.assertFalse(origChildObj == clonedChildObj, "Child XMLObjects were the same reference");
         Assert.assertNotNull(clonedChildObj.getDOM(), "Cloned child DOM node was null");
