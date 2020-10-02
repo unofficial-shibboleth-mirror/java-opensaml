@@ -130,12 +130,17 @@ public final class XMLObjectSupport {
             return null;
         }
         
-        final Marshaller marshaller = getMarshaller(originalXMLObject);
-        if (marshaller == null) {
-            throw new MarshallingException("Unable to obtain Marshaller for XMLObject: "
-                    + originalXMLObject.getElementQName());
+        Element origElement = null;
+        if (originalXMLObject.getDOM() == null) {
+            final Marshaller marshaller = getMarshaller(originalXMLObject);
+            if (marshaller == null) {
+                throw new MarshallingException("Unable to obtain Marshaller for XMLObject: "
+                        + originalXMLObject.getElementQName());
+            }
+            origElement = marshaller.marshall(originalXMLObject);
+        } else {
+            origElement = originalXMLObject.getDOM();
         }
-        final Element origElement = marshaller.marshall(originalXMLObject);
         
         Element clonedElement = null;
         

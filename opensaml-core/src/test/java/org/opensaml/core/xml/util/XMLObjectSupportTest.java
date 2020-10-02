@@ -30,6 +30,8 @@ import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.core.xml.util.XMLObjectSupport.CloneOutputOption;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 
 /**
  * Tests of XMLObjectHelper utility methods.
@@ -147,6 +149,34 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
                 "Cloned objects DOM's were owned by the same Document");
         Assert.assertTrue(clonedParentObj.getDOM().getOwnerDocument().getDocumentElement().isSameNode(clonedParentObj.getDOM()), 
                 "Cloned object was not the new Document root");
+    }
+    
+    @Test
+    public void testXMLObjectCloneInputMarshalling() throws MarshallingException, UnmarshallingException {
+        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
+                .getBuilder(SimpleXMLObject.ELEMENT_NAME);
+            
+            SimpleXMLObject origChildObj = sxoBuilder.buildObject();
+            origChildObj.setValue("FooBarBaz");
+            
+            SimpleXMLObject origParentObj = sxoBuilder.buildObject();
+            origParentObj.getSimpleXMLObjects().add(origChildObj);
+            
+            Assert.assertNull(origParentObj.getDOM());
+            
+            SimpleXMLObject clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj, CloneOutputOption.DropDOM);
+            Assert.assertNotNull(clonedParentObj);
+            
+            Assert.assertNotNull(origParentObj.getDOM());
+            Element preCloneElement = origParentObj.getDOM();
+            Document preCloneDocument = origParentObj.getDOM().getOwnerDocument();
+            
+            clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj, CloneOutputOption.DropDOM);
+            Assert.assertNotNull(clonedParentObj);
+            
+            Assert.assertNotNull(origParentObj.getDOM());
+            Assert.assertTrue(preCloneElement.isSameNode(origParentObj.getDOM()));
+            Assert.assertTrue(preCloneDocument.isSameNode(origParentObj.getDOM().getOwnerDocument()));
     }
     
     @Test
