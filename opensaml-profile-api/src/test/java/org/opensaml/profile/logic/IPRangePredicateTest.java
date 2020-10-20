@@ -24,24 +24,52 @@ import net.shibboleth.ext.spring.util.ApplicationContextBuilder;
 
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- *
+ * Unit test of {@link IPRangePredicate}.
  */
 public class IPRangePredicateTest {
 
     @Test public void testRanges() {
 
-       final GenericApplicationContext ctx = new ApplicationContextBuilder()
+        final GenericApplicationContext ctx = new ApplicationContextBuilder()
                .setName("IpRange")
                .setServiceConfiguration(new ClassPathResource("iprange.xml"))
                .setBeanPostProcessor(new IdentifiableBeanPostProcessor())
                .build();
 
-       final Map<String, IPRangePredicate> bar = ctx.getBeansOfType(IPRangePredicate.class);
-       
-       Assert.assertEquals(bar.size(), 2);
+        final Map<String,IPRangePredicate> map = ctx.getBeansOfType(IPRangePredicate.class);
+        Assert.assertEquals(map.size(), 2);
+
+        final MockHttpServletRequest request = new MockHttpServletRequest();
+   
+        IPRangePredicate condition = map.get("three");
+        condition.setHttpServletRequest(request);
+   
+        request.setRemoteAddr("192.168.1.128");
+        Assert.assertTrue(condition.test(null));
+
+        request.setRemoteAddr("192.168.3.128");
+        Assert.assertFalse(condition.test(null));
+
+        request.setRemoteAddr("::1");
+        Assert.assertFalse(condition.test(null));
+
+        condition = map.get("four");
+        condition.setHttpServletRequest(request);
+
+        request.setRemoteAddr("2620:df:8000:ff14:0:0:0:2");
+        Assert.assertTrue(condition.test(null));
+        
+        request.setRemoteAddr("2620:df:8000:ff14:0:0:0:3");
+        Assert.assertFalse(condition.test(null));
+        
+        // TODO reverse once we handle brackets.
+        request.setRemoteAddr("[2620:df:8000:ff14:0:0:0:2]");
+        Assert.assertFalse(condition.test(null));
     }
+
 }
