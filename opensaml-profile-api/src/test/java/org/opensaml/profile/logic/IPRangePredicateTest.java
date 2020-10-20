@@ -67,9 +67,8 @@ public class IPRangePredicateTest {
         request.setRemoteAddr("2620:df:8000:ff14:0:0:0:3");
         Assert.assertFalse(condition.test(null));
         
-        // TODO reverse once we handle brackets.
         request.setRemoteAddr("[2620:df:8000:ff14:0:0:0:2]");
-        Assert.assertFalse(condition.test(null));
+        Assert.assertTrue(condition.test(null));
     }
 
 }

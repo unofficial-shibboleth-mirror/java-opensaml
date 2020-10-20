@@ -35,6 +35,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -120,7 +121,8 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         // Default pulls from servlet request.
         addressLookupStrategy = new Function<>() {
             public String apply(final ProfileRequestContext input) {
-                final String address = getHttpServletRequest() != null ? getHttpServletRequest().getRemoteAddr() : null;
+                final String address = getHttpServletRequest() != null ?
+                        HttpServletSupport.getRemoteAddr(getHttpServletRequest()) : null;
                 log.debug("{} Setting confirmation data Address to {}", getLogPrefix(),
                         address != null ? address : "(none)");
                 return address;

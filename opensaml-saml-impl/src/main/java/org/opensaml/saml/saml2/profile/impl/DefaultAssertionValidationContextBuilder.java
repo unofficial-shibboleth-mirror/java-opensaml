@@ -73,6 +73,7 @@ import com.google.common.base.Predicates;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -925,7 +926,7 @@ public class DefaultAssertionValidationContextBuilder
      */
     @Nonnull protected String getAttesterIPAddress(@Nonnull final AssertionValidationInput input) {
         //TODO support indirection via SAMLBindingSupport and use of SAMLMessageReceivedEndpointContext?
-        return input.getHttpServletRequest().getRemoteAddr();
+        return HttpServletSupport.getRemoteAddr(input.getHttpServletRequest());
     }
     
     /**

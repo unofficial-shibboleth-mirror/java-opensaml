@@ -33,6 +33,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -340,7 +341,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * @return the IP address of the attester
      */
     @Nonnull protected String getAttesterIPAddress(@Nonnull final SAML20AssertionTokenValidationInput input) {
-        return input.getHttpServletRequest().getRemoteAddr();
+        return HttpServletSupport.getRemoteAddr(input.getHttpServletRequest());
     }
     
     /**

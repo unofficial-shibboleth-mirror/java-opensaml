@@ -32,6 +32,7 @@ import com.google.common.net.InetAddresses;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.Predicate;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.net.IPRange;
 
 /**
@@ -74,7 +75,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
 
     /** {@inheritDoc} */
     public boolean test(@Nullable final BaseContext input) {
-        final String address = httpRequest != null ? httpRequest.getRemoteAddr() : null;
+        final String address = httpRequest != null ? HttpServletSupport.getRemoteAddr(httpRequest) : null;
         if (address == null || !InetAddresses.isInetAddress(address)) {
             return false;
         }
