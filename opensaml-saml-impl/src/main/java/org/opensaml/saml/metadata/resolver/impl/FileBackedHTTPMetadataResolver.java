@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.StandardCopyOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Timer;
@@ -349,19 +350,30 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     protected void postProcessMetadata(final byte[] metadataBytes, 
                                        final Document metadataDom, final XMLObject originalMetadata, 
             final XMLObject filteredMetadata) throws ResolverException {
+
+        final File staging = new File(metadataBackupFile.getAbsolutePath() + ".staging");
         try {
+            validateBackupFile(staging);
             validateBackupFile(metadataBackupFile);
-            try (final FileOutputStream out = new FileOutputStream(metadataBackupFile)) {
+            try (final FileOutputStream out = new FileOutputStream(staging)) {
                 out.write(metadataBytes);
                 out.flush();
             }
-        } catch (final ResolverException e) {
-            log.error("{} Unable to write metadata to backup file: {}", 
-                    getLogPrefix(), metadataBackupFile.getAbsoluteFile(), e);
-        } catch (final IOException e) {
-            log.error("{} Unable to write metadata to backup file: {}", 
+
+            try {
+                java.nio.file.Files.move(staging.toPath(), metadataBackupFile.toPath(),
+                        StandardCopyOption.REPLACE_EXISTING);
+            } catch (final IOException e) {
+                log.warn("{} Error moving metadata backup staging file into place: {}",
+                        getLogPrefix(), staging.getAbsolutePath(), e);
+            }
+        } catch (final ResolverException|IOException e) {
+            log.warn("{} Unable to write metadata to backup file: {}", 
                     getLogPrefix(), metadataBackupFile.getAbsoluteFile(), e);
         } finally {
+            if (staging.exists()) {
+                staging.delete();
+            }
             super.postProcessMetadata(metadataBytes, metadataDom, originalMetadata, filteredMetadata);
         }
     }

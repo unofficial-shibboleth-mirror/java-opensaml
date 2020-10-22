@@ -22,7 +22,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 
@@ -63,6 +62,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     private String relativeMDResourceBad;
     private String badMDURL;
     private String backupFilePath;
+    private File backupFile;
     private FileBackedHTTPMetadataResolver metadataProvider;
     private String entityID;
     private CriteriaSet criteriaSet;
@@ -81,13 +81,14 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         badMDURL = "http://www.opensaml.org/foo/bar/baz/samlmd";
         backupFilePath = System.getProperty("java.io.tmpdir") + System.getProperty("file.separator") 
                 + "filebacked-http-metadata.xml";
+        backupFile = new File(backupFilePath);
         
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
 
     @AfterMethod
     protected void tearDown() throws IOException {
-        Path nioBackupFilePath = Paths.get(backupFilePath);
+        Path nioBackupFilePath = backupFile.toPath();
         Files.deleteIfExists(nioBackupFilePath);
     }
     
@@ -98,6 +99,8 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testGetEntityDescriptor() throws Exception {
+        Assert.assertFalse(backupFile.exists());
+        
         metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp, backupFilePath);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
@@ -108,6 +111,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(metadataProvider.getLastFailureCause());
         
         Assert.assertFalse(metadataProvider.isInitializedFromBackupFile());
+        Assert.assertTrue(backupFile.exists());
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
@@ -233,7 +237,6 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testInitFromBackupFile() throws Exception {
-        File backupFile = new File(backupFilePath);
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResource), backupFileOutputStream);
         }
@@ -288,7 +291,6 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testInitFromExpiredBackupFile() throws Exception {
-        File backupFile = new File(backupFilePath);
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResourceExpired), backupFileOutputStream);
         }
@@ -343,7 +345,6 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testInitFromBadBackupFileNonFailFast() throws Exception {
-        File backupFile = new File(backupFilePath);
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResourceBad), backupFileOutputStream);
         }
@@ -395,7 +396,6 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testNoBackupFileLoadWhenMetadataCached() throws Exception {
-        File backupFile = new File(backupFilePath);
         try (FileOutputStream backupFileOutputStream = new FileOutputStream(backupFile)) {
             Resources.copy(Resources.getResource(relativeMDResource), backupFileOutputStream);
         }
