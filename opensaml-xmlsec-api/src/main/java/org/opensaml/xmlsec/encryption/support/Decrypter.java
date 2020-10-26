@@ -986,7 +986,7 @@ public class Decrypter {
      * Validate the algorithms contained within an {@link EncryptedKey}.
      * 
      * @param encryptedKey the encrypted key instance to validate
-     * @throws DecryptionException if any algorithms do not satisfy whitelist/blacklist policy
+     * @throws DecryptionException if any algorithms do not satisfy include/exclude policy
      */
     protected void validateAlgorithms(@Nonnull final EncryptedKey encryptedKey) throws DecryptionException {
         final String encryptionAlgorithm = encryptedKey.getEncryptionMethod().getAlgorithm();
@@ -1027,25 +1027,25 @@ public class Decrypter {
      * Validate the algorithms contained within an {@link EncryptedData}.
      * 
      * @param encryptedData the encrypted data instance to validate
-     * @throws DecryptionException if any algorithms do not satisfy whitelist/blacklist policy
+     * @throws DecryptionException if any algorithms do not satisfy include/exclude policy
      */
     protected void validateAlgorithms(@Nonnull final EncryptedData encryptedData) throws DecryptionException {
         validateAlgorithmURI(encryptedData.getEncryptionMethod().getAlgorithm());
     }
     
     /**
-     * Validate the supplied algorithm URI against the configured whitelist and blacklist.
+     * Validate the supplied algorithm URI against the configured include and exclude lists.
      * 
      * @param algorithmURI the algorithm URI to evaluate
-     * @throws DecryptionException if the algorithm URI does not satisfy the whitelist/blacklist policy
+     * @throws DecryptionException if the algorithm URI does not satisfy the include/exclude policy
      */
     protected void validateAlgorithmURI(@Nonnull final String algorithmURI) throws DecryptionException {
-        log.debug("Validating algorithm URI against whitelist and blacklist: "
-                + "algorithm: {}, whitelist: {}, blacklist: {}",
+        log.debug("Validating algorithm URI against include and exclude lists: "
+                + "algorithm: {}, included: {}, excluded: {}",
                 algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs);
         
         if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs)) {
-            throw new DecryptionException("Algorithm failed whitelist/blacklist validation: " + algorithmURI);
+            throw new DecryptionException("Algorithm failed include/exclude validation: " + algorithmURI);
         }
         
     }
