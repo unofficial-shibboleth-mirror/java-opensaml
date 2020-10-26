@@ -23,6 +23,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
@@ -38,6 +40,9 @@ import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.w3c.dom.Element;
+
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * Class which implements SAML2-specific options for {@link EncryptedElementType} objects.
@@ -178,6 +183,8 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
             log.error("SAML Decrypter encountered an error decrypting element content: {}", e.getMessage());
             throw e; 
         }
+
+        logPostDecryption(xmlObject);
         
         if (! (xmlObject instanceof SAMLObject)) {
             throw new DecryptionException("Decrypted XMLObject was not an instance of SAMLObject");
@@ -186,4 +193,19 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
         return (SAMLObject) xmlObject;
     }
 
+    /**
+     * Log the target object after decryption.
+     * 
+     * @param xmlObject the decrypted XMLObject
+     */
+    private void logPostDecryption(final XMLObject xmlObject) {
+        if (log.isDebugEnabled()) {
+            try {
+                final Element dom = XMLObjectSupport.marshall(xmlObject);
+                log.debug("XML after decryption:\n{}", SerializeSupport.prettyPrintXML(dom));
+            } catch (final MarshallingException e) {
+                log.error("Unable to marshall decrypted XML for logging purposes", e);
+            }
+        }
+    }
 }
