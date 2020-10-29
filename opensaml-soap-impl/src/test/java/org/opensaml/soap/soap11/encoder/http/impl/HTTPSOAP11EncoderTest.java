@@ -89,7 +89,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
 
-        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals(response.getContentType(), "text/xml;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "");
@@ -145,7 +145,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
 
-        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals(response.getContentType(), "text/xml;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "");
@@ -208,7 +208,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
 
-        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals(response.getContentType(), "text/xml;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "");
@@ -272,7 +272,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
 
-        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals(response.getContentType(), "text/xml;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getStatus(), 200);
@@ -305,7 +305,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals(response.getContentType(), "text/xml;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getStatus(), 500);
@@ -356,7 +356,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        Assert.assertEquals(response.getContentType(), "text/xml", "Unexpected content type");
+        Assert.assertEquals(response.getContentType(), "text/xml;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getStatus(), 500);

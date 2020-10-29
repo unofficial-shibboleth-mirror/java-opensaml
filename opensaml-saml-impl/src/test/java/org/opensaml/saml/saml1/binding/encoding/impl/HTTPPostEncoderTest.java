@@ -102,7 +102,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
 
-        Assert.assertEquals(response.getContentType(), "text/html", "Unexpected content type");
+        Assert.assertEquals(response.getContentType(), "text/html;charset=UTF-8", "Unexpected content type");
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         
