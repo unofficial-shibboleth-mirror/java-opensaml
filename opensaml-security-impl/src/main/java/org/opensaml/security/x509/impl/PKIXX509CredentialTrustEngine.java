@@ -77,7 +77,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     public PKIXX509CredentialTrustEngine(
             @Nonnull @ParameterName(name="resolver") final PKIXValidationInformationResolver resolver,
             @Nullable @ParameterName(name="nameEvaluator") final X509CredentialNameEvaluator nameEvaluator) {
-        this(resolver, new CertPathPKIXTrustEvaluator(), null);
+        this(resolver, new CertPathPKIXTrustEvaluator(), nameEvaluator);
     }
     
     /**
