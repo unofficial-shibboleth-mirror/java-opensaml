@@ -398,7 +398,7 @@ public class Encrypter {
             if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithmURI) && rsaOAEPParams != null 
                     && rsaOAEPParams.getDigestMethod() != null) {
                 xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName(), 
-                        null, rsaOAEPParams.getDigestMethod());
+                        (String)null, rsaOAEPParams.getDigestMethod());
             } else {
                 xmlCipher = XMLCipher.getProviderInstance(encryptionAlgorithmURI, getJCAProviderName());
             }
