@@ -112,13 +112,13 @@ public class BasicSignatureSigningParametersResolver
         Constraint.isNotNull(criteria.get(SignatureSigningConfigurationCriterion.class), 
                 "Resolver requires an instance of SignatureSigningConfigurationCriterion");
         
-        final Predicate<String> whitelistBlacklistPredicate = getWhitelistBlacklistPredicate(criteria);
+        final Predicate<String> includeExcludePredicate = getIncludeExcludePredicate(criteria);
         
         final SignatureSigningParameters params = new SignatureSigningParameters();
         
-        resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
+        resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, includeExcludePredicate);
         
-        params.setSignatureReferenceDigestMethod(resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate));
+        params.setSignatureReferenceDigestMethod(resolveReferenceDigestMethod(criteria, includeExcludePredicate));
         params.setSignatureReferenceCanonicalizationAlgorithm(resolveReferenceCanonicalizationAlgorithm(criteria));
         
         params.setSignatureCanonicalizationAlgorithm(resolveCanonicalizationAlgorithm(criteria));
@@ -197,11 +197,25 @@ public class BasicSignatureSigningParametersResolver
      * 
      * @param criteria the input criteria being evaluated
      * 
-     * @return a whitelist/blacklist predicate instance
+     * @return include/exclude predicate instance
      */
-    @Nonnull protected Predicate<String> getWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria) {
+    @Nonnull protected Predicate<String> getIncludeExcludePredicate(@Nonnull final CriteriaSet criteria) {
         return resolveIncludeExcludePredicate(criteria, 
                 criteria.get(SignatureSigningConfigurationCriterion.class).getConfigurations());
+    }
+
+    /**
+     * Get a predicate which implements the effective configured include/exclude policy.
+     * 
+     * @param criteria the input criteria being evaluated
+     * 
+     * @return include/exclude predicate instance
+     * 
+     * @deprecated
+     */
+    @Deprecated(since="4.1.0",forRemoval=true)
+    @Nonnull protected Predicate<String> getWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria) {
+        return getIncludeExcludePredicate(criteria);
     }
 
     /**
