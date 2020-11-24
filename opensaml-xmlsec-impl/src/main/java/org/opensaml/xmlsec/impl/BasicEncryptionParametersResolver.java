@@ -271,17 +271,31 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         return true;
     }
 // Checkstyle: CyclomaticComplexity ON
-    
+
     /**
-     * Get a predicate which implements the effective configured whitelist/blacklist policy.
+     * Get a predicate which implements the effective configured include/exclude policy.
      * 
      * @param criteria the input criteria being evaluated
      * 
-     * @return a whitelist/blacklist predicate instance
+     * @return a include/exclude predicate instance
      */
-    @Nonnull protected Predicate<String> getWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria) {
+    @Nonnull protected Predicate<String> getIncludeExcludePredicate(@Nonnull final CriteriaSet criteria) {
         return resolveIncludeExcludePredicate(criteria, 
                 criteria.get(EncryptionConfigurationCriterion.class).getConfigurations());
+    }
+
+    /**
+     * Get a predicate which implements the effective configured include/exclude policy.
+     * 
+     * @param criteria the input criteria being evaluated
+     * 
+     * @return a include/exclude predicate instance
+     * 
+     * @deprecated
+     */
+    @Deprecated(since="4.1.0",forRemoval=true)
+    @Nonnull protected Predicate<String> getWhitelistBlacklistPredicate(@Nonnull final CriteriaSet criteria) {
+        return getIncludeExcludePredicate(criteria);
     }
     
     /**
