@@ -188,6 +188,15 @@ public final class JCAConstants {
     public static final String HMAC_SHA512 = "HmacSHA512";
     
     
+    
+    // Key Agreement types
+    
+    /** Key Agreement algorithm: Diffie-Hellman. */
+    public static final String KEY_AGREEMENT_DH = "DiffieHellman";
+    
+    /** Key Agreement algorithm: Elliptic Curve Diffie-Hellman. */
+    public static final String KEY_AGREEMENT_ECDH = "ECDH";
+
 
     /** Constructor. Private to disable instantiation. */
     private JCAConstants() { }

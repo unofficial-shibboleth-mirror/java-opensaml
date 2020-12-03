@@ -73,8 +73,11 @@ public final class EncryptionConstants {
     // *************************************************
     // Key Agreement
     // *************************************************
-    /** Key Agreement - OPTIONAL Diffie-Hellman. */
+    /** Key Agreement - OPTIONAL Diffie-Hellman with Legacy Key Derivation Function. */
     public static final String ALGO_ID_KEYAGREEMENT_DH = XMLENC_NS + "dh";
+    
+    /** URI for DHKeyValue. */
+    public static final String TYPE_DH_KEY_VALUE = XMLENC_NS + "DHKeyValue";
 
     // *************************************************
     // Symmetric Key Wrap
@@ -141,6 +144,21 @@ public final class EncryptionConstants {
 
     /** URI for DerivedKey. */
     public static final String TYPE_DERIVED_KEY = XMLENC11_NS + "DerivedKey";
+        
+    /** URI for ECKeyValue. */
+    public static final String TYPE_EC_KEY_VALUE = XMLENC11_NS + "ECKeyValue";
+        
+    /** Key Agreement - Diffie-Hellman with Explicit Key Derivation Function. */
+    public static final String ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF = XMLENC11_NS + "dh-es";
+        
+    /** Key Agreement - Elliptic Curve Diffie-Hellman (ECDH) Ephemeral-Static Mode. */
+    public static final String ALGO_ID_KEYAGREEMENT_ECDH_ES = XMLENC11_NS + "ECDH-ES";
+        
+    /** Key Derivation Method - ConcatKDF. */
+    public static final String ALGO_ID_KEYDERIVATION_CONCATKDF = XMLENC11_NS + "ConcatKDF";
+        
+    /** Key Derivation Method - PBKDF2. */
+    public static final String ALGO_ID_KEYDERIVATION_PBKDF2 = XMLENC11_NS + "pbkdf2";
         
     /** Constructor. */
     private EncryptionConstants() {

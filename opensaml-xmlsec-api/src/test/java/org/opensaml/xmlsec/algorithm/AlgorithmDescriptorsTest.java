@@ -39,6 +39,9 @@ import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA224;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA384;
 import org.opensaml.xmlsec.algorithm.descriptors.HMACSHA512;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyAgreementDHExplicitKDF;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyAgreementDHLegacyKDF;
+import org.opensaml.xmlsec.algorithm.descriptors.KeyAgreementECDH;
 import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSA15;
 import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEP;
 import org.opensaml.xmlsec.algorithm.descriptors.KeyTransportRSAOAEPMGF1P;
@@ -226,6 +229,27 @@ public class AlgorithmDescriptorsTest {
         Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.HMAC_SHA512);
         Assert.assertEquals(descriptor.getURI(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.Mac);
+    }
+    
+    // KeyAgreement
+    @Test
+    public void testKeyAgreement() {
+        KeyAgreementAlgorithm descriptor;
+        
+        descriptor = new KeyAgreementDHExplicitKDF();
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.KEY_AGREEMENT_DH);
+        Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.KeyAgreement);
+        
+        descriptor = new KeyAgreementDHLegacyKDF();
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.KEY_AGREEMENT_DH);
+        Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.KeyAgreement);
+        
+        descriptor = new KeyAgreementECDH();
+        Assert.assertEquals(descriptor.getJCAAlgorithmID(), JCAConstants.KEY_AGREEMENT_ECDH);
+        Assert.assertEquals(descriptor.getURI(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(descriptor.getType(), AlgorithmDescriptor.AlgorithmType.KeyAgreement);
     }
     
     // KeyTransport
