@@ -31,6 +31,7 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.Cipher;
+import javax.crypto.KeyAgreement;
 import javax.crypto.Mac;
 import javax.crypto.NoSuchPaddingException;
 
@@ -325,9 +326,14 @@ public class AlgorithmRegistry {
                     MessageDigest.getInstance(descriptor.getJCAAlgorithmID());
                     break;
                     
+                case KeyAgreement:
+                    KeyAgreement.getInstance(descriptor.getJCAAlgorithmID());
+                    break;
+                    
                 default:
                     log.info("Saw unknown AlgorithmDescriptor type, failing runtime support check: {}",
                             descriptor.getClass().getName());
+                    return false;
                 
             }
         } catch (final NoSuchAlgorithmException | NoSuchPaddingException e) {

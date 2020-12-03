@@ -163,6 +163,11 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
         Assert.assertNotNull(registry.get(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
         
+        // KeyAgreement
+        Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH));
+        Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF));
+        Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES));
+        
         // KeyTransport
         Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
         Assert.assertNotNull(registry.get(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
@@ -232,6 +237,13 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
         Assert.assertTrue(byType.contains(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
         Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.Mac).stream().filter(Objects::nonNull).count(), byType.size());
+        
+        // KeyAgreement
+        byType = registry.getRegisteredURIsByType(AlgorithmType.KeyAgreement);
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF));
+        Assert.assertTrue(byType.contains(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES));
+        Assert.assertEquals(registry.getRegisteredByType(AlgorithmType.KeyAgreement).stream().filter(Objects::nonNull).count(), byType.size());
         
         // KeyTransport
         byType = registry.getRegisteredURIsByType(AlgorithmType.KeyTransport);
@@ -306,6 +318,10 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA384));
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512));
             
+            // KeyAgreement
+            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH));
+            Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF));
+            
             // KeyTransport
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
             Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
@@ -331,6 +347,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
+                Assert.assertTrue(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES));
                 
                 Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
             } else {
@@ -339,6 +356,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
                 Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256));
                 Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
                 Assert.assertFalse(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
+                Assert.assertFalse(registry.isRuntimeSupported(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES));
             }
 
             Assert.assertTrue(registry.isRuntimeSupported(SignatureConstants.ALGO_ID_DIGEST_SHA224));
