@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc11:DerivedKey xmlns:xenc11="http://www.w3.org/2009/xmlenc11#">
+    
+    <xenc11:KeyDerivationMethod></xenc11:KeyDerivationMethod>
+    
+    <xenc:ReferenceList xmlns:xenc="http://www.w3.org/2001/04/xmlenc#" ></xenc:ReferenceList>
+    
+    <xenc11:DerivedKeyName></xenc11:DerivedKeyName>
+    
+    <xenc11:MasterKeyName></xenc11:MasterKeyName>
+    
+</xenc11:DerivedKey>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xenc11:ConcatKDFParams xmlns:xenc11="http://www.w3.org/2009/xmlenc11#"
+    AlgorithmID="00AA"
+    PartyUInfo="00BB"
+    PartyVInfo="00CC"
+    SuppPubInfo="00DD"
+    SuppPrivInfo="00EE" >
+    
+    <ds:DigestMethod xmlns:ds="http://www.w3.org/2000/09/xmldsig#" Algorithm="urn:string:foo"/>
+    
+</xenc11:ConcatKDFParams>

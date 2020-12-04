@@ -14,6 +14,11 @@
     <logger name="org.apache.xml.security.encryption.XMLCipherUtil">
         <level value="TRACE"/>
     </logger>
+    
+    <logger name="org.opensaml.core.testing">
+        <level value="TRACE"/>
+    </logger>
+    
     <logger name="org.opensaml.xmlsec.encryption.support">
         <level value="TRACE"/>
     </logger>
