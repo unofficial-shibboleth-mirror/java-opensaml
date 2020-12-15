@@ -19,7 +19,7 @@
 
     <groupId>org.opensaml</groupId>
     <artifactId>opensaml-parent</artifactId>
-    <version>3.4.6-SNAPSHOT</version>
+    <version>3.4.6</version>
     <packaging>pom</packaging>
 
     <modules>
@@ -49,8 +49,8 @@
     </modules>
 
     <properties>
-        <java-support.version>7.5.2-SNAPSHOT</java-support.version>
-        <spring-extensions.version>5.4.2-SNAPSHOT</spring-extensions.version>
+        <java-support.version>7.5.2</java-support.version>
+        <spring-extensions.version>5.4.2</spring-extensions.version>
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
         <opensaml-parent.site.url>${shibboleth.site.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
         <opensaml-module.site.url>${opensaml-parent.site.url}${project.artifactId}</opensaml-module.site.url>
