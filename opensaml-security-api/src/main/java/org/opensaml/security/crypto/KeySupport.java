@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyFactory;
@@ -42,6 +43,7 @@ import java.security.interfaces.RSAKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.DSAPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
@@ -453,6 +455,33 @@ public final class KeySupport {
     }
 
     /**
+     * Generate a random symmetric key.
+     * 
+     * @param algo key algorithm
+     * @param paramSpec the algorithm parameter specification
+     * @param provider JCA provider
+     * @return randomly generated symmetric key
+     * @throws NoSuchAlgorithmException algorithm not found
+     * @throws NoSuchProviderException provider not found
+     * @throws InvalidAlgorithmParameterException invalid parameter specification
+     */
+    @Nonnull public static SecretKey generateKey(@Nonnull final String algo,
+            @Nonnull final AlgorithmParameterSpec paramSpec, @Nullable final String provider)
+                    throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        Constraint.isNotNull(algo, "Key algorithm cannot be null");
+        Constraint.isNotNull(paramSpec, "Algorithm parameter spec cannot be null");
+        
+        KeyGenerator keyGenerator = null;
+        if (provider != null) {
+            keyGenerator = KeyGenerator.getInstance(algo, provider);
+        } else {
+            keyGenerator = KeyGenerator.getInstance(algo);
+        }
+        keyGenerator.init(paramSpec);
+        return keyGenerator.generateKey();
+    }
+
+    /**
      * Generate a random asymmetric key pair.
      * 
      * @param algo key algorithm
@@ -476,6 +505,32 @@ public final class KeySupport {
         return keyGenerator.generateKeyPair();
     }
 
+    /**
+     * Generate a random asymmetric key pair.
+     * 
+     * @param algo key algorithm
+     * @param paramSpec the algorithm parameter specification
+     * @param provider JCA provider
+     * @return randomly generated key
+     * @throws NoSuchAlgorithmException algorithm not found
+     * @throws NoSuchProviderException provider not found
+     * @throws InvalidAlgorithmParameterException invalid parameter specification
+     */
+    @Nonnull public static KeyPair generateKeyPair(@Nonnull final String algo,
+            @Nonnull final AlgorithmParameterSpec paramSpec, @Nullable final String provider)
+                    throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        Constraint.isNotNull(algo, "Key algorithm cannot be null");
+        
+        KeyPairGenerator keyGenerator = null;
+        if (provider != null) {
+            keyGenerator = KeyPairGenerator.getInstance(algo, provider);
+        } else {
+            keyGenerator = KeyPairGenerator.getInstance(algo);
+        }
+        keyGenerator.initialize(paramSpec);
+        return keyGenerator.generateKeyPair();
+    }
+    
     /**
      * Compare the supplied public and private keys, and determine if they correspond to the same key pair.
      * 
