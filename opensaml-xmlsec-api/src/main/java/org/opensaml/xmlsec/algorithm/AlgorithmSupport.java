@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.algorithm;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyPair;
@@ -24,6 +25,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.spec.AlgorithmParameterSpec;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
@@ -358,6 +360,23 @@ public final class AlgorithmSupport {
     }
 
     /**
+     * Randomly generates a Java JCE KeyPair object from the specified XML Encryption algorithm URI.
+     * 
+     * @param algoURI  The XML Encryption algorithm URI
+     * @param paramSpec the algorithm parameter specification
+     * @return a randomly-generated KeyPair
+     * @throws NoSuchProviderException  provider not found
+     * @throws NoSuchAlgorithmException  algorithm not found
+     * @throws InvalidAlgorithmParameterException 
+     */
+    @Nonnull public static KeyPair generateKeyPair(@Nonnull final String algoURI,
+            @Nonnull final AlgorithmParameterSpec paramSpec)
+                    throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        final String jceAlgorithmName = getKeyAlgorithm(algoURI);
+        return KeySupport.generateKeyPair(jceAlgorithmName, paramSpec, null);
+    }
+
+    /**
      * Generate a random symmetric key and return in a BasicCredential.
      * 
      * @param algorithmURI The XML Encryption algorithm URI
@@ -385,6 +404,29 @@ public final class AlgorithmSupport {
             final int keyLength,
             final boolean includePrivate) throws NoSuchAlgorithmException, NoSuchProviderException {
         final KeyPair keyPair = generateKeyPair(algorithmURI, keyLength);
+        final BasicCredential credential = new BasicCredential(keyPair.getPublic());
+        if (includePrivate) {
+            credential.setPrivateKey(keyPair.getPrivate());
+        }
+        return credential;
+    }
+    
+    /**
+     * Generate a random asymmetric key pair and return in a BasicCredential.
+     * 
+     * @param algorithmURI The XML Encryption algorithm URI
+     * @param paramSpec the algorithm parameter specification
+     * @param includePrivate if true, the private key will be included as well
+     * @return a basic credential containing a randomly generated asymmetric key pair
+     * @throws NoSuchAlgorithmException algorithm not found
+     * @throws NoSuchProviderException provider not found
+     * @throws InvalidAlgorithmParameterException 
+     */
+    @Nonnull public static Credential generateKeyPairAndCredential(@Nonnull final String algorithmURI,
+            @Nonnull final AlgorithmParameterSpec paramSpec,
+            final boolean includePrivate)
+                    throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        final KeyPair keyPair = generateKeyPair(algorithmURI, paramSpec);
         final BasicCredential credential = new BasicCredential(keyPair.getPublic());
         if (includePrivate) {
             credential.setPrivateKey(keyPair.getPrivate());

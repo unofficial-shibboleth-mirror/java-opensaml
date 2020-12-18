@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.algorithm;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
 import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.spec.ECGenParameterSpec;
+import java.security.spec.RSAKeyGenParameterSpec;
 import java.util.HashSet;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
@@ -400,6 +403,80 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
         
         Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
         Assert.assertNotNull(AlgorithmSupport.generateSymmetricKey(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
+    }
+    
+    @Test
+    public void testGenerateSymmetricKeyAndCredential() throws NoSuchAlgorithmException, KeyException {
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_KEYWRAP_AES192));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        Assert.assertNotNull(AlgorithmSupport.generateSymmetricKeyAndCredential(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
+    }
+    
+    @Test
+    public void testGenerateKeyPairWithLength() throws NoSuchAlgorithmException, NoSuchProviderException {
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 2048));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 2048));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, 2048));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, 2048));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512, 2048));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1, 256));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256, 256));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512, 256));
+    }
+
+    @Test
+    public void testGenerateKeyPairAndCredentialWithLength() throws NoSuchAlgorithmException, NoSuchProviderException {
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, 2048, true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, 2048, true));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, 2048, true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, 2048, true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512, 2048, true));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1, 256, true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256, 256, true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512, 256, true));
+    }
+
+    @Test
+    public void testGenerateKeyPairWithParamSpec() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4)));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4)));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4)));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4)));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4)));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1, new ECGenParameterSpec("secp256r1")));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256, new ECGenParameterSpec("secp256r1")));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPair(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512, new ECGenParameterSpec("secp256r1")));
+    }
+
+    @Test
+    public void testGenerateKeyPairAndCredentialWithParamSpec() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4), true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4), true));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4), true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4), true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA512, new RSAKeyGenParameterSpec(2048, RSAKeyGenParameterSpec.F4), true));
+        
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1, new ECGenParameterSpec("secp256r1"), true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256, new ECGenParameterSpec("secp256r1"), true));
+        Assert.assertNotNull(AlgorithmSupport.generateKeyPairAndCredential(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512, new ECGenParameterSpec("secp256r1"), true));
     }
 
 }
