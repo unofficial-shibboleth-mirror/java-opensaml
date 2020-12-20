@@ -62,13 +62,14 @@ public class ECSupportTest {
     public void performKeyAgreement(String namedCurve) throws Exception {
         final KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance(JCAConstants.KEY_ALGO_EC);
         kpGenerator.initialize(new ECGenParameterSpec(namedCurve));
-        final KeyPair recipientKeyPair = kpGenerator.generateKeyPair();
-        ECPublicKey recipientPublicKey = ECPublicKey.class.cast(recipientKeyPair.getPublic());
+        final KeyPair publicKeyPair = kpGenerator.generateKeyPair();
+        ECPublicKey publicKey = ECPublicKey.class.cast(publicKeyPair.getPublic());
         
-        final KeyPair originatorKeyPair = ECSupport.generateCompatibleKeyPair(recipientPublicKey, null);
-        final ECPrivateKey originatorPrivateKey = ECPrivateKey.class.cast(originatorKeyPair.getPrivate());
+        final KeyPair privateKeyPair = ECSupport.generateCompatibleKeyPair(publicKey, null);
         
-        byte[] secret = ECSupport.performKeyAgreement(recipientPublicKey, originatorPrivateKey, null);
+        final ECPrivateKey privateKey = ECPrivateKey.class.cast(privateKeyPair.getPrivate());
+        
+        byte[] secret = ECSupport.performKeyAgreement(publicKey, privateKey, null);
         Assert.assertNotNull(secret);
     }
 

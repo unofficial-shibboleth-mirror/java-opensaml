@@ -46,9 +46,9 @@ public class ECDHKeyAgreementProcessorTest {
     }
     
     @Test
-    public void basic() throws Exception {
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
-        Credential recipientCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
+    public void encryptingCase() throws Exception {
+        KeyPair recipientKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        Credential recipientCredential = CredentialSupport.getSimpleCredential(recipientKeyPair.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new MockKeyDerivation()); 
@@ -70,6 +70,7 @@ public class ECDHKeyAgreementProcessorTest {
         
         Assert.assertNotNull(keyAgreementCredential.getRecipientCredential());
         Assert.assertNotNull(keyAgreementCredential.getRecipientCredential().getPublicKey());
+        Assert.assertNull(keyAgreementCredential.getRecipientCredential().getPrivateKey());
         Assert.assertNull(keyAgreementCredential.getRecipientCredential().getSecretKey());
         
         Assert.assertNotNull(keyAgreementCredential.getOriginatorCredential());
@@ -85,17 +86,64 @@ public class ECDHKeyAgreementProcessorTest {
         Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "someBase64");
         
     }
+    
+    @Test
+    public void decryptingCase() throws Exception {
+        KeyPair originatorKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        Credential originatorCredential = CredentialSupport.getSimpleCredential(originatorKeyPair.getPublic(), null);
+        
+        KeyPair recipientKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        Credential recipientCredential = CredentialSupport.getSimpleCredential(recipientKeyPair.getPublic(), recipientKeyPair.getPrivate());
+        
+        KeyAgreementParameters params = new KeyAgreementParameters();
+        params.add(new PrivateCredential(recipientCredential));
+        params.add(new MockKeyDerivation()); 
+        params.add(new KANonce("someBase64")); 
+        
+        KeyAgreementCredential keyAgreementCredential = processor.execute(originatorCredential,
+                JCAConstants.KEY_ALGO_AES,
+                128,
+                params);
+        
+        Assert.assertNotNull(keyAgreementCredential);
+        
+        Assert.assertNotNull(keyAgreementCredential.getSecretKey());
+        Assert.assertEquals(keyAgreementCredential.getSecretKey().getAlgorithm(), JCAConstants.KEY_ALGO_AES);
+        Assert.assertEquals(KeySupport.getKeyLength(keyAgreementCredential.getSecretKey()), Integer.valueOf(128));
+        
+        Assert.assertNull(keyAgreementCredential.getPublicKey());
+        Assert.assertNull(keyAgreementCredential.getPrivateKey());
+        
+        Assert.assertNotNull(keyAgreementCredential.getRecipientCredential());
+        Assert.assertNotNull(keyAgreementCredential.getRecipientCredential().getPublicKey());
+        Assert.assertNotNull(keyAgreementCredential.getRecipientCredential().getPrivateKey());
+        Assert.assertNull(keyAgreementCredential.getRecipientCredential().getSecretKey());
+        
+        Assert.assertNotNull(keyAgreementCredential.getOriginatorCredential());
+        Assert.assertNotNull(keyAgreementCredential.getOriginatorCredential().getPublicKey());
+        Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getPrivateKey());
+        Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getSecretKey());
+        
+        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        
+        Assert.assertEquals(keyAgreementCredential.getParameters().size(), 3);
+        Assert.assertTrue(keyAgreementCredential.getParameters().contains(PrivateCredential.class));
+        Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
+        Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
+        Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "someBase64");
+        
+    }
 
     @Test(expectedExceptions = KeyAgreementException.class)
     public void nonECCred() throws Exception {
         KeyPair kp = KeySupport.generateKeyPair("RSA", 2048, null);
-        Credential recipientCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
+        Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new MockKeyDerivation()); 
         params.add(new KANonce("someBase64")); 
         
-        processor.execute(recipientCredential,
+        processor.execute(publicCredential,
                 JCAConstants.KEY_ALGO_AES,
                 128,
                 params);
@@ -104,13 +152,13 @@ public class ECDHKeyAgreementProcessorTest {
     @Test(expectedExceptions = KeyAgreementException.class)
     public void keyDerivationError() throws Exception {
         KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
-        Credential recipientCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
+        Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new MockKeyDerivation()); 
         params.add(new KANonce("someBase64")); 
         
-        processor.execute(recipientCredential,
+        processor.execute(publicCredential,
                 "INVALID",
                 128,
                 params);
@@ -119,12 +167,12 @@ public class ECDHKeyAgreementProcessorTest {
     @Test(expectedExceptions = KeyAgreementException.class)
     public void missingKeyDerivationParam() throws Exception {
         KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
-        Credential recipientCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
+        Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new KANonce("someBase64")); 
         
-        processor.execute(recipientCredential,
+        processor.execute(publicCredential,
                 JCAConstants.KEY_ALGO_AES,
                 128,
                 params);

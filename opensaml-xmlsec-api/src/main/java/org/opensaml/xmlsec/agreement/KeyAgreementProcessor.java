@@ -36,16 +36,18 @@ public interface KeyAgreementProcessor {
     /**
      * Perform the key agreement operation and return a new credential representing the results.
      * 
-     * @param recipientCredential the recipient credential
+     * @param publicCredential the public credential, which will belong either to the recipient or originator party,
+     *                         depending on whether encryption or decryption is being performed, respectively
      * @param keyAlgorithm the JCA key algorithm for the derived key
      * @param keyLength the key length for the derived key
-     * @param parameters parameters to the agreement operation
+     * @param parameters parameters to the agreement operation. Internally a copy will be created so this input instance
+     *                   will not be modified.
      * 
      * @return the agreement credential
      * 
      * @throws KeyAgreementException
      */
-    @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential recipientCredential,
+    @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
             @Nonnull final String keyAlgorithm, @Nonnull final Integer keyLength,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException;
 

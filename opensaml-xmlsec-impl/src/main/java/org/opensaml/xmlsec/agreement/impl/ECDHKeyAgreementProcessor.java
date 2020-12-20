@@ -34,12 +34,17 @@ import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link KeyAgreementProcessor} which performs Elliptic Curve Diffie-Hellman (ECDH)
  * Ephemeral-Static Mode key agreement as defined in XML Encryption 1.1.
  */
 public class ECDHKeyAgreementProcessor extends AbstractDerivationKeyAgreementProcessor {
+    
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(ECDHKeyAgreementProcessor.class);
 
     /** {@inheritDoc} */
     public String getAlgorithm() {
@@ -47,42 +52,50 @@ public class ECDHKeyAgreementProcessor extends AbstractDerivationKeyAgreementPro
     }
 
     /** {@inheritDoc} */
-    protected Credential obtainOriginatorCredential(@Nonnull final Credential recipientCredential,
+    protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
-        if (!ECPublicKey.class.isInstance(recipientCredential.getPublicKey())) {
-            throw new KeyAgreementException("Recipient credential's public key is not an instance of ECPublicKey");
+        final Credential suppliedCredential = super.obtainPrivateCredential(publicCredential, parameters);
+        if (suppliedCredential != null) {
+            return suppliedCredential;
         }
         
-        final ECPublicKey recipientPublicKey = ECPublicKey.class.cast(recipientCredential.getPublicKey());
+        log.debug("Found no supplied PrivateCredential in KeyAgreementParameters, generating ephemeral key pair");
+        
+        
+        if (!ECPublicKey.class.isInstance(publicCredential.getPublicKey())) {
+            throw new KeyAgreementException("Public credential's public key is not an instance of ECPublicKey");
+        }
+        
+        final ECPublicKey publicKey = ECPublicKey.class.cast(publicCredential.getPublicKey());
         
         try {
-            final KeyPair originatorKeyPair = ECSupport.generateCompatibleKeyPair(recipientPublicKey, null);
-            return new BasicCredential(originatorKeyPair.getPublic(), originatorKeyPair.getPrivate());
+            final KeyPair privateKeyPair = ECSupport.generateCompatibleKeyPair(publicKey, null);
+            return new BasicCredential(privateKeyPair.getPublic(), privateKeyPair.getPrivate());
         } catch (final NoSuchAlgorithmException | NoSuchProviderException | InvalidAlgorithmParameterException e) {
-            throw new KeyAgreementException("Error generating originator KeyPair from recipient EC public key", e);
+            throw new KeyAgreementException("Error generating private KeyPair from EC public key", e);
         }
     }
 
     /** {@inheritDoc} */
-    protected byte[] generateAgreementSecret(@Nonnull final Credential recipientCredential,
-            @Nonnull final Credential originatorCredential, @Nonnull final KeyAgreementParameters parameters)
+    protected byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
+            @Nonnull final Credential privateCredential, @Nonnull final KeyAgreementParameters parameters)
                     throws KeyAgreementException {
         
-        if (!ECPublicKey.class.isInstance(recipientCredential.getPublicKey())) {
-            throw new KeyAgreementException("Recipient credential's public key is not an instance of ECPublicKey");
+        if (!ECPublicKey.class.isInstance(publicCredential.getPublicKey())) {
+            throw new KeyAgreementException("Public credential's public key is not an instance of ECPublicKey");
         }
-        if (!ECPrivateKey.class.isInstance(originatorCredential.getPrivateKey())) {
-            throw new KeyAgreementException("Originator credential's private key is not an instance of ECPublicKey");
+        if (!ECPrivateKey.class.isInstance(privateCredential.getPrivateKey())) {
+            throw new KeyAgreementException("Private credential's private key is not an instance of ECPublicKey");
         }
         
-        final ECPublicKey recipient = ECPublicKey.class.cast(recipientCredential.getPublicKey());
-        final ECPrivateKey originator = ECPrivateKey.class.cast(originatorCredential.getPrivateKey());
+        final ECPublicKey publicKey = ECPublicKey.class.cast(publicCredential.getPublicKey());
+        final ECPrivateKey privateKey = ECPrivateKey.class.cast(privateCredential.getPrivateKey());
         
         try {
-            return ECSupport.performKeyAgreement(recipient, originator, null);
+            return ECSupport.performKeyAgreement(publicKey, privateKey, null);
         } catch (final InvalidKeyException | NoSuchAlgorithmException | NoSuchProviderException e) {
-            throw new KeyAgreementException("Error generating secret from recipient and originator EC keys", e);
+            throw new KeyAgreementException("Error generating secret from public and private EC keys", e);
         }
     }
 

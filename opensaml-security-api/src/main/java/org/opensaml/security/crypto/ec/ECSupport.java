@@ -41,10 +41,10 @@ public final class ECSupport {
     private ECSupport() { }
     
     /**
-     * Perform ECDH key agreement between the given originator and recipient keys.
+     * Perform ECDH key agreement between the given public and private keys.
      * 
-     * @param recipientKey the recipient's public key
-     * @param originatorKey the originator's private key
+     * @param publicKeyKey the public key
+     * @param privateKey the private key
      * @param provider the optional security provider to use
      * 
      * @return the secret produced by key agreement
@@ -53,8 +53,8 @@ public final class ECSupport {
      * @throws NoSuchProviderException
      * @throws InvalidKeyException
      */
-    public static byte[] performKeyAgreement(@Nonnull final ECPublicKey recipientKey,
-            @Nonnull final ECPrivateKey originatorKey, @Nullable final String provider)
+    public static byte[] performKeyAgreement(@Nonnull final ECPublicKey publicKeyKey,
+            @Nonnull final ECPrivateKey privateKey, @Nullable final String provider)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException {
         
         KeyAgreement keyAgreement = null;
@@ -64,8 +64,8 @@ public final class ECSupport {
             keyAgreement = KeyAgreement.getInstance(JCAConstants.KEY_AGREEMENT_ECDH);
         }
         
-        keyAgreement.init(originatorKey);
-        keyAgreement.doPhase(recipientKey, true);
+        keyAgreement.init(privateKey);
+        keyAgreement.doPhase(publicKeyKey, true);
         return keyAgreement.generateSecret();
     }
 
