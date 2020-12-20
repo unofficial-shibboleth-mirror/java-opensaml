@@ -17,11 +17,30 @@
 
 package org.opensaml.xmlsec.agreement;
 
+import javax.annotation.Nonnull;
+
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
 
 /**
  * Specialized collection type for holding sets of parameters to key agreement operations.
  */
 public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParameter> {
+    
+    /**
+     * Constructor.
+     *
+     */
+    public KeyAgreementParameters() {
+        super();
+    }
 
+    /**
+     * Copy constructor.
+     *
+     * @param source the source set from which to copy
+     */
+    public KeyAgreementParameters(@Nonnull final KeyAgreementParameters source) {
+        super();
+        addAll(source);
+    }
 }

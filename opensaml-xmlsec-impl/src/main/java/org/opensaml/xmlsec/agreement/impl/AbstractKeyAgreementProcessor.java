@@ -39,7 +39,10 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
     /** {@inheritDoc} */
     @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
             @Nonnull final String keyAlgorithm, @Nonnull final Integer keyLength,
-            @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
+            @Nonnull final KeyAgreementParameters inputParameters) throws KeyAgreementException {
+        
+        // Make a copy so methods can store items without mutating the input instance
+        final KeyAgreementParameters parameters = new KeyAgreementParameters(inputParameters);
         
         final Credential privateCredential = obtainPrivateCredential(publicCredential, parameters);
         
