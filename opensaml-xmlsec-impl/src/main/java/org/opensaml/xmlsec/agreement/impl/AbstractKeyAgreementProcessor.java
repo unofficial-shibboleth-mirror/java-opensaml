@@ -25,53 +25,66 @@ import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract base class for {@link KeyAgreementProcessor} implementations.
  */
 public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProcessor {
+    
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(AbstractKeyAgreementProcessor.class);
 
     /** {@inheritDoc} */
-    @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential recipientCredential,
+    @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
             @Nonnull final String keyAlgorithm, @Nonnull final Integer keyLength,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
-        final Credential originatorCredential = obtainOriginatorCredential(recipientCredential, parameters);
+        final Credential privateCredential = obtainPrivateCredential(publicCredential, parameters);
         
-        final byte[] secret = generateAgreementSecret(recipientCredential, originatorCredential, parameters);
+        final byte[] secret = generateAgreementSecret(publicCredential, privateCredential, parameters);
         
         final SecretKey derivedKey = deriveSecretKey(secret, keyAlgorithm, keyLength, parameters);
         
-        return buildKeyAgreementCredential(derivedKey, recipientCredential, originatorCredential, parameters);
+        return buildKeyAgreementCredential(derivedKey, publicCredential, privateCredential, parameters);
     }
     
     /**
-     * Obtain an originator credential which is compatible with the given recipient credential.
+     * Obtain the private credential which is compatible with the given public credential.
      * 
-     * @param recipientCredential the recipient credential
+     * @param publicCredential the public credential
      * @param parameters the key agreement parameters
      * 
-     * @return the obtained originator credential
+     * @return the obtained private credential
      * 
      * @throws KeyAgreementException
      */
-    @Nonnull protected abstract Credential obtainOriginatorCredential(@Nonnull final Credential recipientCredential,
-            @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException;
+    @Nonnull protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
+            @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
+        
+        if (parameters.contains(PrivateCredential.class)) {
+            log.debug("Found supplied PrivateCredential in KeyAgreementParameters");
+            return parameters.get(PrivateCredential.class).getCredential();
+        }
+        return null;
+        
+    }
     
     /**
      * Generate the agreement secret according to the key algorithm and using the supplied
-     * originator and recipient credentials.
+     * public and private credentials.
      * 
-     * @param recipientCredential the recipient credential
-     * @param originatorCredential the originator credential
+     * @param publicCredential the public credential
+     * @param privateCredential the private credential
      * @param parameters the key agreement parameters
      * 
-     * @return the obtained originator credential
+     * @return the secret produced by the key agreement operation
      * 
      * @throws KeyAgreementException
      */
-    @Nonnull protected abstract byte[] generateAgreementSecret(@Nonnull final Credential recipientCredential,
-            @Nonnull final Credential originatorCredential, @Nonnull final KeyAgreementParameters parameters)
+    @Nonnull protected abstract byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
+            @Nonnull final Credential privateCredential, @Nonnull final KeyAgreementParameters parameters)
                 throws KeyAgreementException;
     
     /**
@@ -94,8 +107,8 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * Build the final {@link KeyAgreementCredential} from the given inputs.
      * 
      * @param derivedKey the derived secret key
-     * @param recipientCredential the recipient credential
-     * @param originatorCredential the originator credential
+     * @param publicCredential the public credential
+     * @param privateCredential the private credential
      * @param parameters the key agreement parameters
      * 
      * @return the new key agreement credential
@@ -103,11 +116,24 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * @throws KeyAgreementException
      */
     @Nonnull protected KeyAgreementCredential buildKeyAgreementCredential(@Nonnull final SecretKey derivedKey,
-            @Nonnull final Credential recipientCredential, @Nonnull final Credential originatorCredential,
+            @Nonnull final Credential publicCredential, @Nonnull final Credential privateCredential,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
+        Credential recipient = null;
+        Credential originator = null;
+        
+        if (parameters.contains(PrivateCredential.class) && ! parameters.contains(StaticStaticMode.class)) {
+            // Decrypting party case
+            recipient = privateCredential;
+            originator = publicCredential;
+        } else {
+            // Encrypting party case
+            recipient = publicCredential;
+            originator = privateCredential;
+        }
+        
         final KeyAgreementCredential cred = new BasicKeyAgreementCredential(derivedKey, getAlgorithm(),
-                originatorCredential, recipientCredential);
+                originator, recipient);
         cred.getParameters().addAll(parameters);
         
         return cred;
