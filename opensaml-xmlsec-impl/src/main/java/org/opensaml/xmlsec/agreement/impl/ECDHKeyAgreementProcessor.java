@@ -86,7 +86,7 @@ public class ECDHKeyAgreementProcessor extends AbstractDerivationKeyAgreementPro
             throw new KeyAgreementException("Public credential's public key is not an instance of ECPublicKey");
         }
         if (!ECPrivateKey.class.isInstance(privateCredential.getPrivateKey())) {
-            throw new KeyAgreementException("Private credential's private key is not an instance of ECPublicKey");
+            throw new KeyAgreementException("Private credential's private key is not an instance of ECPrivateKey");
         }
         
         final ECPublicKey publicKey = ECPublicKey.class.cast(publicCredential.getPublicKey());
