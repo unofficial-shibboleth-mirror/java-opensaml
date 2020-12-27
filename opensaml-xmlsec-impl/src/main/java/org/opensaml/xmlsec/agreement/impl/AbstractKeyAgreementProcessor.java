@@ -38,8 +38,8 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
 
     /** {@inheritDoc} */
     @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
-            @Nonnull final String keyAlgorithm, @Nonnull final Integer keyLength,
-            @Nonnull final KeyAgreementParameters inputParameters) throws KeyAgreementException {
+            @Nonnull final String keyAlgorithm, @Nonnull final KeyAgreementParameters inputParameters)
+                    throws KeyAgreementException {
         
         // Make a copy so methods can store items without mutating the input instance
         final KeyAgreementParameters parameters = new KeyAgreementParameters(inputParameters);
@@ -48,7 +48,7 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
         
         final byte[] secret = generateAgreementSecret(publicCredential, privateCredential, parameters);
         
-        final SecretKey derivedKey = deriveSecretKey(secret, keyAlgorithm, keyLength, parameters);
+        final SecretKey derivedKey = deriveSecretKey(secret, keyAlgorithm, parameters);
         
         return buildKeyAgreementCredential(derivedKey, publicCredential, privateCredential, parameters);
     }
@@ -95,7 +95,6 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * 
      * @param secret the input secret
      * @param keyAlgorithm the JCA key algorithm for the derived key
-     * @param keyLength the key length for the derived key
      * @param parameters the key agreement parameters
      * 
      * @return the derived secret key
@@ -103,8 +102,8 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * @throws KeyAgreementException
      */
     @Nonnull protected abstract SecretKey deriveSecretKey(@Nonnull final byte[] secret,
-            @Nonnull final String keyAlgorithm, @Nonnull final Integer keyLength,
-            @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException;
+            @Nonnull final String keyAlgorithm, @Nonnull final KeyAgreementParameters parameters)
+                    throws KeyAgreementException;
     
     /**
      * Build the final {@link KeyAgreementCredential} from the given inputs.

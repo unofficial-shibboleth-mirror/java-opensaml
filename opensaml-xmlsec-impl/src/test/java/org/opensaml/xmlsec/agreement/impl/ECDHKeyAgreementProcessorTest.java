@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.agreement.impl;
 import java.security.KeyPair;
 import java.security.spec.ECGenParameterSpec;
 
+import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;
@@ -36,7 +37,7 @@ import org.testng.annotations.Test;
 /**
  *
  */
-public class ECDHKeyAgreementProcessorTest {
+public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     private ECDHKeyAgreementProcessor processor;
     
@@ -55,8 +56,7 @@ public class ECDHKeyAgreementProcessorTest {
         params.add(new KANonce("someBase64")); 
         
         KeyAgreementCredential keyAgreementCredential = processor.execute(recipientCredential,
-                JCAConstants.KEY_ALGO_AES,
-                128,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
                 params);
         
         Assert.assertNotNull(keyAgreementCredential);
@@ -101,8 +101,7 @@ public class ECDHKeyAgreementProcessorTest {
         params.add(new KANonce("someBase64")); 
         
         KeyAgreementCredential keyAgreementCredential = processor.execute(originatorCredential,
-                JCAConstants.KEY_ALGO_AES,
-                128,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
                 params);
         
         Assert.assertNotNull(keyAgreementCredential);
@@ -144,8 +143,7 @@ public class ECDHKeyAgreementProcessorTest {
         params.add(new KANonce("someBase64")); 
         
         processor.execute(publicCredential,
-                JCAConstants.KEY_ALGO_AES,
-                128,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
                 params);
     }
     
@@ -159,8 +157,7 @@ public class ECDHKeyAgreementProcessorTest {
         params.add(new KANonce("someBase64")); 
         
         processor.execute(publicCredential,
-                "INVALID",
-                128,
+                "urn:test:InvalidBlockEncryption",
                 params);
     }
     
@@ -173,8 +170,7 @@ public class ECDHKeyAgreementProcessorTest {
         params.add(new KANonce("someBase64")); 
         
         processor.execute(publicCredential,
-                JCAConstants.KEY_ALGO_AES,
-                128,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
                 params);
     }
         

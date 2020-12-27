@@ -39,8 +39,8 @@ public class ConcatKDF implements KeyDerivation {
     }
 
     /** {@inheritDoc} */
-    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
-            @Nonnull final Integer keyLength) throws KeyDerivationException {
+    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm)
+            throws KeyDerivationException {
         
         // TODO Auto-generated method stub
         

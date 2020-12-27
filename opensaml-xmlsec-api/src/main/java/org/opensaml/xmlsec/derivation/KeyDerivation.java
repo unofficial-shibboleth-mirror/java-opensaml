@@ -42,13 +42,12 @@ public interface KeyDerivation extends XMLExpressableKeyAgreementParameter {
      * Derive a {@link SecretKey} from the specified secret.
      * 
      * @param secret the input secret from which to derive the key.
-     * @param keyAlgorithm the JCA key algorithm for the derived key
-     * @param keyLength the length of for the derived key
+     * @param keyAlgorithm the algorithm URI for which the derived key will be used
      * 
      * @return the derived key
      * 
      * @throws KeyDerivationException
      */
-    public SecretKey derive(byte[] secret, String keyAlgorithm, Integer keyLength) throws KeyDerivationException;
+    public SecretKey derive(byte[] secret, String keyAlgorithm) throws KeyDerivationException;
     
 }

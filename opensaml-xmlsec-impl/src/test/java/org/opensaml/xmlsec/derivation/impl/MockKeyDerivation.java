@@ -17,14 +17,12 @@
 
 package org.opensaml.xmlsec.derivation.impl;
 
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
-
 import javax.crypto.SecretKey;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
@@ -47,10 +45,12 @@ public class MockKeyDerivation implements KeyDerivation {
     }
 
     /** {@inheritDoc} */
-    public SecretKey derive(byte[] secret, String keyAlgorithm, Integer keyLength) throws KeyDerivationException {
+    public SecretKey derive(byte[] secret, String keyAlgorithm) throws KeyDerivationException {
         try {
-            return KeySupport.generateKey(keyAlgorithm, keyLength, null);
-        } catch (NoSuchAlgorithmException | NoSuchProviderException e) {
+            String algo = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
+            Integer length = AlgorithmSupport.getKeyLength(keyAlgorithm);
+            return KeySupport.generateKey(algo, length, null);
+        } catch (Exception e) {
             throw new KeyDerivationException("Error generating mock derived key", e);
         }
     }

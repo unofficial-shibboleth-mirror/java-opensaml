@@ -35,8 +35,7 @@ public abstract class AbstractDerivationKeyAgreementProcessor extends AbstractKe
 
     /** {@inheritDoc} */
     protected SecretKey deriveSecretKey(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
-            @Nonnull final Integer keyLength, @Nonnull final KeyAgreementParameters parameters)
-                    throws KeyAgreementException {
+            @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
         final KeyDerivation keyDerivation = parameters.stream()
                 .filter(KeyDerivation.class::isInstance)
@@ -48,7 +47,7 @@ public abstract class AbstractDerivationKeyAgreementProcessor extends AbstractKe
         }
         
         try {
-            return keyDerivation.derive(secret, keyAlgorithm, keyLength);
+            return keyDerivation.derive(secret, keyAlgorithm);
         } catch (final KeyDerivationException e) {
             throw new KeyAgreementException("Key derivation failed using supplied KeyDerivation parameter", e);
         }
