@@ -22,6 +22,7 @@ import javax.crypto.SecretKey;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.xmlsec.agreement.CloneableKeyAgreementParameter;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
@@ -31,7 +32,7 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 /**
  * Implementation of PBKDF2 key derivation as defined in XML Encryption 1.1.
  */
-public class PBKDF2 implements KeyDerivation {
+public class PBKDF2 implements KeyDerivation, CloneableKeyAgreementParameter {
 
     /** {@inheritDoc} */
     public String getAlgorithm() {
@@ -61,6 +62,16 @@ public class PBKDF2 implements KeyDerivation {
         method.getUnknownXMLObjects().add(params);
         
         return method;
+    }
+    
+    /** {@inheritDoc} */
+    public PBKDF2 clone() {
+        try {
+            return (PBKDF2) super.clone();
+        } catch (final CloneNotSupportedException e) {
+            // We know we are, so this will never happen
+            return null;
+        }
     }
 
 }

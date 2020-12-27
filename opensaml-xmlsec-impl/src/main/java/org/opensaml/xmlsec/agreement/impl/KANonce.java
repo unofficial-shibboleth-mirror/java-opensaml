@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.xmlsec.agreement.CloneableKeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
 
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -29,7 +30,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 /**
  * Key agreement parameter to support use of {@link org.opensaml.xmlsec.encryption.KANonce} values.
  */
-public class KANonce implements XMLExpressableKeyAgreementParameter {
+public class KANonce implements XMLExpressableKeyAgreementParameter, CloneableKeyAgreementParameter {
     
     /** Base64-encoded nonce value. */
     @Nonnull private String value;
@@ -60,6 +61,16 @@ public class KANonce implements XMLExpressableKeyAgreementParameter {
         
         nonce.setValue(getValue());
         return nonce;
+    }
+    
+    /** {@inheritDoc} */
+    public KANonce clone() {
+        try {
+            return (KANonce ) super.clone();
+        } catch (final CloneNotSupportedException e) {
+            // We know we are, so this will never happen
+            return null;
+        }
     }
 
 }

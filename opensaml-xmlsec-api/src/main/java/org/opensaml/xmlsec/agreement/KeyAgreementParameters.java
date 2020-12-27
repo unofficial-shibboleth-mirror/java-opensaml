@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.agreement;
 
+import java.util.Collection;
+
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
@@ -39,8 +41,26 @@ public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParamete
      *
      * @param source the source set from which to copy
      */
-    public KeyAgreementParameters(@Nonnull final KeyAgreementParameters source) {
-        super();
-        addAll(source);
+    public KeyAgreementParameters(@Nonnull final Collection<KeyAgreementParameter> source) {
+        this(source, false);
     }
+    
+    /**
+     * Copy constructor with parameter clone option.
+     *
+     * @param source the source set from which to copy
+     * @param clone if true each parameter which is a {@link CloneableKeyAgreementParameter}
+     *              will be cloned before being added
+     */
+    public KeyAgreementParameters(@Nonnull final Collection<KeyAgreementParameter> source, final boolean clone) {
+        this();
+        for (final KeyAgreementParameter param : source) {
+            if (clone && CloneableKeyAgreementParameter.class.isInstance(param)) {
+                add(CloneableKeyAgreementParameter.class.cast(param).clone());
+            } else {
+                add(param);
+            }
+        }
+    }
+
 }
