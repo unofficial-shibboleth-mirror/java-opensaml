@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.agreement.impl;
 
 import java.security.KeyPair;
 import java.security.spec.ECGenParameterSpec;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
@@ -27,6 +29,7 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.KeyAgreementException;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.derivation.impl.MockKeyDerivation;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -53,7 +56,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new MockKeyDerivation()); 
-        params.add(new KANonce("someBase64")); 
+        params.addAll(getMockParams());
         
         KeyAgreementCredential keyAgreementCredential = processor.execute(recipientCredential,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
@@ -98,7 +101,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new PrivateCredential(recipientCredential));
         params.add(new MockKeyDerivation()); 
-        params.add(new KANonce("someBase64")); 
+        params.addAll(getMockParams());
         
         KeyAgreementCredential keyAgreementCredential = processor.execute(originatorCredential,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
@@ -140,7 +143,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new MockKeyDerivation()); 
-        params.add(new KANonce("someBase64")); 
+        params.addAll(getMockParams());
         
         processor.execute(publicCredential,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
@@ -154,7 +157,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new MockKeyDerivation()); 
-        params.add(new KANonce("someBase64")); 
+        params.addAll(getMockParams());
         
         processor.execute(publicCredential,
                 "urn:test:InvalidBlockEncryption",
@@ -167,11 +170,20 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
-        params.add(new KANonce("someBase64")); 
+        params.addAll(getMockParams());
         
         processor.execute(publicCredential,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
                 params);
     }
+    
+    private Collection<KeyAgreementParameter> getMockParams() {
+        ArrayList<KeyAgreementParameter> params = new ArrayList<>();
+        KANonce nonce = new KANonce();
+        nonce.setValue("someBase64");
+        params.add(nonce);
+        return params;
+    }
+    
         
 }

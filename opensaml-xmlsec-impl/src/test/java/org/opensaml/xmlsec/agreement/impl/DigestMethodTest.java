@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.agreement.impl;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -28,38 +29,38 @@ import net.shibboleth.utilities.java.support.component.UnmodifiableComponentExce
 /**
  *
  */
-public class KANonceTest extends OpenSAMLInitBaseTestCase  {
+public class DigestMethodTest extends OpenSAMLInitBaseTestCase  {
     
     @Test
     public void basic() throws ComponentInitializationException {
-        KANonce nonce = new KANonce();
-        nonce.setValue("someBase64==   ");
-        nonce.initialize();
-        Assert.assertEquals(nonce.getValue(), "someBase64==");
+        DigestMethod digest = new DigestMethod();
+        digest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        digest.initialize();
+        Assert.assertEquals(digest.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         
         try {
-            nonce.setValue("foo");
+            digest.setAlgorithm("foo");
             Assert.fail("Modify of initialzied component should have failed");
         } catch (UnmodifiableComponentException e) {
             // expected
         }
         
-        KANonce cloned  = nonce.clone();
+        DigestMethod cloned  = digest.clone();
         Assert.assertTrue(cloned.isInitialized());
-        Assert.assertEquals(cloned.getValue(), "someBase64==");
+        Assert.assertEquals(cloned.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         
-        XMLObject xmlObject = nonce.buildXMLObject();
+        XMLObject xmlObject = digest.buildXMLObject();
         Assert.assertNotNull(xmlObject);
-        Assert.assertTrue(org.opensaml.xmlsec.encryption.KANonce.class.isInstance(xmlObject));
-        org.opensaml.xmlsec.encryption.KANonce xmlNonce = org.opensaml.xmlsec.encryption.KANonce.class.cast(xmlObject);
-        Assert.assertEquals(xmlNonce.getValue(), "someBase64==");
+        Assert.assertTrue(org.opensaml.xmlsec.signature.DigestMethod.class.isInstance(xmlObject));
+        org.opensaml.xmlsec.signature.DigestMethod xmlDigest = org.opensaml.xmlsec.signature.DigestMethod.class.cast(xmlObject);
+        Assert.assertEquals(xmlDigest.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         
     }
     
     @Test(expectedExceptions = ComponentInitializationException.class)
     public void missingValue() throws ComponentInitializationException {
-        KANonce nonce = new KANonce();
-        nonce.initialize();
+        DigestMethod digest = new DigestMethod();
+        digest.initialize();
     }
     
 }

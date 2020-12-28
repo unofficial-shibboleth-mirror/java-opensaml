@@ -22,6 +22,8 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 /**
  * Specialized collection type for holding sets of parameters to key agreement operations.
@@ -59,6 +61,19 @@ public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParamete
                 add(CloneableKeyAgreementParameter.class.cast(param).clone());
             } else {
                 add(param);
+            }
+        }
+    }
+    
+    /**
+     * A convenience method for initializing all parameters which are initializable.
+     * 
+     * @throws ComponentInitializationException 
+     */
+    public void initializeAll() throws ComponentInitializationException {
+        for (final KeyAgreementParameter param : this) {
+            if (InitializableComponent.class.isInstance(param)) {
+               InitializableComponent.class.cast(param).initialize();
             }
         }
     }

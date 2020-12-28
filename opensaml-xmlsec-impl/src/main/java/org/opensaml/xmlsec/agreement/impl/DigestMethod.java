@@ -30,55 +30,55 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
- * Key agreement parameter to support use of {@link org.opensaml.xmlsec.encryption.KANonce} values.
+ * Key agreement parameter to support use of {@link org.opensaml.xmlsec.signature.DigestMethod} values.
  */
-public class KANonce extends AbstractInitializableComponent
+public class DigestMethod extends AbstractInitializableComponent
     implements XMLExpressableKeyAgreementParameter, CloneableKeyAgreementParameter {
     
-    /** Base64-encoded nonce value. */
-    @Nullable private String value;
+    /** Algorithm URI. */
+    @Nullable private String algorithm;
     
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
-        if (value == null) {
-            throw new ComponentInitializationException("KANonce value was null");
+        if (algorithm == null) {
+            throw new ComponentInitializationException("DigestMethod algorithm was null");
         }
     }
 
     /**
-     * Get the Base64-encoded nonce value.
+     * Get the algorithm URI.
      * 
-     * @return the nonce value
+     * @return the algorithm URI
      */
-    @Nullable public String getValue() {
-        return value;
+    @Nullable public String getAlgorithm() {
+        return algorithm;
     }
     
     /**
-     * Set the Base64-encoded nonce value.
+     * Set the algorithm URI.
      * 
-     * @param newValue the nonce value
+     * @param newAlgorithm the algorithm URI
      */
-    public void setValue(@Nullable final String newValue) {
+    public void setAlgorithm(@Nullable final String newAlgorithm) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        value = StringSupport.trimOrNull(newValue);
+        algorithm = StringSupport.trimOrNull(newAlgorithm);
     }
 
     /** {@inheritDoc} */
     public XMLObject buildXMLObject() {
-        final org.opensaml.xmlsec.encryption.KANonce nonce =
-                (org.opensaml.xmlsec.encryption.KANonce) XMLObjectSupport
-                    .buildXMLObject(org.opensaml.xmlsec.encryption.KANonce.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.signature.DigestMethod digestMethod =
+                (org.opensaml.xmlsec.signature.DigestMethod) XMLObjectSupport
+                    .buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         
-        nonce.setValue(getValue());
-        return nonce;
+        digestMethod.setAlgorithm(getAlgorithm());
+        return digestMethod;
     }
     
     /** {@inheritDoc} */
-    public KANonce clone() {
+    public DigestMethod clone() {
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         try {
-            return (KANonce ) super.clone();
+            return (DigestMethod ) super.clone();
         } catch (final CloneNotSupportedException e) {
             // We know we are, so this will never happen
             return null;

@@ -29,10 +29,12 @@ import org.opensaml.xmlsec.encryption.ConcatKDFParams;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+
 /**
  * Implementation of ConcatKDF key derivation as defined in XML Encryption 1.1.
  */
-public class ConcatKDF implements KeyDerivation, CloneableKeyAgreementParameter {
+public class ConcatKDF extends AbstractInitializableComponent implements KeyDerivation, CloneableKeyAgreementParameter {
 
     /** {@inheritDoc} */
     public String getAlgorithm() {
