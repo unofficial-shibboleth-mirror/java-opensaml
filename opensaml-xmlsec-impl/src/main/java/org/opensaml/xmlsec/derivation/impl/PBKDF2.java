@@ -17,37 +17,347 @@
 
 package org.opensaml.xmlsec.derivation.impl;
 
+import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
+import java.security.spec.InvalidKeySpecException;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import javax.crypto.spec.SecretKeySpec;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.agreement.CloneableKeyAgreementParameter;
+import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
+import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.algorithm.MACAlgorithm;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
-import org.opensaml.xmlsec.encryption.ConcatKDFParams;
+import org.opensaml.xmlsec.encryption.IterationCount;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
+import org.opensaml.xmlsec.encryption.KeyLength;
+import org.opensaml.xmlsec.encryption.PBKDF2Params;
+import org.opensaml.xmlsec.encryption.PRF;
+import org.opensaml.xmlsec.encryption.Salt;
+import org.opensaml.xmlsec.encryption.Specified;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import com.google.common.base.Charsets;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Implementation of PBKDF2 key derivation as defined in XML Encryption 1.1.
  */
-public class PBKDF2 extends AbstractInitializableComponent implements KeyDerivation, CloneableKeyAgreementParameter {
+public class PBKDF2 extends AbstractInitializableComponent
+        implements KeyDerivation, XMLExpressableKeyAgreementParameter, CloneableKeyAgreementParameter {
+    
+    /** Default PRF. */
+    public static final String DEFAULT_PRF = SignatureConstants.ALGO_ID_MAC_HMAC_SHA256;
+    
+    /** Default iteration count. */
+    public static final Integer DEFAULT_ITERATION_COUNT = 2000;
+    
+    /** Default length for generated salt, in bytes. */
+    public static final Integer DEFAULT_GENERATED_SALT_LENGTH = 8;
+    
+    /** Base algorithm ID for PBKDF2 SecretKeyFactory. */
+    private static final String PBKDF2_JCA_ALGORITHM_BASE = "PBKDF2With";
+    
+    /** Base64-encoded salt value. */
+    @Nullable private String salt;
+    
+    /** Generated salt length, in bytes. */
+    @NonnullAfterInit private Integer generatedSaltLength;
+    
+    /** SecureRandom generator for salt. */
+    @NonnullAfterInit private SecureRandom secureRandom;
+    
+    /** Iteration count. */
+    @NonnullAfterInit private Integer iterationCount;
+    
+    /** Key length, in <b>bits</b>. */
+    @Nullable private Integer keyLength;
+    
+    /** Pseudo-random function algorithm. */
+    @NonnullAfterInit private String prf;
 
     /** {@inheritDoc} */
     public String getAlgorithm() {
         return EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2;
     }
+    
+    /**
+     * Get the Base64-encoded salt value.
+     * 
+     * @return the salt value
+     */
+    @Nullable public String getSalt() {
+        return salt;
+    }
+    
+    /**
+     * Set the Base64-encoded salt value.
+     * 
+     * @param value the salt
+     */
+    public void setSalt(@Nullable final String value) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        salt = StringSupport.trimOrNull(value);
+    }
+    
+    /**
+     * Get the generated salt length, in bytes.
+     * 
+     * @return the generated salt length, in bytes
+     */
+    @NonnullAfterInit public Integer getGeneratedSaltLength() {
+        return generatedSaltLength;
+    }
+    
+    /**
+     * Set the generated salt length, in bytes.
+     * 
+     * @param length
+     */
+    public void setGeneratedSaltLength(@Nullable final Integer length) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        generatedSaltLength = length;
+    }
+    
+    /**
+     * Get the secure random generator.
+     * 
+     * <p>
+     * Defaults to the platform default via <code>new SecureRandom()</code>
+     * </p>
+     * 
+     * @return the secure random instance
+     */
+    @NonnullAfterInit public SecureRandom getRandom() {
+        return secureRandom;
+    }
+    
+    /**
+     * Set the secure random generator.
+     * 
+     * <p>
+     * Defaults to the platform default via <code>new SecureRandom()</code>
+     * </p>
+     * 
+     * @param sr the secure random generator to set
+     */
+    public void setRandom(@Nullable final SecureRandom sr) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        
+        secureRandom = sr;
+    }
+    
+    /**
+     * Get the iteration count.
+     * 
+     * @return the iteration count
+     */
+    @NonnullAfterInit public Integer getIterationCount() {
+        return iterationCount;
+    }
+    
+    /**
+     * Set the iteration count.
+     * 
+     * @param count
+     */
+    public void setIterationCount(@Nullable final Integer count) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        iterationCount = count;
+    }
+    
+    /**
+     * Get the key length, in number of <b>bits</b>.
+     * 
+     * <p>
+     * Note: KeyLength in expressed XML will be in <b>bytes</b>
+     * </p>
+     * 
+     * @return the key length
+     */
+    @Nullable public Integer getKeyLength() {
+         return keyLength;
+    }
+    
+    /**
+     * Set the key length, in number of <b>bits</b>.
+     * 
+     * <p>
+     * Note: KeyLength in expressed XML will be in <b>bytes</b>
+     * </p>
+     * 
+     * @param length
+     */
+    public void setKeyLength(@Nullable final Integer length) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        keyLength = length;
+    }
+    
+    /**
+     * Get the pseudo-random function algorithm URI.
+     * 
+     * @return the algorithm URI
+     */
+    @NonnullAfterInit public String getPRF() {
+        return prf;
+    }
+    
+    /**
+     * Set the pseudo-random function algorithm URI.
+     * 
+     * @param uri
+     */
+    public void setPRF(@Nullable final String uri) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        prf = StringSupport.trimOrNull(uri);
+    }
+
+    /** {@inheritDoc} */
+    // Checkstyle: CyclomaticComplexity OFF
+    protected void doInitialize() throws ComponentInitializationException {
+        if (salt != null) {
+            try {
+                Base64Support.decode(salt);
+            } catch (final DecodingException e) {
+                throw new ComponentInitializationException("Salt value was not valid Base64", e);
+            }
+        }
+        
+        if (generatedSaltLength == null) {
+            generatedSaltLength = DEFAULT_GENERATED_SALT_LENGTH;
+        }
+        
+        if (secureRandom == null) {
+            secureRandom = new SecureRandom();
+        }
+        
+        if (iterationCount == null) {
+            iterationCount = DEFAULT_ITERATION_COUNT;
+        }
+        
+        if (keyLength != null && keyLength % 8 != 0) {
+            throw new ComponentInitializationException("Specified key length in bits is not a multiple of 8");
+        }
+        
+        if (prf == null) {
+            prf = DEFAULT_PRF;
+        } else {
+            final AlgorithmDescriptor descriptor = AlgorithmSupport.getGlobalAlgorithmRegistry().get(prf);
+            if (descriptor == null) {
+                throw new ComponentInitializationException("Specified PRF algorithm is unknown: " + prf);
+            }
+            if (!MACAlgorithm.class.isInstance(descriptor)) {
+                throw new ComponentInitializationException("Specified PRF algorithm is not a MAC algorithm: " + prf);
+            }
+        }
+    }
+    // Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
     public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm)
             throws KeyDerivationException {
+        Constraint.isNotNull(secret, "Secret byte[] was null");
+        Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
         
-        // TODO Auto-generated method stub
+        final String jcaKeyAlgorithm = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
+        if (jcaKeyAlgorithm == null) {
+            throw new KeyDerivationException("Could not determine JCA key algorithm from URI: " + keyAlgorithm);
+        }
         
-        return null;
+        final byte[] saltBytes = getEffectiveSalt();
+        
+        final Integer length = getEffectiveKeyLength(keyAlgorithm);
+        
+        final String jcaPRF = AlgorithmSupport.getAlgorithmID(prf);
+        
+        final char[] secretChars = new String(secret, Charsets.UTF_8).toCharArray();
+        
+        try {
+            final PBEKeySpec spec = new PBEKeySpec(secretChars, saltBytes, iterationCount, length);
+            final SecretKeyFactory skf = SecretKeyFactory.getInstance(PBKDF2_JCA_ALGORITHM_BASE + jcaPRF);
+            return new SecretKeySpec(skf.generateSecret(spec).getEncoded(), jcaKeyAlgorithm); 
+        } catch (final NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new KeyDerivationException("Error generating SecretKey via PBKDF2", e);
+        }
+    }
+    
+    /**
+     * Get the effective salt bytes to use.
+     * 
+     * @return the salt bytes
+     * 
+     * @throws KeyDerivationException
+     */
+    protected byte[] getEffectiveSalt() throws KeyDerivationException {
+        byte[] saltBytes = null;
+        if (salt == null) {
+            // Usually the originator/encrypting case. We generate and set it internally here so can emit in XML later.
+            saltBytes = new byte[generatedSaltLength];
+            secureRandom.nextBytes(saltBytes);
+            try {
+                salt = Base64Support.encode(saltBytes, false);
+            } catch (final EncodingException e) {
+                throw new KeyDerivationException("Error Base64-encoding generated salt", e);
+            }
+        } else {
+            // Usually the recipient/decrypting case, where value is parsed from the Salt XML Element.
+            try {
+                saltBytes = Base64Support.decode(salt);
+            } catch (final DecodingException e) {
+                // We already tested this during init so this shouldn't happen
+                throw new KeyDerivationException("Error Base64-decoding supplied salt", e);
+            }
+        }
+        return saltBytes;
+    }
+
+    /**
+     * Get the effective key length, in bits.
+     * 
+     * @param keyAlgorithm the algorithm for which the derived key will be used
+     * 
+     * @return the effective key length, in bits
+     * 
+     * @throws KeyDerivationException
+     */
+    protected Integer getEffectiveKeyLength(@Nonnull final String keyAlgorithm) throws KeyDerivationException {
+        final Integer jcaKeyLength = AlgorithmSupport.getKeyLength(keyAlgorithm);
+        if (jcaKeyLength == null) {
+            throw new KeyDerivationException("Failed to determine key length for algorithm URI: " + keyAlgorithm);
+        }
+            
+        if (keyLength == null) {
+            // Usually the originator/encrypting case. We set it internally here so can emit in XML later.
+            keyLength = jcaKeyLength;
+        } else {
+            // Usually the recipient/decrypting case, where value is parsed from the KeyLength XML Element.
+            // Validate that specified key length value matches that of the specified algorithm URI.
+            if (! keyLength.equals(jcaKeyLength)) {
+                throw new KeyDerivationException(String.format("Specified key length '%d' does not match URI: %s",
+                        keyLength, keyAlgorithm));
+            }
+        }
+        
+        return keyLength;
     }
 
     /** {@inheritDoc} */
@@ -56,10 +366,31 @@ public class PBKDF2 extends AbstractInitializableComponent implements KeyDerivat
                 (KeyDerivationMethod) XMLObjectSupport.buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         method.setAlgorithm(getAlgorithm());
         
-        final ConcatKDFParams params =
-                (ConcatKDFParams) XMLObjectSupport.buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        final PBKDF2Params params =
+                (PBKDF2Params) XMLObjectSupport.buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
         
-        //TODO populate params based on properties 
+        //TODO do sanity checking on these - how to report out?  Maybe method signature should have a thrown exception.
+        
+        final Salt xmlSalt = (Salt) XMLObjectSupport.buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
+        final Specified  specified = (Specified) XMLObjectSupport.buildXMLObject(Specified.DEFAULT_ELEMENT_NAME);
+        specified.setValue(salt);
+        xmlSalt.setSpecified(specified);
+        params.setSalt(xmlSalt);
+        
+        final IterationCount xmlIterationcount =
+                (IterationCount) XMLObjectSupport.buildXMLObject(IterationCount.DEFAULT_ELEMENT_NAME);
+        xmlIterationcount.setValue(iterationCount);
+        params.setIterationCount(xmlIterationcount);
+        
+        final KeyLength xmlKeyLength = (KeyLength) XMLObjectSupport.buildXMLObject(KeyLength.DEFAULT_ELEMENT_NAME);
+        // Note: We're tracking this in # of bits, but the XML element uses # of bytes.
+        // It's already validated to be an exact multiple of 8.
+        xmlKeyLength.setValue(keyLength / 8);
+        params.setKeyLength(xmlKeyLength);
+        
+        final PRF xmlPRF = (PRF) XMLObjectSupport.buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
+        xmlPRF.setAlgorithm(prf);
+        params.setPRF(xmlPRF);
         
         method.getUnknownXMLObjects().add(params);
         

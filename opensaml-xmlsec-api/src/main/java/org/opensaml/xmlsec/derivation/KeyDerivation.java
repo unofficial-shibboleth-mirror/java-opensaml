@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.derivation;
 
 import javax.crypto.SecretKey;
 
-import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 
 /**
  * Component which represents a specific key derivation algorithm, and supports deriving a new {@link SecretKey}
@@ -29,7 +29,7 @@ import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
  * Sub-types will usually contain additional configurable property inputs to the derivation operation.
  * </p>
  */
-public interface KeyDerivation extends XMLExpressableKeyAgreementParameter {
+public interface KeyDerivation extends KeyAgreementParameter {
     
     /**
      * The key derivation algorithm URI.

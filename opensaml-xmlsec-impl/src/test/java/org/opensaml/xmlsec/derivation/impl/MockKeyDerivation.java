@@ -19,25 +19,15 @@ package org.opensaml.xmlsec.derivation.impl;
 
 import javax.crypto.SecretKey;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
-import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 
 /**
  * Mock key derivation for testing.
  */
 public class MockKeyDerivation implements KeyDerivation {
-
-    /** {@inheritDoc} */
-    public XMLObject buildXMLObject() {
-        final KeyDerivationMethod method = (KeyDerivationMethod) XMLObjectSupport.buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
-        method.setAlgorithm(getAlgorithm());
-        return method;
-    }
 
     /** {@inheritDoc} */
     public String getAlgorithm() {

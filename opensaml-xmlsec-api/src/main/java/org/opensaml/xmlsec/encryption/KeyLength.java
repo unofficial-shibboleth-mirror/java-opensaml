@@ -23,7 +23,11 @@ import org.opensaml.core.xml.schema.XSInteger;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * XMLObject representing XML Encryption 1.1 IterationCount KeyLength element.
+ * XMLObject representing XML Encryption 1.1 KeyLength element.
+ * 
+ * <p>
+ * Note: Value is in number of <b>bytes</b>.
+ * </p>
  */
 public interface KeyLength extends XSInteger {
     
