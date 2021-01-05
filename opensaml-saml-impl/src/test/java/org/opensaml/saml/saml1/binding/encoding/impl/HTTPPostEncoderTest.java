@@ -59,7 +59,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     public void setUp() throws Exception {
         velocityEngine = new VelocityEngine();
-        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath");
+        velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADERS, "classpath");
         velocityEngine.setProperty("classpath.resource.loader.class",
                 "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
         velocityEngine.init();
