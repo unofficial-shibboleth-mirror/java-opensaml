@@ -277,7 +277,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         
         byte[] secret = Hex.decodeHex("DEADBEEF");
         
-        SecretKey derivedKey = kdf.derive(secret, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM);
+        SecretKey derivedKey = kdf.derive(secret, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, null);
         
         Assert.assertNotNull(derivedKey);
         Assert.assertEquals(derivedKey.getAlgorithm(), "AES");
@@ -303,7 +303,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         
         byte[] secret = Hex.decodeHex("DEADBEEF");
         
-        SecretKey derivedKey = kdf.derive(secret, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
+        SecretKey derivedKey = kdf.derive(secret, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM, null);
         
         Assert.assertNotNull(derivedKey);
         Assert.assertEquals(derivedKey.getAlgorithm(), "AES");
@@ -318,7 +318,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         
         byte[] secret = Hex.decodeHex("DEADBEEF");
         
-        kdf.derive(secret, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM);
+        kdf.derive(secret, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, null);
     }
     
     @Test(expectedExceptions = KeyDerivationException.class)
@@ -328,7 +328,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         
         byte[] secret = Hex.decodeHex("DEADBEEF");
         
-        kdf.derive(secret, "urn:test:InvalidKeyAlgorithm");
+        kdf.derive(secret, "urn:test:InvalidKeyAlgorithm", null);
     }
 
     @Test(expectedExceptions = KeyDerivationException.class)
@@ -339,7 +339,23 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         byte[] secret = Hex.decodeHex("DEADBEEF");
         
         // Just use this as a stand-in for something which is KeySpecifiedAlgorithm but not KeyLengthSpecifiedAlgorithm
-        kdf.derive(secret, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
+        kdf.derive(secret, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null);
+    }
+    
+    @Test
+    public void nonKeyLengthAlgorithmWithSpecifiedLength() throws Exception {
+        PBKDF2 kdf = new PBKDF2();
+        kdf.initialize();
+        
+        byte[] secret = Hex.decodeHex("DEADBEEF");
+        
+        // Just use this as a stand-in for something which is KeySpecifiedAlgorithm but not KeyLengthSpecifiedAlgorithm
+        SecretKey derivedKey = kdf.derive(secret, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, 256);
+        
+        // This is bogus obviously, but just need to test that a known algo URI that is non-key length works with specified key length
+        Assert.assertNotNull(derivedKey);
+        Assert.assertEquals(derivedKey.getAlgorithm(), "RSA");
+        Assert.assertEquals(derivedKey.getEncoded().length * 8, 256);
     }
     
     
@@ -529,7 +545,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         kdf.setSalt(salt);
         kdf.initialize();
         
-        SecretKey derivedKey = kdf.derive(secret, keyAlgorithm);
+        SecretKey derivedKey = kdf.derive(secret, keyAlgorithm, null);
         
         Assert.assertNotNull(derivedKey);
         Assert.assertEquals(derivedKey.getAlgorithm(), jcaKeyAlgorithm);

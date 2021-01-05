@@ -36,6 +36,8 @@ import org.opensaml.xmlsec.agreement.impl.KeyAgreementParametersParser;
 import org.opensaml.xmlsec.agreement.impl.PrivateCredential;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedType;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolutionMode;
@@ -113,7 +115,7 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
             final KeyAgreementParameters parameters = parametersParser.parse(agreementMethod);
             parameters.add(new PrivateCredential(recipientCredential));
             
-            final String keyAlgorithm = resolveKeyAlgorithmAndSize(agreementMethod, parameters);
+            final String keyAlgorithm = resolveKeyAlgorithm(agreementMethod);
             
             cred = processor.execute(originatorCredential, keyAlgorithm, parameters);
             
@@ -143,14 +145,13 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
      * </p>
      * 
      * @param agreementMethod the AgreementMethod to process
-     * @param parameters the key agreement parameters
      * 
      * @return the encryption algorithm URI
      * 
      * @throws SecurityException if the algorithm URI can not be resolved
      */
-    @Nonnull private String resolveKeyAlgorithmAndSize(@Nonnull final AgreementMethod agreementMethod,
-            @Nonnull final KeyAgreementParameters parameters) throws SecurityException {
+    @Nonnull private String resolveKeyAlgorithm(@Nonnull final AgreementMethod agreementMethod)
+            throws SecurityException {
         
         // This was already validated in handles(...)
         final EncryptedType encrytpedType = EncryptedType.class.cast(agreementMethod.getParent().getParent());
@@ -158,8 +159,6 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
         if (encrytpedType.getEncryptionMethod() == null || encrytpedType.getEncryptionMethod().getAlgorithm() == null) {
             throw new SecurityException("EncryptedType contains no EncryptionMethod algorithm");
         }
-        
-        //TODO handle KeySize when new KeySize param is ready; add it to parameters
         
         return encrytpedType.getEncryptionMethod().getAlgorithm();
     }

@@ -35,7 +35,7 @@ public class MockKeyDerivation implements KeyDerivation {
     }
 
     /** {@inheritDoc} */
-    public SecretKey derive(byte[] secret, String keyAlgorithm) throws KeyDerivationException {
+    public SecretKey derive(byte[] secret, String keyAlgorithm, Integer keyLength) throws KeyDerivationException {
         try {
             String algo = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
             Integer length = AlgorithmSupport.getKeyLength(keyAlgorithm);

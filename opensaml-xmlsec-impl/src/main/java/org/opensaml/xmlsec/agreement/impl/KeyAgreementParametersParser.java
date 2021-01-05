@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
+import org.opensaml.xmlsec.agreement.KeyAgreementSupport;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,6 +84,12 @@ public class KeyAgreementParametersParser {
             }
         }
         
+        // The grandparent's EncryptionMethod KeySize element is an implicit parameter to the agreement operation
+        final Integer keySize = KeyAgreementSupport.getExplicitKeySize(agreementMethod);
+        if (keySize != null) {
+            parameters.add(new KeySize(keySize));
+        }
+
         parameters.initializeAll();
         
         return parameters;

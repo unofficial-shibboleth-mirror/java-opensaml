@@ -45,6 +45,7 @@ import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.DigestAlgorithm;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
+import org.opensaml.xmlsec.derivation.KeyDerivationSupport;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
 import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
@@ -265,21 +266,15 @@ public class ConcatKDF extends AbstractInitializableComponent
     }
 
     /** {@inheritDoc} */
-    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm)
-            throws KeyDerivationException {
+    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+            @Nullable final Integer keyLength) throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
-        final String jcaKeyAlgorithm = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
-        if (jcaKeyAlgorithm == null) {
-            throw new KeyDerivationException("Could not determine JCA key algorithm from URI: " + keyAlgorithm);
-        }
+        final String jcaKeyAlgorithm = KeyDerivationSupport.getJCAKeyAlgorithm(keyAlgorithm);
         
-        final Integer jcaKeyLength = AlgorithmSupport.getKeyLength(keyAlgorithm);
-        if (jcaKeyLength == null) {
-            throw new KeyDerivationException("Could not determine JCA key length from URI: " + keyAlgorithm);
-        }
+        final Integer jcaKeyLength = KeyDerivationSupport.getEffectiveKeyLength(keyAlgorithm, keyLength);
         
         final byte[] otherInfo = Bytes.concat(
                 decodeParam(algorithmID, "AlgorithmID"),

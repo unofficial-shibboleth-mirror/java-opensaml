@@ -40,6 +40,7 @@ import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.MACAlgorithm;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
+import org.opensaml.xmlsec.derivation.KeyDerivationSupport;
 import org.opensaml.xmlsec.encryption.IterationCount;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.KeyLength;
@@ -276,20 +277,17 @@ public class PBKDF2 extends AbstractInitializableComponent
     // Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
-    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm)
-            throws KeyDerivationException {
+    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+            @Nullable final Integer specifiedKeyLength) throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
-        final String jcaKeyAlgorithm = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
-        if (jcaKeyAlgorithm == null) {
-            throw new KeyDerivationException("Could not determine JCA key algorithm from URI: " + keyAlgorithm);
-        }
+        final String jcaKeyAlgorithm = KeyDerivationSupport.getJCAKeyAlgorithm(keyAlgorithm);
         
         final byte[] saltBytes = getEffectiveSalt();
         
-        final Integer length = getEffectiveKeyLength(keyAlgorithm);
+        final Integer length = getEffectiveKeyLength(keyAlgorithm, specifiedKeyLength);
         
         final String jcaPRF = AlgorithmSupport.getAlgorithmID(prf);
         
@@ -338,17 +336,17 @@ public class PBKDF2 extends AbstractInitializableComponent
      * Get the effective key length, in bits.
      * 
      * @param keyAlgorithm the algorithm for which the derived key will be used
+     * @param specifiedKeyLength 
      * 
      * @return the effective key length, in bits
      * 
      * @throws KeyDerivationException
      */
-    protected Integer getEffectiveKeyLength(@Nonnull final String keyAlgorithm) throws KeyDerivationException {
-        final Integer jcaKeyLength = AlgorithmSupport.getKeyLength(keyAlgorithm);
-        if (jcaKeyLength == null) {
-            throw new KeyDerivationException("Failed to determine key length for algorithm URI: " + keyAlgorithm);
-        }
-            
+    protected Integer getEffectiveKeyLength(@Nonnull final String keyAlgorithm,
+            @Nullable final Integer specifiedKeyLength) throws KeyDerivationException {
+        
+        final Integer jcaKeyLength = KeyDerivationSupport.getEffectiveKeyLength(keyAlgorithm, specifiedKeyLength);
+        
         if (keyLength == null) {
             // Usually the originator/encrypting case. We set it internally here so can emit in XML later.
             keyLength = jcaKeyLength;

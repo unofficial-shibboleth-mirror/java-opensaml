@@ -17,9 +17,12 @@
 
 package org.opensaml.xmlsec.derivation;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
+import org.opensaml.xmlsec.algorithm.KeyLengthSpecifiedAlgorithm;
 
 /**
  * Component which represents a specific key derivation algorithm, and supports deriving a new {@link SecretKey}
@@ -36,18 +39,23 @@ public interface KeyDerivation extends KeyAgreementParameter {
      * 
      * @return the algorithm
      */
-    public String getAlgorithm();
+    @Nonnull public String getAlgorithm();
 
     /**
      * Derive a {@link SecretKey} from the specified secret.
      * 
      * @param secret the input secret from which to derive the key.
      * @param keyAlgorithm the algorithm URI for which the derived key will be used
+     * @param keyLength the length of the derived key.  This may be null if the keyAlgorithm URI
+     *                  implies a key length, for example if the URI represents a {@link KeyLengthSpecifiedAlgorithm}.
+     *                  However if the URI implies a key length and this parameter value does not match that length,
+     *                  that is an error and and exception will be thrown
      * 
      * @return the derived key
      * 
      * @throws KeyDerivationException
      */
-    public SecretKey derive(byte[] secret, String keyAlgorithm) throws KeyDerivationException;
+    @Nonnull public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+            @Nullable final Integer keyLength) throws KeyDerivationException;
     
 }

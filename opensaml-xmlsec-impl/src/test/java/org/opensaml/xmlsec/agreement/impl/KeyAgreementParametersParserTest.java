@@ -24,6 +24,8 @@ import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.IterationCount;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.KeyLength;
@@ -32,6 +34,7 @@ import org.opensaml.xmlsec.encryption.PRF;
 import org.opensaml.xmlsec.encryption.Salt;
 import org.opensaml.xmlsec.encryption.Specified;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -80,6 +83,63 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(kdf.getPartyVInfo(), "CC");
         Assert.assertEquals(kdf.getSuppPubInfo(), "DD");
         Assert.assertEquals(kdf.getSuppPrivInfo(), "EE");
+    }
+    
+    @Test
+    public void ECDHWithConcatKDFWithKeySize() throws KeyAgreementException {
+        org.opensaml.xmlsec.encryption.KeySize xmlKeySize = buildXMLObject(org.opensaml.xmlsec.encryption.KeySize.DEFAULT_ELEMENT_NAME);
+        xmlKeySize.setValue(80);
+        
+        EncryptionMethod em = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
+        em.setKeySize(xmlKeySize);
+        
+        EncryptedData ed = buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
+        ed.setEncryptionMethod(em);
+        
+        KeyInfo keyInfo = buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+        ed.setKeyInfo(keyInfo);
+        
+        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        keyInfo.getAgreementMethods().add(agreementMethod);
+        
+        KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        kdm.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        
+        ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        xmlParams.setAlgorithmID("00AA");
+        xmlParams.setPartyUInfo("00BB");
+        xmlParams.setPartyVInfo("00CC");
+        xmlParams.setSuppPubInfo("00DD");
+        xmlParams.setSuppPrivInfo("00EE");
+        
+        org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        xmlParams.setDigestMethod(digestMethod);
+        
+        kdm.getUnknownXMLObjects().add(xmlParams);
+        
+        agreementMethod.getUnknownXMLObjects().add(kdm);
+        
+        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        
+        KeyAgreementParameters parameters = parser.parse(agreementMethod);
+        Assert.assertNotNull(parameters);
+        Assert.assertEquals(parameters.size(), 2);
+        
+        Assert.assertTrue(parameters.contains(ConcatKDF.class));
+        
+        ConcatKDF kdf = parameters.get(ConcatKDF.class);
+        Assert.assertTrue(kdf.isInitialized());
+        Assert.assertEquals(kdf.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        Assert.assertEquals(kdf.getAlgorithmID(), "AA");
+        Assert.assertEquals(kdf.getPartyUInfo(), "BB");
+        Assert.assertEquals(kdf.getPartyVInfo(), "CC");
+        Assert.assertEquals(kdf.getSuppPubInfo(), "DD");
+        Assert.assertEquals(kdf.getSuppPrivInfo(), "EE");
+        
+        Assert.assertTrue(parameters.contains(KeySize.class));
+        Assert.assertEquals(parameters.get(KeySize.class).getSize().intValue(), 80);
     }
     
     @Test

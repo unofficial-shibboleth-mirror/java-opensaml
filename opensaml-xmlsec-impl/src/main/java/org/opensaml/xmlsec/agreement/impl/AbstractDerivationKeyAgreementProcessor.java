@@ -46,8 +46,10 @@ public abstract class AbstractDerivationKeyAgreementProcessor extends AbstractKe
             throw new KeyAgreementException("Required KeyDerivation parameter was not supplied");
         }
         
+        final Integer keySize = parameters.contains(KeySize.class) ? parameters.get(KeySize.class).getSize() : null;
+        
         try {
-            return keyDerivation.derive(secret, keyAlgorithm);
+            return keyDerivation.derive(secret, keyAlgorithm, keySize);
         } catch (final KeyDerivationException e) {
             throw new KeyAgreementException("Key derivation failed using supplied KeyDerivation parameter", e);
         }
