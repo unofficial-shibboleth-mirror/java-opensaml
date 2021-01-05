@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.Assert;
 import java.security.KeyException;
 import java.security.PublicKey;
@@ -28,6 +29,8 @@ import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -107,7 +110,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         PublicKey generatedKey = KeyInfoSupport.getKey(keyInfo.getKeyValues().get(0));
         Assert.assertEquals(generatedKey, pubKey, "Unexpected key value");
         PublicKey generatedKey2 = KeyInfoSupport.getKey(keyInfo.getDEREncodedKeyValues().get(0));
-        Assert.assertEquals(pubKey, generatedKey2, "Unexpected key value");
+        Assert.assertEquals(generatedKey2, pubKey, "Unexpected key value");
     }
     
     /**
@@ -180,6 +183,44 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 5, "Unexpected # of KeyInfo children found");
+    }
+    
+    @DataProvider
+    public Object[][] keyInfoTypes() {
+       return new Object[][] {
+          new Object[] { KeyInfo.class }, 
+          new Object[] { OriginatorKeyInfo.class }, 
+          new Object[] { RecipientKeyInfo.class }, 
+       };
+    }
+    
+    /**
+     * Test emit of sub-type of KeyInfo
+     * 
+     * @throws SecurityException ...
+     * @throws KeyException ...
+     */
+    @Test(dataProvider = "keyInfoTypes")
+    public void testKeyInfoElmementType(Class<? extends KeyInfo> type) throws SecurityException, KeyException {
+        factory.setEmitPublicKeyValue(true);
+        factory.setEmitPublicDEREncodedKeyValue(true);
+        
+        generator = factory.newInstance(type);
+        KeyInfo keyInfo = generator.generate(credential);
+        
+        Assert.assertTrue(type.isInstance(keyInfo));
+        
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
+        
+        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 2, "Unexpected number of KeyInfo children");
+        Assert.assertEquals(keyInfo.getKeyValues().size(), 1, "Unexpected number of KeyValue elements");
+        Assert.assertEquals(keyInfo.getDEREncodedKeyValues().size(), 1,
+                "Unexpected number of DEREncodedKeyValue elements");
+        PublicKey generatedKey = KeyInfoSupport.getKey(keyInfo.getKeyValues().get(0));
+        Assert.assertEquals(generatedKey, pubKey, "Unexpected key value");
+        PublicKey generatedKey2 = KeyInfoSupport.getKey(keyInfo.getDEREncodedKeyValues().get(0));
+        Assert.assertEquals(generatedKey2, pubKey, "Unexpected key value");
     }
 
 }

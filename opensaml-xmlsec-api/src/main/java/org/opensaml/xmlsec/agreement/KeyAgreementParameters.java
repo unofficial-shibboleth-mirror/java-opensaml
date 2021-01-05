@@ -68,12 +68,20 @@ public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParamete
     /**
      * A convenience method for initializing all parameters which are initializable.
      * 
-     * @throws ComponentInitializationException 
+     * @throws KeyAgreementException
      */
-    public void initializeAll() throws ComponentInitializationException {
+    public void initializeAll() throws KeyAgreementException {
         for (final KeyAgreementParameter param : this) {
             if (InitializableComponent.class.isInstance(param)) {
-               InitializableComponent.class.cast(param).initialize();
+               final InitializableComponent component = InitializableComponent.class.cast(param);
+               if (!component.isInitialized()) {
+                   try {
+                       component.initialize();
+                   } catch (final ComponentInitializationException e) {
+                       throw new KeyAgreementException("Error initializing KeyAgreementParameter: "
+                               + component.getClass().getName(), e);
+                   }
+               }
             }
         }
     }

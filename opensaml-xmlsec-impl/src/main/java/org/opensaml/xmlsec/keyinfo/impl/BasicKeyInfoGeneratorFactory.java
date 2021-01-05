@@ -19,16 +19,21 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.XMLObjectBuilder;
+import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
@@ -46,6 +51,15 @@ import net.shibboleth.utilities.java.support.codec.EncodingException;
  * All boolean options default to false.
  */
 public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
+    
+    /** Mappings from KeyInfo Class to QNames.*/
+    private static final Map<Class<? extends KeyInfo>, QName> CLASS_TO_NAME;
+    static {
+        CLASS_TO_NAME = new HashMap<>();
+        CLASS_TO_NAME.put(KeyInfo.class, KeyInfo.DEFAULT_ELEMENT_NAME);
+        CLASS_TO_NAME.put(OriginatorKeyInfo.class, OriginatorKeyInfo.DEFAULT_ELEMENT_NAME);
+        CLASS_TO_NAME.put(RecipientKeyInfo.class, RecipientKeyInfo.DEFAULT_ELEMENT_NAME);
+    }
     
     /** The set of options configured for the factory. */
     private final BasicOptions options;
@@ -72,9 +86,12 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
 
     /** {@inheritDoc} */
     @Nonnull public KeyInfoGenerator newInstance() {
-        //TODO lock options during cloning ?
-        final BasicOptions newOptions = options.clone();
-        return new BasicKeyInfoGenerator(newOptions);
+        return newInstance(null);
+    }
+    
+    /** {@inheritDoc} */
+    @Nonnull public KeyInfoGenerator newInstance(@Nullable final Class<? extends KeyInfo> type) {
+        return new BasicKeyInfoGenerator(options.clone(), type);
     }
     
     /**
@@ -177,20 +194,25 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     public class BasicKeyInfoGenerator implements KeyInfoGenerator {
         
         /** The set of options to be used by the generator.*/
-        private final BasicOptions options;
+        @Nonnull private final BasicOptions options;
+        
+        /** The specific type of KeyInfo to generate. */
+        @Nonnull private final Class<? extends KeyInfo> keyInfoType;
        
-        /** Builder for KeyInfo objects. */
-        private final XMLObjectBuilder<KeyInfo> keyInfoBuilder;
+        /** Builder factory for KeyInfo objects. */
+        @Nonnull private final XMLObjectBuilderFactory builderFactory;
        
         /**
          * Constructor.
          * 
          * @param newOptions the options to be used by the generator
+         * @param type the type of element to produce
          */
-        protected BasicKeyInfoGenerator(@Nonnull final BasicOptions newOptions) {
+        protected BasicKeyInfoGenerator(@Nonnull final BasicOptions newOptions,
+                @Nullable final Class<? extends KeyInfo> type) {
             options = newOptions;
-            keyInfoBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
-                    KeyInfo.DEFAULT_ELEMENT_NAME);
+            keyInfoType = type != null ? type : KeyInfo.class;
+            builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         }
 
         /** {@inheritDoc} */
@@ -199,7 +221,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
                 return null;
             }
             
-            final KeyInfo keyInfo = keyInfoBuilder.buildObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+            final KeyInfo keyInfo = buildKeyInfo();
             
             processKeyNames(keyInfo, credential);
             processEntityID(keyInfo, credential);
@@ -210,6 +232,45 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
                 return keyInfo;
             }
             return null;
+        }
+        
+        /**
+         * Build a new KeyInfo instance.
+         * 
+         * <p>
+         * The exact element type is determined by {@link BasicOptions#keyInfoElementType}, defaulting to
+         * {@link KeyInfo#DEFAULT_ELEMENT_NAME} if the option is null. It is a runtime error if the specified type
+         * is not a sub-type of {@link KeyInfo}.
+         * </p>
+         * 
+         * @return a new KeyInfo instance
+         * 
+         * @throws SecurityException
+         */
+        protected KeyInfo buildKeyInfo() throws SecurityException {
+            final QName elementName = classToElementName(keyInfoType);
+            if (elementName == null) { 
+                throw new SecurityException("KeyInfo type not mapped to an element QName: "
+                        + keyInfoType.getClass().getName());
+            }
+            
+            final XMLObject xmlObject = builderFactory.getBuilderOrThrow(elementName).buildObject(elementName);
+            return KeyInfo.class.cast(xmlObject);
+        }
+        
+        /**
+         * Map the specified KeyInfo type to an element {@link QName}.
+         * 
+         * <p>
+         * Subclasses may override to implement new types or custom mappings.
+         * </p>
+         * 
+         * @param type the KeyInfo element type
+         * 
+         * @return the mapped element name
+         */
+        @Nullable protected QName classToElementName(@Nonnull final Class<? extends KeyInfo> type) {
+            return CLASS_TO_NAME.get(type);
         }
         
         /** Process the values of {@link Credential#getKeyNames()}.
@@ -298,5 +359,5 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
         }
         
     }
-
+    
 }

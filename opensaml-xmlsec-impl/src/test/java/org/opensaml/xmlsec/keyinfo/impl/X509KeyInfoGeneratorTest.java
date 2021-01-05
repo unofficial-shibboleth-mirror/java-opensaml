@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.Assert;
 import java.math.BigInteger;
 import java.security.KeyException;
@@ -42,6 +43,8 @@ import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -608,5 +611,40 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 4, "Unexpected # of KeyInfo children found");
     }
+    
+    @DataProvider
+    public Object[][] keyInfoTypes() {
+       return new Object[][] {
+          new Object[] { KeyInfo.class }, 
+          new Object[] { OriginatorKeyInfo.class }, 
+          new Object[] { RecipientKeyInfo.class }, 
+       };
+    }
+    
+    /**
+     * Test emit of sub-type of KeyInfo.
+     * 
+     * @throws SecurityException ...
+     * @throws CertificateException ...
+     */
+    @Test(dataProvider = "keyInfoTypes")
+    public void testKeyInfoElementType(Class<? extends KeyInfo> type) throws SecurityException, CertificateException {
+        factory.setEmitEntityCertificate(true);
+
+        generator = factory.newInstance(type);
+        KeyInfo keyInfo = generator.generate(credential);
+
+        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
+        
+        Assert.assertTrue(type.isInstance(keyInfo));
+
+        Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
+        X509Data x509Data = keyInfo.getX509Datas().get(0);
+        Assert.assertEquals(x509Data.getX509Certificates().size(), 1, "Unexpected number of X509Certificate elements");
+        List<X509Certificate> certs = KeyInfoSupport.getCertificates(x509Data);
+        Assert.assertEquals(certs.get(0), entityCert, "Unexpected certificate value found");
+    }
+
 
 }

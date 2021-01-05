@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.keyinfo;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Interface for factories which produce {@link KeyInfoGenerator} instances.
@@ -32,6 +34,19 @@ public interface KeyInfoGeneratorFactory {
      * @return a new KeyInfoGenerator instance
      */
     @Nonnull public KeyInfoGenerator newInstance();
+    
+    /**
+     * Get a new instance of the generator type produced by the factory, and which generates
+     * {@link KeyInfo} instances of the specified type, for example {@link OriginatorKeyInfo}
+     * or {@link RecipientKeyInfo}.
+     * 
+     * @param type the type of element to produce. Null is interpreted as a standard {@link KeyInfo}.
+     * 
+     * @return a new KeyInfoGenerator instance
+     */
+    @Nonnull public default KeyInfoGenerator newInstance(@Nullable final Class<? extends KeyInfo> type) {
+        throw new UnsupportedOperationException("Method not implemented");
+    }
     
     /**
      * Check whether the generators produced by this factory can handle the specified credential.

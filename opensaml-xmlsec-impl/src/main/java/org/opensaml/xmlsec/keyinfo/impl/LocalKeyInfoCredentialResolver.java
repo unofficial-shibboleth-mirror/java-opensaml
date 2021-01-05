@@ -29,6 +29,10 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.criteria.KeyNameCriterion;
 import org.opensaml.security.criteria.PublicKeyCriterion;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolutionMode;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolutionMode.Mode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.logic.Constraint;
@@ -70,6 +74,9 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  */
 public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredentialResolver {
     
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(LocalKeyInfoCredentialResolver.class);
+    
     /** The resolver which is used to resolve local credentials. */
     private final CredentialResolver localCredResolver;
 
@@ -105,23 +112,45 @@ public class LocalKeyInfoCredentialResolver extends BasicProviderKeyInfoCredenti
             @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
                     throws ResolverException {
         
-        final ArrayList<Credential> localCreds = new ArrayList<>();
+        final Mode mode = criteriaSet.contains(KeyInfoCredentialResolutionMode.class)
+                ? criteriaSet.get(KeyInfoCredentialResolutionMode.class).getMode() : Mode.LOCAL;
+
+        log.debug("Resolution mode in effect is: {}", mode);
+
+        if (Mode.PUBLIC == mode) {
+            log.debug("Criteria indicates PUBLIC resolution mode, skipping explicit local credential resolution");
+            return;
+        }
         
-        for (final Credential cred : credentials) {
-            if (isLocalCredential(cred)) {
-                localCreds.add(cred);
-            } else if (cred.getPublicKey() != null) {
-               localCreds.addAll(resolveByPublicKey(cred.getPublicKey()));
+        final ArrayList<Credential> results = new ArrayList<>();
+        
+        for (final Credential inputCred : credentials) {
+            if (isLocalCredential(inputCred)) {
+                log.debug("Input credential was local, including in results");
+                results.add(inputCred);
+            } else if (inputCred.getPublicKey() != null) {
+                final Collection<? extends Credential> localCreds = resolveByPublicKey(inputCred.getPublicKey());
+                if (!localCreds.isEmpty()) {
+                    log.debug("Input credential was public, resolved to local credential(s), adding to results");
+                    results.addAll(localCreds);
+                } else if (Mode.BOTH == mode) {
+                    log.debug("Input credential was public, did not resolve to local credential(s), "
+                            + "BOTH mode in effect, including in results");
+                    results.add(inputCred);
+                } else {
+                    log.debug("Input credential was public, did not resolve to local credential(s), "
+                            + "LOCAL mode in effect, omitting from results");
+                }
             }
         }
         
-        // Also resolve local creds based on any key names that are known
+        // Also resolve local credentials based on any key names that are known
         for (final String keyName : kiContext.getKeyNames()) {
-            localCreds.addAll(resolveByKeyName(keyName));
+            results.addAll(resolveByKeyName(keyName));
         }
         
         credentials.clear();
-        credentials.addAll(localCreds);
+        credentials.addAll(results);
     }
     
     /**

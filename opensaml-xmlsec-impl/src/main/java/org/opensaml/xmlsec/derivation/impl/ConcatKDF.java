@@ -36,13 +36,17 @@ import org.bouncycastle.crypto.params.KDFParameters;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.agreement.CloneableKeyAgreementParameter;
+import org.opensaml.xmlsec.agreement.KeyAgreementException;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
+import org.opensaml.xmlsec.agreement.impl.KeyAgreementParameterParser;
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.DigestAlgorithm;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
+import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.DigestMethod;
@@ -265,6 +269,7 @@ public class ConcatKDF extends AbstractInitializableComponent
             throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
         final String jcaKeyAlgorithm = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
         if (jcaKeyAlgorithm == null) {
@@ -350,31 +355,6 @@ public class ConcatKDF extends AbstractInitializableComponent
         }
     }
 
-    /** {@inheritDoc} */
-    public XMLObject buildXMLObject() {
-        final KeyDerivationMethod method =
-                (KeyDerivationMethod) XMLObjectSupport.buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
-        method.setAlgorithm(getAlgorithm());
-        
-        final ConcatKDFParams params =
-                (ConcatKDFParams) XMLObjectSupport.buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
-        
-        final DigestMethod xmlDigestMethod =
-                (DigestMethod) XMLObjectSupport.buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
-        xmlDigestMethod.setAlgorithm(digestMethod);
-        params.setDigestMethod(xmlDigestMethod);
-        
-        params.setAlgorithmID(padParam(algorithmID));
-        params.setPartyUInfo(padParam(partyUInfo));
-        params.setPartyVInfo(padParam(partyVInfo));
-        params.setSuppPubInfo(padParam(suppPubInfo));
-        params.setSuppPrivInfo(padParam(suppPrivInfo));
-        
-        method.getUnknownXMLObjects().add(params);
-        
-        return method;
-    }
-    
     /** {@inheritDoc} */
     public ConcatKDF clone() {
         try {
@@ -476,6 +456,111 @@ public class ConcatKDF extends AbstractInitializableComponent
         }
         
         return trimmed.substring(2);
+    }
+    
+    /** {@inheritDoc} */
+    public XMLObject buildXMLObject() {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
+        final KeyDerivationMethod method =
+                (KeyDerivationMethod) XMLObjectSupport.buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        method.setAlgorithm(getAlgorithm());
+        
+        final ConcatKDFParams params =
+                (ConcatKDFParams) XMLObjectSupport.buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        
+        final DigestMethod xmlDigestMethod =
+                (DigestMethod) XMLObjectSupport.buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        xmlDigestMethod.setAlgorithm(digestMethod);
+        params.setDigestMethod(xmlDigestMethod);
+        
+        params.setAlgorithmID(padParam(algorithmID));
+        params.setPartyUInfo(padParam(partyUInfo));
+        params.setPartyVInfo(padParam(partyVInfo));
+        params.setSuppPubInfo(padParam(suppPubInfo));
+        params.setSuppPrivInfo(padParam(suppPrivInfo));
+        
+        method.getUnknownXMLObjects().add(params);
+        
+        return method;
+    }
+    
+    /**
+     * Create and initialize a new instance from the specified {@link XMLObject}.
+     * 
+     * @param xmlObject the XML object
+     * 
+     * @return new parameter instance
+     * 
+     * @throws ComponentInitializationException
+     */
+    @Nonnull public static ConcatKDF fromXMLObject(@Nonnull final KeyDerivationMethod xmlObject) 
+            throws ComponentInitializationException {
+        Constraint.isNotNull(xmlObject, "XMLObject was null");
+        
+        if (! EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(xmlObject.getAlgorithm())) {
+            throw new ComponentInitializationException("KeyDerivationMethod contains unsupported algorithm: "
+                    + xmlObject.getAlgorithm());
+        }
+        
+        if (xmlObject.getUnknownXMLObjects().size() != 1 
+                || xmlObject.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).size() != 1) {
+            throw new ComponentInitializationException("KeyDerivationMethod contains unsupported children");
+        }
+        
+        final ConcatKDFParams xmlParams =
+                (ConcatKDFParams) xmlObject.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).get(0);
+        
+        final ConcatKDF parameter = new ConcatKDF();
+        
+        if (xmlParams.getDigestMethod() == null || xmlParams.getDigestMethod().getAlgorithm() == null) {
+            throw new ComponentInitializationException("KeyDerivationMethod did not contain DigestMethod value");
+        }
+        
+        parameter.setDigestMethod(xmlParams.getDigestMethod().getAlgorithm());
+        
+        try {
+            parameter.setAlgorithmID(unpadParam(xmlParams.getAlgorithmID(), "AlgorithmID"));
+            parameter.setPartyUInfo(unpadParam(xmlParams.getPartyUInfo(), "PartyUInfo"));
+            parameter.setPartyVInfo(unpadParam(xmlParams.getPartyVInfo(), "PartyVInfo"));
+            parameter.setSuppPubInfo(unpadParam(xmlParams.getSuppPubInfo(), "SuppPubInfo"));
+            parameter.setSuppPrivInfo(unpadParam(xmlParams.getSuppPrivInfo(), "SuppPrivInfo"));
+        } catch (final KeyDerivationException e) {
+            throw new ComponentInitializationException("Invalid ConcatKDF param value", e);
+        }
+        
+        parameter.initialize();
+        
+        return parameter;
+    }
+    
+    /**
+     * Implementation of {@link KeyAgreementParameterParser}.
+     */
+    public static class Parser implements KeyAgreementParameterParser {
+
+        /** {@inheritDoc} */
+        public boolean handles(@Nonnull final XMLObject xmlObject) {
+            return KeyDerivationMethod.class.isInstance(xmlObject)
+                    && EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF.equals(
+                            KeyDerivationMethod.class.cast(xmlObject).getAlgorithm());
+        }
+
+        /** {@inheritDoc} */
+        public KeyAgreementParameter parse(@Nonnull final XMLObject xmlObject) throws KeyAgreementException {
+            // Sanity check
+            if (!handles(xmlObject)) {
+                throw new KeyAgreementException("This implementation does not handle: "
+                        + xmlObject.getClass().getName());
+            }
+            
+            try {
+                return fromXMLObject(KeyDerivationMethod.class.cast(xmlObject));
+            } catch (final ComponentInitializationException e) {
+                throw new KeyAgreementException(e);
+            }
+        }
+        
     }
     
 }

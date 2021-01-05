@@ -17,16 +17,20 @@
 
 package org.opensaml.xmlsec.agreement.impl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.agreement.CloneableKeyAgreementParameter;
+import org.opensaml.xmlsec.agreement.KeyAgreementException;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
 
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
@@ -65,16 +69,6 @@ public class DigestMethod extends AbstractInitializableComponent
     }
 
     /** {@inheritDoc} */
-    public XMLObject buildXMLObject() {
-        final org.opensaml.xmlsec.signature.DigestMethod digestMethod =
-                (org.opensaml.xmlsec.signature.DigestMethod) XMLObjectSupport
-                    .buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
-        
-        digestMethod.setAlgorithm(getAlgorithm());
-        return digestMethod;
-    }
-    
-    /** {@inheritDoc} */
     public DigestMethod clone() {
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
         try {
@@ -85,4 +79,61 @@ public class DigestMethod extends AbstractInitializableComponent
         }
     }
 
+    /** {@inheritDoc} */
+    @Nonnull public XMLObject buildXMLObject() {
+        final org.opensaml.xmlsec.signature.DigestMethod digestMethod =
+                (org.opensaml.xmlsec.signature.DigestMethod) XMLObjectSupport
+                    .buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        
+        digestMethod.setAlgorithm(getAlgorithm());
+        return digestMethod;
+    }
+    
+    /**
+     * Create and initialize a new instance from the specified {@link XMLObject}.
+     * 
+     * @param xmlObject the XML object
+     * 
+     * @return new parameter instance
+     * 
+     * @throws ComponentInitializationException
+     */
+    @Nonnull public static DigestMethod fromXMLObject(
+            @Nonnull final org.opensaml.xmlsec.signature.DigestMethod xmlObject)
+                    throws ComponentInitializationException {
+        Constraint.isNotNull(xmlObject, "XMLObject was null");
+        
+        final DigestMethod parameter = new DigestMethod();
+        parameter.setAlgorithm(xmlObject.getAlgorithm());
+        parameter.initialize();
+        return parameter;
+    }
+    
+    /**
+     * Implementation of {@link KeyAgreementParameterParser}.
+     */
+    public static class Parser implements KeyAgreementParameterParser {
+
+        /** {@inheritDoc} */
+        public boolean handles(@Nonnull final XMLObject xmlObject) {
+            return org.opensaml.xmlsec.signature.DigestMethod.class.isInstance(xmlObject);
+        }
+
+        /** {@inheritDoc} */
+        public KeyAgreementParameter parse(@Nonnull final XMLObject xmlObject) throws KeyAgreementException {
+            // Sanity check
+            if (!handles(xmlObject)) {
+                throw new KeyAgreementException("This implementation does not handle: "
+                        + xmlObject.getClass().getName());
+            }
+            
+            try {
+                return fromXMLObject(org.opensaml.xmlsec.signature.DigestMethod.class.cast(xmlObject));
+            } catch (final ComponentInitializationException e) {
+                throw new KeyAgreementException(e);
+            }
+        }
+        
+    }
+    
 }

@@ -39,6 +39,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
+import org.opensaml.xmlsec.keyinfo.impl.KeyAgreementKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DEREncodedKeyValueProvider;
@@ -229,7 +230,12 @@ public class DefaultSecurityConfigurationBootstrap {
      * @return a named KeyInfo generator manager instance
      */
     protected static NamedKeyInfoGeneratorManager buildDataEncryptionKeyInfoGeneratorManager() {
-        return buildBasicKeyInfoGeneratorManager();
+        // Generator for KeyAgreementCredentials. This factory already defaults the usually desired settings.
+        final KeyAgreementKeyInfoGeneratorFactory keyAgreementFactory = new KeyAgreementKeyInfoGeneratorFactory();
+        
+        final NamedKeyInfoGeneratorManager manager = buildBasicKeyInfoGeneratorManager();
+        manager.getDefaultManager().registerFactory(keyAgreementFactory);
+        return manager;
     }
     
     /**
@@ -239,7 +245,12 @@ public class DefaultSecurityConfigurationBootstrap {
      * @return a named KeyInfo generator manager instance
      */
     protected static NamedKeyInfoGeneratorManager buildKeyTransportEncryptionKeyInfoGeneratorManager() {
-        return buildBasicKeyInfoGeneratorManager();
+        // Generator for KeyAgreementCredentials. This factory already defaults the usually desired settings.
+        final KeyAgreementKeyInfoGeneratorFactory keyAgreementFactory = new KeyAgreementKeyInfoGeneratorFactory();
+        
+        final NamedKeyInfoGeneratorManager manager = buildBasicKeyInfoGeneratorManager();
+        manager.getDefaultManager().registerFactory(keyAgreementFactory);
+        return manager;
     }
     
     /**

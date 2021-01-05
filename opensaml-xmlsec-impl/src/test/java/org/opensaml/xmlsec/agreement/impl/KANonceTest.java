@@ -17,7 +17,7 @@
 
 package org.opensaml.xmlsec.agreement.impl;
 
-import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -28,7 +28,7 @@ import net.shibboleth.utilities.java.support.component.UnmodifiableComponentExce
 /**
  *
  */
-public class KANonceTest extends OpenSAMLInitBaseTestCase  {
+public class KANonceTest extends XMLObjectBaseTestCase  {
     
     @Test
     public void basic() throws ComponentInitializationException {
@@ -54,6 +54,27 @@ public class KANonceTest extends OpenSAMLInitBaseTestCase  {
         org.opensaml.xmlsec.encryption.KANonce xmlNonce = org.opensaml.xmlsec.encryption.KANonce.class.cast(xmlObject);
         Assert.assertEquals(xmlNonce.getValue(), "someBase64==");
         
+    }
+    
+    @Test
+    public void fromXMLObject() throws Exception {
+        org.opensaml.xmlsec.encryption.KANonce xmlObject = buildXMLObject(org.opensaml.xmlsec.encryption.KANonce.DEFAULT_ELEMENT_NAME);
+        xmlObject.setValue("someBase64==");
+        
+        KANonce parameter = KANonce.fromXMLObject(xmlObject);
+        Assert.assertNotNull(parameter);
+        Assert.assertTrue(parameter.isInitialized());
+        Assert.assertEquals(parameter.getValue(), "someBase64==");
+        
+        xmlObject.setValue(null);
+        
+        
+        try {
+            KANonce.fromXMLObject(xmlObject);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
     }
     
     @Test(expectedExceptions = ComponentInitializationException.class)

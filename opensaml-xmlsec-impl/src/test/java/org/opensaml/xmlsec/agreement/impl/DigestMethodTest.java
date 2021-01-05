@@ -17,7 +17,7 @@
 
 package org.opensaml.xmlsec.agreement.impl;
 
-import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
@@ -29,7 +29,7 @@ import net.shibboleth.utilities.java.support.component.UnmodifiableComponentExce
 /**
  *
  */
-public class DigestMethodTest extends OpenSAMLInitBaseTestCase  {
+public class DigestMethodTest extends XMLObjectBaseTestCase {
     
     @Test
     public void basic() throws ComponentInitializationException {
@@ -55,6 +55,27 @@ public class DigestMethodTest extends OpenSAMLInitBaseTestCase  {
         org.opensaml.xmlsec.signature.DigestMethod xmlDigest = org.opensaml.xmlsec.signature.DigestMethod.class.cast(xmlObject);
         Assert.assertEquals(xmlDigest.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         
+    }
+    
+    @Test
+    public void fromXMLObject() throws Exception {
+        org.opensaml.xmlsec.signature.DigestMethod xmlObject = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        xmlObject.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        
+        DigestMethod parameter = DigestMethod.fromXMLObject(xmlObject);
+        Assert.assertNotNull(parameter);
+        Assert.assertTrue(parameter.isInitialized());
+        Assert.assertEquals(parameter.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        
+        xmlObject.setAlgorithm(null);
+        
+        
+        try {
+            DigestMethod.fromXMLObject(xmlObject);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
     }
     
     @Test(expectedExceptions = ComponentInitializationException.class)

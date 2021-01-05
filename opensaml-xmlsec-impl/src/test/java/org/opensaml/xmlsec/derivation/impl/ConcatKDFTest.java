@@ -22,11 +22,15 @@ import javax.crypto.SecretKey;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.xmlsec.agreement.impl.KANonce;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
@@ -38,7 +42,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 /**
  *
  */
-public class ConcatKDFTest extends OpenSAMLInitBaseTestCase {
+public class ConcatKDFTest extends XMLObjectBaseTestCase {
     
     @Test
     public void defaultProperties() throws Exception {
@@ -154,6 +158,110 @@ public class ConcatKDFTest extends OpenSAMLInitBaseTestCase {
         
         Assert.assertNotNull(kdmParams.getDigestMethod());
         Assert.assertEquals(kdmParams.getDigestMethod().getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+    }
+    
+    @Test
+    public void fromXMLObject() throws Exception {
+        KeyDerivationMethod xmlKDM = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        xmlKDM.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        
+        ConcatKDFParams xmlParams= buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        xmlKDM.getUnknownXMLObjects().add(xmlParams);
+        
+        DigestMethod xmlDigest = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        xmlDigest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        xmlParams.setDigestMethod(xmlDigest);
+        
+        xmlParams.setAlgorithmID("00AA");
+        xmlParams.setPartyUInfo("00BB");
+        xmlParams.setPartyVInfo("00CC");
+        xmlParams.setSuppPubInfo("00DD");
+        xmlParams.setSuppPrivInfo("00EE");
+        
+        ConcatKDF parameter = ConcatKDF.fromXMLObject(xmlKDM);
+        Assert.assertNotNull(parameter);
+        Assert.assertTrue(parameter.isInitialized());
+        
+        KeyDerivationMethod xmlKDMBad = null;
+        ConcatKDFParams xmlParamsBad = null;
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlKDMBad.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2);
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlKDMBad.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (ConcatKDFParams) xmlKDMBad.getUnknownXMLObjects().get(0);
+        xmlParamsBad.setDigestMethod(null);
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (ConcatKDFParams) xmlKDMBad.getUnknownXMLObjects().get(0);
+        xmlParamsBad.setAlgorithmID("01AA");
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (ConcatKDFParams) xmlKDMBad.getUnknownXMLObjects().get(0);
+        xmlParamsBad.setPartyUInfo("01BB");
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (ConcatKDFParams) xmlKDMBad.getUnknownXMLObjects().get(0);
+        xmlParamsBad.setPartyVInfo("01CC");
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (ConcatKDFParams) xmlKDMBad.getUnknownXMLObjects().get(0);
+        xmlParamsBad.setSuppPubInfo("01DD");
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (ConcatKDFParams) xmlKDMBad.getUnknownXMLObjects().get(0);
+        xmlParamsBad.setSuppPrivInfo("01EE");
+        try {
+            ConcatKDF.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
     }
 
     @Test

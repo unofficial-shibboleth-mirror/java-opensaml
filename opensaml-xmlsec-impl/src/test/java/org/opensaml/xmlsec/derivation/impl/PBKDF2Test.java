@@ -23,14 +23,20 @@ import javax.crypto.SecretKey;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
+import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.BlockEncryptionAlgorithm;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
+import org.opensaml.xmlsec.encryption.IterationCount;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
+import org.opensaml.xmlsec.encryption.KeyLength;
 import org.opensaml.xmlsec.encryption.PBKDF2Params;
+import org.opensaml.xmlsec.encryption.PRF;
+import org.opensaml.xmlsec.encryption.Salt;
+import org.opensaml.xmlsec.encryption.Specified;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
@@ -48,7 +54,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 /**
  *
  */
-public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
+public class PBKDF2Test extends XMLObjectBaseTestCase {
     
     @Test
     public void defaultProperties() throws Exception {
@@ -75,7 +81,7 @@ public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
         kdf.setKeyLength(256);
         kdf.setPRF(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         kdf.setRandom(sr);
-        kdf.setSalt("ABCDEFGH");
+        kdf.setSalt("ABCD");
         kdf.initialize();
         
         Assert.assertEquals(kdf.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2);
@@ -85,7 +91,7 @@ public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(kdf.getKeyLength().intValue(), 256);
         Assert.assertEquals(kdf.getPRF(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         Assert.assertSame(kdf.getRandom(), sr);
-        Assert.assertEquals(kdf.getSalt(), "ABCDEFGH");
+        Assert.assertEquals(kdf.getSalt(), "ABCD");
     }
     
     @Test(expectedExceptions = ComponentInitializationException.class)
@@ -115,7 +121,7 @@ public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
         kdf.setIterationCount(3000);
         kdf.setKeyLength(256);
         kdf.setPRF(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
-        kdf.setSalt("ABCDEFGH");
+        kdf.setSalt("ABCD");
         kdf.initialize();
         
         XMLObject xmlObject = kdf.buildXMLObject();
@@ -139,7 +145,104 @@ public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
         
         Assert.assertNotNull(kdmParams.getSalt());
         Assert.assertNotNull(kdmParams.getSalt().getSpecified());
-        Assert.assertEquals(kdmParams.getSalt().getSpecified().getValue(), "ABCDEFGH");
+        Assert.assertEquals(kdmParams.getSalt().getSpecified().getValue(), "ABCD");
+    }
+    
+    @Test
+    public void fromXMLObject() throws Exception {
+        KeyDerivationMethod xmlKDM = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        xmlKDM.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2);
+        
+        PBKDF2Params xmlParams= buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
+        xmlKDM.getUnknownXMLObjects().add(xmlParams);
+        
+        IterationCount xmlIterationCount = buildXMLObject(IterationCount.DEFAULT_ELEMENT_NAME);
+        xmlIterationCount.setValue(3000);
+        xmlParams.setIterationCount(xmlIterationCount);
+        
+        KeyLength xmlKeyLength = buildXMLObject(KeyLength.DEFAULT_ELEMENT_NAME);
+        xmlKeyLength.setValue(16);
+        xmlParams.setKeyLength(xmlKeyLength);
+        
+        PRF xmlPRF = buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
+        xmlPRF.setAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
+        xmlParams.setPRF(xmlPRF);
+        
+        Salt xmlSalt = buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
+        Specified xmlSpecified = buildXMLObject(Specified.DEFAULT_ELEMENT_NAME);
+        xmlSpecified.setValue("ABCD");
+        xmlSalt.setSpecified(xmlSpecified);
+        xmlParams.setSalt(xmlSalt);
+        
+        PBKDF2 parameter = PBKDF2.fromXMLObject(xmlKDM);
+        Assert.assertNotNull(parameter);
+        Assert.assertTrue(parameter.isInitialized());
+        
+        Assert.assertEquals(parameter.getIterationCount().intValue(), 3000);
+        Assert.assertEquals(parameter.getKeyLength().intValue(), 128);
+        Assert.assertEquals(parameter.getPRF(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
+        Assert.assertEquals(parameter.getSalt(), "ABCD");
+        
+        KeyDerivationMethod xmlKDMBad = null;
+        PBKDF2Params xmlParamsBad = null;
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlKDMBad.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        try {
+            PBKDF2.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlKDMBad.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
+        try {
+            PBKDF2.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (PBKDF2Params) xmlKDMBad.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).get(0);
+        xmlParamsBad.setIterationCount(null);
+        try {
+            PBKDF2.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (PBKDF2Params) xmlKDMBad.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).get(0);
+        xmlParamsBad.setKeyLength(null);
+        try {
+            PBKDF2.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (PBKDF2Params) xmlKDMBad.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).get(0);
+        xmlParamsBad.setPRF(null);
+        try {
+            PBKDF2.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
+        
+        xmlKDMBad = XMLObjectSupport.cloneXMLObject(xmlKDM);
+        xmlParamsBad = (PBKDF2Params) xmlKDMBad.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).get(0);
+        xmlParamsBad.setSalt(null);
+        try {
+            PBKDF2.fromXMLObject(xmlKDMBad);
+            Assert.fail("Should have failed invalid XMLObject");
+        } catch (ComponentInitializationException e) {
+            //expected
+        }
     }
     
     @Test
@@ -152,7 +255,7 @@ public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
         kdf.setKeyLength(256);
         kdf.setPRF(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         kdf.setRandom(sr);
-        kdf.setSalt("ABCDEFGH");
+        kdf.setSalt("ABCD");
         kdf.initialize();
         
         PBKDF2 cloned = kdf.clone();
@@ -164,7 +267,7 @@ public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(cloned.getKeyLength().intValue(), 256);
         Assert.assertEquals(cloned.getPRF(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         Assert.assertSame(cloned.getRandom(), sr);
-        Assert.assertEquals(cloned.getSalt(), "ABCDEFGH");
+        Assert.assertEquals(cloned.getSalt(), "ABCD");
     }
     
     @Test
@@ -195,7 +298,7 @@ public class PBKDF2Test extends OpenSAMLInitBaseTestCase {
         kdf.setIterationCount(3000);
         kdf.setKeyLength(256);
         kdf.setPRF(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
-        kdf.setSalt("ABCDEFGH");
+        kdf.setSalt("ABCD");
         kdf.initialize();
         
         byte[] secret = Hex.decodeHex("DEADBEEF");

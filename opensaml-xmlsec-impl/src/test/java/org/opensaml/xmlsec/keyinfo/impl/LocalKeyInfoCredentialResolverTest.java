@@ -34,6 +34,8 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolutionMode;
+import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolutionMode.Mode;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
@@ -102,6 +104,59 @@ public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
         Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
         
         Assert.assertNull(resolvedCred, "Expected no credential to be resolved");
+    }
+    
+    @Test
+    public void testLocalMode() throws ResolverException, EncodingException {
+        // Nominally the same as "testKeyInfoWithKnownPublicKey", just testing an explicit mode which is the default
+        KeyInfoSupport.addPublicKey(keyInfo, keyPair.getPublic());
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo), new KeyInfoCredentialResolutionMode(Mode.LOCAL) );
+        Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
+        
+        Assert.assertEquals(resolvedCred, localCred, "Unexpected local credential resolved");
+    }
+    
+    @Test
+    public void testPublicMode() throws ResolverException, EncodingException {
+        localCredResolver.getCollection().clear();
+        
+        KeyInfoSupport.addPublicKey(keyInfo, keyPair.getPublic());
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo), new KeyInfoCredentialResolutionMode(Mode.PUBLIC) );
+        Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(resolvedCred);
+        Assert.assertNotSame(resolvedCred, localCred);
+        Assert.assertNull(resolvedCred.getPrivateKey());
+        Assert.assertNotNull(resolvedCred.getPublicKey());
+        Assert.assertEquals(resolvedCred.getPublicKey(), keyPair.getPublic());
+    }
+    
+    @Test
+    public void testBothModeWithLocalNotPresent() throws ResolverException, EncodingException {
+        localCredResolver.getCollection().clear();
+        
+        KeyInfoSupport.addPublicKey(keyInfo, keyPair.getPublic());
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo), new KeyInfoCredentialResolutionMode(Mode.BOTH) );
+        Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(resolvedCred);
+        Assert.assertNotSame(resolvedCred, localCred);
+        Assert.assertNull(resolvedCred.getPrivateKey());
+        Assert.assertNotNull(resolvedCred.getPublicKey());
+        Assert.assertEquals(resolvedCred.getPublicKey(), keyPair.getPublic());
+    }
+    
+    @Test
+    public void testBothModeWithLocalPresent() throws ResolverException, EncodingException {
+        KeyInfoSupport.addPublicKey(keyInfo, keyPair.getPublic());
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new KeyInfoCriterion(keyInfo), new KeyInfoCredentialResolutionMode(Mode.BOTH) );
+        Credential resolvedCred = keyInfoResolver.resolveSingle(criteriaSet);
+        
+        Assert.assertEquals(resolvedCred, localCred, "Unexpected local credential resolved");
     }
     
 }

@@ -31,7 +31,10 @@ import javax.crypto.spec.SecretKeySpec;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.agreement.CloneableKeyAgreementParameter;
+import org.opensaml.xmlsec.agreement.KeyAgreementException;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
+import org.opensaml.xmlsec.agreement.impl.KeyAgreementParameterParser;
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.MACAlgorithm;
@@ -277,6 +280,7 @@ public class PBKDF2 extends AbstractInitializableComponent
             throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
         
         final String jcaKeyAlgorithm = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
         if (jcaKeyAlgorithm == null) {
@@ -361,15 +365,34 @@ public class PBKDF2 extends AbstractInitializableComponent
     }
 
     /** {@inheritDoc} */
+    public PBKDF2 clone() {
+        try {
+            return (PBKDF2) super.clone();
+        } catch (final CloneNotSupportedException e) {
+            // We know we are, so this will never happen
+            return null;
+        }
+    }
+
+    /** {@inheritDoc} */
     public XMLObject buildXMLObject() {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
+        // If initialized, iterationCount and PRF are guaranteed to be non-null.
+        // These 2 would happen if initialized but derive(...) hasn't been called.
+        if (keyLength == null) {
+            throw new IllegalStateException("PBKDF2 is missing KeyLength element data");
+        }
+        if (salt == null) {
+            throw new IllegalStateException("PBKDF2 is missing Salt element data");
+        }
+        
         final KeyDerivationMethod method =
                 (KeyDerivationMethod) XMLObjectSupport.buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         method.setAlgorithm(getAlgorithm());
         
         final PBKDF2Params params =
                 (PBKDF2Params) XMLObjectSupport.buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
-        
-        //TODO do sanity checking on these - how to report out?  Maybe method signature should have a thrown exception.
         
         final Salt xmlSalt = (Salt) XMLObjectSupport.buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
         final Specified  specified = (Specified) XMLObjectSupport.buildXMLObject(Specified.DEFAULT_ELEMENT_NAME);
@@ -397,14 +420,107 @@ public class PBKDF2 extends AbstractInitializableComponent
         return method;
     }
     
-    /** {@inheritDoc} */
-    public PBKDF2 clone() {
-        try {
-            return (PBKDF2) super.clone();
-        } catch (final CloneNotSupportedException e) {
-            // We know we are, so this will never happen
-            return null;
+    /**
+     * Create and initialize a new instance from the specified {@link XMLObject}.
+     * 
+     * @param xmlObject the XML object
+     * 
+     * @return new parameter instance
+     * 
+     * @throws ComponentInitializationException
+     */
+    @Nonnull public static PBKDF2 fromXMLObject(@Nonnull final KeyDerivationMethod xmlObject) 
+            throws ComponentInitializationException {
+        Constraint.isNotNull(xmlObject, "XMLObject was null");
+        
+        if (! EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2.equals(xmlObject.getAlgorithm())) {
+            throw new ComponentInitializationException("KeyDerivationMethod contains unsupported algorithm: "
+                    + xmlObject.getAlgorithm());
+        }
+        
+        if (xmlObject.getUnknownXMLObjects().size() != 1 
+                || xmlObject.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).size() != 1) {
+            throw new ComponentInitializationException("KeyDerivationMethod contains unsupported children");
+        }
+        
+        final PBKDF2Params xmlParams =
+                (PBKDF2Params) xmlObject.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).get(0);
+        
+        validateXMLObjectParameters(xmlParams);
+        
+        final PBKDF2 param = new PBKDF2();
+        
+        param.setIterationCount(xmlParams.getIterationCount().getValue());
+        // Note: We're tracking this in # of bits, but the XML element uses # of bytes.
+        param.setKeyLength(xmlParams.getKeyLength().getValue() * 8);
+        param.setPRF(xmlParams.getPRF().getAlgorithm());
+        param.setSalt(xmlParams.getSalt().getSpecified().getValue());
+        
+        param.initialize();
+        
+        return param;
+    }
+    
+    /**
+     * Validate the {@link PBKDF2Params} instance.
+     * 
+     * @param xmlParams the instance to validate
+     * 
+     * @throws ComponentInitializationException
+     */
+    // Checkstyle: CyclomaticComplexity OFF
+    private static void validateXMLObjectParameters(@Nonnull final PBKDF2Params xmlParams)
+            throws ComponentInitializationException {
+        
+        if (xmlParams.getIterationCount() == null || xmlParams.getIterationCount().getValue() == null) {
+            throw new ComponentInitializationException("PBKDF2-params did not contain IterationCount value");
+        }
+        
+        if (xmlParams.getKeyLength() == null || xmlParams.getKeyLength().getValue() == null) {
+            throw new ComponentInitializationException("PBKDF2-params did not contain KeyLength value");
+        }
+        
+        if (xmlParams.getPRF() == null || xmlParams.getPRF().getAlgorithm() == null) {
+            throw new ComponentInitializationException("PBKDF2-params did not contain PRF value");
+        }
+        if (xmlParams.getPRF().getParameters() != null) {
+            throw new ComponentInitializationException("PBKDF2-params contained unsupported PRF parameters");
+        }
+        
+        if (xmlParams.getSalt() == null || xmlParams.getSalt().getSpecified() == null
+                || xmlParams.getSalt().getSpecified().getValue() == null) {
+            throw new ComponentInitializationException("PBKDF2-params did not contain Salt Specified value");
         }
     }
+    // Checkstyle: CyclomaticComplexity ON
+    
+    /**
+     * Implementation of {@link KeyAgreementParameterParser}.
+     */
+    public static class Parser implements KeyAgreementParameterParser {
 
+        /** {@inheritDoc} */
+        public boolean handles(@Nonnull final XMLObject xmlObject) {
+            return KeyDerivationMethod.class.isInstance(xmlObject)
+                    && EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2.equals(
+                            KeyDerivationMethod.class.cast(xmlObject).getAlgorithm());
+        }
+
+        /** {@inheritDoc} */
+        public KeyAgreementParameter parse(@Nonnull final XMLObject xmlObject) throws KeyAgreementException {
+            // Sanity check
+            if (!handles(xmlObject)) {
+                throw new KeyAgreementException("This implementation does not handle: "
+                        + xmlObject.getClass().getName());
+            }
+            
+            try {
+                return fromXMLObject(KeyDerivationMethod.class.cast(xmlObject));
+            } catch (final ComponentInitializationException e) {
+                throw new KeyAgreementException(e);
+            }
+        }
+        
+    }
+    
 }

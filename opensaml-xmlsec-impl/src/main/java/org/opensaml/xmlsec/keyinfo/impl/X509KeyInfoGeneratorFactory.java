@@ -26,9 +26,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -50,6 +47,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A factory implementation which produces instances of {@link KeyInfoGenerator} capable of 
@@ -82,9 +82,12 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
 
     /** {@inheritDoc} */
     @Nonnull public KeyInfoGenerator newInstance() {
-        //TODO lock options during cloning ?
-        final X509Options newOptions = options.clone();
-        return new X509KeyInfoGenerator(newOptions);
+        return newInstance(null);
+    }
+    
+    /** {@inheritDoc} */
+    @Nonnull public KeyInfoGenerator newInstance(@Nullable final Class<? extends KeyInfo> type) {
+        return new X509KeyInfoGenerator(options.clone(), type);
     }
     
     /**
@@ -396,9 +399,6 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         /** The set of options to be used by the generator.*/
         private X509Options options;
        
-        /** Builder for KeyInfo objects. */
-        private final XMLObjectBuilder<KeyInfo> keyInfoBuilder;
-        
         /** Builder for X509Data objects. */
         private final XMLObjectBuilder<X509Data> x509DataBuilder;
        
@@ -406,13 +406,12 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          * Constructor.
          * 
          * @param newOptions the options to be used by the generator
+         * @param type the KeyInfo elemet type
          */
-        protected X509KeyInfoGenerator(final X509Options newOptions) {
-            super(newOptions);
+        protected X509KeyInfoGenerator(final X509Options newOptions, final Class<? extends KeyInfo> type) {
+            super(newOptions, type);
             options = newOptions;
             
-            keyInfoBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
-                    KeyInfo.DEFAULT_ELEMENT_NAME);
             x509DataBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
                     X509Data.DEFAULT_ELEMENT_NAME);
         }
@@ -431,7 +430,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             
             KeyInfo keyInfo =  super.generate(credential);
             if (keyInfo == null) {
-                keyInfo = keyInfoBuilder.buildObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+                keyInfo = buildKeyInfo();
             }
             final X509Data x509Data = x509DataBuilder.buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             
