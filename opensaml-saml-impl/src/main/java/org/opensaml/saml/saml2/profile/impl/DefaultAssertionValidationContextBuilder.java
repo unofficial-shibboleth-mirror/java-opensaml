@@ -73,6 +73,7 @@ import com.google.common.base.Predicates;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
@@ -85,52 +86,55 @@ public class DefaultAssertionValidationContextBuilder
         implements Function<AssertionValidationInput, ValidationContext> {
     
     /** Logger. */
-    @Nullable private Logger log = LoggerFactory.getLogger(DefaultAssertionValidationContextBuilder.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(DefaultAssertionValidationContextBuilder.class);
+    
+    /** A function for resolving the clock skew to apply. */
+    @Nullable private Function<ProfileRequestContext, Duration> clockSkew;
     
     /** A function for resolving the signature validation CriteriaSet for a particular function. */
-    private Function<Pair<ProfileRequestContext, Assertion>, CriteriaSet> signatureCriteriaSetFunction;
+    @Nullable private Function<Pair<ProfileRequestContext, Assertion>, CriteriaSet> signatureCriteriaSetFunction;
     
     /** Predicate for determining whether an Assertion signature is required. */
-    private Predicate<ProfileRequestContext> signatureRequired;
+    @Nonnull private Predicate<ProfileRequestContext> signatureRequired;
     
     /** Predicate for determining whether an Assertion's network address(es) should be checked. */
-    private Predicate<ProfileRequestContext> checkAddress;
+    @Nonnull private Predicate<ProfileRequestContext> checkAddress;
     
     /** Function for determining the max allowed time since authentication. */
-    private Function<ProfileRequestContext, Duration> maximumTimeSinceAuthn;
+    @Nullable private Function<ProfileRequestContext, Duration> maximumTimeSinceAuthn;
 
     /** Predicate for determining whether to include the self entityID as a valid Recipient. */
-    private Predicate<ProfileRequestContext> includeSelfEntityIDAsRecipient;
+    @Nonnull private Predicate<ProfileRequestContext> includeSelfEntityIDAsRecipient;
     
     /** Function for determining additional valid audience values. */
-    private Function<ProfileRequestContext, Set<String>> additionalAudiences;
+    @Nullable private Function<ProfileRequestContext, Set<String>> additionalAudiences;
     
     /** Function for determining additional valid Issuer values. */
-    private Function<ProfileRequestContext, Set<String>> validIssuers;
+    @Nonnull private Function<ProfileRequestContext, Set<String>> validIssuers;
     
     /** Function for determining the valid InResponseTo value. */
-    private Function<ProfileRequestContext, String> inResponseTo;
+    @Nullable private Function<ProfileRequestContext, String> inResponseTo;
     
     /** Predicate for determining whether an Assertion SubjectConfirmationData InResponseTo is required. */
-    private Predicate<ProfileRequestContext> inResponseToRequired;
+    @Nonnull private Predicate<ProfileRequestContext> inResponseToRequired;
     
     /** Predicate for determining whether an Assertion SubjectConfirmationData Recipient is required. */
-    private Predicate<ProfileRequestContext> recipientRequired;
+    @Nonnull private Predicate<ProfileRequestContext> recipientRequired;
     
     /** Predicate for determining whether an Assertion SubjectConfirmationData NotBefore is required. */
-    private Predicate<ProfileRequestContext> notBeforeRequired;
+    @Nonnull private Predicate<ProfileRequestContext> notBeforeRequired;
     
     /** Predicate for determining whether an Assertion SubjectConfirmationData NotOnOrAfter is required. */
-    private Predicate<ProfileRequestContext> notOnOrAfterRequired;
+    @Nonnull private Predicate<ProfileRequestContext> notOnOrAfterRequired;
     
     /** Predicate for determining whether an Assertion SubjectConfirmationData Address is required. */
-    private Predicate<ProfileRequestContext> addressRequired;
+    @Nonnull private Predicate<ProfileRequestContext> addressRequired;
     
     /** The set of required Conditions. */
-    private Set<QName> requiredConditions;
+    @Nonnull private Set<QName> requiredConditions;
 
     /** Resolver for security parameters context. */
-    private Function<ProfileRequestContext, SecurityParametersContext> securityParametersLookupStrategy;
+    @Nonnull private Function<ProfileRequestContext, SecurityParametersContext> securityParametersLookupStrategy;
 
     /**
      * Constructor.
@@ -150,6 +154,39 @@ public class DefaultAssertionValidationContextBuilder
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
                 .compose(new InboundMessageContextLookup());
+    }
+    
+    /**
+     * Get the strategy by which to resolve the clock skew.
+     * 
+     * @return lookup strategy
+     * 
+     * @since 4.1.0
+     */
+    @Nullable public Function<ProfileRequestContext, Duration> getClockSkew() {
+        return clockSkew;
+    }
+
+    /**
+     * Set the clock skew.
+     * 
+     * @param skew clock skew
+     * 
+     * @since 4.1.0
+     */
+    public void setClockSkew(@Nullable final Duration skew) {
+        clockSkew = FunctionSupport.constant(skew);
+    }
+
+    /**
+     * Set the strategy by which to resolve the clock skew.
+     * 
+     * @param strategy lookup strategy
+     * 
+     * @since 4.1.0
+     */
+    public void setClockSkewLookupStrategy(@Nullable final Function<ProfileRequestContext, Duration> strategy) {
+        clockSkew = strategy;
     }
 
     /**
@@ -203,7 +240,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getIncludeSelfEntityIDAsRecipient() {
+    @Nonnull public Predicate<ProfileRequestContext> getIncludeSelfEntityIDAsRecipient() {
         return includeSelfEntityIDAsRecipient;
     }
 
@@ -216,7 +253,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @param predicate the predicate, must be non-null
      */
-    public void setIncludeSelfEntityIDAsRecipient(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+    public void setIncludeSelfEntityIDAsRecipient(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         includeSelfEntityIDAsRecipient = Constraint.isNotNull(predicate, "Signature required predicate was null");
     }
     
@@ -229,7 +266,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getSignatureRequired() {
+    @Nonnull public Predicate<ProfileRequestContext> getSignatureRequired() {
         return signatureRequired;
     }
 
@@ -242,7 +279,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @param predicate the predicate, must be non-null
      */
-    public void setSignatureRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+    public void setSignatureRequired(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         signatureRequired = Constraint.isNotNull(predicate, "Signature required predicate was null");
     }
 
@@ -255,7 +292,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @param function the function, may be null
      */
-    public void setInResponseTo(final @Nonnull Function<ProfileRequestContext,String> function) {
+    public void setInResponseTo(final @Nullable Function<ProfileRequestContext,String> function) {
         inResponseTo = function;
     }
     
@@ -268,7 +305,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @return the function
      */
-    public Function<ProfileRequestContext,String> getInResponseTo() {
+    @Nullable public Function<ProfileRequestContext,String> getInResponseTo() {
         return inResponseTo;
     }
     
@@ -281,7 +318,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getInResponseToRequired() {
+    @Nonnull public Predicate<ProfileRequestContext> getInResponseToRequired() {
         return inResponseToRequired;
     }
 
@@ -294,7 +331,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @param predicate the predicate, must be non-null
      */
-    public void setInResponseToRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+    public void setInResponseToRequired(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         inResponseToRequired = Constraint.isNotNull(predicate, "InResponseTo required predicate was null");
     }
 
@@ -307,7 +344,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getRecipientRequired() {
+    @Nonnull public Predicate<ProfileRequestContext> getRecipientRequired() {
         return recipientRequired;
     }
 
@@ -320,7 +357,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @param predicate the predicate, must be non-null
      */
-    public void setRecipientRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+    public void setRecipientRequired(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         recipientRequired = Constraint.isNotNull(predicate, "Recipient required predicate was null");
     }
 
@@ -333,7 +370,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getNotBeforeRequired() {
+    @Nonnull public Predicate<ProfileRequestContext> getNotBeforeRequired() {
         return notBeforeRequired;
     }
 
@@ -346,7 +383,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @param predicate the predicate, must be non-null
      */
-    public void setNotBeforeRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+    public void setNotBeforeRequired(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         notBeforeRequired = Constraint.isNotNull(predicate, "NotBefore required predicate was null");
     }
 
@@ -359,7 +396,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getNotOnOrAfterRequired() {
+    @Nonnull public Predicate<ProfileRequestContext> getNotOnOrAfterRequired() {
         return notOnOrAfterRequired;
     }
 
@@ -372,7 +409,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @param predicate the predicate, must be non-null
      */
-    public void setNotOnOrAfterRequired(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+    public void setNotOnOrAfterRequired(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         notOnOrAfterRequired = Constraint.isNotNull(predicate, "NotOnOrAfter required predicate was null");
     }
 
@@ -385,7 +422,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getAddressRequired() {
+    @Nonnull public Predicate<ProfileRequestContext> getAddressRequired() {
         return addressRequired;
     }
 
@@ -411,7 +448,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @return the predicate
      */
-    public Predicate<ProfileRequestContext> getCheckAddress() {
+    @Nonnull public Predicate<ProfileRequestContext> getCheckAddress() {
         return checkAddress;
     }
 
@@ -424,7 +461,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @param predicate the predicate, must be non-null
      */
-    public void setCheckAddress(final @Nonnull Predicate<ProfileRequestContext> predicate) {
+    public void setCheckAddress(@Nonnull final Predicate<ProfileRequestContext> predicate) {
         checkAddress = Constraint.isNotNull(predicate, "Check address predicate was null");
     }
 
@@ -437,7 +474,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @return the function
      */
-    public Function<ProfileRequestContext,Set<String>> getAdditionalAudiences() {
+    @Nullable public Function<ProfileRequestContext,Set<String>> getAdditionalAudiences() {
         return additionalAudiences;
     }
 
@@ -450,7 +487,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @param function the function, may be null
      */
-    public void setAdditionalAudiences(final @Nonnull Function<ProfileRequestContext,Set<String>> function) {
+    public void setAdditionalAudiences(@Nullable final Function<ProfileRequestContext,Set<String>> function) {
         additionalAudiences = function;
     }
 
@@ -463,7 +500,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @return the function
      */
-    public Function<ProfileRequestContext,Set<String>> getValidIssuers() {
+    @Nonnull public Function<ProfileRequestContext,Set<String>> getValidIssuers() {
         return validIssuers;
     }
 
@@ -476,7 +513,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @param function the function, may be null
      */
-    public void setValidIssuers(final @Nonnull Function<ProfileRequestContext,Set<String>> function) {
+    public void setValidIssuers(@Nonnull final Function<ProfileRequestContext,Set<String>> function) {
         validIssuers = Constraint.isNotNull(function, "Valied Issuers function was null");
     }
 
@@ -489,7 +526,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @return the function
      */
-    public Function<ProfileRequestContext,Duration> getMaximumTimeSinceAuthn() {
+    @Nullable public Function<ProfileRequestContext,Duration> getMaximumTimeSinceAuthn() {
         return maximumTimeSinceAuthn;
     }
 
@@ -502,7 +539,7 @@ public class DefaultAssertionValidationContextBuilder
      *
      * @param function the function, may be null
      */
-    public void setMaximumTimeSinceAuthn(final @Nonnull Function<ProfileRequestContext,Duration> function) {
+    public void setMaximumTimeSinceAuthn(@Nullable final Function<ProfileRequestContext,Duration> function) {
         maximumTimeSinceAuthn = function;
     }
 
@@ -553,6 +590,12 @@ public class DefaultAssertionValidationContextBuilder
             @Nonnull final AssertionValidationInput input) {
         
         final TreeMap<String, Object> staticParams = new TreeMap<>();
+        
+        // Clock skew
+        if (getClockSkew() != null) {
+            staticParams.put(SAML2AssertionValidationParameters.CLOCK_SKEW,
+                    getClockSkew().apply(input.getProfileRequestContext()));
+        }
         
         // Issuer
         staticParams.put(SAML2AssertionValidationParameters.VALID_ISSUERS,
