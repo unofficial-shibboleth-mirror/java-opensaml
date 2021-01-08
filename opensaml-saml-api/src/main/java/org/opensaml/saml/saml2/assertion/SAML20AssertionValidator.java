@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
@@ -128,19 +129,22 @@ public class SAML20AssertionValidator {
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML20AssertionValidator.class);
 
     /** Registered {@link Condition} validators. */
-    private LazyMap<QName, ConditionValidator> conditionValidators;
+    @Nonnull @NonnullElements private LazyMap<QName, ConditionValidator> conditionValidators;
 
     /** Registered {@link SubjectConfirmation} validators. */
-    private LazyMap<String, SubjectConfirmationValidator> subjectConfirmationValidators;
+    @Nonnull @NonnullElements private LazyMap<String, SubjectConfirmationValidator> subjectConfirmationValidators;
 
     /** Registered {@link Statement} validators. */
-    private LazyMap<QName, StatementValidator> statementValidators;
+    @Nonnull @NonnullElements private LazyMap<QName, StatementValidator> statementValidators;
+    
+    /** Generic validator. */
+    @Nullable private AssertionValidator assertionValidator;
     
     /** Trust engine for signature evaluation. */
-    private SignatureTrustEngine trustEngine;
+    @Nullable private SignatureTrustEngine trustEngine;
     
     /** SAML signature profile validator.*/
-    private SignaturePrevalidator signaturePrevalidator;
+    @Nullable private SignaturePrevalidator signaturePrevalidator;
 
     /**
      * Constructor.
@@ -149,15 +153,19 @@ public class SAML20AssertionValidator {
      * @param newConfirmationValidators validators used to validate {@link SubjectConfirmation} methods within the
      *            assertion
      * @param newStatementValidators validators used to validate {@link Statement}s within the assertion
+     * @param newAssertionValidator generic validator extension point
      * @param newTrustEngine the trust used to validate the Assertion signature
      * @param newSignaturePrevalidator the signature pre-validator used to pre-validate the Assertion signature
+     * 
+     * @since 4.1.0
      */
     public SAML20AssertionValidator(@Nullable final Collection<ConditionValidator> newConditionValidators,
             @Nullable final Collection<SubjectConfirmationValidator> newConfirmationValidators,
-            @Nullable final Collection<StatementValidator> newStatementValidators, 
+            @Nullable final Collection<StatementValidator> newStatementValidators,
+            @Nullable final AssertionValidator newAssertionValidator,
             @Nullable final SignatureTrustEngine newTrustEngine,
             @Nullable final SignaturePrevalidator newSignaturePrevalidator) {
-        
+
         conditionValidators = new LazyMap<>();
         if (newConditionValidators != null) {
             for (final ConditionValidator validator : newConditionValidators) {
@@ -185,8 +193,36 @@ public class SAML20AssertionValidator {
             }
         }
         
+        assertionValidator = newAssertionValidator;
+        
         trustEngine = newTrustEngine;
         signaturePrevalidator = newSignaturePrevalidator;
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param newConditionValidators validators used to validate the {@link Condition}s within the assertion
+     * @param newConfirmationValidators validators used to validate {@link SubjectConfirmation} methods within the
+     *            assertion
+     * @param newStatementValidators validators used to validate {@link Statement}s within the assertion
+     * @param newTrustEngine the trust used to validate the Assertion signature
+     * @param newSignaturePrevalidator the signature pre-validator used to pre-validate the Assertion signature
+     * 
+     * @deprecated
+     */
+    @Deprecated
+    public SAML20AssertionValidator(@Nullable final Collection<ConditionValidator> newConditionValidators,
+            @Nullable final Collection<SubjectConfirmationValidator> newConfirmationValidators,
+            @Nullable final Collection<StatementValidator> newStatementValidators, 
+            @Nullable final SignatureTrustEngine newTrustEngine,
+            @Nullable final SignaturePrevalidator newSignaturePrevalidator) {
+        
+        this(newConditionValidators, newConfirmationValidators, newStatementValidators, null,
+                newTrustEngine, newSignaturePrevalidator);
+        
+        DeprecationSupport.warn(ObjectType.METHOD, "SAML20AssertionValidator 5 argument constructor", null,
+                "SAML20AssertionValidator 6 argument constructor");
     }
 
     /**
@@ -265,7 +301,16 @@ public class SAML20AssertionValidator {
             return result;
         }
 
-        return validateStatements(assertion, context);
+        result = validateStatements(assertion, context);
+        if (result != ValidationResult.VALID) {
+            return result;
+        }
+        
+        if (assertionValidator != null) {
+            return assertionValidator.validate(assertion, context);
+        }
+        
+        return ValidationResult.VALID;
     }
 
     /**

@@ -37,7 +37,7 @@ public interface ConditionValidator {
      * 
      * @return element or schema type QName of the statement handled by this validator
      */
-    @Nonnull public QName getServicedCondition();
+    @Nonnull QName getServicedCondition();
 
     /**
      * Validates the given condition.
@@ -50,6 +50,6 @@ public interface ConditionValidator {
      * 
      * @throws AssertionValidationException if there is a problem processing the validation operation
      */
-    @Nonnull public ValidationResult validate(@Nonnull final Condition condition, @Nonnull final Assertion assertion, 
+    @Nonnull ValidationResult validate(@Nonnull final Condition condition, @Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException;
 }
