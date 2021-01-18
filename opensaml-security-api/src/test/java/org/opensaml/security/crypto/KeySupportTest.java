@@ -142,7 +142,7 @@ public class KeySupportTest {
     
     
     /**
-     * Test deriving a public key from an RSA and DSA private key.
+     * Test deriving a public key from an RSA, DSA and EC private key.
      * 
      * @throws Exception if something goes wrong
      */
@@ -159,6 +159,13 @@ public class KeySupportTest {
         pubKey = KeySupport.derivePublicKey(privKey);
         Assert.assertNotNull(pubKey);
         Assert.assertEquals(pubKey.getAlgorithm(), "DSA");
+        Assert.assertTrue(KeySupport.matchKeyPair(pubKey, privKey));
+        
+        pubKey = null;
+        privKey = testPrivKey(ecPrivKeyPEMNoEncrypt, null, "EC");
+        pubKey = KeySupport.derivePublicKey(privKey);
+        Assert.assertNotNull(pubKey);
+        Assert.assertEquals(pubKey.getAlgorithm(), "EC");
         Assert.assertTrue(KeySupport.matchKeyPair(pubKey, privKey));
     }
 

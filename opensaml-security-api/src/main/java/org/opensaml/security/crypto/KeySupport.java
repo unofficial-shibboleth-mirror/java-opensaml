@@ -45,6 +45,8 @@ import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.ECPoint;
+import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
@@ -62,6 +64,7 @@ import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
+import org.bouncycastle.jcajce.provider.asymmetric.util.EC5Util;
 import org.cryptacular.util.KeyPairUtil;
 import org.opensaml.security.SecurityException;
 import org.slf4j.Logger;
@@ -287,8 +290,23 @@ public final class KeySupport {
             } catch (final GeneralSecurityException e) {
                 throw new KeyException("Unable to derive public key from RSA private key", e);
             }
+        } else if (key instanceof ECPrivateKey) {
+            final ECPrivateKey ecKey = (ECPrivateKey) key;
+            // Let BC do the math, by converting to BC's ECPoint for the multiply(BigInteger),
+            // and then back to standard ECPoint
+            final ECPoint ecPointPublic = EC5Util.convertPoint(EC5Util.convertPoint(
+                    ecKey.getParams(), ecKey.getParams().getGenerator())
+                        .multiply(ecKey.getS()));
+            final ECPublicKeySpec pubKeySpec = new ECPublicKeySpec(ecPointPublic, ecKey.getParams());
+
+            try {
+                factory = KeyFactory.getInstance(JCAConstants.KEY_ALGO_EC);
+                return factory.generatePublic(pubKeySpec);
+            } catch (final GeneralSecurityException e) {
+                throw new KeyException("Unable to derive public key from EC private key", e);
+            }
         } else {
-            throw new KeyException("Private key was not a DSA or RSA key");
+            throw new KeyException("Private key was not a DSA, RSA or EC key");
         }
     }
 
