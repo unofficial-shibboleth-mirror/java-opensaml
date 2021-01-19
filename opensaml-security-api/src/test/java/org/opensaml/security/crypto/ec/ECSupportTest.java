@@ -17,30 +17,25 @@
 
 package org.opensaml.security.crypto.ec;
 
+import java.math.BigInteger;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
 
+import org.bouncycastle.jce.ECNamedCurveTable;
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.security.crypto.KeySupport;
 import org.testng.Assert;
-import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
  *
  */
-public class ECSupportTest {
-    
-    @DataProvider
-    public Object[][] namedCurves() {
-        return new Object[][] {
-            new Object[] {"secp256r1"},
-            new Object[] {"secp384r1"},
-            new Object[] {"secp521r1"},
-        };
-    }
+public class ECSupportTest extends BaseNamedCurveTest {
     
     @Test(dataProvider="namedCurves")
     public void generateCompatibleKeyPair(String namedCurve) throws Exception {
@@ -72,5 +67,44 @@ public class ECSupportTest {
         byte[] secret = ECSupport.performKeyAgreement(publicKey, privateKey, null);
         Assert.assertNotNull(secret);
     }
+    
+    @Test(dataProvider="namedCurves")
+    public void convertParameterSpec(String namedCurve) throws Exception {
+        ECParameterSpec control = ECPublicKey.class.cast(
+                KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec(namedCurve), null).getPublic()).getParams();
+        
+        ECParameterSpec target = ECSupport.convert(ECNamedCurveTable.getParameterSpec(namedCurve));
+        Assert.assertNotNull(target);
+        
+        Assert.assertNotSame(target, control);
+        
+        Assert.assertEquals(target.getCurve().getField().getFieldSize(), control.getCurve().getField().getFieldSize());
+        Assert.assertEquals(target.getCurve(), control.getCurve());
+        Assert.assertEquals(target.getGenerator(), control.getGenerator());
+        Assert.assertEquals(target.getOrder(), control.getOrder());
+        Assert.assertEquals(target.getCofactor(), control.getCofactor());
+    }
 
+    @Test(dataProvider="namedCurves")
+    public void encodeAndDecodeECPoint(String namedCurve) throws Exception {
+        ECParameterSpec spec = ECPublicKey.class.cast(
+                KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec(namedCurve), null).getPublic()).getParams();
+        
+        //  Do this differently (and clearer) than in the actual code just so check the latter.
+        int fieldSizeBits = spec.getCurve().getField().getFieldSize();
+        int fieldSizeBytes = (fieldSizeBits % 8) == 0 ? (fieldSizeBits / 8) : (fieldSizeBits / 8) + 1;
+        
+        byte[] encoded = ECSupport.encodeECPointUncompressed(spec.getGenerator(), spec.getCurve());
+        Assert.assertNotNull(encoded);
+        Assert.assertEquals(encoded.length, (fieldSizeBytes * 2) + 1);
+        Assert.assertEquals(encoded[0], 0x04);
+        Assert.assertEquals(new BigInteger(1, encoded, 1, fieldSizeBytes),
+                spec.getGenerator().getAffineX());
+        Assert.assertEquals(new BigInteger(1, encoded, fieldSizeBytes+1, fieldSizeBytes),
+                spec.getGenerator().getAffineY());
+        
+        ECPoint decoded = ECSupport.decodeECPoint(encoded, spec.getCurve());
+        Assert.assertNotNull(decoded);
+        Assert.assertEquals(decoded, spec.getGenerator());
+    }
 }

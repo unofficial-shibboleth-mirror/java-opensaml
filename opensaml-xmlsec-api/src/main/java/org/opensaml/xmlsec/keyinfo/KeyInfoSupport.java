@@ -31,9 +31,13 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.DSAParameterSpec;
 import java.security.spec.DSAPublicKeySpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.ECPublicKeySpec;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.RSAPublicKeySpec;
@@ -55,16 +59,20 @@ import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.security.crypto.ec.ECSupport;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.G;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.Modulus;
+import org.opensaml.xmlsec.signature.NamedCurve;
 import org.opensaml.xmlsec.signature.P;
 import org.opensaml.xmlsec.signature.Q;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
@@ -525,10 +533,10 @@ public class KeyInfoSupport {
                 XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(KeyValue.DEFAULT_ELEMENT_NAME);
         final KeyValue keyValue = keyValueBuilder.buildObject(KeyValue.DEFAULT_ELEMENT_NAME);
 
-        // TODO handle ECKeyValue
-        
         if (pk instanceof RSAPublicKey) {
             keyValue.setRSAKeyValue(buildRSAKeyValue((RSAPublicKey) pk));
+        } else if (pk instanceof ECPublicKey) {
+            keyValue.setECKeyValue(buildECKeyValue((ECPublicKey) pk));
         } else if (pk instanceof DSAPublicKey) {
             keyValue.setDSAKeyValue(buildDSAKeyValue((DSAPublicKey) pk));
         } else {
@@ -536,6 +544,53 @@ public class KeyInfoSupport {
         }
 
         keyInfo.getKeyValues().add(keyValue);
+    }
+
+    /**
+     * Builds an {@link ECKeyValue} XMLObject from the Java security EC public key type.
+     * 
+     * <p>
+     * Only curve parameters specified by a {@link NamedCurve} are supported.  Use of explicit
+     * curve parameters will throw.
+     * </p>
+     * 
+     * @param ecPubKey a naive java {@link ECPublicKey}
+     * @return an {@link ECKeyValue} XMLObject
+     * @throws EncodingException if the NamedCurve variant was not used, if the EC PublicKey value is invalid
+     *                           or if the EC PublicKey value can not be Base64 encoded
+     */
+    @Nonnull public static ECKeyValue buildECKeyValue(@Nonnull final ECPublicKey ecPubKey) throws EncodingException {
+        Constraint.isNotNull(ecPubKey, "EC public key cannot be null");
+        
+        final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+        
+        final ECKeyValue ecKeyValue = (ECKeyValue) builderFactory.getBuilderOrThrow(ECKeyValue.DEFAULT_ELEMENT_NAME)
+                .buildObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+        
+        final NamedCurve namedCurve = (NamedCurve) builderFactory.getBuilderOrThrow(NamedCurve.DEFAULT_ELEMENT_NAME)
+                .buildObject(NamedCurve.DEFAULT_ELEMENT_NAME);
+        
+        final org.opensaml.xmlsec.signature.PublicKey publicKey =
+                (org.opensaml.xmlsec.signature.PublicKey) builderFactory.getBuilderOrThrow(
+                        org.opensaml.xmlsec.signature.PublicKey.DEFAULT_ELEMENT_NAME)
+                .buildObject(org.opensaml.xmlsec.signature.PublicKey.DEFAULT_ELEMENT_NAME);
+        
+        final String uri = ECSupport.getNamedCurveURI(ecPubKey);
+        if (uri == null) {
+            // TODO EncdoingException doesn't really seem correct here, but we likely can't add a
+            // new checked exception type in a minor release. I guess it's sort of "encoding" though ... 
+            throw new EncodingException("Unable to obtain NamedCurve URI from ECPublicKey");
+        }
+        
+        namedCurve.setURI(uri);
+        ecKeyValue.setNamedCurve(namedCurve);
+        
+        publicKey.setValue(Base64Support.encode(
+                ECSupport.encodeECPointUncompressed(ecPubKey.getW(), ecPubKey.getParams().getCurve()),
+                Base64Support.UNCHUNKED));
+        ecKeyValue.setPublicKey(publicKey);
+        
+        return ecKeyValue;
     }
 
     /**
@@ -656,8 +711,6 @@ public class KeyInfoSupport {
      */
     @Nonnull public static List<PublicKey> getPublicKeys(@Nullable final KeyInfo keyInfo) throws KeyException {
 
-        // TODO support ECKeyValue and DEREncodedKeyValue
-
         final List<PublicKey> keys = new LinkedList<>();
 
         if (keyInfo == null) {
@@ -696,9 +749,48 @@ public class KeyInfoSupport {
             return getDSAKey(keyValue.getDSAKeyValue());
         } else if (keyValue.getRSAKeyValue() != null) {
             return getRSAKey(keyValue.getRSAKeyValue());
+        } else if (keyValue.getECKeyValue() != null) {
+            return getECKey(keyValue.getECKeyValue());
         } else {
             return null;
         }
+    }
+
+    /**
+     * Builds an EC key from an {@link ECKeyValue} element.
+     * 
+     * @param keyDescriptor the {@link ECKeyValue} key descriptor
+     * 
+     * @return a new {@link ECPublicKey} instance of {@link PublicKey}
+     * 
+     * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not contain
+     *             valid information
+     */
+    @Nonnull public static PublicKey getECKey(@Nonnull final ECKeyValue keyDescriptor) throws KeyException {
+        
+        if (keyDescriptor.getNamedCurve() == null || keyDescriptor.getNamedCurve().getURI() == null) {
+            throw new KeyException("Only ECKeyValue NamedCurve representation is supported");
+        }
+        
+        final ECParameterSpec ecParams =
+                ECSupport.getParameterSpecForURI(keyDescriptor.getNamedCurve().getURI());
+        if (ecParams == null) {
+            throw new KeyException("Could not resolve ECParametersSpec for NamedCurve URI: "
+                    + keyDescriptor.getNamedCurve().getURI());
+        }
+
+        try {
+            final ECPoint ecPoint = ECSupport.decodeECPoint(
+                    Base64Support.decode(keyDescriptor.getPublicKey().getValue()),
+                    ecParams.getCurve());
+            
+            final ECPublicKeySpec keySpec = new ECPublicKeySpec(ecPoint, ecParams);
+            
+            return buildKey(keySpec, JCAConstants.KEY_ALGO_EC);
+        } catch (final DecodingException e) {
+            throw new KeyException("Error Base64 decoding ECKeyValue PublicKey ECPoint", e);
+        }
+        
     }
 
     /**
@@ -746,7 +838,7 @@ public class KeyInfoSupport {
 
         final DSAPublicKeySpec keySpec =
                 new DSAPublicKeySpec(yComponent, dsaParams.getP(), dsaParams.getQ(), dsaParams.getG());
-        return buildKey(keySpec, "DSA");
+        return buildKey(keySpec, JCAConstants.KEY_ALGO_DSA);
     }
 
     /**
@@ -783,7 +875,7 @@ public class KeyInfoSupport {
         final BigInteger exponent = keyDescriptor.getExponent().getValueBigInt();
 
         final RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, exponent);
-        return buildKey(keySpec, "RSA");
+        return buildKey(keySpec, JCAConstants.KEY_ALGO_RSA);
     }
 
     /**
@@ -851,7 +943,10 @@ public class KeyInfoSupport {
      * @throws KeyException thrown if the given key data can not be converted into {@link PublicKey}
      */
     @Nonnull public static PublicKey getKey(@Nonnull final DEREncodedKeyValue keyValue) throws KeyException{
-        final String[] supportedKeyTypes = { "RSA", "DSA", "EC"};
+        final String[] supportedKeyTypes = {
+                JCAConstants.KEY_ALGO_RSA,
+                JCAConstants.KEY_ALGO_DSA,
+                JCAConstants.KEY_ALGO_EC};
         
         Constraint.isNotNull(keyValue, "DEREncodedKeyValue cannot be null");
         if (keyValue.getValue() == null) {

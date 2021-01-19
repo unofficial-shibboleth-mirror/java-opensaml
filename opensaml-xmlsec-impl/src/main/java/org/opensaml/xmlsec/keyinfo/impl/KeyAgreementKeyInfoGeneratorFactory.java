@@ -28,6 +28,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
+import org.opensaml.xmlsec.config.impl.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.KANonce;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
@@ -350,21 +351,11 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
            emitOriginatorKeyInfo = true;
            emitRecipientKeyInfo = true;
            
-           // TODO We can't default the general ones below until KeyInfoSupport supports PublicKey -> ECKeyValue
-           // For now limit defaults to emit DEREncodedKeyValue only
-           final KeyInfoGeneratorManager managerDEROnly = new KeyInfoGeneratorManager();
-           final BasicKeyInfoGeneratorFactory basicFactoryDEROnly = new BasicKeyInfoGeneratorFactory();
-           basicFactoryDEROnly.setEmitPublicDEREncodedKeyValue(true);
-           managerDEROnly.registerFactory(basicFactoryDEROnly);
-           originatorKeyInfoGeneratorManager = managerDEROnly;
-           recipientKeyInfoGeneratorManager = managerDEROnly;
-           /*
            originatorKeyInfoGeneratorManager =
                    DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager().getDefaultManager();
            
            recipientKeyInfoGeneratorManager =
                    DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager().getDefaultManager();
-            */
        }
        
        /** {@inheritDoc} */

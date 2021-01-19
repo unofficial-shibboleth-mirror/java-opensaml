@@ -17,25 +17,42 @@
 
 package org.opensaml.security.crypto.ec;
 
+import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.KeyException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.EllipticCurve;
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.KeyAgreement;
 
+import org.bouncycastle.jcajce.provider.asymmetric.util.EC5Util;
+import org.bouncycastle.jce.ECNamedCurveTable;
+import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Cryptography support related to Elliptic Curve.
  */
 public final class ECSupport {
+    
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(ECSupport.class);
     
     /** Constructor. */
     private ECSupport() { }
@@ -43,7 +60,7 @@ public final class ECSupport {
     /**
      * Perform ECDH key agreement between the given public and private keys.
      * 
-     * @param publicKeyKey the public key
+     * @param publicKey the public key
      * @param privateKey the private key
      * @param provider the optional security provider to use
      * 
@@ -53,9 +70,11 @@ public final class ECSupport {
      * @throws NoSuchProviderException
      * @throws InvalidKeyException
      */
-    public static byte[] performKeyAgreement(@Nonnull final ECPublicKey publicKeyKey,
+    public static byte[] performKeyAgreement(@Nonnull final ECPublicKey publicKey,
             @Nonnull final ECPrivateKey privateKey, @Nullable final String provider)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException {
+        Constraint.isNotNull(publicKey, "ECPublicKey was null");
+        Constraint.isNotNull(privateKey, "ECPrivateKey was null");
         
         KeyAgreement keyAgreement = null;
         if (provider != null) {
@@ -65,7 +84,7 @@ public final class ECSupport {
         }
         
         keyAgreement.init(privateKey);
-        keyAgreement.doPhase(publicKeyKey, true);
+        keyAgreement.doPhase(publicKey, true);
         return keyAgreement.generateSecret();
     }
 
@@ -84,7 +103,204 @@ public final class ECSupport {
     public static KeyPair generateCompatibleKeyPair(@Nonnull final ECPublicKey publicKey,
             @Nullable final String provider)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
+        Constraint.isNotNull(publicKey, "ECPublicKey was null");
+        
         return KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, publicKey.getParams(), provider);
     }
     
-}
+    /**
+     * Get the global {@link NamedCurveRegistry} instance.
+     * 
+     * @return the global named curve registry, or null if nothing registered
+     */
+    @Nullable public static NamedCurveRegistry getGlobalNamedCurveRegistry() {
+        return ConfigurationService.get(NamedCurveRegistry.class);
+    }
+
+    /**
+     * Get the {@link NamedCurve} for the specified {@link ECPublicKey}.
+     * 
+     * @param publicKey the {@link ECPublicKey}
+     * 
+     * @return the {@@link NamedCurve} instance, or null if can not be determined,
+     *         possibly because the key's domain parameters do not correspond to a named curve
+     */
+    @Nullable public static NamedCurve getNamedCurve(@Nonnull final ECPublicKey publicKey) {
+        Constraint.isNotNull(publicKey, "ECPublicKey was null");
+        
+        final NamedCurveRegistry registry = getGlobalNamedCurveRegistry();
+        if (registry == null) {
+            LOG.warn("No NamedCurveRegistry is configured");
+            return null;
+        }
+        return registry.getByParameterSpec(publicKey.getParams());
+    }
+
+    /**
+     * Get the {@link NamedCurve} for the specified URI.
+     * 
+     * @param uri the URI
+     * 
+     * @return the {@@link NamedCurve} instance, or null if can not be determined,
+     */
+    @Nullable public static NamedCurve getNamedCurve(@Nonnull final String uri) {
+        Constraint.isNotNull(uri, "NamedCurve URI was null");
+        
+        final NamedCurveRegistry registry = getGlobalNamedCurveRegistry();
+        if (registry == null) {
+            LOG.warn("No NamedCurveRegistry is configured");
+            return null;
+        }
+        return registry.getByURI(uri);
+    }
+
+    /**
+     * Get the URI of the named curve for the specified {@link ECPublicKey}.
+     * 
+     * @param publicKey the {@link ECPublicKey}
+     * 
+     * @return the URI or null if can not be determined, possibly because is not a named curve
+     */
+    @Nullable public static String getNamedCurveURI(@Nonnull final ECPublicKey publicKey) {
+        Constraint.isNotNull(publicKey, "ECPublicKey was null");
+        
+        //TODO implement fallback to do nasty parsing of the ASN.1 encoded form for the OID?
+        final NamedCurve namedCurve = getNamedCurve(publicKey);
+        if (namedCurve == null) {
+            LOG.warn("Could not resolve NamedCurve for ECPublicKey");
+            return null;
+        }
+        return namedCurve.getURI();
+    }
+
+    /**
+     * Get an {@link ECParameterSpec} instance which corresponds to the specified named curve URI.
+     * 
+     * @param uri the URI of the named curve
+     * 
+     * @return the {@link ECParameterSpec} instance
+     * 
+     * @throws KeyException
+     */
+    @Nullable public static ECParameterSpec getParameterSpecForURI(@Nonnull final String uri) {
+        Constraint.isNotNull(uri, "NamedCurve URI was null");
+        
+        //TODO implement fallback to use BCNamedCurveTable to lookup up OID -> param spec?
+        final NamedCurve namedCurve = getNamedCurve(uri);
+        if (namedCurve == null) {
+            LOG.warn("Could not resolve NamedCurve for URI: {}", uri);
+            return null;
+        }
+        return namedCurve.getParameterSpec();
+    }
+    
+    /**
+     * Decode the {@link ECPoint} from the byte representation.
+     * 
+     * <p>
+     * Only uncompressed point types (0x04) are supported.
+     * </p>
+     * 
+     * @param data the EC point byte representation
+     * @param curve the {@link EllipticCurve}
+     * 
+     * @return the {@link ECPoint}
+     * 
+     * @throws KeyException
+     */
+    @Nonnull public static ECPoint decodeECPoint(@Nonnull final byte[] data, @Nonnull final EllipticCurve curve)
+            throws KeyException {
+        Constraint.isNotNull(data, "ECPoint byte array was null");
+        Constraint.isNotNull(curve, "EllipticCurve was null");
+        
+        // This implementation borrowed from Santuario 2.2.1 (unfortunately private static methods)
+        // See: org.apache.xml.security.keys.content.keyvalues.ECKeyValue#decodePoint(...)
+        
+        if (data.length == 0 || data[0] != 4) {
+            throw new KeyException("Only uncompressed point format supported");
+        }
+        
+        // Per ANSI X9.62, an encoded point is a 1 byte type followed by
+        // ceiling(LOG base 2 field-size / 8) bytes of x and the same of y.
+        final int n = (data.length - 1) / 2;
+        if (n != (curve.getField().getFieldSize() + 7) >> 3) {
+            throw new KeyException("Point does not match field size");
+        }
+
+        final byte[] xb = Arrays.copyOfRange(data, 1, 1 + n);
+        final byte[] yb = Arrays.copyOfRange(data, n + 1, n + 1 + n);
+
+        return new ECPoint(new BigInteger(1, xb), new BigInteger(1, yb));
+    }
+    
+    /**
+     * Encode the uncompressed byte representation of the specified {@link ECPoint}.
+     * 
+     * @param point the {@link ECPoint}
+     * @param curve the {@link EllipticCurve}
+     * 
+     * @return the uncompressed byte representation
+     */
+    @Nonnull public static byte[] encodeECPointUncompressed(@Nonnull final ECPoint point,
+            @Nonnull final EllipticCurve curve) {
+        Constraint.isNotNull(point, "ECPoint was null");
+        Constraint.isNotNull(curve, "EllipticCurve was null");
+        
+        // This implementation borrowed from Santuario 2.2.1 (unfortunately private static methods)
+        // See: org.apache.xml.security.keys.content.keyvalues.ECKeyValue#encodePoint(...)
+        
+        // get field size in bytes (rounding up)
+        final int n = (curve.getField().getFieldSize() + 7) >> 3;
+        final byte[] xb = trimZeroes(point.getAffineX().toByteArray());
+        final byte[] yb = trimZeroes(point.getAffineY().toByteArray());
+        if (xb.length > n || yb.length > n) {
+            throw new IllegalArgumentException("Point coordinates do not match field size");
+        }
+        final byte[] b = new byte[1 + (n << 1)];
+        // 0x04 indicates the uncompressed type
+        b[0] = 4;
+        System.arraycopy(xb, 0, b, n - xb.length + 1, xb.length);
+        System.arraycopy(yb, 0, b, b.length - yb.length, yb.length);
+        return b;
+    }
+
+    /**
+     * Trim leading zero bytes from the byte array.
+     * 
+     * @param b the byte array
+     * @return the byte array without leading zero bytes
+     */
+    private static byte[] trimZeroes(@Nonnull final byte[] b) {
+        Constraint.isNotNull(b, "byte[] data was null");
+        
+        int i = 0;
+        while (i < b.length - 1 && b[i] == 0) {
+            i++;
+        }
+        if (i == 0) {
+            return b;
+        }
+        return Arrays.copyOfRange(b, i, b.length);
+    }
+    
+    /**
+     * Convert a Bouncy Castle {@link ECNamedCurveParameterSpec}, such as obtained from the {@link ECNamedCurveTable},
+     * to a standard JCA {@link ECParameterSpec}.
+     * 
+     * @param bcSpec the Bouncy Castle parameter spec instance
+     * 
+     * @return the standard parameter spec instance
+     */
+    @Nullable public static ECParameterSpec convert(@Nullable final ECNamedCurveParameterSpec bcSpec) {
+        if (bcSpec == null) {
+            return null;
+        }
+        
+        return new ECParameterSpec(
+                EC5Util.convertCurve(bcSpec.getCurve(), bcSpec.getSeed()),
+                EC5Util.convertPoint(bcSpec.getG()),
+                bcSpec.getN(),
+                bcSpec.getH().intValue());
+    }
+
+} 

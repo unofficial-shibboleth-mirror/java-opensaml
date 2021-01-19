@@ -111,22 +111,20 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         //Originator
         Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
         OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
-        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 1);
+        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
         Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
-        //TODO Can't do these until have support for ECKeyValue <-> PublicKey.  Change KeyInfo children size above also 1 -> 2.
-        //Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
-        //Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
+        Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
         
         //Recipient
         Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
         RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
-        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 1);
+        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
         Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientECDH.getPublic());
-        //TODO Can't do these until have support for ECKeyValue <-> PublicKey.  Change KeyInfo children size above also 1 -> 2.
-        //Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
-        //Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getKeyValues().get(0)), keyPairRecipientECDH.getPublic());
+        Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getKeyValues().get(0)), keyPairRecipientECDH.getPublic());
         
         //Params
         Assert.assertEquals(agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).size(), 1);
@@ -169,22 +167,20 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         //Originator
         Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
         OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
-        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 1);
+        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
         Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
-        //TODO Can't do these until have support for ECKeyValue <-> PublicKey.  Change KeyInfo children size above also 1 -> 2.
-        //Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
-        //Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
+        Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
         
         //Recipient
         Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
         RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
-        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 1);
+        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
         Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientECDH.getPublic());
-        //TODO Can't do these until have support for ECKeyValue <-> PublicKey.  Change KeyInfo children size above also 1 -> 2.
-        //Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
-        //Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getKeyValues().get(0)), keyPairRecipientECDH.getPublic());
+        Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getKeyValues().get(0)), keyPairRecipientECDH.getPublic());
         
         //Params
         Assert.assertEquals(agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).size(), 1);

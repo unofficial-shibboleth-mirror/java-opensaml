@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ds:KeyInfo xmlns:ds="http://www.w3.org/2000/09/xmldsig#">
+    <ds:KeyName>Foo</ds:KeyName>
+    <ds:KeyName>Bar</ds:KeyName>
+    <ds:KeyValue>
+        <ds11:ECKeyValue xmlns:ds11="http://www.w3.org/2009/xmldsig11#">
+            <ds11:NamedCurve URI="urn:oid:1.2.840.10045.3.1.7"/>
+            <ds11:PublicKey>BATNIxmK71TKW1U0+9vPkXwyy9LT4LMH1ElF361ysABjpq0mxdSh7BK2XV4ZxAtVUppvZE3fFcyIuDooRFTKFPs=</ds11:PublicKey>
+        </ds11:ECKeyValue>
+    </ds:KeyValue> 
+</ds:KeyInfo>

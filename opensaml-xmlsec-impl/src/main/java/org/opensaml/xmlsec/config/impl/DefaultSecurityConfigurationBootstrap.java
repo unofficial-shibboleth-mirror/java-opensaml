@@ -44,6 +44,7 @@ import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DEREncodedKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DSAKeyValueProvider;
+import org.opensaml.xmlsec.keyinfo.impl.provider.ECKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
@@ -216,6 +217,7 @@ public class DefaultSecurityConfigurationBootstrap {
         final ArrayList<KeyInfoProvider> providers = new ArrayList<>();
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
+        providers.add( new ECKeyValueProvider() );
         providers.add( new DEREncodedKeyValueProvider() );
         providers.add( new InlineX509DataProvider() );
         

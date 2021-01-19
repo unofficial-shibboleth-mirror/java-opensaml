@@ -22,15 +22,20 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.math.BigInteger;
 import java.security.KeyException;
+import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPublicKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPublicKey;
 import java.security.spec.InvalidKeySpecException;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.List;
 
@@ -40,18 +45,23 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.security.crypto.ec.ECSupport;
+import org.opensaml.security.crypto.ec.EnhancedECParameterSpec;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
+import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.G;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.Modulus;
+import org.opensaml.xmlsec.signature.NamedCurve;
 import org.opensaml.xmlsec.signature.P;
 import org.opensaml.xmlsec.signature.Q;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
@@ -178,7 +188,26 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
             + "/f9ymefKHB7ISlskT7kODCIbr5HHU/n1zXtMRjoslY1A+nFlWiAaIvjnj/C8x0BW"
             + "BkhuSKX/2PbljnmIdGV7mJK9/XUHnyKgZBxXEul2mlvGkrgUvyv+qYsCFsKSSrkB"
             + "1Mj2Ql5xmTMaePMEmvOr6fDAP0OH8cvADEZjx0s/5vvoBFPGGmPrHJluEVS0Fu8I" + "9sROg9YjyuhRV0b8xHo=";
+    
+    /** Test EC key with named curve variant 1, curve: secp256r1, OID: 1.2.840.10045.3.1.7 */
+    private final String ecPubKey_NamedCurve1 = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEBM0jGYrvVMpbVTT728+RfDLL0tPg"
+            + "swfUSUXfrXKwAGOmrSbF1KHsErZdXhnEC1VSmm9kTd8VzIi4OihEVMoU+w==";
+    
+    /** OID of the curve for ecPubKey_NamedCurve1, curve: secp256r1. */
+    private final String ecPubKey_NamedCurve1_OID = "1.2.840.10045.3.1.7";
+    
+    /** Test EC key with explicit params variant 1, curve: secp256r1, OID: 1.2.840.10045.3.1.7 */
+    private final String ecPubKey_ExplicitParams1 = "MIIBSzCCAQMGByqGSM49AgEwgfcCAQEwLAYHKoZIzj0BAQIhAP////8AAAABAAAA\n"
+            + "AAAAAAAAAAAA////////////////MFsEIP////8AAAABAAAAAAAAAAAAAAAA////"
+            + "///////////8BCBaxjXYqjqT57PrvVV2mIa8ZR0GsMxTsPY7zjw+J9JgSwMVAMSd"
+            + "NgiG5wSTamZ44ROdJreBn36QBEEEaxfR8uEsQkf4vOblY6RA8ncDfYEt6zOg9KE5"
+            + "RdiYwpZP40Li/hp/m47n60p8D54WK84zV2sxXs7LtkBoN79R9QIhAP////8AAAAA"
+            + "//////////+85vqtpxeehPO5ysL8YyVRAgEBA0IABBRJ1RlY9GqHxNRRPDh+rciw"
+            + "7HI/QgGWVf32j91hIwbQ8yNx0Hveirx0B5YGhF0cXrihKH0wC0zcYhtXUKHL7uQ=";
 
+    /** OID of the curve for ecPubKey_ExplicitParams1, curve: secp256r1. */
+    private final String ecPubKey_ExplicitParams1_OID = "1.2.840.10045.3.1.7";
+    
     private X509Certificate xmlCert1, xmlCert2;
 
     private X509CRL xmlCRL1;
@@ -193,6 +222,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
 
     private RSAKeyValue xmlRSAKeyValue1;
 
+    private ECKeyValue xmlECKeyValue_NamedCurve1, xmlECKeyValue_ExplicitParams1;
+    
     private int numExpectedCerts;
 
     private int numExpectedCRLs;
@@ -204,6 +235,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     private RSAPublicKey javaRSAPubKey1;
 
     private DSAPublicKey javaDSAPubKey1;
+    
+    private ECPublicKey javaECPubKey_NamedCurve1, javaECPubKey_ExplicitParams1;
 
     private DSAParams javaDSAParams1;
 
@@ -245,6 +278,9 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
 
         javaDSAPubKey1 = KeySupport.buildJavaDSAPublicKey(dsaPubKey1);
         javaRSAPubKey1 = KeySupport.buildJavaRSAPublicKey(rsaPubKey1);
+        javaECPubKey_NamedCurve1 = KeySupport.buildJavaECPublicKey(ecPubKey_NamedCurve1);
+        // SunEC provider doesn't support explicit params, so use a custom method. 
+        javaECPubKey_ExplicitParams1 = buildECPublicKeyWithExplicitParams(ecPubKey_ExplicitParams1);
 
         xmlRSAKeyValue1 = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         Modulus modulus = (Modulus) buildXMLObject(Modulus.DEFAULT_ELEMENT_NAME);
@@ -273,6 +309,31 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         y2.setValueBigInt(javaDSAPubKey1.getY());
         xmlDSAKeyValue1NoParams.setY(y2);
         javaDSAParams1 = javaDSAPubKey1.getParams();
+        
+        xmlECKeyValue_NamedCurve1 = buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+        NamedCurve namedCurve1 = buildXMLObject(NamedCurve.DEFAULT_ELEMENT_NAME);
+        org.opensaml.xmlsec.signature.PublicKey xmlECPublicKey_NamedCurve1 =
+                buildXMLObject(org.opensaml.xmlsec.signature.PublicKey.DEFAULT_ELEMENT_NAME);
+        namedCurve1.setURI("urn:oid:" + ecPubKey_NamedCurve1_OID);
+        xmlECPublicKey_NamedCurve1.setValue(Base64Support.encode(ECSupport.encodeECPointUncompressed(
+                javaECPubKey_NamedCurve1.getW(), javaECPubKey_NamedCurve1.getParams().getCurve()),
+                Base64Support.UNCHUNKED));
+        xmlECKeyValue_NamedCurve1.setNamedCurve(namedCurve1);
+        xmlECKeyValue_NamedCurve1.setPublicKey(xmlECPublicKey_NamedCurve1);
+        
+        // Note: this is expressing the explicit params EC pub key as a named curve in KeyInfo.
+        // Update or add test cases + control data if we ever support the ECKeyValue with ECParameters variant.
+        xmlECKeyValue_ExplicitParams1 = buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+        NamedCurve namedCurve_Explicit1 = buildXMLObject(NamedCurve.DEFAULT_ELEMENT_NAME);
+        org.opensaml.xmlsec.signature.PublicKey xmlECPublicKey_ExplicitParams1 =
+                buildXMLObject(org.opensaml.xmlsec.signature.PublicKey.DEFAULT_ELEMENT_NAME);
+        namedCurve_Explicit1.setURI("urn:oid:" + ecPubKey_ExplicitParams1_OID);
+        xmlECPublicKey_ExplicitParams1.setValue(Base64Support.encode(ECSupport.encodeECPointUncompressed(
+                javaECPubKey_ExplicitParams1.getW(), javaECPubKey_ExplicitParams1.getParams().getCurve()),
+                Base64Support.UNCHUNKED));
+        xmlECKeyValue_ExplicitParams1.setNamedCurve(namedCurve_Explicit1);
+        xmlECKeyValue_ExplicitParams1.setPublicKey(xmlECPublicKey_ExplicitParams1);
+        
     }
 
     /**
@@ -445,12 +506,51 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(rsaKey, javaRSAPubKey1, "Generated key was not the expected value");
     }
 
+    /** Test conversion of EC public keys from XML to Java security native type. */
+    @Test
+    public void testECConversionXMLToJavaWithNamedCurve() {
+        PublicKey key = null;
+        ECPublicKey ecKey = null;
+
+        try {
+            key = KeyInfoSupport.getECKey(xmlECKeyValue_NamedCurve1);
+        } catch (KeyException e) {
+            Assert.fail("RSA key conversion XML to Java failed: " + e);
+        }
+        ecKey = (ECPublicKey) key;
+        Assert.assertNotNull(ecKey, "Generated key was not an instance of ECPublicKey");
+        Assert.assertEquals(ecKey, javaECPubKey_NamedCurve1, "Generated key was not the expected value");
+    }
+    
+    /** Test conversion of EC public keys from XML to Java security native type. */
+    @Test
+    public void testECConversionXMLToJavaWithExplicitParameters() {
+        PublicKey key = null;
+        ECPublicKey ecKey = null;
+
+        try {
+            key = KeyInfoSupport.getECKey(xmlECKeyValue_ExplicitParams1);
+        } catch (KeyException e) {
+            Assert.fail("RSA key conversion XML to Java failed: " + e);
+        }
+        ecKey = (ECPublicKey) key;
+        Assert.assertNotNull(ecKey, "Generated key was not an instance of ECPublicKey");
+        // The standard equals() test below doesn't work b/c the standard ECParameterSpec doesn't really implement equals()beyond
+        // the standard reference compare, and the control key is from BC, so the instance object isn't the same (constant one) as from SunEC.
+        // So use our Enhanced- equality wrapper helper instead.
+        //Assert.assertEquals(ecKey, javaECPubKey_ExplicitParams1);
+        Assert.assertEquals(ecKey.getW(), javaECPubKey_ExplicitParams1.getW());
+        Assert.assertEquals(new EnhancedECParameterSpec(ecKey.getParams()),
+                new EnhancedECParameterSpec(javaECPubKey_ExplicitParams1.getParams()));
+
+    }
+
     /** Test conversion of DSA public keys from Java security native type to XML. 
      * @throws EncodingException on base64 encoding error*/
     @Test
     public void testDSAConversionJavaToXML() throws EncodingException {
         DSAKeyValue dsaKeyValue = KeyInfoSupport.buildDSAKeyValue(javaDSAPubKey1);
-        Assert.assertNotNull("Generated DSAKeyValue was null");
+        Assert.assertNotNull(dsaKeyValue);
         Assert.assertEquals(dsaKeyValue
                 .getY().getValueBigInt(), javaDSAPubKey1.getY(), "Generated DSAKeyValue Y component was not the expected value");
         Assert.assertEquals(dsaKeyValue.getP().getValueBigInt(), javaDSAPubKey1.getParams().getP(),
@@ -466,11 +566,39 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testRSAConversionJavaToXML() throws EncodingException {
         RSAKeyValue rsaKeyValue = KeyInfoSupport.buildRSAKeyValue(javaRSAPubKey1);
-        Assert.assertNotNull("Generated RSAKeyValue was null");
+        Assert.assertNotNull(rsaKeyValue);
         Assert.assertEquals(rsaKeyValue.getModulus().getValueBigInt(), javaRSAPubKey1.getModulus(),
                 "Generated RSAKeyValue modulus component was not the expected value");
         Assert.assertEquals(rsaKeyValue.getExponent().getValueBigInt(),
                 javaRSAPubKey1.getPublicExponent(), "Generated RSAKeyValue exponent component was not the expected value");
+    }
+
+    /** Test conversion of EC public keys from Java security native type to XML. 
+     * @throws EncodingException on base64 encoding error
+     * @throws DecodingException 
+     * @throws KeyException */
+    @Test
+    public void testECConversionJavaToXMLWithNamedCurve() throws EncodingException, KeyException, DecodingException {
+        ECKeyValue ecKeyValue = KeyInfoSupport.buildECKeyValue(javaECPubKey_NamedCurve1);
+        Assert.assertNotNull(ecKeyValue);
+        Assert.assertEquals(ecKeyValue.getNamedCurve().getURI(), "urn:oid:" + ecPubKey_NamedCurve1_OID);
+        Assert.assertEquals(ECSupport.decodeECPoint(Base64Support.decode(ecKeyValue.getPublicKey().getValue()),
+                ECSupport.getNamedCurve("urn:oid:" + ecPubKey_NamedCurve1_OID).getParameterSpec().getCurve()),
+                javaECPubKey_NamedCurve1.getW());
+    }
+
+    /** Test conversion of EC public keys from Java security native type to XML. 
+     * @throws EncodingException on base64 encoding error
+     * @throws DecodingException 
+     * @throws KeyException */
+    @Test
+    public void testECConversionJavaToXMLWithExplicitParameters() throws EncodingException, KeyException, DecodingException {
+        ECKeyValue ecKeyValue = KeyInfoSupport.buildECKeyValue(javaECPubKey_ExplicitParams1);
+        Assert.assertNotNull(ecKeyValue);
+        Assert.assertEquals(ecKeyValue.getNamedCurve().getURI(), "urn:oid:" + ecPubKey_ExplicitParams1_OID);
+        Assert.assertEquals(ECSupport.decodeECPoint(Base64Support.decode(ecKeyValue.getPublicKey().getValue()),
+                ECSupport.getNamedCurve("urn:oid:" + ecPubKey_ExplicitParams1_OID).getParameterSpec().getCurve()),
+                javaECPubKey_ExplicitParams1.getW());
     }
 
     /** Tests extracting a DSA public key from a KeyValue. */
@@ -557,6 +685,60 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         }
 
         Assert.assertEquals(javaKey, javaRSAPubKey1, "Inserted RSA public key was not the expected value");
+
+        keyInfo.getKeyValues().clear();
+    }
+
+    /** Tests adding a public key as a KeyValue to KeyInfo. 
+     * @throws EncodingException on base64 encoding error*/
+    @Test
+    public void testAddECPublicKeyWithNamedCurve() throws EncodingException {
+        keyInfo.getKeyValues().clear();
+
+        KeyInfoSupport.addPublicKey(keyInfo, javaECPubKey_NamedCurve1);
+        KeyValue kv = keyInfo.getKeyValues().get(0);
+        Assert.assertNotNull(kv, "KeyValue was null");
+        ECKeyValue ecKeyValue = kv.getECKeyValue();
+        Assert.assertNotNull(ecKeyValue, "ECKeyValue was null");
+
+        ECPublicKey javaKey = null;
+        try {
+            javaKey = (ECPublicKey) KeyInfoSupport.getECKey(ecKeyValue);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of Java key failed: " + e);
+        }
+
+        Assert.assertEquals(javaKey, javaECPubKey_NamedCurve1, "Inserted EC public key with named curve was not the expected value");
+
+        keyInfo.getKeyValues().clear();
+    }
+
+    /** Tests adding a public key as a KeyValue to KeyInfo. 
+     * @throws EncodingException on base64 encoding error*/
+    @Test
+    public void testAddECPublicKeyWithExplicitParams() throws EncodingException {
+        keyInfo.getKeyValues().clear();
+
+        KeyInfoSupport.addPublicKey(keyInfo, javaECPubKey_ExplicitParams1);
+        KeyValue kv = keyInfo.getKeyValues().get(0);
+        Assert.assertNotNull(kv, "KeyValue was null");
+        ECKeyValue ecKeyValue = kv.getECKeyValue();
+        Assert.assertNotNull(ecKeyValue, "ECKeyValue was null");
+
+        ECPublicKey javaKey = null;
+        try {
+            javaKey = (ECPublicKey) KeyInfoSupport.getECKey(ecKeyValue);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of Java key failed: " + e);
+        }
+
+        // The standard equals() test below doesn't work b/c the standard ECParameterSpec doesn't really implement equals()beyond
+        // the standard reference compare, and the control key is from BC, so the instance object isn't the same (constant one) as from SunEC.
+        // So use our Enhanced- equality wrapper helper instead.
+        //Assert.assertEquals(javaKey, javaECPubKey_ExplicitParams1, "Inserted EC public key with explicit params was not the expected value");
+        Assert.assertEquals(javaKey.getW(), javaECPubKey_ExplicitParams1.getW());
+        Assert.assertEquals(new EnhancedECParameterSpec(javaKey.getParams()),
+                new EnhancedECParameterSpec(javaECPubKey_ExplicitParams1.getParams()));
 
         keyInfo.getKeyValues().clear();
     }
@@ -730,4 +912,24 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(xmlValue, "Decoded X509Digest value was null");
         Assert.assertTrue(Arrays.equals(digestValue, xmlValue), "Incorrect digest value");
     }
+    
+    
+    
+    //
+    // Helpers
+    //
+    
+    private ECPublicKey buildECPublicKeyWithExplicitParams(String encodedKey) throws KeyException {
+        // Use BC for this for now, since standard Java's SunEC provider does not support explicit params
+        try {
+            Security.addProvider(new BouncyCastleProvider());
+            final KeyFactory keyFactory = KeyFactory.getInstance("EC", "BC");
+            return (ECPublicKey) keyFactory.generatePublic(new X509EncodedKeySpec(Base64Support.decode(encodedKey)));
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException | DecodingException | NoSuchProviderException e) {
+            throw new KeyException("Failed creating ECPublicKey containing explict params", e);
+        } finally {
+            Security.removeProvider("BC");
+        }
+    }
+
 }
