@@ -227,7 +227,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
     protected boolean validate(@Nonnull final EncryptionParameters params, final boolean encryptionOptional) {
         if (params.getKeyTransportEncryptionCredential() == null 
                 && params.getDataEncryptionCredential() == null) {
-            final String msg = "Validation failure: Failed to resolve both a data and a key encryption credential";
+            final String msg = "Validation failure: Failed to resolve an encryption key";
             if (encryptionOptional) {
                 log.debug(msg);
             } else {
