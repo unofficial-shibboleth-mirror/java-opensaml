@@ -141,7 +141,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     public void setContextSize(@Positive final int size) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        contextSize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
+        contextSize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
 
     /**
@@ -152,7 +152,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     public void setKeySize(@Positive final int size) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        keySize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
+        keySize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
 
     /**
@@ -163,7 +163,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     public void setValueSize(@Positive final int size) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        valueSize = (int) Constraint.isGreaterThan(0, size, "Size must be greater than zero");
+        valueSize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
 
     /** {@inheritDoc} */
