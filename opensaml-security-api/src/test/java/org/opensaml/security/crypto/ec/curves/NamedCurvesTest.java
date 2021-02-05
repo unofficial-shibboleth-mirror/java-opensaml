@@ -82,7 +82,7 @@ public class NamedCurvesTest extends BaseNamedCurveTest {
      * i.e. resolve to equivalent instances of ECParameterSpec, and that curve matches the NamedCurve's params.
      * 
      *<p>
-     * This test assumes that all curves we'd every register and ship with the library will be supported
+     * This test assumes that all curves we'd ever register and ship with the library will be supported
      * by Bouncy Castle.  If this ever becomes untrue, we can always disable the test, or remove the 
      * curves if there is a security or other reason to stop supporting it.
      *</p>
@@ -101,7 +101,7 @@ public class NamedCurvesTest extends BaseNamedCurveTest {
             
             ECParameterSpec specByOID = ECSupport.convert(ECNamedCurveTable.getParameterSpec(curve.getObjectIdentifier()));
             Assert.assertNotNull(specByOID);
-            ECParameterSpec specByName = ECSupport.convert(ECNamedCurveTable.getParameterSpec(curve.getName()));
+            ECParameterSpec specByName = ECSupport.convert(ECNamedCurveTable.getParameterSpec(mapBCCurveName(curve.getName())));
             Assert.assertNotNull(specByName);
             
             
@@ -110,6 +110,22 @@ public class NamedCurvesTest extends BaseNamedCurveTest {
             // And that curve from BC actually matches the NamedCurve's ECParameterSpec
             Assert.assertEquals(new EnhancedECParameterSpec(curve.getParameterSpec()), new EnhancedECParameterSpec(specByOID));
         }
+    }
+    
+    //
+    // Helpers
+    //
+
+    /**
+     * BC sometimes has slightly different curve simple names from SunEC, so translate here...
+     * @param standardName
+     * @return the corresponding BC curve name
+     */
+    private String mapBCCurveName(String standardName) {
+        if (standardName.startsWith("X9.62 ")) {
+            return standardName.substring(6);
+        }
+        return standardName;
     }
 
 }
