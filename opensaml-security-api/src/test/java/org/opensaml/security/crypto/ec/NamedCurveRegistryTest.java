@@ -18,10 +18,14 @@
 package org.opensaml.security.crypto.ec;
 
 import java.security.spec.ECParameterSpec;
+import java.util.Properties;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.bouncycastle.jce.ECNamedCurveTable;
+import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
+import org.opensaml.security.config.GlobalNamedCurveRegistryInitializer;
 import org.opensaml.security.crypto.ec.curves.Secp256r1;
 import org.opensaml.security.crypto.ec.curves.Secp384r1;
 import org.opensaml.security.crypto.ec.curves.Secp521r1;
@@ -158,6 +162,32 @@ public class NamedCurveRegistryTest extends BaseNamedCurveTest {
         Assert.assertTrue(curveNames.contains("secp256r1"));
         Assert.assertTrue(curveNames.contains("secp384r1"));
         Assert.assertTrue(curveNames.contains("secp521r1"));
+    }
+    
+    @Test
+    public void registerBouncyCastleCurves() throws Exception {
+        String propName = GlobalNamedCurveRegistryInitializer.CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES;
+        NamedCurveRegistry origRegistry = ECSupport.getGlobalNamedCurveRegistry();
+        try {
+            Properties props = new Properties();
+            props.setProperty(propName, "true");
+            ThreadLocalConfigurationPropertiesHolder.setProperties(props);
+            
+            new GlobalNamedCurveRegistryInitializer().init();
+            NamedCurveRegistry bcRegistry = ECSupport.getGlobalNamedCurveRegistry();
+            Assert.assertNotSame(bcRegistry, origRegistry);
+            
+            Set<NamedCurve> origCurves = origRegistry.getRegisteredCurves();
+            Set<NamedCurve> bcCurves = bcRegistry.getRegisteredCurves();
+            Assert.assertTrue(bcCurves.size() > origCurves.size());
+            
+            Set<String> origOIDs = origCurves.stream().map(NamedCurve::getObjectIdentifier).collect(Collectors.toSet());
+            Set<String> bcOIDs = bcCurves.stream().map(NamedCurve::getObjectIdentifier).collect(Collectors.toSet());
+            Assert.assertTrue(bcOIDs.containsAll(origOIDs));
+        } finally {
+            ThreadLocalConfigurationPropertiesHolder.clear();
+            ConfigurationService.register(NamedCurveRegistry.class, origRegistry);
+        }
     }
 
 }

@@ -30,6 +30,9 @@ import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
 import java.security.spec.EllipticCurve;
 import java.util.Arrays;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -41,9 +44,12 @@ import org.bouncycastle.jce.spec.ECNamedCurveParameterSpec;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.security.crypto.ec.curves.BasicNamedCurve;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -164,7 +170,6 @@ public final class ECSupport {
     @Nullable public static String getNamedCurveURI(@Nonnull final ECPublicKey publicKey) {
         Constraint.isNotNull(publicKey, "ECPublicKey was null");
         
-        //TODO implement fallback to do nasty parsing of the ASN.1 encoded form for the OID?
         final NamedCurve namedCurve = getNamedCurve(publicKey);
         if (namedCurve == null) {
             LOG.warn("Could not resolve NamedCurve for ECPublicKey");
@@ -185,7 +190,6 @@ public final class ECSupport {
     @Nullable public static ECParameterSpec getParameterSpecForURI(@Nonnull final String uri) {
         Constraint.isNotNull(uri, "NamedCurve URI was null");
         
-        //TODO implement fallback to use BCNamedCurveTable to lookup up OID -> param spec?
         final NamedCurve namedCurve = getNamedCurve(uri);
         if (namedCurve == null) {
             LOG.warn("Could not resolve NamedCurve for URI: {}", uri);
@@ -301,6 +305,45 @@ public final class ECSupport {
                 EC5Util.convertPoint(bcSpec.getG()),
                 bcSpec.getN(),
                 bcSpec.getH().intValue());
+    }
+    
+    /**
+     * Return a set of all curves known to Bouncy Castle as instances of {@link NamedCurve}.
+     * 
+     * @return the set of curves known to Bouncy Castle
+     */
+    @Nonnull @NonnullElements @NotLive
+    public static Set<NamedCurve> getCurvesFromBouncyCastle() {
+        final HashSet<NamedCurve> curves = new HashSet<>();
+        
+        // There seems to be duplication between the main and custom curve tables, so use OID to only find unique ones.
+        final HashSet<String> oids = new HashSet<>();
+        
+        final Enumeration<String> standardNames = org.bouncycastle.asn1.x9.ECNamedCurveTable.getNames();
+        while (standardNames.hasMoreElements()) {
+            final String name = standardNames.nextElement();
+            final String oid = org.bouncycastle.asn1.x9.ECNamedCurveTable.getOID(name).getId();
+            if (!oids.contains(oid)) {
+                final ECParameterSpec paramSpec =
+                        EC5Util.convertToSpec(org.bouncycastle.asn1.x9.ECNamedCurveTable.getByName(name));
+                curves.add(new BasicNamedCurve(oid, name, paramSpec));
+                oids.add(oid);
+            }
+        }
+        
+        final Enumeration<String> customNames = org.bouncycastle.crypto.ec.CustomNamedCurves.getNames();
+        while (customNames.hasMoreElements()) {
+            final String name = customNames.nextElement();
+            final String oid = org.bouncycastle.crypto.ec.CustomNamedCurves.getOID(name).getId();
+            if (!oids.contains(oid)) {
+                final ECParameterSpec paramSpec =
+                        EC5Util.convertToSpec(org.bouncycastle.crypto.ec.CustomNamedCurves.getByName(name));
+                curves.add(new BasicNamedCurve(oid, name, paramSpec));
+                oids.add(oid);
+            }
+        }
+        
+        return curves;
     }
 
 } 

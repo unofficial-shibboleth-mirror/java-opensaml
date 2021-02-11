@@ -25,6 +25,7 @@ import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
+import java.util.Set;
 
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.opensaml.security.crypto.JCAConstants;
@@ -106,5 +107,12 @@ public class ECSupportTest extends BaseNamedCurveTest {
         ECPoint decoded = ECSupport.decodeECPoint(encoded, spec.getCurve());
         Assert.assertNotNull(decoded);
         Assert.assertEquals(decoded, spec.getGenerator());
+    }
+    
+    @Test
+    public void getCurvesFromBouncyCastle() {
+        Set<NamedCurve> curves = ECSupport.getCurvesFromBouncyCastle();
+        Assert.assertNotNull(curves);
+        Assert.assertFalse(curves.isEmpty());
     }
 }

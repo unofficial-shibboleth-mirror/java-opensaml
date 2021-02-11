@@ -18,11 +18,15 @@
 package org.opensaml.security.config;
 
 import java.util.Iterator;
+import java.util.Properties;
 import java.util.ServiceLoader;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
+import org.opensaml.security.crypto.ec.ECSupport;
 import org.opensaml.security.crypto.ec.NamedCurve;
 import org.opensaml.security.crypto.ec.NamedCurveRegistry;
 import org.slf4j.Logger;
@@ -35,6 +39,10 @@ import net.shibboleth.utilities.java.support.component.InitializableComponent;
  * OpenSAML {@link Initializer} implementation for {@link NamedCurveRegistry}.
  */
 public class GlobalNamedCurveRegistryInitializer implements Initializer {
+    
+    /** Configuration property name for registering curves from Bouncy Castle. */
+    public static final String CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES =
+            "opensaml.config.ec.registerBouncyCastleCurves";
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(GlobalNamedCurveRegistryInitializer.class);
@@ -52,13 +60,37 @@ public class GlobalNamedCurveRegistryInitializer implements Initializer {
                     InitializableComponent.class.cast(curve).initialize();
                 }
             } catch (final ComponentInitializationException e) {
-                log.warn("Error initing NamedCurve with name '{}', OID '{}', URI '{}': {}",
+                log.warn("Error initing NamedCurve, name '{}', OID '{}', URI '{}': {}",
                         curve.getName(), curve.getObjectIdentifier(), curve.getURI(), curve.getClass().getName());
                 continue;
             }
-            log.debug("Registering NamedCurve with name '{}', OID '{}' and name '{}': {}'",
+            log.debug("Registering NamedCurve, name '{}', OID '{}', URI '{}': {}'",
                     curve.getName(), curve.getObjectIdentifier(), curve.getURI(), curve.getClass().getName());
             registry.register(curve);
+        }
+        
+        final Properties props = ConfigurationService.getConfigurationProperties(); 
+        final boolean registerBCCurves =
+                (props != null) ? Boolean.parseBoolean(props.getProperty(CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES))
+                        : false;
+        
+        if (registerBCCurves) {
+            // Don't register if already done above. Use the OID as the canonical unique identifier.  Names may differ.
+            final Set<String> oids = registry.getRegisteredCurves().stream()
+                    .map(NamedCurve::getObjectIdentifier)
+                    .collect(Collectors.toSet());
+            
+            final Set<NamedCurve> curves = ECSupport.getCurvesFromBouncyCastle();
+            for (final NamedCurve curve : curves) {
+                if (!oids.contains(curve.getObjectIdentifier())) {
+                    log.debug("Registering BC NamedCurve, name '{}', OID '{}', URI '{}': {}'",
+                            curve.getName(), curve.getObjectIdentifier(), curve.getURI(), curve.getClass().getName());
+                    registry.register(curve);
+                } else {
+                    log.debug("Skipping BC NamedCurve because already registered, name '{}', OID '{}', URI '{}': {}'",
+                            curve.getName(), curve.getObjectIdentifier(), curve.getURI(), curve.getClass().getName());
+                }
+            }
         }
         
         ConfigurationService.register(NamedCurveRegistry.class, registry);
