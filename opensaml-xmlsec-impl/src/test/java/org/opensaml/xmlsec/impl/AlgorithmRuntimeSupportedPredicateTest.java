@@ -31,8 +31,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.testing.TestSupport;
-
+@SuppressWarnings("javadoc")
 public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTestCase {
     
     private AlgorithmRuntimeSupportedPredicate predicate;
@@ -113,9 +112,7 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
                 Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA384));
                 Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
                 
-                if (providerSupport.haveBC() || TestSupport.isJavaV8OrLater()) {
-                    Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
-                }
+                Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
             } else {
                 Assert.assertFalse(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA1));
                 Assert.assertFalse(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA224));
@@ -124,38 +121,16 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
                 Assert.assertFalse(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA512));
             }
             
-            if (providerSupport.haveBC() || TestSupport.isJavaV8OrLater()) {
-                Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_DIGEST_SHA224));
-                Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
-                Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
-                
-                Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
-                
-                Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
-                Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
-                Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
-                Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
-            } else {
-                if (providerSupport.isOpenJDK()) {
-                    Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_DIGEST_SHA224));
-                    Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
-                    Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
-                    
-                    Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
-                } else {
-                    Assert.assertFalse(predicate.test(SignatureConstants.ALGO_ID_DIGEST_SHA224));
-                    Assert.assertFalse(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
-                    Assert.assertFalse(predicate.test(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
-                    
-                    Assert.assertFalse(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
-                }
-                
-                Assert.assertFalse(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
-                Assert.assertFalse(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
-                Assert.assertFalse(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
-                
-                Assert.assertFalse(predicate.test(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
-            }
+            Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+            Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA224));
+            Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_MAC_HMAC_SHA224));
+            
+            Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA256));
+            
+            Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+            Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
+            Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+            Assert.assertTrue(predicate.test(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11));
             
             if (providerSupport.haveBC()) {
                 Assert.assertTrue(predicate.test(SignatureConstants.ALGO_ID_DIGEST_RIPEMD160));

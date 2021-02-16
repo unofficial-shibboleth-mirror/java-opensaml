@@ -23,10 +23,6 @@ import java.util.Set;
 
 import javax.script.ScriptException;
 
-import net.shibboleth.ext.spring.resource.ResourceHelper;
-import net.shibboleth.utilities.java.support.resource.Resource;
-import net.shibboleth.utilities.java.support.testing.TestSupport;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -36,29 +32,17 @@ import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.ext.spring.resource.ResourceHelper;
+import net.shibboleth.utilities.java.support.resource.Resource;
+
 /**
  *
  */
+@SuppressWarnings("javadoc")
 public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
     
-    static final String SCRIPT_7 = "s = new java.lang.String(\"String\");set = new java.util.HashSet();set.add(s);set";
     static final String SCRIPT_8 = "JavaString=Java.type(\"java.lang.String\"); JavaSet = Java.type(\"java.util.HashSet\");set = new JavaSet();set.add(new JavaString(\"String\"));set";
-    static final String FILE_7 = "/org/opensaml/saml/metadata/resolver/filter/impl/script.js";
     static final String FILE_8 = "/org/opensaml/saml/metadata/resolver/filter/impl/script8.js";
-        
-    private String script() {
-        if (TestSupport.isJavaV8OrLater()) {
-            return SCRIPT_8;
-        }
-        return SCRIPT_7;
-    }
-    
-    private String file() {
-        if (TestSupport.isJavaV8OrLater()) {
-            return FILE_8;
-        }
-        return FILE_7;
-    }
     
     private XMLObject makeObject() {
         final SAMLObjectBuilder<EntityDescriptor> builder = (SAMLObjectBuilder<EntityDescriptor>)
@@ -67,17 +51,16 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
         return builder.buildObject();
     }
     
-    
     @Test public void inlineScript() throws ScriptException {
         
-        final Set<String> s = ScriptedTrustedNamesFunction.inlineScript(script()).apply(makeObject());
+        final Set<String> s = ScriptedTrustedNamesFunction.inlineScript(SCRIPT_8).apply(makeObject());
         Assert.assertEquals(s.size(), 1);
         Assert.assertTrue(s.contains("String"));
    }
     
     
     @Test public void fileScript() throws ScriptException, IOException {
-        final Resource r = ResourceHelper.of(new ClassPathResource(file()));
+        final Resource r = ResourceHelper.of(new ClassPathResource(FILE_8));
         final Set<String> result = ScriptedTrustedNamesFunction.resourceScript(r).apply(makeObject());
 
         Assert.assertEquals(result.size(), 1);
