@@ -40,11 +40,10 @@ import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.testing.TestSupport;
-
 /**
  *
  */
+@SuppressWarnings("javadoc")
 public class AESGCMTest extends XMLObjectBaseTestCase {
     
     private Logger log = LoggerFactory.getLogger(AESGCMTest.class);
@@ -69,27 +68,22 @@ public class AESGCMTest extends XMLObjectBaseTestCase {
         AlgorithmDescriptor aesGCM256 = registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
         
         return new Object[][] {
-                new Object[] {aesGCM128, 7, TestSupport.isJavaV7OrLater(), true},
-                new Object[] {aesGCM192, 8, TestSupport.isJavaV8OrLater(), true},
-                new Object[] {aesGCM256, 8, TestSupport.isJavaV8OrLater(), true},
+                new Object[] {aesGCM128, true},
+                new Object[] {aesGCM192, true},
+                new Object[] {aesGCM256, true},
                 
-                new Object[] {aesGCM128, 8, TestSupport.isJavaV8OrLater(), false},
-                new Object[] {aesGCM192, 8, TestSupport.isJavaV8OrLater(), false},
-                new Object[] {aesGCM256, 8, TestSupport.isJavaV8OrLater(), false},
+                new Object[] {aesGCM128, false},
+                new Object[] {aesGCM192, false},
+                new Object[] {aesGCM256, false},
                 
-                new Object[] {aesGCM128, 8, TestSupport.isJavaV8OrLater(), true},
-                new Object[] {aesGCM192, 8, TestSupport.isJavaV8OrLater(), true},
-                new Object[] {aesGCM256, 8, TestSupport.isJavaV8OrLater(), true},
+                new Object[] {aesGCM128, true},
+                new Object[] {aesGCM192, true},
+                new Object[] {aesGCM256, true},
         };
     }
 
     @Test(dataProvider="testDataAESGCM")
-    public void testEncryptDecrypt(AlgorithmDescriptor descriptor, int minJavaVersion,
-            boolean haveJavaVersion, boolean loadBC) throws Exception {
-        if (!haveJavaVersion) {
-            log.debug("Not Java {}+, skipping test", minJavaVersion);
-            return;
-        }
+    public void testEncryptDecrypt(AlgorithmDescriptor descriptor, boolean loadBC) throws Exception {
         
         int maxKeyLength = Cipher.getMaxAllowedKeyLength(descriptor.getJCAAlgorithmID());
         log.debug("Installed policy indicates max allowed key length for '{}' is: {}", descriptor.getJCAAlgorithmID(), maxKeyLength);
