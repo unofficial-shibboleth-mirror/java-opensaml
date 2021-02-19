@@ -23,6 +23,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
@@ -34,11 +35,17 @@ import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.EncryptionParametersResolver;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
+import org.opensaml.xmlsec.agreement.KeyAgreementException;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
+import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
+import org.opensaml.xmlsec.agreement.KeyAgreementSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.EncryptionOptionalCriterion;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
+import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.slf4j.Logger;
@@ -196,7 +203,8 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             }
             
             log.debug("\tKey transport KeyInfoGenerator: {}", 
-                    params.getKeyTransportKeyInfoGenerator() != null ? "present" : "null");
+                    params.getKeyTransportKeyInfoGenerator() != null ?
+                            params.getKeyTransportKeyInfoGenerator().getClass().getName() : "null");
             
             final Key dataKey = CredentialSupport.extractEncryptionKey(params.getDataEncryptionCredential());
             if (dataKey != null) {
@@ -208,7 +216,8 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             log.debug("\tData encryption algorithm URI: {}", params.getDataEncryptionAlgorithm());
             
             log.debug("\tData encryption KeyInfoGenerator: {}", 
-                    params.getDataKeyInfoGenerator() != null ? "present" : "null");
+                    params.getDataKeyInfoGenerator() != null ?
+                            params.getDataKeyInfoGenerator().getClass().getName() : "null");
             
         }
     }
@@ -326,6 +335,11 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             params.setDataEncryptionAlgorithm(resolveDataEncryptionAlgorithm(null, dataEncryptionAlgorithms));
         } else {
             for (final Credential dataEncryptionCredential : dataEncryptionCredentials) {
+                if (checkAndProcessKeyAgreement(params, criteria, dataEncryptionCredential, dataEncryptionAlgorithms,
+                        Collections.emptyList())) {
+                    return;
+                }
+                
                 final String dataEncryptionAlgorithm = resolveDataEncryptionAlgorithm(dataEncryptionCredential, 
                         dataEncryptionAlgorithms);
                 if (dataEncryptionAlgorithm != null) {
@@ -343,6 +357,11 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         
         // Select key encryption cred and algorithm
         for (final Credential keyTransportCredential : keyTransportCredentials) {
+            if (checkAndProcessKeyAgreement(params, criteria, keyTransportCredential, dataEncryptionAlgorithms,
+                    keyTransportAlgorithms)) {
+                return;
+            }
+            
             final String keyTransportAlgorithm = resolveKeyTransportAlgorithm(keyTransportCredential,
                     keyTransportAlgorithms, params.getDataEncryptionAlgorithm(), keyTransportPredicate);
             
@@ -360,6 +379,145 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         
         // Auto-generate data encryption cred if configured and possible
         processDataEncryptionCredentialAutoGeneration(params);
+    }
+    
+    /**
+     * Check for a credential type that implies a key agreement operation, and process if so indicated.
+     * 
+     * <p>
+     * For both algorithm list arguments, they are assumed to already have had runtime support and include/exclude
+     * filtering applied.
+     * </p>
+     * 
+     * <p>
+     * If symmetric key wrap should NOT be considered, pass an empty list for <code>keyTransportAlgorithms</code>.
+     * Otherwise, if the <code>keyTransportAlgorithms</code> list contains a symmetric key wrap algorithm, then 
+     * key wrapping will be indicated in the produced parameters.  If it does not then direct data encryption
+     * will be indicated.
+     * </p>
+     * 
+     * @param params the params instance being populated
+     * @param criteria the input criteria being evaluated
+     * @param credential the credential being evaluated
+     * @param dataEncryptionAlgorithms the effective data encryption credentials
+     * @param keyTransportAlgorithms the effective key transport credentials
+     * 
+     * @return true if all required parameters were supplied, key agreement was successfully performed,
+     *         and the {@link EncryptionParameters} instance's credential and algorithms properties are fully populated,
+     *         otherwise false
+     */
+    protected boolean checkAndProcessKeyAgreement(@Nonnull final EncryptionParameters params,
+            @Nonnull final CriteriaSet criteria, @Nonnull final Credential credential,
+            @Nonnull final List<String> dataEncryptionAlgorithms, @Nonnull final List<String> keyTransportAlgorithms) {
+        
+        if (!KeyAgreementSupport.supportsKeyAgreement(credential) ) {
+            log.trace("Specified Credential does not support key agreement");
+            return false; 
+        }
+        
+        log.debug("Processing key agreement for credential with key type: {}",
+                credential.getPublicKey().getAlgorithm());
+        
+        final KeyAgreementEncryptionConfiguration config = getEffectiveKeyAgreementConfiguration(criteria, credential);
+        if (config == null) {
+            log.warn("Unable to get effective KeyAgreementEncryptionConfiguration for credential with key type: {}",
+                    credential.getPublicKey().getAlgorithm());
+            return false;
+        }
+        
+        final String dataEncryptionAlgorithm = dataEncryptionAlgorithms.stream()
+                .filter(AlgorithmSupport::isBlockEncryption)
+                .findFirst().orElse(null);
+        if (dataEncryptionAlgorithm == null) {
+            log.warn("Unable to resolve data encryption algorithm for key agreement, skipping");
+            return false;
+        }
+        
+        final String keyTransportAlgorithm = keyTransportAlgorithms.stream()
+                .filter(AlgorithmSupport::isSymmetricKeyWrap)
+                .findFirst().orElse(null);
+        
+        final String keyAlgorithm = keyTransportAlgorithm != null ? keyTransportAlgorithm : dataEncryptionAlgorithm;
+        
+        final KeyAgreementParameters parameters = new KeyAgreementParameters(config.getParameters(), true);
+        try {
+            parameters.initializeAll();
+            parameters.forEach(p -> {
+                log.debug("Saw KeyAgreementParameter of type: {}", p.getClass().getName());
+            });
+        } catch (final KeyAgreementException e) {
+            log.warn("Fatal error initing configured parameters for key agreement", e);
+            return false;
+        }
+        
+        try {
+            final KeyAgreementProcessor processor = KeyAgreementSupport.getProcessor(config.getAlgorithm());
+        
+            final KeyAgreementCredential agreementCredential = processor.execute(credential, keyAlgorithm, parameters);
+            
+            params.setDataEncryptionAlgorithm(dataEncryptionAlgorithm);
+            
+            if (keyTransportAlgorithm != null) {
+                params.setKeyTransportEncryptionAlgorithm(keyTransportAlgorithm);
+                params.setKeyTransportEncryptionCredential(agreementCredential);
+            } else {
+                params.setDataEncryptionCredential(agreementCredential);
+            }
+            
+            processDataEncryptionCredentialAutoGeneration(params);
+            
+            log.debug("Successfully processed key agreement for credential with key type: {}",
+                    credential.getPublicKey().getAlgorithm());
+            
+            return true;
+        } catch (final KeyAgreementException e) {
+            log.warn("Fatal error processing key agreement for credential", e);
+            return false;
+        }
+        
+    }
+    
+    /**
+     * Get the effective {@link KeyAgreementEncryptionConfiguration} to use with the specified credential.
+     * 
+     * @param criteria the criteria
+     * @param credential the credential to evaluate
+     * @return the key agreement configuration for the credential, or null if could not be resolved
+     */
+    @Nullable protected KeyAgreementEncryptionConfiguration getEffectiveKeyAgreementConfiguration(
+            @Nonnull final CriteriaSet criteria, @Nonnull final Credential credential) {
+        
+        final String keyType = credential.getPublicKey().getAlgorithm();
+        
+        final KeyAgreementEncryptionConfiguration config = new KeyAgreementEncryptionConfiguration();
+        
+        final List<EncryptionConfiguration> encConfigs = criteria.get(EncryptionConfigurationCriterion.class)
+                .getConfigurations();
+        
+        config.setAlgorithm(
+                encConfigs.stream()
+                    .map(c -> c.getKeyAgreementConfigurations().get(keyType))
+                    .filter(Objects::nonNull)
+                    .map(KeyAgreementEncryptionConfiguration::getAlgorithm)
+                    .filter(Objects::nonNull)
+                    .findFirst().orElse(null)
+                );
+        
+        config.setParameters(
+                encConfigs.stream()
+                    .map(c -> c.getKeyAgreementConfigurations().get(keyType))
+                    .filter(Objects::nonNull)
+                    .map(KeyAgreementEncryptionConfiguration::getParameters)
+                    .filter(Objects::nonNull)
+                    .findFirst().orElse(Collections.emptySet())
+                );
+        
+        if (config.getAlgorithm() == null) {
+            log.warn("Failed to resolve a key agreement algorithm for key type: {}", keyType);
+            return null;
+        }
+        
+        return config;
     }
     
     /**

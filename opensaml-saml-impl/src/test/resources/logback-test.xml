@@ -16,6 +16,14 @@
         <level value="WARN"/>
     </logger>
     
+    <logger name="org.opensaml.xmlsec.impl.BasicEncryptionParametersResolver">
+        <level value="TRACE"/>
+    </logger>
+    
+    <logger name="org.opensaml.saml.security.impl.SAMLMetadataEncryptionParametersResolver">
+        <level value="TRACE"/>
+    </logger>
+    
     <logger name="org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager">
         <level value="INFO"/>
     </logger>

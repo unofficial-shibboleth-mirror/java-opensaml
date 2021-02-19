@@ -19,14 +19,20 @@ package org.opensaml.xmlsec.config.impl;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
+import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.encryption.support.SimpleKeyInfoReferenceEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
@@ -48,6 +54,10 @@ import org.opensaml.xmlsec.keyinfo.impl.provider.ECKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  * A utility class which programmatically builds basic instances of various components 
@@ -55,6 +65,9 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
  * various configuration parameters.
  */
 public class DefaultSecurityConfigurationBootstrap {
+    
+    /** Logger. */
+    private static final Logger LOG = LoggerFactory.getLogger(DefaultSecurityConfigurationBootstrap.class);
     
     /** Constructor. */
     protected DefaultSecurityConfigurationBootstrap() {}
@@ -83,8 +96,8 @@ public class DefaultSecurityConfigurationBootstrap {
                 // The order of the RSA algos is significant.
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP,
                 
-                // The order of these is not significant.
-                // These aren't really "preferences" per se. They just need to be registered 
+                // The order of these is only significant when doing key agreement with key wrap.
+                // Otherwise the order is not significant, they just need to be registered 
                 // so that they can be used if a credential with a key of that type and size is seen.
                 EncryptionConstants.ALGO_ID_KEYWRAP_AES128,
                 EncryptionConstants.ALGO_ID_KEYWRAP_AES192,
@@ -97,6 +110,26 @@ public class DefaultSecurityConfigurationBootstrap {
                 EncryptionConstants.ALGO_ID_MGF1_SHA1, 
                 null
                 ));
+        
+        try {
+            final Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = new HashMap<>();
+            
+            final KeyAgreementEncryptionConfiguration ecConfig = new KeyAgreementEncryptionConfiguration();
+            ecConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+            final ConcatKDF ecConcatKDF = new ConcatKDF();
+            // Need to set these 3 to something to confirm to NIST spec requirements. Actual deployments
+            // can and should override in a custom config with specific parameter values, if needed.
+            ecConcatKDF.setAlgorithmID("00");
+            ecConcatKDF.setPartyUInfo("00");
+            ecConcatKDF.setPartyVInfo("00");
+            ecConcatKDF.initialize();
+            ecConfig.setParameters(Set.of(ecConcatKDF));
+            kaConfigs.put(JCAConstants.KEY_ALGO_EC, ecConfig);
+            
+            config.setKeyAgreementConfigurations(kaConfigs);
+        } catch (final ComponentInitializationException e) {
+            LOG.error("Initialization failure on global key agreement encryption configuration, will be unusable", e);
+        }
         
         config.setDataKeyInfoGeneratorManager(buildDataEncryptionKeyInfoGeneratorManager());
         config.setKeyTransportKeyInfoGeneratorManager(buildKeyTransportEncryptionKeyInfoGeneratorManager());

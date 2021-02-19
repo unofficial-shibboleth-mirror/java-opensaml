@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,6 +28,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 
@@ -100,5 +102,13 @@ public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration
      * @return the predicate instance
      */
     @Nullable public KeyTransportAlgorithmPredicate getKeyTransportAlgorithmPredicate();
+    
+    /**
+     * Get the map of {@link KeyAgreementEncryptionConfiguration} instances.
+     * 
+     * @return the 
+     */
+    @Nonnull @Unmodifiable @NotLive
+    public Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations();
     
 }

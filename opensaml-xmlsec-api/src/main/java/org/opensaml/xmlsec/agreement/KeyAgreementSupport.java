@@ -17,10 +17,14 @@
 
 package org.opensaml.xmlsec.agreement;
 
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.security.credential.Credential;
+import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
@@ -30,6 +34,9 @@ import org.opensaml.xmlsec.encryption.KeySize;
  * Support for key agreement operations.
  */
 public final class KeyAgreementSupport {
+    
+    /** JCA key algorithms that support key agreement. */
+    public static final Set<String> KEY_ALGORITHMS = Set.of(JCAConstants.KEY_ALGO_EC);
     
     /** Constructor. */
     private KeyAgreementSupport() {}
@@ -42,6 +49,34 @@ public final class KeyAgreementSupport {
      */
     @Nullable public static KeyAgreementProcessorRegistry getGlobalProcessorRegistry() {
         return ConfigurationService.get(KeyAgreementProcessorRegistry.class);
+    }
+    
+    /**
+     * Lookup and return the {@link KeyAgreementProcessor} to use for the specified key
+     * agreement algorithm.
+     * 
+     * @param algorithm the key agreement algorithm
+     * 
+     * @return the processor for that algorithm
+     * 
+     * @throws KeyAgreementException if global {@link KeyAgreementProcessorRegistry} is not configured
+     *          or if no processor is registered for the specified algorithm
+     */
+    @Nonnull public static KeyAgreementProcessor getProcessor(@Nonnull final String algorithm)
+            throws KeyAgreementException {
+        
+        final KeyAgreementProcessorRegistry registry = getGlobalProcessorRegistry();
+        if (registry == null) {
+            throw new KeyAgreementException("Global KeyAgreementProcessorRegistry not configured");
+        }
+        
+        final KeyAgreementProcessor processor = registry.getProcessor(algorithm);
+        if (processor == null) {
+            throw new KeyAgreementException("No KeyAgreementProcessor registered for specified algorithm: "
+                    + algorithm);
+        }
+        
+        return processor;
     }
     
     /**
@@ -64,5 +99,19 @@ public final class KeyAgreementSupport {
         }
         
         return et.getEncryptionMethod().getKeySize().getValue();
+    }
+    
+    /**
+     * Evaluate whether the specified credential contains a public key which supports key agreement.
+     * 
+     * @param credential the credential to evaluate
+     * @return true if supports key agreement, false if does not
+     */
+    public static boolean supportsKeyAgreement(@Nullable final Credential credential) {
+        if (credential == null) {
+            return false;
+        }
+        
+        return credential.getPublicKey() != null && KEY_ALGORITHMS.contains(credential.getPublicKey().getAlgorithm());
     }
 }

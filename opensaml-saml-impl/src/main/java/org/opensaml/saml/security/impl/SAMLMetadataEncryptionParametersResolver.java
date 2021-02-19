@@ -18,8 +18,12 @@
 package org.opensaml.saml.security.impl;
 
 import java.security.Key;
+import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -28,23 +32,31 @@ import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.PredicateSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.bouncycastle.jcajce.spec.UserKeyingMaterialSpec;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
+import org.opensaml.saml.security.SAMLMetadataKeyAgreementEncryptionConfiguration;
+import org.opensaml.saml.security.SAMLMetadataKeyAgreementEncryptionConfiguration.KeyWrap;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.agreement.KeyAgreementSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.impl.BasicEncryptionParametersResolver;
 import org.opensaml.xmlsec.signature.DigestMethod;
@@ -82,6 +94,9 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      */
     private boolean mergeMetadataRSAOAEPParametersWithConfig;
     
+    /** Default for usage of key wrapping with key agreement if not otherwise configured. */
+    @Nonnull private KeyWrap defaultKeyAgreementUseKeyWrap = KeyWrap.Default;
+    
     /**
      * Constructor.
      *
@@ -117,6 +132,36 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     public void setMergeMetadataRSAOAEPParametersWithConfig(final boolean flag) {
         mergeMetadataRSAOAEPParametersWithConfig = flag;
     }
+    
+    /**
+     * Get the default for usage of key wrapping with key agreement if not otherwise configured.
+     * 
+     * <p>
+     * The default is: {@link KeyWrap#Default}.
+     * </p>
+     * 
+     * @return the default value
+     */
+    @Nonnull public KeyWrap getDefaultKeyAgreemenUseKeyWrap() {
+        return defaultKeyAgreementUseKeyWrap;
+    }
+    
+    /**
+     * Set the default for usage of key wrapping with key agreement if not otherwise configured.
+     * 
+     * <p>
+     * The default is: {@link KeyWrap#Default}.
+     * </p>
+     * 
+     * @param keyWrap the value to set; null implies {@link KeyWrap#Default}
+     */
+    public void setDefaultKeyAgreementUseKeyWrap(@Nullable final KeyWrap keyWrap) {
+        if (keyWrap == null) {
+            defaultKeyAgreementUseKeyWrap = KeyWrap.Default;
+        } else {
+            defaultKeyAgreementUseKeyWrap = keyWrap;
+        }
+    }
 
     /**
      * Get the metadata credential resolver instance to use to resolve encryption credentials.
@@ -138,36 +183,41 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         mdCredResolverCriteria.addAll(criteria);
         mdCredResolverCriteria.add(new UsageCriterion(UsageType.ENCRYPTION), true);
         
-        // Note: Here we assume that we will only ever resolve a key transport credential from metadata.
-        // Even if it's a symmetric key credential (via a key agreement protocol, or resolved from a KeyName, etc),
-        // it ought to be used for symmetric key wrap, not direct data encryption.
+        // Note: Here we primarily assume that we will resolve a key transport credential from metadata.
+        // Even if it's a symmetric key credential (e.g. resolved from a KeyName, etc),
+        // it will be used for symmetric key wrap, not direct data encryption.
+        // The exception is key agreement (e.g. ECDH), which is handled as a special case and may be
+        // either, determined by both metadata and local configuration.
         try {
-            for (final Credential keyTransportCredential :
-                            getMetadataCredentialResolver().resolve(mdCredResolverCriteria)) {
+            for (final Credential credential : getMetadataCredentialResolver().resolve(mdCredResolverCriteria)) {
                 
                 if (log.isTraceEnabled()) {
-                    final Key key = CredentialSupport.extractEncryptionKey(keyTransportCredential);
-                    log.trace("Evaluating key transport encryption credential from SAML metadata of type: {}", 
+                    final Key key = CredentialSupport.extractEncryptionKey(credential);
+                    log.trace("Evaluating candidate encryption credential from SAML metadata of type: {}", 
                             key != null ? key.getAlgorithm() : "n/a");
                 }
                 
+                if (checkAndProcessKeyAgreement(params, criteria, whitelistBlacklistPredicate, credential)) {
+                    return;
+                }
+                
                 final SAMLMDCredentialContext metadataCredContext = 
-                        keyTransportCredential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
+                        credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
                 
                 final Pair<String,EncryptionMethod> dataEncryptionAlgorithmAndMethod = resolveDataEncryptionAlgorithm(
                         criteria, whitelistBlacklistPredicate, metadataCredContext);
                 
                 final Pair<String,EncryptionMethod> keyTransportAlgorithmAndMethod = resolveKeyTransportAlgorithm(
-                        keyTransportCredential, criteria, whitelistBlacklistPredicate, 
+                        credential, criteria, whitelistBlacklistPredicate, 
                         dataEncryptionAlgorithmAndMethod.getFirst(), metadataCredContext);
                 if (keyTransportAlgorithmAndMethod.getFirst() == null) {
                     log.debug("Unable to resolve key transport algorithm for credential with key type '{}', " 
                             + "considering other credentials", 
-                            CredentialSupport.extractEncryptionKey(keyTransportCredential).getAlgorithm());
+                            CredentialSupport.extractEncryptionKey(credential).getAlgorithm());
                     continue;
                 }
                 
-                params.setKeyTransportEncryptionCredential(keyTransportCredential);
+                params.setKeyTransportEncryptionCredential(credential);
                 params.setKeyTransportEncryptionAlgorithm(keyTransportAlgorithmAndMethod.getFirst());
                 params.setDataEncryptionAlgorithm(dataEncryptionAlgorithmAndMethod.getFirst());
                 
@@ -187,7 +237,141 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         
         super.resolveAndPopulateCredentialsAndAlgorithms(params, criteria, whitelistBlacklistPredicate);
     }
-
+    
+    /**
+     * 
+     * Check for a credential type that implies a key agreement operation, and process if so indicated.
+     * 
+     * @param params the params instance being populated
+     * @param criteria the input criteria being evaluated
+     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate
+     * @param credential the credential being evaluated
+     * 
+     * @return true if all required parameters were supplied, key agreement was successfully performed,
+     *         and the {@link EncryptionParameters} instance's credential and algorithms properties are fully populated,
+     *         otherwise false
+     */
+    protected boolean checkAndProcessKeyAgreement(@Nonnull final EncryptionParameters params,
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate,
+            @Nonnull final Credential credential) {
+        
+        if (!KeyAgreementSupport.supportsKeyAgreement(credential) ) {
+            log.trace("Specified Credential does not support key agreement");
+            return false; 
+        }
+        
+        final SAMLMetadataKeyAgreementEncryptionConfiguration config =
+                getEffectiveKeyAgreementConfiguration(criteria, credential);
+        if (config == null) {
+            log.warn("Unable to get effective KeyAgreementEncryptionConfiguration for credential with key type: {}",
+                    credential.getPublicKey().getAlgorithm());
+            return false;
+        }
+        
+        final List<String> criteriaKeyTransportAlgorithms = getEffectiveKeyTransportAlgorithms(criteria,
+                whitelistBlacklistPredicate);
+        
+        final List<String> criteriaDataEncryptionAlgorithms = getEffectiveDataEncryptionAlgorithms(criteria, 
+                whitelistBlacklistPredicate);
+        
+        final SAMLMDCredentialContext metadataCredContext = 
+                credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
+        
+        List<String> metadataKeyWrapAlgorithms = Collections.emptyList();
+        List<String> metadataDataEncryptionAlgorithms = Collections.emptyList(); 
+        if (metadataCredContext != null) {
+            final List<String> metadataAlgorithms = metadataCredContext.getEncryptionMethods().stream()
+                    .map(EncryptionMethod::getAlgorithm)
+                    .filter(Objects::nonNull)
+                    .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                    .collect(Collectors.toList());
+            
+            metadataKeyWrapAlgorithms = metadataAlgorithms.stream()
+                    .filter(AlgorithmSupport::isSymmetricKeyWrap)
+                    .collect(Collectors.toList());
+            
+            metadataDataEncryptionAlgorithms = metadataAlgorithms.stream()
+                    .filter(AlgorithmSupport::isBlockEncryption)
+                    .collect(Collectors.toList());
+        }
+        
+        log.debug("Evaling useKeyWrap: # key wrap algos '{}', # direct data algos '{}', config '{}'",
+                metadataKeyWrapAlgorithms.size(), metadataDataEncryptionAlgorithms.size(),
+                config.getMetadataUseKeyWrap());
+        
+        boolean useKeyWrap = false;
+        if (KeyWrap.Never == config.getMetadataUseKeyWrap()) {
+            useKeyWrap = false;
+        } else if (KeyWrap.Always == config.getMetadataUseKeyWrap() || !metadataKeyWrapAlgorithms.isEmpty()) {
+            useKeyWrap = true;
+        } else {
+            useKeyWrap = metadataDataEncryptionAlgorithms.isEmpty()
+                    && KeyWrap.IfNotIndicated == config.getMetadataUseKeyWrap();
+        }
+        
+        return checkAndProcessKeyAgreement(params, criteria, credential,
+                concatLists(metadataDataEncryptionAlgorithms, criteriaDataEncryptionAlgorithms),
+                useKeyWrap ? concatLists(metadataKeyWrapAlgorithms, criteriaKeyTransportAlgorithms)
+                        : Collections.emptyList());
+    }
+    
+    /**
+     * Get the effective {@link SAMLMetadataKeyAgreementEncryptionConfiguration} to use with the specified credential.
+     * 
+     * @param criteria the criteria
+     * @param credential the credential to evaluate
+     * @return the key agreement configuration for the credential, or null if could not be resolved
+     */
+    @Nullable protected SAMLMetadataKeyAgreementEncryptionConfiguration getEffectiveKeyAgreementConfiguration(
+            @Nonnull final CriteriaSet criteria, @Nonnull final Credential credential) {
+        
+        final KeyAgreementEncryptionConfiguration baseConfig =
+                super.getEffectiveKeyAgreementConfiguration(criteria, credential);
+        if (baseConfig == null) {
+            return null;
+        }
+        
+        final SAMLMetadataKeyAgreementEncryptionConfiguration config =
+                new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        
+        config.setAlgorithm(baseConfig.getAlgorithm());
+        config.setParameters(baseConfig.getParameters());
+        
+        final String keyType = credential.getPublicKey().getAlgorithm();
+        
+        final List<EncryptionConfiguration> encConfigs = criteria.get(EncryptionConfigurationCriterion.class)
+                .getConfigurations();
+        
+        config.setMetadataUseKeyWrap(
+                encConfigs.stream()
+                    .map(c -> c.getKeyAgreementConfigurations().get(keyType))
+                    .filter(Objects::nonNull)
+                    .filter(SAMLMetadataKeyAgreementEncryptionConfiguration.class::isInstance)
+                    .map(SAMLMetadataKeyAgreementEncryptionConfiguration.class::cast)
+                    .map(SAMLMetadataKeyAgreementEncryptionConfiguration::getMetadataUseKeyWrap)
+                    .filter(Objects::nonNull)
+                    .findFirst().orElse(getDefaultKeyAgreemenUseKeyWrap())
+                );
+        
+        return config;
+        
+    }
+    
+    /**
+     * Concatenate multiple lists into one list.
+     * 
+     * @param lists the lists to process
+     * 
+     * @return the concatenation of the supplied lists
+     */
+    @SafeVarargs
+    private List<String> concatLists(@Nonnull final List<String> ... lists) {
+        return Stream.of(lists)
+                .filter(Objects::nonNull)
+                .flatMap(x -> x.stream())
+                .collect(Collectors.toList());
+    }
+    
     /**
      * Resolve and populate an instance of {@link RSAOAEPParameters}, if appropriate for the selected
      * key transport encryption algorithm.

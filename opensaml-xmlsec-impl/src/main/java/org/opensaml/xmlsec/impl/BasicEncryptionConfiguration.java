@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.impl;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -31,6 +32,7 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
@@ -74,6 +76,9 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
     /** Key transport algorithm predicate. */
     @Nullable private KeyTransportAlgorithmPredicate keyTransportPredicate;
     
+    /** Key agreement configurations. */
+    @Nonnull @NonnullElements private Map<String, KeyAgreementEncryptionConfiguration> keyAgreementConfigurations;
+    
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
     
     //TODO update for modern coding conventions, Guava, etc
@@ -84,6 +89,7 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
         dataEncryptionAlgorithms = Collections.emptyList();
         keyTransportEncryptionCredentials = Collections.emptyList();
         keyTransportEncryptionAlgorithms = Collections.emptyList();
+        keyAgreementConfigurations = Collections.emptyMap();
         
         rsaOAEPParametersMerge = true;
     }
@@ -245,4 +251,22 @@ public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfigu
         keyTransportPredicate = predicate;
     }
 
+    /** {@inheritDoc} */
+    @Nonnull public Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations() {
+        return keyAgreementConfigurations;
+    }
+    
+    /**
+     * Set the map of {@link KeyAgreementEncryptionConfiguration} instances.
+     * 
+     * @param configs the new map of instances
+     */
+    public void setKeyAgreementConfigurations(@Nullable final Map<String,KeyAgreementEncryptionConfiguration> configs) {
+        if (configs == null) {
+            keyAgreementConfigurations = Collections.emptyMap();
+        } else {
+            keyAgreementConfigurations = Map.copyOf(configs);
+        }
+    }
+    
 }

@@ -154,7 +154,8 @@ public class BasicSignatureSigningParametersResolver
             
             log.debug("\tSignature algorithm URI: {}", params.getSignatureAlgorithm()); 
             
-            log.debug("\tSignature KeyInfoGenerator: {}", params.getKeyInfoGenerator() != null ? "present" : "null");
+            log.debug("\tSignature KeyInfoGenerator: {}", params.getKeyInfoGenerator() != null ?
+                    params.getKeyInfoGenerator().getClass().getName() : "null");
             
             log.debug("\tReference digest method algorithm URI: {}", params.getSignatureReferenceDigestMethod()); 
             log.debug("\tReference canonicalization algorithm URI: {}", 

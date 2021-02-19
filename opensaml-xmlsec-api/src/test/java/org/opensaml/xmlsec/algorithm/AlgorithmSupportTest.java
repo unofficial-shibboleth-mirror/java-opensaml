@@ -108,6 +108,37 @@ public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test
+    public void testIsSymmetricKeyWrap() {
+        Assert.assertTrue(AlgorithmSupport.isSymmetricKeyWrap(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
+        Assert.assertTrue(AlgorithmSupport.isSymmetricKeyWrap(EncryptionConstants.ALGO_ID_KEYWRAP_AES192));
+        Assert.assertTrue(AlgorithmSupport.isSymmetricKeyWrap(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        Assert.assertTrue(AlgorithmSupport.isSymmetricKeyWrap(EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES));
+        
+        //Test some failure cases
+        Assert.assertFalse(AlgorithmSupport.isSymmetricKeyWrap(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        Assert.assertFalse(AlgorithmSupport.isSymmetricKeyWrap(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+        Assert.assertFalse(AlgorithmSupport.isSymmetricKeyWrap(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        Assert.assertFalse(AlgorithmSupport.isSymmetricKeyWrap(SignatureConstants.ALGO_ID_DIGEST_SHA256));
+    }
+
+    @Test
+    public void testIsBlockEncryption() {
+        Assert.assertTrue(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        Assert.assertTrue(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
+        Assert.assertTrue(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
+        Assert.assertTrue(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM));
+        Assert.assertTrue(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        Assert.assertTrue(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        Assert.assertTrue(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
+        
+        //Test some failure cases
+        Assert.assertFalse(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        Assert.assertFalse(AlgorithmSupport.isBlockEncryption(EncryptionConstants.ALGO_ID_KEYWRAP_AES128));
+        Assert.assertFalse(AlgorithmSupport.isBlockEncryption(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        Assert.assertFalse(AlgorithmSupport.isBlockEncryption(SignatureConstants.ALGO_ID_DIGEST_SHA224));
+    }
+    
+    @Test
     public void testCredentialSupportsAlgorithmForSigning() throws NoSuchAlgorithmException, KeyException, NoSuchProviderException {
         Credential credential;
         KeyPair kp;

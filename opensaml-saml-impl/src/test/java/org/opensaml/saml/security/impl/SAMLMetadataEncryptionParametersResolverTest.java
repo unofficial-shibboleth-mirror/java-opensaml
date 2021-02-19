@@ -17,18 +17,21 @@
 
 package org.opensaml.saml.security.impl;
 
+import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
+import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.annotation.Nullable;
 
@@ -48,6 +51,8 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.security.SAMLMetadataKeyAgreementEncryptionConfiguration;
+import org.opensaml.saml.security.SAMLMetadataKeyAgreementEncryptionConfiguration.KeyWrap;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
@@ -56,20 +61,26 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
+import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.config.GlobalAlgorithmRegistryInitializer;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.KeyInfoGenerationProfileCriterion;
+import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
+import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.impl.BasicEncryptionConfiguration;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.keyinfo.impl.KeyAgreementKeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.impl.X509KeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.keyinfo.impl.KeyAgreementKeyInfoGeneratorFactory.KeyAgreementKeyInfoGenerator;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
@@ -96,6 +107,9 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     private Credential dsaCred1;
     private String dsaCred1KeyName = "DSACred1";
     
+    private Credential ecCred1;
+    private String ecCred1KeyName = "ECCred1";
+    
     private String defaultRSAKeyTransportAlgo = EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP;
     private String defaultAES128DataAlgo = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
     private String defaultAES192DataAlgo = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192;
@@ -117,7 +131,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     }
     
     @BeforeClass
-    public void buildCredentials() throws NoSuchAlgorithmException, NoSuchProviderException {
+    public void buildCredentials() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
         KeyPair rsaKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 2048, null);
         rsaCred1 = CredentialSupport.getSimpleCredential(rsaKeyPair.getPublic(), null);
         rsaCred1.getKeyNames().add(rsaCred1KeyName);
@@ -125,6 +139,10 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         KeyPair dsaKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DSA, 1024, null);
         dsaCred1 = CredentialSupport.getSimpleCredential(dsaKeyPair.getPublic(), null);
         dsaCred1.getKeyNames().add(dsaCred1KeyName);
+        
+        KeyPair ecKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec("secp256r1"), null);
+        ecCred1 = CredentialSupport.getSimpleCredential(ecKeyPair.getPublic(), ecKeyPair.getPrivate());
+        ecCred1.getKeyNames().add(ecCred1KeyName);
     }
     
     @BeforeMethod
@@ -159,18 +177,32 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
                 EncryptionConstants.ALGO_ID_KEYWRAP_TRIPLEDES
                 ));
         
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig.setMetadataUseKeyWrap(KeyWrap.Default);
+        ecConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        ConcatKDF concatKDF = new ConcatKDF();
+        concatKDF.setAlgorithmID("00");
+        concatKDF.setPartyUInfo("00");
+        concatKDF.setPartyVInfo("00");
+        ecConfig.setParameters(Set.of(concatKDF));
+        config3.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        
         BasicKeyInfoGeneratorFactory basicFactory1 = new BasicKeyInfoGeneratorFactory();
         X509KeyInfoGeneratorFactory x509Factory1 = new X509KeyInfoGeneratorFactory();
+        KeyAgreementKeyInfoGeneratorFactory kaFactory1 = new KeyAgreementKeyInfoGeneratorFactory();
         defaultKeyTransportKeyInfoGeneratorManager = new NamedKeyInfoGeneratorManager();
         defaultKeyTransportKeyInfoGeneratorManager.registerDefaultFactory(basicFactory1);
         defaultKeyTransportKeyInfoGeneratorManager.registerDefaultFactory(x509Factory1);
+        defaultKeyTransportKeyInfoGeneratorManager.registerDefaultFactory(kaFactory1);
         config3.setKeyTransportKeyInfoGeneratorManager(defaultKeyTransportKeyInfoGeneratorManager);
         
         BasicKeyInfoGeneratorFactory basicFactory2 = new BasicKeyInfoGeneratorFactory();
         X509KeyInfoGeneratorFactory x509Factory2 = new X509KeyInfoGeneratorFactory();
+        KeyAgreementKeyInfoGeneratorFactory kaFactory2 = new KeyAgreementKeyInfoGeneratorFactory();
         defaultDataEncryptionKeyInfoGeneratorManager = new NamedKeyInfoGeneratorManager();
         defaultDataEncryptionKeyInfoGeneratorManager.registerDefaultFactory(basicFactory2);
         defaultDataEncryptionKeyInfoGeneratorManager.registerDefaultFactory(x509Factory2);
+        defaultDataEncryptionKeyInfoGeneratorManager.registerDefaultFactory(kaFactory2);
         config3.setDataKeyInfoGeneratorManager(defaultDataEncryptionKeyInfoGeneratorManager);
         
         configCriterion = new EncryptionConfigurationCriterion(config1, config2, config3);
@@ -181,6 +213,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         criteriaSet = new CriteriaSet(configCriterion, roleDescCriterion);
     }
     
+
     @Test
     public void testBasic() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
@@ -542,6 +575,334 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertNull(params.getDataEncryptionCredential());
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testECDHWithNoEncryptionMethodsAndKeyWrapDefault() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
+        Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNotNull(params.getDataEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
+        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNotNull(params.getDataKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
+    }
+    
+    @Test
+    public void testECDHWithNoEncryptionMethodsAndKeyWrapAlways() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig.setMetadataUseKeyWrap(KeyWrap.Always);
+        config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testECDHWithNoEncryptionMethodsAndKeyWrapNever() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig.setMetadataUseKeyWrap(KeyWrap.Never);
+        config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
+        Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNotNull(params.getDataEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
+        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNotNull(params.getDataKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
+    }
+    
+    @Test
+    public void testECDHWithNoEncryptionMethodsAndKeyWrapIfNotIndicated() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig.setMetadataUseKeyWrap(KeyWrap.IfNotIndicated);
+        config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testECDHWithBlockEncryptionMethodAndKeyWrapDefault() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
+        Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNotNull(params.getDataEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
+        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
+        Assert.assertNotNull(params.getDataKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
+    }
+    
+    @Test
+    public void testECDHWithBlockEncryptionMethodAndKeyWrapAlways() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig.setMetadataUseKeyWrap(KeyWrap.Always);
+        config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
+        
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+
+    @Test
+    public void testECDHWithKeyWrapEncryptionMethodAndKeyWrapDefault() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testECDHWithKeyWrapEncryptionMethodAndKeyWrapNever() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig.setMetadataUseKeyWrap(KeyWrap.Never);
+        config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
+        Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNotNull(params.getDataEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
+        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNotNull(params.getDataKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
+    }
+    
+    @Test
+    public void testECDHWithBlockAndKeyWrapEncryptionMethods() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
+        
+        Assert.assertNull(params.getDataEncryptionCredential());
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
+        Assert.assertNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testECDHWithKeyWrapEncryptionMethodAndGeneratedDataCredential() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        resolver.setAutoGenerateDataEncryptionCredential(true);
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
+        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
+        Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
+        
+        Assert.assertNotNull(params.getDataEncryptionCredential());
+        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
+        Assert.assertNotNull(params.getDataKeyInfoGenerator());
+    }
+    
+    @Test
+    public void testECDHWithKDFOverride() throws ResolverException {
+        KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
+        kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
+        roleDesc.getKeyDescriptors().add(kd);
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        PBKDF2 kdf = new PBKDF2();
+        ecConfig.setParameters(Set.of(kdf));
+        config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        
+        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        
+        Assert.assertNotNull(params);
+        Assert.assertNull(params.getKeyTransportEncryptionCredential());
+        Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
+        Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
+        
+        Assert.assertNotNull(params.getDataEncryptionCredential());
+        Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
+        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
+        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
+        Assert.assertNotNull(params.getDataKeyInfoGenerator());
+        Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
+        
+        KeyAgreementCredential kaCred = KeyAgreementCredential.class.cast(params.getDataEncryptionCredential());
+        Assert.assertEquals(kaCred.getParameters().size(), 1);
+        Assert.assertTrue(kaCred.getParameters().contains(PBKDF2.class));
+    }
+    
+    @Test
+    public void testGetEffectiveKeyAgreementConfiguration() {
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig1 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig1.setMetadataUseKeyWrap(KeyWrap.Always);
+        config1.setKeyAgreementConfigurations(Map.of("EC", ecConfig1));
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig2 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig2.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        ecConfig2.setParameters(Set.of(new PBKDF2()));
+        ecConfig2.setMetadataUseKeyWrap(KeyWrap.IfNotIndicated);
+        config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig2));
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig3 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        ecConfig3.setAlgorithm("SomeAlgo");
+        ecConfig3.setParameters(Set.of(new ConcatKDF()));
+        ecConfig3.setMetadataUseKeyWrap(KeyWrap.Default);
+        config3.setKeyAgreementConfigurations(Map.of("EC", ecConfig3));
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration config = resolver.getEffectiveKeyAgreementConfiguration(criteriaSet, ecCred1);
+        
+        Assert.assertEquals(config.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(config.getMetadataUseKeyWrap(), KeyWrap.Always);
+        Assert.assertEquals(config.getParameters().size(), 1);
+        Assert.assertTrue(PBKDF2.class.isInstance(config.getParameters().iterator().next()));
+    }
+    
+    @Test
+    public void testDefaultKeyAgreementUseKeyWrap() {
+        KeyAgreementEncryptionConfiguration ecConfig = new KeyAgreementEncryptionConfiguration();
+        ecConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        ecConfig.setParameters(Set.of());
+        BasicEncryptionConfiguration encConfig = new BasicEncryptionConfiguration();
+        encConfig.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        CriteriaSet criteria = new CriteriaSet(new EncryptionConfigurationCriterion(encConfig));
+        
+        // Check default value
+        Assert.assertEquals(resolver.getDefaultKeyAgreemenUseKeyWrap(), KeyWrap.Default);
+        
+        SAMLMetadataKeyAgreementEncryptionConfiguration config = resolver.getEffectiveKeyAgreementConfiguration(criteria, ecCred1);
+        Assert.assertEquals(config.getMetadataUseKeyWrap(), KeyWrap.Default);
+        
+        resolver.setDefaultKeyAgreementUseKeyWrap(KeyWrap.Always);
+        Assert.assertEquals(resolver.getDefaultKeyAgreemenUseKeyWrap(), KeyWrap.Always);
+        
+        config = resolver.getEffectiveKeyAgreementConfiguration(criteria, ecCred1);
+        Assert.assertEquals(config.getMetadataUseKeyWrap(), KeyWrap.Always);
     }
     
     @Test

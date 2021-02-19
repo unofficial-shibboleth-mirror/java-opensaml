@@ -250,6 +250,40 @@ public final class AlgorithmSupport {
     }
     
     /**
+     * Check whether the algorithm URI indicates block encryption.
+     * 
+     * @param algorithm the algorithm URI
+     * @return true if URI indicates symmetric key wrap, false otherwise
+     */
+    public static boolean isBlockEncryption(@Nonnull final String algorithm) {
+        final AlgorithmRegistry registry = getGlobalAlgorithmRegistry();
+        if (registry != null){
+            final AlgorithmDescriptor descriptor = registry.get(algorithm);
+            if (descriptor != null) {
+                return descriptor.getType().equals(AlgorithmDescriptor.AlgorithmType.BlockEncryption);
+            }
+        }
+        return false;
+    }
+    
+    /**
+     * Check whether the algorithm URI indicates symmetric key wrap.
+     * 
+     * @param algorithm the algorithm URI
+     * @return true if URI indicates symmetric key wrap, false otherwise
+     */
+    public static boolean isSymmetricKeyWrap(@Nonnull final String algorithm) {
+        final AlgorithmRegistry registry = getGlobalAlgorithmRegistry();
+        if (registry != null){
+            final AlgorithmDescriptor descriptor = registry.get(algorithm);
+            if (descriptor != null) {
+                return descriptor.getType().equals(AlgorithmDescriptor.AlgorithmType.SymmetricKeyWrap);
+            }
+        }
+        return false;
+    }
+    
+    /**
      * Check whether the signature method algorithm URI indicates HMAC.
      * 
      * @param signatureAlgorithm the signature method algorithm URI
