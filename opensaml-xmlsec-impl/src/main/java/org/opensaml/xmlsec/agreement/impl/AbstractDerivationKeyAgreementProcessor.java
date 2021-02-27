@@ -24,6 +24,7 @@ import javax.crypto.SecretKey;
 import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
+import org.opensaml.xmlsec.agreement.KeyAgreementSupport;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 
@@ -47,6 +48,8 @@ public abstract class AbstractDerivationKeyAgreementProcessor extends AbstractKe
         }
         
         final Integer keySize = parameters.contains(KeySize.class) ? parameters.get(KeySize.class).getSize() : null;
+        
+        KeyAgreementSupport.validateKeyAlgorithmAndSize(keyAlgorithm, keySize);
         
         try {
             return keyDerivation.derive(secret, keyAlgorithm, keySize);

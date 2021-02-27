@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
@@ -99,6 +100,38 @@ public final class KeyAgreementSupport {
         }
         
         return et.getEncryptionMethod().getKeySize().getValue();
+    }
+    
+    /** 
+     * Validate the specified algorithm URI and key length for consistency.
+     * 
+     * <p>
+     * If the algorithm URI does not imply a key length, then the specified key length must be non-null.
+     * If the algorithm URI does imply a key length and the optional specified key length is non-null, 
+     * they must be the same length. 
+     * </p>
+     *
+     *  
+     * @param algorithmURI the algorithm URI
+     * @param specifiedKeyLength the optional specified key length
+     * 
+     * @throws KeyAgreementException if algorithm and specified key lengths are not consistent
+     */
+    public static void validateKeyAlgorithmAndSize(@Nonnull final String algorithmURI,
+            @Nullable final Integer specifiedKeyLength) throws KeyAgreementException {
+        
+        final Integer algoKeyLength = AlgorithmSupport.getKeyLength(algorithmURI);
+        
+        if (algoKeyLength == null && specifiedKeyLength == null) {
+            throw new KeyAgreementException("Key length was not specified and key algorithm does not imply a length: "
+                    + algorithmURI);
+        }
+        
+        if (algoKeyLength != null && specifiedKeyLength != null && ! algoKeyLength.equals(specifiedKeyLength)) {
+            throw new KeyAgreementException(String.format("Algorithm URI '%s' key length (%d) "
+                    + "does not match specified (%d)", algorithmURI, algoKeyLength, specifiedKeyLength));
+        }
+        
     }
     
     /**

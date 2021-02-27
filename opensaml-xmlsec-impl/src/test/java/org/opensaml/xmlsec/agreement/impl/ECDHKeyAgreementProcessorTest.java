@@ -177,6 +177,20 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
                 params);
     }
     
+    @Test(expectedExceptions = KeyAgreementException.class)
+    public void specifiedKeySizeMismatch() throws Exception {
+        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
+        
+        KeyAgreementParameters params = new KeyAgreementParameters();
+        params.add(new MockKeyDerivation()); 
+        params.add(new KeySize(256));
+        
+        processor.execute(publicCredential,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
+                params);
+    }
+    
     private Collection<KeyAgreementParameter> getMockParams() {
         ArrayList<KeyAgreementParameter> params = new ArrayList<>();
         KANonce nonce = new KANonce();

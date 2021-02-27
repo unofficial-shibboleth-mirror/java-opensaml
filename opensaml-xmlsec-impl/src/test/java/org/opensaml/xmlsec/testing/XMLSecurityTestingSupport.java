@@ -42,12 +42,16 @@ public final class XMLSecurityTestingSupport {
      * @return a new KeyInfoCredentialResolver instance
      */
     public static KeyInfoCredentialResolver buildBasicInlineKeyInfoResolver() {
+        return new BasicProviderKeyInfoCredentialResolver(getBasicInlineKeyInfoProviders());
+    }
+    
+    public static List<KeyInfoProvider> getBasicInlineKeyInfoProviders() {
         List<KeyInfoProvider> providers = new ArrayList<>();
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
         providers.add( new ECKeyValueProvider() );
         providers.add( new InlineX509DataProvider() );
-        return new BasicProviderKeyInfoCredentialResolver(providers);
+        return providers;
     }
 
 }
