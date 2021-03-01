@@ -188,7 +188,9 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
                 ? recipientLookupStrategy.apply(profileRequestContext) : null; 
         final DataEncryptionParameters dataParams = new DataEncryptionParameters(params);
         final List<KeyEncryptionParameters> keyParams = new ArrayList<>();
-        keyParams.add(new KeyEncryptionParameters(params, recipient));
+        if (params.getKeyTransportEncryptionCredential() != null) {
+            keyParams.add(new KeyEncryptionParameters(params, recipient));
+        }
         
         if (encryptToSelf.test(profileRequestContext)) {
             log.debug("{} Encryption to self was indicated", getLogPrefix());
