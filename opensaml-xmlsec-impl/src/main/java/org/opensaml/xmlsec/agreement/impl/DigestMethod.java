@@ -96,7 +96,7 @@ public class DigestMethod extends AbstractInitializableComponent
      * 
      * @return new parameter instance
      * 
-     * @throws ComponentInitializationException
+     * @throws ComponentInitializationException if component initialization fails
      */
     @Nonnull public static DigestMethod fromXMLObject(
             @Nonnull final org.opensaml.xmlsec.signature.DigestMethod xmlObject)

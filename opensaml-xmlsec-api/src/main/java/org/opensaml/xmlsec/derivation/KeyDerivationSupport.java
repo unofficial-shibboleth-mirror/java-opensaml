@@ -39,7 +39,7 @@ public final class KeyDerivationSupport {
      * 
      * @return the JCA key algorithm
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if key algorithm could not be determined
      */
     @Nonnull public static String getJCAKeyAlgorithm(@Nonnull final String algorithmURI)
             throws KeyDerivationException {
@@ -66,7 +66,7 @@ public final class KeyDerivationSupport {
      * 
      * @return the effective key length
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if algorithm and specified key lengths are not consistent
      */
     @Nonnull public static Integer getEffectiveKeyLength(@Nonnull final String algorithmURI,
             @Nullable final Integer specifiedKeyLength) throws KeyDerivationException {

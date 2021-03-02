@@ -21,6 +21,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
+import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**

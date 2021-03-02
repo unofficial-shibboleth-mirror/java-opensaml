@@ -238,14 +238,12 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
          * Build a new KeyInfo instance.
          * 
          * <p>
-         * The exact element type is determined by {@link BasicOptions#keyInfoElementType}, defaulting to
-         * {@link KeyInfo#DEFAULT_ELEMENT_NAME} if the option is null. It is a runtime error if the specified type
-         * is not a sub-type of {@link KeyInfo}.
+         * The exact element type is determined by {@link #keyInfoType} which was supplied at factory construction.
          * </p>
          * 
          * @return a new KeyInfo instance
          * 
-         * @throws SecurityException
+         * @throws SecurityException if class type can not be mapped to an element {@link QName}
          */
         protected KeyInfo buildKeyInfo() throws SecurityException {
             final QName elementName = classToElementName(keyInfoType);

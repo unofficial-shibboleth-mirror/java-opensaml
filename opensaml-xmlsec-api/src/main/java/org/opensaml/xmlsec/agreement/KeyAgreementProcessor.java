@@ -44,7 +44,7 @@ public interface KeyAgreementProcessor {
      * 
      * @return the agreement credential
      * 
-     * @throws KeyAgreementException
+     * @throws KeyAgreementException if the key agreement operation is not completed successfully
      */
     @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
             @Nonnull final String keyAlgorithm, @Nonnull final KeyAgreementParameters parameters)

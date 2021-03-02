@@ -53,7 +53,7 @@ public interface KeyDerivation extends KeyAgreementParameter {
      * 
      * @return the derived key
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if the key derivation operation is not completed successfully
      */
     @Nonnull public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nullable final Integer keyLength) throws KeyDerivationException;

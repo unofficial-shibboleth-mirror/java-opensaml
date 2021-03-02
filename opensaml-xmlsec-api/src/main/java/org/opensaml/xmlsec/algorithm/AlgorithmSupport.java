@@ -401,7 +401,7 @@ public final class AlgorithmSupport {
      * @return a randomly-generated KeyPair
      * @throws NoSuchProviderException  provider not found
      * @throws NoSuchAlgorithmException  algorithm not found
-     * @throws InvalidAlgorithmParameterException 
+     * @throws InvalidAlgorithmParameterException algorithm parameter spec is unsupported
      */
     @Nonnull public static KeyPair generateKeyPair(@Nonnull final String algoURI,
             @Nonnull final AlgorithmParameterSpec paramSpec)
@@ -454,7 +454,7 @@ public final class AlgorithmSupport {
      * @return a basic credential containing a randomly generated asymmetric key pair
      * @throws NoSuchAlgorithmException algorithm not found
      * @throws NoSuchProviderException provider not found
-     * @throws InvalidAlgorithmParameterException 
+     * @throws InvalidAlgorithmParameterException algorithm parameter spec is unsupported
      */
     @Nonnull public static Credential generateKeyPairAndCredential(@Nonnull final String algorithmURI,
             @Nonnull final AlgorithmParameterSpec paramSpec,

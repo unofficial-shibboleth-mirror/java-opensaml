@@ -303,7 +303,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * 
      * @return the derived key bytes
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if key derivation does not complete successfully
      */
     protected byte[] derive(@Nonnull final byte[] secret, @Nonnull final byte[] otherInfo,
             @Nonnull final Integer keyLength) throws KeyDerivationException {
@@ -329,7 +329,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * 
      * @return a new corresponding instance of BC Digest
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if the specified digest algorithm is unsupported
      */
     @Nonnull protected Digest getDigestInstance(@Nonnull final String digestURI) throws KeyDerivationException {
         switch(digestURI) {
@@ -368,7 +368,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * 
      * @return the decoded value, which may be an empty array
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if parameter value could not be decoded successfully
      */
     @Nonnull protected byte[] decodeParam(@Nullable final String value, @Nonnull final String name)
             throws KeyDerivationException {
@@ -400,8 +400,6 @@ public class ConcatKDF extends AbstractInitializableComponent
      * @param value the value to process
      * 
      * @return the padded value, which may be null
-     * 
-     * @throws KeyDerivationException
      */
     @Nullable protected static String padParam(@Nullable final String value) {
         
@@ -487,7 +485,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * 
      * @return new parameter instance
      * 
-     * @throws ComponentInitializationException
+     * @throws ComponentInitializationException if component initialization fails
      */
     @Nonnull public static ConcatKDF fromXMLObject(@Nonnull final KeyDerivationMethod xmlObject) 
             throws ComponentInitializationException {

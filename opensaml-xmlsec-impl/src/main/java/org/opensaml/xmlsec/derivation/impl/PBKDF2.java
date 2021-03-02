@@ -135,7 +135,7 @@ public class PBKDF2 extends AbstractInitializableComponent
     /**
      * Set the generated salt length, in bytes.
      * 
-     * @param length
+     * @param length the generated salt length
      */
     public void setGeneratedSaltLength(@Nullable final Integer length) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
@@ -182,7 +182,7 @@ public class PBKDF2 extends AbstractInitializableComponent
     /**
      * Set the iteration count.
      * 
-     * @param count
+     * @param count the iteration count
      */
     public void setIterationCount(@Nullable final Integer count) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
@@ -209,7 +209,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * Note: KeyLength in expressed XML will be in <b>bytes</b>
      * </p>
      * 
-     * @param length
+     * @param length the key length
      */
     public void setKeyLength(@Nullable final Integer length) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
@@ -228,7 +228,7 @@ public class PBKDF2 extends AbstractInitializableComponent
     /**
      * Set the pseudo-random function algorithm URI.
      * 
-     * @param uri
+     * @param uri the PRF URI
      */
     public void setPRF(@Nullable final String uri) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
@@ -307,7 +307,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * 
      * @return the salt bytes
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if the salt value can not be successfully resolved
      */
     protected byte[] getEffectiveSalt() throws KeyDerivationException {
         byte[] saltBytes = null;
@@ -336,11 +336,11 @@ public class PBKDF2 extends AbstractInitializableComponent
      * Get the effective key length, in bits.
      * 
      * @param keyAlgorithm the algorithm for which the derived key will be used
-     * @param specifiedKeyLength 
+     * @param specifiedKeyLength the explicitly specified key length
      * 
      * @return the effective key length, in bits
      * 
-     * @throws KeyDerivationException
+     * @throws KeyDerivationException if the key length can not be successfully resolved
      */
     protected Integer getEffectiveKeyLength(@Nonnull final String keyAlgorithm,
             @Nullable final Integer specifiedKeyLength) throws KeyDerivationException {
@@ -425,7 +425,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * 
      * @return new parameter instance
      * 
-     * @throws ComponentInitializationException
+     * @throws ComponentInitializationException if component initialization fails
      */
     @Nonnull public static PBKDF2 fromXMLObject(@Nonnull final KeyDerivationMethod xmlObject) 
             throws ComponentInitializationException {
@@ -464,7 +464,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * 
      * @param xmlParams the instance to validate
      * 
-     * @throws ComponentInitializationException
+     * @throws ComponentInitializationException if the specified params fails validation of required values
      */
     // Checkstyle: CyclomaticComplexity OFF
     private static void validateXMLObjectParameters(@Nonnull final PBKDF2Params xmlParams)

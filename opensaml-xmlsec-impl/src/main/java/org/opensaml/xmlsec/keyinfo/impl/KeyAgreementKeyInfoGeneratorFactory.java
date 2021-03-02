@@ -224,7 +224,7 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
          * @param agreementMethod the AgreementMethod that is being built
          * @param credential the Credential that is being processed
          * 
-         * @throws SecurityException
+         * @throws SecurityException if there is a fatal error processing any agreement parameters
          */
         private void processAgreementParameters(@Nonnull final KeyInfo keyInfo,
                 @Nonnull final AgreementMethod agreementMethod, @Nonnull final KeyAgreementCredential credential)
@@ -253,7 +253,7 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
          * @param agreementMethod the AgreementMethod that is being built
          * @param credential the Credential that is being processed
          * 
-         * @throws SecurityException
+         * @throws SecurityException if there is a fatal error processing the originator KeyInfo
          */
         private void processOriginatorKeyInfo(@Nonnull final KeyInfo keyInfo,
                 @Nonnull final AgreementMethod agreementMethod, @Nonnull final KeyAgreementCredential credential)
@@ -293,7 +293,7 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
          * @param agreementMethod the AgreementMethod that is being built
          * @param credential the Credential that is being processed
          * 
-         * @throws SecurityException
+         * @throws SecurityException if there is a fatal error processing the recipient KeyInfo
          */
         private void processRecipientKeyInfo(@Nonnull final KeyInfo keyInfo,
                 @Nonnull final AgreementMethod agreementMethod, @Nonnull final KeyAgreementCredential credential)

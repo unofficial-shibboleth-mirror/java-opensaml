@@ -66,7 +66,7 @@ public interface PBKDF2Params extends XMLObject {
     /**
      * Set the IterationCount child element.
      * 
-     * @param count
+     * @param count the new iteration count
      */
     public void setIterationCount(@Nullable final IterationCount count);
     
@@ -80,7 +80,7 @@ public interface PBKDF2Params extends XMLObject {
     /**
      * Set the KeyLength child element.
      * 
-     * @param length
+     * @param length the new key length
      */
     public void setKeyLength(@Nullable final KeyLength length);
     
@@ -94,7 +94,7 @@ public interface PBKDF2Params extends XMLObject {
     /**
      * Set the PRF child element.
      * 
-     * @param prf
+     * @param prf the new PRF element
      */
     public void setPRF(@Nullable final PRF prf);
 

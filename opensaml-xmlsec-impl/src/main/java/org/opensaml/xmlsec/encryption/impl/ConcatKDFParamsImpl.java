@@ -110,8 +110,7 @@ public class ConcatKDFParamsImpl extends AbstractXMLObject implements ConcatKDFP
         partyUInfo = prepareForAssignment(partyUInfo, newPartyUInfo);
     }
 
-    /** {@inheritDoc} 
-     * @throws DecoderException */
+    /** {@inheritDoc} */
     @Nullable public byte[] getPartyUInfoBytes() {
         try {
             return partyUInfo == null ? null : Hex.decodeHex(partyUInfo);

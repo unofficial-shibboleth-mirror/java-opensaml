@@ -45,7 +45,7 @@ public interface Salt extends XMLObject {
     /**
      * Set the Specified child element.
      * 
-     * @param specified
+     * @param specified the element
      */
     public void setSpecified(@Nullable final Specified specified);
     

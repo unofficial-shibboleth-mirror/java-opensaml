@@ -68,7 +68,7 @@ public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParamete
     /**
      * A convenience method for initializing all parameters which are initializable.
      * 
-     * @throws KeyAgreementException
+     * @throws KeyAgreementException if any parameters fail initialization
      */
     public void initializeAll() throws KeyAgreementException {
         for (final KeyAgreementParameter param : this) {

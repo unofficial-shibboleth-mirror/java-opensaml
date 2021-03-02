@@ -96,7 +96,7 @@ public class KANonce extends AbstractInitializableComponent
      * 
      * @return new parameter instance
      * 
-     * @throws ComponentInitializationException
+     * @throws ComponentInitializationException if component initialization fails
      */
     @Nonnull public static KANonce fromXMLObject(@Nonnull final org.opensaml.xmlsec.encryption.KANonce xmlObject) 
             throws ComponentInitializationException {

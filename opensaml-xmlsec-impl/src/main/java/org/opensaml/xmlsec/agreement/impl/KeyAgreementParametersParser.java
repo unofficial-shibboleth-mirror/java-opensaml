@@ -50,7 +50,7 @@ public class KeyAgreementParametersParser {
      * 
      * @return the new instance of key agreement parameters
      * 
-     * @throws KeyAgreementException
+     * @throws KeyAgreementException if parameters parsing does not complete successfully
      */
     @Nonnull public KeyAgreementParameters parse(@Nonnull final AgreementMethod agreementMethod)
             throws KeyAgreementException {

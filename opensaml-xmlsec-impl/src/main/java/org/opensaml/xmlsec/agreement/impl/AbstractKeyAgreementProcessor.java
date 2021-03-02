@@ -61,7 +61,7 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * 
      * @return the obtained private credential
      * 
-     * @throws KeyAgreementException
+     * @throws KeyAgreementException if private credential can not be obtained
      */
     @Nonnull protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
@@ -84,7 +84,7 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * 
      * @return the secret produced by the key agreement operation
      * 
-     * @throws KeyAgreementException
+     * @throws KeyAgreementException if secret generation fails
      */
     @Nonnull protected abstract byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
             @Nonnull final Credential privateCredential, @Nonnull final KeyAgreementParameters parameters)
@@ -99,7 +99,7 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * 
      * @return the derived secret key
      * 
-     * @throws KeyAgreementException
+     * @throws KeyAgreementException if key derivation operation does not complete successfully
      */
     @Nonnull protected abstract SecretKey deriveSecretKey(@Nonnull final byte[] secret,
             @Nonnull final String keyAlgorithm, @Nonnull final KeyAgreementParameters parameters)
@@ -115,7 +115,7 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * 
      * @return the new key agreement credential
      * 
-     * @throws KeyAgreementException
+     * @throws KeyAgreementException if credential can not be successfully constructed
      */
     @Nonnull protected KeyAgreementCredential buildKeyAgreementCredential(@Nonnull final SecretKey derivedKey,
             @Nonnull final Credential publicCredential, @Nonnull final Credential privateCredential,
