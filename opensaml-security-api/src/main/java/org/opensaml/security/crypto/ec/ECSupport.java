@@ -26,6 +26,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
+import java.security.spec.AlgorithmParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.security.spec.ECPoint;
 import java.security.spec.EllipticCurve;
@@ -104,7 +105,7 @@ public final class ECSupport {
      * 
      * @throws NoSuchAlgorithmException if algorithm is unknown
      * @throws NoSuchProviderException if provider is unknown
-     * @throws InvalidKeyException if supplied key is invalid
+     * @throws InvalidAlgorithmParameterException if the public key's {@link ECParameterSpec} is not supported
      */
     public static KeyPair generateCompatibleKeyPair(@Nonnull final ECPublicKey publicKey,
             @Nullable final String provider)
