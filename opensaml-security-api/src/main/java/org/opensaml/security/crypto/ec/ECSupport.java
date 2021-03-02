@@ -72,9 +72,9 @@ public final class ECSupport {
      * 
      * @return the secret produced by key agreement
      * 
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
-     * @throws InvalidKeyException
+     * @throws NoSuchAlgorithmException if algorithm is unknown
+     * @throws NoSuchProviderException if provider is unknown
+     * @throws InvalidKeyException if supplied key is invalid
      */
     public static byte[] performKeyAgreement(@Nonnull final ECPublicKey publicKey,
             @Nonnull final ECPrivateKey privateKey, @Nullable final String provider)
@@ -102,9 +102,9 @@ public final class ECSupport {
      * 
      * @return the generated key pair
      * 
-     * @throws NoSuchAlgorithmException
-     * @throws NoSuchProviderException
-     * @throws InvalidAlgorithmParameterException
+     * @throws NoSuchAlgorithmException if algorithm is unknown
+     * @throws NoSuchProviderException if provider is unknown
+     * @throws InvalidKeyException if supplied key is invalid
      */
     public static KeyPair generateCompatibleKeyPair(@Nonnull final ECPublicKey publicKey,
             @Nullable final String provider)
@@ -128,7 +128,7 @@ public final class ECSupport {
      * 
      * @param publicKey the {@link ECPublicKey}
      * 
-     * @return the {@@link NamedCurve} instance, or null if can not be determined,
+     * @return the {@link NamedCurve} instance, or null if can not be determined,
      *         possibly because the key's domain parameters do not correspond to a named curve
      */
     @Nullable public static NamedCurve getNamedCurve(@Nonnull final ECPublicKey publicKey) {
@@ -147,7 +147,7 @@ public final class ECSupport {
      * 
      * @param uri the URI
      * 
-     * @return the {@@link NamedCurve} instance, or null if can not be determined,
+     * @return the {@link NamedCurve} instance, or null if can not be determined,
      */
     @Nullable public static NamedCurve getNamedCurve(@Nonnull final String uri) {
         Constraint.isNotNull(uri, "NamedCurve URI was null");
@@ -184,8 +184,6 @@ public final class ECSupport {
      * @param uri the URI of the named curve
      * 
      * @return the {@link ECParameterSpec} instance
-     * 
-     * @throws KeyException
      */
     @Nullable public static ECParameterSpec getParameterSpecForURI(@Nonnull final String uri) {
         Constraint.isNotNull(uri, "NamedCurve URI was null");
@@ -210,7 +208,7 @@ public final class ECSupport {
      * 
      * @return the {@link ECPoint}
      * 
-     * @throws KeyException
+     * @throws KeyException if point is not in uncompressed format, or point does not match curve's field size
      */
     @Nonnull public static ECPoint decodeECPoint(@Nonnull final byte[] data, @Nonnull final EllipticCurve curve)
             throws KeyException {
