@@ -39,6 +39,7 @@ import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.crypto.interfaces.DHPublicKey;
 import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
@@ -49,9 +50,13 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.security.crypto.dh.DHSupport;
 import org.opensaml.security.crypto.ec.ECSupport;
 import org.opensaml.security.crypto.ec.EnhancedECParameterSpec;
 import org.opensaml.security.x509.X509Support;
+import org.opensaml.xmlsec.encryption.DHKeyValue;
+import org.opensaml.xmlsec.encryption.Generator;
+import org.opensaml.xmlsec.encryption.Public;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
@@ -189,6 +194,14 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
             + "BkhuSKX/2PbljnmIdGV7mJK9/XUHnyKgZBxXEul2mlvGkrgUvyv+qYsCFsKSSrkB"
             + "1Mj2Ql5xmTMaePMEmvOr6fDAP0OH8cvADEZjx0s/5vvoBFPGGmPrHJluEVS0Fu8I" + "9sROg9YjyuhRV0b8xHo=";
     
+    /** Test DH key 1. */
+    private final String dhPubKey1 = "MIIBJDCBmQYJKoZIhvcNAQMBMIGLAoGBAP//////////yQ/aoiFowjTExmKLgNwc0SkCTgiKZ8x0"
+            + "Agu+pjsTmyJRSgh5jjQE3e+VGbPNOkMbMCsKbfJfFDdP4TVtbVHCReSFtXZiXn7G9ExC6aY37WsL"
+            + "/1y29Aa37e44a/taiZ+lrp8kEXxLH+ZJKGZR7OZTgf//////////AgECAgICAAOBhQACgYEAwICZ"
+            + "ws/L/QcxdYfg9AU/a0y3jEkgn6FaD0eaUTiWcXjpqEeVjPgqEeGnhffxI7z0B5n/ZSNB8bLVjrKe"
+            + "srlS9Opop6HBKW9yuC9bMisN69n0eZn1SJoM3CpX5eBuVx3pOca2vf4T3J1naVpgvDTyhaaZ4rqH"
+            + "3WC34FMOvm3rJio=";
+    
     /** Test EC key with named curve variant 1, curve: secp256r1, OID: 1.2.840.10045.3.1.7 */
     private final String ecPubKey_NamedCurve1 = "MFkwEwYHKoZIzj0CAQYIKoZIzj0DAQcDQgAEBM0jGYrvVMpbVTT728+RfDLL0tPg"
             + "swfUSUXfrXKwAGOmrSbF1KHsErZdXhnEC1VSmm9kTd8VzIi4OihEVMoU+w==";
@@ -220,6 +233,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
 
     private DSAKeyValue xmlDSAKeyValue1, xmlDSAKeyValue1NoParams;
 
+    private DHKeyValue xmlDHKeyValue1;
+
     private RSAKeyValue xmlRSAKeyValue1;
 
     private ECKeyValue xmlECKeyValue_NamedCurve1, xmlECKeyValue_ExplicitParams1;
@@ -235,6 +250,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     private RSAPublicKey javaRSAPubKey1;
 
     private DSAPublicKey javaDSAPubKey1;
+    
+    private DHPublicKey javaDHPubKey1;
     
     private ECPublicKey javaECPubKey_NamedCurve1, javaECPubKey_ExplicitParams1;
 
@@ -277,6 +294,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         javaCRL1 = X509Support.decodeCRL(crl1);
 
         javaDSAPubKey1 = KeySupport.buildJavaDSAPublicKey(dsaPubKey1);
+        javaDHPubKey1 = KeySupport.buildJavaDHPublicKey(dhPubKey1);
         javaRSAPubKey1 = KeySupport.buildJavaRSAPublicKey(rsaPubKey1);
         javaECPubKey_NamedCurve1 = KeySupport.buildJavaECPublicKey(ecPubKey_NamedCurve1);
         // SunEC provider doesn't support explicit params, so use a custom method. 
@@ -289,6 +307,22 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         exponent.setValueBigInt(javaRSAPubKey1.getPublicExponent());
         xmlRSAKeyValue1.setModulus(modulus);
         xmlRSAKeyValue1.setExponent(exponent);
+
+        xmlDHKeyValue1 = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
+        org.opensaml.xmlsec.encryption.P dhP =
+                (org.opensaml.xmlsec.encryption.P) buildXMLObject(org.opensaml.xmlsec.encryption.P.DEFAULT_ELEMENT_NAME);
+        org.opensaml.xmlsec.encryption.Q dhQ =
+                (org.opensaml.xmlsec.encryption.Q) buildXMLObject(org.opensaml.xmlsec.encryption.Q.DEFAULT_ELEMENT_NAME);
+        Generator gen = (Generator) buildXMLObject(Generator.DEFAULT_ELEMENT_NAME);
+        Public pub = (Public) buildXMLObject(Public.DEFAULT_ELEMENT_NAME);
+        dhP.setValueBigInt(javaDHPubKey1.getParams().getP());
+        dhQ.setValueBigInt(DHSupport.getPrimeQDomainParameter(javaDHPubKey1));
+        gen.setValueBigInt(javaDHPubKey1.getParams().getG());
+        pub.setValueBigInt(javaDHPubKey1.getY());
+        xmlDHKeyValue1.setP(dhP);
+        xmlDHKeyValue1.setQ(dhQ);
+        xmlDHKeyValue1.setGenerator(gen);
+        xmlDHKeyValue1.setPublic(pub);
 
         xmlDSAKeyValue1 = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         P p = (P) buildXMLObject(P.DEFAULT_ELEMENT_NAME);
@@ -457,7 +491,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(X509Support.decodeCRL(xmlCRL.getValue()), javaCRL1,
                 "Java X509CRL encoding to XMLObject failed");
     }
-
+    
     /** Test conversion of DSA public keys from XML to Java security native type. */
     @Test
     public void testDSAConversionXMLToJava() {
@@ -488,6 +522,22 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         } catch (KeyException e) {
             // do nothing, we expect to fail b/c not complete set of DSAParams
         }
+    }
+
+    /** Test conversion of DH public keys from XML to Java security native type. */
+    @Test
+    public void testDHConversionXMLToJava() {
+        PublicKey key = null;
+        DHPublicKey dhKey = null;
+
+        try {
+            key = KeyInfoSupport.getDHKey(xmlDHKeyValue1);
+        } catch (KeyException e) {
+            Assert.fail("DH key conversion XML to Java failed: " + e);
+        }
+        dhKey = (DHPublicKey) key;
+        Assert.assertNotNull(dhKey, "Generated key was not an instance of DHPublicKey");
+        Assert.assertEquals(dhKey, javaDHPubKey1, "Generated key was not the expected value");
     }
 
     /** Test conversion of RSA public keys from XML to Java security native type. */
@@ -545,6 +595,22 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
 
     }
 
+    /** Test conversion of DH public keys from Java security native type to XML. 
+     * @throws EncodingException on base64 encoding error*/
+    @Test
+    public void testDHConversionJavaToXML() throws EncodingException {
+        DHKeyValue dhKeyValue = KeyInfoSupport.buildDHKeyValue(javaDHPubKey1);
+        Assert.assertNotNull(dhKeyValue);
+        Assert.assertEquals(dhKeyValue
+                .getPublic().getValueBigInt(), javaDHPubKey1.getY(), "Generated DHKeyValue Public component was not the expected value");
+        Assert.assertEquals(dhKeyValue.getP().getValueBigInt(), javaDHPubKey1.getParams().getP(),
+                "Generated DHKeyValue P component was not the expected value");
+        Assert.assertEquals(dhKeyValue.getGenerator().getValueBigInt(), javaDHPubKey1.getParams().getG(),
+                "Generated DHKeyValue Generator component was not the expected value");
+        Assert.assertEquals(dhKeyValue.getQ().getValueBigInt(), DHSupport.getPrimeQDomainParameter(javaDHPubKey1),
+                "Generated DHKeyValue Q component was not the expected value");
+    }
+
     /** Test conversion of DSA public keys from Java security native type to XML. 
      * @throws EncodingException on base64 encoding error*/
     @Test
@@ -599,6 +665,26 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(ECSupport.decodeECPoint(Base64Support.decode(ecKeyValue.getPublicKey().getValue()),
                 ECSupport.getNamedCurve("urn:oid:" + ecPubKey_ExplicitParams1_OID).getParameterSpec().getCurve()),
                 javaECPubKey_ExplicitParams1.getW());
+    }
+
+    /** Tests extracting a DH public key from a KeyValue. */
+    @Test
+    public void testGetDHKey() {
+        keyValue.setRSAKeyValue(null);
+        keyValue.setDHKeyValue(xmlDHKeyValue1);
+
+        PublicKey pk = null;
+        DHPublicKey dhKey = null;
+        try {
+            pk = KeyInfoSupport.getKey(keyValue);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of key from KeyValue failed: " + e);
+        }
+        Assert.assertTrue(pk instanceof DHPublicKey, "Generated key was not an instance of DHPublicKey");
+        dhKey = (DHPublicKey) pk;
+        Assert.assertEquals(dhKey, javaDHPubKey1, "Generated key was not the expected value");
+
+        keyValue.setDSAKeyValue(null);
     }
 
     /** Tests extracting a DSA public key from a KeyValue. */
@@ -661,6 +747,30 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         }
 
         Assert.assertEquals(javaKey, javaDSAPubKey1, "Inserted DSA public key was not the expected value");
+
+        keyInfo.getKeyValues().clear();
+    }    
+
+    /** Tests adding a public key as a KeyValue to KeyInfo. 
+     * @throws EncodingException on base64 encoding error*/
+    @Test
+    public void testAddDHPublicKey() throws EncodingException {
+        keyInfo.getKeyValues().clear();
+
+        KeyInfoSupport.addPublicKey(keyInfo, javaDHPubKey1);
+        KeyValue kv = keyInfo.getKeyValues().get(0);
+        Assert.assertNotNull(kv, "KeyValue was null");
+        DHKeyValue dhKeyValue = kv.getDHKeyValue();
+        Assert.assertNotNull(dhKeyValue, "DHKeyValue was null");
+
+        DHPublicKey javaKey = null;
+        try {
+            javaKey = (DHPublicKey) KeyInfoSupport.getDHKey(dhKeyValue);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of Java key failed: " + e);
+        }
+
+        Assert.assertEquals(javaKey, javaDHPubKey1, "Inserted DH public key was not the expected value");
 
         keyInfo.getKeyValues().clear();
     }    
@@ -765,7 +875,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
             Assert.fail("Extraction of Java key failed: " + e);
         }
         
-        Assert.assertEquals(javaDSAPubKey1, javaKey, "Inserted RSA public key was not the expected value");
+        Assert.assertEquals(javaDSAPubKey1, javaKey, "Inserted DSA public key was not the expected value");
         
         keyInfo.getDEREncodedKeyValues().clear();
     }

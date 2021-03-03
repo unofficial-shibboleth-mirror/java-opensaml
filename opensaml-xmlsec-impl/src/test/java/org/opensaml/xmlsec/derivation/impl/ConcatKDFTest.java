@@ -21,11 +21,9 @@ import javax.crypto.SecretKey;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
-import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
-import org.opensaml.xmlsec.agreement.impl.KANonce;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;

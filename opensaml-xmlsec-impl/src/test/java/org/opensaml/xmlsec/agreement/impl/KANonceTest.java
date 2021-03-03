@@ -22,6 +22,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
 
@@ -31,14 +32,14 @@ import net.shibboleth.utilities.java.support.component.UnmodifiableComponentExce
 public class KANonceTest extends XMLObjectBaseTestCase  {
     
     @Test
-    public void basic() throws ComponentInitializationException {
+    public void basic() throws Exception {
         KANonce nonce = new KANonce();
-        nonce.setValue("someBase64==   ");
+        nonce.setValue("AABBCCDD");
         nonce.initialize();
-        Assert.assertEquals(nonce.getValue(), "someBase64==");
+        Assert.assertEquals(nonce.getValue(), "AABBCCDD");
         
         try {
-            nonce.setValue("foo");
+            nonce.setValue("BBCCDDEE");
             Assert.fail("Modify of initialzied component should have failed");
         } catch (UnmodifiableComponentException e) {
             // expected
@@ -46,25 +47,51 @@ public class KANonceTest extends XMLObjectBaseTestCase  {
         
         KANonce cloned  = nonce.clone();
         Assert.assertTrue(cloned.isInitialized());
-        Assert.assertEquals(cloned.getValue(), "someBase64==");
+        Assert.assertEquals(cloned.getValue(), "AABBCCDD");
         
         XMLObject xmlObject = nonce.buildXMLObject();
         Assert.assertNotNull(xmlObject);
         Assert.assertTrue(org.opensaml.xmlsec.encryption.KANonce.class.isInstance(xmlObject));
         org.opensaml.xmlsec.encryption.KANonce xmlNonce = org.opensaml.xmlsec.encryption.KANonce.class.cast(xmlObject);
-        Assert.assertEquals(xmlNonce.getValue(), "someBase64==");
+        Assert.assertEquals(xmlNonce.getValue(), "AABBCCDD");
         
+    }
+    
+    @Test()
+    public void generatedValue() throws Exception {
+        KANonce nonce = new KANonce();
+        // Don't generate a value unless initialized
+        Assert.assertNull(nonce.getValue());
+        nonce.initialize();
+        
+        String initValue = nonce.getValue();
+        Assert.assertNotNull(initValue);
+        Assert.assertEquals(Base64Support.decode(initValue).length, nonce.getGeneratedLength().intValue());
+        // Once generated value shouldn't change
+        Assert.assertEquals(nonce.getValue(), initValue);
+        Assert.assertEquals(nonce.getValue(), initValue);
+    }
+    
+    @Test()
+    public void generatedLength() throws Exception {
+        KANonce nonce = new KANonce();
+        nonce.setGeneratedLength(16);
+        nonce.initialize();
+        
+        String initValue = nonce.getValue();
+        Assert.assertNotNull(initValue);
+        Assert.assertEquals(Base64Support.decode(initValue).length, nonce.getGeneratedLength().intValue());
     }
     
     @Test
     public void fromXMLObject() throws Exception {
         org.opensaml.xmlsec.encryption.KANonce xmlObject = buildXMLObject(org.opensaml.xmlsec.encryption.KANonce.DEFAULT_ELEMENT_NAME);
-        xmlObject.setValue("someBase64==");
+        xmlObject.setValue("AABBCCDD");
         
         KANonce parameter = KANonce.fromXMLObject(xmlObject);
         Assert.assertNotNull(parameter);
         Assert.assertTrue(parameter.isInitialized());
-        Assert.assertEquals(parameter.getValue(), "someBase64==");
+        Assert.assertEquals(parameter.getValue(), "AABBCCDD");
         
         xmlObject.setValue(null);
         
@@ -75,12 +102,6 @@ public class KANonceTest extends XMLObjectBaseTestCase  {
         } catch (ComponentInitializationException e) {
             //expected
         }
-    }
-    
-    @Test(expectedExceptions = ComponentInitializationException.class)
-    public void missingValue() throws ComponentInitializationException {
-        KANonce nonce = new KANonce();
-        nonce.initialize();
     }
     
 }

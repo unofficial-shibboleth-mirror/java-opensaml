@@ -23,6 +23,7 @@ import java.util.List;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
+import org.opensaml.xmlsec.keyinfo.impl.provider.DEREncodedKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DSAKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.ECKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
@@ -50,6 +51,7 @@ public final class XMLSecurityTestingSupport {
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
         providers.add( new ECKeyValueProvider() );
+        providers.add( new DEREncodedKeyValueProvider() );
         providers.add( new InlineX509DataProvider() );
         return providers;
     }

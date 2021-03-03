@@ -37,7 +37,7 @@ import org.opensaml.xmlsec.encryption.KeySize;
 public final class KeyAgreementSupport {
     
     /** JCA key algorithms that support key agreement. */
-    public static final Set<String> KEY_ALGORITHMS = Set.of(JCAConstants.KEY_ALGO_EC);
+    public static final Set<String> KEY_ALGORITHMS = Set.of(JCAConstants.KEY_ALGO_EC, JCAConstants.KEY_ALGO_DH);
     
     /** Constructor. */
     private KeyAgreementSupport() {}

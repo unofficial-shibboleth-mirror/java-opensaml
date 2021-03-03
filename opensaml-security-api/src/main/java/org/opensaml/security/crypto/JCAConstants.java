@@ -17,6 +17,8 @@
 
 package org.opensaml.security.crypto;
 
+import java.security.Key;
+
 /**
  * Various useful constants defined in and/or used with the Java Cryptography Architecture (JCA) specification.
  */
@@ -41,6 +43,12 @@ public final class JCAConstants {
     
     /** Key algorithm: "DESede". */
     public static final String KEY_ALGO_DESEDE = "DESede";
+    
+    /** Key algorithm: "DH" (returned by {@link Key#getAlgorithm()}). */
+    public static final String KEY_ALGO_DH = "DH";
+    
+    /** Key algorithm: "DiffieHellman" (used with key and key pair factories, generators, etc). */
+    public static final String KEY_ALGO_DIFFIE_HELLMAN = "DiffieHellman";
     
     
     

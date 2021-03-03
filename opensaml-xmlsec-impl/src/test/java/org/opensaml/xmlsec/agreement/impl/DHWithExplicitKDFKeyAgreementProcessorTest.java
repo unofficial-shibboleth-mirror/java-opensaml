@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.agreement.impl;
 
 import java.security.KeyPair;
-import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -40,18 +39,18 @@ import org.testng.annotations.Test;
 /**
  *
  */
-public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
+public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
-    private ECDHKeyAgreementProcessor processor;
+    private DHWithExplicitKDFKeyAgreementProcessor processor;
     
     @BeforeMethod
     public void setUp() {
-        processor = new ECDHKeyAgreementProcessor();
+        processor = new DHWithExplicitKDFKeyAgreementProcessor();
     }
     
     @Test
     public void encryptingCase() throws Exception {
-        KeyPair recipientKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair recipientKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential recipientCredential = CredentialSupport.getSimpleCredential(recipientKeyPair.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
@@ -81,7 +80,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(keyAgreementCredential.getOriginatorCredential().getPrivateKey());
         Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getSecretKey());
         
-        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF);
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 2);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
@@ -92,10 +91,10 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     @Test
     public void decryptingCase() throws Exception {
-        KeyPair originatorKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair originatorKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential originatorCredential = CredentialSupport.getSimpleCredential(originatorKeyPair.getPublic(), null);
         
-        KeyPair recipientKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair recipientKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential recipientCredential = CredentialSupport.getSimpleCredential(recipientKeyPair.getPublic(), recipientKeyPair.getPrivate());
         
         KeyAgreementParameters params = new KeyAgreementParameters();
@@ -126,7 +125,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getPrivateKey());
         Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getSecretKey());
         
-        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF);
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 3);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(PrivateCredential.class));
@@ -152,7 +151,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     @Test(expectedExceptions = KeyAgreementException.class)
     public void keyDerivationError() throws Exception {
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
@@ -166,7 +165,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     @Test(expectedExceptions = KeyAgreementException.class)
     public void missingKeyDerivationParam() throws Exception {
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
@@ -179,7 +178,7 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     @Test(expectedExceptions = KeyAgreementException.class)
     public void specifiedKeySizeMismatch() throws Exception {
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();

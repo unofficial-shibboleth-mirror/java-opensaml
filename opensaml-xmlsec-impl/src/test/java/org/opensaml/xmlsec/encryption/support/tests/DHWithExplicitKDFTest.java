@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.encryption.support.tests;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
-import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +34,7 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
+import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.DecryptionParameters;
@@ -44,6 +44,7 @@ import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.EncryptionParametersResolver;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
+import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -75,7 +76,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 /**
  *
  */
-public class ECDHTest extends XMLObjectBaseTestCase {
+public class DHWithExplicitKDFTest extends XMLObjectBaseTestCase {
     
     private String targetFile;
     
@@ -87,7 +88,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     private Encrypter encrypter;
     private EncryptionParametersResolver encParamsResolver;
     private CriteriaSet encCriteria;
-    private BasicEncryptionConfiguration encConfig;
+    private BasicEncryptionConfiguration encConfig, encConfig2;
     
     private DecryptionParametersResolver decryptParamsResolver;
     private CriteriaSet decryptCriteria;
@@ -97,7 +98,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     public void beforeClass() throws Exception {
         targetFile = "/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
         
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         recipientCredPrivate = new BasicCredential(kp.getPublic(), kp.getPrivate());
         recipientCredPublic = new BasicCredential(kp.getPublic());
         
@@ -116,8 +117,20 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     public void beforeMethod() throws Exception {
         encConfig = new BasicEncryptionConfiguration();
-        encCriteria = new CriteriaSet(new EncryptionConfigurationCriterion(encConfig,
+        encConfig2 = new BasicEncryptionConfiguration();
+        encCriteria = new CriteriaSet(new EncryptionConfigurationCriterion(encConfig, encConfig2,
                 ConfigurationService.get(EncryptionConfiguration.class)));
+        
+        // Configure the middle slot explicitly so that we aren't relying on whichever DH variant the library wide config has.
+        KeyAgreementEncryptionConfiguration kaConfig = new KeyAgreementEncryptionConfiguration();
+        kaConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF);
+        ConcatKDF kdf = new ConcatKDF();
+        kdf.setAlgorithmID("00");
+        kdf.setPartyUInfo("00");
+        kdf.setPartyVInfo("00");
+        kdf.initialize();
+        kaConfig.setParameters(Set.of(kdf));
+        encConfig2.setKeyAgreementConfigurations(Map.of("DH", kaConfig));
         
         decryptConfig = new BasicDecryptionConfiguration();
         decryptConfig.setDataKeyInfoCredentialResolver(localKeyInfoResolver);
@@ -166,7 +179,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         PBKDF2 kdf = new PBKDF2();
         kdf.initialize();
         kaConfig.setParameters(Set.of(kdf));
-        encConfig.setKeyAgreementConfigurations(Map.of("EC", kaConfig));
+        encConfig.setKeyAgreementConfigurations(Map.of("DH", kaConfig));
         
         testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, null, EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2);
     }
@@ -206,7 +219,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
             agreementMethod = encryptedDataOrig.getKeyInfo().getAgreementMethods().get(0);
         }
         Assert.assertNotNull(agreementMethod);
-        Assert.assertEquals(agreementMethod.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(agreementMethod.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF);
         
         if (expectedKDFAlgo != null) {
             KeyDerivationMethod kdm = (KeyDerivationMethod) agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0); 

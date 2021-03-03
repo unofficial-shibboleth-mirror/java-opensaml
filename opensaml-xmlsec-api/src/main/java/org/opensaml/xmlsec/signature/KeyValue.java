@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.encryption.DHKeyValue;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
@@ -84,6 +85,26 @@ public interface KeyValue extends XMLObject {
      */
     public void setECKeyValue(@Nullable final ECKeyValue newECKeyValue);
     
+    /**
+     * Get the DHKeyValue child element.
+     * 
+     * @return DHKeyValue child element
+     */
+    @Nullable public default DHKeyValue getDHKeyValue() {
+        //TODO remove 'default' and method body in next major version (v5)
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
+    /**
+     * Set the DHKeyValue child element.
+     * 
+     * @param newDHKeyValue the new DHKeyValue child element
+     */
+    public default void setDHKeyValue(@Nullable final DHKeyValue newDHKeyValue) {
+        //TODO remove 'default' and method body in next major version (v5)
+        throw new UnsupportedOperationException("Method not implemented");
+    }
+
     /**
      * Get the wildcard &lt;any&gt; XMLObject child element.
      * 

@@ -23,6 +23,7 @@ import java.util.List;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.xmlsec.encryption.DHKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
@@ -32,6 +33,9 @@ import org.opensaml.xmlsec.signature.RSAKeyValue;
  * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyValue}.
  */
 public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
+ 
+    /** DHKeyValue child element. */
+    private DHKeyValue dhKeyValue;
     
     /** DSAKeyValue child element. */
     private DSAKeyValue dsaKeyValue;
@@ -54,6 +58,16 @@ public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
      */
     protected KeyValueImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
+    }
+
+    /** {@inheritDoc} */
+    public DHKeyValue getDHKeyValue() {
+        return dhKeyValue;
+    }
+
+    /** {@inheritDoc} */
+    public void setDHKeyValue(final DHKeyValue newDHKeyValue) {
+        dhKeyValue = prepareForAssignment(dhKeyValue, newDHKeyValue);
     }
 
     /** {@inheritDoc} */
@@ -108,6 +122,9 @@ public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
         }
         if (ecKeyValue != null) {
             children.add(ecKeyValue);
+        }
+        if (dhKeyValue != null) {
+            children.add(dhKeyValue);
         }
         if (unknownXMLObject != null) {
             children.add(unknownXMLObject);

@@ -57,6 +57,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
+import javax.crypto.interfaces.DHPrivateKey;
+import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
@@ -322,6 +324,19 @@ public final class KeySupport {
         final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(base64DecodeOrThrow(base64EncodedKey));
         return (DSAPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_DSA);
     }
+    
+    /**
+     * Build Java DH public key from base64 encoding.
+     * 
+     * @param base64EncodedKey base64-encoded DH public key
+     * @return a native Java DHPublicKey
+     * @throws KeyException thrown if there is an error constructing key
+     */
+    @Nonnull public static DHPublicKey buildJavaDHPublicKey(@Nonnull final String base64EncodedKey)
+            throws KeyException {
+        final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(base64DecodeOrThrow(base64EncodedKey));
+        return (DHPublicKey) buildKey(keySpec, JCAConstants.KEY_ALGO_DIFFIE_HELLMAN);
+    }
 
     /**
      * Build Java RSA public key from base64 encoding.
@@ -395,6 +410,22 @@ public final class KeySupport {
             throw new KeyException("Generated key was not a DSAPrivateKey instance");
         }
         return (DSAPrivateKey) key;
+    }
+
+    /**
+     * Build Java DH private key from base64 encoding.
+     * 
+     * @param base64EncodedKey base64-encoded DH private key
+     * @return a native Java DHPrivateKey
+     * @throws KeyException thrown if there is an error constructing key
+     */
+    @Nonnull public static DHPrivateKey buildJavaDHPrivateKey(@Nonnull final String base64EncodedKey)
+            throws KeyException {
+        final PrivateKey key = buildJavaPrivateKey(base64EncodedKey);
+        if (!(key instanceof DHPrivateKey)) {
+            throw new KeyException("Generated key was not a DHPrivateKey instance");
+        }
+        return (DHPrivateKey) key;
     }
 
     /**

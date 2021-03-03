@@ -47,11 +47,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.DecodingException;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import javax.crypto.interfaces.DHPublicKey;
+import javax.crypto.spec.DHPublicKeySpec;
 
 import org.apache.xml.security.utils.XMLUtils;
 import org.opensaml.core.xml.XMLObjectBuilder;
@@ -60,9 +57,13 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.security.crypto.dh.DHSupport;
 import org.opensaml.security.crypto.ec.ECSupport;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.encryption.DHKeyValue;
+import org.opensaml.xmlsec.encryption.Generator;
+import org.opensaml.xmlsec.encryption.Public;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.ECKeyValue;
@@ -88,6 +89,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Utility class for working with data inside a KeyInfo object.
@@ -515,11 +521,18 @@ public class KeyInfoSupport {
     }    
     
     /**
-     * Converts a Java DSA or RSA public key into the corresponding XMLObject and stores it in a {@link KeyInfo} in a
-     * new {@link KeyValue} element.
+     * Converts a Java RSA, EC, DSA or DH public key into the corresponding XMLObject and stores it in a
+     * {@link KeyInfo} in a new {@link KeyValue} element.
      * 
-     * As input, only supports {@link PublicKey}s which are instances of either
-     * {@link java.security.interfaces.DSAPublicKey} or {@link java.security.interfaces.RSAPublicKey}
+     * <p>
+     * As input, only supports {@link PublicKey} instances which are:
+     * </p>
+     * <ul>
+     * <li>{@link java.security.interfaces.RSAPublicKey}</li>
+     * <li>{@link java.security.interfaces.ECPublicKey}</li>
+     * <li>{@link java.security.interfaces.DSAPublicKey}</li>
+     * <li>{@link javax.crypto.interfaces.DHPublicKey}</li>
+     * </ul>
      * 
      * @param keyInfo the {@link KeyInfo} element to which to add the key
      * @param pk the native Java {@link PublicKey} to add
@@ -539,11 +552,67 @@ public class KeyInfoSupport {
             keyValue.setECKeyValue(buildECKeyValue((ECPublicKey) pk));
         } else if (pk instanceof DSAPublicKey) {
             keyValue.setDSAKeyValue(buildDSAKeyValue((DSAPublicKey) pk));
+        } else if (pk instanceof DHPublicKey) {
+            keyValue.setDHKeyValue(buildDHKeyValue((DHPublicKey) pk));
         } else {
-            throw new IllegalArgumentException("Only RSAPublicKey and DSAPublicKey are supported");
+            throw new IllegalArgumentException("Saw unsupported public key type: " + pk.getClass().getName());
         }
 
         keyInfo.getKeyValues().add(keyValue);
+    }
+    
+    /**
+     * Builds a {@link DHKeyValue} XMLObject from the Java security DH public key type.
+     * 
+     * @param dhPubKey a native Java {@link DHPublicKey}
+     * @return an {@link DHKeyValue} XMLObject
+     * @throws EncodingException if the DH public key parameters can not be base64 encoded
+     */
+    @Nonnull public static DHKeyValue buildDHKeyValue(@Nonnull final DHPublicKey dhPubKey) 
+            throws EncodingException {
+        Constraint.isNotNull(dhPubKey, "DH public key cannot be null");
+        
+        final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
+
+        final XMLObjectBuilder<DHKeyValue> dhKeyValueBuilder =
+                builderFactory.getBuilderOrThrow(DHKeyValue.DEFAULT_ELEMENT_NAME);
+        final DHKeyValue dhKeyValue = dhKeyValueBuilder.buildObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
+
+        final XMLObjectBuilder<Generator> generatorBuilder =
+                builderFactory.getBuilderOrThrow(Generator.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<Public> publicBuilder = builderFactory.getBuilderOrThrow(Public.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<org.opensaml.xmlsec.encryption.P> pBuilder =
+                builderFactory.getBuilderOrThrow(org.opensaml.xmlsec.encryption.P.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<org.opensaml.xmlsec.encryption.Q> qBuilder =
+                builderFactory.getBuilderOrThrow(org.opensaml.xmlsec.encryption.Q.DEFAULT_ELEMENT_NAME);
+        
+        final Public pub = publicBuilder.buildObject(Public.DEFAULT_ELEMENT_NAME);
+        final Generator gen = generatorBuilder.buildObject(Generator.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.encryption.P p =
+                pBuilder.buildObject(org.opensaml.xmlsec.encryption.P.DEFAULT_ELEMENT_NAME);
+
+        pub.setValueBigInt(dhPubKey.getY());
+        dhKeyValue.setPublic(pub);
+
+        gen.setValueBigInt(dhPubKey.getParams().getG());
+        dhKeyValue.setGenerator(gen);
+
+        p.setValueBigInt(dhPubKey.getParams().getP());
+        dhKeyValue.setP(p);
+
+        // DHParameterSpec doesn't expose the Q param.  Also, it seems sometimes the ASN.1 encoded keys do not have
+        // a Q param, which is a violation of RFC 3279, section 2.3.3. So we have to deal with the null case.
+        // If it doesn't have Q, just emit without, even thought it violates the XML Encryption schema,
+        // since we don't actually need it to construct a DHPublicKey key anyway.
+        final BigInteger qValue = DHSupport.getPrimeQDomainParameter(dhPubKey);
+        if (qValue != null) {
+            final org.opensaml.xmlsec.encryption.Q q =
+                    qBuilder.buildObject(org.opensaml.xmlsec.encryption.Q.DEFAULT_ELEMENT_NAME);
+            q.setValueBigInt(qValue);
+            dhKeyValue.setQ(q);
+        }
+
+        return dhKeyValue;
     }
 
     /**
@@ -751,6 +820,8 @@ public class KeyInfoSupport {
             return getRSAKey(keyValue.getRSAKeyValue());
         } else if (keyValue.getECKeyValue() != null) {
             return getECKey(keyValue.getECKeyValue());
+        } else if (keyValue.getDHKeyValue() != null) {
+            return getDHKey(keyValue.getDHKeyValue());
         } else {
             return null;
         }
@@ -791,6 +862,52 @@ public class KeyInfoSupport {
             throw new KeyException("Error Base64 decoding ECKeyValue PublicKey ECPoint", e);
         }
         
+    }
+    
+    /**
+     * Builds a DH key from a {@link DHKeyValue} element. The element must contain values for all required DH public
+     * key parameters, including values for shared key family values P, Q and G (aka Generator).
+     * 
+     * @param keyDescriptor the {@link DHKeyValue} key descriptor
+     * 
+     * @return a new {@link DHPublicKey} instance of {@link PublicKey}
+     * 
+     * @throws KeyException thrown if the key algorithm is not supported by the JCE or the key spec does not contain
+     *             valid information
+     */
+    @Nonnull public static PublicKey getDHKey(@Nonnull final DHKeyValue keyDescriptor) throws KeyException {
+        if (!hasCompleteDHParams(keyDescriptor)) {
+            throw new KeyException("DHKeyValue element did not contain at least one of DH parameters P, Q or G");
+        }
+
+        final BigInteger gComponent = keyDescriptor.getGenerator().getValueBigInt();
+        final BigInteger pComponent = keyDescriptor.getP().getValueBigInt();
+        // Note: Java doesn't need or even accept the prime Q component, so don't bother to parse it
+
+        final BigInteger publicComponent = keyDescriptor.getPublic().getValueBigInt();
+
+        final DHPublicKeySpec keySpec = new DHPublicKeySpec(publicComponent, pComponent, gComponent);
+        return buildKey(keySpec, JCAConstants.KEY_ALGO_DIFFIE_HELLMAN);
+    }
+    
+    /**
+     * Check whether the specified {@link DHKeyValue} element has the all optional DH values which can be shared
+     * amongst many keys in a DH "key family", and are presumed to be known from context.
+     * 
+     * @param keyDescriptor the {@link DHKeyValue} element to check
+     * @return true if all parameters are present and non-empty, false otherwise
+     */
+    public static boolean hasCompleteDHParams(@Nullable final DHKeyValue keyDescriptor) {
+        if (keyDescriptor == null
+                || keyDescriptor.getGenerator() == null
+                || Strings.isNullOrEmpty(keyDescriptor.getGenerator().getValue())
+                || keyDescriptor.getP() == null || Strings.isNullOrEmpty(keyDescriptor.getP().getValue())
+                // Note: Java doesn't need or even accept the prime Q component.  So even though it's
+                // required per the schema, relax the check here and don't require.
+                ) {
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -943,10 +1060,15 @@ public class KeyInfoSupport {
      * @throws KeyException thrown if the given key data can not be converted into {@link PublicKey}
      */
     @Nonnull public static PublicKey getKey(@Nonnull final DEREncodedKeyValue keyValue) throws KeyException{
+        // Note: Testing shows DH must come before DSA.  If you attempt to decode a DH key as DSA,
+        // it "works", b/c they have similar structures, but it's probably not correct.  DSA does not decode as DH,
+        // so this ordering is what works at present. If this methodology has a problem in the future, we'll likely
+        // need to switch to explicit ASN.1 parsing of the key's type, instead of "try and return what doesn't fail".
         final String[] supportedKeyTypes = {
                 JCAConstants.KEY_ALGO_RSA,
-                JCAConstants.KEY_ALGO_DSA,
-                JCAConstants.KEY_ALGO_EC};
+                JCAConstants.KEY_ALGO_EC,
+                JCAConstants.KEY_ALGO_DIFFIE_HELLMAN,
+                JCAConstants.KEY_ALGO_DSA};
         
         Constraint.isNotNull(keyValue, "DEREncodedKeyValue cannot be null");
         if (keyValue.getValue() == null) {
@@ -961,15 +1083,17 @@ public class KeyInfoSupport {
 
         // Iterate over the supported key types until one produces a public key.
         for (final String keyType : supportedKeyTypes) {
+            getLogger().trace("Attempting to decode DER key as type: {}", keyType);
             try {
                 final KeyFactory keyFactory = KeyFactory.getInstance(keyType);
                 final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
                 final PublicKey publicKey = keyFactory.generatePublic(keySpec);
                 if (publicKey != null) {
+                    getLogger().trace("DER key decoded successfully as type: {}", keyType);
                     return publicKey;
                 }
             } catch (final NoSuchAlgorithmException | InvalidKeySpecException e) {
-                // Do nothing, try the next type
+                getLogger().trace("DER key failed decoding as: {}", keyType);
             }
         }
         throw new KeyException("DEREncodedKeyValue did not contain a supported key type");

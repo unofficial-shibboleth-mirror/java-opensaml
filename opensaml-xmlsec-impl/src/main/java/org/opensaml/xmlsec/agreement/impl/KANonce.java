@@ -17,16 +17,23 @@
 
 package org.opensaml.xmlsec.agreement.impl;
 
+import java.security.SecureRandom;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.xmlsec.agreement.CloneableKeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
 
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
@@ -39,22 +46,27 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 public class KANonce extends AbstractInitializableComponent
     implements XMLExpressableKeyAgreementParameter, CloneableKeyAgreementParameter {
     
+    /** Default length for generated salt, in bytes. */
+    public static final Integer DEFAULT_GENERATED_LENGTH = 8;
+    
     /** Base64-encoded nonce value. */
     @Nullable private String value;
     
-    /** {@inheritDoc} */
-    protected void doInitialize() throws ComponentInitializationException {
-        if (value == null) {
-            throw new ComponentInitializationException("KANonce value was null");
-        }
-    }
-
+    /** Generated salt length, in bytes. */
+    @NonnullAfterInit private Integer generatedLength;
+    
+    /** SecureRandom generator for salt. */
+    @NonnullAfterInit private SecureRandom secureRandom;
+    
     /**
      * Get the Base64-encoded nonce value.
      * 
      * @return the nonce value
      */
     @Nullable public String getValue() {
+        if (value == null && isInitialized()) {
+            value = generateValue();
+        }
         return value;
     }
     
@@ -66,6 +78,87 @@ public class KANonce extends AbstractInitializableComponent
     public void setValue(@Nullable final String newValue) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         value = StringSupport.trimOrNull(newValue);
+    }
+    
+    /**
+     * Get the generated length, in bytes.
+     * 
+     * @return the generated length, in bytes
+     */
+    @NonnullAfterInit public Integer getGeneratedLength() {
+        return generatedLength;
+    }
+    
+    /**
+     * Set the generated length, in bytes.
+     * 
+     * @param length the generated length
+     */
+    public void setGeneratedLength(@Nullable final Integer length) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        generatedLength = length;
+    }
+    
+    /**
+     * Get the secure random generator.
+     * 
+     * <p>
+     * Defaults to the platform default via <code>new SecureRandom()</code>
+     * </p>
+     * 
+     * @return the secure random instance
+     */
+    @NonnullAfterInit public SecureRandom getRandom() {
+        return secureRandom;
+    }
+    
+    /**
+     * Set the secure random generator.
+     * 
+     * <p>
+     * Defaults to the platform default via <code>new SecureRandom()</code>
+     * </p>
+     * 
+     * @param sr the secure random generator to set
+     */
+    public void setRandom(@Nullable final SecureRandom sr) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        secureRandom = sr;
+    }
+
+    /** {@inheritDoc} */
+    protected void doInitialize() throws ComponentInitializationException {
+        if (value != null) {
+            try {
+                Base64Support.decode(value);
+            } catch (final DecodingException e) {
+                throw new ComponentInitializationException("Nonce value was not valid Base64", e);
+            }
+        }
+        
+        if (generatedLength == null) {
+            generatedLength = DEFAULT_GENERATED_LENGTH;
+        }
+        
+        if (secureRandom == null) {
+            secureRandom = new SecureRandom();
+        }
+    }
+    
+    /**
+     * Generate a new random value.
+     * 
+     * @return the generated value
+     */
+    protected String generateValue() {
+        try {
+            final byte[] valueBytes = new byte[generatedLength];
+            secureRandom.nextBytes(valueBytes);
+            return Base64Support.encode(valueBytes, false);
+        } catch (final EncodingException e) {
+            // This should never really happen
+            throw new XMLRuntimeException("Error Base64-encoding generated nonce value salt", e);
+        }
     }
 
     /** {@inheritDoc} */
@@ -101,6 +194,10 @@ public class KANonce extends AbstractInitializableComponent
     @Nonnull public static KANonce fromXMLObject(@Nonnull final org.opensaml.xmlsec.encryption.KANonce xmlObject) 
             throws ComponentInitializationException {
         Constraint.isNotNull(xmlObject, "XMLObject was null");
+        
+        if (StringSupport.trimOrNull(xmlObject.getValue()) == null) {
+            throw new ComponentInitializationException("XML KANonce had a null or empty value");
+        }
         
         final KANonce parameter = new KANonce();
         parameter.setValue(xmlObject.getValue());

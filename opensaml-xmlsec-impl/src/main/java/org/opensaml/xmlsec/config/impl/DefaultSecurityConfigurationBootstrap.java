@@ -27,6 +27,8 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.xmlsec.agreement.impl.DigestMethod;
+import org.opensaml.xmlsec.agreement.impl.KANonce;
 import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
@@ -125,6 +127,18 @@ public class DefaultSecurityConfigurationBootstrap {
             ecConcatKDF.initialize();
             ecConfig.setParameters(Set.of(ecConcatKDF));
             kaConfigs.put(JCAConstants.KEY_ALGO_EC, ecConfig);
+            
+            // For DH we default the Legacy KDF variant as that is mandatory for DH support.
+            final KeyAgreementEncryptionConfiguration dhConfig = new KeyAgreementEncryptionConfiguration();
+            dhConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
+            final DigestMethod digestMethod = new DigestMethod();
+            digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            digestMethod.initialize();
+            KANonce nonce = new KANonce();
+            // This will use an auto-generated nonce value each time
+            nonce.initialize();
+            dhConfig.setParameters(Set.of(digestMethod, nonce));
+            kaConfigs.put(JCAConstants.KEY_ALGO_DH, dhConfig);
             
             config.setKeyAgreementConfigurations(kaConfigs);
         } catch (final ComponentInitializationException e) {

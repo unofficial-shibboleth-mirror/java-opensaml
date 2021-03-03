@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.agreement.impl;
 
 import java.security.KeyPair;
-import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -33,6 +32,7 @@ import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.derivation.impl.MockKeyDerivation;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -40,23 +40,29 @@ import org.testng.annotations.Test;
 /**
  *
  */
-public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
+public class DHWithLegacyKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
-    private ECDHKeyAgreementProcessor processor;
+    private DHWithLegacyKDFKeyAgreementProcessor processor;
     
     @BeforeMethod
     public void setUp() {
-        processor = new ECDHKeyAgreementProcessor();
+        processor = new DHWithLegacyKDFKeyAgreementProcessor();
     }
     
     @Test
     public void encryptingCase() throws Exception {
-        KeyPair recipientKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair recipientKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential recipientCredential = CredentialSupport.getSimpleCredential(recipientKeyPair.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
-        params.add(new MockKeyDerivation()); 
-        params.addAll(getMockParams());
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        dm.initialize();
+        params.add(dm);
+        KANonce nonce = new KANonce();
+        nonce.setValue("AABBCCDD");
+        nonce.initialize();
+        params.add(nonce);
         
         KeyAgreementCredential keyAgreementCredential = processor.execute(recipientCredential,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
@@ -81,27 +87,33 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(keyAgreementCredential.getOriginatorCredential().getPrivateKey());
         Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getSecretKey());
         
-        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 2);
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
+        Assert.assertTrue(keyAgreementCredential.getParameters().contains(DigestMethod.class));
+        Assert.assertEquals(keyAgreementCredential.getParameters().get(DigestMethod.class).getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
         Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
-        
     }
     
     @Test
     public void decryptingCase() throws Exception {
-        KeyPair originatorKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair originatorKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential originatorCredential = CredentialSupport.getSimpleCredential(originatorKeyPair.getPublic(), null);
         
-        KeyPair recipientKeyPair = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair recipientKeyPair = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential recipientCredential = CredentialSupport.getSimpleCredential(recipientKeyPair.getPublic(), recipientKeyPair.getPrivate());
         
         KeyAgreementParameters params = new KeyAgreementParameters();
         params.add(new PrivateCredential(recipientCredential));
-        params.add(new MockKeyDerivation()); 
-        params.addAll(getMockParams());
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        dm.initialize();
+        params.add(dm);
+        KANonce nonce = new KANonce();
+        nonce.setValue("AABBCCDD");
+        nonce.initialize();
+        params.add(nonce);
         
         KeyAgreementCredential keyAgreementCredential = processor.execute(originatorCredential,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
@@ -126,11 +138,12 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getPrivateKey());
         Assert.assertNull(keyAgreementCredential.getOriginatorCredential().getSecretKey());
         
-        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 3);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(PrivateCredential.class));
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
+        Assert.assertTrue(keyAgreementCredential.getParameters().contains(DigestMethod.class));
+        Assert.assertEquals(keyAgreementCredential.getParameters().get(DigestMethod.class).getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
         Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
         
@@ -142,8 +155,14 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
-        params.add(new MockKeyDerivation()); 
-        params.addAll(getMockParams());
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        dm.initialize();
+        params.add(dm);
+        KANonce nonce = new KANonce();
+        nonce.setValue("AABBCCDD");
+        nonce.initialize();
+        params.add(nonce);
         
         processor.execute(publicCredential,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
@@ -151,13 +170,19 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test(expectedExceptions = KeyAgreementException.class)
-    public void keyDerivationError() throws Exception {
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+    public void invalidKeyAlgorithm() throws Exception {
+        KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
-        params.add(new MockKeyDerivation()); 
-        params.addAll(getMockParams());
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        dm.initialize();
+        params.add(dm);
+        KANonce nonce = new KANonce();
+        nonce.setValue("AABBCCDD");
+        nonce.initialize();
+        params.add(nonce);
         
         processor.execute(publicCredential,
                 "urn:test:InvalidBlockEncryption",
@@ -165,39 +190,25 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test(expectedExceptions = KeyAgreementException.class)
-    public void missingKeyDerivationParam() throws Exception {
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
-        Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
-        
-        KeyAgreementParameters params = new KeyAgreementParameters();
-        params.addAll(getMockParams());
-        
-        processor.execute(publicCredential,
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
-                params);
-    }
-    
-    @Test(expectedExceptions = KeyAgreementException.class)
     public void specifiedKeySizeMismatch() throws Exception {
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         Credential publicCredential = CredentialSupport.getSimpleCredential(kp.getPublic(), null);
         
         KeyAgreementParameters params = new KeyAgreementParameters();
-        params.add(new MockKeyDerivation()); 
         params.add(new KeySize(256));
-        
-        processor.execute(publicCredential,
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
-                params);
-    }
-    
-    private Collection<KeyAgreementParameter> getMockParams() {
-        ArrayList<KeyAgreementParameter> params = new ArrayList<>();
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        dm.initialize();
+        params.add(dm);
         KANonce nonce = new KANonce();
         nonce.setValue("AABBCCDD");
+        nonce.initialize();
         params.add(nonce);
-        return params;
+        
+        
+        processor.execute(publicCredential,
+                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
+                params);
     }
-    
         
 }

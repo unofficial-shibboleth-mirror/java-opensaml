@@ -32,6 +32,8 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.impl.BasicKeyAgreementCredential;
+import org.opensaml.xmlsec.agreement.impl.DigestMethod;
+import org.opensaml.xmlsec.agreement.impl.KANonce;
 import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
@@ -56,12 +58,16 @@ import org.testng.annotations.Test;
 public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     private KeyPair keyPairOriginatorECDH, keyPairRecipientECDH;
+    private KeyPair keyPairOriginatorDiffieHellman, keyPairRecipientDiffieHellman;
     
     private Credential credOriginatorECDH, credRecipientECDH;
+    private Credential credOriginatorDiffieHellman, credRecipientDiffieHellman;
     
     private SecretKey derivedKey;
     
     private KeyAgreementCredential credECDH;
+    private KeyAgreementCredential credDiffieHellmanExplicitKDF;
+    private KeyAgreementCredential credDiffieHellmanLegacyKDF;
     
     private KeyAgreementKeyInfoGeneratorFactory factory;
     
@@ -69,9 +75,13 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     public void beforeClass() throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
         keyPairOriginatorECDH = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec("secp256r1"), null);
         credOriginatorECDH = new BasicCredential(keyPairOriginatorECDH.getPublic(), keyPairOriginatorECDH.getPrivate());
-        
         keyPairRecipientECDH = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec("secp256r1"), null);
         credRecipientECDH = new BasicCredential(keyPairRecipientECDH.getPublic());
+        
+        keyPairOriginatorDiffieHellman = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 1024, null);
+        credOriginatorDiffieHellman = new BasicCredential(keyPairOriginatorDiffieHellman.getPublic(), keyPairOriginatorDiffieHellman.getPrivate());
+        keyPairRecipientDiffieHellman = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 1024, null);
+        credRecipientDiffieHellman = new BasicCredential(keyPairRecipientDiffieHellman.getPublic());
         
         derivedKey = KeySupport.generateKey(JCAConstants.KEY_ALGO_AES, 256, null);
     }
@@ -81,11 +91,12 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory = new KeyAgreementKeyInfoGeneratorFactory(); 
         
         credECDH = new BasicKeyAgreementCredential(derivedKey, EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES, credOriginatorECDH, credRecipientECDH);
+        credDiffieHellmanExplicitKDF = new BasicKeyAgreementCredential(derivedKey, EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF, credOriginatorDiffieHellman, credRecipientDiffieHellman);
+        credDiffieHellmanLegacyKDF = new BasicKeyAgreementCredential(derivedKey, EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH, credOriginatorDiffieHellman, credRecipientDiffieHellman);
     }
     
-    
     @Test
-    void ECDHWithConcatKDFWithDefaults() throws Exception {
+    public void ECDHWithConcatKDFWithDefaults() throws Exception {
         ConcatKDF kdf = new ConcatKDF();
         kdf.setDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         kdf.setAlgorithmID("AA");
@@ -106,6 +117,8 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
         AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        Assert.assertEquals(agreementMethod.getAlgorithm(), credECDH.getAlgorithm());
+                
         Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 3);
         
         //Originator
@@ -143,7 +156,7 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     }
 
     @Test
-    void ECDHWithPBKDF2WithDefaults() throws Exception {
+    public void ECDHWithPBKDF2WithDefaults() throws Exception {
         PBKDF2 kdf = new PBKDF2();
         kdf.setIterationCount(1500);
         kdf.setKeyLength(256);
@@ -162,6 +175,8 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
         AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        Assert.assertEquals(agreementMethod.getAlgorithm(), credECDH.getAlgorithm());
+        
         Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 3);
         
         //Originator
@@ -199,6 +214,121 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(kdfParams.getSalt().getSpecified());
         Assert.assertEquals(kdfParams.getSalt().getSpecified().getValue(), "ABCD");
     }
+    
+    @Test
+    public void DiffieHellmanWithConcatKDFWithDefaults() throws Exception {
+        ConcatKDF kdf = new ConcatKDF();
+        kdf.setDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        kdf.setAlgorithmID("AA");
+        kdf.setPartyUInfo("BB");
+        kdf.setPartyVInfo("CC");
+        kdf.setSuppPubInfo("DD");
+        kdf.setSuppPrivInfo("EE");
+        kdf.initialize();
+        
+        credDiffieHellmanExplicitKDF.getParameters().add(kdf);
+        
+        KeyInfoGenerator generator = factory.newInstance();
+        KeyInfo keyInfo = generator.generate(credDiffieHellmanExplicitKDF);
+        
+        Assert.assertNotNull(keyInfo);
+        Assert.assertNotNull(keyInfo.getOrderedChildren());
+        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
+        
+        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        Assert.assertEquals(agreementMethod.getAlgorithm(), credDiffieHellmanExplicitKDF.getAlgorithm());
+        
+        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 3);
+        
+        //Originator
+        Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
+        OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
+        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
+        Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
+        Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
+        
+        //Recipient
+        Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
+        RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
+        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
+        Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientDiffieHellman.getPublic());
+        Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getKeyValues().get(0)), keyPairRecipientDiffieHellman.getPublic());
+        
+        //Params
+        Assert.assertEquals(agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).size(), 1);
+        KeyDerivationMethod kdm = (KeyDerivationMethod) agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0);
+        Assert.assertEquals(kdm.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        Assert.assertEquals(kdm.getUnknownXMLObjects().size(), 1);
+        Assert.assertEquals(kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).size(), 1);
+        ConcatKDFParams kdfParams = (ConcatKDFParams) kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).get(0);
+        Assert.assertNotNull(kdfParams.getDigestMethod());
+        Assert.assertEquals(kdfParams.getDigestMethod().getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        Assert.assertEquals(kdfParams.getAlgorithmID(), "00AA");
+        Assert.assertEquals(kdfParams.getPartyUInfo(), "00BB");
+        Assert.assertEquals(kdfParams.getPartyVInfo(), "00CC");
+        Assert.assertEquals(kdfParams.getSuppPubInfo(), "00DD");
+        Assert.assertEquals(kdfParams.getSuppPrivInfo(), "00EE");
+    }
+
+    @Test
+    public void DiffieHellmanWithLegacyKDFWithDefaults() throws Exception {
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        dm.initialize();
+        
+        KANonce nonce = new KANonce();
+        nonce.setValue("ABCD");
+        nonce.initialize();
+        
+        credDiffieHellmanLegacyKDF.getParameters().add(dm);
+        credDiffieHellmanLegacyKDF.getParameters().add(nonce);
+        
+        KeyInfoGenerator generator = factory.newInstance();
+        KeyInfo keyInfo = generator.generate(credDiffieHellmanLegacyKDF);
+        
+        Assert.assertNotNull(keyInfo);
+        Assert.assertNotNull(keyInfo.getOrderedChildren());
+        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
+        
+        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        Assert.assertEquals(agreementMethod.getAlgorithm(), credDiffieHellmanLegacyKDF.getAlgorithm());
+        
+        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 4);
+        
+        //Originator
+        Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
+        OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
+        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
+        Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
+        Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
+        
+        //Recipient
+        Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
+        RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
+        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
+        Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientDiffieHellman.getPublic());
+        Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
+        Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getKeyValues().get(0)), keyPairRecipientDiffieHellman.getPublic());
+        
+        //Params
+        Assert.assertNotNull(agreementMethod.getKANonce());
+        Assert.assertEquals(agreementMethod.getKANonce().getValue(), "ABCD");
+        Assert.assertEquals(agreementMethod.getUnknownXMLObjects(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME).size(), 1);
+        org.opensaml.xmlsec.signature.DigestMethod xmlDigest =
+                (org.opensaml.xmlsec.signature.DigestMethod) agreementMethod.getUnknownXMLObjects(
+                        org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME).get(0);
+        Assert.assertEquals(xmlDigest.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+    }
+
     
     @Test
     public void noEmitKeyinfos() throws Exception {

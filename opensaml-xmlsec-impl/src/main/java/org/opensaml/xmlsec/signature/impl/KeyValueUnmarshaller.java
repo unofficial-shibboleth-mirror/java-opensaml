@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.signature.impl;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.xmlsec.encryption.DHKeyValue;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
@@ -40,6 +41,8 @@ public class KeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
             keyValue.setRSAKeyValue((RSAKeyValue) childXMLObject);
         } else if (childXMLObject instanceof ECKeyValue) {
             keyValue.setECKeyValue((ECKeyValue) childXMLObject);
+        } else if (childXMLObject instanceof DHKeyValue) {
+            keyValue.setDHKeyValue((DHKeyValue) childXMLObject);
         } else {
             // There can be only one...
             if (keyValue.getUnknownXMLObject() == null) {

@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.encryption.support.tests;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
-import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -35,6 +34,7 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
+import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.DecryptionParameters;
@@ -42,12 +42,12 @@ import org.opensaml.xmlsec.DecryptionParametersResolver;
 import org.opensaml.xmlsec.EncryptionConfiguration;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.EncryptionParametersResolver;
+import org.opensaml.xmlsec.agreement.impl.DigestMethod;
+import org.opensaml.xmlsec.agreement.impl.KANonce;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
-import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedData;
-import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.Decrypter;
 import org.opensaml.xmlsec.encryption.support.Encrypter;
@@ -62,6 +62,7 @@ import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.LocalKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.provider.AgreementMethodKeyInfoProvider;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.testing.XMLSecurityTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -75,7 +76,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 /**
  *
  */
-public class ECDHTest extends XMLObjectBaseTestCase {
+public class DHWithLegacyKDFTest extends XMLObjectBaseTestCase {
     
     private String targetFile;
     
@@ -87,7 +88,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     private Encrypter encrypter;
     private EncryptionParametersResolver encParamsResolver;
     private CriteriaSet encCriteria;
-    private BasicEncryptionConfiguration encConfig;
+    private BasicEncryptionConfiguration encConfig, encConfig2;
     
     private DecryptionParametersResolver decryptParamsResolver;
     private CriteriaSet decryptCriteria;
@@ -97,7 +98,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     public void beforeClass() throws Exception {
         targetFile = "/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
         
-        KeyPair kp = KeySupport.generateKeyPair("EC", new ECGenParameterSpec("secp256r1"), null);
+        KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_DIFFIE_HELLMAN, 2048, null);
         recipientCredPrivate = new BasicCredential(kp.getPublic(), kp.getPrivate());
         recipientCredPublic = new BasicCredential(kp.getPublic());
         
@@ -116,8 +117,20 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     public void beforeMethod() throws Exception {
         encConfig = new BasicEncryptionConfiguration();
-        encCriteria = new CriteriaSet(new EncryptionConfigurationCriterion(encConfig,
+        encConfig2 = new BasicEncryptionConfiguration();
+        encCriteria = new CriteriaSet(new EncryptionConfigurationCriterion(encConfig, encConfig2,
                 ConfigurationService.get(EncryptionConfiguration.class)));
+        
+        // Configure the middle slot explicitly so that we aren't relying on whichever DH variant the library wide config has.
+        KeyAgreementEncryptionConfiguration kaConfig = new KeyAgreementEncryptionConfiguration();
+        kaConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        dm.initialize();
+        KANonce nonce = new KANonce();
+        nonce.initialize();
+        kaConfig.setParameters(Set.of(dm, nonce));
+        encConfig2.setKeyAgreementConfigurations(Map.of("DH", kaConfig));
         
         decryptConfig = new BasicDecryptionConfiguration();
         decryptConfig.setDataKeyInfoCredentialResolver(localKeyInfoResolver);
@@ -131,7 +144,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     public void roundtripDirectDataEncryption() throws Exception {
         encConfig.setDataEncryptionCredentials(List.of(recipientCredPublic));
         
-        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, null);
+        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, null, SignatureConstants.ALGO_ID_DIGEST_SHA256, true);
     }
 
     @Test
@@ -139,14 +152,14 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         encConfig.setDataEncryptionCredentials(List.of(recipientCredPublic));
         encConfig.setDataEncryptionAlgorithms(List.of(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
         
-        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, null);
+        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, null, SignatureConstants.ALGO_ID_DIGEST_SHA256, true);
     }
 
     @Test
     public void roundtripWithKeyWrap() throws Exception {
         encConfig.setKeyTransportEncryptionCredentials(List.of(recipientCredPublic));
         
-        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
+        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, EncryptionConstants.ALGO_ID_KEYWRAP_AES128, SignatureConstants.ALGO_ID_DIGEST_SHA256, true);
     }
 
     @Test
@@ -155,27 +168,23 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         encConfig.setKeyTransportEncryptionAlgorithms(List.of(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
         encConfig.setDataEncryptionAlgorithms(List.of(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
         
-        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
+        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM, EncryptionConstants.ALGO_ID_KEYWRAP_AES256, SignatureConstants.ALGO_ID_DIGEST_SHA256, true);
     }
 
     @Test
-    public void roundtripWithPBKDF2() throws Exception {
+    public void roundtripWithSHA512AndNoNonce() throws Exception {
         encConfig.setDataEncryptionCredentials(List.of(recipientCredPublic));
         
         KeyAgreementEncryptionConfiguration kaConfig = new KeyAgreementEncryptionConfiguration();
-        PBKDF2 kdf = new PBKDF2();
-        kdf.initialize();
-        kaConfig.setParameters(Set.of(kdf));
-        encConfig.setKeyAgreementConfigurations(Map.of("EC", kaConfig));
+        DigestMethod dm = new DigestMethod();
+        dm.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        kaConfig.setParameters(Set.of(dm));
+        encConfig.setKeyAgreementConfigurations(Map.of("DH", kaConfig));
         
-        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, null, EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2);
-    }
-
-    private void testRoundtrip(String expectedDataAlgo, String expectedKEKAlgo) throws Exception {
-        testRoundtrip(expectedDataAlgo, expectedKEKAlgo, null);
+        testRoundtrip(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, null, SignatureConstants.ALGO_ID_DIGEST_SHA512, false);
     }
     
-    private void testRoundtrip(String expectedDataAlgo, String expectedKEKAlgo, String expectedKDFAlgo) throws Exception {
+    private void testRoundtrip(String expectedDataAlgo, String expectedKEKAlgo, String expectedDigestMethod, boolean nonceExpected) throws Exception {
         // Encrypt
         SignableSimpleXMLObject sxoOrig = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
@@ -206,12 +215,22 @@ public class ECDHTest extends XMLObjectBaseTestCase {
             agreementMethod = encryptedDataOrig.getKeyInfo().getAgreementMethods().get(0);
         }
         Assert.assertNotNull(agreementMethod);
-        Assert.assertEquals(agreementMethod.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
+        Assert.assertEquals(agreementMethod.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
         
-        if (expectedKDFAlgo != null) {
-            KeyDerivationMethod kdm = (KeyDerivationMethod) agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0); 
-            Assert.assertNotNull(kdm);
-            Assert.assertEquals(kdm.getAlgorithm(), expectedKDFAlgo);
+        if (expectedDigestMethod != null) {
+            org.opensaml.xmlsec.signature.DigestMethod digestMethod =
+                    (org.opensaml.xmlsec.signature.DigestMethod) agreementMethod
+                    .getUnknownXMLObjects(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME).get(0);
+            Assert.assertNotNull(digestMethod);
+            Assert.assertEquals(digestMethod.getAlgorithm(), expectedDigestMethod);
+        }
+        
+        org.opensaml.xmlsec.encryption.KANonce nonce = agreementMethod.getKANonce();
+        if (nonceExpected) {
+            Assert.assertNotNull(nonce);
+            Assert.assertNotNull(nonce.getValue());
+        } else {
+            Assert.assertNull(nonce);
         }
         
         // Serialize out and back in
