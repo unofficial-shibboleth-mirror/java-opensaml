@@ -108,7 +108,7 @@ public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends
      * 
      * @param index the index to check
      */
-    protected void checkAndCreateIndex(@Nonnull final QName index) {
+    protected synchronized void checkAndCreateIndex(@Nonnull final QName index) {
         if (!objectIndex.containsKey(index)) {
             objectIndex.put(index, new LazyList<ElementType>());
         }
