@@ -223,8 +223,8 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
                 } else if (code == HttpStatus.SC_INTERNAL_SERVER_ERROR) {
                     processFaultResponse(response, context);
                 } else {
-                    throw new SOAPClientException("Received " + code + " HTTP response status code from HTTP request to "
-                            + endpoint);
+                    throw new SOAPClientException("Received " + code +
+                            " HTTP response status code from HTTP request to " + endpoint);
                 }
             } finally {
                 try {

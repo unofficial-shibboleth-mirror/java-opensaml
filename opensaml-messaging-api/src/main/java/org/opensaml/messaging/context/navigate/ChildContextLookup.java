@@ -44,7 +44,9 @@ public class ChildContextLookup<ParentContext extends BaseContext, ChildContext 
     private boolean autocreate;
 
     /**
-     * Constructor. Sets {@link #autocreate} to <code>false</code>.
+     * Constructor.
+     * 
+     * <p>Equivalent to calling the two-parameter constructor with false.</p>
      * 
      * @param type child context type to look up
      */

@@ -169,6 +169,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
         return encrypter;
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
@@ -226,6 +227,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
         
         return true;
     }
+// Checkstyle: CyclomaticComplexity ON
     
     /**
      * Return the right set of parameters for the operation to be performed, or none if no encryption should occur.

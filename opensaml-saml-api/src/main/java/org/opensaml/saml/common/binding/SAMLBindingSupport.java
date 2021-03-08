@@ -36,7 +36,6 @@ import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.metadata.Endpoint;
-import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -359,7 +358,7 @@ public final class SAMLBindingSupport {
         Constraint.isTrue(artifactEndpointIndex.length == 2, "Artifact endpoint index length was not 2, was: "
                 + artifactEndpointIndex.length);
         final short value = ByteBuffer.wrap(artifactEndpointIndex).order(ByteOrder.BIG_ENDIAN).getShort();
-        return (int) Constraint.isGreaterThanOrEqual(0, value, 
+        return Constraint.isGreaterThanOrEqual(0, value, 
                 "Input value was too large, resulting in a negative 16-bit short");
     }
 

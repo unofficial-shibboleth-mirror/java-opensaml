@@ -36,8 +36,6 @@ import org.opensaml.xmlsec.agreement.impl.KeyAgreementParametersParser;
 import org.opensaml.xmlsec.agreement.impl.PrivateCredential;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedType;
-import org.opensaml.xmlsec.encryption.EncryptionMethod;
-import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolutionMode;

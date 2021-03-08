@@ -63,7 +63,7 @@ public abstract class AbstractHandlerDelegatingProfileAction<DelegateType extend
      *
      * @param delegateClass the delegate class. Must have a no-argument constructor. For those that do not,
      *          instead pass in a pre-constructed instance via 
-     *          {@link AbstractHandlerDelegatingProfileAction(MessageHandler, ContextDataLookupFunction)}.
+     *          {@link #AbstractHandlerDelegatingProfileAction(MessageHandler, ContextDataLookupFunction)}.
      * @param lookup the lookup function for the message context on which to operate, 
      *          typically for either the inbound or outbound context
      */

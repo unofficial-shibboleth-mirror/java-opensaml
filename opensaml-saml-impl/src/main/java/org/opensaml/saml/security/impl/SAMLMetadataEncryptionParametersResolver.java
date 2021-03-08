@@ -37,7 +37,6 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
-import org.bouncycastle.jcajce.spec.UserKeyingMaterialSpec;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.security.SAMLMetadataKeyAgreementEncryptionConfiguration;

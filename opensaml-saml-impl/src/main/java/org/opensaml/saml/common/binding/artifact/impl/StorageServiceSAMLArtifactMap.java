@@ -33,6 +33,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
+import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntryFactory;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageSerializer;
 import org.opensaml.storage.StorageService;
@@ -134,7 +135,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponen
      * Set the map entry factory.
      * 
      * <p>
-     * In addition to implementing the {@link SAMLArtifactMap.SAMLArtifactMapEntryFactory} interface, the injected
+     * In addition to implementing the {@link SAMLArtifactMapEntryFactory} interface, the injected
      * object must support the {@link StorageSerializer} interface to enable entries to be stored via the injected
      * {@link StorageService} instance.
      * </p>

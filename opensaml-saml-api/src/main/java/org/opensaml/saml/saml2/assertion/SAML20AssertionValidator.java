@@ -146,6 +146,7 @@ public class SAML20AssertionValidator {
     /** SAML signature profile validator.*/
     @Nullable private SignaturePrevalidator signaturePrevalidator;
 
+// Checkstyle: ParameterNumber OFF
     /**
      * Constructor.
      * 
@@ -198,6 +199,7 @@ public class SAML20AssertionValidator {
         trustEngine = newTrustEngine;
         signaturePrevalidator = newSignaturePrevalidator;
     }
+// Checkstyle: ParameterNumber ON
     
     /**
      * Constructor.

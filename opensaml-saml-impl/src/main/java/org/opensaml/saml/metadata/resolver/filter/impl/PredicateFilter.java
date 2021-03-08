@@ -47,7 +47,14 @@ import org.slf4j.LoggerFactory;
 public class PredicateFilter implements MetadataFilter {
 
     /** Whether matching means to include or exclude an entity. */
-    public enum Direction { INCLUDE, EXCLUDE, };
+    public enum Direction {
+        
+        /** Matches are to be included. */
+        INCLUDE,
+        
+        /** Matches are to be excluded. */
+        EXCLUDE,
+    };
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(PredicateFilter.class);

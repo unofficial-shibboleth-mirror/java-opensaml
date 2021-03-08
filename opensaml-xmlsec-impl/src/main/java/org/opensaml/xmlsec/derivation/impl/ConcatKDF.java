@@ -47,7 +47,6 @@ import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.derivation.KeyDerivationSupport;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
-import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.DigestMethod;
