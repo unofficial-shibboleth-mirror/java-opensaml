@@ -91,37 +91,34 @@ import java.util.concurrent.TimeoutException;
 public class MemcachedStorageService extends AbstractIdentifiableInitializableComponent implements StorageService {
 
     /** Key suffix for entry that contains a list of context keys. */
-    protected static final String CTX_KEY_LIST_SUFFIX = ":contextKeyList";
+    @Nonnull @NotEmpty protected static final String CTX_KEY_LIST_SUFFIX = ":contextKeyList";
 
-    /** Key suffix for entry that contains a list of blacklisted (deleted) context keys. */
-    protected static final String CTX_KEY_BLACKLIST_SUFFIX = ":contextKeyBlackList";
+    /** Key suffix for entry that contains a list of deleted context keys. */
+    @Nonnull @NotEmpty protected static final String CTX_KEY_DELETED_SUFFIX = ":contextKeyDeletedList";
 
     /** Delimiter of items in the context key list. */
-    private static final String CTX_KEY_LIST_DELIMITER = "\n";
+    @Nonnull @NotEmpty private static final String CTX_KEY_LIST_DELIMITER = "\n";
 
     /** Maximum length in bytes of memcached keys. */
     private static final int MAX_KEY_LENGTH = 250;
 
     /** Logger instance. */
-    private final Logger logger = LoggerFactory.getLogger(MemcachedStorageService.class);
+    @Nonnull private final Logger logger = LoggerFactory.getLogger(MemcachedStorageService.class);
 
     /** Handles conversion of {@link MemcachedStorageRecord} to bytes and vice versa. */
-    private final Transcoder<MemcachedStorageRecord<?>> storageRecordTranscoder = new StorageRecordTranscoder();
+    @Nonnull private final Transcoder<MemcachedStorageRecord<?>> storageRecordTranscoder;
 
     /** Handles conversion of strings to bytes and vice versa. */
-    private final Transcoder<String> stringTranscoder = new StringTranscoder();
+    @Nonnull private final Transcoder<String> stringTranscoder;
 
     /** Invariant storage capabilities. */
-    @Nonnull
-    private MemcachedStorageCapabilities storageCapabilities;
+    @Nonnull private MemcachedStorageCapabilities storageCapabilities;
 
     /** Memcached client instance. */
-    @Nonnull
-    private final MemcachedClient memcacheClient;
+    @Nonnull private final MemcachedClient memcacheClient;
 
     /** Memcached asynchronous operation timeout in seconds. */
-    @Positive
-    private int operationTimeout;
+    @Positive private int operationTimeout;
 
     /** Flag that controls context key tracking. */
     private boolean trackContextKeys;
@@ -154,9 +151,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
      *                                 not needed, the flag should be set to <code>false</code> for better
      *                                 performance. The feature is disabled by default.
      */
-    public MemcachedStorageService(
-            @Nonnull final MemcachedClient client,
-            @Positive final int timeout,
+    public MemcachedStorageService(@Nonnull final MemcachedClient client, @Positive final int timeout,
             final boolean enableContextKeyTracking) {
         Constraint.isNotNull(client, "Client cannot be null");
         Constraint.isGreaterThan(0, timeout, "Operation timeout must be positive");
@@ -164,6 +159,8 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
         operationTimeout = timeout;
         trackContextKeys = enableContextKeyTracking;
         storageCapabilities = new MemcachedStorageCapabilities();
+        storageRecordTranscoder = new StorageRecordTranscoder();
+        stringTranscoder = new StringTranscoder();
     }
 
     /** {@inheritDoc} */
@@ -449,9 +446,9 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
         logger.debug("Deleting entry at {} for context={}, key={}", cacheKey, context, key);
         final boolean success = handleAsyncResult(memcacheClient.delete(cacheKey));
         if (success && trackContextKeys) {
-            logger.debug("Blacklisting key {} for context {}", cacheKey, context);
-            if (!updateContextKeyList(CTX_KEY_BLACKLIST_SUFFIX, namespace, cacheKey)) {
-                logger.debug("Failed appending {} to list of blacklisted keys for context {}", cacheKey, context);
+            logger.debug("Noting deletion of key {} for context {}", cacheKey, context);
+            if (!updateContextKeyList(CTX_KEY_DELETED_SUFFIX, namespace, cacheKey)) {
+                logger.debug("Failed appending {} to list of deleted keys for context {}", cacheKey, context);
             }
         }
         return success;
@@ -483,9 +480,9 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
         logger.debug("Deleting entry at {} for context={}, key={}, version={}", cacheKey, context, key, version);
         final boolean success = handleAsyncResult(memcacheClient.delete(cacheKey, version));
         if (success && trackContextKeys) {
-            logger.debug("Blacklisting key {} for context {}", cacheKey, context);
-            if (!updateContextKeyList(CTX_KEY_BLACKLIST_SUFFIX, namespace, cacheKey)) {
-                logger.debug("Failed appending {} to list of blacklisted keys for context {}", cacheKey, context);
+            logger.debug("Noting deletion of key {} for context {}", cacheKey, context);
+            if (!updateContextKeyList(CTX_KEY_DELETED_SUFFIX, namespace, cacheKey)) {
+                logger.debug("Failed appending {} to list of deleted keys for context {}", cacheKey, context);
             }
         }
         return success;
@@ -532,10 +529,10 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
             return;
         }
         final Set<String> keySet = new HashSet<>(Arrays.asList(keys.getValue().split(CTX_KEY_LIST_DELIMITER)));
-        final CASValue<String> blacklistKeys = handleAsyncResult(
-                memcacheClient.asyncGets(namespace + CTX_KEY_BLACKLIST_SUFFIX, stringTranscoder));
-        if (blacklistKeys != null) {
-            keySet.removeAll(Arrays.asList(blacklistKeys.getValue().split(CTX_KEY_LIST_DELIMITER)));
+        final CASValue<String> deletedKeys = handleAsyncResult(
+                memcacheClient.asyncGets(namespace + CTX_KEY_DELETED_SUFFIX, stringTranscoder));
+        if (deletedKeys != null) {
+            keySet.removeAll(Arrays.asList(deletedKeys.getValue().split(CTX_KEY_LIST_DELIMITER)));
         }
         final List<OperationFuture<Boolean>> results = new ArrayList<>(keySet.size());
         for (final String key : keySet) {
@@ -561,10 +558,10 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
         final OperationFuture<Boolean> nsResult = memcacheClient.delete(namespace);
         if (trackContextKeys) {
             final OperationFuture<Boolean> keyListResult = memcacheClient.delete(namespace + CTX_KEY_LIST_SUFFIX);
-            final OperationFuture<Boolean> blackListResult =
-                    memcacheClient.delete(namespace + CTX_KEY_BLACKLIST_SUFFIX);
+            final OperationFuture<Boolean> deletedKeyResult =
+                    memcacheClient.delete(namespace + CTX_KEY_DELETED_SUFFIX);
             handleAsyncResult(keyListResult);
-            handleAsyncResult(blackListResult);
+            handleAsyncResult(deletedKeyResult);
         }
         handleAsyncResult(ctxResult);
         handleAsyncResult(nsResult);
