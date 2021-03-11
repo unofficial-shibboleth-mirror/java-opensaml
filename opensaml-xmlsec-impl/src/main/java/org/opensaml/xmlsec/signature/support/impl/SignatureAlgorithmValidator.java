@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
 
 /**
  * Component which validates a {@link Signature}'s signature and digest algorithm URI's against
- * a supplied algorithm whitelist and blacklist.
+ * a supplied algorithm include and exclude policy.
  * 
  * <p>
  * The evaluation is based on the Signature's underlying DOM structure, therefore the Signature must
@@ -79,7 +79,7 @@ public class SignatureAlgorithmValidator {
     /**
      * Constructor.
      *
-     * @param params signature validation parameters containing the whitelist and blacklist
+     * @param params signature validation parameters containing the algorithm include and exclude lists
      */
     public SignatureAlgorithmValidator(
             @Nonnull @ParameterName(name="params") final SignatureValidationParameters params) {
@@ -113,12 +113,12 @@ public class SignatureAlgorithmValidator {
         checkDOM(signature);
         
         final String signatureAlgorithm = getSignatureAlgorithm(signature);
-        log.debug("Validating SignedInfo/SignatureMethod/@Algorithm against whitelist/blacklist: {}", 
+        log.debug("Validating SignedInfo/SignatureMethod/@Algorithm against include/exclude lists: {}", 
                 signatureAlgorithm);
         validateAlgorithmURI(signatureAlgorithm);
         
         for (final String digestMethod : getDigestMethods(signature)) {
-            log.debug("Validating SignedInfo/Reference/DigestMethod/@Algorithm against whitelist/blacklist: {}", 
+            log.debug("Validating SignedInfo/Reference/DigestMethod/@Algorithm against include/exclude lists: {}", 
                     digestMethod);
             validateAlgorithmURI(digestMethod);
         }
@@ -187,18 +187,18 @@ public class SignatureAlgorithmValidator {
     }
 
     /**
-     * Validate the supplied algorithm URI against the configured whitelist and blacklist.
+     * Validate the supplied algorithm URI against the configured include and exclude lists.
      * 
      * @param algorithmURI the algorithm URI to evaluate
-     * @throws SignatureException if the algorithm URI does not satisfy the whitelist/blacklist policy
+     * @throws SignatureException if the algorithm URI does not satisfy the include/exclude policy
      */
     protected void validateAlgorithmURI(@Nonnull final String algorithmURI) throws SignatureException {
-        log.debug("Validating algorithm URI against whitelist and blacklist: "
-                + "algorithm: {}, whitelist: {}, blacklist: {}",
+        log.debug("Validating algorithm URI against include and exclude: "
+                + "algorithm: {}, includes: {}, excludes: {}",
                 algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs);
         
         if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, includedAlgorithmURIs, excludedAlgorithmURIs)) {
-            throw new SignatureException("Algorithm failed whitelist/blacklist validation: " + algorithmURI);
+            throw new SignatureException("Algorithm failed include/exclude validation: " + algorithmURI);
         }
         
     }

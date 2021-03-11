@@ -91,13 +91,13 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         final SignatureValidationParametersCriterion validationCriterion = 
                 trustBasisCriteria.get(SignatureValidationParametersCriterion.class);
         if (validationCriterion != null) {
-            log.debug("Performing signature algorithm whitelist/blacklist validation using params from CriteriaSet");
+            log.debug("Performing signature algorithm include/exclude validation using params from CriteriaSet");
             final SignatureAlgorithmValidator algorithmValidator = 
                     new SignatureAlgorithmValidator(validationCriterion.getSignatureValidationParameters());
             try {
                 algorithmValidator.validate(signature);
             } catch (final SignatureException e) {
-                log.warn("XML signature failed algorithm whitelist/blacklist validation");
+                log.warn("XML signature failed algorithm include/exclude validation");
                 return false;
             }
         }
@@ -128,11 +128,11 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
         final SignatureValidationParametersCriterion validationCriterion = 
                 trustBasisCriteria.get(SignatureValidationParametersCriterion.class);
         if (validationCriterion != null) {
-            log.debug("Performing signature algorithm whitelist/blacklist validation using params from CriteriaSet");
+            log.debug("Performing signature algorithm include/exclude validation using params from CriteriaSet");
             final SignatureValidationParameters params = validationCriterion.getSignatureValidationParameters();
             if (!AlgorithmSupport.validateAlgorithmURI(algorithmURI, params.getIncludedAlgorithms(), 
                     params.getExcludedAlgorithms())) {
-                log.warn("Simple/raw signature failed algorithm whitelist/blacklist validation");
+                log.warn("Simple/raw signature failed algorithm include/exclude validation");
                 return false;
             }
         }

@@ -245,7 +245,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
     }
 
     /**
-     * Apply whitelist to metadata on input.
+     * Apply include policy to metadata on input.
      * 
      * @param descriptor input to evaluate
      */

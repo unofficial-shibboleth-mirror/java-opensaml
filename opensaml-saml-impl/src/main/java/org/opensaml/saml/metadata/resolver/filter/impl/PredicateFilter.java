@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * A filter that removes any {@link EntityDescriptor} that does or does not match a {@link Predicate}, thus
- * a whitelist or blacklist. 
+ * an include or exclude policy. 
  * 
  * <p>If an {@link EntitiesDescriptor} does not contain any children after filtering it may, optionally, be removed as
  * well. If the root element of the metadata document is an @link EntitiesDescriptor}, it will never be removed,
@@ -71,7 +71,7 @@ public class PredicateFilter implements MetadataFilter {
     /**
      * Constructor.
      * 
-     * @param dir whether to whitelist or blacklist
+     * @param dir whether to apply an include or an exclude policy
      * @param theCondition the predicate to apply to determine inclusion or exclusion
      */
     public PredicateFilter(@Nonnull final Direction dir, @Nonnull final Predicate<EntityDescriptor> theCondition) {

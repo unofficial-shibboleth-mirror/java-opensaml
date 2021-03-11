@@ -86,16 +86,16 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * @param newResolver resolver for data encryption keys.
      * @param newKEKResolver resolver for key encryption keys.
      * @param newEncKeyResolver resolver for EncryptedKey elements
-     * @param whitelistAlgos collection of whitelisted algorithm URIs
-     * @param blacklistAlgos collection of blacklisted algorithm URIs
+     * @param includeAlgos collection of included algorithm URIs
+     * @param excludeAlgos collection of excluded algorithm URIs
      */
     public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
             @Nullable final KeyInfoCredentialResolver newKEKResolver, 
             @Nullable final EncryptedKeyResolver newEncKeyResolver,
-            @Nullable final Collection<String> whitelistAlgos,
-            @Nullable final Collection<String> blacklistAlgos) {
+            @Nullable final Collection<String> includeAlgos,
+            @Nullable final Collection<String> excludeAlgos) {
         
-        super(newResolver, newKEKResolver, newEncKeyResolver, whitelistAlgos, blacklistAlgos);
+        super(newResolver, newKEKResolver, newEncKeyResolver, includeAlgos, excludeAlgos);
     }
     
     /**

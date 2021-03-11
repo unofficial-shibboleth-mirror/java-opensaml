@@ -146,11 +146,11 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
         Constraint.isNotNull(criteria.get(EncryptionConfigurationCriterion.class), 
                 "Resolver requires an instance of EncryptionConfigurationCriterion");
         
-        final Predicate<String> whitelistBlacklistPredicate = getWhitelistBlacklistPredicate(criteria);
+        final Predicate<String> includeExcludePredicate = getIncludeExcludePredicate(criteria);
         
         final EncryptionParameters params = new EncryptionParameters();
         
-        resolveAndPopulateCredentialsAndAlgorithms(params, criteria, whitelistBlacklistPredicate);
+        resolveAndPopulateCredentialsAndAlgorithms(params, criteria, includeExcludePredicate);
         
         if (params.getDataEncryptionCredential() != null) {
             params.setDataKeyInfoGenerator(resolveDataKeyInfoGenerator(criteria, params.getDataEncryptionCredential()));
@@ -312,21 +312,21 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * 
      * @param params the params instance being populated
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
     protected void resolveAndPopulateCredentialsAndAlgorithms(@Nonnull final EncryptionParameters params, 
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
         // Pre-resolve these for efficiency
         final List<Credential> keyTransportCredentials = getEffectiveKeyTransportCredentials(criteria);
         final List<String> keyTransportAlgorithms =
-                getEffectiveKeyTransportAlgorithms(criteria, whitelistBlacklistPredicate);
+                getEffectiveKeyTransportAlgorithms(criteria, includeExcludePredicate);
         log.trace("Resolved effective key transport algorithms: {}", keyTransportAlgorithms);
         
         final List<Credential> dataEncryptionCredentials = getEffectiveDataEncryptionCredentials(criteria);
         final List<String> dataEncryptionAlgorithms = getEffectiveDataEncryptionAlgorithms(criteria, 
-                whitelistBlacklistPredicate);
+                includeExcludePredicate);
         log.trace("Resolved effective data encryption algorithms: {}", dataEncryptionAlgorithms);
         
         // Select the data encryption algorithm, and credential if exists
@@ -375,7 +375,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                     CredentialSupport.extractEncryptionKey(keyTransportCredential).getAlgorithm());
         }
         
-        resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate);
+        resolveAndPopulateRSAOAEPParams(params, criteria, includeExcludePredicate);
         
         // Auto-generate data encryption cred if configured and possible
         processDataEncryptionCredentialAutoGeneration(params);
@@ -526,12 +526,12 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * 
      * @param params the params instance being populated
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
     protected void resolveAndPopulateRSAOAEPParams(@Nonnull final EncryptionParameters params, 
             @Nonnull final CriteriaSet criteria,
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         
         if (!AlgorithmSupport.isRSAOAEP(params.getKeyTransportEncryptionAlgorithm())) {
             return;
@@ -541,7 +541,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             params.setRSAOAEPParameters(new RSAOAEPParameters());
         }
         
-        populateRSAOAEPParams(params.getRSAOAEPParameters(), criteria, whitelistBlacklistPredicate);
+        populateRSAOAEPParams(params.getRSAOAEPParameters(), criteria, includeExcludePredicate);
     }
 
     /**
@@ -550,13 +550,13 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * 
      * @param rsaParams the existing RSAOAEPParameters instance being populated
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
 // Checkstyle: CyclomaticComplexity|ReturnCount OFF -- more readable not split up
     protected void populateRSAOAEPParams(@Nonnull final RSAOAEPParameters rsaParams, 
             @Nonnull final CriteriaSet criteria,
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         
         if (rsaParams.isComplete()) {
             return;
@@ -571,14 +571,14 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             if (rsaConfig != null) {
                 if (rsaParams.getDigestMethod() == null) {
                     if (rsaConfig.getDigestMethod() != null 
-                            && whitelistBlacklistPredicate.test(rsaConfig.getDigestMethod())
+                            && includeExcludePredicate.test(rsaConfig.getDigestMethod())
                             && algoSupportPredicate.test(rsaConfig.getDigestMethod())) {
                         rsaParams.setDigestMethod(rsaConfig.getDigestMethod());
                     }
                 }
                 if (rsaParams.getMaskGenerationFunction() == null) {
                     if (rsaConfig.getMaskGenerationFunction() != null 
-                            && whitelistBlacklistPredicate.test(rsaConfig.getMaskGenerationFunction())) {
+                            && includeExcludePredicate.test(rsaConfig.getMaskGenerationFunction())) {
                         rsaParams.setMaskGenerationFunction(rsaConfig.getMaskGenerationFunction());
                     }
                 }
@@ -657,18 +657,18 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * 
      * @param keyTransportCredential the key transport credential to evaluate
      * @param criteria  the criteria instance being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      * @param dataEncryptionAlgorithm the optional data encryption algorithm URI to consider
      *          
      * @return the selected algorithm URI, may be null
      */
     @Nullable protected String resolveKeyTransportAlgorithm(@Nonnull final Credential keyTransportCredential, 
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate,
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate,
             @Nullable final String dataEncryptionAlgorithm) {
         
         return resolveKeyTransportAlgorithm(keyTransportCredential, getEffectiveKeyTransportAlgorithms(criteria, 
-                whitelistBlacklistPredicate), dataEncryptionAlgorithm, resolveKeyTransportAlgorithmPredicate(criteria));
+                includeExcludePredicate), dataEncryptionAlgorithm, resolveKeyTransportAlgorithmPredicate(criteria));
     }
     
     /**
@@ -712,16 +712,16 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      * 
      * @param dataEncryptionCredential the data encryption credential to evaluate
      * @param criteria  the criteria instance being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      *          
      * @return the selected algorithm URI
      */
     @Nullable protected String resolveDataEncryptionAlgorithm(@Nonnull final Credential dataEncryptionCredential, 
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
         return resolveDataEncryptionAlgorithm(dataEncryptionCredential, getEffectiveDataEncryptionAlgorithms(criteria,
-                whitelistBlacklistPredicate));
+                includeExcludePredicate));
     }
     
     /**
@@ -744,15 +744,15 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
     
     /**
      * Get the effective list of data encryption algorithm URIs to consider, including application of 
-     * whitelist/blacklist policy.
+     * include/exclude policy.
      * 
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to use
+     * @param includeExcludePredicate  the include/exclude predicate to use
      * 
      * @return the list of effective algorithm URIs
      */
     @Nonnull protected List<String> getEffectiveDataEncryptionAlgorithms(@Nonnull final CriteriaSet criteria, 
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         
         final ArrayList<String> accumulator = new ArrayList<>();
         for (final EncryptionConfiguration config
@@ -760,7 +760,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             
             config.getDataEncryptionAlgorithms()
                 .stream()
-                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), includeExcludePredicate))
                 .forEach(accumulator::add);
         }
         return accumulator;
@@ -786,15 +786,15 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
     
     /**
      * Get the effective list of key transport algorithm URIs to consider, including application of 
-     * whitelist/blacklist policy.
+     * include/exclude policy.
      * 
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to use
+     * @param includeExcludePredicate  the include/exclude predicate to use
      * 
      * @return the list of effective algorithm URIs
      */
     @Nonnull protected List<String> getEffectiveKeyTransportAlgorithms(@Nonnull final CriteriaSet criteria, 
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         
         final ArrayList<String> accumulator = new ArrayList<>();
         for (final EncryptionConfiguration config
@@ -802,7 +802,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
             
             config.getKeyTransportEncryptionAlgorithms()
                 .stream()
-                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), includeExcludePredicate))
                 .forEach(accumulator::add);
         }
         return accumulator;

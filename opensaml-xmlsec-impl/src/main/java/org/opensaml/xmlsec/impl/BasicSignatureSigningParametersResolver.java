@@ -225,14 +225,14 @@ public class BasicSignatureSigningParametersResolver
      * 
      * @param params the parameters instance being populated
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate signing method algorithm URIs
      */
     protected void resolveAndPopulateCredentialAndSignatureAlgorithm(@Nonnull final SignatureSigningParameters params, 
-            @Nonnull final CriteriaSet criteria, final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final CriteriaSet criteria, final Predicate<String> includeExcludePredicate) {
         
         final List<Credential> credentials = getEffectiveSigningCredentials(criteria);
-        final List<String> algorithms = getEffectiveSignatureAlgorithms(criteria, whitelistBlacklistPredicate);
+        final List<String> algorithms = getEffectiveSignatureAlgorithms(criteria, includeExcludePredicate);
         log.trace("Resolved effective signature algorithms: {}", algorithms);
         
         for (final Credential credential : credentials) {
@@ -297,41 +297,41 @@ public class BasicSignatureSigningParametersResolver
     
     /**
      * Get the effective list of signature algorithm URIs to consider, including application of 
-     * whitelist/blacklist policy.
+     * include/exclude policy.
      * 
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to use
+     * @param includeExcludePredicate  the include/exclude predicate to use
      * @return the list of effective algorithm URIs
      */
     @Nonnull protected List<String> getEffectiveSignatureAlgorithms(@Nonnull final CriteriaSet criteria, 
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         final ArrayList<String> accumulator = new ArrayList<>();
         for (final SignatureSigningConfiguration config : criteria.get(SignatureSigningConfigurationCriterion.class)
                 .getConfigurations()) {
             
             config.getSignatureAlgorithms()
                 .stream()
-                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), includeExcludePredicate))
                 .forEach(accumulator::add);
         }
         return accumulator;
     }
 
     /**
-     * Resolve and return the digest method algorithm URI to use, including application of whitelist/blacklist policy.
+     * Resolve and return the digest method algorithm URI to use, including application of include/exclude policy.
      * 
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate  the whitelist/blacklist predicate to use
+     * @param includeExcludePredicate  the include/exclude predicate to use
      * @return the resolved digest method algorithm URI
      */
     @Nullable protected String resolveReferenceDigestMethod(@Nonnull final CriteriaSet criteria, 
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         for (final SignatureSigningConfiguration config : criteria.get(SignatureSigningConfigurationCriterion.class)
                 .getConfigurations()) {
             
             for (final String digestMethod : config.getSignatureReferenceDigestMethods()) {
                 if (getAlgorithmRuntimeSupportedPredicate().test(digestMethod) 
-                        && whitelistBlacklistPredicate.test(digestMethod)) {
+                        && includeExcludePredicate.test(digestMethod)) {
                     return digestMethod;
                 }
             }

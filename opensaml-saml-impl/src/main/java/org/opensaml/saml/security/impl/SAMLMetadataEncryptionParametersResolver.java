@@ -174,7 +174,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     /** {@inheritDoc} */
     @Override
     protected void resolveAndPopulateCredentialsAndAlgorithms(@Nonnull final EncryptionParameters params,
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
         // Create a new CriteriaSet for input to the metadata credential resolver, explicitly 
         // setting/forcing an encryption usage criterion.
@@ -196,7 +196,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                             key != null ? key.getAlgorithm() : "n/a");
                 }
                 
-                if (checkAndProcessKeyAgreement(params, criteria, whitelistBlacklistPredicate, credential)) {
+                if (checkAndProcessKeyAgreement(params, criteria, includeExcludePredicate, credential)) {
                     return;
                 }
                 
@@ -204,10 +204,10 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                         credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
                 
                 final Pair<String,EncryptionMethod> dataEncryptionAlgorithmAndMethod = resolveDataEncryptionAlgorithm(
-                        criteria, whitelistBlacklistPredicate, metadataCredContext);
+                        criteria, includeExcludePredicate, metadataCredContext);
                 
                 final Pair<String,EncryptionMethod> keyTransportAlgorithmAndMethod = resolveKeyTransportAlgorithm(
-                        credential, criteria, whitelistBlacklistPredicate, 
+                        credential, criteria, includeExcludePredicate, 
                         dataEncryptionAlgorithmAndMethod.getFirst(), metadataCredContext);
                 if (keyTransportAlgorithmAndMethod.getFirst() == null) {
                     log.debug("Unable to resolve key transport algorithm for credential with key type '{}', " 
@@ -220,7 +220,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 params.setKeyTransportEncryptionAlgorithm(keyTransportAlgorithmAndMethod.getFirst());
                 params.setDataEncryptionAlgorithm(dataEncryptionAlgorithmAndMethod.getFirst());
                 
-                resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate, 
+                resolveAndPopulateRSAOAEPParams(params, criteria, includeExcludePredicate, 
                         keyTransportAlgorithmAndMethod.getSecond());
                 
                 processDataEncryptionCredentialAutoGeneration(params);
@@ -234,7 +234,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         log.debug("Could not resolve encryption parameters based on SAML metadata, " 
                 + "falling back to locally configured credentials and algorithms");
         
-        super.resolveAndPopulateCredentialsAndAlgorithms(params, criteria, whitelistBlacklistPredicate);
+        super.resolveAndPopulateCredentialsAndAlgorithms(params, criteria, includeExcludePredicate);
     }
     
     /**
@@ -243,7 +243,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * 
      * @param params the params instance being populated
      * @param criteria the input criteria being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate
+     * @param includeExcludePredicate the include/exclude predicate
      * @param credential the credential being evaluated
      * 
      * @return true if all required parameters were supplied, key agreement was successfully performed,
@@ -251,7 +251,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      *         otherwise false
      */
     protected boolean checkAndProcessKeyAgreement(@Nonnull final EncryptionParameters params,
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate,
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate,
             @Nonnull final Credential credential) {
         
         if (!KeyAgreementSupport.supportsKeyAgreement(credential) ) {
@@ -268,10 +268,10 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         }
         
         final List<String> criteriaKeyTransportAlgorithms = getEffectiveKeyTransportAlgorithms(criteria,
-                whitelistBlacklistPredicate);
+                includeExcludePredicate);
         
         final List<String> criteriaDataEncryptionAlgorithms = getEffectiveDataEncryptionAlgorithms(criteria, 
-                whitelistBlacklistPredicate);
+                includeExcludePredicate);
         
         final SAMLMDCredentialContext metadataCredContext = 
                 credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
@@ -282,7 +282,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             final List<String> metadataAlgorithms = metadataCredContext.getEncryptionMethods().stream()
                     .map(EncryptionMethod::getAlgorithm)
                     .filter(Objects::nonNull)
-                    .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), whitelistBlacklistPredicate))
+                    .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), includeExcludePredicate))
                     .collect(Collectors.toList());
             
             metadataKeyWrapAlgorithms = metadataAlgorithms.stream()
@@ -386,7 +386,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * 
      * @param params the current encryption parameters instance being resolved
      * @param criteria  the criteria instance being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      * @param encryptionMethod the method encryption method that was resolved along with the key transport 
      *          encryption algorithm URI, if any.  May be null.
@@ -394,7 +394,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      //CheckStyle: ReturnCount OFF
      protected void resolveAndPopulateRSAOAEPParams(@Nonnull final EncryptionParameters params, 
              @Nonnull final CriteriaSet criteria, 
-             @Nonnull final Predicate<String> whitelistBlacklistPredicate, 
+             @Nonnull final Predicate<String> includeExcludePredicate, 
              @Nullable final EncryptionMethod encryptionMethod) {
          
          if (!AlgorithmSupport.isRSAOAEP(params.getKeyTransportEncryptionAlgorithm())) {
@@ -402,7 +402,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
          }
          
          if (encryptionMethod == null) {
-             super.resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate);
+             super.resolveAndPopulateRSAOAEPParams(params, criteria, includeExcludePredicate);
              return;
          }
          
@@ -411,15 +411,15 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
          }
          
          populateRSAOAEPParamsFromEncryptionMethod(params.getRSAOAEPParameters(), encryptionMethod, 
-                 whitelistBlacklistPredicate);
+                 includeExcludePredicate);
         
          if (params.getRSAOAEPParameters().isComplete()) {
              return;
          } else if (params.getRSAOAEPParameters().isEmpty()) {
-             super.resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate);
+             super.resolveAndPopulateRSAOAEPParams(params, criteria, includeExcludePredicate);
          } else {
              if (isMergeMetadataRSAOAEPParametersWithConfig()) {
-                 super.resolveAndPopulateRSAOAEPParams(params, criteria, whitelistBlacklistPredicate);
+                 super.resolveAndPopulateRSAOAEPParams(params, criteria, includeExcludePredicate);
              }
          }
     }
@@ -431,19 +431,19 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * {@link RSAOAEPParameters}.
      * 
      * <p>
-     * Whitelist/blacklist evaluation is applied to the digest method and MGF algorithm URIs.
+     * Include/exclude evaluation is applied to the digest method and MGF algorithm URIs.
      * </p>
      * 
      * @param params the existing RSAOAEPParameters instance being populated
      * @param encryptionMethod the method encryption method that was resolved along with the key transport 
      *          encryption algorithm URI, if any.  May be null.
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
      // Checkstyle: CyclomaticComplexity OFF -- more readable not split up
     protected void populateRSAOAEPParamsFromEncryptionMethod(@Nonnull final RSAOAEPParameters params, 
             @Nonnull final EncryptionMethod encryptionMethod, 
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         
         final Predicate<String> algoSupportPredicate = getAlgorithmRuntimeSupportedPredicate();
         
@@ -451,7 +451,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         if (digestMethods.size() > 0) {
             final DigestMethod digestMethod = (DigestMethod) digestMethods.get(0);
             final String digestAlgorithm = StringSupport.trimOrNull(digestMethod.getAlgorithm());
-            if (digestAlgorithm != null && whitelistBlacklistPredicate.test(digestAlgorithm)
+            if (digestAlgorithm != null && includeExcludePredicate.test(digestAlgorithm)
                     && algoSupportPredicate.test(digestAlgorithm)) {
                 params.setDigestMethod(digestAlgorithm);
             }
@@ -462,7 +462,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             if (mgfs.size() > 0) {
                 final MGF mgf = (MGF) mgfs.get(0);
                 final String mgfAlgorithm = StringSupport.trimOrNull(mgf.getAlgorithm());
-                if (mgfAlgorithm != null && whitelistBlacklistPredicate.test(mgfAlgorithm)) {
+                if (mgfAlgorithm != null && includeExcludePredicate.test(mgfAlgorithm)) {
                     params.setMaskGenerationFunction(mgfAlgorithm);
                 }
             }
@@ -490,7 +490,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * 
      * @param keyTransportCredential the key transport credential to evaluate
      * @param criteria  the criteria instance being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      * @param dataEncryptionAlgorithm the optional data encryption algorithm URI to consider
      * @param metadataCredContext the credential context extracted from metadata
@@ -498,7 +498,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      */
     @Nonnull protected Pair<String, EncryptionMethod> resolveKeyTransportAlgorithm(
             @Nonnull final Credential keyTransportCredential, 
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate,
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate,
             @Nullable final String dataEncryptionAlgorithm,
             @Nullable final SAMLMDCredentialContext metadataCredContext) {
         
@@ -509,10 +509,10 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 final String algorithm = encryptionMethod.getAlgorithm();
                 log.trace("Evaluating SAML metadata EncryptionMethod algorithm for key transport: {}", algorithm);
                 if (isKeyTransportAlgorithm(algorithm) 
-                        && whitelistBlacklistPredicate.test(algorithm) 
+                        && includeExcludePredicate.test(algorithm) 
                         && getAlgorithmRuntimeSupportedPredicate().test(algorithm)
                         && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)
-                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, whitelistBlacklistPredicate)) {
+                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, includeExcludePredicate)) {
                     
                     boolean accepted = true;
                     if (keyTransportPredicate != null) {
@@ -534,7 +534,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 + "falling back to locally configured algorithms");
         
         return new Pair<>(
-                super.resolveKeyTransportAlgorithm(keyTransportCredential, criteria, whitelistBlacklistPredicate, 
+                super.resolveKeyTransportAlgorithm(keyTransportCredential, criteria, includeExcludePredicate, 
                         dataEncryptionAlgorithm),
                 null);
     }
@@ -549,14 +549,14 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * </p>
      * 
      * @param criteria  the criteria instance being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      * @param metadataCredContext the credential context extracted from metadata
      * @return the selected algorithm URI and the associated encryption method from metadata, if any
      */
     @Nonnull protected Pair<String, EncryptionMethod> resolveDataEncryptionAlgorithm(
             @Nonnull final CriteriaSet criteria, 
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate,
+            @Nonnull final Predicate<String> includeExcludePredicate,
             @Nullable final SAMLMDCredentialContext metadataCredContext) {
         
         if (metadataCredContext != null) {
@@ -564,9 +564,9 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 final String algorithm = encryptionMethod.getAlgorithm();
                 log.trace("Evaluating SAML metadata EncryptionMethod algorithm for data encryption: {}", algorithm);
                 if (isDataEncryptionAlgorithm(algorithm) 
-                        && whitelistBlacklistPredicate.test(algorithm)
+                        && includeExcludePredicate.test(algorithm)
                         && getAlgorithmRuntimeSupportedPredicate().test(algorithm)
-                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, whitelistBlacklistPredicate)) {
+                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, includeExcludePredicate)) {
                     log.debug("Resolved data encryption algorithm URI from SAML metadata EncryptionMethod: {}",
                             algorithm);
                     return new Pair<>(algorithm, encryptionMethod);
@@ -578,29 +578,29 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 + "falling back to locally configured algorithms");
         
         return new Pair<>(
-                super.resolveDataEncryptionAlgorithm(null, criteria, whitelistBlacklistPredicate),
+                super.resolveDataEncryptionAlgorithm(null, criteria, includeExcludePredicate),
                 null);
     }
 
     /**
      * Evaluate the child elements of an EncryptionMethod for acceptability based on for example
-     * whitelist/blacklist policy and algorithm runtime support.
+     * include/exclude policy and algorithm runtime support.
      * 
      * @param encryptionMethod the EncryptionMethod being evaluated
      * @param criteria  the criteria instance being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      *          
      * @return true if the EncryptionMethod children are acceptable
      */
     protected boolean evaluateEncryptionMethodChildren(@Nonnull final EncryptionMethod encryptionMethod, 
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
         switch(encryptionMethod.getAlgorithm()) {
             
             case EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP:
             case EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11:
-                return evaluateRSAOAEPChildren(encryptionMethod, criteria, whitelistBlacklistPredicate);
+                return evaluateRSAOAEPChildren(encryptionMethod, criteria, includeExcludePredicate);
                 
             default:
                 return true;
@@ -610,17 +610,17 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
 
     /**
      * Evaluate the child elements of an RSA OAEP EncryptionMethod for acceptability based on for example
-     * whitelist/blacklist policy and algorithm runtime support.
+     * include/exclude policy and algorithm runtime support.
      * 
      * @param encryptionMethod the EncryptionMethod being evaluated
      * @param criteria  the criteria instance being evaluated
-     * @param whitelistBlacklistPredicate the whitelist/blacklist predicate with which to evaluate the 
+     * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      *          
      * @return true if the EncryptionMethod children are acceptable
      */
     protected boolean evaluateRSAOAEPChildren(@Nonnull final EncryptionMethod encryptionMethod, 
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
         final Predicate<String> algoSupportPredicate = getAlgorithmRuntimeSupportedPredicate();
         
@@ -629,7 +629,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             final DigestMethod digestMethod = (DigestMethod) digestMethods.get(0);
             final String digestAlgorithm = StringSupport.trimOrNull(digestMethod.getAlgorithm());
             if (digestAlgorithm != null) {
-                if (!whitelistBlacklistPredicate.test(digestAlgorithm) 
+                if (!includeExcludePredicate.test(digestAlgorithm) 
                         || !algoSupportPredicate.test(digestAlgorithm)) {
                     log.debug("Rejecting RSA OAEP EncryptionMethod due to unsupported or disallowed DigestMethod: {}",
                             digestAlgorithm);
@@ -644,7 +644,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 final MGF mgf = (MGF) mgfs.get(0);
                 final String mgfAlgorithm = StringSupport.trimOrNull(mgf.getAlgorithm());
                 if (mgfAlgorithm != null) {
-                    if (!whitelistBlacklistPredicate.test(mgfAlgorithm)) {
+                    if (!includeExcludePredicate.test(mgfAlgorithm)) {
                         log.debug("Rejecting RSA OAEP EncryptionMethod due to disallowed MGF: {}", mgfAlgorithm);
                         return false;
                     }

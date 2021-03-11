@@ -64,10 +64,10 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
     /** {@inheritDoc} */
     @Override
     protected void resolveAndPopulateCredentialAndSignatureAlgorithm(@Nonnull final SignatureSigningParameters params, 
-            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
         if (!criteria.contains(RoleDescriptorCriterion.class)) {
-            super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
+            super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, includeExcludePredicate);
             return;
         }
         
@@ -75,7 +75,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
                 SigningMethod.DEFAULT_ELEMENT_NAME);
         
         if (signingMethods == null || signingMethods.isEmpty()) {
-            super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
+            super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, includeExcludePredicate);
             return;
         }
         
@@ -89,7 +89,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             
             if (signingMethod.getAlgorithm() == null 
                     || !getAlgorithmRuntimeSupportedPredicate().test(signingMethod.getAlgorithm())
-                    || !whitelistBlacklistPredicate.test(signingMethod.getAlgorithm())) {
+                    || !includeExcludePredicate.test(signingMethod.getAlgorithm())) {
                 continue;
             }
             
@@ -117,7 +117,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         log.debug("Could not resolve signing credential and algorithm based on SAML metadata, " 
                 + "falling back to locally configured algorithms");
         
-        super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, whitelistBlacklistPredicate);
+        super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, includeExcludePredicate);
     }
 // Checkstyle: ReturnCount|CyclomaticComplexity ON
 
@@ -164,16 +164,16 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
     /** {@inheritDoc} */
     @Override
     @Nullable protected String resolveReferenceDigestMethod(@Nonnull final CriteriaSet criteria, 
-            @Nonnull final Predicate<String> whitelistBlacklistPredicate) {
+            @Nonnull final Predicate<String> includeExcludePredicate) {
         if (!criteria.contains(RoleDescriptorCriterion.class)) {
-            return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
+            return super.resolveReferenceDigestMethod(criteria, includeExcludePredicate);
         }
         
         final List<XMLObject> digestMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
                 DigestMethod.DEFAULT_ELEMENT_NAME);
         
         if (digestMethods == null || digestMethods.isEmpty()) {
-            return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
+            return super.resolveReferenceDigestMethod(criteria, includeExcludePredicate);
         }
         
         for (final XMLObject xmlObject : digestMethods) {
@@ -183,7 +183,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             
             if (digestMethod.getAlgorithm() != null 
                     && getAlgorithmRuntimeSupportedPredicate().test(digestMethod.getAlgorithm())
-                    && whitelistBlacklistPredicate.test(digestMethod.getAlgorithm())) {
+                    && includeExcludePredicate.test(digestMethod.getAlgorithm())) {
                 log.debug("Resolved reference digest method algorithm URI from SAML metadata DigestMethod: {}",
                         digestMethod.getAlgorithm());
                 return digestMethod.getAlgorithm();
@@ -193,7 +193,7 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         log.debug("Could not resolve signature reference digest method algorithm based on SAML metadata, " 
                 + "falling back to locally configured algorithms");
         
-        return super.resolveReferenceDigestMethod(criteria, whitelistBlacklistPredicate);
+        return super.resolveReferenceDigestMethod(criteria, includeExcludePredicate);
     }
     
     /**
