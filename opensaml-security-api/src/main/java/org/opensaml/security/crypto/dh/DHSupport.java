@@ -17,7 +17,6 @@
 
 package org.opensaml.security.crypto.dh;
 
-import java.io.IOException;
 import java.math.BigInteger;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
@@ -66,7 +65,7 @@ public final class DHSupport {
      * @throws NoSuchProviderException if provider is unknown
      * @throws InvalidKeyException if supplied key is invalid
      */
-    public static byte[] performKeyAgreement(@Nonnull final DHPublicKey publicKey,
+    @Nonnull public static byte[] performKeyAgreement(@Nonnull final DHPublicKey publicKey,
             @Nonnull final DHPrivateKey privateKey, @Nullable final String provider)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException {
         Constraint.isNotNull(publicKey, "DHPublicKey was null");
@@ -96,7 +95,7 @@ public final class DHSupport {
      * @throws NoSuchProviderException if provider is unknown
      * @throws InvalidAlgorithmParameterException if the public key's {@link DHParameterSpec} is not supported
      */
-    public static KeyPair generateCompatibleKeyPair(@Nonnull final DHPublicKey publicKey,
+    @Nonnull public static KeyPair generateCompatibleKeyPair(@Nonnull final DHPublicKey publicKey,
             @Nullable final String provider)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
         Constraint.isNotNull(publicKey, "DHPublicKey was null");
@@ -117,7 +116,7 @@ public final class DHSupport {
      * 
      * @return the prime Q domain parameter, or null if could not be processed
      */
-    public static BigInteger getPrimeQDomainParameter(@Nonnull final DHPublicKey publicKey) {
+    @Nullable public static BigInteger getPrimeQDomainParameter(@Nonnull final DHPublicKey publicKey) {
         Constraint.isNotNull(publicKey, "DHPublicKey was null");
         try (ASN1InputStream input = new ASN1InputStream(publicKey.getEncoded())) {
             final SubjectPublicKeyInfo spki = SubjectPublicKeyInfo.getInstance(input.readObject());

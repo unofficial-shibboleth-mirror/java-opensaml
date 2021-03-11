@@ -76,7 +76,7 @@ public final class ECSupport {
      * @throws NoSuchProviderException if provider is unknown
      * @throws InvalidKeyException if supplied key is invalid
      */
-    public static byte[] performKeyAgreement(@Nonnull final ECPublicKey publicKey,
+    @Nonnull public static byte[] performKeyAgreement(@Nonnull final ECPublicKey publicKey,
             @Nonnull final ECPrivateKey privateKey, @Nullable final String provider)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeyException {
         Constraint.isNotNull(publicKey, "ECPublicKey was null");
@@ -106,7 +106,7 @@ public final class ECSupport {
      * @throws NoSuchProviderException if provider is unknown
      * @throws InvalidAlgorithmParameterException if the public key's {@link ECParameterSpec} is not supported
      */
-    public static KeyPair generateCompatibleKeyPair(@Nonnull final ECPublicKey publicKey,
+    @Nonnull public static KeyPair generateCompatibleKeyPair(@Nonnull final ECPublicKey publicKey,
             @Nullable final String provider)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
         Constraint.isNotNull(publicKey, "ECPublicKey was null");
@@ -272,7 +272,7 @@ public final class ECSupport {
      * @param b the byte array
      * @return the byte array without leading zero bytes
      */
-    private static byte[] trimZeroes(@Nonnull final byte[] b) {
+    @Nonnull private static byte[] trimZeroes(@Nonnull final byte[] b) {
         Constraint.isNotNull(b, "byte[] data was null");
         
         int i = 0;
