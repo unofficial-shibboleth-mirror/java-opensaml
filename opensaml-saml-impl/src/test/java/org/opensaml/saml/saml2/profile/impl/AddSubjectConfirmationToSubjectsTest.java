@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
@@ -39,6 +40,7 @@ import org.testng.annotations.Test;
 
 
 /** Test for {@link AddSubjectConfirmationToSubjects}. */
+@SuppressWarnings("javadoc")
 public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;
@@ -106,7 +108,27 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         Assert.assertEquals(data.getAddress(), "127.0.0.1");
         Assert.assertEquals(data.getInResponseTo(), ((AuthnRequest) prc.getInboundMessageContext().getMessage()).getID());
     }
-    
+
+    @Test void testNoAddress() throws ComponentInitializationException {
+        addAssertions();
+        
+        action.setMethod(SubjectConfirmation.METHOD_BEARER);
+        action.setAddressLookupStrategy(FunctionSupport.constant(null));
+        action.initialize();
+        
+        action.execute(prc);
+        ActionTestingSupport.assertProceedEvent(prc);
+        
+        final Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
+        final Subject subject = assertion.getSubject();
+        Assert.assertNotNull(subject);
+        Assert.assertEquals(subject.getSubjectConfirmations().size(), 1);
+        
+        final SubjectConfirmationData data = subject.getSubjectConfirmations().get(0).getSubjectConfirmationData();
+        Assert.assertNotNull(data);
+        Assert.assertNull(data.getAddress());
+    }
+
     /** Set up the test message with some assertions. */
     private void addAssertions() {
         final Response response = SAML2ActionTestingSupport.buildResponse();

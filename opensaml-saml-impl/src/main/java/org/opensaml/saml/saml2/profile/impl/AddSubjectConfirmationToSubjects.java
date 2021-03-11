@@ -86,8 +86,8 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     /** Strategy used to locate the {@link Response} to operate on. */
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
     
-    /** Optional strategy to obtain value for {@link SubjectConfirmationData#getAddress()}. */
-    @Nullable private Function<ProfileRequestContext,String> addressLookupStrategy;
+    /** Strategy to obtain value for {@link SubjectConfirmationData#getAddress()}. */
+    @NonnullAfterInit private Function<ProfileRequestContext,String> addressLookupStrategy;
 
     /** Optional strategy to obtain value for {@link SubjectConfirmationData#getInResponseTo()}. */
     @Nullable private Function<ProfileRequestContext,String> inResponseToLookupStrategy;
@@ -117,18 +117,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
                         SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
         overwriteExisting = true;
         responseLookupStrategy = new MessageLookup<>(Response.class).compose(new OutboundMessageContextLookup());
-        
-        // Default pulls from servlet request.
-        addressLookupStrategy = new Function<>() {
-            public String apply(final ProfileRequestContext input) {
-                final String address = getHttpServletRequest() != null ?
-                        HttpServletSupport.getRemoteAddr(getHttpServletRequest()) : null;
-                log.debug("{} Setting confirmation data Address to {}", getLogPrefix(),
-                        address != null ? address : "(none)");
-                return address;
-            }
-        };
-        
+                
         // Default pulls from inbound message context and a SAMLMessageInfoContext child.
         inResponseToLookupStrategy = new Function<>() {
             public String apply(final ProfileRequestContext input) {
@@ -258,6 +247,10 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         if (confirmationMethod == null) {
             throw new ComponentInitializationException("Confirmation method cannot be null or empty");
         }
+
+        if (addressLookupStrategy == null) {
+            addressLookupStrategy = new RemoteAddressStrategy();
+        }
     }
     
     /** {@inheritDoc} */
@@ -288,8 +281,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         
         SubjectConfirmationData confirmationData = null;
         
-        final String address = addressLookupStrategy != null
-                ? addressLookupStrategy.apply(profileRequestContext) : null;
+        final String address = addressLookupStrategy.apply(profileRequestContext);
         if (address != null) {
             confirmationData = confirmationData != null ? confirmationData : confirmationDataBuilder.buildObject();
             confirmationData.setAddress(address);
@@ -380,4 +372,21 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         return clone;
     }
     
+    /**
+     * Default strategy for obtaining client address from servlet layer.
+     * 
+     * @since 4.1.0
+     */
+    private class RemoteAddressStrategy implements Function<ProfileRequestContext,String> {
+
+        /** {@inheritDoc} */
+        @Nullable public String apply(@Nullable final ProfileRequestContext t) {
+            if (getHttpServletRequest() != null) {
+                return HttpServletSupport.getRemoteAddr(getHttpServletRequest());
+            }
+            
+            return null;
+        }
+        
+    }
 }
