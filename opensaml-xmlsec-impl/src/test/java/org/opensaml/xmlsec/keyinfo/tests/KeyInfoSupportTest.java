@@ -907,6 +907,97 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         keyInfo.getDEREncodedKeyValues().clear();
     }
     
+    /** Tests adding a public key as a DEREncodedKeyValue to KeyInfo. */
+    @Test
+    public void testAddDEREncodedECPublicKeyWithNamedCurve() {
+       keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+        
+        try {
+            KeyInfoSupport.addDEREncodedPublicKey(keyInfo, javaECPubKey_NamedCurve1);
+        } catch (NoSuchAlgorithmException e) {
+            Assert.fail("Unsupported key algorithm: " + e);
+        } catch (InvalidKeySpecException e) {
+            Assert.fail("Unsupported key specification: " + e);
+        }
+        DEREncodedKeyValue kv = keyInfo.getDEREncodedKeyValues().get(0);
+        Assert.assertNotNull(kv, "DEREncodedKeyValue was null");
+        
+        ECPublicKey javaKey = null;
+        try {
+            javaKey = (ECPublicKey) KeyInfoSupport.getKey(kv);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of Java key failed: " + e);
+        }
+        
+        Assert.assertEquals(javaECPubKey_NamedCurve1, javaKey, "Inserted EC public key was not the expected value");
+        
+        keyInfo.getDEREncodedKeyValues().clear();
+    }
+    
+    /** Tests adding a public key as a DEREncodedKeyValue to KeyInfo. */
+    @Test
+    public void testAddDEREncodedECPublicKeyWithExplictParams() {
+       keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+        
+       try {
+           // As of this writing SunEC provider doesn't support explicit params,
+           // and so the Java ECPublicKeys wind up not being equal below.  So for this test only,
+           // register BC as the preferred provider, and unregister at the end.
+           // (Note: Provider positions are 1-based, not 0-based).
+           Security.insertProviderAt(new BouncyCastleProvider(), 1);
+           
+           try {
+               KeyInfoSupport.addDEREncodedPublicKey(keyInfo, javaECPubKey_ExplicitParams1);
+           } catch (NoSuchAlgorithmException e) {
+               Assert.fail("Unsupported key algorithm: " + e);
+           } catch (InvalidKeySpecException e) {
+               Assert.fail("Unsupported key specification: " + e);
+           }
+           DEREncodedKeyValue kv = keyInfo.getDEREncodedKeyValues().get(0);
+           Assert.assertNotNull(kv, "DEREncodedKeyValue was null");
+
+           ECPublicKey javaKey = null;
+           try {
+               javaKey = (ECPublicKey) KeyInfoSupport.getKey(kv);
+           } catch (KeyException e) {
+               Assert.fail("Extraction of Java key failed: " + e);
+           }
+
+           Assert.assertEquals(javaECPubKey_ExplicitParams1, javaKey, "Inserted EC public key was not the expected value");
+       } finally {
+           Security.removeProvider("BC");
+       }
+        
+       keyInfo.getDEREncodedKeyValues().clear();
+    }
+    
+    /** Tests adding a public key as a DEREncodedKeyValue to KeyInfo. */
+    @Test
+    public void testAddDEREncodedDHPublicKey() {
+       keyInfo.getXMLObjects(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME).clear();
+        
+        try {
+            KeyInfoSupport.addDEREncodedPublicKey(keyInfo, javaDHPubKey1);
+        } catch (NoSuchAlgorithmException e) {
+            Assert.fail("Unsupported key algorithm: " + e);
+        } catch (InvalidKeySpecException e) {
+            Assert.fail("Unsupported key specification: " + e);
+        }
+        DEREncodedKeyValue kv = keyInfo.getDEREncodedKeyValues().get(0);
+        Assert.assertNotNull(kv, "DEREncodedKeyValue was null");
+        
+        DHPublicKey javaKey = null;
+        try {
+            javaKey = (DHPublicKey) KeyInfoSupport.getKey(kv);
+        } catch (KeyException e) {
+            Assert.fail("Extraction of Java key failed: " + e);
+        }
+        
+        Assert.assertEquals(javaDHPubKey1, javaKey, "Inserted DH public key was not the expected value");
+        
+        keyInfo.getDEREncodedKeyValues().clear();
+    }
+    
     /**
      * Tests adding a certificate as a X509Data/X509Certificate to KeyInfo.
      * 

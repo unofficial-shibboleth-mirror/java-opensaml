@@ -51,6 +51,8 @@ import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.DHPublicKeySpec;
 
 import org.apache.xml.security.utils.XMLUtils;
+import org.bouncycastle.asn1.ASN1InputStream;
+import org.bouncycastle.asn1.x509.SubjectPublicKeyInfo;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -1062,8 +1064,9 @@ public class KeyInfoSupport {
     @Nonnull public static PublicKey getKey(@Nonnull final DEREncodedKeyValue keyValue) throws KeyException{
         // Note: Testing shows DH must come before DSA.  If you attempt to decode a DH key as DSA,
         // it "works", b/c they have similar structures, but it's probably not correct.  DSA does not decode as DH,
-        // so this ordering is what works at present. If this methodology has a problem in the future, we'll likely
-        // need to switch to explicit ASN.1 parsing of the key's type, instead of "try and return what doesn't fail".
+        // so this ordering is what works at present.
+        // This is now only relevant if the direct parsing of the key type below fails, and we fallback to
+        // "try everything and pick the first that doesn't fail" approach.
         final String[] supportedKeyTypes = {
                 JCAConstants.KEY_ALGO_RSA,
                 JCAConstants.KEY_ALGO_EC,
@@ -1081,8 +1084,11 @@ public class KeyInfoSupport {
            throw new KeyException("DEREncodedKeyValue could not be base64 decoded",e);
         }
 
-        // Iterate over the supported key types until one produces a public key.
-        for (final String keyType : supportedKeyTypes) {
+        final String parsedKeyType = parseKeyType(encodedKey);
+        
+        final String[] keyTypes = parsedKeyType != null ? new String[]{parsedKeyType}  : supportedKeyTypes;
+        
+        for (final String keyType : keyTypes) {
             getLogger().trace("Attempting to decode DER key as type: {}", keyType);
             try {
                 final KeyFactory keyFactory = KeyFactory.getInstance(keyType);
@@ -1097,6 +1103,56 @@ public class KeyInfoSupport {
             }
         }
         throw new KeyException("DEREncodedKeyValue did not contain a supported key type");
+    }
+
+    /**
+     * Parse the JCA key algorithm type from the ASN.1 encoded form of the public key.
+     * 
+     * <p>
+     * Methodology is to parse the ASN.1 data to the <code>SubjectPublicKeyInfo</code>, read the
+     * <code>AlgorithmIdentifier</code> for the key type's OID, then map the OID to the JCA
+     * key algorithm.
+     * </p>
+     * 
+     * @param encodedKey the ASN.1 encoded key
+     * 
+     * @return the JCA key algorithm, or null if the OID parsing or OID-to-algorithm mapping fails
+     */
+    private static String parseKeyType(@Nonnull final byte[] encodedKey) {
+        try (final ASN1InputStream input = new ASN1InputStream(encodedKey)) {
+            final SubjectPublicKeyInfo spki = SubjectPublicKeyInfo.getInstance(input.readObject());
+            final String keyTypeOID = spki.getAlgorithm().getAlgorithm().getId();
+            getLogger().debug("Parsed key type OID: {}", keyTypeOID);
+            
+            String parsedKeyType = null;
+            switch(keyTypeOID) {
+                case "1.2.840.113549.1.1.1":
+                    parsedKeyType = JCAConstants.KEY_ALGO_RSA;
+                    break;
+                case "1.2.840.10045.2.1":
+                    parsedKeyType = JCAConstants.KEY_ALGO_EC;
+                    break;
+                case "1.2.840.10040.4.1":
+                    parsedKeyType = JCAConstants.KEY_ALGO_DSA;
+                    break;
+                // There are apparently 2 OIDS in use for DH public keys.
+                // This is what's defined in the specs for DH keys. See RFC 3279, section 2.3.3.
+                case "1.2.840.10046.2.1":
+                // This is what's defined in the specs for DH key agreement. See PKCS #3.
+                // Which sounds wrong but: It's the one returned by Java KeyPairGenerator, etc
+                case "1.2.840.113549.1.3.1":
+                    parsedKeyType = JCAConstants.KEY_ALGO_DIFFIE_HELLMAN;
+                    break;
+                default:
+                    parsedKeyType = null;
+            }
+            
+            getLogger().debug("Parsed key type: {}", parsedKeyType);
+            return parsedKeyType;
+        } catch (final Exception e) {
+            getLogger().warn("Error parsing encoded key, can not determine key type", e);
+            return null;
+        }
     }
     
     /**
