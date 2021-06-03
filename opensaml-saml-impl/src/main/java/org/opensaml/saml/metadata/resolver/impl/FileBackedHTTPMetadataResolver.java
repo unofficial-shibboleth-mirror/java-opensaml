@@ -256,9 +256,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
                     }
                 }
             }
-        }
-
-        if (backupFile.exists()) {
+        } else {
             if (backupFile.isDirectory()) {
                 throw new ResolverException("Filepath " + backupFile.getAbsolutePath()
                 + " is a directory and may not be used as a backup metadata file");
