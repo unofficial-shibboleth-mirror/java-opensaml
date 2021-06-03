@@ -284,10 +284,15 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
                         getLogPrefix(), metadataBackupFile.getAbsolutePath());
             try {
                 final byte[] backingData = Files.toByteArray(metadataBackupFile);
-                log.debug("{} Successfully initialized from backup file: {}", 
-                        getLogPrefix(), metadataBackupFile.getAbsolutePath());
-                initializedFromBackupFile = true;
-                return backingData;
+                if (backingData == null || backingData.length == 0) {
+                    log.debug("{} Backup file byte array was null or empty, continuing with normal HTTP fetch: {}", 
+                            getLogPrefix(), metadataBackupFile.getAbsolutePath());
+                } else {
+                    log.debug("{} Successfully initialized from backup file: {}", 
+                            getLogPrefix(), metadataBackupFile.getAbsolutePath());
+                    initializedFromBackupFile = true;
+                    return backingData;
+                }
             } catch (final IOException e) {
                 log.warn("{} Error initializing from backup file, continuing with normal HTTP fetch", 
                         getLogPrefix(), e);
