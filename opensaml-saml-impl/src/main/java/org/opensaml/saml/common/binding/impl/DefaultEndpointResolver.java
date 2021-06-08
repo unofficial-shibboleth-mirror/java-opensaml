@@ -26,6 +26,7 @@ import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import org.opensaml.saml.common.binding.AbstractEndpointResolver;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
+import org.opensaml.saml.criterion.StartsWithLocationCriterion;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
@@ -37,11 +38,11 @@ import org.slf4j.LoggerFactory;
  * <p>The supported {@link net.shibboleth.utilities.java.support.resolver.Criterion} types and their use follows:</p>
  * 
  * <dl>
- *  <dt> {@link EndpointCriterion}
- *  <dd> Requires that the candidate endpoint's various attributes match the attributes found in the criterion. 
+ *  <dt> {@link EndpointCriterion} </dt>
+ *  <dd> Requires that the candidate endpoint's various attributes match the attributes found in the criterion. </dd> 
  *  
- *  <dt> {@link BindingCriterion}
- *  <dd> Requires that the candidate endpoint's Binding attribute is among the bindings included in the criterion.
+ *  <dt> {@link BindingCriterion} </dt>
+ *  <dd> Requires that the candidate endpoint's Binding attribute is among the bindings included in the criterion. </dd>
  * </dl>
  * 
  * @param <EndpointType> type of endpoint

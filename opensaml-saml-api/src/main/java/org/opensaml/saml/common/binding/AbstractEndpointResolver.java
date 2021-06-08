@@ -34,6 +34,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.saml.criterion.BestMatchLocationCriterion;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
@@ -58,6 +59,10 @@ import org.slf4j.LoggerFactory;
  *  type of endpoint object (via schema type or element name) to resolve. It MAY contain other attributes that
  *  will be used in matching candidate endpoints for suitability, such as index, binding, location, etc. If so
  *  marked, it may also be resolved as a trusted endpoint without additional verification required.</dd>
+ *  
+ *  <dt>{@link BestMatchLocationCriterion}</dt>
+ *  <dd>Prioritizes endpoint whose Location matches the most characters of the input criterion location. Only
+ *  applied to the {@link #resolveSingle(CriteriaSet)} method.</dd>
  *  
  *  <dt>{@link BindingCriterion}</dt>
  *  <dd>Ordered list of bindings to filter and sort the endpoints. This overrides the ordering from the
@@ -118,7 +123,6 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
     }
     
     /** {@inheritDoc} */
-    @Override
     @Nonnull @NonnullElements public Iterable<EndpointType> resolve(@Nullable final CriteriaSet criteria)
             throws ResolverException {
         validateCriteria(criteria);
@@ -144,8 +148,8 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
         return candidates;
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
-    @Override
     @Nullable public EndpointType resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
         validateCriteria(criteria);
 
@@ -158,15 +162,45 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
             return null;
         }
         
+        // Starting at -1 ensures the first candidate automatically starts as the best match.
+        int bestMatchLen = -1;
+        EndpointType bestMatch = null;
+        
+        final BestMatchLocationCriterion startsWith = criteria.get(BestMatchLocationCriterion.class);
+        
         for (final EndpointType candidate : getCandidatesFromMetadata(criteria)) {
             if (doCheckEndpoint(criteria, candidate)) {
-                return candidate;
+                if (startsWith != null) {
+                    // Evaluate how good a match it is.
+                    final String candidateLocation = candidate.getLocation() != null ?
+                            candidate.getLocation() : candidate.getResponseLocation();
+                    int i = 0;
+                    for (; i < candidateLocation.length() && i < startsWith.getLocation().length(); ++i) {
+                        if (candidateLocation.charAt(i) != startsWith.getLocation().charAt(i)) {
+                            break;
+                        }
+                    }
+                    
+                    // If the match is better, reset.
+                    if (i > bestMatchLen) {
+                        bestMatchLen = i;
+                        bestMatch = candidate;
+                    }
+                } else {
+                    // Not testing for overlap with input criterion, so just return the first match.
+                    return candidate;
+                }
             }
+        }
+        
+        if (bestMatch != null) {
+            return bestMatch;
         }
         
         log.debug("{} No candidate endpoints met criteria", getLogPrefix());
         return null;
     }
+// Checkstyle: CyclomaticComplexity ON
     
     /**
      * Apply the supplied criteria to a candidate endpoint to determine its suitability. 

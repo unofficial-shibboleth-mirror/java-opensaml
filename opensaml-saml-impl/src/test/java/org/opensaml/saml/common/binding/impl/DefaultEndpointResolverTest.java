@@ -39,12 +39,14 @@ import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.criterion.BestMatchLocationCriterion;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -352,6 +354,40 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
             eps.add(ep);
         }
         Assert.assertEquals(eps.size(), 2);
+    }
+    
+    /**
+     * Get the "best" endpoint.
+     * 
+     * @throws UnmarshallingException ...
+     * @throws ResolverException ...
+     */
+    @Test
+    public void testBestMatch() throws UnmarshallingException, ResolverException {
+        
+        endpointCrit.getEndpoint().setLocation(null);
+        final RoleDescriptorCriterion roleCrit =
+                new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithVhosts.xml"));
+        
+        CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp.example.org/Foo"));
+        AssertionConsumerService ep = resolver.resolveSingle(crits);
+        Assert.assertNotNull(ep);
+        Assert.assertEquals(ep.getLocation(), "https://sp.example.org/POST");
+        
+        crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp2.example.org/Foo"));
+        ep = resolver.resolveSingle(crits);
+        Assert.assertNotNull(ep);
+        Assert.assertEquals(ep.getLocation(), "https://sp2.example.org/POST");
+        
+        crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp2.example.org/bar/Foo"));
+        ep = resolver.resolveSingle(crits);
+        Assert.assertNotNull(ep);
+        Assert.assertEquals(ep.getLocation(), "https://sp2.example.org/POST");
+        
+        crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp2.example.org/sub/Foo"));
+        ep = resolver.resolveSingle(crits);
+        Assert.assertNotNull(ep);
+        Assert.assertEquals(ep.getLocation(), "https://sp2.example.org/sub/POST");
     }
     
     @Nonnull private SPSSODescriptor loadMetadata(@Nonnull @NotEmpty final String path) throws UnmarshallingException {
