@@ -24,7 +24,15 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.Criterion;
 
-/** {@link Criterion} representing a SAML binding location. */
+/**
+ * {@link Criterion} representing a SAML binding location.
+ * 
+ * <p>There appears to be no use of this class throughout the library, so it is proposed for
+ * removal.</p>
+ * 
+ * @deprecated
+ */
+@Deprecated(since="4.2.0", forRemoval=true)
 public final class BindingLocationCriterion implements Criterion {
 
     /** The binding location URI. */
