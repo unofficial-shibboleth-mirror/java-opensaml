@@ -19,7 +19,6 @@ package org.opensaml.saml.saml2.profile.impl;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -113,7 +112,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      * @param formats   formats to exclude
      */
     public void setExcludedFormats(@Nonnull @NonnullElements final Collection<String> formats) {
-        excludedFormats = new HashSet<>(StringSupport.normalizeStringCollection(formats));
+        excludedFormats = Set.copyOf(StringSupport.normalizeStringCollection(formats));
     }
 
     /** {@inheritDoc} */
