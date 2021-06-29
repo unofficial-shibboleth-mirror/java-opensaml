@@ -52,7 +52,7 @@
         <java-support.version>8.2.1</java-support.version>
         <spring-extensions.version>6.1.2</spring-extensions.version>
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
-        <opensaml-parent.site.url>${shibboleth.site.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
+        <opensaml-parent.site.url>${shibboleth.site.deploy.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
         <opensaml-module.site.url>${opensaml-parent.site.url}${project.artifactId}</opensaml-module.site.url>
     </properties>
 
@@ -157,7 +157,7 @@
     <distributionManagement>
         <site>
             <id>site</id>
-            <url>dav:${opensaml-parent.site.url}</url>
+            <url>scp:${opensaml-parent.site.url}</url>
         </site>
     </distributionManagement>
 

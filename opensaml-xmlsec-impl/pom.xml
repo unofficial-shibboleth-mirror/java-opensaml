@@ -111,7 +111,7 @@
     <distributionManagement>
         <site>
             <id>site</id>
-            <url>dav:${opensaml-module.site.url}</url>
+            <url>scp:${opensaml-module.site.url}</url>
         </site>
     </distributionManagement>
 
