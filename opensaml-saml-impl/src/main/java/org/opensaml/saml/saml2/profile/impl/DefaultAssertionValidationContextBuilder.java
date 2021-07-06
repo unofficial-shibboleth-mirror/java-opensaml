@@ -34,6 +34,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -886,7 +887,7 @@ public class DefaultAssertionValidationContextBuilder
      * <ol>
      * <li>
      * the result of evaluating
-     * {@link SAMLBindingSupport#getActualReceiverEndpointURI(MessageContext, javax.servlet.http.HttpServletRequest)}
+     * {@link SAMLBindingSupport#getActualReceiverEndpointURI(MessageContext, HttpServletRequest)}
      * </li>
      * <li>
      * if enabled via the eval of {@link #getIncludeSelfEntityIDAsRecipient()}, the value from evaluating
