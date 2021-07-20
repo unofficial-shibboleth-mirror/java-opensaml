@@ -50,24 +50,18 @@
         	<artifactId>guava</artifactId>
         </dependency>
 
+        <!-- Needed for LDAP storage plugin. -->
         <dependency>
             <groupId>org.ldaptive</groupId>
             <artifactId>ldaptive</artifactId>
+            <optional>true</optional>
         </dependency>
 
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-beans</artifactId>
-		</dependency>
-
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-core</artifactId>
-		</dependency>
-
+        <!-- Needed for Memcache storage plugin. -->
         <dependency>
             <groupId>net.spy</groupId>
             <artifactId>spymemcached</artifactId>
+            <optional>true</optional>
         </dependency>
 
         <dependency>
@@ -75,9 +69,11 @@
             <artifactId>cryptacular</artifactId>
         </dependency>
 
+        <!-- Needed for JPA storage plugin. -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
+            <optional>true</optional>
 		</dependency>
 
         <!-- Provided Dependencies -->
@@ -97,9 +93,14 @@
             <artifactId>jakarta.json</artifactId>
             <scope>runtime</scope>
         </dependency>
+        
+        <!-- Needed for JPA storage plugin. -->
+        <!-- TODO: I think is test scope here but runtime for the IdP. -->
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-orm</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -152,6 +153,21 @@
         </dependency>
 
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-context</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-test</artifactId>
             <scope>test</scope>
@@ -159,12 +175,6 @@
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-web</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>${spring.groupId}</groupId>
-            <artifactId>spring-context</artifactId>
             <scope>test</scope>
         </dependency>
 
