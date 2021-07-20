@@ -28,6 +28,7 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.config.provider.MapBasedConfiguration;
+import org.opensaml.core.config.provider.SystemPropertyConfigurationPropertiesSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -139,6 +140,12 @@ public class ConfigurationService {
         final Logger log = getLogger();
         log.trace("Resolving configuration propreties source");
         final Iterator<ConfigurationPropertiesSource> iter = configPropertiesLoader.iterator();
+        
+        if (!iter.hasNext()) {
+            log.trace("No ConfigurationPropertiesSources are configured, defaulting to system properties");
+            return new SystemPropertyConfigurationPropertiesSource().getProperties();
+        }
+        
         while (iter.hasNext()) {
             final ConfigurationPropertiesSource source = iter.next();
             log.trace("Evaluating configuration properties implementation: {}", source.getClass().getName());
