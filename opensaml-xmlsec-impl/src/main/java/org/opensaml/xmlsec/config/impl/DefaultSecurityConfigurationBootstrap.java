@@ -22,14 +22,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.agreement.impl.DigestMethod;
 import org.opensaml.xmlsec.agreement.impl.KANonce;
 import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
+import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.support.ChainingEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -67,6 +70,15 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
  * various configuration parameters.
  */
 public class DefaultSecurityConfigurationBootstrap {
+    
+    /** Config property name for ECDH default Key Derivation Function (KDF). */
+    public static final String CONFIG_PROPERTY_ECDH_DEFAULT_KDF = "opensaml.config.ecdh.defaultKDF";
+    
+    /** Config property value for default KDF: ConcatKDF. */
+    public static final String CONCATKDF = "ConcatKDF";
+    
+    /** Config property value for default KDF: PBKDF2. */
+    public static final String PBKDF2 = "PBKDF2";
     
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(DefaultSecurityConfigurationBootstrap.class);
@@ -113,19 +125,49 @@ public class DefaultSecurityConfigurationBootstrap {
                 null
                 ));
         
+        config.setKeyAgreementConfigurations(buildKeyAgreementConfigurations());
+        
+        config.setDataKeyInfoGeneratorManager(buildDataEncryptionKeyInfoGeneratorManager());
+        config.setKeyTransportKeyInfoGeneratorManager(buildKeyTransportEncryptionKeyInfoGeneratorManager());
+        
+        return config;
+    }
+    
+    /**
+     * Build key agreement configurations.
+     * 
+     * @return key agreement configurations.
+     */
+    @Nonnull protected static Map<String, KeyAgreementEncryptionConfiguration> buildKeyAgreementConfigurations() {
+        
+        final Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = new HashMap<>();
         try {
-            final Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = new HashMap<>();
+            
+            final Properties props = ConfigurationService.getConfigurationProperties(); 
             
             final KeyAgreementEncryptionConfiguration ecConfig = new KeyAgreementEncryptionConfiguration();
             ecConfig.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
-            final ConcatKDF ecConcatKDF = new ConcatKDF();
-            // Need to set these 3 to something to confirm to NIST spec requirements. Actual deployments
-            // can and should override in a custom config with specific parameter values, if needed.
-            ecConcatKDF.setAlgorithmID("00");
-            ecConcatKDF.setPartyUInfo("00");
-            ecConcatKDF.setPartyVInfo("00");
-            ecConcatKDF.initialize();
-            ecConfig.setParameters(Set.of(ecConcatKDF));
+            
+            final String ecKDF = 
+                    props != null ? props.getProperty(CONFIG_PROPERTY_ECDH_DEFAULT_KDF, CONCATKDF) : CONCATKDF;
+                    
+            if (CONCATKDF.equals(ecKDF)) {
+                final ConcatKDF ecConcatKDF = new ConcatKDF();
+                // Need to set these 3 to something to confirm to NIST spec requirements. Actual deployments
+                // can and should override in a custom config with specific parameter values, if needed.
+                ecConcatKDF.setAlgorithmID("00");
+                ecConcatKDF.setPartyUInfo("00");
+                ecConcatKDF.setPartyVInfo("00");
+                ecConcatKDF.initialize();
+                ecConfig.setParameters(Set.of(ecConcatKDF));
+            } else if (PBKDF2.equals(ecKDF)) {
+                final PBKDF2 ecPBKDF2 = new PBKDF2();
+                ecPBKDF2.initialize();
+                ecConfig.setParameters(Set.of(ecPBKDF2));
+            } else {
+                LOG.warn("Saw unknown value for ECDH KDF '{}', omitting global ECDH KDF configuration", ecKDF);
+                ecConfig.setParameters(Collections.emptySet());
+            }
             kaConfigs.put(JCAConstants.KEY_ALGO_EC, ecConfig);
             
             // For DH we default the Legacy KDF variant as that is mandatory for DH support.
@@ -134,21 +176,17 @@ public class DefaultSecurityConfigurationBootstrap {
             final DigestMethod digestMethod = new DigestMethod();
             digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
             digestMethod.initialize();
-            KANonce nonce = new KANonce();
+            final KANonce nonce = new KANonce();
             // This will use an auto-generated nonce value each time
             nonce.initialize();
             dhConfig.setParameters(Set.of(digestMethod, nonce));
             kaConfigs.put(JCAConstants.KEY_ALGO_DH, dhConfig);
             
-            config.setKeyAgreementConfigurations(kaConfigs);
         } catch (final ComponentInitializationException e) {
             LOG.error("Initialization failure on global key agreement encryption configuration, will be unusable", e);
         }
         
-        config.setDataKeyInfoGeneratorManager(buildDataEncryptionKeyInfoGeneratorManager());
-        config.setKeyTransportKeyInfoGeneratorManager(buildKeyTransportEncryptionKeyInfoGeneratorManager());
-        
-        return config;
+        return kaConfigs;
     }
     
     /**
