@@ -69,13 +69,6 @@
             <artifactId>cryptacular</artifactId>
         </dependency>
 
-        <!-- Needed for JPA storage plugin. -->
-		<dependency>
-			<groupId>org.hibernate</groupId>
-			<artifactId>hibernate-core</artifactId>
-            <optional>true</optional>
-		</dependency>
-
         <!-- Provided Dependencies -->
         <dependency>
             <groupId>jakarta.json</groupId>
@@ -95,11 +88,15 @@
         </dependency>
         
         <!-- Needed for JPA storage plugin. -->
-        <!-- TODO: I think is test scope here but runtime for the IdP. -->
+        <dependency>
+            <groupId>org.hibernate</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <optional>true</optional>
+        </dependency>
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-orm</artifactId>
-            <scope>runtime</scope>
+            <scope>test</scope>
             <optional>true</optional>
         </dependency>
 
