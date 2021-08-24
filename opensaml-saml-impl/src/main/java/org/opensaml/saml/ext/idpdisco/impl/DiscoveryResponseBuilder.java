@@ -32,8 +32,8 @@ public class DiscoveryResponseBuilder extends AbstractSAMLObjectBuilder<Discover
     /** {@inheritDoc} */
     @Override
     public DiscoveryResponse buildObject() {
-        return buildObject(SAMLConstants.SAML20MD_NS, DiscoveryResponse.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20MD_PREFIX);
+        return buildObject(SAMLConstants.SAML_IDP_DISCO_NS, DiscoveryResponse.DEFAULT_ELEMENT_LOCAL_NAME,
+                SAMLConstants.SAML_IDP_DISCO_PREFIX);
     }
 
     /** {@inheritDoc} */
