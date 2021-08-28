@@ -29,23 +29,24 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.ldaptive.AttributeModification;
-import org.ldaptive.AttributeModificationType;
 import org.ldaptive.Connection;
 import org.ldaptive.DeleteOperation;
 import org.ldaptive.DeleteRequest;
+import org.ldaptive.DeleteResponse;
 import org.ldaptive.LdapAttribute;
 import org.ldaptive.LdapEntry;
 import org.ldaptive.LdapException;
 import org.ldaptive.ModifyOperation;
 import org.ldaptive.ModifyRequest;
-import org.ldaptive.Response;
+import org.ldaptive.ModifyResponse;
+import org.ldaptive.PooledConnectionFactory;
+import org.ldaptive.Result;
 import org.ldaptive.ResultCode;
 import org.ldaptive.SearchOperation;
 import org.ldaptive.SearchRequest;
-import org.ldaptive.SearchResult;
+import org.ldaptive.SearchResponse;
 import org.ldaptive.ext.MergeOperation;
 import org.ldaptive.ext.MergeRequest;
-import org.ldaptive.pool.PooledConnectionFactory;
 import org.opensaml.storage.AbstractStorageService;
 import org.opensaml.storage.StorageCapabilitiesEx;
 import org.opensaml.storage.StorageRecord;
@@ -96,14 +97,14 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
     /** {@inheritDoc} */
     @Override protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-        connectionFactory.getConnectionPool().initialize();
+        connectionFactory.initialize();
     }
 
     /** {@inheritDoc} */
     @Override protected void doDestroy() {
         super.doDestroy();
         if (isInitialized()) {
-            connectionFactory.getConnectionPool().close();
+            connectionFactory.close();
             connectionFactory = null;
         }
     }
@@ -114,8 +115,8 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
         if (expiration != null) {
             throw new UnsupportedOperationException("Expiration not supported");
         }
-        final LdapEntry entry = new LdapEntry(context, defaultAttributes);
-        entry.addAttribute(new LdapAttribute(key, value));
+        final LdapEntry entry = LdapEntry.builder().dn(context).attributes(defaultAttributes).build();
+        entry.addAttributes(new LdapAttribute(key, value));
         try {
             merge(entry);
             return true;
@@ -128,9 +129,9 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
     /** {@inheritDoc} */
     @Override @Nullable public <T> StorageRecord<T> read(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String key) throws IOException {
-        SearchResult result = null;
+        SearchResponse result = null;
         try {
-            result = search(context, key).getResult();
+            result = search(context, key);
         } catch (final LdapException e) {
             if (e.getResultCode() != ResultCode.NO_SUCH_OBJECT) {
                 log.error("LDAP search operation failed: {}", e.getMessage());
@@ -138,7 +139,7 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
             }
         }
         StorageRecord<T> record = null;
-        if (result != null && result.size() > 0) {
+        if (result != null && result.entrySize() > 0) {
             final LdapEntry entry = result.getEntry();
             if (entry != null) {
                 final LdapAttribute attr = entry.getAttribute(key);
@@ -162,8 +163,8 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
         if (expiration != null) {
             throw new UnsupportedOperationException("Expiration not supported");
         }
-        final LdapEntry entry = new LdapEntry(context, defaultAttributes);
-        entry.addAttribute(new LdapAttribute(key, value));
+        final LdapEntry entry = LdapEntry.builder().dn(context).attributes(defaultAttributes).build();
+        entry.addAttributes(new LdapAttribute(key, value));
         try {
             merge(entry);
             return true;
@@ -235,13 +236,11 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      * 
      * @throws LdapException if the operation fails
      */
-    @Nonnull private Response<Void> merge(@Nonnull final LdapEntry entry) throws LdapException {
-        try (final Connection conn = connectionFactory.getConnection()) {
-            final MergeOperation merge = new MergeOperation(conn);
-            final MergeRequest request = new MergeRequest(entry);
-            request.setIncludeAttributes(entry.getAttributeNames());
-            return merge.execute(request);
-        }
+    @Nonnull private Result merge(@Nonnull final LdapEntry entry) throws LdapException {
+        final MergeOperation merge = new MergeOperation(connectionFactory);
+        final MergeRequest request = new MergeRequest(entry);
+        request.setIncludeAttributes(entry.getAttributeNames());
+        return merge.execute(request);
     }
 
     /**
@@ -254,12 +253,10 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      * 
      * @throws LdapException if the operation fails
      */
-    @Nonnull private Response<SearchResult> search(@Nonnull final String dn, final String... attrs)
+    @Nonnull private SearchResponse search(@Nonnull final String dn, final String... attrs)
             throws LdapException {
-        try (final Connection conn = connectionFactory.getConnection()) {
-            final SearchOperation search = new SearchOperation(conn);
-            return search.execute(SearchRequest.newObjectScopeSearchRequest(dn, attrs));
-        }
+        final SearchOperation search = new SearchOperation(connectionFactory);
+        return search.execute(SearchRequest.objectScopeSearchRequest(dn, attrs));
     }
 
     /**
@@ -272,13 +269,11 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      * 
      * @throws LdapException if the operation fails
      */
-    @Nonnull private Response<Void> deleteAttribute(@Nonnull final String dn, @Nonnull final String attrName)
+    @Nonnull private ModifyResponse deleteAttribute(@Nonnull final String dn, @Nonnull final String attrName)
             throws LdapException {
-        try (final Connection conn = connectionFactory.getConnection()) {
-            final ModifyOperation modify = new ModifyOperation(conn);
-            return modify.execute(new ModifyRequest(dn, new AttributeModification(AttributeModificationType.REMOVE,
-                    new LdapAttribute(attrName))));
-        }
+        final ModifyOperation modify = new ModifyOperation(connectionFactory);
+        return modify.execute(new ModifyRequest(dn, new AttributeModification(AttributeModification.Type.DELETE,
+            new LdapAttribute(attrName))));
     }
 
     /**
@@ -290,11 +285,8 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      * 
      * @throws LdapException if the operation fails
      */
-    @Nonnull private Response<Void> delete(@Nonnull final String dn) throws LdapException {
-        try (final Connection conn = connectionFactory.getConnection()) {
-            final DeleteOperation delete = new DeleteOperation(conn);
-            return delete.execute(new DeleteRequest(dn));
-        }
+    @Nonnull private DeleteResponse delete(@Nonnull final String dn) throws LdapException {
+        final DeleteOperation delete = new DeleteOperation(connectionFactory);
+        return delete.execute(new DeleteRequest(dn));
     }
-
 }

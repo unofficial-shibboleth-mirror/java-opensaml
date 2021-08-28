@@ -27,13 +27,13 @@ import javax.annotation.Nonnull;
 import org.cryptacular.util.KeyPairUtil;
 import org.ldaptive.Connection;
 import org.ldaptive.ConnectionConfig;
+import org.ldaptive.ConnectionFactory;
 import org.ldaptive.DefaultConnectionFactory;
 import org.ldaptive.LdapException;
-import org.ldaptive.Response;
 import org.ldaptive.ResultCode;
 import org.ldaptive.SearchOperation;
 import org.ldaptive.SearchRequest;
-import org.ldaptive.SearchResult;
+import org.ldaptive.SearchResponse;
 import org.ldaptive.ssl.SslConfig;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
@@ -138,19 +138,13 @@ public class TrustEngineX509TrustManagerTest {
         config.setUseStartTLS(true);
         config.setSslConfig(sslConfig);
         final DefaultConnectionFactory factory = new DefaultConnectionFactory(config);
-        final Connection conn = factory.getConnection();
-        try {
-            conn.open();
-            doSearch(conn);
-        } finally {
-            conn.close();
-        }
+        doSearch(factory);
     }
 
-    protected void doSearch(@Nonnull final Connection conn) throws LdapException {
-        final SearchOperation search = new SearchOperation(conn);
-        final Response<SearchResult> result =
-                search.execute(SearchRequest.newObjectScopeSearchRequest(context, new String[] {"description"}));
+    protected void doSearch(@Nonnull final ConnectionFactory connFactory) throws LdapException {
+        final SearchOperation search = new SearchOperation(connFactory);
+        final SearchResponse result =
+                search.execute(SearchRequest.objectScopeSearchRequest(context, new String[] {"description"}));
         Assert.assertNotNull(result);
         Assert.assertEquals(result.getResultCode(), ResultCode.SUCCESS);
     }

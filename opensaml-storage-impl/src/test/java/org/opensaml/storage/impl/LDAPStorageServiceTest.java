@@ -24,10 +24,8 @@ import javax.annotation.Nonnull;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
-import org.ldaptive.DefaultConnectionFactory;
 import org.ldaptive.LdapAttribute;
-import org.ldaptive.pool.BlockingConnectionPool;
-import org.ldaptive.pool.PooledConnectionFactory;
+import org.ldaptive.PooledConnectionFactory;
 import org.opensaml.storage.StorageRecord;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
@@ -74,8 +72,7 @@ public class LDAPStorageServiceTest {
     }
 
     @Nonnull protected PooledConnectionFactory getPooledConnectionFactory() {
-        return new PooledConnectionFactory(new BlockingConnectionPool(new DefaultConnectionFactory(
-                "ldap://localhost:10389")));
+        return new PooledConnectionFactory("ldap://localhost:10389");
     }
 
     @Nonnull protected LDAPStorageService getStorageService() {
