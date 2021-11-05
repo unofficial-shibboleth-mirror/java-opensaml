@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -63,14 +64,25 @@ public class ByReferenceMetadataFilter implements MetadataFilter {
      * 
      * @param map filter mappings
      */
-    public void setFilterMappings(@Nonnull @NonnullElements final Map<String,MetadataFilter> map) {
+    public void setFilterMappings(@Nonnull @NonnullElements final Map<Object,MetadataFilter> map) {
         Constraint.isNotNull(map, "Filter mappings cannot be null");
         
         filterMap = new HashMap<>(map.size());
-        for (final Map.Entry<String,MetadataFilter> entry : map.entrySet()) {
-            final String trimmed = StringSupport.trimOrNull(entry.getKey());
-            if (trimmed != null && entry.getValue() != null) {
-                filterMap.put(trimmed, entry.getValue());
+        for (final Map.Entry<Object,MetadataFilter> entry : map.entrySet()) {
+            if (entry.getKey() instanceof String) {
+                final String trimmed = StringSupport.trimOrNull((String) entry.getKey());
+                if (trimmed != null && entry.getValue() != null) {
+                    filterMap.put(trimmed, entry.getValue());
+                }
+            } else if (entry.getKey() instanceof Collection) {
+                for (final Object k : (Collection<?>) entry.getKey()) {
+                    if (k instanceof String && entry.getValue() != null) {
+                        final String trimmed = StringSupport.trimOrNull((String) k);
+                        if (trimmed != null) {
+                            filterMap.put(trimmed, entry.getValue());
+                        }
+                    }
+                }
             }
         }
     }

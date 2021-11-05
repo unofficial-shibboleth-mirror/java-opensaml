@@ -23,6 +23,7 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 import java.util.function.Predicate;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -90,7 +91,7 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
         nameIDFilter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<String>>singletonMap(this, formats));
         nameIDFilter.initialize();
         
-        refFilter.setFilterMappings(Collections.singletonMap("ICMD", nameIDFilter));
+        refFilter.setFilterMappings(Collections.singletonMap(List.of("ICMD", "Foo"), nameIDFilter));
         
         metadataProvider.initialize();
         
