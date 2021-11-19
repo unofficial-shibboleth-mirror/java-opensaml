@@ -161,7 +161,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         if (criteria.contains(DetectDuplicateEntityIDsCriterion.class)) {
             detectDuplicates = criteria.get(DetectDuplicateEntityIDsCriterion.class).getValue();
         }
-        log.trace("Effecgive DetectDuplicateEntityIDs value is: {}", detectDuplicates);
+        log.trace("Effective DetectDuplicateEntityIDs value is: {}", detectDuplicates);
 
         Iterable<EntityDescriptor> result = null;
         Set<String> resultEntityIDs = null;
