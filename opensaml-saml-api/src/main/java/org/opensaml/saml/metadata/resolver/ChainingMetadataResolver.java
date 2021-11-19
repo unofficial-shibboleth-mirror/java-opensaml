@@ -21,6 +21,10 @@ import java.time.Instant;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -34,6 +38,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
+import org.opensaml.saml.metadata.criteria.entity.DetectDuplicateEntityIDsCriterion;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
@@ -53,10 +58,14 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
 
     /** Registered resolvers. */
     @Nonnull @NonnullElements private List<MetadataResolver> resolvers;
+    
+    /** Strategy for detecting duplicate entityIDs across resolvers. */
+    @Nonnull private DetectDuplicateEntityIDs detectDuplicateEntityIDs;
 
     /** Constructor. */
     public ChainingMetadataResolver() {
         resolvers = Collections.emptyList();
+        detectDuplicateEntityIDs = DetectDuplicateEntityIDs.Off;
     }
 
     /**
@@ -86,6 +95,24 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         }
 
         resolvers = List.copyOf(newResolvers);
+    }
+
+    /**
+     * Get the strategy for detecting duplicate entityIDs across resolvers.
+     * 
+     * @return the configured strategy
+     */
+    @Nonnull public DetectDuplicateEntityIDs getDetectDuplicateEntityIDs() {
+        return detectDuplicateEntityIDs;
+    }
+
+    /**
+     * Set the strategy for detecting duplicate entityIDs across resolvers.
+     * 
+     * @param strategy the strategy to configure
+     */
+    public void setDetectDuplicateEntityIDs(@Nullable final DetectDuplicateEntityIDs strategy) {
+        detectDuplicateEntityIDs = strategy != null ? strategy : DetectDuplicateEntityIDs.Off;
     }
 
     /** {@inheritDoc} */
@@ -129,12 +156,34 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
         ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        
+        DetectDuplicateEntityIDs detectDuplicates = getDetectDuplicateEntityIDs();
+        if (criteria.contains(DetectDuplicateEntityIDsCriterion.class)) {
+            detectDuplicates = criteria.get(DetectDuplicateEntityIDsCriterion.class).getValue();
+        }
+        log.trace("Effecgive DetectDuplicateEntityIDs value is: {}", detectDuplicates);
 
+        Iterable<EntityDescriptor> result = null;
+        Set<String> resultEntityIDs = null;
         for (final MetadataResolver resolver : resolvers) {
             try {
+                if (result != null) {
+                    detectDuplicateEntityIDs(resolver, criteria, resultEntityIDs, detectDuplicates);
+                    continue;
+                }
+                
                 final Iterable<EntityDescriptor> descriptors = resolver.resolve(criteria);
                 if (descriptors != null && descriptors.iterator().hasNext()) {
-                    return descriptors;
+                    if (detectDuplicates == DetectDuplicateEntityIDs.Off) {
+                        log.trace("Resolved EntityDescriptor(s) from '{}', duplicate detection disabled, returning",
+                                resolver.getId());
+                        return descriptors;
+                    }
+                    
+                    log.trace("Resolved EntityDescriptor(s) from '{}', duplicate detection enabled, continuing",
+                            resolver.getId());
+                    result = descriptors;
+                    resultEntityIDs = collectEntityIDs(result);
                 }
             } catch (final ResolverException e) {
                 log.warn("Error retrieving metadata from resolver of type {}, proceeding to next resolver",
@@ -143,9 +192,88 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
             }
         }
 
+        if (result != null) {
+            return result;
+        }
         return Collections.emptyList();
     }
     
+    /**
+     * Perform duplicate entityID detection.
+     * 
+     * @param resolver the metadata resolver over which to perform duplicate detection
+     * @param criteria the current criteria set
+     * @param resultEntityIDs the set of entityIDs contained in the effective results to be returned
+     * @param detectDuplicates the effective strategy for duplicate detection
+     */
+    // Checkstyle: CyclomaticComplexity OFF
+    private void detectDuplicateEntityIDs(final @Nonnull MetadataResolver resolver,
+            final @Nonnull CriteriaSet criteria,
+            final @Nullable Set<String> resultEntityIDs,
+            final @Nonnull DetectDuplicateEntityIDs detectDuplicates) {
+        
+        if (resultEntityIDs == null || resultEntityIDs.isEmpty()) {
+            return;
+        }
+        
+        switch(detectDuplicates) {
+            case Off:
+                return;
+            case Batch:
+                if (!BatchMetadataResolver.class.isInstance(resolver)) {
+                    return;
+                }
+                break;
+            case Dynamic:
+                if (!DynamicMetadataResolver.class.isInstance(resolver)) {
+                    return;
+                }
+                break;
+            case All:
+                break;
+            default:
+                log.warn("Saw unknown DetectDuplicateEntityIDs value, can not process: {}", detectDuplicates);
+                return; 
+        }
+        
+        log.trace("Performing duplicate entityID detection on resolver '{} of type {}",
+                resolver.getId(), resolver.getClass().getName());
+        
+        try {
+            final Iterable<EntityDescriptor> descriptors = resolver.resolve(criteria);
+            if (descriptors != null && descriptors.iterator().hasNext()) {
+                final Set<String> descriptorsEnitityIDs = collectEntityIDs(descriptors);
+
+                final Set<String> duplicates = resultEntityIDs.stream()
+                        .filter(descriptorsEnitityIDs::contains)
+                        .collect(Collectors.toSet());
+                
+                if (!duplicates.isEmpty()) {
+                    log.warn("MetadataResolver '{}' contained duplicate entityIDs relative to the returned results: {}",
+                            resolver.getId(), duplicates);
+                }
+            }
+        } catch (final ResolverException e) {
+            log.warn("During duplicate detection, error retrieving metadata from resolver '{}' of type {}",
+                    resolver.getId(), resolver.getClass().getName(), e);
+        }
+        
+    }
+    // Checkstyle: CyclomaticComplexity ON
+
+    /**
+     * Collect the unique entityIDs from the supplied iterable of entity descriptors.
+     * 
+     * @param descriptors
+     * @return the unique entityIDs from the supplied descriptors
+     */
+    private Set<String> collectEntityIDs(final @Nonnull Iterable<EntityDescriptor> descriptors) {
+        return StreamSupport.stream(descriptors.spliterator(), false)
+                .map(EntityDescriptor::getEntityID)
+                .filter(Objects::nonNull)
+                .collect(Collectors.toSet());
+    }
+
     /** {@inheritDoc} */
     public void clear() throws ResolverException {
         for (final MetadataResolver resolver : resolvers) {
