@@ -26,10 +26,13 @@ import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
+import org.opensaml.saml.common.messaging.context.SAMLMetadataLookupParametersContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLPresenterEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.metadata.criteria.entity.DetectDuplicateEntityIDsCriterion;
+import org.opensaml.saml.metadata.resolver.DetectDuplicateEntityIDs;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.PredicateRoleDescriptorResolver;
 import org.opensaml.saml.saml1.core.AttributeQuery;
@@ -48,6 +51,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
@@ -351,6 +355,37 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         Assert.assertNotSame(mdCtx.getRoleDescriptor(), existingMetadataContext.getRoleDescriptor());
         Assert.assertNotNull(mdCtx.getEntityDescriptor());
         Assert.assertNotSame(mdCtx.getEntityDescriptor(), existingMetadataContext.getEntityDescriptor());
+    }
+    
+    @Test
+    public void testDetectDuplicateEntityIDs() throws ComponentInitializationException, MessageHandlerException {
+        handler.setRoleDescriptorResolver(roleResolver);
+        handler.initialize();
+        
+        SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        peerContext.setRole(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML11P_NS);
+        
+        messageContext.getSubcontext(SAMLMetadataLookupParametersContext.class, true).setDetectDuplicateEntityIDs(DetectDuplicateEntityIDs.Batch);
+        
+        Request request = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
+        ((AttributeQuery) request.getQuery()).setResource("urn:mace:incommon:osu.edu");
+        messageContext.setMessage(request);
+
+        // The context data/criterion won't influence the actual results, so just test that criterion has been added as expected.
+        CriteriaSet criteria = handler.buildLookupCriteria(messageContext);
+        Assert.assertNotNull(criteria);
+        Assert.assertTrue(criteria.contains(DetectDuplicateEntityIDsCriterion.class));
+        Assert.assertEquals(criteria.get(DetectDuplicateEntityIDsCriterion.class).getValue(), DetectDuplicateEntityIDs.Batch);
+        
+        // For good measure actually test resolution and that hasn't caused any failures due to side effects, etc.
+        handler.invoke(messageContext);
+        
+        SAMLMetadataContext mdCtx = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        Assert.assertNotNull(mdCtx);
+        Assert.assertNotNull(mdCtx.getRoleDescriptor());
+        Assert.assertNotNull(mdCtx.getEntityDescriptor());
+        
     }
 
 

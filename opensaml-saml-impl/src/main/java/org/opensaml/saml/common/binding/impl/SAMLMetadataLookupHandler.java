@@ -37,10 +37,12 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.AbstractSAMLEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
+import org.opensaml.saml.common.messaging.context.SAMLMetadataLookupParametersContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
+import org.opensaml.saml.metadata.criteria.entity.DetectDuplicateEntityIDsCriterion;
 import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
@@ -159,7 +161,18 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             protocolCriterion = new ProtocolCriterion(protocolCtx.getProtocol());
         }
         
-        final CriteriaSet criteria = new CriteriaSet(entityIdCriterion, protocolCriterion, roleCriterion);
+        final SAMLMetadataLookupParametersContext lookupParamsContext =
+                messageContext.getSubcontext(SAMLMetadataLookupParametersContext.class); 
+        
+        DetectDuplicateEntityIDsCriterion detectDuplicatesCriterion = null;
+        if (lookupParamsContext != null && lookupParamsContext.getDetectDuplicateEntityIDs() != null) {
+            detectDuplicatesCriterion =
+                    new DetectDuplicateEntityIDsCriterion(lookupParamsContext.getDetectDuplicateEntityIDs()); 
+        }
+        
+        final CriteriaSet criteria = new CriteriaSet(entityIdCriterion, protocolCriterion, roleCriterion,
+                detectDuplicatesCriterion);
+        
         try {
             final RoleDescriptor roleMetadata = metadataResolver.resolveSingle(criteria);
             if (roleMetadata == null) {
