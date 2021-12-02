@@ -152,6 +152,47 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             return;
         }
 
+        final CriteriaSet criteria = buildLookupCriteria(messageContext);
+        
+        try {
+            final RoleDescriptor roleMetadata = metadataResolver.resolveSingle(criteria);
+            if (roleMetadata == null) {
+                if (criteria.contains(ProtocolCriterion.class)) {
+                    log.info("{} No metadata returned for {} in role {} with protocol {}",
+                            getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),
+                            criteria.get(ProtocolCriterion.class).getProtocol());
+                } else {
+                    log.info("{} No metadata returned for {} in role {}",
+                            getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole());
+                }
+                return;
+            }
+
+            final SAMLMetadataContext metadataCtx = new SAMLMetadataContext();
+            metadataCtx.setEntityDescriptor((EntityDescriptor) roleMetadata.getParent());
+            metadataCtx.setRoleDescriptor(roleMetadata);
+
+            entityCtx.addSubcontext(metadataCtx);
+
+            log.debug("{} {} added to MessageContext as child of {}", getLogPrefix(), 
+                    SAMLMetadataContext.class.getName(), entityContextClass.getName());
+        } catch (final ResolverException e) {
+            log.error("{} ResolverException thrown during metadata lookup", getLogPrefix(), e);
+        }
+    }
+
+    /**
+     * Build the lookup criteria from the message context data.
+     * 
+     * @param messageContext the current message context
+     * 
+     * @return the new lookup criteria
+     */
+    protected CriteriaSet buildLookupCriteria(final MessageContext messageContext) {
+        
+        // This must be present in the message context, but is already checked in the calling method
+        final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
+        
         final EntityIdCriterion entityIdCriterion = new EntityIdCriterion(entityCtx.getEntityId());
         final EntityRoleCriterion roleCriterion = new EntityRoleCriterion(entityCtx.getRole());
         
@@ -172,32 +213,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
         
         final CriteriaSet criteria = new CriteriaSet(entityIdCriterion, protocolCriterion, roleCriterion,
                 detectDuplicatesCriterion);
-        
-        try {
-            final RoleDescriptor roleMetadata = metadataResolver.resolveSingle(criteria);
-            if (roleMetadata == null) {
-                if (protocolCriterion != null) {
-                    log.info("{} No metadata returned for {} in role {} with protocol {}",
-                            getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),
-                            protocolCriterion.getProtocol());
-                } else {
-                    log.info("{} No metadata returned for {} in role {}",
-                            getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole());
-                }
-                return;
-            }
-
-            final SAMLMetadataContext metadataCtx = new SAMLMetadataContext();
-            metadataCtx.setEntityDescriptor((EntityDescriptor) roleMetadata.getParent());
-            metadataCtx.setRoleDescriptor(roleMetadata);
-
-            entityCtx.addSubcontext(metadataCtx);
-
-            log.debug("{} {} added to MessageContext as child of {}", getLogPrefix(), 
-                    SAMLMetadataContext.class.getName(), entityContextClass.getName());
-        } catch (final ResolverException e) {
-            log.error("{} ResolverException thrown during metadata lookup", getLogPrefix(), e);
-        }
+        return criteria;
     }
 
     /**
