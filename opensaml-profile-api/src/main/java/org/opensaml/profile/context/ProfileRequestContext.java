@@ -33,16 +33,19 @@ import org.opensaml.messaging.context.InOutOperationContext;
 public final class ProfileRequestContext extends InOutOperationContext {
 
     /** ID under which this context is stored, for example, within maps or sessions. */
-    public static final String BINDING_KEY = "opensamlProfileRequestContext";
+    @Nonnull @NotEmpty public static final String BINDING_KEY = "opensamlProfileRequestContext";
 
     /** Profile ID if not overridden. */
-    public static final String ANONYMOUS_PROFILE_ID = "anonymous";
+    @Nonnull @NotEmpty public static final String ANONYMOUS_PROFILE_ID = "anonymous";
 
     /** Unique identifier for the profile/operation/function of the current request. */
-    private String profileId;
+    @Nonnull @NotEmpty private String profileId;
 
+    /** Legacy profile ID used to migrate a profile to a new value. */
+    @Nullable @NotEmpty private String legacyProfileId;
+    
     /** Logging label for the profile/operation/function . */
-    private String loggingId;
+    @Nonnull @NotEmpty private String loggingId;
     
     /** Whether the current profile request is browser-based. */
     private boolean browserProfile;
@@ -74,6 +77,31 @@ public final class ProfileRequestContext extends InOutOperationContext {
         } else {
             profileId = trimmedId;
         }
+    }
+    
+    /**
+     * Get the legacy ID of the profile used by the current request.
+     * 
+     * <p>This is a migration aid for scenarios in which a profile is migrated to a new ID so that
+     * the original value can be supplied as a fallback. In most cases it will be null.</p>
+     * 
+     * @return legacy profile ID
+     * 
+     * @since 4.2.0
+     */
+    @Nullable @NotEmpty public String getLegacyProfileId() {
+        return legacyProfileId;
+    }
+    
+    /**
+     * Set the legacy ID of the profile used by the current request.
+     * 
+     * @param id legacy profile ID
+     * 
+     * @since 4.2.0
+     */
+    public void setLegacyProfileId(@Nullable final String id) {
+        legacyProfileId = StringSupport.trimOrNull(id);
     }
 
     /**
