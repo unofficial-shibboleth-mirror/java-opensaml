@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.opensaml</groupId>
         <artifactId>opensaml-parent</artifactId>
-        <version>4.2.1-SNAPSHOT</version>
+        <version>5.0.0-SNAPSHOT</version>
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
@@ -75,8 +75,8 @@
 
         <!-- Provided Dependencies -->
         <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
+            <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
         </dependency>
 
         <!-- Runtime Dependencies -->

@@ -25,10 +25,6 @@ import java.util.Set;
 import java.util.function.Function;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -49,6 +45,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  *

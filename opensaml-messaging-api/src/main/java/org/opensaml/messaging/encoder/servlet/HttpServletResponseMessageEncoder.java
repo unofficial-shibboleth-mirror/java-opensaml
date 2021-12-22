@@ -18,9 +18,10 @@
 package org.opensaml.messaging.encoder.servlet;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletResponse;
 
 import org.opensaml.messaging.encoder.MessageEncoder;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * A specialization of {@link MessageEncoder} that operates on a sink message data type of {@link HttpServletResponse}.

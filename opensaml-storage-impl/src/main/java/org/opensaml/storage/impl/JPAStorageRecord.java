@@ -18,23 +18,23 @@
 package org.opensaml.storage.impl;
 
 import java.io.Serializable;
-
 import java.util.Objects;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.persistence.Column;
-import javax.persistence.Embeddable;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.IdClass;
-import javax.persistence.Lob;
-import javax.persistence.NamedQueries;
-import javax.persistence.NamedQuery;
-import javax.persistence.Table;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 import org.opensaml.storage.MutableStorageRecord;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Embeddable;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.IdClass;
+import jakarta.persistence.Lob;
+import jakarta.persistence.NamedQueries;
+import jakarta.persistence.NamedQuery;
+import jakarta.persistence.Table;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**
  * Implementation of {@link MutableStorageRecord} annotated for JPA.

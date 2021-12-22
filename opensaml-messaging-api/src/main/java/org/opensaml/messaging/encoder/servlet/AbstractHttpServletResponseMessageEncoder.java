@@ -18,12 +18,12 @@
 package org.opensaml.messaging.encoder.servlet;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletResponse;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
+
+import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.

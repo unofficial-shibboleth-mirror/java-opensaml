@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.concurrent.locks.Lock;
 
-import javax.servlet.http.Cookie;
-
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
@@ -39,6 +37,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.net.UrlEscapers;
 
+import jakarta.servlet.http.Cookie;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
