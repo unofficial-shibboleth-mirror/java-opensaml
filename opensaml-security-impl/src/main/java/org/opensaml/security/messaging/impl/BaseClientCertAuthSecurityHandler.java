@@ -24,16 +24,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
@@ -41,8 +31,8 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
-import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.messaging.ClientTLSSecurityParametersContext;
+import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
@@ -51,6 +41,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  * Policy rule that checks if the client cert used to authenticate the request is valid and trusted.

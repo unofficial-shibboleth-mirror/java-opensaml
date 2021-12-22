@@ -18,9 +18,10 @@
 package org.opensaml.messaging.decoder.servlet;
 
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.messaging.decoder.MessageDecoder;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 
 /**

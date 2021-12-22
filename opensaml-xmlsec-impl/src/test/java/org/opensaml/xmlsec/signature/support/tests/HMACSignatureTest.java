@@ -17,19 +17,10 @@
 
 package org.opensaml.xmlsec.signature.support.tests;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import java.io.InputStream;
 import java.util.List;
 
 import javax.crypto.SecretKey;
-import javax.xml.bind.ValidationException;
-
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.xml.security.signature.SignedInfo;
 import org.apache.xml.security.signature.XMLSignature;
@@ -57,8 +48,17 @@ import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import jakarta.xml.bind.ValidationException;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test to verify {@link org.opensaml.xmlsec.signature.Signature} and its marshallers and unmarshallers.

@@ -18,12 +18,12 @@
 package org.opensaml.saml.saml2.wssecurity.messaging.impl;
 
 import javax.annotation.Nonnull;
-import javax.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.saml2.core.Assertion;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Class which holds messaging data relevant to validating a WS-Security SAML 2.0 Assertion token.

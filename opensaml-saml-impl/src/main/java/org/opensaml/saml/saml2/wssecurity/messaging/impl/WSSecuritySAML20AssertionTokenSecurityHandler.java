@@ -23,14 +23,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.collection.LazyList;
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
@@ -54,6 +46,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A security handler which resolves SAML 2.0 Assertion tokens from a SOAP envelope's

@@ -21,16 +21,6 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
-import javax.servlet.http.HttpServletResponse;
-
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.core.xml.XMLObject;
@@ -41,6 +31,15 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.utilities.java.support.codec.EncodingException;
+import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * SAML 1.X HTTP POST message encoder.

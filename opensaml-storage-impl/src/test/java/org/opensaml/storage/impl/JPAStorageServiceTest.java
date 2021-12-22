@@ -24,10 +24,6 @@ import java.util.List;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
-import javax.persistence.EntityManagerFactory;
-
-import net.shibboleth.ext.spring.util.ApplicationContextBuilder;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
@@ -41,6 +37,10 @@ import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+
+import jakarta.persistence.EntityManagerFactory;
+import net.shibboleth.ext.spring.util.ApplicationContextBuilder;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  * Test of {@link JPAStorageService} implementation.

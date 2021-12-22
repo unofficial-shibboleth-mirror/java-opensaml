@@ -24,16 +24,15 @@ import java.nio.ByteOrder;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SignableSAMLObject;
-import org.opensaml.saml.common.messaging.context.SAMLMessageReceivedEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
+import org.opensaml.saml.common.messaging.context.SAMLMessageReceivedEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
@@ -41,6 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;

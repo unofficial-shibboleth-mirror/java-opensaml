@@ -22,11 +22,6 @@ import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.PublicKey;
 
-import javax.xml.bind.ValidationException;
-
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -54,6 +49,10 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import jakarta.xml.bind.ValidationException;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test to verify {@link org.opensaml.xmlsec.signature.Signature} and its marshallers and unmarshallers.

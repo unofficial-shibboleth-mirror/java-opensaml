@@ -23,12 +23,12 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.messaging.context.BaseContext;
 
 import com.google.common.net.InetAddresses;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.Predicate;

@@ -21,17 +21,17 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.ServletRequest;
-
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.security.AccessControl;
 
 import org.opensaml.profile.context.AccessControlContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.ServletRequest;
+import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.security.AccessControl;
 
 /**
  * Access control implementation based on a predicate over a {@link ProfileRequestContext}.

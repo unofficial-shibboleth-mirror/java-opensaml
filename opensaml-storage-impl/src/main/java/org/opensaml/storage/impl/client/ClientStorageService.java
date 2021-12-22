@@ -29,15 +29,23 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
+import org.opensaml.storage.AbstractMapBackedStorageService;
+import org.opensaml.storage.MutableStorageRecord;
+import org.opensaml.storage.StorageCapabilitiesEx;
+import org.opensaml.storage.impl.client.ClientStorageServiceStore.Factory;
+import org.opensaml.storage.impl.client.JSONClientStorageServiceStore.JSONClientStorageServiceStoreFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -52,14 +60,6 @@ import net.shibboleth.utilities.java.support.security.DataExpiredException;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.DataSealerException;
 import net.shibboleth.utilities.java.support.security.DataSealerKeyStrategy;
-
-import org.opensaml.storage.AbstractMapBackedStorageService;
-import org.opensaml.storage.MutableStorageRecord;
-import org.opensaml.storage.StorageCapabilitiesEx;
-import org.opensaml.storage.impl.client.ClientStorageServiceStore.Factory;
-import org.opensaml.storage.impl.client.JSONClientStorageServiceStore.JSONClientStorageServiceStoreFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link org.opensaml.storage.StorageService} that stores data in-memory in a

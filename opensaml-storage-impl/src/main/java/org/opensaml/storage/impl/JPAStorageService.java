@@ -26,21 +26,6 @@ import java.util.TimerTask;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.persistence.EntityExistsException;
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.LockModeType;
-import javax.persistence.Query;
-import javax.persistence.RollbackException;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.storage.AbstractStorageService;
 import org.opensaml.storage.StorageCapabilitiesEx;
@@ -48,6 +33,21 @@ import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import jakarta.persistence.EntityExistsException;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.LockModeType;
+import jakarta.persistence.Query;
+import jakarta.persistence.RollbackException;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonNegative;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Implementation of {@link org.opensaml.storage.StorageService} that uses JPA to persist to a database.

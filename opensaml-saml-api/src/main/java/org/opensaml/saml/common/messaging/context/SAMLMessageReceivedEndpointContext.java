@@ -19,11 +19,11 @@ package org.opensaml.saml.common.messaging.context;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageContext;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

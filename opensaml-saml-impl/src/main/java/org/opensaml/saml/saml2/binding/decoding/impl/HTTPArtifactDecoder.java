@@ -21,7 +21,6 @@ import java.time.Instant;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -63,6 +62,7 @@ import org.opensaml.soap.common.SOAPException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;

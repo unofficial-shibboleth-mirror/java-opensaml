@@ -19,19 +19,19 @@ package org.opensaml.profile.action;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.shibboleth.utilities.java.support.annotation.Prototype;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.MetricContext;
 import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.LoggerFactory;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.utilities.java.support.annotation.Prototype;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Base class for profile actions.

@@ -19,7 +19,6 @@ package org.opensaml.storage.impl.client;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -27,6 +26,7 @@ import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 
 /**

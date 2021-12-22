@@ -17,14 +17,13 @@
 
 package org.opensaml.messaging.handler.impl;
 
-import javax.servlet.http.HttpServletRequest;
-
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Test the HTTP request validation message handler.
