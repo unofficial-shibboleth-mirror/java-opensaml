@@ -218,11 +218,12 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testMDQ() throws Exception {
-        String baseURL = "http://test.shibboleth.net:9000";
+        String baseURL = "https://test.shibboleth.net/mdq";
         String entityID = "https://foo1.example.org/idp/shibboleth";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL);
         
+        httpClientBuilder.setConnectionDisregardTLSCertificate(true);
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
@@ -239,12 +240,13 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testMDQViaArtifact() throws Exception {
-        String baseURL = "http://test.shibboleth.net:9000";
+        String baseURL = "https://test.shibboleth.net/mdq";
         String entityID = "https://foo1.example.org/idp/shibboleth";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL,
                 Collections.singletonList(new SAMLArtifactURLBuilder()));
         
+        httpClientBuilder.setConnectionDisregardTLSCertificate(true);
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
