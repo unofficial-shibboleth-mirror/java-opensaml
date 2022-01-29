@@ -159,7 +159,7 @@
                                     <dataArtifactId>maven-dist-enforcer-data</dataArtifactId>
                                     <dataVersion>1.0.1-SNAPSHOT</dataVersion>
                                     <dataKeyRing>${basedir}/src/main/enforcer/shibbolethKeys.gpg</dataKeyRing>
-                                    <parentPomDir>${basedir}/../idp-parent</parentPomDir>
+                                    <parentPomDir>${basedir}/../opensaml-parent</parentPomDir>
                                     <zipFiles/>
                                     <tgzFiles/>
                                     <checkSignatures>false</checkSignatures>
