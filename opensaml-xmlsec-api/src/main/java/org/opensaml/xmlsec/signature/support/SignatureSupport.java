@@ -46,6 +46,9 @@ import net.shibboleth.utilities.java.support.primitive.StringSupport;
  */
 public final class SignatureSupport {
     
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SignatureSupport.class);
+    
     /** Set of known canonicalization algorithm URIs. */
     @Nonnull @NonnullElements private static final Set<String> C14N_ALGORITHMS = Set.of(
             SignatureConstants.ALGO_ID_C14N11_OMIT_COMMENTS,
@@ -59,15 +62,6 @@ public final class SignatureSupport {
     /** Constructor. */
     private SignatureSupport() {
         
-    }
-    
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(SignatureSupport.class);
     }
     
     /**
@@ -160,8 +154,6 @@ public final class SignatureSupport {
     private static void processKeyInfo(final Signature signature, 
             final SignatureSigningParameters parameters) throws SecurityException {
         
-        final Logger log = getLogger();
-        
         if (signature.getKeyInfo() == null) {
             final KeyInfoGenerator kiGenerator = parameters.getKeyInfoGenerator();
             if (kiGenerator != null) {
@@ -169,11 +161,11 @@ public final class SignatureSupport {
                     final KeyInfo keyInfo = kiGenerator.generate(signature.getSigningCredential());
                     signature.setKeyInfo(keyInfo);
                 } catch (final SecurityException e) {
-                    log.error("Error generating KeyInfo from credential: {}", e.getMessage());
+                    LOG.error("Error generating KeyInfo from credential: {}", e.getMessage());
                     throw e;
                 }
             } else {
-                log.info("No KeyInfoGenerator was supplied in parameters or resolveable " 
+                LOG.info("No KeyInfoGenerator was supplied in parameters or resolveable " 
                         + "for credential type {}, No KeyInfo will be generated for Signature", 
                         signature.getSigningCredential().getCredentialType().getName());
             }
@@ -227,9 +219,7 @@ public final class SignatureSupport {
             return;
         }
         
-        final Logger log = getLogger();
-        
-        log.trace("Adding or replacing content reference transform: {}", uri);
+        LOG.trace("Adding or replacing content reference transform: {}", uri);
         
         if (cr instanceof TransformsConfigurableContentReference) {
             final List<String> transforms = ((TransformsConfigurableContentReference)cr).getTransforms();
@@ -246,7 +236,7 @@ public final class SignatureSupport {
             // Didn't see an existing one, so add it
             transforms.add(uri);
         } else {
-            log.warn("A non-null signature reference c14n transform was specified, " 
+            LOG.warn("A non-null signature reference c14n transform was specified, " 
                     + "but ContentReference was not configurable for transforms: {}",
                     cr.getClass().getName());
         }

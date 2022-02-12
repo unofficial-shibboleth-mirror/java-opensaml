@@ -79,6 +79,9 @@ import com.google.common.io.Files;
  * Helper methods for cryptographic keys and key pairs.
  */
 public final class KeySupport {
+    
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(KeySupport.class);
 
     /** Maps key algorithms to the signing algorithm used in the key matching function. */
     private static Map<String, String> keyMatchAlgorithms;
@@ -94,8 +97,7 @@ public final class KeySupport {
      * @return length of the key in bits, or null if the length cannot be determined
      */
     @Nullable public static Integer getKeyLength(@Nonnull final Key key) {
-        final Logger log = getLogger();
-        log.debug("Attempting to determine length of Key with algorithm '{}' and encoding format '{}'", 
+        LOG.debug("Attempting to determine length of Key with algorithm '{}' and encoding format '{}'", 
                 key.getAlgorithm(), key.getFormat());
         // TODO investigate if exists, and can/how to support, non-RAW format symmetric keys
         if (key instanceof SecretKey && JCAConstants.KEY_FORMAT_RAW.equals(key.getFormat())) {
@@ -107,7 +109,7 @@ public final class KeySupport {
         } else if (key instanceof ECKey) {
             return ((ECKey) key).getParams().getCurve().getField().getFieldSize();
         }
-        log.debug("Unable to determine length in bits of specified Key instance");
+        LOG.debug("Unable to determine length in bits of specified Key instance");
         return null;
     }
 
@@ -123,7 +125,6 @@ public final class KeySupport {
      */
     @Nonnull public static SecretKey decodeSecretKey(@Nonnull final byte[] key, @Nonnull final String algorithm)
             throws KeyException {
-        final Logger log = getLogger();
         Constraint.isNotNull(key, "Secret key bytes can not be null");
         Constraint.isNotNull(algorithm, "Secret key algorithm can not be null");
         Constraint.isGreaterThanOrEqual(1, key.length, "Secret key bytes can not be empty");
@@ -150,7 +151,7 @@ public final class KeySupport {
                 }
                 break;
             default:
-                log.debug("No length and sanity checking done for key with algorithm: {}", algorithm);
+                LOG.debug("No length and sanity checking done for key with algorithm: {}", algorithm);
         }
         
         return new SecretKeySpec(key, algorithm);
@@ -601,9 +602,8 @@ public final class KeySupport {
                     + privKey.getAlgorithm());
         }
 
-        final Logger log = getLogger();
-        if (log.isDebugEnabled()) {
-            log.debug("Attempting to match key pair containing key algorithms public '{}' private '{}', "
+        if (LOG.isDebugEnabled()) {
+            LOG.debug("Attempting to match key pair containing key algorithms public '{}' private '{}', "
                     + "using JCA signature algorithm '{}'", new Object[] {pubKey.getAlgorithm(),
                     privKey.getAlgorithm(), jcaAlgoID,});
         }
@@ -611,15 +611,6 @@ public final class KeySupport {
         final byte[] data = "This is the data to sign".getBytes();
         final byte[] signature = SigningUtil.sign(privKey, jcaAlgoID, data);
         return SigningUtil.verify(pubKey, jcaAlgoID, signature, data);
-    }
-
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(KeySupport.class);
     }
 
     static {

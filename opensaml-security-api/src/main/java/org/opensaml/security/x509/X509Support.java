@@ -108,6 +108,9 @@ public class X509Support {
 
     /** RFC 2459 Registered ID Subject Alt Name type. */
     public static final Integer REGISTERED_ID_ALT_NAME = 8;
+    
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(X509Support.class);
 
     /** Constructed. */
     protected X509Support() {
@@ -166,8 +169,7 @@ public class X509Support {
             return null;
         }
 
-        final Logger log = getLogger();
-        log.debug("Extracting CNs from the following DN: {}", dn.toString());
+        LOG.debug("Extracting CNs from the following DN: {}", dn.toString());
         final RDNSequence attrs = NameReader.readX500Principal(dn);
         // Have to copy because list returned from Attributes is unmodifiable, so can't reverse it.
         final List<String> values = new ArrayList<>(attrs.getValues(StandardAttributeType.CommonName));
@@ -208,8 +210,7 @@ public class X509Support {
             }
             return altNames;
         } catch (final EncodingException e) {
-            final Logger log = getLogger();
-            log.warn("Could not extract alt names from certificate: {}", e.getMessage());
+            LOG.warn("Could not extract alt names from certificate: {}", e.getMessage());
             throw e;
         }
     }
@@ -258,7 +259,7 @@ public class X509Support {
             final ASN1Primitive ski = JcaX509ExtensionUtils.parseExtensionValue(derValue);
             return ((DEROctetString) ski).getOctets();
         } catch (final IOException e) {
-            getLogger().error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
+            LOG.error("Unable to extract subject key identifier from certificate: ASN.1 parsing failed: " + e);
             return null;
         }
     }
@@ -277,10 +278,10 @@ public class X509Support {
             final MessageDigest hasher = MessageDigest.getInstance(jcaAlgorithm);
             return hasher.digest(certificate.getEncoded());
         } catch (final CertificateEncodingException e) {
-            getLogger().error("Unable to encode certificate for digest operation", e);
+            LOG.error("Unable to encode certificate for digest operation", e);
             throw new SecurityException("Unable to encode certificate for digest operation", e);
         } catch (final NoSuchAlgorithmException e) {
-            getLogger().error("Algorithm {} is unsupported", jcaAlgorithm);
+            LOG.error("Algorithm {} is unsupported", jcaAlgorithm);
             throw new SecurityException("Algorithm " + jcaAlgorithm + " is unsupported", e);
         }
     }
@@ -552,7 +553,6 @@ public class X509Support {
      */
     @Nullable private static Object convertAltNameType(@Nonnull final Integer nameType,
             @Nonnull final ASN1Primitive nameValue) {
-        final Logger log = getLogger();
         
         if (DIRECTORY_ALT_NAME.equals(nameType) || DNS_ALT_NAME.equals(nameType) || RFC822_ALT_NAME.equals(nameType)
                 || URI_ALT_NAME.equals(nameType) || REGISTERED_ID_ALT_NAME.equals(nameType)) {
@@ -565,7 +565,7 @@ public class X509Support {
             try {
                 return InetAddresses.toAddrString(InetAddress.getByAddress(nameValueBytes));
             } catch (final UnknownHostException e) {
-                log.warn("Was unable to convert IP address alt name byte[] to string: " +
+                LOG.warn("Was unable to convert IP address alt name byte[] to string: " +
                         CodecUtil.hex(nameValueBytes, true), e);
                 return null;
             }
@@ -575,19 +575,10 @@ public class X509Support {
             // these have no defined representation, just return a DER-encoded byte[]
             return nameValue;
         } else {
-            log.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
+            LOG.warn("Encountered unknown alt name type '{}', adding as-is", nameType);
             return nameValue;
         }
     }
 // Checkstyle: CyclomaticComplexity ON
-    
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(X509Support.class);
-    }
     
 }

@@ -104,6 +104,9 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
  * types, and for storing these Java native types inside a KeyInfo.
  */
 public class KeyInfoSupport {
+    
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(KeyInfoSupport.class);
 
     /**
      * Factory for {@link java.security.cert.X509Certificate} and {@link java.security.cert.X509CRL} creation.
@@ -469,8 +472,6 @@ public class KeyInfoSupport {
     @Nullable public static X509SKI buildX509SKI(@Nonnull final X509Certificate javaCert) throws SecurityException {
         final byte[] skiPlainValue = X509Support.getSubjectKeyIdentifier(javaCert);
         
-        final Logger log = getLogger();
-        
         if (skiPlainValue == null || skiPlainValue.length == 0) {
             return null;
         }
@@ -484,7 +485,7 @@ public class KeyInfoSupport {
             xmlSKI.setValue(Base64Support.encode(skiPlainValue, Base64Support.CHUNKED));
             return xmlSKI;
         } catch (final EncodingException e) {
-            log.warn("X.509 subject key identifier could not be base64 encoded",e);
+            LOG.warn("X.509 subject key identifier could not be base64 encoded",e);
             throw new SecurityException("X.509 subject key identifier could not be base64 encoded",e);
         }        
     }
@@ -1038,16 +1039,15 @@ public class KeyInfoSupport {
      */
     @Nonnull protected static PublicKey buildKey(@Nonnull final KeySpec keySpec, @Nonnull final String keyAlgorithm)
             throws KeyException {
-        final Logger log = getLogger();
         try {
             final KeyFactory keyFactory = KeyFactory.getInstance(keyAlgorithm);
             return keyFactory.generatePublic(keySpec);
         } catch (final NoSuchAlgorithmException e) {
             final String msg = keyAlgorithm + " algorithm is not supported by this JCE"; 
-            log.error(msg + ": {}", e.getMessage());
+            LOG.error(msg + ": {}", e.getMessage());
             throw new KeyException(msg, e);
         } catch (final InvalidKeySpecException e) {
-            log.error("Invalid key information: {}", e.getMessage());
+            LOG.error("Invalid key information: {}", e.getMessage());
             throw new KeyException("Invalid key information", e);
         }
     }
@@ -1089,17 +1089,17 @@ public class KeyInfoSupport {
         final String[] keyTypes = parsedKeyType != null ? new String[]{parsedKeyType}  : supportedKeyTypes;
         
         for (final String keyType : keyTypes) {
-            getLogger().trace("Attempting to decode DER key as type: {}", keyType);
+            LOG.trace("Attempting to decode DER key as type: {}", keyType);
             try {
                 final KeyFactory keyFactory = KeyFactory.getInstance(keyType);
                 final X509EncodedKeySpec keySpec = new X509EncodedKeySpec(encodedKey);
                 final PublicKey publicKey = keyFactory.generatePublic(keySpec);
                 if (publicKey != null) {
-                    getLogger().trace("DER key decoded successfully as type: {}", keyType);
+                    LOG.trace("DER key decoded successfully as type: {}", keyType);
                     return publicKey;
                 }
             } catch (final NoSuchAlgorithmException | InvalidKeySpecException e) {
-                getLogger().trace("DER key failed decoding as: {}", keyType);
+                LOG.trace("DER key failed decoding as: {}", keyType);
             }
         }
         throw new KeyException("DEREncodedKeyValue did not contain a supported key type");
@@ -1122,7 +1122,7 @@ public class KeyInfoSupport {
         try (final ASN1InputStream input = new ASN1InputStream(encodedKey)) {
             final SubjectPublicKeyInfo spki = SubjectPublicKeyInfo.getInstance(input.readObject());
             final String keyTypeOID = spki.getAlgorithm().getAlgorithm().getId();
-            getLogger().debug("Parsed key type OID: {}", keyTypeOID);
+            LOG.debug("Parsed key type OID: {}", keyTypeOID);
             
             String parsedKeyType = null;
             switch(keyTypeOID) {
@@ -1147,10 +1147,10 @@ public class KeyInfoSupport {
                     parsedKeyType = null;
             }
             
-            getLogger().debug("Parsed key type: {}", parsedKeyType);
+            LOG.debug("Parsed key type: {}", parsedKeyType);
             return parsedKeyType;
         } catch (final Exception e) {
-            getLogger().warn("Error parsing encoded key, can not determine key type", e);
+            LOG.warn("Error parsing encoded key, can not determine key type", e);
             return null;
         }
     }
@@ -1191,33 +1191,22 @@ public class KeyInfoSupport {
         Constraint.isNotNull(credential, "Credential may not be null");
         Constraint.isNotNull(manager, "NamedKeyInfoGeneratorManager may not be null");
         
-        final Logger log = getLogger();
-    
         KeyInfoGeneratorFactory factory = null;
         if (keyInfoProfileName != null) {
-            log.trace("Resolving KeyInfoGeneratorFactory using profile name: {}", keyInfoProfileName);
+            LOG.trace("Resolving KeyInfoGeneratorFactory using profile name: {}", keyInfoProfileName);
             factory = manager.getFactory(keyInfoProfileName, credential);
         } else {
-            log.trace("Resolving KeyInfoGeneratorFactory using default manager: {}", keyInfoProfileName);
+            LOG.trace("Resolving KeyInfoGeneratorFactory using default manager: {}", keyInfoProfileName);
             factory = manager.getDefaultManager().getFactory(credential);
         }
         
         if (factory != null) {
-            log.trace("Found KeyInfoGeneratorFactory: {}", factory.getClass().getName());
+            LOG.trace("Found KeyInfoGeneratorFactory: {}", factory.getClass().getName());
             return factory.newInstance();
         }
         
-        log.trace("Unable to resolve KeyInfoGeneratorFactory for credential");
+        LOG.trace("Unable to resolve KeyInfoGeneratorFactory for credential");
         return null;
-    }
-    
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(KeyInfoSupport.class);
     }
 
 }

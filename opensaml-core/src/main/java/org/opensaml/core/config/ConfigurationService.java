@@ -64,6 +64,9 @@ public class ConfigurationService {
     /** The configuration property name for the storage partition name to use. */
     @Nonnull public static final String PROPERTY_PARTITION_NAME = "opensaml.config.partitionName";
     
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(ConfigurationService.class);
+    
     /** The service loader used to locate registered implementations of ConfigurationPropertiesSource. */
     private static ServiceLoader<ConfigurationPropertiesSource> configPropertiesLoader = 
         ServiceLoader.load(ConfigurationPropertiesSource.class) ;
@@ -137,26 +140,25 @@ public class ConfigurationService {
      */
     @Nullable public static Properties getConfigurationProperties() {
         //TODO make these immutable?
-        final Logger log = getLogger();
-        log.trace("Resolving configuration propreties source");
+        LOG.trace("Resolving configuration propreties source");
         final Iterator<ConfigurationPropertiesSource> iter = configPropertiesLoader.iterator();
         
         if (!iter.hasNext()) {
-            log.trace("No ConfigurationPropertiesSources are configured, defaulting to system properties");
+            LOG.trace("No ConfigurationPropertiesSources are configured, defaulting to system properties");
             return new SystemPropertyConfigurationPropertiesSource().getProperties();
         }
         
         while (iter.hasNext()) {
             final ConfigurationPropertiesSource source = iter.next();
-            log.trace("Evaluating configuration properties implementation: {}", source.getClass().getName());
+            LOG.trace("Evaluating configuration properties implementation: {}", source.getClass().getName());
             final Properties props = source.getProperties();
             if (props != null) {
-                log.trace("Resolved non-null configuration properties using implementation: {}", 
+                LOG.trace("Resolved non-null configuration properties using implementation: {}", 
                         source.getClass().getName());
                 return props;
             }
         }
-        log.trace("Unable to resolve non-null configuration properties from any ConfigurationPropertiesSource");
+        LOG.trace("Unable to resolve non-null configuration properties from any ConfigurationPropertiesSource");
         return null;
     }
     
@@ -187,7 +189,6 @@ public class ConfigurationService {
      * @return the partition name
      */
     @Nonnull @NotEmpty protected static String getPartitionName() {
-        final Logger log = getLogger();
         final Properties configProperties = getConfigurationProperties();
         String partitionName = null;
         if (configProperties != null) {
@@ -195,7 +196,7 @@ public class ConfigurationService {
         } else {
             partitionName = DEFAULT_PARTITION_NAME;
         }
-        log.trace("Resolved effective configuration partition name '{}'", partitionName);
+        LOG.trace("Resolved effective configuration partition name '{}'", partitionName);
         return partitionName;
     }
 
@@ -224,15 +225,6 @@ public class ConfigurationService {
             }
         }
         return configuration;
-    }
-    
-    /**
-     * Get a logger.
-     * 
-     * @return an SLF4J logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(ConfigurationService.class);
     }
     
 }

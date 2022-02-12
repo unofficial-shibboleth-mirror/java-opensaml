@@ -325,7 +325,6 @@ public final class AlgorithmSupport {
      *         indeterminable from the URI
      */
     @Nullable public static Integer getKeyLength(@Nonnull final String algorithmURI) {
-        final Logger log = getLogger();
         final AlgorithmRegistry registry = getGlobalAlgorithmRegistry();
         if (registry != null){
             final AlgorithmDescriptor descriptor = registry.get(algorithmURI);
@@ -334,7 +333,7 @@ public final class AlgorithmSupport {
             }
         }
     
-        log.info("Mapping from algorithm URI {} to key length not available", algorithmURI);
+        LOG.info("Mapping from algorithm URI {} to key length not available", algorithmURI);
         return null;
     }
 
@@ -348,10 +347,9 @@ public final class AlgorithmSupport {
      */
     @Nonnull public static SecretKey generateSymmetricKey(@Nonnull final String algoURI)
             throws NoSuchAlgorithmException, KeyException {
-        final Logger log = getLogger();
         final String jceAlgorithmName = getKeyAlgorithm(algoURI);
         if (Strings.isNullOrEmpty(jceAlgorithmName)) {
-            log.error("Mapping from algorithm URI '" + algoURI
+            LOG.error("Mapping from algorithm URI '" + algoURI
                     + "' to key algorithm not available, key generation failed");
             throw new NoSuchAlgorithmException("Algorithm URI'" + algoURI + "' is invalid for key generation");
         }
@@ -370,7 +368,7 @@ public final class AlgorithmSupport {
         }
         
         if (keyLength == null) {
-            log.error("Key length could not be determined from algorithm URI, can't generate key");
+            LOG.error("Key length could not be determined from algorithm URI, can't generate key");
             throw new KeyException("Key length not determinable from algorithm URI, could not generate new key");
         }
         final KeyGenerator keyGenerator = KeyGenerator.getInstance(jceAlgorithmName);
@@ -508,15 +506,6 @@ public final class AlgorithmSupport {
         }
         
         return true;
-    }
-    
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(AlgorithmSupport.class);
     }
 
 }

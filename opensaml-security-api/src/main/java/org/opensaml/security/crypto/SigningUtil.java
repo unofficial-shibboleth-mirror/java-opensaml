@@ -40,6 +40,9 @@ import org.slf4j.LoggerFactory;
  * A utility class for computing and verifying raw signatures and MAC values.
  */
 public final class SigningUtil {
+    
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SigningUtil.class);
 
     /** Constructor. */
     private SigningUtil() {
@@ -62,11 +65,10 @@ public final class SigningUtil {
     @Nonnull public static byte[] sign(@Nonnull final Credential signingCredential,
             @Nonnull final String jcaAlgorithmID, final boolean isMAC, @Nonnull final byte[] input)
             throws SecurityException {
-        final Logger log = getLogger();
 
         final Key signingKey = CredentialSupport.extractSigningKey(signingCredential);
         if (signingKey == null) {
-            log.error("No signing key supplied in signing credential for signature computation");
+            LOG.error("No signing key supplied in signing credential for signature computation");
             throw new SecurityException("No signing key supplied in signing credential");
         }
 
@@ -75,7 +77,7 @@ public final class SigningUtil {
         } else if (signingKey instanceof PrivateKey) {
             return sign((PrivateKey) signingKey, jcaAlgorithmID, input);
         } else {
-            log.error("No PrivateKey present in signing credential for signature computation");
+            LOG.error("No PrivateKey present in signing credential for signature computation");
             throw new SecurityException("No PrivateKey supplied for signing");
         }
     }
@@ -98,8 +100,7 @@ public final class SigningUtil {
         Constraint.isNotNull(jcaAlgorithmID, "JCA algorithm ID cannot be null");
         Constraint.isNotNull(input, "Input data to sign cannot be null");
 
-        final Logger log = getLogger();
-        log.debug("Computing signature over input using private key of type {} and JCA algorithm ID {}", signingKey
+        LOG.debug("Computing signature over input using private key of type {} and JCA algorithm ID {}", signingKey
                 .getAlgorithm(), jcaAlgorithmID);
 
         try {
@@ -107,10 +108,10 @@ public final class SigningUtil {
             signature.initSign(signingKey);
             signature.update(input);
             final byte[] rawSignature = signature.sign();
-            log.debug("Computed signature: {}", Hex.encodeHex(rawSignature));
+            LOG.debug("Computed signature: {}", Hex.encodeHex(rawSignature));
             return rawSignature;
         } catch (final GeneralSecurityException e) {
-            log.error("Error during signature generation: {}", e.getMessage());
+            LOG.error("Error during signature generation: {}", e.getMessage());
             throw new SecurityException("Error during signature generation", e);
         }
     }
@@ -133,8 +134,7 @@ public final class SigningUtil {
         Constraint.isNotNull(jcaAlgorithmID, "JCA algorithm ID cannot be null");
         Constraint.isNotNull(input, "Input data to sign cannot be null");
 
-        final Logger log = getLogger();
-        log.debug("Computing MAC over input using key of type {} and JCA algorithm ID {}", signingKey.getAlgorithm(),
+        LOG.debug("Computing MAC over input using key of type {} and JCA algorithm ID {}", signingKey.getAlgorithm(),
                 jcaAlgorithmID);
 
         try {
@@ -142,10 +142,10 @@ public final class SigningUtil {
             mac.init(signingKey);
             mac.update(input);
             final byte[] rawMAC = mac.doFinal();
-            log.debug("Computed MAC: {}", Hex.encodeHexString(rawMAC));
+            LOG.debug("Computed MAC: {}", Hex.encodeHexString(rawMAC));
             return rawMAC;
         } catch (final GeneralSecurityException e) {
-            log.error("Error during MAC generation: {}", e.getMessage());
+            LOG.error("Error during MAC generation: {}", e.getMessage());
             throw new SecurityException("Error during MAC generation", e);
         }
     }
@@ -168,11 +168,10 @@ public final class SigningUtil {
     public static boolean verify(@Nonnull final Credential verificationCredential,
             @Nonnull final String jcaAlgorithmID, final boolean isMAC, @Nonnull final byte[] signature,
             @Nonnull final byte[] input) throws SecurityException {
-        final Logger log = getLogger();
 
         final Key verificationKey = CredentialSupport.extractVerificationKey(verificationCredential);
         if (verificationKey == null) {
-            log.error("No verification key supplied in verification credential for signature verification");
+            LOG.error("No verification key supplied in verification credential for signature verification");
             throw new SecurityException("No verification key supplied in verification credential");
         }
 
@@ -181,7 +180,7 @@ public final class SigningUtil {
         } else if (verificationKey instanceof PublicKey) {
             return verify((PublicKey) verificationKey, jcaAlgorithmID, signature, input);
         } else {
-            log.error("No PublicKey present in verification credential for signature verification");
+            LOG.error("No PublicKey present in verification credential for signature verification");
             throw new SecurityException("No PublicKey supplied for signature verification");
         }
     }
@@ -207,8 +206,7 @@ public final class SigningUtil {
         Constraint.isNotNull(signature, "Signature data to verify cannot be null");
         Constraint.isNotNull(input, "Input data to verify cannot be null");
 
-        final Logger log = getLogger();
-        log.debug("Verifying signature over input using public key of type {} and JCA algorithm ID {}", verificationKey
+        LOG.debug("Verifying signature over input using public key of type {} and JCA algorithm ID {}", verificationKey
                 .getAlgorithm(), jcaAlgorithmID);
 
         try {
@@ -217,7 +215,7 @@ public final class SigningUtil {
             sig.update(input);
             return sig.verify(signature);
         } catch (final GeneralSecurityException e) {
-            log.error("Error during signature verification: {}", e.getMessage());
+            LOG.error("Error during signature verification: {}", e.getMessage());
             throw new SecurityException("Error during signature verification", e);
         }
     }
@@ -244,8 +242,7 @@ public final class SigningUtil {
         Constraint.isNotNull(signature, "Signature data to verify cannot be null");
         Constraint.isNotNull(input, "Input data to verify cannot be null");
 
-        final Logger log = getLogger();
-        log.debug("Verifying MAC over input using key of type {} and JCA algorithm ID {}", verificationKey
+        LOG.debug("Verifying MAC over input using key of type {} and JCA algorithm ID {}", verificationKey
                 .getAlgorithm(), jcaAlgorithmID);
 
         // Java JCA/JCE Mac interface doesn't have a verification op,
@@ -255,12 +252,4 @@ public final class SigningUtil {
         return Arrays.equals(computed, signature);
     }
     
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(SigningUtil.class);
-    }
 }

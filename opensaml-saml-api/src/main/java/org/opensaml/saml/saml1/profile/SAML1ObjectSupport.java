@@ -31,6 +31,9 @@ import org.slf4j.LoggerFactory;
  */
 public final class SAML1ObjectSupport {
     
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SAML1ObjectSupport.class);
+    
     /** Constructor. */
     private SAML1ObjectSupport() {
         
@@ -66,13 +69,4 @@ public final class SAML1ObjectSupport {
                 && Objects.equals(name1.getNameQualifier(), name2.getNameQualifier());
     }
     
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(SAML1ObjectSupport.class);
-    }
-
 }

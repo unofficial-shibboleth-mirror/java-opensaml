@@ -33,6 +33,9 @@ import org.slf4j.LoggerFactory;
  */
 public final class SignatureValidator {
     
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SignatureValidationProvider.class);
+    
     /** The cached signature validation provider instance to use. */
     private static SignatureValidationProvider validatorInstance;
 
@@ -50,7 +53,7 @@ public final class SignatureValidator {
     public static void validate(@Nonnull final Signature signature, @Nonnull final Credential validationCredential) 
             throws SignatureException {
         final SignatureValidationProvider validator = getSignatureValidationProvider();
-        getLogger().debug("Using a validation provider of implementation: {}", validator.getClass().getName());
+        LOG.debug("Using a validation provider of implementation: {}", validator.getClass().getName());
         validator.validate(signature, validationCredential);
     }
     
@@ -75,15 +78,6 @@ public final class SignatureValidator {
             }
         }
         return validatorInstance;
-    }
-    
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(SignatureValidationProvider.class);
     }
 
 }

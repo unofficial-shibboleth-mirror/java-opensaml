@@ -58,6 +58,9 @@ import org.w3c.dom.Element;
  */
 public final class XMLObjectSupport {
     
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(XMLObjectSupport.class);
+    
     /** Options for handling output of XMLObject cloning. */
     public enum CloneOutputOption {
         
@@ -189,22 +192,21 @@ public final class XMLObjectSupport {
      */
     public static XMLObject unmarshallFromInputStream(final ParserPool parserPool, final InputStream inputStream)
             throws XMLParserException, UnmarshallingException {
-        final Logger log = getLogger();
-        log.debug("Parsing InputStream into DOM document");
+        LOG.debug("Parsing InputStream into DOM document");
 
         try {
             final Document messageDoc = parserPool.parse(inputStream);
             final Element messageElem = messageDoc.getDocumentElement();
 
-            if (log.isTraceEnabled()) {
-                log.trace("Resultant DOM message was:");
-                log.trace(SerializeSupport.nodeToString(messageElem));
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Resultant DOM message was:");
+                LOG.trace(SerializeSupport.nodeToString(messageElem));
             }
 
-            log.debug("Unmarshalling DOM parsed from InputStream");
+            LOG.debug("Unmarshalling DOM parsed from InputStream");
             final Unmarshaller unmarshaller = getUnmarshaller(messageElem);
             if (unmarshaller == null) {
-                log.error("Unable to unmarshall InputStream, no unmarshaller registered for element "
+                LOG.error("Unable to unmarshall InputStream, no unmarshaller registered for element "
                         + QNameSupport.getNodeQName(messageElem));
                 throw new UnmarshallingException(
                         "Unable to unmarshall InputStream, no unmarshaller registered for element "
@@ -213,7 +215,7 @@ public final class XMLObjectSupport {
 
             final XMLObject message = unmarshaller.unmarshall(messageElem);
 
-            log.debug("InputStream succesfully unmarshalled");
+            LOG.debug("InputStream succesfully unmarshalled");
             return message;
         } catch (final RuntimeException e) {
             throw new UnmarshallingException("Fatal error unmarshalling XMLObject", e);
@@ -231,23 +233,22 @@ public final class XMLObjectSupport {
      */
     public static XMLObject unmarshallFromReader(final ParserPool parserPool, final Reader reader)
             throws XMLParserException, UnmarshallingException {
-        final Logger log = getLogger();
-        log.debug("Parsing Reader into DOM document");
+        LOG.debug("Parsing Reader into DOM document");
         
 
         try {
             final Document messageDoc = parserPool.parse(reader);
             final Element messageElem = messageDoc.getDocumentElement();
 
-            if (log.isTraceEnabled()) {
-                log.trace("Resultant DOM message was:");
-                log.trace(SerializeSupport.nodeToString(messageElem));
+            if (LOG.isTraceEnabled()) {
+                LOG.trace("Resultant DOM message was:");
+                LOG.trace(SerializeSupport.nodeToString(messageElem));
             }
 
-            log.debug("Unmarshalling DOM parsed from Reader");
+            LOG.debug("Unmarshalling DOM parsed from Reader");
             final Unmarshaller unmarshaller = getUnmarshaller(messageElem);
             if (unmarshaller == null) {
-                log.error("Unable to unmarshall Reader, no unmarshaller registered for element "
+                LOG.error("Unable to unmarshall Reader, no unmarshaller registered for element "
                         + QNameSupport.getNodeQName(messageElem));
                 throw new UnmarshallingException(
                         "Unable to unmarshall Reader, no unmarshaller registered for element "
@@ -256,7 +257,7 @@ public final class XMLObjectSupport {
 
             final XMLObject message = unmarshaller.unmarshall(messageElem);
 
-            log.debug("Reader succesfully unmarshalled");
+            LOG.debug("Reader succesfully unmarshalled");
             return message;
         } catch (final RuntimeException e) {
             throw new UnmarshallingException("Fatal error unmarshalling XMLObject", e);
@@ -272,17 +273,16 @@ public final class XMLObjectSupport {
      * @throws MarshallingException if there is a problem marshalling the XMLObject
      */
     @Nonnull public static Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException {
-        final Logger log = getLogger();
-        log.debug("Marshalling XMLObject");
+        LOG.debug("Marshalling XMLObject");
         
         if (xmlObject.getDOM() != null) {
-            log.debug("XMLObject already had cached DOM, returning that element");
+            LOG.debug("XMLObject already had cached DOM, returning that element");
             return xmlObject.getDOM();
         }
 
         final Marshaller marshaller = getMarshaller(xmlObject);
         if (marshaller == null) {
-            log.error("Unable to marshall XMLObject, no marshaller registered for object: "
+            LOG.error("Unable to marshall XMLObject, no marshaller registered for object: "
                     + xmlObject.getElementQName());
             throw new MarshallingException("Unable to marshall XMLObject, no marshaller registered for object: " 
                     + xmlObject.getElementQName());
@@ -290,9 +290,9 @@ public final class XMLObjectSupport {
         
         final Element messageElem = marshaller.marshall(xmlObject);
         
-        if (log.isTraceEnabled()) {
-            log.trace("Marshalled XMLObject into DOM:");
-            log.trace(SerializeSupport.nodeToString(messageElem));
+        if (LOG.isTraceEnabled()) {
+            LOG.trace("Marshalled XMLObject into DOM:");
+            LOG.trace(SerializeSupport.nodeToString(messageElem));
         }
         
         return messageElem;
@@ -357,15 +357,6 @@ public final class XMLObjectSupport {
         return null;
     }
     
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    private static Logger getLogger() {
-        return LoggerFactory.getLogger(XMLObjectSupport.class);
-    }
-
     /**
      * Marshall an attribute name and value to a DOM Element. This is particularly useful for attributes whose names
      * appear in namespace-qualified form.

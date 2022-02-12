@@ -36,6 +36,9 @@ import org.slf4j.LoggerFactory;
 
 /** Helper methods for SAML 1 profile actions. */
 public final class SAML1ActionSupport {
+    
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SAML1ActionSupport.class);
 
     /** Constructor. */
     private SAML1ActionSupport() {
@@ -65,7 +68,7 @@ public final class SAML1ActionSupport {
         assertion.setIssuer(issuer);
         assertion.setVersion(SAMLVersion.VERSION_11);
         
-        getLogger().debug("Profile Action {}: Created Assertion {}", action.getClass().getSimpleName(),
+        LOG.debug("Profile Action {}: Created Assertion {}", action.getClass().getSimpleName(),
                 assertion.getID());
 
         return assertion;
@@ -89,7 +92,7 @@ public final class SAML1ActionSupport {
         final Assertion assertion = buildAssertion(action, idGenerator, issuer);
         assertion.setIssueInstant(response.getIssueInstant());
         
-        getLogger().debug("Profile Action {}: Added Assertion {} to Response {}",
+        LOG.debug("Profile Action {}: Added Assertion {} to Response {}",
                 new Object[] {action.getClass().getSimpleName(), assertion.getID(), response.getID(),});
         response.getAssertions().add(assertion);
 
@@ -114,23 +117,14 @@ public final class SAML1ActionSupport {
                             Conditions.DEFAULT_ELEMENT_NAME);
             conditions = conditionsBuilder.buildObject();
             assertion.setConditions(conditions);
-            getLogger().debug("Profile Action {}: Assertion {} did not already contain Conditions, added",
+            LOG.debug("Profile Action {}: Assertion {} did not already contain Conditions, added",
                     action.getClass().getSimpleName(), assertion.getID());
         } else {
-            getLogger().debug("Profile Action {}: Assertion {} already contains Conditions, nothing was done",
+            LOG.debug("Profile Action {}: Assertion {} already contains Conditions, nothing was done",
                     action.getClass().getSimpleName(), assertion.getID());
         }
 
         return conditions;
-    }
-
-    /**
-     * Gets the logger for this class.
-     * 
-     * @return logger for this class, never null
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(SAML1ActionSupport.class);
     }
     
 }

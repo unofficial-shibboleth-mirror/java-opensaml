@@ -41,6 +41,9 @@ import org.slf4j.LoggerFactory;
  */
 public final class Signer {
     
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(Signer.class);
+    
     /** The cached signer provider instance to use. */
     private static SignerProvider signerInstance;
 
@@ -55,7 +58,7 @@ public final class Signer {
      */
     public static void signObjects(@Nonnull final List<Signature> signatures) throws SignatureException {
         final SignerProvider signer = getSignerProvider();
-        getLogger().debug("Using a signer of implementation: {}", signer.getClass().getName());
+        LOG.debug("Using a signer of implementation: {}", signer.getClass().getName());
         for (final Signature signature : signatures) {
             signer.signObject(signature);
         }
@@ -69,7 +72,7 @@ public final class Signer {
      */
     public static void signObject(@Nonnull final Signature signature) throws SignatureException {
         final SignerProvider signer = getSignerProvider();
-        getLogger().debug("Using a signer of implemenation: {}", signer.getClass().getName());
+        LOG.debug("Using a signer of implemenation: {}", signer.getClass().getName());
         signer.signObject(signature);
     }
     
@@ -90,15 +93,6 @@ public final class Signer {
             }
         }
         return signerInstance;
-    }
-    
-    /**
-     * Get an SLF4J Logger.
-     * 
-     * @return a Logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(Signer.class);
     }
 
 }

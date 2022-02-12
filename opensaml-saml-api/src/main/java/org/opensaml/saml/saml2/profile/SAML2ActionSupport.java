@@ -38,6 +38,9 @@ import org.slf4j.LoggerFactory;
 
 /** Helper methods for SAML 2 IdP actions. */
 public final class SAML2ActionSupport {
+    
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SAML2ActionSupport.class);
 
     /** Constructor. */
     private SAML2ActionSupport() {
@@ -75,7 +78,7 @@ public final class SAML2ActionSupport {
             assertion.setIssuer(issuerObject);
         }
         
-        getLogger().debug("Profile Action {}: Created Assertion {}", action.getClass().getSimpleName(),
+        LOG.debug("Profile Action {}: Created Assertion {}", action.getClass().getSimpleName(),
                 assertion.getID());
 
         return assertion;
@@ -99,7 +102,7 @@ public final class SAML2ActionSupport {
         final Assertion assertion = buildAssertion(action, idGenerator, issuer);
         assertion.setIssueInstant(response.getIssueInstant());
 
-        getLogger().debug("Profile Action {}: Added Assertion {} to Response {}",
+        LOG.debug("Profile Action {}: Added Assertion {} to Response {}",
                 new Object[] {action.getClass().getSimpleName(), assertion.getID(), response.getID(),});
         response.getAssertions().add(assertion);
 
@@ -124,10 +127,10 @@ public final class SAML2ActionSupport {
                             Conditions.DEFAULT_ELEMENT_NAME);
             conditions = conditionsBuilder.buildObject();
             assertion.setConditions(conditions);
-            getLogger().debug("Profile Action {}: Assertion {} did not already contain Conditions, one was added",
+            LOG.debug("Profile Action {}: Assertion {} did not already contain Conditions, one was added",
                     action.getClass().getSimpleName(), assertion.getID());
         } else {
-            getLogger().debug("Profile Action {}: Assertion {} already contained Conditions, nothing was done",
+            LOG.debug("Profile Action {}: Assertion {} already contained Conditions, nothing was done",
                     action.getClass().getSimpleName(), assertion.getID());
         }
 
@@ -152,23 +155,14 @@ public final class SAML2ActionSupport {
                             Advice.DEFAULT_ELEMENT_NAME);
             advice = adviceBuilder.buildObject();
             assertion.setAdvice(advice);
-            getLogger().debug("Profile Action {}: Assertion {} did not already contain Advice, one was added",
+            LOG.debug("Profile Action {}: Assertion {} did not already contain Advice, one was added",
                     action.getClass().getSimpleName(), assertion.getID());
         } else {
-            getLogger().debug("Profile Action {}: Assertion {} already contained Advice, nothing was done",
+            LOG.debug("Profile Action {}: Assertion {} already contained Advice, nothing was done",
                     action.getClass().getSimpleName(), assertion.getID());
         }
 
         return advice;
-    }
-
-    /**
-     * Gets the logger for this class.
-     * 
-     * @return logger for this class, never null
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(SAML2ActionSupport.class);
     }
     
 }

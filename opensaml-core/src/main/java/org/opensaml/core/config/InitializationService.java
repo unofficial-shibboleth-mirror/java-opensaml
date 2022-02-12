@@ -34,6 +34,9 @@ import org.slf4j.LoggerFactory;
  */
 public class InitializationService {
     
+    /** Logger. */
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(InitializationService.class);
+    
     /** Constructor.*/
     protected InitializationService() { }
     
@@ -43,19 +46,17 @@ public class InitializationService {
      * @throws InitializationException  if initialization did not complete successfully
      */
     public static synchronized void initialize() throws InitializationException {
-        final Logger log = getLogger();
-        
-        log.info("Initializing OpenSAML using the Java Services API");
+        LOG.info("Initializing OpenSAML using the Java Services API");
         
         final ServiceLoader<Initializer> serviceLoader = getServiceLoader();
         final Iterator<Initializer> iter = serviceLoader.iterator();
         while (iter.hasNext()) {
             final Initializer initializer  = iter.next();
-            log.debug("Initializing module initializer implementation: {}", initializer.getClass().getName());
+            LOG.debug("Initializing module initializer implementation: {}", initializer.getClass().getName());
             try {
                 initializer.init();
             } catch (final InitializationException e) {
-                log.error("Error initializing module: {}", e.getMessage());
+                LOG.error("Error initializing module: {}", e.getMessage());
                 throw e;
             }
         }
@@ -74,13 +75,4 @@ public class InitializationService {
         return ServiceLoader.load(Initializer.class);
     }
     
-    /**
-     * Get a logger.
-     * 
-     * @return an SLF4J logger instance
-     */
-    @Nonnull private static Logger getLogger() {
-        return LoggerFactory.getLogger(InitializationService.class);
-    }
-
 }
