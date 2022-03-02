@@ -309,17 +309,7 @@ public class SAML20AssertionValidator {
         
         log(assertion, context);
         
-        ValidationResult result = validateVersion(assertion, context);
-        if (result != ValidationResult.VALID) {
-            return result;
-        }
-
-        result = validateIssueInstant(assertion, context);
-        if (result != ValidationResult.VALID) {
-            return result;
-        }
-
-        result = validateIssuer(assertion, context);
+        ValidationResult result = validateBasicData(assertion, context);
         if (result != ValidationResult.VALID) {
             return result;
         }
@@ -368,6 +358,38 @@ public class SAML20AssertionValidator {
             log.trace("SAML 2 Assertion ValidationContext - static parameters: {}", context.getStaticParameters());
             log.trace("SAML 2 Assertion ValidationContext - dynamic parameters: {}", context.getDynamicParameters());
         }
+    }
+    
+    
+    /**
+     * Validate basic Assertion data, such as version, issuer and issue instant.
+     * 
+     * @param assertion the assertion being evaluated
+     * @param context the current validation context
+     * 
+     * @return the validation result
+     * 
+     * @throws AssertionValidationException if there is a fatal error evaluating the validity of the assertion
+     */
+    @Nonnull protected ValidationResult validateBasicData(@Nonnull final Assertion assertion, 
+            @Nonnull final ValidationContext context) throws AssertionValidationException {
+        
+        ValidationResult result = validateVersion(assertion, context);
+        if (result != ValidationResult.VALID) {
+            return result;
+        }
+
+        result = validateIssueInstant(assertion, context);
+        if (result != ValidationResult.VALID) {
+            return result;
+        }
+
+        result = validateIssuer(assertion, context);
+        if (result != ValidationResult.VALID) {
+            return result;
+        }
+        
+        return ValidationResult.VALID;
     }
 
     /**
