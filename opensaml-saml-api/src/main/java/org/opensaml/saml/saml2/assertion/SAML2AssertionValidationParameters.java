@@ -44,6 +44,11 @@ public final class SAML2AssertionValidationParameters {
     public static final String CLOCK_SKEW = STD_PREFIX + ".ClockSkew";
 
     /**
+     * Carries a {@link java.time.Duration} specifying a lifetime from 'now' for IssueInstant.
+     */
+    public static final String LIFETIME = STD_PREFIX + ".Lifetime";
+
+    /**
      * Carries the {@link org.opensaml.saml.saml2.core.SubjectConfirmation} that confirmed the subject.
      */
     public static final String CONFIRMED_SUBJECT_CONFIRMATION = STD_PREFIX + ".ConfirmedSubjectConfirmation";

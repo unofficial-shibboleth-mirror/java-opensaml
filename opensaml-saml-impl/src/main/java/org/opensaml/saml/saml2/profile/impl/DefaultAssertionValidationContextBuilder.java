@@ -92,6 +92,9 @@ public class DefaultAssertionValidationContextBuilder
     /** A function for resolving the clock skew to apply. */
     @Nullable private Function<ProfileRequestContext, Duration> clockSkew;
     
+    /** A function for resolving the lifetime to apply. */
+    @Nullable private Function<ProfileRequestContext, Duration> lifetime;
+    
     /** A function for resolving the signature validation CriteriaSet for a particular function. */
     @Nullable private Function<Pair<ProfileRequestContext, Assertion>, CriteriaSet> signatureCriteriaSetFunction;
     
@@ -188,6 +191,39 @@ public class DefaultAssertionValidationContextBuilder
      */
     public void setClockSkewLookupStrategy(@Nullable final Function<ProfileRequestContext, Duration> strategy) {
         clockSkew = strategy;
+    }
+
+    /**
+     * Get the strategy by which to resolve the lifetime.
+     * 
+     * @return lookup strategy
+     * 
+     * @since 4.2.0
+     */
+    @Nullable public Function<ProfileRequestContext, Duration> getLifetime() {
+        return lifetime;
+    }
+
+    /**
+     * Set the lifetime.
+     * 
+     * @param duration lifetime
+     * 
+     * @since 4.2.0
+     */
+    public void setLifetime(@Nullable final Duration duration) {
+        lifetime = FunctionSupport.constant(duration);
+    }
+
+    /**
+     * Set the strategy by which to resolve the lifetime.
+     * 
+     * @param strategy lookup strategy
+     * 
+     * @since 4.2.0
+     */
+    public void setLifetimeLookupStrategy(@Nullable final Function<ProfileRequestContext, Duration> strategy) {
+        lifetime = strategy;
     }
 
     /**
@@ -596,6 +632,12 @@ public class DefaultAssertionValidationContextBuilder
         if (getClockSkew() != null) {
             staticParams.put(SAML2AssertionValidationParameters.CLOCK_SKEW,
                     getClockSkew().apply(input.getProfileRequestContext()));
+        }
+        
+        // Lifetime (for IssueInstant)
+        if (getLifetime() != null) {
+            staticParams.put(SAML2AssertionValidationParameters.LIFETIME,
+                    getLifetime().apply(input.getProfileRequestContext()));
         }
         
         // Issuer

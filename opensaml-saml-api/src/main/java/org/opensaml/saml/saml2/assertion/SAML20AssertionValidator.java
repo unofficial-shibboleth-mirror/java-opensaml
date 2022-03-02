@@ -38,6 +38,7 @@ import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
@@ -124,6 +125,9 @@ public class SAML20AssertionValidator {
 
     /** Default clock skew of 5 minutes. */
     @Nonnull public static final Duration DEFAULT_CLOCK_SKEW = Duration.ofMinutes(5);
+
+    /** Default lifetime for IssueInstant of 5 minutes. */
+    @Nonnull public static final Duration DEFAULT_LIFETIME = Duration.ofMinutes(5);
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML20AssertionValidator.class);
@@ -228,6 +232,18 @@ public class SAML20AssertionValidator {
     }
 
     /**
+     * Gets the lifetime duration from the {@link ValidationContext#getStaticParameters()} parameters.
+     * If the parameter is not set or is not a non-zero {@link Duration} then the {@link #DEFAULT_LIFETIME} is used.
+     * 
+     * @param context current validation context
+     * 
+     * @return the lifetime duration
+     */
+    @Nonnull public static Duration getLifetime(@Nonnull final ValidationContext context) {
+        return getDurationParam(context, SAML2AssertionValidationParameters.LIFETIME, DEFAULT_LIFETIME);
+     }
+     
+    /**
      * Gets the clock skew from the {@link ValidationContext#getStaticParameters()} parameters. If the parameter is not
      * set or is not a non-zero {@link Duration} then the {@link #DEFAULT_CLOCK_SKEW} is used.
      * 
@@ -235,32 +251,47 @@ public class SAML20AssertionValidator {
      * 
      * @return the clock skew
      */
-    public static Duration getClockSkew(@Nonnull final ValidationContext context) {
-        Duration clockSkew = DEFAULT_CLOCK_SKEW;
+    @Nonnull public static Duration getClockSkew(@Nonnull final ValidationContext context) {
+        return getDurationParam(context, SAML2AssertionValidationParameters.CLOCK_SKEW, DEFAULT_CLOCK_SKEW);
+     }
+     
+    /**
+     * Gets the clock skew from the {@link ValidationContext#getStaticParameters()} parameters. If the parameter is not
+     * set or is not a non-zero {@link Duration} then the {@link #DEFAULT_CLOCK_SKEW} is used.
+     * 
+     * @param context current validation context
+     * @param paramName name of the duration parameter to process
+     * @param defaultDuration the default duration to use if not parameter not present in context
+     * 
+     * @return the clock skew
+     */
+    private static Duration getDurationParam(@Nonnull final ValidationContext context, @Nonnull final String paramName,
+            @Nonnull final Duration defaultDuration) {
+        
+        Duration duration = defaultDuration;
 
-        if (context.getStaticParameters().containsKey(SAML2AssertionValidationParameters.CLOCK_SKEW)) {
+        if (context.getStaticParameters().containsKey(paramName)) {
             try {
-                final Object raw = context.getStaticParameters().get(SAML2AssertionValidationParameters.CLOCK_SKEW);
+                final Object raw = context.getStaticParameters().get(paramName);
                 if (raw instanceof Duration) {
-                    clockSkew = (Duration) raw;
+                    duration = (Duration) raw;
                 } else if (raw instanceof Long) {
-                    clockSkew = Duration.ofMillis((Long) raw);
+                    duration = Duration.ofMillis((Long) raw);
                     // This is a V4 deprecation, remove in V5.
-                    DeprecationSupport.warn(ObjectType.CONFIGURATION, SAML2AssertionValidationParameters.CLOCK_SKEW,
-                            null, Duration.class.getName());
+                    DeprecationSupport.warn(ObjectType.CONFIGURATION, paramName, null, Duration.class.getName());
                 }
                 
-                if (clockSkew.isZero()) {
-                    clockSkew = DEFAULT_CLOCK_SKEW;
-                } else if (clockSkew.isNegative()) {
-                    clockSkew = clockSkew.abs();
+                if (duration.isZero()) {
+                    duration = defaultDuration;
+                } else if (duration.isNegative()) {
+                    duration = duration.abs();
                 }
             } catch (final ClassCastException e) {
-                clockSkew = DEFAULT_CLOCK_SKEW;
+                duration = defaultDuration;
             }
         }
 
-        return clockSkew;
+        return duration;
     }
 
     /**
@@ -279,6 +310,11 @@ public class SAML20AssertionValidator {
         log(assertion, context);
         
         ValidationResult result = validateVersion(assertion, context);
+        if (result != ValidationResult.VALID) {
+            return result;
+        }
+
+        result = validateIssueInstant(assertion, context);
         if (result != ValidationResult.VALID) {
             return result;
         }
@@ -355,6 +391,53 @@ public class SAML20AssertionValidator {
         return ValidationResult.VALID;
     }
 
+    /**
+     * Validates the Assertion IssueInstant.
+     * 
+     * @param assertion the assertion to validate
+     * @param context current validation context
+     * 
+     * @return the result of the validation evaluation
+     * 
+     * @throws AssertionValidationException if there is a problem validating the IssueInstant
+     */
+    protected ValidationResult validateIssueInstant(@Nonnull final Assertion assertion,
+            @Nonnull final ValidationContext context) throws AssertionValidationException {
+        
+        if (assertion.getIssueInstant() == null) {
+            context.setValidationFailureMessage(String.format(
+                    "Assertion '%s' did not contain the required IssueInstant", assertion.getID()));
+            return ValidationResult.INVALID; 
+        }
+        final Instant issueInstant = assertion.getIssueInstant();
+        
+        final Duration clockSkew = getClockSkew(context);
+        final Duration lifetime = getLifetime(context);
+        
+        final Instant now = Instant.now();
+        final Instant latestValid = now.plus(clockSkew.abs());
+        final Instant expiration = issueInstant.plus(clockSkew.abs()).plus(lifetime.abs());
+
+        // Check assertion wasn't issued in the future
+        if (issueInstant.isAfter(latestValid)) {
+            log.warn("Assertion was not yet valid: IssueInstant: '{}', latest valid: '{}'", issueInstant, latestValid);
+            context.setValidationFailureMessage("Assertion IssueInstant was invalid, issued in future");
+            return ValidationResult.INVALID;
+            
+        }
+
+        // Check assertion has not expired
+        if (expiration.isBefore(now)) {
+            log.warn("Assertion IssueInstant was expired: IssueInstant: '{}', expiration: '{}', now: '{}'",
+                    issueInstant, expiration, now);
+            context.setValidationFailureMessage("Assertion IssueInstant was invalid, expired");
+            return ValidationResult.INVALID;
+        }
+        
+        
+        return ValidationResult.VALID;
+    }
+    
     /**
      * Validates the Assertion {@link Issuer}.
      * 

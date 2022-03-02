@@ -25,10 +25,12 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -590,6 +592,127 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     }
     
 
+    @Test
+    public void testNoIssueInstant() throws AssertionValidationException {
+        getAssertion().setIssueInstant(null);
+        
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testGetLifetime() {
+        ValidationContext validationContext;
+        Map<String,Object> staticParams = new HashMap<>();
+       
+        // Default
+        validationContext = new ValidationContext(staticParams);
+        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(5));
+        
+        staticParams.put(SAML2AssertionValidationParameters.LIFETIME, Duration.ofMinutes(10));
+        validationContext = new ValidationContext(staticParams);
+        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(10));
+        
+        staticParams.put(SAML2AssertionValidationParameters.LIFETIME, Duration.ofMinutes(8).negated());
+        validationContext = new ValidationContext(staticParams);
+        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(8));
+        
+        staticParams.put(SAML2AssertionValidationParameters.LIFETIME, 7*60*1000l);
+        validationContext = new ValidationContext(staticParams);
+        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(7));
+        
+        staticParams.put(SAML2AssertionValidationParameters.LIFETIME, -9*60*1000l);
+        validationContext = new ValidationContext(staticParams);
+        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(9));
+        
+        // Duration==0 means use default
+        staticParams.put(SAML2AssertionValidationParameters.LIFETIME, Duration.ofSeconds(0));
+        validationContext = new ValidationContext(staticParams);
+        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(5));
+    }
+    
+    @Test
+    public void testIssueInstantInFuture() throws AssertionValidationException {
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Instant now = Instant.now();
+        Duration clockSkew = SAML20AssertionValidator.getClockSkew(validationContext);
+        getAssertion().setIssueInstant(now.plus(clockSkew).plusSeconds(5));
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testIssueInstantInFutureWithinClockSkew() throws AssertionValidationException {
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Instant now = Instant.now();
+        Duration clockSkew = SAML20AssertionValidator.getClockSkew(validationContext);
+        getAssertion().setIssueInstant(now.plus(clockSkew).minusSeconds(5));
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
+    }
+    
+    @Test
+    public void testIssueInstantExpired() throws AssertionValidationException {
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Instant now = Instant.now();
+        Duration clockSkew = SAML20AssertionValidator.getClockSkew(validationContext);
+        Duration lifetime = SAML20AssertionValidator.getLifetime(validationContext);
+        getAssertion().setIssueInstant(now.minus(lifetime.plus(clockSkew).plusSeconds(5)));
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.INVALID);
+    }
+    
+    @Test
+    public void testIssueInstantExpiredWithinClockSkew() throws AssertionValidationException {
+        validator = getCurrentValidator();
+        
+        Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, false);
+        
+        ValidationContext validationContext = new ValidationContext(staticParams);
+        
+        Instant now = Instant.now();
+        Duration clockSkew = SAML20AssertionValidator.getClockSkew(validationContext);
+        Duration lifetime = SAML20AssertionValidator.getLifetime(validationContext);
+        getAssertion().setIssueInstant(now.minus(lifetime.plus(clockSkew).minusSeconds(5)));
+        
+        Assertion assertion = getAssertion();
+        
+        Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
+    }
+    
     
     
     // Helper methods
