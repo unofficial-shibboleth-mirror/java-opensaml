@@ -48,6 +48,8 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.xmlsec.context.SecurityParametersContext;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -215,6 +217,15 @@ public class DefaultSAML20AssertionValidationContextBuilder
         if (!criteriaSet.contains(UsageCriterion.class)) {
             log.debug("Adding internally-generated UsageCriterion with value of: {}", UsageType.SIGNING);
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
+        }
+        
+        if (!criteriaSet.contains(SignatureValidationParametersCriterion.class)) {
+            final SecurityParametersContext secParamsContext =
+                    input.getMessageContext().getSubcontext(SecurityParametersContext.class);
+            if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
+                criteriaSet.add(new SignatureValidationParametersCriterion(
+                        secParamsContext.getSignatureValidationParameters()));
+            }
         }
         
         log.debug("Resolved Signature validation CriteriaSet: {}", criteriaSet);

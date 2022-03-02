@@ -66,6 +66,7 @@ import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
+import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -855,6 +856,7 @@ public class DefaultAssertionValidationContextBuilder
      * @param criteriaSet the criteria set to populate
      * @param inboundContext the inbound message context
      */
+    // Checkstyle: CyclomaticComplexity OFF
     protected void populateSignatureCriteriaFromInboundContext(@Nonnull final CriteriaSet criteriaSet,
             @Nonnull final MessageContext inboundContext) {
 
@@ -879,7 +881,17 @@ public class DefaultAssertionValidationContextBuilder
                 && protocolContext != null && protocolContext.getProtocol() != null) {
             criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
         }
+        
+        if (!criteriaSet.contains(SignatureValidationParametersCriterion.class)) {
+            final SecurityParametersContext secParamsContext =
+                    inboundContext.getSubcontext(SecurityParametersContext.class);
+            if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
+                criteriaSet.add(new SignatureValidationParametersCriterion(
+                        secParamsContext.getSignatureValidationParameters()));
+            }
+        }
     }
+    // Checkstyle: CyclomaticComplexity ON
 
     /**
      * Get the attesting entity's {@link X509Certificate}.
