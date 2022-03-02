@@ -104,6 +104,12 @@ import org.w3c.dom.Element;
  * will be used.
  * </li>
  * <li>
+ * {@link SAML2AssertionValidationParameters#LIFETIME}:
+ * Optional.
+ * If not present the default lifetime of {@link SAML20AssertionValidator#DEFAULT_LIFETIME} 
+ * will be used.
+ * </li>
+ * <li>
  * {@link SAML2AssertionValidationParameters#COND_REQUIRED_CONDITIONS}:
  * Optional.
  * </li>
