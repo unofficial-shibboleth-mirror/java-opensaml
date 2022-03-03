@@ -53,7 +53,7 @@
     </modules>
 
     <properties>
-        <java-support.version>8.2.2-SNAPSHOT</java-support.version>
+        <java-support.version>8.3.0-SNAPSHOT</java-support.version>
         <spring-extensions.version>6.2.0-SNAPSHOT</spring-extensions.version>
         <checkstyle.configLocation>${project.basedir}/../opensaml-parent/resources/checkstyle/checkstyle.xml</checkstyle.configLocation>
         <opensaml-parent.site.url>${shibboleth.site.deploy.url}java-opensaml/${project.version}/</opensaml-parent.site.url>
