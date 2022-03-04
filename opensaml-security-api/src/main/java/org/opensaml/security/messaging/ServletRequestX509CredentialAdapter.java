@@ -40,6 +40,9 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
     /** Servlet request attribute to pull certificate info from. */
     public static final String X509_CERT_REQUEST_ATTRIBUTE = "javax.servlet.request.X509Certificate";
     
+    /** Servlet request attribute to pull certificate info from. */
+    public static final String JAKARTA_X509_CERT_REQUEST_ATTRIBUTE = "jakarta.servlet.request.X509Certificate";
+    
     /** The entity certificate. */
     private X509Certificate cert;
     
@@ -55,10 +58,18 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
      *  request attribute 'javax.servlet.request.X509Certificate'
      */
     public ServletRequestX509CredentialAdapter(final ServletRequest request) throws SecurityException {
-        final X509Certificate[] chain = (X509Certificate[]) request.getAttribute(X509_CERT_REQUEST_ATTRIBUTE);
+        X509Certificate[] chain = (X509Certificate[]) request.getAttribute(X509_CERT_REQUEST_ATTRIBUTE);
+        
         if (chain == null || chain.length == 0) {
-            throw new SecurityException("Servlet request does not contain X.509 certificates in attribute "
-                    + X509_CERT_REQUEST_ATTRIBUTE);
+            // Check for newer Jakarta variant.
+            // TODO: Once Jakarta is "common", probably reverse these checks.
+            chain = (X509Certificate[]) request.getAttribute(JAKARTA_X509_CERT_REQUEST_ATTRIBUTE);
+        }
+        
+        if (chain == null || chain.length == 0) {
+            throw new SecurityException(
+                    String.format("Servlet request does not contain X.509 certificates in either attribute %s or %s",
+                    X509_CERT_REQUEST_ATTRIBUTE, JAKARTA_X509_CERT_REQUEST_ATTRIBUTE));
         }
 
         cert = chain[0];
