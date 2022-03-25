@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.signature.support.tests;
 
 import java.security.KeyPair;
 
+import org.apache.xml.security.utils.resolver.ResourceResolver;
+import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -132,6 +134,10 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testExternalSignatureAndVerification() throws MarshallingException, SignatureException {
+        // This is necessary as of Santuario 2.3.0, which removed the -DirectHTTP and -LocalFilesystem resolvers by default.
+        // Unfortunately it's stored in static storage and no way to clear or reset after the test.
+        ResourceResolver.register(new ResolverDirectHTTP(), false);
+        
         Signature signature = sigBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
         signature.setSigningCredential(goodCredential);
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
