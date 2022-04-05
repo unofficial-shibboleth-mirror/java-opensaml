@@ -74,7 +74,6 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getRecipients() {
         return recipients;
     }
@@ -88,11 +87,16 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      */
     protected boolean matchRecipient(@Nullable final String recipient) {
         final String trimmedRecipient = StringSupport.trimOrNull(recipient);
-        if (trimmedRecipient == null || recipients.isEmpty()) {
+        if (trimmedRecipient == null) {
             return true;
         }
         
-        return recipients.contains(trimmedRecipient);
+        final Set<String> ourRecipients = getRecipients();
+        if (ourRecipients.isEmpty()) {
+            return true;
+        }
+        
+        return ourRecipients.contains(trimmedRecipient);
     }
     
     /**
