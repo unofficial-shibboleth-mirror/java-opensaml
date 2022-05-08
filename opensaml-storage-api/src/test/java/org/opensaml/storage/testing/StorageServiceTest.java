@@ -17,6 +17,8 @@
 
 package org.opensaml.storage.testing;
 
+import static org.testng.Assert.assertEquals;
+
 import java.io.IOException;
 import java.security.SecureRandom;
 
@@ -41,6 +43,7 @@ import org.testng.annotations.Test;
 /**
  * Test of {@link StorageService} implementations.
  */
+@SuppressWarnings("javadoc")
 public abstract class StorageServiceTest {
     
     protected SecureRandom random;
@@ -142,7 +145,7 @@ public abstract class StorageServiceTest {
         
         shared.create(context, key, "foo", null);
         
-        shared.updateWithVersion(1, context, key, "bar", null);
+        assertEquals(shared.updateWithVersion(1, context, key, "bar", null), 2);
         
         try {
             shared.updateWithVersion(1, context, key, "baz", null);
