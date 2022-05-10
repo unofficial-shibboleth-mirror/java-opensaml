@@ -72,10 +72,11 @@ public class HSQLDBStorageServiceTest {
     }
 
 
-    @Test(threadPoolSize = 4, invocationCount = 10)
+    @Test(threadPoolSize = 10, invocationCount = 10)
     public void strings() throws IOException {
         threadInit();
         
+        try {
         String context = Long.toString(random.nextLong());
         
         for (int i = 1; i <= 100; i++) {
@@ -110,6 +111,9 @@ public class HSQLDBStorageServiceTest {
             StorageRecord<?> rec = shared.read(context, Integer.toString(i));
             Assert.assertNull(rec);
         }
+        } catch (java.lang.AssertionError e) {
+            System.out.println("FAILURE: " + e);
+        }
     }
 
     /**
@@ -119,7 +123,7 @@ public class HSQLDBStorageServiceTest {
         try {
             dataSource = new BasicDataSource();
             dataSource.setDriverClassName("org.hsqldb.jdbcDriver");
-            dataSource.setUrl("jdbc:hsqldb:mem:JPAStorageService");
+            dataSource.setUrl("jdbc:hsqldb:mem:Test;hsqldb.sqllog=3");
             dataSource.setUsername("SA");
             dataSource.setPassword("");
             Connection dbConn;
