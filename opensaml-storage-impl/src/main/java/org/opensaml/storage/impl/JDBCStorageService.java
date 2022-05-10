@@ -563,12 +563,77 @@ public final class JDBCStorageService extends AbstractStorageService implements 
 
     /** {@inheritDoc} */
     public void reap(String context) throws IOException {
-        throw new IOException("Not implemented");
+        //
+        // Constraints, Logging
+        //
+        int retries = transactionRetry;
+        while (true) {
+            try (Connection connection = getConnection(true)) {
+                final PreparedStatement updateStmnt = connection.prepareStatement("DELETE FROM StorageRecords WHERE context = ? AND expires <= ?");
+                updateStmnt.setString(1, context);
+                setExpires(updateStmnt, 2, System.currentTimeMillis());
+                updateStmnt.execute();
+                connection.commit();
+                return;
+            }
+            catch (final SQLException e) {
+                boolean retry = false;
+                for (final String msg : retryableErrors) {
+                    if (e.getSQLState() != null && e.getSQLState().contains(msg)) {
+                        log.warn("Caught retryable SQL exception", e);
+                        retry = true;
+                        break;
+                    }
+                }
+                if (retry) {
+                    if (--retries < 0) {
+                        log.warn("Error retryable, but retry limit exceeded");
+                        throw new IOException(e);
+                    }
+                    log.info("Retrying JDBC DeleteByContext Operation");
+                } else {
+                    throw new IOException(e);
+                }
+            }
+        }
     }
 
     /** {@inheritDoc} */
     public void updateContextExpiration(String context, Long expires) throws IOException {
-        throw new IOException("Not implemented");
+        //
+        // Constraints, Logging
+        //
+        int retries = transactionRetry;
+        while (true) {
+            try (Connection connection = getConnection(true)) {
+                final PreparedStatement updateStmnt = connection.prepareStatement("UPDATE StorageRecords SET expires = ? WHERE context = ? AND expires > ? ");
+                setExpires(updateStmnt, 1, expires);
+                updateStmnt.setString(2, context);
+                setExpires(updateStmnt, 3, System.currentTimeMillis());
+                updateStmnt.execute();
+                connection.commit();
+                return;
+            }
+            catch (final SQLException e) {
+                boolean retry = false;
+                for (final String msg : retryableErrors) {
+                    if (e.getSQLState() != null && e.getSQLState().contains(msg)) {
+                        log.warn("Caught retryable SQL exception", e);
+                        retry = true;
+                        break;
+                    }
+                }
+                if (retry) {
+                    if (--retries < 0) {
+                        log.warn("Error retryable, but retry limit exceeded");
+                        throw new IOException(e);
+                    }
+                    log.info("Retrying JDBC DeleteByContext Operation");
+                } else {
+                    throw new IOException(e);
+                }
+            }
+        }
     }
 
     /** {@inheritDoc} */
