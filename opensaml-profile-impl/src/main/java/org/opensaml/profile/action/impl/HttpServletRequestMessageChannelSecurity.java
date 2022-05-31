@@ -26,7 +26,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Profile action which populates a {@link MessageChannelSecurityContext} based on a
- * {@link javax.servlet.http.HttpServletRequest}.
+ * {@link jakarta.servlet.http.HttpServletRequest}.
  */
 public class HttpServletRequestMessageChannelSecurity extends AbstractMessageChannelSecurity {
 

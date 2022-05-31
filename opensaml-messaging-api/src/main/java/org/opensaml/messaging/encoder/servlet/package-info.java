@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-/** Interfaces and classes for encoding messages to a {@link javax.servlet.http.HttpServletResponse}. */
+/** Interfaces and classes for encoding messages to a {@link jakarta.servlet.http.HttpServletResponse}. */
 package org.opensaml.messaging.encoder.servlet;

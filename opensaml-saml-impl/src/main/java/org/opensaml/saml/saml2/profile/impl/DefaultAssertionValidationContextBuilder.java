@@ -898,7 +898,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * <p>
      * This implementation returns the client TLS certificate present in the 
-     * {@link javax.servlet.http.HttpServletRequest}, or null if one is not present.
+     * {@link jakarta.servlet.http.HttpServletRequest}, or null if one is not present.
      * </p>
      * 
      * @param input the assertion validation input
@@ -1015,7 +1015,7 @@ public class DefaultAssertionValidationContextBuilder
      * Get the attester's IP address.
      * 
      * <p>
-     * This implementation returns the value of {@link javax.servlet.http.HttpServletRequest#getRemoteAddr()}.
+     * This implementation returns the value of {@link jakarta.servlet.http.HttpServletRequest#getRemoteAddr()}.
      * </p>
      * 
      * @param input the assertion validation input

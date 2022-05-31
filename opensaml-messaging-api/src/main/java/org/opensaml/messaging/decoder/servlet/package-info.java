@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-/** Interfaces and classes for decoding messages that come from an {@link javax.servlet.http.HttpServletRequest}. */
+/** Interfaces and classes for decoding messages that come from an {@link jakarta.servlet.http.HttpServletRequest}. */
 package org.opensaml.messaging.decoder.servlet;

@@ -238,7 +238,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * 
      * <p>
      * This implementation returns the client TLS certificate present in the 
-     * {@link javax.servlet.http.HttpServletRequest}, or null if one is not present.
+     * {@link jakarta.servlet.http.HttpServletRequest}, or null if one is not present.
      * </p>
      * 
      * @param input the assertion validation input
@@ -281,7 +281,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * </p>
      * <ol>
      * <li>
-     * {@link javax.servlet.http.HttpServletRequest#getRequestURL()}
+     * {@link jakarta.servlet.http.HttpServletRequest#getRequestURL()}
      * </li>
      * <li>
      * if present, {@link SAMLSelfEntityContext#getEntityId()}
@@ -344,7 +344,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * Get the attester's IP address.
      * 
      * <p>
-     * This implementation returns the value of {@link javax.servlet.http.HttpServletRequest#getRemoteAddr()}.
+     * This implementation returns the value of {@link jakarta.servlet.http.HttpServletRequest#getRemoteAddr()}.
      * </p>
      * 
      * @param input the assertion validation input
