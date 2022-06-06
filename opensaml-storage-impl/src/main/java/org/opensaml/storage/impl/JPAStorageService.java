@@ -41,6 +41,8 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 import org.opensaml.storage.AbstractStorageService;
 import org.opensaml.storage.StorageCapabilitiesEx;
@@ -69,6 +71,7 @@ public class JPAStorageService extends AbstractStorageService implements Storage
      * @param factory entity manager factory
      */
     public JPAStorageService(@Nonnull final EntityManagerFactory factory) {
+        DeprecationSupport.warn(ObjectType.CLASS, "JPAStorageService", null, "JDBCStorageService");
         entityManagerFactory = Constraint.isNotNull(factory, "EntityManagerFactory cannot be null");
 
         setContextSize(JPAStorageRecord.CONTEXT_SIZE);
@@ -90,13 +93,26 @@ public class JPAStorageService extends AbstractStorageService implements Storage
      * Sets the number of times a transaction will be retried (default is 3).
      * 
      * @param retry number of transaction retries
+     * @Deprecated
      */
     public void setTransactionRetry(final int retry) {
+        DeprecationSupport.warn(ObjectType.PROPERTY , "transactionRetry", null, "transactionRetries");
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        transactionRetry =
-                (int) Constraint.isGreaterThanOrEqual(0, retry,
+        transactionRetry = Constraint.isGreaterThanOrEqual(0, retry,
                         "Transaction retry must be greater than or equal to zero");
     }
+    /**
+     * Sets the number of times a transaction will be retried (default is 3).
+     * 
+     * @param retry number of transaction retries
+     * @Deprecated
+     */
+    public void setTransactionRetries(final int retry) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        transactionRetry = Constraint.isGreaterThanOrEqual(0, retry,
+                        "Transaction retries must be greater than or equal to zero");
+    }
+
 
     /** {@inheritDoc} */
     public boolean isServerSide() {
