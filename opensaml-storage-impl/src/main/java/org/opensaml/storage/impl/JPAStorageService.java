@@ -93,9 +93,9 @@ public class JPAStorageService extends AbstractStorageService implements Storage
      * Sets the number of times a transaction will be retried (default is 3).
      * 
      * @param retry number of transaction retries
-     * @Deprecated
+     * @deprecated
      */
-    public void setTransactionRetry(final int retry) {
+    @Deprecated(forRemoval = true, since = "4.2") void setTransactionRetry(final int retry) {
         DeprecationSupport.warn(ObjectType.PROPERTY , "transactionRetry", null, "transactionRetries");
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         transactionRetry = Constraint.isGreaterThanOrEqual(0, retry,
@@ -105,7 +105,6 @@ public class JPAStorageService extends AbstractStorageService implements Storage
      * Sets the number of times a transaction will be retried (default is 3).
      * 
      * @param retry number of transaction retries
-     * @Deprecated
      */
     public void setTransactionRetries(final int retry) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
