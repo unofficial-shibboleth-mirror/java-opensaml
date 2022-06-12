@@ -23,6 +23,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -34,17 +35,14 @@ import org.opensaml.xmlsec.DecryptionParametersResolver;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
-import org.opensaml.messaging.context.navigate.ChildContextLookup;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Action that resolves and populates {@link DecryptionParameters} on a {@link SecurityParametersContext}
@@ -85,7 +83,7 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
@@ -98,7 +96,7 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<DecryptionConfiguration>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "DecryptionConfiguration lookup strategy cannot be null");
@@ -110,7 +108,7 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
      * @param newResolver   resolver to use
      */
     public void setDecryptionParametersResolver(@Nonnull final DecryptionParametersResolver newResolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         resolver = Constraint.isNotNull(newResolver, "DecryptionParametersResolver cannot be null");
     }

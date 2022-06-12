@@ -34,7 +34,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -67,7 +66,7 @@ public class LogEvent extends AbstractProfileAction {
      * @param strategy  lookup strategy
      */
     public void setEventContextLookupStrategy(@Nonnull final Function<ProfileRequestContext,EventContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         eventContextLookupStrategy = Constraint.isNotNull(strategy, "EventContext lookup strategy cannot be null");
     }
@@ -78,7 +77,7 @@ public class LogEvent extends AbstractProfileAction {
      * @param events events to ignore
      */
     public void setSuppressedEvents(@Nullable @NotEmpty final Collection<String> events) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         if (events != null) {
             suppressedEvents = new HashSet<>(StringSupport.normalizeStringCollection(events));

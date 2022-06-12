@@ -22,15 +22,14 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.MetricContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 
 /**
@@ -59,7 +58,7 @@ public class PopulateMetricContext extends AbstractProfileAction {
      * @param strategy  timer mapping strategy
      */
     public void setMetricStrategy(@Nullable final Function<ProfileRequestContext,Boolean> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         metricStrategy = strategy;
     }

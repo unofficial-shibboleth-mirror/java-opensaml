@@ -22,7 +22,6 @@ import org.opensaml.profile.context.ProfileRequestContext;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Profile action which populates a {@link MessageChannelSecurityContext} based on a
@@ -51,7 +50,7 @@ public class HttpServletRequestMessageChannelSecurity extends AbstractMessageCha
      * @param flag flag to set
      */
     public void setDefaultPortInsecure(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         defaultPortInsecure = flag;
     }

@@ -22,12 +22,11 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Abstract base class for profile actions which populate a
@@ -60,7 +59,7 @@ public abstract class AbstractMessageChannelSecurity extends AbstractProfileActi
      */
     public void setParentContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,BaseContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         parentContextLookupStrategy = Constraint.isNotNull(strategy, "Parent context lookup strategy cannot be null");
     }
