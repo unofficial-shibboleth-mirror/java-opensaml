@@ -23,13 +23,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
@@ -44,6 +37,12 @@ import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
 import org.opensaml.security.x509.tls.ClientTLSValidationParametersResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Action that resolves and populates {@link ClientTLSValidationParameters} on a 
@@ -87,7 +86,7 @@ public class PopulateClientTLSValidationParameters extends AbstractProfileAction
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,ClientTLSSecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "ClientTLSSecurityParametersContext lookup strategy cannot be null");
@@ -100,7 +99,7 @@ public class PopulateClientTLSValidationParameters extends AbstractProfileAction
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<ClientTLSValidationConfiguration>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "ClientTLSValidationConfiguration lookup strategy cannot be null");
@@ -113,7 +112,7 @@ public class PopulateClientTLSValidationParameters extends AbstractProfileAction
      */
     public void setClientTLSValidationParametersResolver(
             @Nonnull final ClientTLSValidationParametersResolver newResolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         resolver = Constraint.isNotNull(newResolver, "ClientTLSValidationParametersResolver cannot be null");
     }

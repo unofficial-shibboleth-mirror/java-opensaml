@@ -26,18 +26,16 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.security.AccessControlService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * This action validates that a request comes from an authorized client, based on an injected service
@@ -76,7 +74,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param acs service to use
      */
     public void setAccessControlService(@Nonnull final AccessControlService acs) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         service = Constraint.isNotNull(acs, "AccessControlService cannot be null");
     }
@@ -89,7 +87,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @since 3.3.0
      */
     public void setPolicyNameLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         policyNameLookupStrategy = Constraint.isNotNull(strategy, "Policy lookup strategy cannot be null");
     }
@@ -100,7 +98,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param name  policy name
      */
     public void setPolicyName(@Nonnull @NotEmpty final String name) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         policyNameLookupStrategy = FunctionSupport.constant(
                 Constraint.isNotNull(StringSupport.trimOrNull(name), "Policy name cannot be null or empty"));
@@ -114,7 +112,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @since 3.3.0
      */
     public void setOperationLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         operationLookupStrategy = Constraint.isNotNull(strategy, "Policy lookup strategy cannot be null");
     }
@@ -125,7 +123,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param op operation
      */
     public void setOperation(@Nullable final String op) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         operationLookupStrategy = FunctionSupport.constant(StringSupport.trimOrNull(op));
     }
@@ -138,7 +136,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @since 3.3.0
      */
     public void setResourceLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         resourceLookupStrategy = Constraint.isNotNull(strategy, "Policy lookup strategy cannot be null");
     }
@@ -149,7 +147,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param res resource
      */
     public void setResource(@Nullable final String res) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         resourceLookupStrategy = FunctionSupport.constant(StringSupport.trimOrNull(res));
     }

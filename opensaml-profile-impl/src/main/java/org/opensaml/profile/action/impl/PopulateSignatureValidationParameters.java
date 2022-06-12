@@ -39,7 +39,6 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -85,7 +84,7 @@ public class PopulateSignatureValidationParameters
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
@@ -98,7 +97,7 @@ public class PopulateSignatureValidationParameters
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<SignatureValidationConfiguration>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "SignatureValidationConfiguration lookup strategy cannot be null");
@@ -111,7 +110,7 @@ public class PopulateSignatureValidationParameters
      */
     public void setSignatureValidationParametersResolver(
             @Nonnull final SignatureValidationParametersResolver newResolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         resolver = Constraint.isNotNull(newResolver, "SignatureValidationParametersResolver cannot be null");
     }
