@@ -26,15 +26,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.Predicate;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.core.NameIdentifier;
@@ -42,6 +33,14 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.Predicate;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Base class for implementations of {@link Predicate} that handle evaluation of name identifier content in various
@@ -76,7 +75,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup strategy
      */
     public void setRequesterIdLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         requesterIdLookupStrategy = strategy;
     }
@@ -87,7 +86,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup strategy
      */
     public void setResponderIdLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         responderIdLookupStrategy = strategy;
     }
@@ -98,7 +97,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup function
      */
     public void setObjectLookupStrategy(@Nullable final Function<ProfileRequestContext,SAMLObject> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         objectLookupStrategy = Constraint.isNotNull(strategy, "Object lookup strategy cannot be null");
     }
@@ -109,7 +108,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param newFormats    formats to apply predicate to
      */
     public void setFormats(@Nullable final Collection<String> newFormats) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         formats = new HashSet<>(StringSupport.normalizeStringCollection(newFormats));
     }

@@ -24,19 +24,18 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObject;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Abstract base class for simple implementations of {@link NameIdentifierGenerator}.
@@ -92,7 +91,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param condition an activation condition
      */
     public void setActivationCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
     }
@@ -113,7 +112,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      */
     public void setDefaultIdPNameQualifierLookupStrategy(
             @Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         defaultIdPNameQualifierLookupStrategy = strategy;
     }
@@ -134,7 +133,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      */
     public void setDefaultSPNameQualifierLookupStrategy(
             @Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         defaultSPNameQualifierLookupStrategy = strategy;
     }
@@ -156,7 +155,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param flag flag to set
      */
     public void setOmitQualifiers(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         omitQualifiers = flag;
     }
@@ -172,7 +171,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param f format to set
      */
     public void setFormat(@Nonnull @NotEmpty final String f) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         format = Constraint.isNotNull(StringSupport.trimOrNull(f), "Format cannot be null or empty");
     }
@@ -196,7 +195,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param qualifier qualifier to set
      */
     public void setIdPNameQualifier(@Nullable final String qualifier) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         idpNameQualifier = StringSupport.trimOrNull(qualifier);
     }
@@ -221,7 +220,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param qualifier qualifier to set
      */
     public void setSPNameQualifier(@Nullable final String qualifier) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         spNameQualifier = StringSupport.trimOrNull(qualifier);
     }
@@ -241,7 +240,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param id value to set
      */
     public void setSPProvidedId(@Nullable final String id) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         spProvidedId = id;
     }
@@ -265,7 +264,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     @Override
     @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull @NotEmpty final String theFormat) throws SAMLException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
 
         if (!Objects.equals(format, theFormat)) {
             throw new SAMLException("The format to generate does not match the value configured");

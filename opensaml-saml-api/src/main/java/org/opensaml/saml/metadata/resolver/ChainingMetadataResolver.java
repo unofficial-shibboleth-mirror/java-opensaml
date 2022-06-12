@@ -29,20 +29,19 @@ import java.util.stream.StreamSupport;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
-import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.saml.metadata.criteria.entity.DetectDuplicateEntityIDsCriterion;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
+import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * A metadata provider that uses registered resolvers, in turn, to answer queries.
@@ -86,8 +85,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      */
     public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers)
             throws ResolverException {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         if (newResolvers == null || newResolvers.isEmpty()) {
             resolvers = Collections.emptyList();
@@ -140,7 +138,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /** {@inheritDoc} */
     @Override
     @Nullable public EntityDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
 
         final Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
@@ -155,8 +153,8 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /** {@inheritDoc} */
     @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
+        throwComponentStateExceptions();
+
         DetectDuplicateEntityIDs detectDuplicates = getDetectDuplicateEntityIDs();
         if (criteria.contains(DetectDuplicateEntityIDsCriterion.class)) {
             detectDuplicates = criteria.get(DetectDuplicateEntityIDsCriterion.class).getValue();
