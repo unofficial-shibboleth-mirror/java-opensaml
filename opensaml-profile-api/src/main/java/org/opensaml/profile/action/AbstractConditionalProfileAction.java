@@ -21,13 +21,12 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Base class for conditional profile actions.
@@ -61,7 +60,7 @@ public abstract class AbstractConditionalProfileAction extends AbstractProfileAc
      * @param condition predicate to apply
      */
     public void setActivationCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
     }
