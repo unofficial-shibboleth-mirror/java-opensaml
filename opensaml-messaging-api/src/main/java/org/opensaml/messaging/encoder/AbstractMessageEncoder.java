@@ -17,14 +17,13 @@
 
 package org.opensaml.messaging.encoder;
 
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
-
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
+
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
 
 /**
  * Abstract message encoder.
@@ -38,8 +37,7 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     /** {@inheritDoc} */
     @Override
     public synchronized void setMessageContext(@Nullable final MessageContext context) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         messageContext = context;
     }
@@ -47,9 +45,7 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     /** {@inheritDoc} */
     @Override
     public void encode() throws MessageEncodingException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
+        throwComponentStateExceptions();
         doEncode();
     }
 

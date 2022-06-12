@@ -24,7 +24,6 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
@@ -42,8 +41,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
 
     /** {@inheritDoc} */
     public synchronized void setHttpServletRequest(@Nullable final HttpServletRequest servletRequest) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         request = servletRequest;
     }

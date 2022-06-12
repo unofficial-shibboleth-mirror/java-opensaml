@@ -19,12 +19,11 @@ package org.opensaml.messaging.decoder.httpclient;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.apache.http.HttpResponse;
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  * Abstract implementation of {@link HttpClientResponseMessageDecoder}.
@@ -42,8 +41,7 @@ public abstract class AbstractHttpClientResponseMessageDecoder extends AbstractM
 
     /** {@inheritDoc} */
     public synchronized void setHttpResponse(@Nullable final HttpResponse clientResponse) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         response = clientResponse;
     }

@@ -19,12 +19,11 @@ package org.opensaml.messaging.encoder.httpclient;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.apache.http.HttpRequest;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.
@@ -42,8 +41,7 @@ public abstract class AbstractHttpClientRequestMessageEncoder extends AbstractMe
 
     /** {@inheritDoc} */
     public synchronized void setHttpRequest(@Nullable final HttpRequest httpRequest) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         request = httpRequest;
     }
