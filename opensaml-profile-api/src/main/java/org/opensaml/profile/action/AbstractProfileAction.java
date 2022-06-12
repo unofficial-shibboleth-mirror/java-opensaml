@@ -31,7 +31,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.annotation.Prototype;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Base class for profile actions.
@@ -65,7 +64,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      * @param request current HTTP request
      */
     public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         httpServletRequest = request;
     }
@@ -85,7 +84,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      * @param response current HTTP response
      */
     public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         httpServletResponse = response;
     }
