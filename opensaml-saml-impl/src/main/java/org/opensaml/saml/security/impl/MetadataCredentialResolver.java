@@ -27,16 +27,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
 import org.opensaml.saml.criterion.ProtocolCriterion;
@@ -54,6 +44,17 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.component.InitializableComponent;
+import net.shibboleth.utilities.java.support.component.UninitializedComponentException;
+import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * A credential resolver capable of resolving credentials from SAML 2 metadata.
@@ -117,6 +118,26 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     public boolean isInitialized() {
         return isInitialized;
     }
+    
+    /**
+     * Checks if a component has not been initialized and, if so, throws a {@link UninitializedComponentException}.
+     */
+    protected void ifNotInitializedThrowUninitializedComponentException() {
+        if (!isInitialized()) {
+            throw new UninitializedComponentException(
+                    "Unidentified Component has not yet been initialized and cannot be used.");
+        }
+    }
+
+    /**
+     * Checks if a component has been initialized and, if so, throws a {@link UnmodifiableComponentException}.
+     */
+    protected void ifInitializedThrowUnmodifiabledComponentException() {
+        if (isInitialized()) {
+            throw new UnmodifiableComponentException(
+                    "Unidentified Component has already been initialized and can no longer be modified");
+        }
+    }
 
     /** {@inheritDoc} */
     @Override
@@ -129,7 +150,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
             log.info("RoleDescriptorResolver was not supplied, " 
                     + "credentials may only be resolved via RoleDescriptorCriterion");
         }
-        
+
         isInitialized = true;
     }
     
@@ -158,7 +179,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param resolver the new RoleDescriptorResolver to use
      */
     public void setRoleDescriptorResolver(@Nullable final RoleDescriptorResolver resolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ifInitializedThrowUnmodifiabledComponentException();
         
         roleDescriptorResolver = resolver;
     }
@@ -178,7 +199,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
      * @param resolver the new KeyInfoCredentialResolver to use
      */
     public void setKeyInfoCredentialResolver(@Nonnull final KeyInfoCredentialResolver resolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        ifInitializedThrowUnmodifiabledComponentException();
         
         keyInfoCredentialResolver = Constraint.isNotNull(resolver, "KeyInfoCredentialResolver may not be null");
     }
@@ -188,7 +209,7 @@ public class MetadataCredentialResolver extends AbstractCriteriaFilteringCredent
     @Nonnull protected Iterable<Credential> resolveFromSource(@Nonnull final CriteriaSet criteriaSet) 
             throws ResolverException {
         
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ifNotInitializedThrowUninitializedComponentException();
         Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
 
         final UsageType usage = getEffectiveUsageInput(criteriaSet);

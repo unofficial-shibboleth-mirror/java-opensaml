@@ -31,7 +31,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.URIComparator;
 import net.shibboleth.utilities.java.support.net.URIException;
@@ -74,8 +73,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @param comparator the new URI comparator to use
      */
     public void setURIComparator(@Nonnull final URIComparator comparator) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         uriComparator = Constraint.isNotNull(comparator, "URIComparator cannot be null");
     }
     
@@ -94,8 +92,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @param request The to set.
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
 

@@ -22,15 +22,14 @@ import java.time.Instant;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Security message handler implementation that checks for validity of SAML message issue instant date and time.
@@ -73,7 +72,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
      * @param skew clock skew to set
      */
     public void setClockSkew(@Nonnull final Duration skew) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
                 
         clockSkew = Constraint.isNotNull(skew, "Clock skew cannot be null");
     }
@@ -93,7 +92,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
      * @param lifetime amount of time for which a message is valid
      */
     public synchronized void setMessageLifetime(@Nonnull final Duration lifetime) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         Constraint.isNotNull(lifetime, "Lifetime cannot be null");
         Constraint.isFalse(lifetime.isNegative(), "Lifetime cannot be negative");
         
@@ -115,7 +114,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
      * @param required whether this rule is required to be met
      */
     public void setRequiredRule(final boolean required) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         requiredRule = required;
     }

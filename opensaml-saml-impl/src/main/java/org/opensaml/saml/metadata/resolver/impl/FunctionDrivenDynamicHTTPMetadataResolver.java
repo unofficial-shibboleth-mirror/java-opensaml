@@ -27,7 +27,6 @@ import org.apache.http.client.HttpClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
@@ -90,8 +89,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolver extends AbstractDynamicHT
      * @param builder the request URL builder function instance
      */
     public void setRequestURLBuilder(@Nonnull final Function<CriteriaSet, String> builder) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         requestURLBuilder = Constraint.isNotNull(builder, "Request URL builder function was null");
     }
 

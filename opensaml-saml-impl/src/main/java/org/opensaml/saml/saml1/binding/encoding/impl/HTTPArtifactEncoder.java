@@ -48,7 +48,6 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.URLBuilder;
 
@@ -92,8 +91,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
      * @param newArtifactMap the new artifactMap 
      */
     public void setArtifactMap(@Nonnull final SAMLArtifactMap newArtifactMap) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         artifactMap = Constraint.isNotNull(newArtifactMap, "SAMLArtifactMap cannot be null");
     }

@@ -41,7 +41,6 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.TimerSupport;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -144,8 +143,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     /** {@inheritDoc} */
     @Override
     protected void setCacheSourceMetadata(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         if (!flag) {
             log.warn("{} Caching of source metadata may not be disabled for reloading metadata resolvers", 
@@ -214,9 +212,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param threshold the threshold for logging a warning if live metadata will soon expire
      */
     public void setExpirationWarningThreshold(@Nonnull final Duration threshold) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
+        throwSetterPreconditionExceptions();
+
         Constraint.isNotNull(threshold, "Expiration warning threshold cannot be null");
         Constraint.isFalse(threshold.isNegative(), "Expiration warning threshold cannot be negative");
         
@@ -238,9 +235,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param delay maximum amount of time between refresh intervals
      */
     public void setMaxRefreshDelay(@Nonnull final Duration delay) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
+        throwSetterPreconditionExceptions();
+
         Constraint.isNotNull(delay, "Maximum refresh delay cannot be null");
         Constraint.isFalse(delay.isNegative() || delay.isZero(), "Maximum refresh delay must be greater than 0");
 
@@ -262,8 +258,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param factor delay factor used to compute the next refresh time
      */
     public void setRefreshDelayFactor(final float factor) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         if (factor <= 0 || factor >= 1) {
             throw new IllegalArgumentException("Refresh delay factor must be a number between 0.0 and 1.0, exclusive");
@@ -287,8 +282,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
      * @param delay minimum amount of time between refreshes
      */
     public void setMinRefreshDelay(@Nonnull final Duration delay) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         Constraint.isNotNull(delay, "Minimum refresh delay cannot be null");
         Constraint.isFalse(delay.isNegative() || delay.isZero(), "Minimum refresh delay must be greater than 0");

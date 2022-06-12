@@ -24,9 +24,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -38,6 +35,8 @@ import org.opensaml.saml.common.messaging.context.ECPContext;
 import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Action to create and populate an {@link ECPContext} based on the request and, when encryption is in use,
@@ -91,7 +90,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      */
     public void setECPContextCreationStrategy(
             @Nonnull final Function<ProfileRequestContext,ECPContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         ecpContextCreationStrategy = Constraint.isNotNull(strategy, "ECPContext creation strategy cannot be null");
     }
@@ -103,7 +102,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      */
     public void setEncryptionContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,EncryptionContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         encryptionContextLookupStrategy = Constraint.isNotNull(strategy,
                 "EncryptionContext lookup strategy cannot be null");
@@ -115,7 +114,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      * @param generator random number generator
      */
     public void setRandomGenerator(@Nullable final SecureRandom generator) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         randomGenerator = generator;
     }
@@ -126,7 +125,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      * @param flag  flag to set
      */
     public void setRequireEncryption(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         requireEncryption = flag;
     }

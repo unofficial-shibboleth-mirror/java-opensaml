@@ -52,7 +52,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.collection.LazyList;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -115,8 +114,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      */
     public void setValidationContextBuilder(
             @Nonnull final Function<SAML20AssertionTokenValidationInput, ValidationContext> builder) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         validationContextBuilder = Constraint.isNotNull(builder, "Validation context builder may not be null");
     }
 
@@ -135,8 +133,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @param request The HTTP servlet request
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
     
@@ -163,8 +160,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @param flag The invalidFatal to set.
      */
     public void setInvalidFatal(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         invalidFatal = flag;
     }
     
@@ -183,8 +179,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @param validator the local Assertion validator, may be null
      */
     public void setAssertionValidator(@Nullable final SAML20AssertionValidator validator) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         assertionValidator = validator;
     }
     
@@ -204,8 +199,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      */
     public void setAssertionValidatorLookup(
             @Nullable final Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> function) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         assertionValidatorLookup = function;
     }
 

@@ -56,7 +56,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.MediaTypeSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -169,9 +168,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param params the security parameters
      */
     public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
+        throwSetterPreconditionExceptions();
         httpClientSecurityParameters = params;
     }
     
@@ -208,8 +205,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param types the new supported content types to set
      */
     public void setSupportedContentTypes(@Nullable final List<String> types) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         if (types == null) {
             supportedContentTypes = Collections.emptyList();
         } else {

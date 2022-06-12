@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -105,8 +104,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
     }
@@ -119,8 +117,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setExistingParametersContextLookupStrategy(
             @Nullable final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         existingParametersContextLookupStrategy = strategy;
     }
     
@@ -131,8 +128,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setMetadataContextLookupStrategy(
             @Nullable final Function<ProfileRequestContext,SAMLMetadataContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         metadataContextLookupStrategy = strategy;
     }
 
@@ -143,8 +139,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<SignatureSigningConfiguration>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "SignatureSigningConfiguration lookup strategy cannot be null");
     }
@@ -156,8 +151,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setSignatureSigningParametersResolver(
             @Nonnull final SignatureSigningParametersResolver newResolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         resolver = Constraint.isNotNull(newResolver, "SignatureSigningParametersResolver cannot be null");
     }
 
@@ -171,8 +165,7 @@ public class PopulateSignatureSigningParameters
      * @since 3.4.0
      */
     public void setNoResultIsError(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         noResultIsError = flag;
     }
 

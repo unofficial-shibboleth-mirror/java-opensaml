@@ -22,12 +22,6 @@ import java.time.Instant;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -36,6 +30,11 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.storage.ReplayCache;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Security message handler implementation that which checks for replay of SAML messages.
@@ -75,7 +74,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
      * @param cache The replayCache to set.
      */
     public void setReplayCache(@Nonnull final ReplayCache cache) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         replayCache = Constraint.isNotNull(cache, "ReplayCache cannot be null");
     }
@@ -86,8 +85,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
      * @param flag  flag to set
      */
     public void setRequiredRule(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         requiredRule = flag;
     }
 
@@ -106,7 +104,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
      * @param exp lifetime of entries
      */
     public void setExpires(@Nonnull final Duration exp) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         Constraint.isNotNull(exp, "Lifetime cannot be null");
         Constraint.isFalse(exp.isNegative(), "Lifetime cannot be negative");
         

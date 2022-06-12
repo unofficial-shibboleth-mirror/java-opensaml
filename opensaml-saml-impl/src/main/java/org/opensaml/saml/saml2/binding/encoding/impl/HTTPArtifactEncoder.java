@@ -51,7 +51,6 @@ import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.URLBuilder;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
@@ -109,8 +108,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param post true if POST encoding will be used, false if GET encoding will be used
      */
     public void setPostEncoding(final boolean post) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
+
         postEncoding = post;
     }
     
@@ -129,9 +128,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param newVelocityEngine the new VelocityEngine instane
      */
     public void setVelocityEngine(@Nullable final VelocityEngine newVelocityEngine) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
+        throwSetterPreconditionExceptions();
+
         velocityEngine = newVelocityEngine;
     }
     
@@ -154,9 +152,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param newVelocityTemplateId the new Velocity template id
      */
     public void setVelocityTemplateId(@Nonnull @NotEmpty final String newVelocityTemplateId) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
+        throwSetterPreconditionExceptions();
+
         velocityTemplateId = Constraint.isNotNull(StringSupport.trimOrNull(newVelocityTemplateId),
                 "Velocity template ID cannot be null or empty");
     }
@@ -176,8 +173,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param newArtifactMap the new artifactMap 
      */
     public void setArtifactMap(@Nonnull final SAMLArtifactMap newArtifactMap) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         artifactMap = Constraint.isNotNull(newArtifactMap, "SAMLArtifactMap cannot be null");
     }

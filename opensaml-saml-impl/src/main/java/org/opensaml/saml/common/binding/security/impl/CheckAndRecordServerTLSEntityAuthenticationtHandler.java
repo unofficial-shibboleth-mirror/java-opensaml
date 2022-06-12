@@ -35,7 +35,6 @@ import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -80,7 +79,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
      */
     public void setHttpClientContextLookup(
             @Nonnull final ContextDataLookupFunction<MessageContext, HttpClientContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         httpClientContextLookup = Constraint.isNotNull(strategy, 
                 "The HttpClientContext lookup strategy may not be null");
     }
@@ -93,7 +92,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractAuthenticatableSAMLEntityContext> clazz) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         entityContextClass = Constraint.isNotNull(clazz, "The SAML entity context class may not be null");
     }
 
@@ -103,7 +102,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
      * @param strategy the new strategy function, or null
      */
     public void setEntityIDLookup(@Nullable final ContextDataLookupFunction<MessageContext, String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         entityIDLookup = strategy;
     }
 

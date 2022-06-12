@@ -20,11 +20,6 @@ package org.opensaml.saml.common.binding.security.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.AbstractAuthenticatableSAMLEntityContext;
@@ -35,6 +30,10 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.security.messaging.impl.BaseClientCertAuthSecurityHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  * SAML specialization of {@link BaseClientCertAuthSecurityHandler} which provides support for X509Credential 
@@ -81,7 +80,7 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractAuthenticatableSAMLEntityContext> clazz) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         entityContextClass = Constraint.isNotNull(clazz, "The SAML entity context class may not be null");
     }
 

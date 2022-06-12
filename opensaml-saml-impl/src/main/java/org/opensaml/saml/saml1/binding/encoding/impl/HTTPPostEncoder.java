@@ -37,7 +37,6 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
@@ -84,8 +83,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * @param newVelocityEngine the new VelocityEngine instane
      */
     public void setVelocityEngine(final VelocityEngine newVelocityEngine) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         velocityEngine = newVelocityEngine;
     }
     
@@ -108,8 +106,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * @param newVelocityTemplateId the new Velocity template id
      */
     public void setVelocityTemplateId(final String newVelocityTemplateId) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         velocityTemplateId = newVelocityTemplateId;
     }
 

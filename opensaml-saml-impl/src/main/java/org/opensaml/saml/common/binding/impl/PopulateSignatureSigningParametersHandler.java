@@ -42,7 +42,6 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -96,7 +95,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<MessageContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
@@ -110,8 +109,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setExistingParametersContextLookupStrategy(
             @Nullable final Function<MessageContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         existingParametersContextLookupStrategy = strategy;
     }
     
@@ -122,8 +120,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setMetadataContextLookupStrategy(
             @Nullable final Function<MessageContext,SAMLMetadataContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         metadataContextLookupStrategy = strategy;
     }
 
@@ -134,8 +131,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<MessageContext,List<SignatureSigningConfiguration>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "SignatureSigningConfiguration lookup strategy cannot be null");
     }
@@ -147,8 +143,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setSignatureSigningParametersResolver(
             @Nonnull final SignatureSigningParametersResolver newResolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         resolver = Constraint.isNotNull(newResolver, "SignatureSigningParametersResolver cannot be null");
     }
 
@@ -162,8 +157,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      * @since 3.4.0
      */
     public void setNoResultIsError(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         noResultIsError = flag;
     }
     

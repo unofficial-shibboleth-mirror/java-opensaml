@@ -28,11 +28,6 @@ import java.util.Timer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.apache.http.client.HttpClient;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
@@ -42,6 +37,10 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.google.common.io.Files;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * An HTTP metadata provider that caches a copy of the retrieved metadata to disk so that, in the event that
@@ -148,8 +147,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @param flag true if should initialize from backup file, false otherwise
      */
     public void setInitializeFromBackupFile(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         initializeFromBackupFile = flag;
     }
@@ -173,8 +171,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @param delay the next refresh delay
      */
     public void setBackupFileInitNextRefreshDelay(@Nonnull final Duration delay) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         Constraint.isNotNull(delay, "Backup file init next refresh delay cannot be null");
         Constraint.isFalse(delay.isNegative() || delay.isZero(),
@@ -222,8 +219,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @throws ResolverException thrown if the backup file is not read/writable or creatable
      */
     protected void setBackupFile(final String backupFilePath) throws ResolverException {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         final File backingFile = new File(backupFilePath);
         metadataBackupFile = backingFile;

@@ -23,17 +23,16 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.Live;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.Live;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor} to each element node in the
@@ -65,8 +64,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
      * @param newProcessors the new list of processors to set.
      */
     public void setNodeProcessors(@Nonnull @NonnullElements final List<MetadataNodeProcessor> newProcessors) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         Constraint.isNotNull(newProcessors, "MetadataNodeProcessor list cannot be null");
 
         processors = new ArrayList<>(List.copyOf(newProcessors));
@@ -76,7 +74,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
     @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
 
         if (metadata == null) {
             return null;

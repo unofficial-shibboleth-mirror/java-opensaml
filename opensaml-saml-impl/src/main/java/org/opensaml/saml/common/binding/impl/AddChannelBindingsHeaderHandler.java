@@ -22,9 +22,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
@@ -38,6 +35,8 @@ import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * MessageHandler to add {@link ChannelBindings} headers to an outgoing SOAP envelope.
@@ -65,7 +64,7 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
      */
     public void setChannelBindingsContextLookupStrategy(
             @Nonnull final Function<MessageContext,ChannelBindingsContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         channelBindingsContextLookupStrategy = Constraint.isNotNull(strategy,
                 "ChannelBindingsContext lookup strategy cannot be null");

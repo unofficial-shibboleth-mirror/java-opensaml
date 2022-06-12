@@ -23,10 +23,6 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
@@ -43,6 +39,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Abstract base class for actions that perform SAML decryption.
@@ -103,7 +102,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * @param flag  true iff decryption failure should be fatal
      */
     public void setErrorFatal(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         errorFatal = flag;
     }
@@ -117,7 +116,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         securityParamsLookupStrategy =
                 Constraint.isNotNull(strategy, "SecurityParametersContext lookup strategy cannot be null");
@@ -129,7 +128,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link SAMLObject} to operate on
      */
     public void setMessageLookupStrategy(@Nonnull final Function<ProfileRequestContext,Object> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         messageLookupStrategy = Constraint.isNotNull(strategy, "Message lookup strategy cannot be null");
     }
@@ -150,7 +149,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      */
     public void setDecryptionPredicate(
             @Nonnull final Predicate<Pair<ProfileRequestContext,EncryptedElementType>> predicate) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         decryptionPredicate = Constraint.isNotNull(predicate, "Decryption predicate cannot be null");
     }
