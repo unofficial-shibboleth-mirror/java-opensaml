@@ -22,13 +22,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
@@ -36,6 +29,12 @@ import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Evaluates name identifier data and enforces a default policy over its content.
@@ -58,7 +57,7 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
      * @param resolver  resolver to use
      */
     public void setMetadataResolver(@Nonnull final MetadataResolver resolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         metadataResolver = Constraint.isNotNull(resolver, "MetadataResolver cannot be null");
     }
@@ -78,7 +77,7 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
     protected boolean doApply(@Nullable final String requesterId, @Nullable final String responderId,
             @Nullable final String format, @Nullable final String nameQualifier,
             @Nullable final String spNameQualifier) {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         
         if (super.doApply(requesterId, responderId, format, nameQualifier, spNameQualifier)) {
             return true;

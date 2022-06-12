@@ -22,9 +22,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -38,6 +35,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Abstract base class for simple implementations of {@link SAML2NameIDGenerator}.
@@ -76,7 +75,7 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
      */
     public void setRequestLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
     
         requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
     }
