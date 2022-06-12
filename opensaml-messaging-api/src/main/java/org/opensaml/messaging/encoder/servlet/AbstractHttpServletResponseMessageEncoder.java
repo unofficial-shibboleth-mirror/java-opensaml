@@ -23,7 +23,6 @@ import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.
@@ -41,8 +40,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
 
     /** {@inheritDoc} */
     public synchronized void setHttpServletResponse(@Nullable final HttpServletResponse servletResponse) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         response = servletResponse;
     }

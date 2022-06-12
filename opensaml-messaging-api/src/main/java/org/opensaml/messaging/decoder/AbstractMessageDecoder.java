@@ -17,11 +17,10 @@
 
 package org.opensaml.messaging.decoder;
 
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
-
 import org.opensaml.messaging.context.MessageContext;
+
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
 
 /**
  * Abstract message decoder.
@@ -50,9 +49,7 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
     /** {@inheritDoc} */
     @Override
     public void decode() throws MessageDecodingException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
+        throwComponentStateExceptions();
         doDecode();
     }
     

@@ -21,17 +21,16 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.Prototype;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.annotation.Prototype;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A base abstract implementation of {@link MessageHandler}.
@@ -73,7 +72,7 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
      * @param condition predicate to apply
      */
     public void setActivationCondition(@Nonnull final Predicate<MessageContext> condition) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
     }
