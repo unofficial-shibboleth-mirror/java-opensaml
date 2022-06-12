@@ -29,12 +29,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -61,6 +55,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A filter that adds algorithm extension content to entities in order to drive software
@@ -99,9 +98,9 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * @param rules rules to apply
      */
     public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<XMLObject>> rules) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
-        
+
         rules.values().stream()
             .flatMap(Collection::stream)
             .filter(DigestMethod.class::isInstance)

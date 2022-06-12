@@ -33,7 +33,6 @@ import org.opensaml.saml.common.messaging.context.SAMLProtocolContext;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -81,8 +80,7 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler {
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractSAMLEntityContext> clazz) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         entityContextClass = Constraint.isNotNull(clazz, "SAML entity context class may not be null");
     }
 

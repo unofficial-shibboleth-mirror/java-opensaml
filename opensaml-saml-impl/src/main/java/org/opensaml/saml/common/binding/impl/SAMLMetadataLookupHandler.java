@@ -24,13 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -48,6 +41,12 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Handler for inbound SAML protocol messages that attempts to locate SAML metadata for
@@ -92,8 +91,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * @param strategy the strategy function
      */
     public void setCopyContextStrategy(@Nullable final Function<MessageContext, SAMLMetadataContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         copyContextStrategy = strategy;
     }
 
@@ -105,8 +103,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractSAMLEntityContext> clazz) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         entityContextClass = Constraint.isNotNull(clazz, "SAML entity context class may not be null");
     }
 
@@ -116,8 +113,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * @param resolver  the resolver to use
      */
     public void setRoleDescriptorResolver(@Nonnull final RoleDescriptorResolver resolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         metadataResolver = Constraint.isNotNull(resolver, "RoleDescriptorResolver cannot be null");
     }
     
@@ -134,7 +130,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
 
         final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
 

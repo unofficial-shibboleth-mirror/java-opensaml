@@ -43,7 +43,6 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -107,8 +106,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param function the new assertion resolver function
      */
     public void setAssertionResolver(@Nonnull final Function<ProfileRequestContext, List<Assertion>> function) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         assertionResolver = function;
     }
 
@@ -139,8 +137,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      */
     public void setValidationContextBuilder(
             @Nonnull final Function<AssertionValidationInput, ValidationContext> builder) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         validationContextBuilder = builder;
     }
 
@@ -159,8 +156,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param request The HTTP servlet request
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         httpServletRequest = request;
     }
     
@@ -187,8 +183,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param flag The invalidFatal to set.
      */
     public void setInvalidFatal(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         invalidFatal = flag;
     }
     
@@ -207,8 +202,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param validator the local Assertion validator, may be null
      */
     public void setAssertionValidator(@Nullable final SAML20AssertionValidator validator) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         assertionValidator = validator;
     }
     
@@ -229,8 +223,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      */
     public void setAssertionValidatorLookup(
             @Nullable final Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> function) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         assertionValidatorLookup = function;
     }
 

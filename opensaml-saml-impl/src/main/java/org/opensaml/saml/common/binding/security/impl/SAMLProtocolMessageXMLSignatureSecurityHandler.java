@@ -20,8 +20,6 @@ package org.opensaml.saml.common.binding.security.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SignableSAMLObject;
@@ -83,7 +81,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * @param validator The prevalidator to set.
      */
     public void setSignaturePrevalidator(@Nullable final SignaturePrevalidator validator) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         signaturePrevalidator = validator;
     }
 

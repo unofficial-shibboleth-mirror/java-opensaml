@@ -24,21 +24,19 @@ import java.time.Instant;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
-import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntryFactory;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageSerializer;
 import org.opensaml.storage.StorageService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /** Artifact map implementation backed by {@link StorageService}. */
 public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponent implements SAMLArtifactMap {
@@ -113,7 +111,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponen
      * @param store the artifact store
      */
     public void setStorageService(@Nonnull final StorageService store) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         artifactStore = Constraint.isNotNull(store, "StorageService cannot be null");
     }
@@ -124,7 +122,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponen
      * @param lifetime artifact entry lifetime
      */
     public void setArtifactLifetime(@Nonnull final Duration lifetime) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         Constraint.isNotNull(lifetime, "Lifetime cannot be null");
         Constraint.isFalse(lifetime.isNegative() || lifetime.isZero(), "Lifetime must be positive");
         
@@ -143,7 +141,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponen
      * @param factory map entry factory
      */
     public void setEntryFactory(@Nonnull final SAMLArtifactMapEntryFactory factory) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         Constraint.isTrue(factory != null && factory instanceof StorageSerializer<?>,
                 "SAMLArtifactMapEntryFactory cannot be null and must support the StorageSerializer interface");

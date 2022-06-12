@@ -26,12 +26,11 @@ import java.util.Timer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * A metadata provider that pulls metadata from a file on the local filesystem.
@@ -90,8 +89,7 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * @throws ResolverException this exception is no longer thrown
      */
     protected void setMetadataFile(@Nonnull final File file) throws ResolverException {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         metadataFile = Constraint.isNotNull(file, "Metadata file cannot be null");
     }

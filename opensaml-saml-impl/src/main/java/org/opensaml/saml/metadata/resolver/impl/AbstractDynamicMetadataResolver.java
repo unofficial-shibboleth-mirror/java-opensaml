@@ -77,7 +77,6 @@ import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.primitive.TimerSupport;
@@ -245,8 +244,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param flag true if should init from the cache in the background, false otherwise
      */
     public void setInitializeFromPersistentCacheInBackground(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         initializeFromPersistentCacheInBackground = flag;
     }
 
@@ -273,8 +271,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @since 3.3.0
      */
     public void setBackgroundInitializationFromCacheDelay(@Nonnull final Duration delay) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         Constraint.isNotNull(delay, "Delay cannot be null");
         Constraint.isFalse(delay.isNegative(), "Delay cannot be negative");
@@ -298,8 +295,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param manager the cache manager, may be null
      */
     public void setPersistentCacheManager(@Nullable final XMLObjectLoadSaveManager<EntityDescriptor> manager) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         persistentCacheManager = manager;
     }
     
@@ -327,8 +323,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param generator the new generator to set, may be null
      */
     public void setPersistentCacheKeyGenerator(@Nullable final Function<EntityDescriptor, String> generator) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         persistentCacheKeyGenerator = generator;
     }
 
@@ -349,8 +344,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param predicate the cache initialization predicate
      */
     public void setInitializationFromCachePredicate(@Nullable final Predicate<EntityDescriptor> predicate) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         initializationFromCachePredicate = predicate;
     }
 
@@ -373,8 +367,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param duration the minimum cache duration
      */
     public void setMinCacheDuration(@Nonnull final Duration duration) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         Constraint.isNotNull(duration, "Duration cannot be null");
         Constraint.isFalse(duration.isNegative(), "Duration cannot be negative");
@@ -401,8 +394,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param duration the maximum cache duration
      */
     public void setMaxCacheDuration(@Nonnull final Duration duration) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         Constraint.isNotNull(duration, "Duration cannot be null");
         Constraint.isFalse(duration.isNegative(), "Duration cannot be negative");
@@ -429,8 +421,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param duration the negative lookup cache duration
      */
     public void setNegativeLookupCacheDuration(@Nonnull final Duration duration) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         Constraint.isNotNull(duration, "Duration cannot be null");
         Constraint.isFalse(duration.isNegative(), "Duration cannot be negative");
@@ -457,8 +448,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param factor delay factor used to compute the next refresh time
      */
     public void setRefreshDelayFactor(@Nonnull final Float factor) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         if (factor <= 0 || factor >= 1) {
             throw new IllegalArgumentException("Refresh delay factor must be a number between 0.0 and 1.0, exclusive");
@@ -482,8 +472,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param flag true if idle entity data should be removed, false otherwise
      */
     public void setRemoveIdleEntityData(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         removeIdleEntityData = flag;
     }
 
@@ -508,8 +497,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param max the maximum entity data idle time
      */
     public void setMaxIdleEntityData(@Nonnull final Duration max) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
 
         Constraint.isNotNull(max, "Max idle time cannot be null");
         Constraint.isFalse(max.isNegative(), "Max idle time cannot be negative");
@@ -532,8 +520,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param threshold the threshold for logging a warning if live metadata will soon expire
      */
     public void setExpirationWarningThreshold(@Nullable final Duration threshold) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         if (threshold == null) {
             expirationWarningThreshold = Duration.ZERO;
@@ -563,8 +550,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param interval the interval to set
      */
     public void setCleanupTaskInterval(@Nonnull final Duration interval) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         Constraint.isNotNull(interval, "Cleanup task interval may not be null");
         Constraint.isFalse(interval.isNegative() || interval.isZero(), "Cleanup task interval must be positive");
@@ -587,8 +573,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param baseName the Metrics base name
      */
     public void setMetricsBaseName(@Nullable final String baseName) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         metricsBaseName = StringSupport.trimOrNull(baseName);
     }
     
@@ -607,9 +592,8 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param newIndexes the new indexes to set
      */
     public void setIndexes(@Nullable final Set<MetadataIndex> newIndexes) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        
+        throwSetterPreconditionExceptions();
+
         if (newIndexes == null) {
             indexes = Collections.emptySet();
         } else {
@@ -657,8 +641,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     /** {@inheritDoc} */
     @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(@Nonnull final CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwComponentStateExceptions();
         
         final Context contextResolve = MetricsSupport.startTimer(timerResolve);
         try {

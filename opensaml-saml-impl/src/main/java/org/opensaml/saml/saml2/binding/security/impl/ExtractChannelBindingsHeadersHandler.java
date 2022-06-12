@@ -23,8 +23,6 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -64,7 +62,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
      * @param flag flag to set
      */
     public void setFinalDestination(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         finalDestination = flag;
     }
@@ -75,7 +73,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
      * @param flag flag to set
      */
     public void setNextDestination(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         nextDestination = flag;
     }

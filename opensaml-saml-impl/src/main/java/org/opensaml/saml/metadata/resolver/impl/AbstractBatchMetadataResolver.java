@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.time.Instant;
-
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.Optional;
@@ -46,7 +45,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
@@ -81,7 +79,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     
     /** {@inheritDoc} */
     @Override public Iterator<EntityDescriptor> iterator() {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         return Collections.unmodifiableList(getBackingStore().getOrderedDescriptors()).iterator();
     }
 
@@ -100,8 +98,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @param flag true if source should be cached, false otherwise
      */
     protected void setCacheSourceMetadata(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         cacheSourceMetadata = flag; 
     }
     
@@ -120,7 +117,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @param newIndexes the new indexes to set
      */
     public void setIndexes(@Nullable final Set<MetadataIndex> newIndexes) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         if (newIndexes == null) {
             indexes = Collections.emptySet();
         } else {
@@ -145,7 +142,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @param flag true if resolution may be attempted solely via predicates, false if not
      */
     public void setResolveViaPredicatesOnly(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         resolveViaPredicatesOnly = flag;
     }
 
@@ -169,7 +166,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
 
     /** {@inheritDoc} */
     @Override @Nonnull public Iterable<EntityDescriptor> resolve(final CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         
         final EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
         if (entityIdCriterion != null) {

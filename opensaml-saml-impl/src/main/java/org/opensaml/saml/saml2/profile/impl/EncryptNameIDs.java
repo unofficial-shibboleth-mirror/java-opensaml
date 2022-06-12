@@ -25,12 +25,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
@@ -62,6 +56,11 @@ import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * Action that encrypts all {@link NameID}s in a message obtained from a lookup strategy,
@@ -101,7 +100,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public void setMessageLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         messageLookupStrategy = Constraint.isNotNull(strategy, "Message lookup strategy cannot be null");
     }

@@ -23,10 +23,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -39,6 +35,9 @@ import org.opensaml.saml.ext.saml2cb.ChannelBindings;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Action that verifies two sets of {@link ChannelBindings} from two different {@link ChannelBindingsContext}
@@ -101,8 +100,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
      */
     public void setChannelBindingsLookupStrategy1(
             @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         channelBindingsLookupStrategy1 = Constraint.isNotNull(strategy,
                 "First ChannelBindingsContext lookup strategy cannot be null");
     }
@@ -114,8 +112,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
      */
     public void setChannelBindingsLookupStrategy2(
             @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         channelBindingsLookupStrategy2 = Constraint.isNotNull(strategy,
                 "Second ChannelBindingsContext lookup strategy cannot be null");
     }
@@ -127,8 +124,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
      */
     public void setChannelBindingsCreationStrategy(
             @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         channelBindingsCreationStrategy = Constraint.isNotNull(strategy,
                 "ChannelBindingsContext creation strategy cannot be null");
     }

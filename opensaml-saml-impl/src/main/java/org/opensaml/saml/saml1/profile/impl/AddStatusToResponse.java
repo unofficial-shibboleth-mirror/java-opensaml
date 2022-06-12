@@ -29,6 +29,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
@@ -36,15 +38,6 @@ import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
@@ -54,6 +47,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Action that sets {@link Status} content in a {@link Response} obtained from
@@ -110,8 +108,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param condition predicate for detailed errors condition
      */
     public void setDetailedErrorsCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         detailedErrorsCondition =
                 Constraint.isNotNull(condition, "Detailed errors condition cannot be null");
     }
@@ -122,8 +119,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param strategy strategy used to obtain status codes
      */
     public void setStatusCodesLookupStrategy(@Nullable final Function<ProfileRequestContext,List<QName>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         statusCodesLookupStrategy = strategy;
     }
     
@@ -133,8 +129,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param strategy strategy used to obtain a status message
      */
     public void setStatusMessageLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         statusMessageLookupStrategy = strategy;
     }
     
@@ -144,8 +139,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
     
@@ -156,8 +150,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param codes list of status code values to insert
      */
     public void setStatusCodes(@Nonnull @NonnullElements final List<QName> codes) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         defaultStatusCodes = List.copyOf(Constraint.isNotNull(codes, "Status code list cannot be null"));
     }
     
@@ -168,16 +161,14 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param message default status message
      */
     public void setStatusMessage(@Nullable final String message) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         statusMessage = StringSupport.trimOrNull(message);
     }
     
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-
+        throwComponentStateExceptions();
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
             log.debug("{} Response message was not returned by lookup strategy", getLogPrefix());

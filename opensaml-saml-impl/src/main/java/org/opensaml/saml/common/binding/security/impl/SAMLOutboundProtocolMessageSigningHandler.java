@@ -20,8 +20,6 @@ package org.opensaml.saml.common.binding.security.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -60,8 +58,7 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
      * @param flag  flag to set
      */
     public void setSignErrorResponses(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         signErrorResponses = flag;
     }
     

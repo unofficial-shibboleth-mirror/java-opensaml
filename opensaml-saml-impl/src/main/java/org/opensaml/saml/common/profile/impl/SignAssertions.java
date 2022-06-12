@@ -22,10 +22,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
@@ -45,6 +41,9 @@ import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * Action that signs assertions in a SAML 1/2 Response returned by a lookup strategy,
@@ -85,8 +84,7 @@ public class SignAssertions extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
 
@@ -97,8 +95,7 @@ public class SignAssertions extends AbstractProfileAction {
      */
     public void setSecurityParametersLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
+        throwSetterPreconditionExceptions();
         securityParametersLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParameterContext lookup strategy cannot be null");
     }

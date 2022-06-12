@@ -48,7 +48,6 @@ import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.CriterionPredicateRegistry;
@@ -122,9 +121,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     /** {@inheritDoc} */
     @Override
     public void setRequireValidMetadata(final boolean require) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
+        throwSetterPreconditionExceptions();
         requireValidMetadata = require;
     }
     
@@ -149,8 +146,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param flag true if must satisfy all, false otherwise
      */
     public void setSatisfyAnyPredicates(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         satisfyAnyPredicates = flag;
     }
 
@@ -169,8 +165,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param registry the registry instance to use
      */
     public void setCriterionPredicateRegistry(@Nullable final CriterionPredicateRegistry<RoleDescriptor> registry) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         criterionPredicateRegistry = registry;
     }
 
@@ -195,8 +190,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param flag true if should use default registry, false otherwise
      */
     public void setUseDefaultPredicateRegistry(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         useDefaultPredicateRegistry = flag;
     }
     
@@ -218,7 +212,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param flag true if resolution may be attempted solely via predicates, false if not
      */
     public void setResolveViaPredicatesOnly(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         resolveViaPredicatesOnly = flag;
     }
     
@@ -240,8 +234,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     /** {@inheritDoc} */
     @Override
     @Nullable public RoleDescriptor resolveSingle(final CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
+        throwComponentStateExceptions();
         final Iterable<RoleDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             final Iterator<RoleDescriptor> iterator = iterable.iterator();
@@ -255,7 +248,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     /** {@inheritDoc} */
     @Override
     @Nonnull public Iterable<RoleDescriptor> resolve(final CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         
         final Iterable<EntityDescriptor> entityDescriptorsSource = entityDescriptorResolver.resolve(criteria);
         if (!entityDescriptorsSource.iterator().hasNext()) {

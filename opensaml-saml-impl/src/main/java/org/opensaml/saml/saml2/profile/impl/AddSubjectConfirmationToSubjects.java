@@ -24,22 +24,13 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.OutboundMessageContextLookup;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
-import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
@@ -50,6 +41,13 @@ import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.net.HttpServletSupport;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Action that builds {@link SubjectConfirmation} and adds it to the {@link Subject} of all the assertions
@@ -166,7 +164,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param flag  true iff the action should overwrite any existing objects
      */
     public void setOverwriteExisting(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         overwriteExisting = flag;
     }
@@ -178,7 +176,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      */
     public void setResponseLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
@@ -189,7 +187,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setAddressLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         addressLookupStrategy = strategy;
     }
@@ -200,7 +198,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setInResponseToLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         inResponseToLookupStrategy = strategy;
     }
@@ -211,7 +209,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setRecipientLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         recipientLookupStrategy = strategy;
     }
@@ -222,7 +220,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setLifetimeLookupStrategy(@Nullable final Function<ProfileRequestContext,Long> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         lifetimeLookupStrategy = strategy;
     }
@@ -233,7 +231,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param method   confirmation method to use
      */
     public void setMethod(@Nonnull @NotEmpty final String method) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         confirmationMethod = Constraint.isNotNull(StringSupport.trimOrNull(method),
                 "Confirmation method cannot be null or empty"); 

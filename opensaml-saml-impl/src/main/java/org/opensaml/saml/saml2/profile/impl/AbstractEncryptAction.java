@@ -25,11 +25,6 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.FunctionSupport;
-
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -46,6 +41,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 /**
  * Abstract base class for actions that perform simple unicast SAML encryption to a single
@@ -100,7 +99,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      */
     public void setEncryptionContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,EncryptionContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         encryptionCtxLookupStrategy =
                 Constraint.isNotNull(strategy, "EncryptionContext lookup strategy cannot be null");
@@ -112,7 +111,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param strategy lookup strategy
      */
     public void setRecipientLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         recipientLookupStrategy = Constraint.isNotNull(strategy, "Recipient lookup strategy cannot be null");
     }
@@ -123,7 +122,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param strategy  lookup strategy
      */
     public void setKeyPlacementLookupStrategy(@Nonnull final Function<ProfileRequestContext,KeyPlacement> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         keyPlacementLookupStrategy = Constraint.isNotNull(strategy, "Key placement lookup strategy cannot be null");
     }
@@ -134,7 +133,8 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param predicate the encrypt-to-self predicate
      */
     public void setEncryptToSelf(@Nonnull final Predicate<ProfileRequestContext> predicate) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
+
         encryptToSelf = Constraint.isNotNull(predicate, "Encrypt-to-self predicate cannot be null");
     }
     
@@ -146,7 +146,8 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     public void setEncryptToSelfParametersStrategy(
             @Nullable final Function<Pair<ProfileRequestContext, EncryptionParameters>, 
             List<EncryptionParameters>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
+
         encryptToSelfParametersStrategy = strategy;
     }
     
@@ -156,7 +157,8 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param strategy lookup strategy
      */
     public void setSelfRecipientLookupStrategy(@Nullable final Function<ProfileRequestContext, String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
+
         selfRecipientLookupStrategy = strategy;
     }
     

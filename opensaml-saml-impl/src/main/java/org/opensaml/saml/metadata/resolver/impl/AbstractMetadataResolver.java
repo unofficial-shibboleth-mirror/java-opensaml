@@ -31,21 +31,6 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.CriterionPredicateRegistry;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.resolver.ResolverSupport;
-import net.shibboleth.utilities.java.support.xml.ParserPool;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.criterion.SatisfyAnyCriterion;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -68,6 +53,20 @@ import org.w3c.dom.Document;
 
 import com.google.common.base.Strings;
 import com.google.common.collect.Iterables;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.utilities.java.support.resolver.CriterionPredicateRegistry;
+import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.utilities.java.support.resolver.ResolverSupport;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
+import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 /** An abstract, base, implementation of a metadata provider. */
 public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent implements
@@ -126,8 +125,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
     /** {@inheritDoc} */
     @Override public void setRequireValidMetadata(final boolean require) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         requireValidMetadata = require;
     }
 
@@ -138,8 +136,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
     /** {@inheritDoc} */
     @Override public void setMetadataFilter(@Nullable final MetadataFilter newFilter) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         mdFilter = newFilter;
     }
 
@@ -160,8 +157,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param failFast whether problems during initialization should cause the provider to fail
      */
     public void setFailFastInitialization(final boolean failFast) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         failFastInitialization = failFast;
     }
 
@@ -180,8 +176,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param pool pool of parsers to use to parse XML
      */
     public void setParserPool(@Nonnull final ParserPool pool) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         parser = Constraint.isNotNull(pool, "ParserPool may not be null");
     }
 
@@ -206,8 +201,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param flag true if must satisfy all, false otherwise
      */
     public void setSatisfyAnyPredicates(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         satisfyAnyPredicates = flag;
     }
 
@@ -226,8 +220,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param registry the registry instance to use
      */
     public void setCriterionPredicateRegistry(@Nullable final CriterionPredicateRegistry<EntityDescriptor> registry) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         criterionPredicateRegistry = registry;
     }
 
@@ -252,16 +245,13 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param flag true if should use default registry, false otherwise
      */
     public void setUseDefaultPredicateRegistry(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         useDefaultPredicateRegistry = flag;
     }
 
     /** {@inheritDoc} */
     @Override @Nullable public EntityDescriptor resolveSingle(final CriteriaSet criteria) throws ResolverException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
+        throwComponentStateExceptions();
         final Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             final Iterator<EntityDescriptor> iterator = iterable.iterator();

@@ -27,12 +27,6 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -51,6 +45,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * A filter that adds {@link NameIDFormat} content to entities in order to drive software
@@ -89,8 +88,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
      * @param flag flag to set
      */
     public void setRemoveExistingFormats(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         removeExistingFormats = flag;
     }
     
@@ -100,7 +98,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
      * @param rules rules to apply
      */
     public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<String>> rules) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
         
         applyMap = ArrayListMultimap.create(rules.size(), 1);
@@ -115,8 +113,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
     @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         if (metadata == null) {
             return null;
         }

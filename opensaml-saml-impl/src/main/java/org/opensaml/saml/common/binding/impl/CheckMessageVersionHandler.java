@@ -19,8 +19,6 @@ package org.opensaml.saml.common.binding.impl;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -45,8 +43,7 @@ public class CheckMessageVersionHandler extends AbstractMessageHandler {
      * @param flag  flag to set
      */
     public void setIgnoreMissingOrUnrecognized(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
+        throwSetterPreconditionExceptions();
         ignoreMissingOrUnrecognized = flag;
     }
     

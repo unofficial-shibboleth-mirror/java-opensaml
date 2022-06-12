@@ -23,11 +23,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -45,6 +40,10 @@ import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Action that resolves SAML 1.x artifacts inside a {@link Request} located via a lookup strategy,
@@ -104,7 +103,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
      */
     public synchronized void setRequestLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,Request> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         requestLookupStrategy = Constraint.isNotNull(strategy, "Request lookup strategy cannot be null");
     }
@@ -116,7 +115,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
      */
     public synchronized void setResponseLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
@@ -128,7 +127,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
      */
     public synchronized void setIssuerLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
     
         issuerLookupStrategy = Constraint.isNotNull(strategy, "Issuer lookup strategy cannot be null");
     }
@@ -140,7 +139,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
      */
     public synchronized void setRequesterLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         requesterLookupStrategy = Constraint.isNotNull(strategy, "Requester lookup strategy cannot be null");
     }
@@ -151,7 +150,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
      * @param map   artifact map
      */
     public synchronized void setArtifactMap(@Nonnull final SAMLArtifactMap map) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         artifactMap = Constraint.isNotNull(map, "SAMLArtifactMap cannot be null");
     }
