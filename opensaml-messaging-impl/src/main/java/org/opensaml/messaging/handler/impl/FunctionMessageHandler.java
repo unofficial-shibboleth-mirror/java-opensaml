@@ -22,8 +22,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -46,7 +44,7 @@ public final class FunctionMessageHandler extends AbstractMessageHandler {
      * @param function the function to use
      */
     public void setFunction(@Nullable final Function<MessageContext,Exception> function) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         messageContextConsumer = function;
     }

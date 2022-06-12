@@ -22,16 +22,15 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Message handler that checks that a message context has an issuer.
@@ -53,7 +52,7 @@ public final class CheckExpectedIssuer extends AbstractMessageHandler {
      * @param strategy lookup strategy
      */
     public void setIssuerLookupStrategy(@Nonnull final Function<MessageContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         issuerLookupStrategy = Constraint.isNotNull(strategy, "Message context issuer lookup strategy cannot be null");
     }
@@ -64,7 +63,7 @@ public final class CheckExpectedIssuer extends AbstractMessageHandler {
      * @param strategy lookup strategy
      */
     public void setExpectedIssuerLookupStrategy(@Nonnull final Function<MessageContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         expectedIssuerLookupStrategy = Constraint.isNotNull(strategy, 
                 "Message context expected issuer lookup strategy cannot be null");

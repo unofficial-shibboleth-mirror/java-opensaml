@@ -29,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -68,7 +67,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param contentType the content type
      */
     public void setRequiredContentType(final String contentType) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         requiredContentType = contentType;
     }
 
@@ -87,7 +86,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param requestMethod the required request method
      */
     public void setRequiredRequestMethod(final String requestMethod) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         requiredRequestMethod = StringSupport.trimOrNull(requestMethod);
     }
 
@@ -106,7 +105,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param secured true if required to be secure, false otherwise
      */
     public void setRequireSecured(final boolean secured) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         requireSecured = secured;
     }
 
@@ -125,7 +124,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param request the request instance
      */
     public void setHttpServletRequest(final HttpServletRequest request) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
     }
 
