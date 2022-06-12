@@ -27,7 +27,6 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -64,7 +63,7 @@ public abstract class AbstractMessageChannelSecurity extends AbstractMessageHand
      *          the {@link org.opensaml.messaging.context.MessageChannelSecurityContext}
      */
     public void setParentContextLookupStrategy(@Nonnull final Function<MessageContext, BaseContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         parentContextLookupStrategy = Constraint.isNotNull(strategy, "Parent context lookup strategy cannot be null");
     }

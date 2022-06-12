@@ -21,14 +21,13 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Message handler that checks that a message context is authenticated.
@@ -44,7 +43,7 @@ public final class CheckMandatoryAuthentication extends AbstractMessageHandler {
      * @param strategy lookup strategy
      */
     public void setAuthenticationLookupStrategy(@Nonnull final Function<MessageContext,Boolean> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         authenticationLookupStrategy = Constraint.isNotNull(strategy,
                 "Message context authentication lookup strategy cannot be null");
