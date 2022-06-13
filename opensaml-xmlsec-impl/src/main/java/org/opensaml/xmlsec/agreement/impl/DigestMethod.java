@@ -29,7 +29,6 @@ import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
 
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -64,13 +63,13 @@ public class DigestMethod extends AbstractInitializableComponent
      * @param newAlgorithm the algorithm URI
      */
     public void setAlgorithm(@Nullable final String newAlgorithm) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         algorithm = StringSupport.trimOrNull(newAlgorithm);
     }
 
     /** {@inheritDoc} */
     public DigestMethod clone() {
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        ifDestroyedThrowDestroyedComponentException();
         try {
             return (DigestMethod ) super.clone();
         } catch (final CloneNotSupportedException e) {

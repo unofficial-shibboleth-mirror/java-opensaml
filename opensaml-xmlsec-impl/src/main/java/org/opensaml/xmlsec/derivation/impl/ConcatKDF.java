@@ -57,7 +57,6 @@ import com.google.common.primitives.Bytes;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -132,7 +131,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * @param newDigestMethod the algorithm URI
      */
     public void setDigestMethod(@Nullable final String newDigestMethod) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         digestMethod = StringSupport.trimOrNull(newDigestMethod);
     }
 
@@ -151,7 +150,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * @param newAlgorithmID the AlgorithmID
      */
     public void setAlgorithmID(@Nullable final String newAlgorithmID) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         algorithmID = StringSupport.trimOrNull(newAlgorithmID);
     }
 
@@ -170,7 +169,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * @param newPartyUInfo the PartyUInfo
      */
     public void setPartyUInfo(@Nullable final String newPartyUInfo) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         partyUInfo = StringSupport.trimOrNull(newPartyUInfo);
     }
 
@@ -189,7 +188,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * @param newPartyVInfo the PartyVInfo
      */
     public void setPartyVInfo(@Nullable final String newPartyVInfo) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         partyVInfo = StringSupport.trimOrNull(newPartyVInfo);
     }
 
@@ -208,7 +207,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * @param newSuppPubInfo the SuppPubInfo
      */
     public void setSuppPubInfo(@Nullable final String newSuppPubInfo) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         suppPubInfo = StringSupport.trimOrNull(newSuppPubInfo);
     }
 
@@ -227,7 +226,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * @param newSuppPrivInfo the SuppPrivInfo
      */
     public void setSuppPrivInfo(@Nullable final String newSuppPrivInfo) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         suppPrivInfo = StringSupport.trimOrNull(newSuppPrivInfo);
     }
 
@@ -269,7 +268,7 @@ public class ConcatKDF extends AbstractInitializableComponent
             @Nullable final Integer keyLength) throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         
         final String jcaKeyAlgorithm = KeyDerivationSupport.getJCAKeyAlgorithm(keyAlgorithm);
         
@@ -452,7 +451,7 @@ public class ConcatKDF extends AbstractInitializableComponent
     
     /** {@inheritDoc} */
     public XMLObject buildXMLObject() {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         
         final KeyDerivationMethod method =
                 (KeyDerivationMethod) XMLObjectSupport.buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
