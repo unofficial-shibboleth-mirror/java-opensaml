@@ -23,13 +23,12 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Abstract base class for message handlers that generate SOAP headers.
@@ -60,8 +59,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param flag true if header must be understood, false if not
      */
     public void setMustUnderstand(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         mustUnderstand = flag;
     }
     
@@ -71,8 +69,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param strategy the predicate strategy
      */
     public void setMustUnderstandStrategy(@Nullable final Predicate<MessageContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         mustUnderstandStrategy = strategy;
     }
     
@@ -91,8 +88,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param node the target node, may be null
      */
     public void setTargetNode(@Nullable final String node) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         targetNode = StringSupport.trimOrNull(node);
     }
     
@@ -102,8 +98,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param strategy the predicate strategy
      */
     public void setTargetNodeStrategy(@Nullable final Function<MessageContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         targetNodeStrategy = strategy;
     }
     

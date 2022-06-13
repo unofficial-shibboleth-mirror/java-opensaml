@@ -32,7 +32,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -58,8 +57,7 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
      */
     public void setPipelineFactory(
             @Nonnull final HttpClientMessagePipelineFactory factory) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         pipelineFactory = Constraint.isNotNull(factory, "HttpClientPipelineFactory cannot be null"); 
     }
@@ -70,8 +68,7 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
      * @param function the strategy function, or null
      */
     public void setPipelineNameStrategy(@Nullable final Function<InOutOperationContext,String> function) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         
         pipelineNameStrategy = function;
     }
