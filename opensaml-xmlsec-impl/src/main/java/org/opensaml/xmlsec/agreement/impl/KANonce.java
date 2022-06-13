@@ -36,7 +36,6 @@ import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
@@ -76,7 +75,7 @@ public class KANonce extends AbstractInitializableComponent
      * @param newValue the nonce value
      */
     public void setValue(@Nullable final String newValue) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         value = StringSupport.trimOrNull(newValue);
     }
     
@@ -95,7 +94,7 @@ public class KANonce extends AbstractInitializableComponent
      * @param length the generated length
      */
     public void setGeneratedLength(@Nullable final Integer length) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         generatedLength = length;
     }
     
@@ -122,7 +121,7 @@ public class KANonce extends AbstractInitializableComponent
      * @param sr the secure random generator to set
      */
     public void setRandom(@Nullable final SecureRandom sr) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         secureRandom = sr;
     }
 
@@ -163,7 +162,7 @@ public class KANonce extends AbstractInitializableComponent
 
     /** {@inheritDoc} */
     public KANonce clone() {
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        ifDestroyedThrowDestroyedComponentException();
         try {
             return (KANonce ) super.clone();
         } catch (final CloneNotSupportedException e) {
