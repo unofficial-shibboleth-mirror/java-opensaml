@@ -38,7 +38,6 @@ import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -78,7 +77,7 @@ public class SaveCookieBackedClientStorageServices
      * @param services instances to check for loading
      */
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         Constraint.isNotNull(services, "StorageService collection cannot be null");
         storageServices = new HashMap<>(services.size());

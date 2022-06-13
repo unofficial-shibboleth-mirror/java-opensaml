@@ -33,7 +33,6 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -68,7 +67,7 @@ public class PopulateClientStorageLoadContext extends AbstractProfileAction {
      * @param services instances to check for loading
      */
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         storageServices = List.copyOf(Constraint.isNotNull(services, "StorageService collection cannot be null"));
     }
