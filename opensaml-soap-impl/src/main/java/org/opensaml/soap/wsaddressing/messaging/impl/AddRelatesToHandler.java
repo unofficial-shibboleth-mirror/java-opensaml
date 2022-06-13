@@ -19,9 +19,6 @@ package org.opensaml.soap.wsaddressing.messaging.impl;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
@@ -32,6 +29,8 @@ import org.opensaml.soap.wsaddressing.RelatesTo;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Handler implementation that adds a wsa:RelatesTo header to the outbound SOAP envelope.
@@ -65,8 +64,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param lookup the lookup function
      */
     public void setRelatesToURILookup(final ContextDataLookupFunction<MessageContext, String> lookup) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         relatesToURILookup = lookup;
     }
 
@@ -85,8 +83,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param value the relationship type
      */
     public void setRelationshipType(final String value) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         relationshipType = StringSupport.trimOrNull(value);
     }
 

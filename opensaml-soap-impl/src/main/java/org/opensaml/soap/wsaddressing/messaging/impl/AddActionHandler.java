@@ -21,9 +21,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -35,6 +32,8 @@ import org.opensaml.soap.wsaddressing.WSAddressingConstants;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Handler implementation that adds a wsa:Action header to the outbound SOAP envelope.
@@ -82,8 +81,7 @@ public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
      * @param uri the new URI value
      */
     public void setActionURI(@Nullable final String uri) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         actionURI = StringSupport.trimOrNull(uri);
     }
     
@@ -102,8 +100,7 @@ public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
      * @param uri the new URI value
      */
     public void setFaultActionURI(@Nullable final String uri) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         faultActionURI = StringSupport.trimOrNull(uri);
     }
     

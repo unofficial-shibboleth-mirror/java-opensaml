@@ -26,12 +26,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
@@ -47,6 +41,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Action that resolves or builds a SOAP 1.1 {@link Fault} object, and stores it in the outbound message context.
@@ -121,7 +120,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param strategy strategy used to resolve the fault instance
      */
     public void setContextFaultStrategy(@Nullable final Function<ProfileRequestContext,Fault> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         contextFaultStrategy = strategy;
     }
@@ -132,7 +131,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param condition predicate for detailed errors condition
      */
     public void setDetailedErrorsCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         detailedErrorsCondition = Constraint.isNotNull(condition, "Detailed errors condition cannot be null");
     }
@@ -143,7 +142,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param strategy strategy used to obtain faultcode
      */
     public void setFaultCodeLookupStrategy(@Nullable final Function<ProfileRequestContext,QName> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         faultCodeLookupStrategy = strategy;
     }
@@ -154,7 +153,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param strategy strategy used to obtain a fault string
      */
     public void setFaultStringLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         faultStringLookupStrategy = strategy;
     }
@@ -165,7 +164,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param code faultcode
      */
     public void setFaultCode(@Nonnull final QName code) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         defaultFaultCode = Constraint.isNotNull(code, "Faultcode cannot be null");
     }
@@ -177,7 +176,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param message default faultstring
      */
     public void setFaultString(@Nullable final String message) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         faultString = StringSupport.trimOrNull(message);
     }
@@ -185,7 +184,7 @@ public class AddSOAPFault extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
 
         detailedErrors = detailedErrorsCondition.test(profileRequestContext);
         

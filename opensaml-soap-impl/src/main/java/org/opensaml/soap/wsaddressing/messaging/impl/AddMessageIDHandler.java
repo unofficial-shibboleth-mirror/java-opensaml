@@ -22,9 +22,6 @@ import java.util.UUID;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
-
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -34,6 +31,8 @@ import org.opensaml.soap.wsaddressing.MessageID;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
 
 /**
  * Handler implementation that adds a wsa:MessageID header to the outbound SOAP envelope.
@@ -68,8 +67,7 @@ public class AddMessageIDHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param strategy the new strategy
      */
     public void setIdentifierGenerationStrategy(@Nullable final IdentifierGenerationStrategy strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         identifierGenerationStrategy = strategy;
     }
 
