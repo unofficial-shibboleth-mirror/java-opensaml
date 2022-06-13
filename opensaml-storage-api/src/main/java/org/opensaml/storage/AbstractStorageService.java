@@ -25,15 +25,14 @@ import java.util.TimerTask;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.storage.annotation.AnnotationSupport;
+
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.TimerSupport;
-
-import org.opensaml.storage.annotation.AnnotationSupport;
 
 /**
  * Abstract base class for {@link StorageService} implementations.
@@ -90,7 +89,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param interval time between one cleanup and another
      */
     public void setCleanupInterval(@Nonnull final Duration interval) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         Constraint.isNotNull(interval, "Interval cannot be null");
         Constraint.isFalse(interval.isNegative(), "Interval cannot be negative");
@@ -115,7 +114,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param timer timer used to schedule configuration reload tasks
      */
     public void setCleanupTaskTimer(@Nullable final Timer timer) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         cleanupTaskTimer = timer;
     }
@@ -139,7 +138,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param size limit on context size in characters
      */
     public void setContextSize(@Positive final int size) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         contextSize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
@@ -150,7 +149,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param size size limit on key size in characters
      */
     public void setKeySize(@Positive final int size) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         keySize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
@@ -161,7 +160,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param size size limit on value size in characters
      */
     public void setValueSize(@Positive final int size) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         valueSize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
