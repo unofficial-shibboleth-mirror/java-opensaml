@@ -41,7 +41,6 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
@@ -86,7 +85,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      * @param predicate clientTLS predicate
      */
     public void setClientTLSPredicate(@Nullable final Predicate<MessageContext> predicate) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         clientTLSPredicate = predicate;
     }
@@ -98,7 +97,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<MessageContext,HttpClientSecurityContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "HttpClientSecurityContext lookup strategy cannot be null");
@@ -112,7 +111,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setExistingParametersContextLookupStrategy(
             @Nullable final Function<MessageContext,HttpClientSecurityContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         existingParametersContextLookupStrategy = strategy;
     }
@@ -124,7 +123,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<MessageContext,List<HttpClientSecurityConfiguration>> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "HttpClientSecurityConfiguration lookup strategy cannot be null");
@@ -137,7 +136,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setHttpClientSecurityParametersResolver(
             @Nonnull final HttpClientSecurityParametersResolver newResolver) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         resolver = Constraint.isNotNull(newResolver, "HttpClientSecurityParametersResolver cannot be null");
     }
