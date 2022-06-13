@@ -42,7 +42,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.URISupport;
 
@@ -91,7 +90,7 @@ public class LoadClientStorageServices extends AbstractProfileAction {
      * @param flag flag to set
      */
     public void setUseLocalStorage(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         useLocalStorage = flag;
     }
@@ -102,7 +101,7 @@ public class LoadClientStorageServices extends AbstractProfileAction {
      * @param services instances to check for loading
      */
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         Constraint.isNotNull(services, "StorageService collection cannot be null");
         storageServices = new HashMap<>(services.size());

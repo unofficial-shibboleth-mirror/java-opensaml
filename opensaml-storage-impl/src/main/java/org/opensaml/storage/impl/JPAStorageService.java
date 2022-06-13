@@ -46,7 +46,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
@@ -92,7 +91,7 @@ public class JPAStorageService extends AbstractStorageService implements Storage
      * @param retry number of transaction retries
      */
     public void setTransactionRetry(final int retry) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         transactionRetry =
                 (int) Constraint.isGreaterThanOrEqual(0, retry,
                         "Transaction retry must be greater than or equal to zero");

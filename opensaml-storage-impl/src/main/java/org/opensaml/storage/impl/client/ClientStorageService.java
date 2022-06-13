@@ -51,7 +51,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.net.CookieManager;
@@ -141,7 +140,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param map capability map
      */
     public void setCapabilityMap(@Nonnull @NonnullElements final Map<ClientStorageSource,Integer> map) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         Constraint.isNotNull(map, "Capability map cannot be null");
         
         for (final Map.Entry<ClientStorageSource,Integer> entry : map.entrySet()) {
@@ -170,7 +169,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param request servlet request in which to manage data
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
@@ -190,7 +189,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param manager the CookieManager to use.
      */
     public void setCookieManager(@Nonnull final CookieManager manager) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         cookieManager = Constraint.isNotNull(manager, "CookieManager cannot be null");
     }
@@ -210,7 +209,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param name label to use
      */
     public void setStorageName(@Nonnull @NotEmpty final String name) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         storageName = Constraint.isNotNull(StringSupport.trimOrNull(name), "Storage name cannot be null or empty");
     }
@@ -230,7 +229,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param sealer {@link DataSealer} to use for data security
      */
     public void setDataSealer(@Nonnull final DataSealer sealer) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         dataSealer = Constraint.isNotNull(sealer, "DataSealer cannot be null");
     }
@@ -241,7 +240,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param strategy {@link DataSealerKeyStrategy} to use for stale key detection
      */
     public void setKeyStrategy(@Nullable final DataSealerKeyStrategy strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         keyStrategy = strategy;
     }
@@ -252,7 +251,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param factory factory to use
      */
     public void setClientStorageServiceStoreFactory(@Nonnull final Factory factory) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         storeFactory = Constraint.isNotNull(factory, "Factory cannot be null");
     }
