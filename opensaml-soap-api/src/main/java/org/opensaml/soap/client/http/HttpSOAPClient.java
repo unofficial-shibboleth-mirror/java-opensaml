@@ -28,16 +28,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.ParserPool;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -67,6 +57,15 @@ import org.opensaml.soap.soap11.Fault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.xml.ParserPool;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * SOAP client that uses HTTP as the underlying transport and POST as the binding.
@@ -121,7 +120,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * @param client client object
      */
     public void setHttpClient(@Nonnull final HttpClient client) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
     }
@@ -132,7 +131,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * @param parser parser pool
      */
     public void setParserPool(@Nonnull final ParserPool parser) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         parserPool = Constraint.isNotNull(parser, "ParserPool cannot be null");
     }
@@ -159,7 +158,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      *            message context
      */
     public void setSOAPClientContextLookupStrategy(@Nonnull final Function<MessageContext,SOAPClientContext> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         soapClientContextLookupStrategy =
                 Constraint.isNotNull(strategy, "SOAP client context lookup strategy cannot be null");
@@ -184,7 +183,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      *            message context
      */
     public void setSOAP11ContextLookupStrategy(@Nonnull final Function<MessageContext,SOAP11Context> strategy) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
         
         soap11ContextLookupStrategy =
                 Constraint.isNotNull(strategy, "SOAP 1.1 context lookup strategy cannot be null");
