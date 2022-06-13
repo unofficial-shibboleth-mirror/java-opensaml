@@ -23,9 +23,6 @@ import java.util.Objects;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -36,6 +33,8 @@ import org.opensaml.soap.wsaddressing.WSAddressingConstants;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Handler implementation that checks a wsa:Action header against an expected value.
@@ -69,8 +68,7 @@ public class ValidateActionHandler extends AbstractMessageHandler {
      * @param uri the new URI value
      */
     public void setExpectedActionURI(@Nullable final String uri) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         expectedActionURI = StringSupport.trimOrNull(uri);
     }
 

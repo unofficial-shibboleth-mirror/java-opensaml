@@ -24,8 +24,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -82,8 +80,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param lookup the lookup function
      */
     public void setCreatedLookup(@Nullable final Function<MessageContext,Instant> lookup) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         createdLookup = lookup;
     }
 
@@ -102,8 +99,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param lookup the lookup function
      */
     public void setExpiresLookup(@Nullable final Function<MessageContext,Instant> lookup) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         expiresLookup = lookup;
     }
 
@@ -124,8 +120,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param flag true if should use currnet time, false if not
      */
     public void setUseCurrentTimeAsDefaultCreated(final boolean flag) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         useCurrentTimeAsDefaultCreated = flag;
     }
     
@@ -146,8 +141,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param value the expires offset, or null
      */
     public void setExpiresOffsetFromCreated(@Nullable final Duration value) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        throwSetterPreconditionExceptions();
         expiresOffsetFromCreated = value;
     }
 
