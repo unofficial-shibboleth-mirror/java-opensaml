@@ -43,7 +43,8 @@ public class TimestampMarshaller extends AbstractWSSecurityObjectMarshaller {
     }
     
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    protected void marshallAttributeIDness(final XMLObject xmlObject,
+            final Element domElement) throws MarshallingException {
         XMLObjectSupport.marshallAttributeIDness(Timestamp.WSU_ID_ATTR_NAME, domElement, true);
         
         super.marshallAttributeIDness(xmlObject, domElement);
