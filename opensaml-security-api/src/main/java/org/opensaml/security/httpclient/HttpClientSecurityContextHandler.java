@@ -25,7 +25,6 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientContextHandler;
 
 /**
@@ -54,14 +53,14 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
      * @param params the new client security parameters
      */
     public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        throwSetterPreconditionExceptions();
 
         httpClientSecurityParameters = params;
     }
     
     /** {@inheritDoc} */
     public void invokeBefore(final HttpClientContext context, final HttpUriRequest request) throws IOException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, false);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(context, request);
@@ -69,7 +68,7 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
 
     /** {@inheritDoc} */
     public void invokeAfter(final HttpClientContext context, final HttpUriRequest request) throws IOException {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         
         HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getURI().getScheme());
     }

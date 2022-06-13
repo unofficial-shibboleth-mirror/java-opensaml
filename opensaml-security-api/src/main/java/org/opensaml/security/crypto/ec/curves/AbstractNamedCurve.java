@@ -36,7 +36,6 @@ import com.google.common.base.MoreObjects;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 /**
  * Abstract base class for implementations of {@link NamedCurve}.
@@ -51,7 +50,7 @@ public abstract class AbstractNamedCurve extends AbstractInitializableComponent 
     
     /** {@inheritDoc} */
     @NonnullAfterInit public ECParameterSpec getParameterSpec() {
-        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        throwComponentStateExceptions();
         return paramSpec;
     }
 
