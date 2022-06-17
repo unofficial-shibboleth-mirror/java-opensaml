@@ -87,19 +87,6 @@
             <scope>runtime</scope>
         </dependency>
         
-        <!-- Needed for JPA storage plugin. -->
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-core-jakarta</artifactId>
-            <optional>true</optional>
-        </dependency>
-        <dependency>
-            <groupId>${spring.groupId}</groupId>
-            <artifactId>spring-orm</artifactId>
-            <scope>test</scope>
-            <optional>true</optional>
-        </dependency>
-
         <!-- Test Dependencies -->
         <dependency>
             <groupId>${project.groupId}</groupId>
