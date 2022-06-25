@@ -18,6 +18,7 @@
 package org.opensaml.storage.testing;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotEquals;
 
 import java.io.IOException;
 import java.security.SecureRandom;
@@ -159,6 +160,29 @@ public abstract class StorageServiceTest {
         Assert.assertEquals(rec.getVersion(), 2);
     }
     
+    @Test
+    public void update() throws ComponentInitializationException, IOException {
+        final String context = Long.toString(random.nextLong());
+        final String value = Long.toString(random.nextLong());
+        final String newValue = Long.toString(random.nextLong());
+        final Long expiration = System.currentTimeMillis() + 10000;
+
+        shared.create(context, context, value, expiration);
+        StorageRecord<Object> rec = shared.read(context, context);
+        assertEquals(rec.getValue(), value);
+        assertEquals(rec.getExpiration(), expiration);
+
+        shared.updateExpiration(context, context, expiration+50000);
+        rec = shared.read(context, context);
+        assertEquals(rec.getValue(), value);
+        assertNotEquals(rec.getExpiration(), expiration);
+
+        shared.update(context, context, newValue, expiration+100000);
+        rec = shared.read(context, context);
+        assertEquals(rec.getValue(), newValue);
+        assertNotEquals(rec.getExpiration(), expiration);
+    }
+
     @Test
     public void objects() throws IOException, InterruptedException {
         threadInit();
