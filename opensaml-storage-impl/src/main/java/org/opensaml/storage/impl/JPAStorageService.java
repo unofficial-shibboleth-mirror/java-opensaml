@@ -358,7 +358,7 @@ public class JPAStorageService extends AbstractStorageService implements Storage
      * @throws VersionMismatchException if the record found contains a version that does not match the parameter
      */
     @Nullable protected Long updateImpl(@Nullable final Long version, @Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String key, @Nonnull @NotEmpty final String value,
+            @Nonnull @NotEmpty final String key, @Nullable final String value,
             @Nullable @Positive final Long expiration) throws IOException, VersionMismatchException {
         EntityManager manager = null;
         try {
