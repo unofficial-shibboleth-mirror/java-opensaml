@@ -159,7 +159,7 @@ public class ConcatKDFTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    public void fromXMLObject() throws Exception {
+    public void fromXMLObject_Basic() throws Exception {
         KeyDerivationMethod xmlKDM = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         xmlKDM.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         
@@ -179,7 +179,105 @@ public class ConcatKDFTest extends XMLObjectBaseTestCase {
         ConcatKDF parameter = ConcatKDF.fromXMLObject(xmlKDM);
         Assert.assertNotNull(parameter);
         Assert.assertTrue(parameter.isInitialized());
+
+        Assert.assertEquals(parameter.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        Assert.assertEquals(parameter.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
+
+        Assert.assertEquals(parameter.getAlgorithmID(), "AA");
+        Assert.assertEquals(parameter.getPartyUInfo(), "BB");
+        Assert.assertEquals(parameter.getPartyVInfo(), "CC");
+        Assert.assertEquals(parameter.getSuppPubInfo(), "DD");
+        Assert.assertEquals(parameter.getSuppPrivInfo(), "EE");
+    }
+    
+    @Test
+    public void fromXMLObject_NullBitstrings() throws Exception {
+        KeyDerivationMethod xmlKDM = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        xmlKDM.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         
+        ConcatKDFParams xmlParams= buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        xmlKDM.getUnknownXMLObjects().add(xmlParams);
+        
+        DigestMethod xmlDigest = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        xmlDigest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        xmlParams.setDigestMethod(xmlDigest);
+        
+        xmlParams.setAlgorithmID(null);
+        xmlParams.setPartyUInfo(null);
+        xmlParams.setPartyVInfo(null);
+        xmlParams.setSuppPubInfo(null);
+        xmlParams.setSuppPrivInfo(null);
+        
+        ConcatKDF parameter = ConcatKDF.fromXMLObject(xmlKDM);
+        Assert.assertNotNull(parameter);
+        Assert.assertTrue(parameter.isInitialized());
+
+        Assert.assertEquals(parameter.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        Assert.assertEquals(parameter.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
+
+        Assert.assertEquals(parameter.getAlgorithmID(), null);
+        Assert.assertEquals(parameter.getPartyUInfo(), null);
+        Assert.assertEquals(parameter.getPartyVInfo(), null);
+        Assert.assertEquals(parameter.getSuppPubInfo(), null);
+        Assert.assertEquals(parameter.getSuppPrivInfo(), null);
+    }
+    
+    @Test
+    public void fromXMLObject_EmptyBitstrings_OSJ_355() throws Exception {
+        KeyDerivationMethod xmlKDM = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        xmlKDM.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        
+        ConcatKDFParams xmlParams= buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        xmlKDM.getUnknownXMLObjects().add(xmlParams);
+        
+        DigestMethod xmlDigest = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        xmlDigest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        xmlParams.setDigestMethod(xmlDigest);
+        
+        xmlParams.setAlgorithmID("00");
+        xmlParams.setPartyUInfo("00");
+        xmlParams.setPartyVInfo("00");
+        xmlParams.setSuppPubInfo("00");
+        xmlParams.setSuppPrivInfo("00");
+        
+        ConcatKDF parameter = ConcatKDF.fromXMLObject(xmlKDM);
+        Assert.assertNotNull(parameter);
+        Assert.assertTrue(parameter.isInitialized());
+
+        Assert.assertEquals(parameter.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        Assert.assertEquals(parameter.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
+
+        Assert.assertEquals(parameter.getAlgorithmID(), null);
+        Assert.assertEquals(parameter.getPartyUInfo(), null);
+        Assert.assertEquals(parameter.getPartyVInfo(), null);
+        Assert.assertEquals(parameter.getSuppPubInfo(), null);
+        Assert.assertEquals(parameter.getSuppPrivInfo(), null);
+    }
+    
+    @Test
+    public void fromXMLObject_InvalidValues() throws Exception {
+        KeyDerivationMethod xmlKDM = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        xmlKDM.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
+        
+        ConcatKDFParams xmlParams= buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        xmlKDM.getUnknownXMLObjects().add(xmlParams);
+        
+        DigestMethod xmlDigest = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        xmlDigest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        xmlParams.setDigestMethod(xmlDigest);
+        
+        xmlParams.setAlgorithmID("00AA");
+        xmlParams.setPartyUInfo("00BB");
+        xmlParams.setPartyVInfo("00CC");
+        xmlParams.setSuppPubInfo("00DD");
+        xmlParams.setSuppPrivInfo("00EE");
+        
+        ConcatKDF parameter = ConcatKDF.fromXMLObject(xmlKDM);
+        Assert.assertNotNull(parameter);
+        Assert.assertTrue(parameter.isInitialized());
+
+        // Testing various invalid values
+
         KeyDerivationMethod xmlKDMBad = null;
         ConcatKDFParams xmlParamsBad = null;
         
@@ -409,6 +507,9 @@ public class ConcatKDFTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(ConcatKDF.unpadParam("00AA", "test"), "AA");
         Assert.assertEquals(ConcatKDF.unpadParam("   00AABBCC   ", "test"), "AABBCC");
+
+        // Considered valid per OSJ-355
+        Assert.assertEquals(ConcatKDF.unpadParam("00", "test"), "");
         
         try {
             // Unsupported padding
@@ -420,13 +521,13 @@ public class ConcatKDFTest extends XMLObjectBaseTestCase {
         
         try {
             // Too short
-            ConcatKDF.unpadParam("00", "test");
+            ConcatKDF.unpadParam("0", "test");
             Assert.fail("Invalid value should have failed");
         } catch (KeyDerivationException eA ) {
            //expected 
         }
         try {
-            // Too short
+            // Odd number of hex digits
             ConcatKDF.unpadParam("00A", "test");
             Assert.fail("Invalid value should have failed");
         } catch (KeyDerivationException eA ) {

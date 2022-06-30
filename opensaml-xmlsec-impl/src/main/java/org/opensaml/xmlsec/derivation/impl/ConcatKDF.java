@@ -392,8 +392,8 @@ public class ConcatKDF extends AbstractInitializableComponent
      * XML Encryption 1.1.
      * 
      * <p>
-     * No syntactic validation is done on the input value.  Since only whole byte-aligned values are not supported,
-     * this method merely pre-pends "00" to indicate 0 padding bits.
+     * No syntactic validation is done on the input value.  Since only whole byte-aligned values are supported,
+     * this method merely prepends "00" to indicate 0 padding bits.
      * </p>
      * 
      * @param value the value to process
@@ -416,7 +416,7 @@ public class ConcatKDF extends AbstractInitializableComponent
      * for input to the derivation operation.
      * 
      * <p>
-     * Since only whole byte-aligned values supported, this method required input values to begin with "00",
+     * Since only whole byte-aligned values are supported, this method requires input values to begin with "00",
      * indicating 0 padding bits.
      * </p>
      * 
@@ -435,18 +435,24 @@ public class ConcatKDF extends AbstractInitializableComponent
             return null;
         }
         
+        if (trimmed.length() < 2) {
+            throw new KeyDerivationException("ConcatKDF parameter was not a valid padded hexBinary value "
+                    + "(too short): " + name);
+        }
+        if (trimmed.length() % 2 != 0) {
+            throw new KeyDerivationException("ConcatKDF parameter was not a valid padded hexBinary value "
+                    + "(odd number of hex digits): " + name);
+        }
+        
         // We only support whole byte-aligned values, so # of padding bits must always be 0
         if (!trimmed.startsWith("00")) {
             throw new KeyDerivationException("ConcatKDF parameter was not a valid padded hexBinary value "
                     + "(non-byte-aligned): " + name);
         }
         
-        // Minimum valid padded length would be 2 bytes (4 hex digits): 1 for # of padding bits, 1+ for data
-        if (trimmed.length() < 4) {
-            throw new KeyDerivationException("ConcatKDF parameter was not a valid padded hexBinary value (too short): "
-                    + name);
-        }
-        
+        // As of OSJ-355, we treat "00" as a legal value, representing an empty bitstring.
+        // The following will return "" in that case, which is ok.
+
         return trimmed.substring(2);
     }
     
