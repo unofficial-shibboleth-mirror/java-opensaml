@@ -52,7 +52,7 @@ public final class CheckExpectedIssuer extends AbstractMessageHandler {
      * @param strategy lookup strategy
      */
     public void setIssuerLookupStrategy(@Nonnull final Function<MessageContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         issuerLookupStrategy = Constraint.isNotNull(strategy, "Message context issuer lookup strategy cannot be null");
     }
@@ -63,7 +63,7 @@ public final class CheckExpectedIssuer extends AbstractMessageHandler {
      * @param strategy lookup strategy
      */
     public void setExpectedIssuerLookupStrategy(@Nonnull final Function<MessageContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         expectedIssuerLookupStrategy = Constraint.isNotNull(strategy, 
                 "Message context expected issuer lookup strategy cannot be null");

@@ -81,7 +81,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * @param validator The prevalidator to set.
      */
     public void setSignaturePrevalidator(@Nullable final SignaturePrevalidator validator) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         signaturePrevalidator = validator;
     }
 

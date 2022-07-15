@@ -83,7 +83,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
@@ -95,7 +95,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
      */
     public void setProxyRestrictionLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,Pair<Integer,Set<String>>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         proxyRestrictionLookupStrategy =
                 Constraint.isNotNull(strategy, "Proxy restriction lookup strategy cannot be null");

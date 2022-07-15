@@ -147,7 +147,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @param flag true if should initialize from backup file, false otherwise
      */
     public void setInitializeFromBackupFile(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         initializeFromBackupFile = flag;
     }
@@ -171,7 +171,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @param delay the next refresh delay
      */
     public void setBackupFileInitNextRefreshDelay(@Nonnull final Duration delay) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         Constraint.isNotNull(delay, "Backup file init next refresh delay cannot be null");
         Constraint.isFalse(delay.isNegative() || delay.isZero(),
@@ -219,7 +219,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @throws ResolverException thrown if the backup file is not read/writable or creatable
      */
     protected void setBackupFile(final String backupFilePath) throws ResolverException {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         final File backingFile = new File(backupFilePath);
         metadataBackupFile = backingFile;

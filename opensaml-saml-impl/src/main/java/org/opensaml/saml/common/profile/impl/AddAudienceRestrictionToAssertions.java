@@ -88,7 +88,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
     
@@ -100,7 +100,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
      *            another one
      */
     public void setAddingAudiencesToExistingRestriction(final boolean addingToExistingRestriction) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         addingAudiencesToExistingRestriction = addingToExistingRestriction;
     }
 
@@ -111,7 +111,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
      */
     public void setAudienceRestrictionsLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,Collection<String>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         audienceRestrictionsLookupStrategy =
                 Constraint.isNotNull(strategy, "Audience restriction lookup strategy cannot be null");
     }

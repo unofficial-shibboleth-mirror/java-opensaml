@@ -64,7 +64,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
      * @param newProcessors the new list of processors to set.
      */
     public void setNodeProcessors(@Nonnull @NonnullElements final List<MetadataNodeProcessor> newProcessors) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(newProcessors, "MetadataNodeProcessor list cannot be null");
 
         processors = new ArrayList<>(List.copyOf(newProcessors));
@@ -74,7 +74,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
     @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
-        throwComponentStateExceptions();
+        checkComponentActive();
 
         if (metadata == null) {
             return null;

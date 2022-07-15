@@ -89,7 +89,7 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
      * @throws ResolverException this exception is no longer thrown
      */
     protected void setMetadataFile(@Nonnull final File file) throws ResolverException {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         metadataFile = Constraint.isNotNull(file, "Metadata file cannot be null");
     }

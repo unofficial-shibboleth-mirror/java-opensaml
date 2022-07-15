@@ -98,7 +98,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * @param request The to set.
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }

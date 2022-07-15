@@ -125,7 +125,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
     /** {@inheritDoc} */
     @Override public void setRequireValidMetadata(final boolean require) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requireValidMetadata = require;
     }
 
@@ -136,7 +136,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
     /** {@inheritDoc} */
     @Override public void setMetadataFilter(@Nullable final MetadataFilter newFilter) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         mdFilter = newFilter;
     }
 
@@ -157,7 +157,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param failFast whether problems during initialization should cause the provider to fail
      */
     public void setFailFastInitialization(final boolean failFast) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         failFastInitialization = failFast;
     }
 
@@ -176,7 +176,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param pool pool of parsers to use to parse XML
      */
     public void setParserPool(@Nonnull final ParserPool pool) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         parser = Constraint.isNotNull(pool, "ParserPool may not be null");
     }
 
@@ -201,7 +201,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param flag true if must satisfy all, false otherwise
      */
     public void setSatisfyAnyPredicates(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         satisfyAnyPredicates = flag;
     }
 
@@ -220,7 +220,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param registry the registry instance to use
      */
     public void setCriterionPredicateRegistry(@Nullable final CriterionPredicateRegistry<EntityDescriptor> registry) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         criterionPredicateRegistry = registry;
     }
 
@@ -245,13 +245,13 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param flag true if should use default registry, false otherwise
      */
     public void setUseDefaultPredicateRegistry(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         useDefaultPredicateRegistry = flag;
     }
 
     /** {@inheritDoc} */
     @Override @Nullable public EntityDescriptor resolveSingle(final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         final Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             final Iterator<EntityDescriptor> iterator = iterable.iterator();

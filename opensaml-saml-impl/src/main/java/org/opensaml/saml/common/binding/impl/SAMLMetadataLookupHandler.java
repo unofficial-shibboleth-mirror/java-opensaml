@@ -91,7 +91,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * @param strategy the strategy function
      */
     public void setCopyContextStrategy(@Nullable final Function<MessageContext, SAMLMetadataContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         copyContextStrategy = strategy;
     }
 
@@ -103,7 +103,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractSAMLEntityContext> clazz) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         entityContextClass = Constraint.isNotNull(clazz, "SAML entity context class may not be null");
     }
 
@@ -113,7 +113,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * @param resolver  the resolver to use
      */
     public void setRoleDescriptorResolver(@Nonnull final RoleDescriptorResolver resolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         metadataResolver = Constraint.isNotNull(resolver, "RoleDescriptorResolver cannot be null");
     }
     
@@ -130,7 +130,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        throwComponentStateExceptions();
+        checkComponentActive();
 
         final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
 

@@ -63,7 +63,7 @@ public class DigestMethod extends AbstractInitializableComponent
      * @param newAlgorithm the algorithm URI
      */
     public void setAlgorithm(@Nullable final String newAlgorithm) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         algorithm = StringSupport.trimOrNull(newAlgorithm);
     }
 

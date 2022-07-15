@@ -88,7 +88,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
      * @param flag flag to set
      */
     public void setRemoveExistingFormats(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         removeExistingFormats = flag;
     }
     
@@ -98,7 +98,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
      * @param rules rules to apply
      */
     public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<String>> rules) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
         
         applyMap = ArrayListMultimap.create(rules.size(), 1);
@@ -113,7 +113,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
     @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         if (metadata == null) {
             return null;
         }

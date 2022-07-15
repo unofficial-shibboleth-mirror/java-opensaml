@@ -74,7 +74,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param acs service to use
      */
     public void setAccessControlService(@Nonnull final AccessControlService acs) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         service = Constraint.isNotNull(acs, "AccessControlService cannot be null");
     }
@@ -87,7 +87,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @since 3.3.0
      */
     public void setPolicyNameLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         policyNameLookupStrategy = Constraint.isNotNull(strategy, "Policy lookup strategy cannot be null");
     }
@@ -98,7 +98,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param name  policy name
      */
     public void setPolicyName(@Nonnull @NotEmpty final String name) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         policyNameLookupStrategy = FunctionSupport.constant(
                 Constraint.isNotNull(StringSupport.trimOrNull(name), "Policy name cannot be null or empty"));
@@ -112,7 +112,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @since 3.3.0
      */
     public void setOperationLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         operationLookupStrategy = Constraint.isNotNull(strategy, "Policy lookup strategy cannot be null");
     }
@@ -123,7 +123,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param op operation
      */
     public void setOperation(@Nullable final String op) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         operationLookupStrategy = FunctionSupport.constant(StringSupport.trimOrNull(op));
     }
@@ -136,7 +136,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @since 3.3.0
      */
     public void setResourceLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         resourceLookupStrategy = Constraint.isNotNull(strategy, "Policy lookup strategy cannot be null");
     }
@@ -147,7 +147,7 @@ public class CheckAccess extends AbstractProfileAction {
      * @param res resource
      */
     public void setResource(@Nullable final String res) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         resourceLookupStrategy = FunctionSupport.constant(StringSupport.trimOrNull(res));
     }

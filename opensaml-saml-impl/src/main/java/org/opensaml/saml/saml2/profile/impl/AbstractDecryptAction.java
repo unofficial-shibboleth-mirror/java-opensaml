@@ -102,7 +102,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * @param flag  true iff decryption failure should be fatal
      */
     public void setErrorFatal(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         errorFatal = flag;
     }
@@ -116,7 +116,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         securityParamsLookupStrategy =
                 Constraint.isNotNull(strategy, "SecurityParametersContext lookup strategy cannot be null");
@@ -128,7 +128,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link SAMLObject} to operate on
      */
     public void setMessageLookupStrategy(@Nonnull final Function<ProfileRequestContext,Object> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         messageLookupStrategy = Constraint.isNotNull(strategy, "Message lookup strategy cannot be null");
     }
@@ -149,7 +149,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      */
     public void setDecryptionPredicate(
             @Nonnull final Predicate<Pair<ProfileRequestContext,EncryptedElementType>> predicate) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         decryptionPredicate = Constraint.isNotNull(predicate, "Decryption predicate cannot be null");
     }

@@ -62,7 +62,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
      * @param flag flag to set
      */
     public void setFinalDestination(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         finalDestination = flag;
     }
@@ -73,7 +73,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
      * @param flag flag to set
      */
     public void setNextDestination(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         nextDestination = flag;
     }

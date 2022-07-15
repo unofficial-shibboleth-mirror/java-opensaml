@@ -168,7 +168,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @param params the security parameters
      */
     public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         httpClientSecurityParameters = params;
     }

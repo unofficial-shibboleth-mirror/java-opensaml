@@ -84,7 +84,7 @@ public class PopulateSignatureValidationParameters
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
@@ -97,7 +97,7 @@ public class PopulateSignatureValidationParameters
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<SignatureValidationConfiguration>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "SignatureValidationConfiguration lookup strategy cannot be null");
@@ -110,7 +110,7 @@ public class PopulateSignatureValidationParameters
      */
     public void setSignatureValidationParametersResolver(
             @Nonnull final SignatureValidationParametersResolver newResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         resolver = Constraint.isNotNull(newResolver, "SignatureValidationParametersResolver cannot be null");
     }

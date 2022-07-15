@@ -120,7 +120,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * @param client client object
      */
     public void setHttpClient(@Nonnull final HttpClient client) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
     }
@@ -131,7 +131,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * @param parser parser pool
      */
     public void setParserPool(@Nonnull final ParserPool parser) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         parserPool = Constraint.isNotNull(parser, "ParserPool cannot be null");
     }
@@ -158,7 +158,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      *            message context
      */
     public void setSOAPClientContextLookupStrategy(@Nonnull final Function<MessageContext,SOAPClientContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         soapClientContextLookupStrategy =
                 Constraint.isNotNull(strategy, "SOAP client context lookup strategy cannot be null");
@@ -183,7 +183,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      *            message context
      */
     public void setSOAP11ContextLookupStrategy(@Nonnull final Function<MessageContext,SOAP11Context> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         soap11ContextLookupStrategy =
                 Constraint.isNotNull(strategy, "SOAP 1.1 context lookup strategy cannot be null");

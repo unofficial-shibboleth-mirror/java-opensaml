@@ -63,7 +63,7 @@ public abstract class AbstractMessageChannelSecurity extends AbstractMessageHand
      *          the {@link org.opensaml.messaging.context.MessageChannelSecurityContext}
      */
     public void setParentContextLookupStrategy(@Nonnull final Function<MessageContext, BaseContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         parentContextLookupStrategy = Constraint.isNotNull(strategy, "Parent context lookup strategy cannot be null");
     }

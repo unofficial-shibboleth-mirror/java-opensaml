@@ -168,7 +168,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param params the security parameters
      */
     public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         httpClientSecurityParameters = params;
     }
     
@@ -205,7 +205,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param types the new supported content types to set
      */
     public void setSupportedContentTypes(@Nullable final List<String> types) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         if (types == null) {
             supportedContentTypes = Collections.emptyList();
         } else {

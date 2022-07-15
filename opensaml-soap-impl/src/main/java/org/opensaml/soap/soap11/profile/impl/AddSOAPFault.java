@@ -120,7 +120,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param strategy strategy used to resolve the fault instance
      */
     public void setContextFaultStrategy(@Nullable final Function<ProfileRequestContext,Fault> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         contextFaultStrategy = strategy;
     }
@@ -131,7 +131,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param condition predicate for detailed errors condition
      */
     public void setDetailedErrorsCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         detailedErrorsCondition = Constraint.isNotNull(condition, "Detailed errors condition cannot be null");
     }
@@ -142,7 +142,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param strategy strategy used to obtain faultcode
      */
     public void setFaultCodeLookupStrategy(@Nullable final Function<ProfileRequestContext,QName> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         faultCodeLookupStrategy = strategy;
     }
@@ -153,7 +153,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param strategy strategy used to obtain a fault string
      */
     public void setFaultStringLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         faultStringLookupStrategy = strategy;
     }
@@ -164,7 +164,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param code faultcode
      */
     public void setFaultCode(@Nonnull final QName code) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         defaultFaultCode = Constraint.isNotNull(code, "Faultcode cannot be null");
     }
@@ -176,7 +176,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      * @param message default faultstring
      */
     public void setFaultString(@Nullable final String message) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         faultString = StringSupport.trimOrNull(message);
     }
@@ -184,7 +184,7 @@ public class AddSOAPFault extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        throwComponentStateExceptions();
+        checkComponentActive();
 
         detailedErrors = detailedErrorsCondition.test(profileRequestContext);
         

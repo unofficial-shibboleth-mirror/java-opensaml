@@ -177,7 +177,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param flag  true iff the action should overwrite any existing objects
      */
     public void setOverwriteExisting(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         overwriteExisting = flag;
     }
@@ -188,7 +188,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link AuthnRequest}
      */
     public void setRequestLookupStrategy(@Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
     }
@@ -199,7 +199,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setAssertionsLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<Assertion>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         assertionsLookupStrategy = Constraint.isNotNull(strategy, "Assertions lookup strategy cannot be null");
     }
@@ -211,7 +211,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      */
     public void setIdentifierGeneratorLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,IdentifierGenerationStrategy> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         idGeneratorLookupStrategy =
                 Constraint.isNotNull(strategy, "IdentifierGenerationStrategy lookup strategy cannot be null");
@@ -223,7 +223,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setIssuerLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         issuerLookupStrategy = strategy;
     }
@@ -234,7 +234,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param predicate predicate used to evaluate the {@link NameIDPolicy}
      */
     public void setNameIDPolicyPredicate(@Nonnull final Predicate<ProfileRequestContext> predicate) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         nameIDPolicyPredicate = Constraint.isNotNull(predicate, "NameIDPolicy predicate cannot be null");
     }
@@ -245,7 +245,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param strategy  format lookup strategy
      */
     public void setFormatLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<String>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         formatLookupStrategy = Constraint.isNotNull(strategy, "Format lookup strategy cannot be null");
     }
@@ -256,7 +256,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @param theGenerator the generator to use
      */
     public void setNameIDGenerator(@Nullable final SAML2NameIDGenerator theGenerator) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         generator = Constraint.isNotNull(theGenerator, "SAML2NameIDGenerator cannot be null");
     }

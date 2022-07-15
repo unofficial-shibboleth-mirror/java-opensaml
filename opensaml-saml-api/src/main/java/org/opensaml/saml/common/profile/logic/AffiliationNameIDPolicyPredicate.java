@@ -57,7 +57,7 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
      * @param resolver  resolver to use
      */
     public void setMetadataResolver(@Nonnull final MetadataResolver resolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         metadataResolver = Constraint.isNotNull(resolver, "MetadataResolver cannot be null");
     }
@@ -77,7 +77,7 @@ public class AffiliationNameIDPolicyPredicate extends DefaultNameIDPolicyPredica
     protected boolean doApply(@Nullable final String requesterId, @Nullable final String responderId,
             @Nullable final String format, @Nullable final String nameQualifier,
             @Nullable final String spNameQualifier) {
-        throwComponentStateExceptions();
+        checkComponentActive();
         
         if (super.doApply(requesterId, responderId, format, nameQualifier, spNameQualifier)) {
             return true;

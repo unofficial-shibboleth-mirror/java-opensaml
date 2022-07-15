@@ -84,7 +84,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
      * @param newVelocityEngine the new VelocityEngine instane
      */
     public void setVelocityEngine(final VelocityEngine newVelocityEngine) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         velocityEngine = newVelocityEngine;
     }
     
@@ -107,7 +107,7 @@ public class HTTPPostEncoder extends BaseSAML2MessageEncoder {
      * @param newVelocityTemplateId the new Velocity template id
      */
     public void setVelocityTemplateId(final String newVelocityTemplateId) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         velocityTemplateId = newVelocityTemplateId;
     }
     

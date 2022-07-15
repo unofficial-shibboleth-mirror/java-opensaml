@@ -64,7 +64,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param lookup the lookup function
      */
     public void setRelatesToURILookup(final ContextDataLookupFunction<MessageContext, String> lookup) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         relatesToURILookup = lookup;
     }
 
@@ -83,7 +83,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param value the relationship type
      */
     public void setRelationshipType(final String value) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         relationshipType = StringSupport.trimOrNull(value);
     }
 

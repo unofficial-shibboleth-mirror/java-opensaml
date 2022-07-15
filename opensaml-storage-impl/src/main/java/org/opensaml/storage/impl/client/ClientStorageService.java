@@ -140,7 +140,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param map capability map
      */
     public void setCapabilityMap(@Nonnull @NonnullElements final Map<ClientStorageSource,Integer> map) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(map, "Capability map cannot be null");
         
         for (final Map.Entry<ClientStorageSource,Integer> entry : map.entrySet()) {
@@ -169,7 +169,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param request servlet request in which to manage data
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
@@ -189,7 +189,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param manager the CookieManager to use.
      */
     public void setCookieManager(@Nonnull final CookieManager manager) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         cookieManager = Constraint.isNotNull(manager, "CookieManager cannot be null");
     }
@@ -209,7 +209,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param name label to use
      */
     public void setStorageName(@Nonnull @NotEmpty final String name) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         storageName = Constraint.isNotNull(StringSupport.trimOrNull(name), "Storage name cannot be null or empty");
     }
@@ -229,7 +229,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param sealer {@link DataSealer} to use for data security
      */
     public void setDataSealer(@Nonnull final DataSealer sealer) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         dataSealer = Constraint.isNotNull(sealer, "DataSealer cannot be null");
     }
@@ -240,7 +240,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param strategy {@link DataSealerKeyStrategy} to use for stale key detection
      */
     public void setKeyStrategy(@Nullable final DataSealerKeyStrategy strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         keyStrategy = strategy;
     }
@@ -251,7 +251,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * @param factory factory to use
      */
     public void setClientStorageServiceStoreFactory(@Nonnull final Factory factory) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         storeFactory = Constraint.isNotNull(factory, "Factory cannot be null");
     }

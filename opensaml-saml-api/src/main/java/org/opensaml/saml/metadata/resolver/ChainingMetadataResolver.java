@@ -85,7 +85,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      */
     public void setResolvers(@Nonnull @NonnullElements final List<? extends MetadataResolver> newResolvers)
             throws ResolverException {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         if (newResolvers == null || newResolvers.isEmpty()) {
             resolvers = Collections.emptyList();
@@ -138,7 +138,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /** {@inheritDoc} */
     @Override
     @Nullable public EntityDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
 
         final Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
@@ -153,7 +153,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /** {@inheritDoc} */
     @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
 
         DetectDuplicateEntityIDs detectDuplicates = getDetectDuplicateEntityIDs();
         if (criteria.contains(DetectDuplicateEntityIDsCriterion.class)) {

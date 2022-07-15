@@ -75,7 +75,7 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
     
@@ -85,7 +85,7 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
      * @param strategy strategy function
      */
     public void setAssertionLifetimeStrategy(@Nullable final Function<ProfileRequestContext,Duration> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         assertionLifetimeStrategy = strategy;
     }
     
@@ -95,7 +95,7 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
      * @param lifetime  default lifetime
      */
     public void setDefaultAssertionLifetime(@Nonnull final Duration lifetime) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(lifetime, "Lifetime cannot be null");
         Constraint.isFalse(lifetime.isNegative(), "Lifetime cannot be negative");
         

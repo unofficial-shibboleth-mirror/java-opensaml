@@ -50,7 +50,7 @@ public abstract class AbstractNamedCurve extends AbstractInitializableComponent 
     
     /** {@inheritDoc} */
     @NonnullAfterInit public ECParameterSpec getParameterSpec() {
-        throwComponentStateExceptions();
+        checkComponentActive();
         return paramSpec;
     }
 

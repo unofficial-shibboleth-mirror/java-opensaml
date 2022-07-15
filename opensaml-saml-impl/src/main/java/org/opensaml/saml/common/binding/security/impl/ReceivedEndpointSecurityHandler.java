@@ -73,7 +73,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @param comparator the new URI comparator to use
      */
     public void setURIComparator(@Nonnull final URIComparator comparator) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         uriComparator = Constraint.isNotNull(comparator, "URIComparator cannot be null");
     }
     
@@ -92,7 +92,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @param request The to set.
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
 

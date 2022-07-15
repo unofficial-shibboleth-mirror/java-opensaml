@@ -71,7 +71,7 @@ public class ReplayCache extends AbstractIdentifiableInitializableComponent {
      * @param storageService backing store to use
      */
     public void setStorage(@Nonnull final StorageService storageService) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         storage = Constraint.isNotNull(storageService, "StorageService cannot be null");
         final StorageCapabilities caps = storage.getCapabilities();
@@ -95,7 +95,7 @@ public class ReplayCache extends AbstractIdentifiableInitializableComponent {
      * @param flag true iff we should treat storage failures as a replay
      */
     public void setStrict(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         strict = flag;
     }

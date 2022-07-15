@@ -40,7 +40,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
 
     /** {@inheritDoc} */
     public synchronized void setHttpServletResponse(@Nullable final HttpServletResponse servletResponse) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         response = servletResponse;
     }

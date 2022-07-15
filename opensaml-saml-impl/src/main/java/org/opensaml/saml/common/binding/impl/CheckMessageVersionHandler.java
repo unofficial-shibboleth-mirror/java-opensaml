@@ -43,7 +43,7 @@ public class CheckMessageVersionHandler extends AbstractMessageHandler {
      * @param flag  flag to set
      */
     public void setIgnoreMissingOrUnrecognized(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         ignoreMissingOrUnrecognized = flag;
     }
     

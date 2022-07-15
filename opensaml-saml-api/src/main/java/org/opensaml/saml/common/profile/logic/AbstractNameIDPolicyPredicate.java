@@ -75,7 +75,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup strategy
      */
     public void setRequesterIdLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         requesterIdLookupStrategy = strategy;
     }
@@ -86,7 +86,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup strategy
      */
     public void setResponderIdLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         responderIdLookupStrategy = strategy;
     }
@@ -97,7 +97,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param strategy lookup function
      */
     public void setObjectLookupStrategy(@Nullable final Function<ProfileRequestContext,SAMLObject> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         objectLookupStrategy = Constraint.isNotNull(strategy, "Object lookup strategy cannot be null");
     }
@@ -108,7 +108,7 @@ public abstract class AbstractNameIDPolicyPredicate extends AbstractInitializabl
      * @param newFormats    formats to apply predicate to
      */
     public void setFormats(@Nullable final Collection<String> newFormats) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         formats = new HashSet<>(StringSupport.normalizeStringCollection(newFormats));
     }

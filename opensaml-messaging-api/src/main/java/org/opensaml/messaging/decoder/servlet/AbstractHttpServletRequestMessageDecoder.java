@@ -41,7 +41,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
 
     /** {@inheritDoc} */
     public synchronized void setHttpServletRequest(@Nullable final HttpServletRequest servletRequest) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         request = servletRequest;
     }

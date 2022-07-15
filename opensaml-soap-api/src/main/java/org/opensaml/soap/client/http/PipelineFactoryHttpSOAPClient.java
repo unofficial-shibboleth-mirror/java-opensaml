@@ -57,7 +57,7 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
      */
     public void setPipelineFactory(
             @Nonnull final HttpClientMessagePipelineFactory factory) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         pipelineFactory = Constraint.isNotNull(factory, "HttpClientPipelineFactory cannot be null"); 
     }
@@ -68,7 +68,7 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
      * @param function the strategy function, or null
      */
     public void setPipelineNameStrategy(@Nullable final Function<InOutOperationContext,String> function) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         pipelineNameStrategy = function;
     }

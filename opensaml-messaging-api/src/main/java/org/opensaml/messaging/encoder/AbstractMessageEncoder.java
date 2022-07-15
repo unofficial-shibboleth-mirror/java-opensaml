@@ -37,7 +37,7 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     /** {@inheritDoc} */
     @Override
     public synchronized void setMessageContext(@Nullable final MessageContext context) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         messageContext = context;
     }
@@ -45,7 +45,7 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     /** {@inheritDoc} */
     @Override
     public void encode() throws MessageEncodingException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         doEncode();
     }
 

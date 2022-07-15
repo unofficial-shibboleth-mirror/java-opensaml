@@ -41,7 +41,7 @@ public abstract class AbstractHttpClientResponseMessageDecoder extends AbstractM
 
     /** {@inheritDoc} */
     public synchronized void setHttpResponse(@Nullable final HttpResponse clientResponse) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         response = clientResponse;
     }

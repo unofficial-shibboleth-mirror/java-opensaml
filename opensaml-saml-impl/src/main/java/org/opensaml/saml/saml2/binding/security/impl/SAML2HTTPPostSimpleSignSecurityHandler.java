@@ -83,7 +83,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
      * @param newParserPool The parser to set.
      */
     public void setParser(@Nonnull final ParserPool newParserPool) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         parserPool = Constraint.isNotNull(newParserPool, "ParserPool cannot be null");
     }
 
@@ -102,7 +102,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
      * @param newKeyInfoResolver The keyInfoResolver to set.
      */
     public void setKeyInfoResolver(@Nonnull final KeyInfoCredentialResolver newKeyInfoResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         keyInfoResolver = Constraint.isNotNull(newKeyInfoResolver, "KeyInfoCredentialResolver cannot be null");
     }
 

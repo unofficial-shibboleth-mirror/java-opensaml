@@ -93,7 +93,7 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
      * @param flag flag to set
      */
     public void setOverwriteExisting(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         overwriteExisting = flag;
     }
@@ -105,7 +105,7 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
      */
     public void setIdentifierGeneratorLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,IdentifierGenerationStrategy> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         idGeneratorLookupStrategy =
                 Constraint.isNotNull(strategy, "IdentifierGenerationStrategy lookup strategy cannot be null");
@@ -117,7 +117,7 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
      * @param strategy lookup strategy
      */
     public void setIssuerLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         issuerLookupStrategy = strategy;
     }

@@ -74,7 +74,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
      * @param cache The replayCache to set.
      */
     public void setReplayCache(@Nonnull final ReplayCache cache) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         replayCache = Constraint.isNotNull(cache, "ReplayCache cannot be null");
     }
@@ -85,7 +85,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
      * @param flag  flag to set
      */
     public void setRequiredRule(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requiredRule = flag;
     }
 
@@ -104,7 +104,7 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
      * @param exp lifetime of entries
      */
     public void setExpires(@Nonnull final Duration exp) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(exp, "Lifetime cannot be null");
         Constraint.isFalse(exp.isNegative(), "Lifetime cannot be negative");
         

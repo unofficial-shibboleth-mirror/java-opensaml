@@ -58,7 +58,7 @@ public class PopulateMetricContext extends AbstractProfileAction {
      * @param strategy  timer mapping strategy
      */
     public void setMetricStrategy(@Nullable final Function<ProfileRequestContext,Boolean> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         metricStrategy = strategy;
     }

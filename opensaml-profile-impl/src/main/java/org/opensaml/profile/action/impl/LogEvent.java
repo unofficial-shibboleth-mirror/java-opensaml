@@ -66,7 +66,7 @@ public class LogEvent extends AbstractProfileAction {
      * @param strategy  lookup strategy
      */
     public void setEventContextLookupStrategy(@Nonnull final Function<ProfileRequestContext,EventContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         eventContextLookupStrategy = Constraint.isNotNull(strategy, "EventContext lookup strategy cannot be null");
     }
@@ -77,7 +77,7 @@ public class LogEvent extends AbstractProfileAction {
      * @param events events to ignore
      */
     public void setSuppressedEvents(@Nullable @NotEmpty final Collection<String> events) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         if (events != null) {
             suppressedEvents = new HashSet<>(StringSupport.normalizeStringCollection(events));

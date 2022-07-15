@@ -44,7 +44,7 @@ public final class FunctionMessageHandler extends AbstractMessageHandler {
      * @param function the function to use
      */
     public void setFunction(@Nullable final Function<MessageContext,Exception> function) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         messageContextConsumer = function;
     }

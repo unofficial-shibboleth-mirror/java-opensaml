@@ -53,14 +53,14 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
      * @param params the new client security parameters
      */
     public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         httpClientSecurityParameters = params;
     }
     
     /** {@inheritDoc} */
     public void invokeBefore(final HttpClientContext context, final HttpUriRequest request) throws IOException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, false);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(context, request);
@@ -68,7 +68,7 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
 
     /** {@inheritDoc} */
     public void invokeAfter(final HttpClientContext context, final HttpUriRequest request) throws IOException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         
         HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getURI().getScheme());
     }

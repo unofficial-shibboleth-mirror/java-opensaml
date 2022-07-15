@@ -72,7 +72,7 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
      * @param condition predicate to apply
      */
     public void setActivationCondition(@Nonnull final Predicate<MessageContext> condition) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
     }

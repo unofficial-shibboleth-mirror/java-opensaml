@@ -84,7 +84,7 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
      * @param pool parser pool used to parse serialized data
      */
     public void setParserPool(@Nonnull final ParserPool pool) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         parserPool = Constraint.isNotNull(pool, "ParserPool cannot be null");
     }

@@ -85,7 +85,7 @@ public class AddChannelBindingsToAssertions extends AbstractConditionalProfileAc
      */
     public void setChannelBindingsContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         channelBindingsContextLookupStrategy = Constraint.isNotNull(strategy,
                 "ChannelBindingsContext lookup strategy cannot be null");
@@ -97,7 +97,7 @@ public class AddChannelBindingsToAssertions extends AbstractConditionalProfileAc
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }

@@ -77,7 +77,7 @@ public class PopulateSignatureValidationParametersHandler extends AbstractMessag
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<MessageContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
@@ -90,7 +90,7 @@ public class PopulateSignatureValidationParametersHandler extends AbstractMessag
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<MessageContext,List<SignatureValidationConfiguration>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "SignatureValidationConfiguration lookup strategy cannot be null");
@@ -103,7 +103,7 @@ public class PopulateSignatureValidationParametersHandler extends AbstractMessag
      */
     public void setSignatureValidationParametersResolver(
             @Nonnull final SignatureValidationParametersResolver newResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         resolver = Constraint.isNotNull(newResolver, "SignatureValidationParametersResolver cannot be null");
     }

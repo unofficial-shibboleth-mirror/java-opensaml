@@ -90,7 +90,7 @@ public class LoadClientStorageServices extends AbstractProfileAction {
      * @param flag flag to set
      */
     public void setUseLocalStorage(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         useLocalStorage = flag;
     }
@@ -101,7 +101,7 @@ public class LoadClientStorageServices extends AbstractProfileAction {
      * @param services instances to check for loading
      */
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         Constraint.isNotNull(services, "StorageService collection cannot be null");
         storageServices = new HashMap<>(services.size());

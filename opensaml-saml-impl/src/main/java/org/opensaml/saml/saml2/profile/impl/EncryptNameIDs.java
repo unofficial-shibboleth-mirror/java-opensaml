@@ -100,7 +100,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public void setMessageLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         messageLookupStrategy = Constraint.isNotNull(strategy, "Message lookup strategy cannot be null");
     }

@@ -102,7 +102,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setRequestLookupStrategy(@Nonnull final Function<ProfileRequestContext,ArtifactResolve> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         requestLookupStrategy = Constraint.isNotNull(strategy, "Request lookup strategy cannot be null");
     }
@@ -113,7 +113,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,ArtifactResponse> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
@@ -124,7 +124,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setIssuerLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
     
         issuerLookupStrategy = Constraint.isNotNull(strategy, "Issuer lookup strategy cannot be null");
     }
@@ -135,7 +135,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setRequesterLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         requesterLookupStrategy = Constraint.isNotNull(strategy, "Requester lookup strategy cannot be null");
     }
@@ -146,7 +146,7 @@ public class ResolveArtifact extends AbstractProfileAction {
      * @param map   artifact map
      */
     public void setArtifactMap(@Nonnull final SAMLArtifactMap map) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         artifactMap = Constraint.isNotNull(map, "SAMLArtifactMap cannot be null");
     }

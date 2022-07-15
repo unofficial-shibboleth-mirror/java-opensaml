@@ -89,7 +89,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolver extends AbstractDynamicHT
      * @param builder the request URL builder function instance
      */
     public void setRequestURLBuilder(@Nonnull final Function<CriteriaSet, String> builder) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requestURLBuilder = Constraint.isNotNull(builder, "Request URL builder function was null");
     }
 

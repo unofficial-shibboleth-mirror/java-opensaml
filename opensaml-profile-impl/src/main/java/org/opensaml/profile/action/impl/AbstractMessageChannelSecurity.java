@@ -59,7 +59,7 @@ public abstract class AbstractMessageChannelSecurity extends AbstractProfileActi
      */
     public void setParentContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,BaseContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         parentContextLookupStrategy = Constraint.isNotNull(strategy, "Parent context lookup strategy cannot be null");
     }

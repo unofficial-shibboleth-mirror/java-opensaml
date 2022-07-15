@@ -114,7 +114,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param flag  true iff the action should overwrite any existing objects
      */
     public void setOverwriteExisting(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         overwriteExisting = flag;
     }
     
@@ -124,7 +124,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
     
@@ -134,7 +134,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param methods   confirmation methods to use
      */
     public void setMethods(@Nonnull @NonnullElements final Collection<String> methods) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotEmpty(methods, "Confirmation method collection cannot be null or empty");
         
         confirmationMethods = List.copyOf(methods);

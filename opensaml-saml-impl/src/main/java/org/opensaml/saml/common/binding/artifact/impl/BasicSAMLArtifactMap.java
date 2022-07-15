@@ -122,7 +122,7 @@ public class BasicSAMLArtifactMap extends AbstractInitializableComponent impleme
      * @param lifetime artifact entry lifetime
      */
     public void setArtifactLifetime(@Nonnull final Duration lifetime) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(lifetime, "Lifetime cannot be null");
         Constraint.isFalse(lifetime.isNegative() || lifetime.isZero(), "Lifetime must be positive");
         
@@ -135,7 +135,7 @@ public class BasicSAMLArtifactMap extends AbstractInitializableComponent impleme
      * @param interval  cleanup interval
      */
     public void setCleanupInterval(@Nonnull final Duration interval) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(interval, "Interval cannot be null");
         Constraint.isFalse(interval.isNegative(), "Interval cannot be negative");
 
@@ -148,7 +148,7 @@ public class BasicSAMLArtifactMap extends AbstractInitializableComponent impleme
      * @param factory map entry factory
      */
     public void setEntryFactory(@Nonnull final SAMLArtifactMapEntryFactory factory) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         entryFactory = Constraint.isNotNull(factory, "SAMLArtifactMapEntryFactory cannot be null");
     }

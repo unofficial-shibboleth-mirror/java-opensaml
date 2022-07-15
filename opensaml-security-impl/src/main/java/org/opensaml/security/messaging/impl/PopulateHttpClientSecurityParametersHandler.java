@@ -85,7 +85,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      * @param predicate clientTLS predicate
      */
     public void setClientTLSPredicate(@Nullable final Predicate<MessageContext> predicate) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         clientTLSPredicate = predicate;
     }
@@ -97,7 +97,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<MessageContext,HttpClientSecurityContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "HttpClientSecurityContext lookup strategy cannot be null");
@@ -111,7 +111,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setExistingParametersContextLookupStrategy(
             @Nullable final Function<MessageContext,HttpClientSecurityContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         existingParametersContextLookupStrategy = strategy;
     }
@@ -123,7 +123,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<MessageContext,List<HttpClientSecurityConfiguration>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "HttpClientSecurityConfiguration lookup strategy cannot be null");
@@ -136,7 +136,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      */
     public void setHttpClientSecurityParametersResolver(
             @Nonnull final HttpClientSecurityParametersResolver newResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         resolver = Constraint.isNotNull(newResolver, "HttpClientSecurityParametersResolver cannot be null");
     }

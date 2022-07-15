@@ -100,7 +100,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
      */
     public void setChannelBindingsLookupStrategy1(
             @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         channelBindingsLookupStrategy1 = Constraint.isNotNull(strategy,
                 "First ChannelBindingsContext lookup strategy cannot be null");
     }
@@ -112,7 +112,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
      */
     public void setChannelBindingsLookupStrategy2(
             @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         channelBindingsLookupStrategy2 = Constraint.isNotNull(strategy,
                 "Second ChannelBindingsContext lookup strategy cannot be null");
     }
@@ -124,7 +124,7 @@ public class VerifyChannelBindings extends AbstractProfileAction {
      */
     public void setChannelBindingsCreationStrategy(
             @Nonnull final Function<ProfileRequestContext,ChannelBindingsContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         channelBindingsCreationStrategy = Constraint.isNotNull(strategy,
                 "ChannelBindingsContext creation strategy cannot be null");
     }

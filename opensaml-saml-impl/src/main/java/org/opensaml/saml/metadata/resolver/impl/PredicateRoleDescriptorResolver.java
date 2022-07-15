@@ -121,7 +121,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     /** {@inheritDoc} */
     @Override
     public void setRequireValidMetadata(final boolean require) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requireValidMetadata = require;
     }
     
@@ -146,7 +146,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param flag true if must satisfy all, false otherwise
      */
     public void setSatisfyAnyPredicates(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         satisfyAnyPredicates = flag;
     }
 
@@ -165,7 +165,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param registry the registry instance to use
      */
     public void setCriterionPredicateRegistry(@Nullable final CriterionPredicateRegistry<RoleDescriptor> registry) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         criterionPredicateRegistry = registry;
     }
 
@@ -190,7 +190,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param flag true if should use default registry, false otherwise
      */
     public void setUseDefaultPredicateRegistry(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         useDefaultPredicateRegistry = flag;
     }
     
@@ -212,7 +212,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @param flag true if resolution may be attempted solely via predicates, false if not
      */
     public void setResolveViaPredicatesOnly(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         resolveViaPredicatesOnly = flag;
     }
     
@@ -234,7 +234,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     /** {@inheritDoc} */
     @Override
     @Nullable public RoleDescriptor resolveSingle(final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         final Iterable<RoleDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
             final Iterator<RoleDescriptor> iterator = iterable.iterator();
@@ -248,7 +248,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     /** {@inheritDoc} */
     @Override
     @Nonnull public Iterable<RoleDescriptor> resolve(final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         
         final Iterable<EntityDescriptor> entityDescriptorsSource = entityDescriptorResolver.resolve(criteria);
         if (!entityDescriptorsSource.iterator().hasNext()) {

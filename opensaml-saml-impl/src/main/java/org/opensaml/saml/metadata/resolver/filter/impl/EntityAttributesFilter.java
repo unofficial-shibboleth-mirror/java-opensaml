@@ -97,7 +97,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
      * @param rules rules to apply
      */
     public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<Attribute>> rules) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
         
         applyMap = ArrayListMultimap.create(rules.size(), 1);
@@ -119,7 +119,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
      * @since 3.4.0
      */
     public void setAttributeFilter(@Nullable final Predicate<Attribute> condition) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         attributeFilter = condition;
     }
 

@@ -108,7 +108,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param condition predicate for detailed errors condition
      */
     public void setDetailedErrorsCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         detailedErrorsCondition =
                 Constraint.isNotNull(condition, "Detailed errors condition cannot be null");
     }
@@ -119,7 +119,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param strategy strategy used to obtain status codes
      */
     public void setStatusCodesLookupStrategy(@Nullable final Function<ProfileRequestContext,List<QName>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         statusCodesLookupStrategy = strategy;
     }
     
@@ -129,7 +129,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param strategy strategy used to obtain a status message
      */
     public void setStatusMessageLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         statusMessageLookupStrategy = strategy;
     }
     
@@ -139,7 +139,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
     
@@ -150,7 +150,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param codes list of status code values to insert
      */
     public void setStatusCodes(@Nonnull @NonnullElements final List<QName> codes) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         defaultStatusCodes = List.copyOf(Constraint.isNotNull(codes, "Status code list cannot be null"));
     }
     
@@ -161,14 +161,14 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * @param message default status message
      */
     public void setStatusMessage(@Nullable final String message) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         statusMessage = StringSupport.trimOrNull(message);
     }
     
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        throwComponentStateExceptions();
+        checkComponentActive();
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
             log.debug("{} Response message was not returned by lookup strategy", getLogPrefix());

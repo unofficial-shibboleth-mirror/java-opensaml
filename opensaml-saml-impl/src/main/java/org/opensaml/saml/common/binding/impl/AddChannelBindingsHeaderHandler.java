@@ -64,7 +64,7 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
      */
     public void setChannelBindingsContextLookupStrategy(
             @Nonnull final Function<MessageContext,ChannelBindingsContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         channelBindingsContextLookupStrategy = Constraint.isNotNull(strategy,
                 "ChannelBindingsContext lookup strategy cannot be null");

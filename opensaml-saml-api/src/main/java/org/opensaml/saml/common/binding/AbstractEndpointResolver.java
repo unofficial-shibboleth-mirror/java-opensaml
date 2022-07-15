@@ -116,7 +116,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      * @since 4.1.0
      */
     public void setInMetadataOrder(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         inMetadataOrder = flag;
     }

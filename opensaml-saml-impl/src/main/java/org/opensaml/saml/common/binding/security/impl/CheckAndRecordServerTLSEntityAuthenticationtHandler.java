@@ -79,7 +79,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
      */
     public void setHttpClientContextLookup(
             @Nonnull final ContextDataLookupFunction<MessageContext, HttpClientContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         httpClientContextLookup = Constraint.isNotNull(strategy, 
                 "The HttpClientContext lookup strategy may not be null");
     }
@@ -92,7 +92,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractAuthenticatableSAMLEntityContext> clazz) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         entityContextClass = Constraint.isNotNull(clazz, "The SAML entity context class may not be null");
     }
 
@@ -102,7 +102,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
      * @param strategy the new strategy function, or null
      */
     public void setEntityIDLookup(@Nullable final ContextDataLookupFunction<MessageContext, String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         entityIDLookup = strategy;
     }
 

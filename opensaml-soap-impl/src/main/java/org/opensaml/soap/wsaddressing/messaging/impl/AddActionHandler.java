@@ -81,7 +81,7 @@ public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
      * @param uri the new URI value
      */
     public void setActionURI(@Nullable final String uri) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         actionURI = StringSupport.trimOrNull(uri);
     }
     
@@ -100,7 +100,7 @@ public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
      * @param uri the new URI value
      */
     public void setFaultActionURI(@Nullable final String uri) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         faultActionURI = StringSupport.trimOrNull(uri);
     }
     

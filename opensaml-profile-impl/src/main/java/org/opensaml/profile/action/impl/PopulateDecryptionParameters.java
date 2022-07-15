@@ -83,7 +83,7 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
@@ -96,7 +96,7 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<DecryptionConfiguration>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "DecryptionConfiguration lookup strategy cannot be null");
@@ -108,7 +108,7 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
      * @param newResolver   resolver to use
      */
     public void setDecryptionParametersResolver(@Nonnull final DecryptionParametersResolver newResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         resolver = Constraint.isNotNull(newResolver, "DecryptionParametersResolver cannot be null");
     }

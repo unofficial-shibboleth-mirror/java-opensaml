@@ -107,7 +107,7 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
      * @param flag  true iff the action should overwrite any existing objects
      */
     public void setOverwriteExisting(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         overwriteExisting = flag;
     }
@@ -119,7 +119,7 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
      */
     public void setNameIDContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SAMLSubjectNameIdentifierContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         nameIdentifierContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SAMLSubjectNameIdentifierContext lookup strategy cannot be null");
@@ -131,7 +131,7 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }

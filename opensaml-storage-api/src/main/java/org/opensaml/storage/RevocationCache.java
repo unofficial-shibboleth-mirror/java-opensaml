@@ -73,7 +73,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * @param entryExpiration lifetime of an revocation entry in milliseconds
      */
     public void setEntryExpiration(@Positive final Duration entryExpiration) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         Constraint.isTrue(entryExpiration != null && !entryExpiration.isNegative() && !entryExpiration.isZero(),
                 "Revocation cache default entry expiration must be greater than 0");
@@ -95,7 +95,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * @param storageService backing store to use
      */
     public void setStorage(@Nonnull final StorageService storageService) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         storage = Constraint.isNotNull(storageService, "StorageService cannot be null");
         final StorageCapabilities caps = storage.getCapabilities();
@@ -119,7 +119,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * @param flag true iff we should treat storage failures as a replay
      */
     public void setStrict(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         strict = flag;
     }

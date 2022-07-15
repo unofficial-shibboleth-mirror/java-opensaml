@@ -43,7 +43,7 @@ public final class CheckMandatoryAuthentication extends AbstractMessageHandler {
      * @param strategy lookup strategy
      */
     public void setAuthenticationLookupStrategy(@Nonnull final Function<MessageContext,Boolean> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         authenticationLookupStrategy = Constraint.isNotNull(strategy,
                 "Message context authentication lookup strategy cannot be null");

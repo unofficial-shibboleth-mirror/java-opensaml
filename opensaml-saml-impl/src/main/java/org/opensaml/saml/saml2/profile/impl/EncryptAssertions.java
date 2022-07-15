@@ -83,7 +83,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
      * @param strategy strategy used to locate the {@link Response} to operate on
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,StatusResponseType> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }

@@ -75,7 +75,7 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
      */
     public void setRequestLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,AuthnRequest> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
     
         requestLookupStrategy = Constraint.isNotNull(strategy, "AuthnRequest lookup strategy cannot be null");
     }

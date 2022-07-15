@@ -91,7 +91,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param condition an activation condition
      */
     public void setActivationCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
     }
@@ -112,7 +112,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      */
     public void setDefaultIdPNameQualifierLookupStrategy(
             @Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         defaultIdPNameQualifierLookupStrategy = strategy;
     }
@@ -133,7 +133,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      */
     public void setDefaultSPNameQualifierLookupStrategy(
             @Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         defaultSPNameQualifierLookupStrategy = strategy;
     }
@@ -155,7 +155,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param flag flag to set
      */
     public void setOmitQualifiers(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         omitQualifiers = flag;
     }
@@ -171,7 +171,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param f format to set
      */
     public void setFormat(@Nonnull @NotEmpty final String f) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         format = Constraint.isNotNull(StringSupport.trimOrNull(f), "Format cannot be null or empty");
     }
@@ -195,7 +195,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param qualifier qualifier to set
      */
     public void setIdPNameQualifier(@Nullable final String qualifier) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         idpNameQualifier = StringSupport.trimOrNull(qualifier);
     }
@@ -220,7 +220,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param qualifier qualifier to set
      */
     public void setSPNameQualifier(@Nullable final String qualifier) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         spNameQualifier = StringSupport.trimOrNull(qualifier);
     }
@@ -240,7 +240,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
      * @param id value to set
      */
     public void setSPProvidedId(@Nullable final String id) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         spProvidedId = id;
     }
@@ -264,7 +264,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     @Override
     @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull @NotEmpty final String theFormat) throws SAMLException {
-        throwComponentStateExceptions();
+        checkComponentActive();
 
         if (!Objects.equals(format, theFormat)) {
             throw new SAMLException("The format to generate does not match the value configured");

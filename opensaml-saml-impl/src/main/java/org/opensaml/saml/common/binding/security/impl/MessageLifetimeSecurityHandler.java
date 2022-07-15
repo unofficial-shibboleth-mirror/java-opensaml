@@ -72,7 +72,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
      * @param skew clock skew to set
      */
     public void setClockSkew(@Nonnull final Duration skew) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
                 
         clockSkew = Constraint.isNotNull(skew, "Clock skew cannot be null");
     }
@@ -92,7 +92,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
      * @param lifetime amount of time for which a message is valid
      */
     public synchronized void setMessageLifetime(@Nonnull final Duration lifetime) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(lifetime, "Lifetime cannot be null");
         Constraint.isFalse(lifetime.isNegative(), "Lifetime cannot be negative");
         
@@ -114,7 +114,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
      * @param required whether this rule is required to be met
      */
     public void setRequiredRule(final boolean required) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         requiredRule = required;
     }

@@ -79,7 +79,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     
     /** {@inheritDoc} */
     @Override public Iterator<EntityDescriptor> iterator() {
-        throwComponentStateExceptions();
+        checkComponentActive();
         return Collections.unmodifiableList(getBackingStore().getOrderedDescriptors()).iterator();
     }
 
@@ -98,7 +98,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @param flag true if source should be cached, false otherwise
      */
     protected void setCacheSourceMetadata(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         cacheSourceMetadata = flag; 
     }
     
@@ -117,7 +117,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @param newIndexes the new indexes to set
      */
     public void setIndexes(@Nullable final Set<MetadataIndex> newIndexes) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         if (newIndexes == null) {
             indexes = Collections.emptySet();
         } else {
@@ -142,7 +142,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @param flag true if resolution may be attempted solely via predicates, false if not
      */
     public void setResolveViaPredicatesOnly(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         resolveViaPredicatesOnly = flag;
     }
 
@@ -166,7 +166,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
 
     /** {@inheritDoc} */
     @Override @Nonnull public Iterable<EntityDescriptor> resolve(final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         
         final EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
         if (entityIdCriterion != null) {

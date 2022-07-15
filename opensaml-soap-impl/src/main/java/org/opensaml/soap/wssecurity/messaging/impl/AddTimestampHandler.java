@@ -80,7 +80,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param lookup the lookup function
      */
     public void setCreatedLookup(@Nullable final Function<MessageContext,Instant> lookup) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         createdLookup = lookup;
     }
 
@@ -99,7 +99,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param lookup the lookup function
      */
     public void setExpiresLookup(@Nullable final Function<MessageContext,Instant> lookup) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         expiresLookup = lookup;
     }
 
@@ -120,7 +120,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param flag true if should use currnet time, false if not
      */
     public void setUseCurrentTimeAsDefaultCreated(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         useCurrentTimeAsDefaultCreated = flag;
     }
     
@@ -141,7 +141,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param value the expires offset, or null
      */
     public void setExpiresOffsetFromCreated(@Nullable final Duration value) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         expiresOffsetFromCreated = value;
     }
 

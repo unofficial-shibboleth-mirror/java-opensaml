@@ -83,7 +83,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
      * @param strategy strategy used to locate the message to operate on
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,SAMLObject> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
     
@@ -93,7 +93,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
      * @param strategy lookup strategy
      */
     public void setRequestIdLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requestIdLookupStrategy = Constraint.isNotNull(strategy, "Request ID lookup strategy cannot be null");
     }
     

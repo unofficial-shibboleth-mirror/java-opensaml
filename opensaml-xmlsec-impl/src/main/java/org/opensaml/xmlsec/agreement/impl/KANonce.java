@@ -75,7 +75,7 @@ public class KANonce extends AbstractInitializableComponent
      * @param newValue the nonce value
      */
     public void setValue(@Nullable final String newValue) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         value = StringSupport.trimOrNull(newValue);
     }
     
@@ -94,7 +94,7 @@ public class KANonce extends AbstractInitializableComponent
      * @param length the generated length
      */
     public void setGeneratedLength(@Nullable final Integer length) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         generatedLength = length;
     }
     
@@ -121,7 +121,7 @@ public class KANonce extends AbstractInitializableComponent
      * @param sr the secure random generator to set
      */
     public void setRandom(@Nullable final SecureRandom sr) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         secureRandom = sr;
     }
 

@@ -72,7 +72,7 @@ public class URLEvaluatingMessageChannelSecurity extends AbstractMessageChannelS
      * @param flag flag to set
      */
     public void setDefaultPortInsecure(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         defaultPortInsecure = flag;
     }

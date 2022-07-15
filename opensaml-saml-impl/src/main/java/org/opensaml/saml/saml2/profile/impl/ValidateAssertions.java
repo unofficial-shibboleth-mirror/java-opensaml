@@ -106,7 +106,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param function the new assertion resolver function
      */
     public void setAssertionResolver(@Nonnull final Function<ProfileRequestContext, List<Assertion>> function) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         assertionResolver = function;
     }
 
@@ -137,7 +137,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      */
     public void setValidationContextBuilder(
             @Nonnull final Function<AssertionValidationInput, ValidationContext> builder) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         validationContextBuilder = builder;
     }
 
@@ -156,7 +156,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param request The HTTP servlet request
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         httpServletRequest = request;
     }
     
@@ -183,7 +183,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param flag The invalidFatal to set.
      */
     public void setInvalidFatal(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         invalidFatal = flag;
     }
     
@@ -202,7 +202,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param validator the local Assertion validator, may be null
      */
     public void setAssertionValidator(@Nullable final SAML20AssertionValidator validator) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         assertionValidator = validator;
     }
     
@@ -223,7 +223,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      */
     public void setAssertionValidatorLookup(
             @Nullable final Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> function) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         assertionValidatorLookup = function;
     }
 

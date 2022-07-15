@@ -95,7 +95,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<MessageContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
@@ -109,7 +109,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setExistingParametersContextLookupStrategy(
             @Nullable final Function<MessageContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         existingParametersContextLookupStrategy = strategy;
     }
     
@@ -120,7 +120,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setMetadataContextLookupStrategy(
             @Nullable final Function<MessageContext,SAMLMetadataContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         metadataContextLookupStrategy = strategy;
     }
 
@@ -131,7 +131,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<MessageContext,List<SignatureSigningConfiguration>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "SignatureSigningConfiguration lookup strategy cannot be null");
     }
@@ -143,7 +143,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      */
     public void setSignatureSigningParametersResolver(
             @Nonnull final SignatureSigningParametersResolver newResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         resolver = Constraint.isNotNull(newResolver, "SignatureSigningParametersResolver cannot be null");
     }
 
@@ -157,7 +157,7 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
      * @since 3.4.0
      */
     public void setNoResultIsError(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         noResultIsError = flag;
     }
     

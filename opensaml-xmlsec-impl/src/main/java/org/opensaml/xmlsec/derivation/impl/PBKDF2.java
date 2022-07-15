@@ -118,7 +118,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * @param value the salt
      */
     public void setSalt(@Nullable final String value) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         salt = StringSupport.trimOrNull(value);
     }
     
@@ -137,7 +137,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * @param length the generated salt length
      */
     public void setGeneratedSaltLength(@Nullable final Integer length) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         generatedSaltLength = length;
     }
     
@@ -164,7 +164,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * @param sr the secure random generator to set
      */
     public void setRandom(@Nullable final SecureRandom sr) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         secureRandom = sr;
     }
@@ -184,7 +184,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * @param count the iteration count
      */
     public void setIterationCount(@Nullable final Integer count) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         iterationCount = count;
     }
     
@@ -211,7 +211,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * @param length the key length
      */
     public void setKeyLength(@Nullable final Integer length) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         keyLength = length;
     }
     
@@ -230,7 +230,7 @@ public class PBKDF2 extends AbstractInitializableComponent
      * @param uri the PRF URI
      */
     public void setPRF(@Nullable final String uri) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         prf = StringSupport.trimOrNull(uri);
     }
 
@@ -280,7 +280,7 @@ public class PBKDF2 extends AbstractInitializableComponent
             @Nullable final Integer specifiedKeyLength) throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
-        throwComponentStateExceptions();
+        checkComponentActive();
         
         final String jcaKeyAlgorithm = KeyDerivationSupport.getJCAKeyAlgorithm(keyAlgorithm);
         
@@ -373,7 +373,7 @@ public class PBKDF2 extends AbstractInitializableComponent
 
     /** {@inheritDoc} */
     public XMLObject buildXMLObject() {
-        throwComponentStateExceptions();
+        checkComponentActive();
         
         // If initialized, iterationCount and PRF are guaranteed to be non-null.
         // These 2 would happen if initialized but derive(...) hasn't been called.

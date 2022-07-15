@@ -58,7 +58,7 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
      * @param flag  flag to set
      */
     public void setSignErrorResponses(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         signErrorResponses = flag;
     }
     

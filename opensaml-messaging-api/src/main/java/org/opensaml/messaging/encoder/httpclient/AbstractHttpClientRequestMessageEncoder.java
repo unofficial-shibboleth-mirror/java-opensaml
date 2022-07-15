@@ -41,7 +41,7 @@ public abstract class AbstractHttpClientRequestMessageEncoder extends AbstractMe
 
     /** {@inheritDoc} */
     public synchronized void setHttpRequest(@Nullable final HttpRequest httpRequest) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         request = httpRequest;
     }

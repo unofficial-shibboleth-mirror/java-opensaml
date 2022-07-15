@@ -108,7 +108,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param post true if POST encoding will be used, false if GET encoding will be used
      */
     public void setPostEncoding(final boolean post) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         postEncoding = post;
     }
@@ -128,7 +128,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param newVelocityEngine the new VelocityEngine instane
      */
     public void setVelocityEngine(@Nullable final VelocityEngine newVelocityEngine) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         velocityEngine = newVelocityEngine;
     }
@@ -152,7 +152,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param newVelocityTemplateId the new Velocity template id
      */
     public void setVelocityTemplateId(@Nonnull @NotEmpty final String newVelocityTemplateId) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         velocityTemplateId = Constraint.isNotNull(StringSupport.trimOrNull(newVelocityTemplateId),
                 "Velocity template ID cannot be null or empty");
@@ -173,7 +173,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
      * @param newArtifactMap the new artifactMap 
      */
     public void setArtifactMap(@Nonnull final SAMLArtifactMap newArtifactMap) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         artifactMap = Constraint.isNotNull(newArtifactMap, "SAMLArtifactMap cannot be null");
     }

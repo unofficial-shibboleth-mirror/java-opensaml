@@ -86,7 +86,7 @@ public class PopulateClientTLSValidationParameters extends AbstractProfileAction
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,ClientTLSSecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "ClientTLSSecurityParametersContext lookup strategy cannot be null");
@@ -99,7 +99,7 @@ public class PopulateClientTLSValidationParameters extends AbstractProfileAction
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<ClientTLSValidationConfiguration>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "ClientTLSValidationConfiguration lookup strategy cannot be null");
@@ -112,7 +112,7 @@ public class PopulateClientTLSValidationParameters extends AbstractProfileAction
      */
     public void setClientTLSValidationParametersResolver(
             @Nonnull final ClientTLSValidationParametersResolver newResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         resolver = Constraint.isNotNull(newResolver, "ClientTLSValidationParametersResolver cannot be null");
     }

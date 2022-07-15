@@ -91,7 +91,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
      * @param newArtifactMap the new artifactMap 
      */
     public void setArtifactMap(@Nonnull final SAMLArtifactMap newArtifactMap) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         artifactMap = Constraint.isNotNull(newArtifactMap, "SAMLArtifactMap cannot be null");
     }

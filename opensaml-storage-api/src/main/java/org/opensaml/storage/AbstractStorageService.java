@@ -89,7 +89,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param interval time between one cleanup and another
      */
     public void setCleanupInterval(@Nonnull final Duration interval) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         Constraint.isNotNull(interval, "Interval cannot be null");
         Constraint.isFalse(interval.isNegative(), "Interval cannot be negative");
@@ -114,7 +114,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param timer timer used to schedule configuration reload tasks
      */
     public void setCleanupTaskTimer(@Nullable final Timer timer) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         cleanupTaskTimer = timer;
     }
@@ -138,7 +138,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param size limit on context size in characters
      */
     public void setContextSize(@Positive final int size) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         contextSize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
@@ -149,7 +149,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param size size limit on key size in characters
      */
     public void setKeySize(@Positive final int size) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         keySize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }
@@ -160,7 +160,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
      * @param size size limit on value size in characters
      */
     public void setValueSize(@Positive final int size) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         valueSize = Constraint.isGreaterThan(0, size, "Size must be greater than zero");
     }

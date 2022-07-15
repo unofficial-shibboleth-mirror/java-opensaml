@@ -59,7 +59,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param flag true if header must be understood, false if not
      */
     public void setMustUnderstand(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         mustUnderstand = flag;
     }
     
@@ -69,7 +69,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param strategy the predicate strategy
      */
     public void setMustUnderstandStrategy(@Nullable final Predicate<MessageContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         mustUnderstandStrategy = strategy;
     }
     
@@ -88,7 +88,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param node the target node, may be null
      */
     public void setTargetNode(@Nullable final String node) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         targetNode = StringSupport.trimOrNull(node);
     }
     
@@ -98,7 +98,7 @@ public abstract class AbstractHeaderGeneratingMessageHandler extends AbstractMes
      * @param strategy the predicate strategy
      */
     public void setTargetNodeStrategy(@Nullable final Function<MessageContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         targetNodeStrategy = strategy;
     }
     

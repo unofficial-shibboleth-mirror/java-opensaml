@@ -77,7 +77,7 @@ public class SaveCookieBackedClientStorageServices
      * @param services instances to check for loading
      */
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         Constraint.isNotNull(services, "StorageService collection cannot be null");
         storageServices = new HashMap<>(services.size());

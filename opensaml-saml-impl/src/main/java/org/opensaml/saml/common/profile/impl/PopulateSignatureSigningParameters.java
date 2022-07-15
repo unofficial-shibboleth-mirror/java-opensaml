@@ -104,7 +104,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setSecurityParametersContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         securityParametersContextLookupStrategy = Constraint.isNotNull(strategy,
                 "SecurityParametersContext lookup strategy cannot be null");
     }
@@ -117,7 +117,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setExistingParametersContextLookupStrategy(
             @Nullable final Function<ProfileRequestContext,SecurityParametersContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         existingParametersContextLookupStrategy = strategy;
     }
     
@@ -128,7 +128,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setMetadataContextLookupStrategy(
             @Nullable final Function<ProfileRequestContext,SAMLMetadataContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         metadataContextLookupStrategy = strategy;
     }
 
@@ -139,7 +139,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setConfigurationLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,List<SignatureSigningConfiguration>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "SignatureSigningConfiguration lookup strategy cannot be null");
     }
@@ -151,7 +151,7 @@ public class PopulateSignatureSigningParameters
      */
     public void setSignatureSigningParametersResolver(
             @Nonnull final SignatureSigningParametersResolver newResolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         resolver = Constraint.isNotNull(newResolver, "SignatureSigningParametersResolver cannot be null");
     }
 
@@ -165,7 +165,7 @@ public class PopulateSignatureSigningParameters
      * @since 3.4.0
      */
     public void setNoResultIsError(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         noResultIsError = flag;
     }
 

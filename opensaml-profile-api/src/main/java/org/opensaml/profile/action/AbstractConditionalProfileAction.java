@@ -60,7 +60,7 @@ public abstract class AbstractConditionalProfileAction extends AbstractProfileAc
      * @param condition predicate to apply
      */
     public void setActivationCondition(@Nonnull final Predicate<ProfileRequestContext> condition) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         activationCondition = Constraint.isNotNull(condition, "Predicate cannot be null");
     }

@@ -114,7 +114,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      */
     public void setValidationContextBuilder(
             @Nonnull final Function<SAML20AssertionTokenValidationInput, ValidationContext> builder) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         validationContextBuilder = Constraint.isNotNull(builder, "Validation context builder may not be null");
     }
 
@@ -133,7 +133,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @param request The HTTP servlet request
      */
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
     }
     
@@ -160,7 +160,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @param flag The invalidFatal to set.
      */
     public void setInvalidFatal(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         invalidFatal = flag;
     }
     
@@ -179,7 +179,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @param validator the local Assertion validator, may be null
      */
     public void setAssertionValidator(@Nullable final SAML20AssertionValidator validator) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         assertionValidator = validator;
     }
     
@@ -199,7 +199,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      */
     public void setAssertionValidatorLookup(
             @Nullable final Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> function) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         assertionValidatorLookup = function;
     }
 

@@ -88,7 +88,7 @@ public class AddGeneratedKeyToAssertions extends AbstractConditionalProfileActio
      */
     public void setECPContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,ECPContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         ecpContextLookupStrategy = Constraint.isNotNull(strategy, "ECPContext lookup strategy cannot be null");
     }
@@ -99,7 +99,7 @@ public class AddGeneratedKeyToAssertions extends AbstractConditionalProfileActio
      * @param strategy lookup strategy
      */
     public void setResponseLookupStrategy(@Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }

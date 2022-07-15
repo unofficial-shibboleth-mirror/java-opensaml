@@ -80,7 +80,7 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler {
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractSAMLEntityContext> clazz) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         entityContextClass = Constraint.isNotNull(clazz, "SAML entity context class may not be null");
     }
 

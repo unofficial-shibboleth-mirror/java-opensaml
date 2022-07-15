@@ -98,7 +98,7 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * @param rules rules to apply
      */
     public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<XMLObject>> rules) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
 
         rules.values().stream()

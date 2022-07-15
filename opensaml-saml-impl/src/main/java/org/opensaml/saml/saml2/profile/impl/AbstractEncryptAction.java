@@ -99,7 +99,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      */
     public void setEncryptionContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,EncryptionContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         encryptionCtxLookupStrategy =
                 Constraint.isNotNull(strategy, "EncryptionContext lookup strategy cannot be null");
@@ -111,7 +111,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param strategy lookup strategy
      */
     public void setRecipientLookupStrategy(@Nonnull final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         recipientLookupStrategy = Constraint.isNotNull(strategy, "Recipient lookup strategy cannot be null");
     }
@@ -122,7 +122,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param strategy  lookup strategy
      */
     public void setKeyPlacementLookupStrategy(@Nonnull final Function<ProfileRequestContext,KeyPlacement> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         keyPlacementLookupStrategy = Constraint.isNotNull(strategy, "Key placement lookup strategy cannot be null");
     }
@@ -133,7 +133,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param predicate the encrypt-to-self predicate
      */
     public void setEncryptToSelf(@Nonnull final Predicate<ProfileRequestContext> predicate) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         encryptToSelf = Constraint.isNotNull(predicate, "Encrypt-to-self predicate cannot be null");
     }
@@ -146,7 +146,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     public void setEncryptToSelfParametersStrategy(
             @Nullable final Function<Pair<ProfileRequestContext, EncryptionParameters>, 
             List<EncryptionParameters>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         encryptToSelfParametersStrategy = strategy;
     }
@@ -157,7 +157,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * @param strategy lookup strategy
      */
     public void setSelfRecipientLookupStrategy(@Nullable final Function<ProfileRequestContext, String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         selfRecipientLookupStrategy = strategy;
     }

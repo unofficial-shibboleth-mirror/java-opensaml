@@ -80,7 +80,7 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
      * @param clazz the entity context class type
      */
     public void setEntityContextClass(@Nonnull final Class<? extends AbstractAuthenticatableSAMLEntityContext> clazz) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         entityContextClass = Constraint.isNotNull(clazz, "The SAML entity context class may not be null");
     }
 

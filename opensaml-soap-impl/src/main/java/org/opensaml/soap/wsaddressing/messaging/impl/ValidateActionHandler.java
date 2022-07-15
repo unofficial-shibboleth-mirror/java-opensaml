@@ -68,7 +68,7 @@ public class ValidateActionHandler extends AbstractMessageHandler {
      * @param uri the new URI value
      */
     public void setExpectedActionURI(@Nullable final String uri) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         expectedActionURI = StringSupport.trimOrNull(uri);
     }
 

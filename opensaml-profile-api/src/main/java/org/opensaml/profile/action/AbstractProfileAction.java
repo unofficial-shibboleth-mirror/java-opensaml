@@ -64,7 +64,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      * @param request current HTTP request
      */
     public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         httpServletRequest = request;
     }
@@ -84,7 +84,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      * @param response current HTTP response
      */
     public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         httpServletResponse = response;
     }

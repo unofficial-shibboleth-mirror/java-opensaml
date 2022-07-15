@@ -109,7 +109,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * @param flag  true iff the action should overwrite any existing objects
      */
     public void setOverwriteExisting(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         overwriteExisting = flag;
     }
     
@@ -119,7 +119,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setAssertionsLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<Assertion>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         assertionsLookupStrategy = Constraint.isNotNull(strategy, "Assertions lookup strategy cannot be null");
     }
 
@@ -129,7 +129,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * @param strategy  format lookup strategy
      */
     public void setFormatLookupStrategy(@Nonnull final Function<ProfileRequestContext,List<String>> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         formatLookupStrategy = Constraint.isNotNull(strategy, "Format lookup strategy cannot be null");
     }
 
@@ -139,7 +139,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * @param theGenerator the generator to use
      */
     public void setNameIdentifierGenerator(@Nonnull final SAML1NameIdentifierGenerator theGenerator) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         generator = Constraint.isNotNull(theGenerator, "SAML1NameIdentifierGenerator cannot be null");
     }
     

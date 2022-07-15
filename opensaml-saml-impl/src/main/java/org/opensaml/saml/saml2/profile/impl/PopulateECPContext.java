@@ -90,7 +90,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      */
     public void setECPContextCreationStrategy(
             @Nonnull final Function<ProfileRequestContext,ECPContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         ecpContextCreationStrategy = Constraint.isNotNull(strategy, "ECPContext creation strategy cannot be null");
     }
@@ -102,7 +102,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      */
     public void setEncryptionContextLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,EncryptionContext> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         encryptionContextLookupStrategy = Constraint.isNotNull(strategy,
                 "EncryptionContext lookup strategy cannot be null");
@@ -114,7 +114,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      * @param generator random number generator
      */
     public void setRandomGenerator(@Nullable final SecureRandom generator) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         randomGenerator = generator;
     }
@@ -125,7 +125,7 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
      * @param flag  flag to set
      */
     public void setRequireEncryption(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         requireEncryption = flag;
     }

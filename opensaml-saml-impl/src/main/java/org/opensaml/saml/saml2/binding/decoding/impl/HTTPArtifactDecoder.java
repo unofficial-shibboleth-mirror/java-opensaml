@@ -179,7 +179,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param strategy the identifier generation strategy
      */
     public void setIdentifierGenerationStrategy(@Nullable final IdentifierGenerationStrategy strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         idStrategy = strategy;
     }
     
@@ -198,7 +198,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param resolver the resolver instance
      */
     public void setSelfEntityIDResolver(@Nonnull final Resolver<String, CriteriaSet> resolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         selfEntityIDResolver = resolver;
     }
 
@@ -217,7 +217,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param role  the peer entity role
      */
     public void setPeerEntityRole(@Nonnull final QName role) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         peerEntityRole = role;
     }
 
@@ -236,7 +236,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param resolver the new resolver
      */
     public void setArtifactEndpointResolver(@Nullable final EndpointResolver<ArtifactResolutionService> resolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         artifactEndpointResolver = resolver;
     }
 
@@ -263,7 +263,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param resolver the role descriptor resolver
      */
     public void setRoleDescriptorResolver(@Nullable final RoleDescriptorResolver resolver) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         roleDescriptorResolver = resolver;
     }
 
@@ -282,7 +282,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param factory the artifact builder factory
      */
     public void setArtifactBuilderFactory(@Nullable final SAML2ArtifactBuilderFactory factory) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         artifactBuilderFactory = factory;
     }
 
@@ -301,7 +301,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param client the SOAP client
      */
     public void setSOAPClient(@Nonnull final SOAPClient client) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         soapClient = client;
     }
     
@@ -322,7 +322,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param name the pipeline name, or null
      */
     public void setSOAPPipelineName(@Nullable final String name) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         soapPipelineName = StringSupport.trimOrNull(name);
     }
     
@@ -364,7 +364,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param descriptor a binding descriptor
      */
     public void setBindingDescriptor(@Nullable final BindingDescriptor descriptor) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         bindingDescriptor = descriptor;
     }
     

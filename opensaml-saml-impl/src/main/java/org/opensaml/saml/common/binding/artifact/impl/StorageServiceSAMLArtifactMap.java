@@ -111,7 +111,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponen
      * @param store the artifact store
      */
     public void setStorageService(@Nonnull final StorageService store) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         artifactStore = Constraint.isNotNull(store, "StorageService cannot be null");
     }
@@ -122,7 +122,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponen
      * @param lifetime artifact entry lifetime
      */
     public void setArtifactLifetime(@Nonnull final Duration lifetime) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         Constraint.isNotNull(lifetime, "Lifetime cannot be null");
         Constraint.isFalse(lifetime.isNegative() || lifetime.isZero(), "Lifetime must be positive");
         
@@ -141,7 +141,7 @@ public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponen
      * @param factory map entry factory
      */
     public void setEntryFactory(@Nonnull final SAMLArtifactMapEntryFactory factory) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         Constraint.isTrue(factory != null && factory instanceof StorageSerializer<?>,
                 "SAMLArtifactMapEntryFactory cannot be null and must support the StorageSerializer interface");

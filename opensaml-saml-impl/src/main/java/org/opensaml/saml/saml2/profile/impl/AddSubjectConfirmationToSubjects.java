@@ -164,7 +164,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param flag  true iff the action should overwrite any existing objects
      */
     public void setOverwriteExisting(final boolean flag) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         overwriteExisting = flag;
     }
@@ -176,7 +176,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      */
     public void setResponseLookupStrategy(
             @Nonnull final Function<ProfileRequestContext,Response> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         responseLookupStrategy = Constraint.isNotNull(strategy, "Response lookup strategy cannot be null");
     }
@@ -187,7 +187,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setAddressLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         addressLookupStrategy = strategy;
     }
@@ -198,7 +198,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setInResponseToLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         inResponseToLookupStrategy = strategy;
     }
@@ -209,7 +209,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setRecipientLookupStrategy(@Nullable final Function<ProfileRequestContext,String> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         recipientLookupStrategy = strategy;
     }
@@ -220,7 +220,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param strategy lookup strategy
      */
     public void setLifetimeLookupStrategy(@Nullable final Function<ProfileRequestContext,Long> strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         lifetimeLookupStrategy = strategy;
     }
@@ -231,7 +231,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @param method   confirmation method to use
      */
     public void setMethod(@Nonnull @NotEmpty final String method) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         confirmationMethod = Constraint.isNotNull(StringSupport.trimOrNull(method),
                 "Confirmation method cannot be null or empty"); 

@@ -67,7 +67,7 @@ public class AddMessageIDHandler extends AbstractHeaderGeneratingMessageHandler 
      * @param strategy the new strategy
      */
     public void setIdentifierGenerationStrategy(@Nullable final IdentifierGenerationStrategy strategy) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         identifierGenerationStrategy = strategy;
     }
 

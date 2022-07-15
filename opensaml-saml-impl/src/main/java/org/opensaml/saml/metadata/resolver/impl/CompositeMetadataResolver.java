@@ -78,7 +78,7 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
      */
     public void setResolvers(@Nonnull @NonnullElements final List<MetadataResolver> newResolvers) 
             throws ResolverException {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
 
         if (newResolvers == null || newResolvers.isEmpty()) {
             resolvers = Collections.emptyList();
@@ -111,13 +111,13 @@ public class CompositeMetadataResolver extends AbstractIdentifiedInitializableCo
 
     /** {@inheritDoc} */
     @Override public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         return new CompositeMetadataResolverIterable(resolvers, criteria);
     }
 
     /** {@inheritDoc} */
     @Override public EntityDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         EntityDescriptor metadata = null;
         for (final MetadataResolver resolver : resolvers) {
             metadata = resolver.resolveSingle(criteria);

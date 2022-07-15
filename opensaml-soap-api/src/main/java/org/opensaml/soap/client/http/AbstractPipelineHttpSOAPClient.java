@@ -125,7 +125,7 @@ public abstract class AbstractPipelineHttpSOAPClient
      * @param client client object
      */
     public void setHttpClient(@Nonnull final HttpClient client) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
     }
@@ -145,7 +145,7 @@ public abstract class AbstractPipelineHttpSOAPClient
      * @param params the new client security parameters
      */
     public void setHttpClientSecurityParameters(@Nullable final HttpClientSecurityParameters params) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         httpClientSecurityParameters = params;
     }
@@ -169,7 +169,7 @@ public abstract class AbstractPipelineHttpSOAPClient
      * @param function the strategy function, or null
      */
     public void setTLSCriteriaSetStrategy(@Nullable final Function<InOutOperationContext,CriteriaSet> function) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         tlsCriteriaSetStrategy = function;
     }

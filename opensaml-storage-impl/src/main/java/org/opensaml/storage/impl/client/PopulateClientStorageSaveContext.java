@@ -66,7 +66,7 @@ public class PopulateClientStorageSaveContext extends AbstractProfileAction {
      * @param services instances to check for saving
      */
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         
         storageServices = List.copyOf(Constraint.isNotNull(services, "StorageService collection cannot be null"));
     }

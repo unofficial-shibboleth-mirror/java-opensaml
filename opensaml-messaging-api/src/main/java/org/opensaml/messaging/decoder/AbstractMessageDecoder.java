@@ -49,7 +49,7 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
     /** {@inheritDoc} */
     @Override
     public void decode() throws MessageDecodingException {
-        throwComponentStateExceptions();
+        checkComponentActive();
         doDecode();
     }
     

@@ -67,7 +67,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param contentType the content type
      */
     public void setRequiredContentType(final String contentType) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requiredContentType = contentType;
     }
 
@@ -86,7 +86,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param requestMethod the required request method
      */
     public void setRequiredRequestMethod(final String requestMethod) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requiredRequestMethod = StringSupport.trimOrNull(requestMethod);
     }
 
@@ -105,7 +105,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param secured true if required to be secure, false otherwise
      */
     public void setRequireSecured(final boolean secured) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         requireSecured = secured;
     }
 
@@ -124,7 +124,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
      * @param request the request instance
      */
     public void setHttpServletRequest(final HttpServletRequest request) {
-        throwSetterPreconditionExceptions();
+        checkSetterPreconditions();
         httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
     }
 
