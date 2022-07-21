@@ -17,6 +17,7 @@
 
 package org.opensaml.storage.impl;
 
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.util.Random;
@@ -36,17 +37,17 @@ import org.opensaml.storage.RevocationCache;
  * Tests for {@link RevocationCache}
  */
 public class RevocationCacheTest {
-
     
     private MemoryStorageService storageService;
     
     private RevocationCache revocationCache;
 
     @BeforeMethod
-    protected void setUp() throws Exception {
+    protected void setUp() throws ComponentInitializationException {
     
         storageService = new MemoryStorageService();
         storageService.setId("test");
+        storageService.setCleanupInterval(Duration.ZERO);
         storageService.initialize();
         
         revocationCache = new RevocationCache();
@@ -58,10 +59,7 @@ public class RevocationCacheTest {
     @AfterMethod
     protected void tearDown() {
         revocationCache.destroy();
-        revocationCache = null;
-        
         storageService.destroy();
-        storageService = null;
     }
     
     @Test
@@ -93,19 +91,19 @@ public class RevocationCacheTest {
     }
     
     @Test (expectedExceptions = ConstraintViolationException.class)
-    public void testExpirationSetter() throws ComponentInitializationException {
+    public void testExpirationSetter() {
         //Must be positive
         revocationCache = new RevocationCache();
         revocationCache.setEntryExpiration(Duration.ZERO);
     }
     
     @Test 
-    public void testStorageGetter() throws ComponentInitializationException {
+    public void testStorageGetter() {
         Assert.assertEquals(storageService, revocationCache.getStorage());
     }
     
     @Test 
-    public void testRevocationSuccess() throws ComponentInitializationException {
+    public void testRevocationSuccess() {
         Assert.assertFalse(revocationCache.isRevoked("context", "item"));
         Assert.assertTrue(revocationCache.revoke("context", "item"));
         Assert.assertTrue(revocationCache.isRevoked("context", "item"));
@@ -116,6 +114,7 @@ public class RevocationCacheTest {
         storageService = new MemoryStorageService();
         storageService.setId("test");
         storageService.setContextSize(50);
+        storageService.setCleanupInterval(Duration.ZERO);
         storageService.initialize();
         
         revocationCache = new RevocationCache();
@@ -134,6 +133,7 @@ public class RevocationCacheTest {
     public void testRevocationSuccessLongLongItem() throws ComponentInitializationException {
         storageService = new MemoryStorageService();
         storageService.setId("test");
+        storageService.setCleanupInterval(Duration.ZERO);
         storageService.setKeySize(50);
         storageService.initialize();
         revocationCache = new RevocationCache();
@@ -149,7 +149,7 @@ public class RevocationCacheTest {
     }
     
     @Test 
-    public void testRevocationExpirationSuccess() throws ComponentInitializationException, InterruptedException {
+    public void testRevocationExpirationSuccess() throws InterruptedException {
         //Test expiration of entry (500ms)
         Assert.assertFalse(revocationCache.isRevoked("context", "item"));
         Assert.assertTrue(revocationCache.revoke("context", "item"));
@@ -162,4 +162,13 @@ public class RevocationCacheTest {
         Thread.sleep(300L);
         Assert.assertTrue(revocationCache.isRevoked("context", "item"));
     }
+
+    @Test
+    public void testRevokedRecordFetch() throws IOException {
+        Assert.assertTrue(revocationCache.revoke("context", "item", "value", Duration.ofHours(1)));
+        Assert.assertNull(revocationCache.getRevocationRecord("context", "item2"));
+        Assert.assertEquals(revocationCache.getRevocationRecord("context", "item"), "value");
+        
+    }
+    
 }

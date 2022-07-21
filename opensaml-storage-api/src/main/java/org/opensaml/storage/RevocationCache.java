@@ -22,6 +22,7 @@ import java.time.Duration;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.slf4j.Logger;
@@ -156,6 +157,26 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      */
     public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
             @Nonnull final Duration exp) {
+        return revoke(context, s, "y", exp);
+    }
+    
+    /**
+     * Returns true if the value is successfully revoked.
+     * 
+     * <p>If the key has already been revoked, expiration is updated.</p>
+     * 
+     * @param context a context label to subdivide the cache
+     * @param s value to revoke
+     * @param value value to insert into revocation record
+     * @param exp entry expiration
+     * 
+     * @return true if value has successfully been listed as revoked in the cache
+     * 
+     * @since 4.3.0
+     */
+    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
+            @Nonnull @NotEmpty final String value, @Nonnull final Duration exp) {
+
         final String key;
 
         final StorageCapabilities caps = storage.getCapabilities();
@@ -172,11 +193,11 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
             if (entry == null) {
                 log.debug("Entry '{}' of context '{}' is not yet on list of revoked entries,"
                         + " adding to cache with expiration time {}", key, context, expires);
-                storage.create(context, key, "y", Instant.now().plus(exp).toEpochMilli());
+                storage.create(context, key, value, Instant.now().plus(exp).toEpochMilli());
                 return true;
             }
             
-            storage.update(context, key, "y", Instant.now().plus(exp).toEpochMilli());
+            storage.updateExpiration(context, key, Instant.now().plus(exp).toEpochMilli());
             log.debug("Entry '{}' of context '{}' was already revoked, updating expiration", key, context);
             return true;
         } catch (final IOException e) {
@@ -221,4 +242,51 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
         }
     }
 
+    /**
+     * Attempts to read back a revocation record for a given context and key.
+     * 
+     * <p>This alternative approach allows revocation records to include richer data,
+     * rather than simple presence/absence as a signal.</p>
+     * 
+     * @param context revocation context
+     * @param s revocation key
+     * 
+     * @return the matching record, if found, or null if absent
+     * 
+     * @throws IOException raised if an error occurs leading to an indeterminate result
+     * 
+     * @since 4.3.0
+     */
+    @Nullable @NotEmpty public synchronized String getRevocationRecord(@Nonnull @NotEmpty final String context,
+            @Nonnull @NotEmpty final String s) throws IOException {
+        final String key;
+        final StorageCapabilities caps = storage.getCapabilities();
+        if (context.length() > caps.getContextSize()) {
+            log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
+            throw new IOException("Context exceeded storage service limit.");
+        } else if (s.length() > caps.getKeySize()) {
+            key = DigestUtils.sha1Hex(s);
+        } else {
+            key = s;
+        }
+
+        try {
+            final StorageRecord<?> entry = storage.read(context, key);
+            if (entry == null) {
+                log.debug("Entry '{}' is not revoked", key);
+                return null;
+            }
+        
+            log.debug("Entry '{}' is revoked", s);
+            return entry.getValue();
+        } catch (final IOException e) {
+            if (strict) {
+                throw e;
+            }
+            
+            log.error("Exception reading from storage service, non-strict so treating as non-revoked", e);
+            return null;
+        }
+    }
+    
 }
