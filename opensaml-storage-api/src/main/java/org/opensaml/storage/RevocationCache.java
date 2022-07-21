@@ -107,7 +107,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
     /**
      * Get the strictness flag.
      * 
-     * @return true iff we should treat storage failures as a replay
+     * @return true iff we should treat storage failures as a revocation
      */
     public boolean isStrict() {
         return strict;
@@ -116,7 +116,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
     /**
      * Set the strictness flag.
      * 
-     * @param flag true iff we should treat storage failures as a replay
+     * @param flag true iff we should treat storage failures as a revocation
      */
     public void setStrict(final boolean flag) {
         checkSetterPreconditions();
@@ -152,7 +152,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * @param s value to revoke
      * @param exp entry expiration
      * 
-     * @return true if value has successfully been listed as revoked in the cache.
+     * @return true if value has successfully been listed as revoked in the cache
      */
     public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
             @Nonnull final Duration exp) {
@@ -186,12 +186,12 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
     }
 
     /**
-     * Returns false if the value has successfully been confirmed as not revoked.
+     * Returns true iff the value has been revoked.
      * 
      * @param context a context label to subdivide the cache
-     * @param s value to revoke
+     * @param s value to check
      * 
-     * @return false if the check value is not found in the cache
+     * @return true iff the check value is found in the cache
      */
     public synchronized boolean isRevoked(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s) {
         final String key;
@@ -215,8 +215,9 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
             log.debug("Entry '{}' is revoked", s);
             return true;
         } catch (final IOException e) {
-            log.error("Exception reading/writing to storage service, returning {}", strict ? "failure" : "success", e);
-            return !strict;
+            log.error("Exception reading/writing to storage service, indicating {}",
+                    strict ? "revoked" : "not revoked", e);
+            return strict;
         }
     }
 
