@@ -374,7 +374,6 @@ public class ValidateAssertions extends AbstractProfileAction {
      * Class which holds data relevant to validating a SAML 2.0 Assertion.
      */
     public static class AssertionValidationInput {
-
         /** The profile request context input. */
         private ProfileRequestContext profileContext;
         
@@ -415,7 +414,7 @@ public class ValidateAssertions extends AbstractProfileAction {
         @Nonnull public HttpServletRequest getHttpServletRequest() {
             return httpServletRequest;
         }
-        
+
         /**
          * Get the {@link Assertion} being evaluated.
          * 
