@@ -17,8 +17,19 @@
 
 package org.opensaml.saml.common.binding.security.impl;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+
+import org.opensaml.messaging.MessageException;
+import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.handler.AbstractMessageHandler;
+import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.saml.common.binding.SAMLBindingSupport;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -29,14 +40,6 @@ import net.shibboleth.utilities.java.support.net.URIComparator;
 import net.shibboleth.utilities.java.support.net.URIException;
 import net.shibboleth.utilities.java.support.net.impl.BasicURLComparator;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
-import org.opensaml.messaging.MessageException;
-import org.opensaml.messaging.context.MessageContext;
-import org.opensaml.messaging.handler.AbstractMessageHandler;
-import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.saml.common.binding.SAMLBindingSupport;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Message handler which checks the validity of the SAML protocol message receiver 
@@ -51,7 +54,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
     @Nonnull private URIComparator uriComparator;
     
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
+    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
@@ -85,18 +88,30 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @return Returns the request.
      */
     @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
+        if (httpServletRequestSupplier == null) {
+            return null;
+        }
+        return httpServletRequestSupplier.get();
     }
 
     /**
-     * Set the HTTP servlet request being processed.
-     * 
-     * @param request The to set.
+     * Get the supplier for  HTTP request if available.
+     *
+     * @return current HTTP request
      */
-    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
+    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+        return httpServletRequestSupplier;
+    }
+
+    /**
+     * Set the current HTTP request Supplier.
+     *
+     * @param requestSupplier Supplier for the current HTTP request
+     */
+    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+
+        httpServletRequestSupplier = requestSupplier;
     }
 
     /** {@inheritDoc} */
@@ -106,7 +121,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
         
         if (uriComparator == null) {
             throw new ComponentInitializationException("URIComparator cannot be null");
-        } else if (httpServletRequest == null) {
+        } else if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
