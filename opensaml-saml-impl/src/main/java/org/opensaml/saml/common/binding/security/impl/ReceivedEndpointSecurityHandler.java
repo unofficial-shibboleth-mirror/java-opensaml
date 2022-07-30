@@ -17,7 +17,10 @@
 
 package org.opensaml.saml.common.binding.security.impl;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.messaging.MessageException;
 import org.opensaml.messaging.context.MessageContext;
@@ -50,7 +53,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
     @Nonnull private URIComparator uriComparator;
     
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
+    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
@@ -83,17 +86,30 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @return Returns the request.
      */
     @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
+        if (httpServletRequestSupplier == null) {
+            return null;
+        }
+        return httpServletRequestSupplier.get();
     }
 
     /**
-     * Set the HTTP servlet request being processed.
-     * 
-     * @param request The to set.
+     * Get the supplier for  HTTP request if available.
+     *
+     * @return current HTTP request
      */
-    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
+    @NonnullAfterInit public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+        return httpServletRequestSupplier;
+    }
+
+    /**
+     * Set the current HTTP request Supplier.
+     *
+     * @param requestSupplier Supplier for the current HTTP request
+     */
+    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+
+        httpServletRequestSupplier = requestSupplier;
     }
 
     /** {@inheritDoc} */
@@ -103,7 +119,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
         
         if (uriComparator == null) {
             throw new ComponentInitializationException("URIComparator cannot be null");
-        } else if (httpServletRequest == null) {
+        } else if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
