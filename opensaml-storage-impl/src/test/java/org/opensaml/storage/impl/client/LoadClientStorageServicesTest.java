@@ -61,7 +61,7 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
         loadCtx.getStorageKeys().add(STORAGE_NAME);
         
         action = new LoadClientStorageServices();
-        action.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
+        action.setHttpServletRequestSupplier(new ThreadLocalHttpServletRequestProxy());
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
     }
 

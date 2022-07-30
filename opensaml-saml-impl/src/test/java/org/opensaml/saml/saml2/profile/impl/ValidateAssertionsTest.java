@@ -21,6 +21,9 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -64,7 +67,7 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
         
         action = new ValidateAssertions();
         action.setHttpServletRequest(httpRequest);
-        action.setHttpServletResponse(httpResponse);
+        action.setHttpServletResponseSupplier(new Supplier<> () {public HttpServletResponse get() { return httpResponse;}});
         action.setValidationContextBuilder(new MockAssertionValidationContextBuilder());
         action.setAssertionValidator(new MockAssertionValidator(resultsMap));
         
