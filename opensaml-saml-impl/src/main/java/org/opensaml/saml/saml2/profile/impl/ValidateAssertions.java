@@ -61,9 +61,6 @@ public class ValidateAssertions extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(ValidateAssertions.class);
     
-    /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
-    
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
     
@@ -149,8 +146,9 @@ public class ValidateAssertions extends AbstractProfileAction {
      * 
      * @return the HTTP servlet request
      */
+    @Deprecated(forRemoval = true, since = "4.3")
     @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
+        return super.getHttpServletRequest();
     }
 
     /**
@@ -158,10 +156,11 @@ public class ValidateAssertions extends AbstractProfileAction {
      * 
      * @param request The HTTP servlet request
      */
+    @Deprecated(forRemoval = true, since = "4.3")
     public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        httpServletRequest = request;
+        super.setHttpServletRequest(request);
     }
     
     /**
@@ -256,13 +255,6 @@ public class ValidateAssertions extends AbstractProfileAction {
             }
             log.info("{} Assertion validator is null, must be resovleable via the lookup function", getLogPrefix());
         }
-    }
-
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        httpServletRequest = null;
-        
-        super.doDestroy();
     }
 
     /** {@inheritDoc} */
@@ -414,9 +406,6 @@ public class ValidateAssertions extends AbstractProfileAction {
         /** The profile request context input. */
         private ProfileRequestContext profileContext;
         
-        /** The HTTP request input. */
-        private HttpServletRequest httpServletRequest;
-        
         /** The Assertion being evaluated. */
         private Assertion assertion;
 
@@ -430,7 +419,8 @@ public class ValidateAssertions extends AbstractProfileAction {
         public AssertionValidationInput(@Nonnull final ProfileRequestContext context,
                 @Nonnull final HttpServletRequest request, @Nonnull final Assertion samlAssertion) {
             profileContext = Constraint.isNotNull(context, "ProfileRequestContext may not be null");
-            httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
+            Constraint.isNotNull(request, "HttpServletRequest may not be null");
+            Constraint.isNotNull(getHttpServletRequest(), "HttpServletRequest may not be null");
             assertion = Constraint.isNotNull(samlAssertion, "Assertion may not be null");
         }
 
@@ -449,7 +439,7 @@ public class ValidateAssertions extends AbstractProfileAction {
          * @return the HTTP servlet request input
          */
         @Nonnull public HttpServletRequest getHttpServletRequest() {
-            return httpServletRequest;
+            return getHttpServletRequestSupplier().get();
         }
         
         /**
