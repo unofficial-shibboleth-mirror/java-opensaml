@@ -25,7 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Supplier;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.xml.XMLConstants;
 
 import net.shibboleth.utilities.java.support.codec.DecodingException;
@@ -220,7 +222,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         sigValParams.setSignatureTrustEngine(signatureTrustEngine);
 
         handler = new SAML2HTTPPostSimpleSignSecurityHandler();
-        handler.setHttpServletRequest(buildServletRequest());
+        final HttpServletRequest request = buildServletRequest();
+        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return request;}});
         handler.setParser(parserPool);
         handler.setKeyInfoResolver(kiResolver);
         handler.initialize();

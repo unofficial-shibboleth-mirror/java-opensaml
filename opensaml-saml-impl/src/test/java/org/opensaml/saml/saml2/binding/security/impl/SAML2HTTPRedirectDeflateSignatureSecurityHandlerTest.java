@@ -25,6 +25,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -201,7 +204,8 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         sigValParams.setSignatureTrustEngine(signatureTrustEngine);
         
         handler = new SAML2HTTPRedirectDeflateSignatureSecurityHandler();
-        handler.setHttpServletRequest(buildServletRequest());
+        final HttpServletRequest request = buildServletRequest();
+        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return request;}});
         handler.initialize();
         
         messageContext = new MessageContext();
