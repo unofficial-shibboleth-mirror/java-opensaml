@@ -21,6 +21,9 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
@@ -158,7 +161,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         params.setCertificateNameOptions(nameOptions);
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
-        handler.setHttpServletRequest(request);
+        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() {return request;}});
         handler.initialize();
         
         messageContext = new MessageContext();
@@ -199,7 +202,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
         handler.setEntityContextClass(SAMLPresenterEntityContext.class);
-        handler.setHttpServletRequest(request);
+        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() {return request;}});
         handler.initialize();
         
         messageContext.removeSubcontext(SAMLPeerEntityContext.class);
