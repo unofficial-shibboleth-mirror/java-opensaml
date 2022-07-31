@@ -18,6 +18,9 @@
 package org.opensaml.soap.soap11.decoder.http.impl;
 
 import java.io.IOException;
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.schema.XSAny;
@@ -25,7 +28,6 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import org.opensaml.security.SecurityException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
 import org.springframework.mock.web.MockHttpServletRequest;
@@ -54,7 +56,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPSOAP11Decoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequest(httpRequest);
+        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
         // Let actual test method do the initialize(), so can set own body handler.
     }
     
