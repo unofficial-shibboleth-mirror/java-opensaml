@@ -21,6 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Supplier;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
 
@@ -39,6 +40,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
@@ -65,7 +67,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
         decoder = new HTTPRedirectDeflateDecoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequest(httpRequest);
+        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }      
 
