@@ -17,14 +17,21 @@
 
 package org.opensaml.messaging.decoder.servlet;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
@@ -32,39 +39,66 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractMessageDecoder
         implements HttpServletRequestMessageDecoder {
 
-    /** The HTTP servlet request. */
-    @Nullable private HttpServletRequest request;
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(AbstractHttpServletRequestMessageDecoder.class);
+
+    /** Current HTTP request, if available. */
+    @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** {@inheritDoc} */
+    @Override
     @Nullable public HttpServletRequest getHttpServletRequest() {
-        return request;
+        if (httpServletRequestSupplier == null) {
+            return null;
+        }
+        return httpServletRequestSupplier.get();
+    }
+
+    /**
+     * Get the supplier for  HTTP request if available.
+     *
+     * @return current HTTP request
+     */
+    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+        return httpServletRequestSupplier;
     }
 
     /** {@inheritDoc} */
-    public synchronized void setHttpServletRequest(@Nullable final HttpServletRequest servletRequest) {
+    @Override
+    @Deprecated(since = "4.3", forRemoval = true)
+    public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-
-        request = servletRequest;
+        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletReqest",
+                getClass().getCanonicalName(), "setHttpServletRequestSupplier");
+        if (request != null && !(request instanceof ThreadLocalHttpServletRequestProxy)) {
+            log.warn("Unsafe HttpServletRequest injected");
+        }
+        httpServletRequestSupplier = new Supplier<>() {
+            public HttpServletRequest get() {
+                return request;
+            };
+        };
     }
-    
+
+    /** {@inheritDoc} */
+    @Override
+    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        httpServletRequestSupplier = requestSupplier;
+    }
+
     /** {@inheritDoc} */
     public void decode() throws MessageDecodingException {
         super.decode();
     }
 
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        request = null;
-        
-        super.doDestroy();
-    }
 
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
 
-        if (request == null) {
+        if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HTTP Servlet request cannot be null");
         }
     }

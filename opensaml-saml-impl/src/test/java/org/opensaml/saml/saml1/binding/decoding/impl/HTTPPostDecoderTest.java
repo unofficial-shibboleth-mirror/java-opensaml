@@ -19,6 +19,9 @@ package org.opensaml.saml.saml1.binding.decoding.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletRequest;
 
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
@@ -57,7 +60,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         decoder = new HTTPPostDecoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequest(httpRequest);
+        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }
 
