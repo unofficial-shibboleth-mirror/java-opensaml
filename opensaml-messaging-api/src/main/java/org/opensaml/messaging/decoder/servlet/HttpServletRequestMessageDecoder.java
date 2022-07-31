@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.decoder.servlet;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,16 +32,25 @@ public interface HttpServletRequestMessageDecoder extends MessageDecoder {
     
     /**
      * Get the HTTP servlet request on which to operate.
-     * 
+     *
      * @return the HTTP servlet request
      */
     @Nullable HttpServletRequest getHttpServletRequest();
     
     /**
      * Set the HTTP servlet request on which to operate.
-     * 
+     *
      * @param request the HTTP servlet request
      */
+    @Deprecated(forRemoval = true, since="4.3")
     void setHttpServletRequest(@Nullable final HttpServletRequest request);
-    
+
+    /**
+     * Set the supplier for the HTTP servlet request on which to operate.
+     *
+     * @param requestSupplier the HTTP servlet request
+     */
+    default void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+        setHttpServletRequest(requestSupplier.get());
+    }
 }
