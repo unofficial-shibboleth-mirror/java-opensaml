@@ -21,6 +21,7 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,7 +49,6 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElemen
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
@@ -98,25 +98,38 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
     @Nullable private CertificateNameOptions certNameOptions;
     
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
+    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
     
     /**
-     * Get the HTTP servlet request being processed.
+     * Get the current HTTP request if available.
      * 
-     * @return Returns the request.
+     * @return current HTTP request
      */
-    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
+    @Nullable public HttpServletRequest getHttpServletRequest() {
+        if (httpServletRequestSupplier == null) {
+            return null;
+        }
+        return httpServletRequestSupplier.get();
     }
 
     /**
-     * Set the HTTP servlet request being processed.
-     * 
-     * @param request The to set.
+     * Get the supplier for  HTTP request if available.
+     *
+     * @return current HTTP request
      */
-    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
+    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+        return httpServletRequestSupplier;
+    }
+
+    /**
+     * Set the current HTTP request Supplier.
+     *
+     * @param requestSupplier Supplier for the current HTTP request
+     */
+    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+
+        httpServletRequestSupplier = requestSupplier;
     }
 
     /**
@@ -133,7 +146,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (httpServletRequest == null) {
+        if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
