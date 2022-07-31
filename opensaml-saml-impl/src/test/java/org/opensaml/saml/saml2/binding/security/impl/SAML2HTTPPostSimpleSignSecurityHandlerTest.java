@@ -25,14 +25,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.Supplier;
 
 import javax.xml.XMLConstants;
-
-import net.shibboleth.utilities.java.support.codec.DecodingException;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -70,6 +65,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import jakarta  .servlet.http.HttpServletRequest;
+import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test SAML simple signature via HTTP POST-SimpleSign binding
@@ -220,7 +222,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         sigValParams.setSignatureTrustEngine(signatureTrustEngine);
 
         handler = new SAML2HTTPPostSimpleSignSecurityHandler();
-        handler.setHttpServletRequest(buildServletRequest());
+        final HttpServletRequest request = buildServletRequest();
+        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return request;}});
         handler.setParser(parserPool);
         handler.setKeyInfoResolver(kiResolver);
         handler.initialize();
