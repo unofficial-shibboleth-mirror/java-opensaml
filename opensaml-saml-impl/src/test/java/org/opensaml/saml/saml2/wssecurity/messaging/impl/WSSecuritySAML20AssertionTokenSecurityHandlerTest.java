@@ -21,12 +21,11 @@ import java.net.URISyntaxException;
 import java.security.KeyException;
 import java.security.cert.CertificateException;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
-
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import jakarta.servlet.http.HttpServletRequest;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
@@ -61,6 +60,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+
 /**
  *
  */
@@ -83,7 +85,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         httpServletRequest = buildHttpServletRequest();
         
         handler = new WSSecuritySAML20AssertionTokenSecurityHandler();
-        handler.setHttpServletRequest(httpServletRequest);
+        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() {return httpServletRequest;}});
         // do init in the test methods
     }
     
