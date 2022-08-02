@@ -20,6 +20,9 @@ package org.opensaml.saml.saml1.binding.encoding.impl;
 import java.io.ByteArrayInputStream;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -94,7 +97,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostEncoder encoder = new HTTPPostEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
 

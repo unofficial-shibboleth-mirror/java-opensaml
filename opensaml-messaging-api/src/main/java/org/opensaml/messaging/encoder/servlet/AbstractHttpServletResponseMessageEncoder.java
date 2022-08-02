@@ -17,13 +17,20 @@
 
 package org.opensaml.messaging.encoder.servlet;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
 
+import org.opensaml.messaging.encoder.AbstractMessageEncoder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
-
-import org.opensaml.messaging.encoder.AbstractMessageEncoder;
+import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.
@@ -31,34 +38,64 @@ import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 public abstract class AbstractHttpServletResponseMessageEncoder extends AbstractMessageEncoder
         implements HttpServletResponseMessageEncoder {
 
-    /** The HTTP servlet response. */
-    @Nullable private HttpServletResponse response;
+    /** Logger. */
+    private final Logger log = LoggerFactory.getLogger(AbstractHttpServletResponseMessageEncoder.class);
 
-    /** {@inheritDoc} */
+    /** Supplier for the Current HTTP servlet response, if available. */
+    @Nullable private Supplier<HttpServletResponse> httpServletResponseSupplier;
+
+    /**
+     * {@inheritDoc}
+     */
     @Nullable public HttpServletResponse getHttpServletResponse() {
-        return response;
+        if (httpServletResponseSupplier == null) {
+            return null;
+        }
+        return httpServletResponseSupplier.get();
     }
-
-    /** {@inheritDoc} */
-    public synchronized void setHttpServletResponse(@Nullable final HttpServletResponse servletResponse) {
+    
+    /**
+     * {@inheritDoc}
+     */
+    public void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> supplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
 
-        response = servletResponse;
+        httpServletResponseSupplier = supplier;
     }
 
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        response = null;
+    /**
+     * Get the supplier for the current HTTP response if available.
+     *
+     * @return the supplier for the current HTTP response or null
+     */
+    @Nullable public Supplier<HttpServletResponse> getHttpServletResponseSupplier() {
+        return httpServletResponseSupplier;
+    }
 
-        super.doDestroy();
+    /**
+     * {@inheritDoc}
+     */
+    @Deprecated(since = "4.3", forRemoval = true)
+    public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+
+        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletResponse",
+                getClass().getCanonicalName(), "setHttpServletResponseSupplier");
+        if (response != null && !(response instanceof ThreadLocalHttpServletResponseProxy)) {
+            log.warn("Unsafe HttpServletRequest injected");
+        }
+        httpServletResponseSupplier = new Supplier<>() {
+            public HttpServletResponse get() {
+                return response;
+            };
+        };
     }
 
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
 
-        if (response == null) {
+        if (getHttpServletResponse() == null) {
             throw new ComponentInitializationException("HTTP servlet response cannot be null");
         }
     }
