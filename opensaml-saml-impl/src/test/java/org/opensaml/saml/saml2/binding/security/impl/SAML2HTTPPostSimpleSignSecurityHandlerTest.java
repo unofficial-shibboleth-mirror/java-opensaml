@@ -66,7 +66,8 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import jakarta  .servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
@@ -418,7 +419,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         
         final HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(mc);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         encoder.setVelocityTemplateId("/templates/saml2-post-simplesign-binding.vm");

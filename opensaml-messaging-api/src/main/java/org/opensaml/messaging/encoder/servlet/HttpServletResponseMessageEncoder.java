@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.encoder.servlet;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.encoder.MessageEncoder;
@@ -29,17 +31,28 @@ import jakarta.servlet.http.HttpServletResponse;
 public interface HttpServletResponseMessageEncoder extends MessageEncoder {
     
     /**
-     * Get the HTTP servlet response on which to operate.
-     * 
-     * @return the HTTP servlet response
+     * Get the current Http Servlet response if available.
+     *
+     * @return current Http Servlet response or null
      */
     @Nullable HttpServletResponse getHttpServletResponse();
     
     /**
-     * Set the HTTP servlet response on which to operate.
+     * Set the Http servlet response on which to operate.
      * 
      * @param response the HTTP servlet response
      */
+    @Deprecated(forRemoval = true, since="4.3")
     void setHttpServletResponse(@Nullable final HttpServletResponse response);
     
+    /**
+     * Set the supplier for the HTTP servlet response on which to operate.
+     *
+     * @param responseSupplier the supplier for the HTTP servlet response
+     */
+    default void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> responseSupplier) {
+        setHttpServletResponse(responseSupplier.get());
+    }
+
 }
+

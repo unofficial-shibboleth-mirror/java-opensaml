@@ -27,12 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
 
-import jakarta.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.net.URLBuilder;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
@@ -65,6 +59,12 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.net.URLBuilder;
 
 
 /**
@@ -330,7 +330,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         
         final HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(mc);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         try {
             encoder.initialize();

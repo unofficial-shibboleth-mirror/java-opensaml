@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.security.KeyPair;
 import java.time.Instant;
 import java.util.Map;
+import java.util.function.Supplier;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
@@ -47,6 +48,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
+import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.net.URISupport;
 import net.shibboleth.utilities.java.support.net.URLBuilder;
@@ -101,7 +103,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -178,7 +180,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -259,7 +261,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -350,7 +352,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -434,11 +436,11 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         // the SAMLOutboundDestinationHandler, which would change the data being signed. Not correct vis-a-vis actual 
         //SAML protocol usage, but for purposes of this test it doesn't matter.
         
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -484,18 +486,18 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
         
-        response = new MockHttpServletResponse();
+        final MockHttpServletResponse response2 = new MockHttpServletResponse();
         
         encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response2;}});
         
         encoder.initialize();
         encoder.prepareContext();
         encoder.encode();
         
-        Assert.assertNotNull(response.getRedirectedUrl());
-        urlBuilder = new URLBuilder(response.getRedirectedUrl());
+        Assert.assertNotNull(response2.getRedirectedUrl());
+        urlBuilder = new URLBuilder(response2.getRedirectedUrl());
         Assert.assertEquals(urlBuilder.getScheme(), "http");
         Assert.assertEquals(urlBuilder.getHost(), "example.org");
         Assert.assertEquals(urlBuilder.getPath(), "/response");
