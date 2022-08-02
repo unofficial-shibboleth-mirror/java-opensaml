@@ -21,6 +21,9 @@ import java.io.ByteArrayInputStream;
 import java.security.KeyPair;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Supplier;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -124,7 +127,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         
@@ -218,7 +221,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         
@@ -320,7 +323,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponse(response);
+        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         
