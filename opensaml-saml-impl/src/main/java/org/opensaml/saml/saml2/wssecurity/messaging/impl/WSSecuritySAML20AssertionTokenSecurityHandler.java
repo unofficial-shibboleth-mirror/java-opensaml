@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.wssecurity.messaging.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -65,8 +66,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(WSSecuritySAML20AssertionTokenSecurityHandler.class);
     
-    /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
+    /** Supplier for the Current HTTP request, if available. */
+    @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
@@ -121,23 +122,35 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     }
 
     /**
-     * Get the HTTP servlet request being processed.
+     * Get the current HTTP request if available.
      * 
-     * @return the HTTP servlet request
+     * @return current HTTP request
      */
-    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
+    @Nullable public HttpServletRequest getHttpServletRequest() {
+        if (httpServletRequestSupplier == null) {
+            return null;
+        }
+        return httpServletRequestSupplier.get();
     }
 
     /**
-     * Set the HTTP servlet request being processed.
-     * 
-     * @param request The HTTP servlet request
+     * Get the supplier for  HTTP request if available.
+     *
+     * @return current HTTP request
      */
-    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
+    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+        return httpServletRequestSupplier;
+    }
+
+    /**
+     * Set the current HTTP request Supplier.
+     *
+     * @param requestSupplier Supplier for the current HTTP request
+     */
+    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+
+        httpServletRequestSupplier = requestSupplier;
     }
     
     /**
@@ -227,13 +240,6 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
             }
             log.info("Assertion validator is null, must be resovleable via the lookup function");
         }
-    }
-
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        httpServletRequest = null;
-        
-        super.doDestroy();
     }
 
 // Checkstyle: ReturnCount OFF
