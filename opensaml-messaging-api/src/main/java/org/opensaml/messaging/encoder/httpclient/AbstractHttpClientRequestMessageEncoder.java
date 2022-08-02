@@ -24,10 +24,9 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 
 import org.apache.http.HttpRequest;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
-import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
 
 /**
- * Abstract implementation of {@link HttpServletResponseMessageEncoder}.
+ * Abstract implementation of {@link HttpServletRequestMessageEncoder}.
  */
 public abstract class AbstractHttpClientRequestMessageEncoder extends AbstractMessageEncoder
         implements HttpClientRequestMessageEncoder {
