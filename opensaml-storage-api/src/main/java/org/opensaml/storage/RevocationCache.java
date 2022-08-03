@@ -128,6 +128,8 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
     /** {@inheritDoc} */
     @Override
     public void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
         if (storage == null) {
             throw new ComponentInitializationException("StorageService cannot be null");
         }
@@ -176,7 +178,9 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      */
     public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
             @Nonnull @NotEmpty final String value, @Nonnull final Duration exp) {
-
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+        
         final String key;
 
         final StorageCapabilities caps = storage.getCapabilities();
@@ -205,6 +209,39 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
             return !strict;
         }
     }
+    
+    /**
+     * Remove a revocation record.
+     * 
+     * @param context a context label to subdivide the cache
+     * @param s value to remove
+     * 
+     * @return true iff a record was removed
+     * 
+     * @since 4.3.0
+     */
+    public synchronized boolean unrevoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s) {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
+        final String key;
+        final StorageCapabilities caps = storage.getCapabilities();
+        if (context.length() > caps.getContextSize()) {
+            log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
+            return false;
+        } else if (s.length() > caps.getKeySize()) {
+            key = DigestUtils.sha1Hex(s);
+        } else {
+            key = s;
+        }
+
+        try {
+            return storage.delete(context, key);
+        } catch (final IOException e) {
+            log.error("Exception writing to storage service", e);
+            return false;
+        }
+    }
 
     /**
      * Returns true iff the value has been revoked.
@@ -215,6 +252,9 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * @return true iff the check value is found in the cache
      */
     public synchronized boolean isRevoked(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s) {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         final String key;
         final StorageCapabilities caps = storage.getCapabilities();
         if (context.length() > caps.getContextSize()) {
@@ -236,7 +276,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
             log.debug("Entry '{}' is revoked", s);
             return true;
         } catch (final IOException e) {
-            log.error("Exception reading/writing to storage service, indicating {}",
+            log.error("Exception reading  storage service, indicating {}",
                     strict ? "revoked" : "not revoked", e);
             return strict;
         }
@@ -259,6 +299,9 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      */
     @Nullable @NotEmpty public synchronized String getRevocationRecord(@Nonnull @NotEmpty final String context,
             @Nonnull @NotEmpty final String s) throws IOException {
+        ComponentSupport.ifNotInitializedThrowUninitializedComponentException(this);
+        ComponentSupport.ifDestroyedThrowDestroyedComponentException(this);
+
         final String key;
         final StorageCapabilities caps = storage.getCapabilities();
         if (context.length() > caps.getContextSize()) {

@@ -17,6 +17,8 @@
 
 package org.opensaml.storage.impl;
 
+import static org.testng.Assert.*;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.time.Duration;
@@ -30,7 +32,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import org.opensaml.storage.RevocationCache;
 
 /**
@@ -51,6 +52,7 @@ public class RevocationCacheTest {
         storageService.initialize();
         
         revocationCache = new RevocationCache();
+        revocationCache.setId("test");
         revocationCache.setEntryExpiration(Duration.ofMillis(500));
         revocationCache.setStorage(storageService);
         revocationCache.initialize();
@@ -67,14 +69,14 @@ public class RevocationCacheTest {
         revocationCache = new RevocationCache();
         try {
             revocationCache.setStorage(null);
-            Assert.fail("Null StorageService should have caused constraint violation");
+            fail("Null StorageService should have caused constraint violation");
         } catch (final Exception e) {
         }
 
         try {
             revocationCache.setStorage(new ClientStorageService());
             
-            Assert.fail("ClientStorageService should have caused constraint violation");
+            fail("ClientStorageService should have caused constraint violation");
         } catch (final Exception e) {
         }
     }
@@ -82,12 +84,13 @@ public class RevocationCacheTest {
     
     @Test
     public void testStrictSetter() throws ComponentInitializationException {
-        Assert.assertFalse(revocationCache.isStrict());
+        assertFalse(revocationCache.isStrict());
         revocationCache = new RevocationCache();
+        revocationCache.setId("test");
         revocationCache.setStorage(storageService);
         revocationCache.setStrict(true);
         revocationCache.initialize();
-        Assert.assertTrue(revocationCache.isStrict());
+        assertTrue(revocationCache.isStrict());
     }
     
     @Test (expectedExceptions = ConstraintViolationException.class)
@@ -99,14 +102,14 @@ public class RevocationCacheTest {
     
     @Test 
     public void testStorageGetter() {
-        Assert.assertEquals(storageService, revocationCache.getStorage());
+        assertEquals(storageService, revocationCache.getStorage());
     }
     
     @Test 
     public void testRevocationSuccess() {
-        Assert.assertFalse(revocationCache.isRevoked("context", "item"));
-        Assert.assertTrue(revocationCache.revoke("context", "item"));
-        Assert.assertTrue(revocationCache.isRevoked("context", "item"));
+        assertFalse(revocationCache.isRevoked("context", "item"));
+        assertTrue(revocationCache.revoke("context", "item"));
+        assertTrue(revocationCache.isRevoked("context", "item"));
     }
     
     @Test 
@@ -118,15 +121,16 @@ public class RevocationCacheTest {
         storageService.initialize();
         
         revocationCache = new RevocationCache();
+        revocationCache.setId("test");
         revocationCache.setStorage(storageService);
         revocationCache.initialize();
         
         final byte[] array = new byte[storageService.getCapabilities().getContextSize()*2];
         new Random().nextBytes(array);
         final String context = new String(array, Charset.forName("UTF-8"));
-        Assert.assertTrue(context.length()>storageService.getCapabilities().getContextSize());
-        Assert.assertTrue(revocationCache.isRevoked(context, "item"));
-        Assert.assertFalse(revocationCache.revoke(context, "item"));
+        assertTrue(context.length()>storageService.getCapabilities().getContextSize());
+        assertTrue(revocationCache.isRevoked(context, "item"));
+        assertFalse(revocationCache.revoke(context, "item"));
     }
     
     @Test 
@@ -137,38 +141,47 @@ public class RevocationCacheTest {
         storageService.setKeySize(50);
         storageService.initialize();
         revocationCache = new RevocationCache();
+        revocationCache.setId("test");
         revocationCache.setStorage(storageService);
         revocationCache.initialize();
         final byte[] array = new byte[storageService.getCapabilities().getKeySize()*2];
         new Random().nextBytes(array);
         final String item = new String(array, Charset.forName("UTF-8"));
-        Assert.assertTrue(item.length()>storageService.getCapabilities().getKeySize());
-        Assert.assertFalse(revocationCache.isRevoked("context", item));
-        Assert.assertTrue(revocationCache.revoke("context", item));
-        Assert.assertTrue(revocationCache.isRevoked("context", item));
+        assertTrue(item.length()>storageService.getCapabilities().getKeySize());
+        assertFalse(revocationCache.isRevoked("context", item));
+        assertTrue(revocationCache.revoke("context", item));
+        assertTrue(revocationCache.isRevoked("context", item));
     }
     
     @Test 
     public void testRevocationExpirationSuccess() throws InterruptedException {
         //Test expiration of entry (500ms)
-        Assert.assertFalse(revocationCache.isRevoked("context", "item"));
-        Assert.assertTrue(revocationCache.revoke("context", "item"));
+        assertFalse(revocationCache.isRevoked("context", "item"));
+        assertTrue(revocationCache.revoke("context", "item"));
         Thread.sleep(600L);
-        Assert.assertFalse(revocationCache.isRevoked("context", "item"));
+        assertFalse(revocationCache.isRevoked("context", "item"));
         //Test rolling window, second revoke updates expiration past original 500ms
-        Assert.assertTrue(revocationCache.revoke("context", "item"));
+        assertTrue(revocationCache.revoke("context", "item"));
         Thread.sleep(300L);
-        Assert.assertTrue(revocationCache.revoke("context", "item"));
+        assertTrue(revocationCache.revoke("context", "item"));
         Thread.sleep(300L);
-        Assert.assertTrue(revocationCache.isRevoked("context", "item"));
+        assertTrue(revocationCache.isRevoked("context", "item"));
     }
 
     @Test
     public void testRevokedRecordFetch() throws IOException {
-        Assert.assertTrue(revocationCache.revoke("context", "item", "value", Duration.ofHours(1)));
-        Assert.assertNull(revocationCache.getRevocationRecord("context", "item2"));
-        Assert.assertEquals(revocationCache.getRevocationRecord("context", "item"), "value");
+        assertTrue(revocationCache.revoke("context", "item", "value", Duration.ofHours(1)));
+        assertNull(revocationCache.getRevocationRecord("context", "item2"));
+        assertEquals(revocationCache.getRevocationRecord("context", "item"), "value");
         
     }
-    
+
+    @Test
+    public void testRevokedRecordDelete() throws IOException {
+        assertTrue(revocationCache.revoke("context", "item", "value", Duration.ofHours(1)));
+        assertEquals(revocationCache.getRevocationRecord("context", "item"), "value");
+        assertTrue(revocationCache.unrevoke("context", "item"));
+        assertNull(revocationCache.getRevocationRecord("context", "item"));
+    }
+
 }
