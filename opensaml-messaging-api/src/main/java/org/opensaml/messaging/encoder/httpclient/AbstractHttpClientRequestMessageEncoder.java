@@ -26,7 +26,7 @@ import org.apache.http.HttpRequest;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
 /**
- * Abstract implementation of {@link HttpServletRequestMessageEncoder}.
+ * Abstract implementation of {@link HttpClientRequestMessageEncoder}.
  */
 public abstract class AbstractHttpClientRequestMessageEncoder extends AbstractMessageEncoder
         implements HttpClientRequestMessageEncoder {
