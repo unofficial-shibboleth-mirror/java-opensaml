@@ -26,8 +26,8 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
-import org.opensaml.storage.ReplayCache;
 import org.opensaml.storage.impl.MemoryStorageService;
+import org.opensaml.storage.impl.StorageServiceReplayCache;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -45,7 +45,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
 
     private MemoryStorageService storageService;
 
-    private ReplayCache replayCache;
+    private StorageServiceReplayCache replayCache;
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -60,7 +60,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
         storageService.setId("test");
         storageService.initialize();
         
-        replayCache = new ReplayCache();
+        replayCache = new StorageServiceReplayCache();
         replayCache.setStorage(storageService);
         replayCache.initialize();
         
