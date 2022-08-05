@@ -32,16 +32,15 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.testng.annotations.BeforeMethod;
-import org.opensaml.storage.RevocationCache;
 
 /**
- * Tests for {@link RevocationCache}
+ * Tests for {@link StorageServiceRevocationCache}.
  */
-public class RevocationCacheTest {
+public class StorageServiceRevocationCacheTest {
     
     private MemoryStorageService storageService;
     
-    private RevocationCache revocationCache;
+    private StorageServiceRevocationCache revocationCache;
 
     @BeforeMethod
     protected void setUp() throws ComponentInitializationException {
@@ -51,7 +50,7 @@ public class RevocationCacheTest {
         storageService.setCleanupInterval(Duration.ZERO);
         storageService.initialize();
         
-        revocationCache = new RevocationCache();
+        revocationCache = new StorageServiceRevocationCache();
         revocationCache.setId("test");
         revocationCache.setEntryExpiration(Duration.ofMillis(500));
         revocationCache.setStorage(storageService);
@@ -66,7 +65,7 @@ public class RevocationCacheTest {
     
     @Test
     public void testInit() {
-        revocationCache = new RevocationCache();
+        revocationCache = new StorageServiceRevocationCache();
         try {
             revocationCache.setStorage(null);
             fail("Null StorageService should have caused constraint violation");
@@ -85,7 +84,7 @@ public class RevocationCacheTest {
     @Test
     public void testStrictSetter() throws ComponentInitializationException {
         assertFalse(revocationCache.isStrict());
-        revocationCache = new RevocationCache();
+        revocationCache = new StorageServiceRevocationCache();
         revocationCache.setId("test");
         revocationCache.setStorage(storageService);
         revocationCache.setStrict(true);
@@ -96,7 +95,7 @@ public class RevocationCacheTest {
     @Test (expectedExceptions = ConstraintViolationException.class)
     public void testExpirationSetter() {
         //Must be positive
-        revocationCache = new RevocationCache();
+        revocationCache = new StorageServiceRevocationCache();
         revocationCache.setEntryExpiration(Duration.ZERO);
     }
     
@@ -120,7 +119,7 @@ public class RevocationCacheTest {
         storageService.setCleanupInterval(Duration.ZERO);
         storageService.initialize();
         
-        revocationCache = new RevocationCache();
+        revocationCache = new StorageServiceRevocationCache();
         revocationCache.setId("test");
         revocationCache.setStorage(storageService);
         revocationCache.initialize();
@@ -140,7 +139,7 @@ public class RevocationCacheTest {
         storageService.setCleanupInterval(Duration.ZERO);
         storageService.setKeySize(50);
         storageService.initialize();
-        revocationCache = new RevocationCache();
+        revocationCache = new StorageServiceRevocationCache();
         revocationCache.setId("test");
         revocationCache.setStorage(storageService);
         revocationCache.initialize();

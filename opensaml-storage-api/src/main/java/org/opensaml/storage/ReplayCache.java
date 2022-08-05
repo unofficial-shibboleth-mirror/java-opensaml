@@ -17,144 +17,29 @@
 
 package org.opensaml.storage;
 
-import java.io.IOException;
-import java.security.NoSuchAlgorithmException;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.concurrent.ThreadSafe;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
-import net.shibboleth.utilities.java.support.codec.StringDigester;
-import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
- * Tracks non-replayable values in order to detect replays of the values, commonly used to track message identifiers.
- * 
- * <p>This class is thread-safe and uses a synchronized method to prevent race conditions within the underlying
- * store (lacking an atomic "check and insert" operation).</p>
+ * Interface to a component that checks for replay of a value.
  */
-@ThreadSafeAfterInit
-public class ReplayCache extends AbstractIdentifiableInitializableComponent {
-
-    /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(ReplayCache.class);
-
-    /** Backing storage for the replay cache. */
-    @NonnullAfterInit private StorageService storage;
-
-    /** Digester if key is too long. */
-    @NonnullAfterInit private StringDigester digester;
-    
-    /** Flag controlling behavior on storage failure. */
-    private boolean strict;
-    
-    /**
-     * Get the backing store for the cache.
-     * 
-     * @return the backing store.
-     */
-    @NonnullAfterInit public StorageService getStorage() {
-        return storage;
-    }
-    
-    /**
-     * Set the backing store for the cache.
-     * 
-     * @param storageService backing store to use
-     */
-    public void setStorage(@Nonnull final StorageService storageService) {
-        checkSetterPreconditions();
-        
-        storage = Constraint.isNotNull(storageService, "StorageService cannot be null");
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (caps instanceof StorageCapabilitiesEx) {
-            Constraint.isTrue(((StorageCapabilitiesEx) caps).isServerSide(), "StorageService cannot be client-side");
-        }
-    }
-    
-    /**
-     * Get the strictness flag.
-     * 
-     * @return true iff we should treat storage failures as a replay
-     */
-    public boolean isStrict() {
-        return strict;
-    }
-
-    /**
-     * Set the strictness flag.
-     * 
-     * @param flag true iff we should treat storage failures as a replay
-     */
-    public void setStrict(final boolean flag) {
-        checkSetterPreconditions();
-        
-        strict = flag;
-    }
-
-
-    /** {@inheritDoc} */
-    @Override
-    public void doInitialize() throws ComponentInitializationException {
-        if (storage == null) {
-            throw new ComponentInitializationException("StorageService cannot be null");
-        }
-
-        try {
-            digester = new StringDigester("SHA", OutputFormat.HEX_LOWER);
-        } catch (final NoSuchAlgorithmException e) {
-            throw new ComponentInitializationException(e);
-        }
-    }
+@ThreadSafe
+public interface ReplayCache {
 
     /**
      * Returns true iff the check value is not found in the cache, and stores it.
      * 
      * @param context   a context label to subdivide the cache
-     * @param s         value to check
+     * @param key       key to check
      * @param expires   time for disposal of value from cache
      * 
      * @return true iff the check value is not found in the cache
      */
-    public synchronized boolean check(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
-            @Nonnull final Instant expires) {
-
-        final String key;
-        
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (context.length() > caps.getContextSize()) {
-            log.error("Context '{}' too long for StorageService (limit {})", context, caps.getContextSize());
-            return false;
-        } else if (s.length() > caps.getKeySize()) {
-            key = digester.apply(s);
-        } else {
-            key = s;
-        }
-
-        try {
-            final StorageRecord<?> entry = storage.read(context, key);
-            if (entry == null) {
-                log.debug("Value '{}' was not a replay, adding to cache with expiration time {}", s, expires);
-                storage.create(context, key, "x", expires.toEpochMilli());
-                return true;
-            }
-            
-            log.debug("Replay of value '{}' detected in cache, expires at {}", s,
-                    Instant.ofEpochMilli(entry.getExpiration()));
-            return false;
-            
-        } catch (final IOException e) {
-            log.error("Exception reading/writing to storage service, returning {}", strict ? "failure" : "success", e);
-            return !strict;
-        }
-    }
+    boolean check(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull final Instant expires);
 
 }

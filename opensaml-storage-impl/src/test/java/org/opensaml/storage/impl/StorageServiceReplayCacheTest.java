@@ -19,7 +19,6 @@ package org.opensaml.storage.impl;
 
 import java.time.Instant;
 
-import org.opensaml.storage.ReplayCache;
 import org.opensaml.storage.impl.client.ClientStorageService;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
@@ -27,9 +26,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 
 /**
- * Tests for {@link ReplayCache}
+ * Tests for {@link StorageServiceReplayCache}.
  */
-public class ReplayCacheTest {
+public class StorageServiceReplayCacheTest {
 
     private String context;
     
@@ -39,7 +38,7 @@ public class ReplayCacheTest {
 
     private MemoryStorageService storageService;
     
-    private ReplayCache replayCache;
+    private StorageServiceReplayCache replayCache;
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -51,7 +50,7 @@ public class ReplayCacheTest {
         storageService.setId("test");
         storageService.initialize();
         
-        replayCache = new ReplayCache();
+        replayCache = new StorageServiceReplayCache();
         replayCache.setStorage(storageService);
         replayCache.initialize();
     }
@@ -65,9 +64,12 @@ public class ReplayCacheTest {
         storageService = null;
     }
     
+    /**
+     * Test init methods.
+     */
     @Test
     public void testInit() {
-        replayCache = new ReplayCache();
+        replayCache = new StorageServiceReplayCache();
         try {
             replayCache.setStorage(null);
             Assert.fail("Null StorageService should have caused constraint violation");

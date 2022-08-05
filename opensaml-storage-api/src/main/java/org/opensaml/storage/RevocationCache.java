@@ -19,122 +19,21 @@ package org.opensaml.storage;
 
 import java.io.IOException;
 import java.time.Duration;
-import java.time.Instant;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.ThreadSafe;
 
-import org.apache.commons.codec.digest.DigestUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
-import net.shibboleth.utilities.java.support.annotation.constraint.ThreadSafeAfterInit;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
- * Stores and checks for revocation entries.
+ * Interface to a cache that tracks revoked information.
  * 
- * <p>
- * This class is thread-safe and uses a synchronized method to prevent race conditions within the underlying store
- * (lacking an atomic "check and insert" operation).
- * </p>
- * 
- * @since 4.2.0
+ * <p>Revocation may include specific information for storage and retrieval,
+ * or simply a tracking of revoked status.</p>
  */
-@ThreadSafeAfterInit
-public class RevocationCache extends AbstractIdentifiableInitializableComponent {
-
-    /** Logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(RevocationCache.class);
-
-    /** Backing storage for the replay cache. */
-    @NonnullAfterInit private StorageService storage;
-
-    /** Flag controlling behavior on storage failure. */
-    private boolean strict;
-
-    /** Default lifetime of revocation entry. Default value: 6 hours */
-    @Nonnull @Positive private Duration expires;
-
-    /**
-     * Constructor.
-     */
-    public RevocationCache() {
-        expires = Duration.ofHours(6);
-    }
-
-    /**
-     * Set the default revocation entry expiration.
-     * 
-     * @param entryExpiration lifetime of an revocation entry in milliseconds
-     */
-    public void setEntryExpiration(@Positive final Duration entryExpiration) {
-        checkSetterPreconditions();
-        
-        Constraint.isTrue(entryExpiration != null && !entryExpiration.isNegative() && !entryExpiration.isZero(),
-                "Revocation cache default entry expiration must be greater than 0");
-        expires = entryExpiration;
-    }
-
-    /**
-     * Get the backing store for the cache.
-     * 
-     * @return the backing store.
-     */
-    @NonnullAfterInit public StorageService getStorage() {
-        return storage;
-    }
-
-    /**
-     * Set the backing store for the cache.
-     * 
-     * @param storageService backing store to use
-     */
-    public void setStorage(@Nonnull final StorageService storageService) {
-        checkSetterPreconditions();
-
-        storage = Constraint.isNotNull(storageService, "StorageService cannot be null");
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (caps instanceof StorageCapabilitiesEx) {
-            Constraint.isTrue(((StorageCapabilitiesEx) caps).isServerSide(), "StorageService cannot be client-side");
-        }
-    }
-
-    /**
-     * Get the strictness flag.
-     * 
-     * @return true iff we should treat storage failures as a revocation
-     */
-    public boolean isStrict() {
-        return strict;
-    }
-
-    /**
-     * Set the strictness flag.
-     * 
-     * @param flag true iff we should treat storage failures as a revocation
-     */
-    public void setStrict(final boolean flag) {
-        checkSetterPreconditions();
-
-        strict = flag;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    public void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (storage == null) {
-            throw new ComponentInitializationException("StorageService cannot be null");
-        }
-    }
-    
+@ThreadSafe
+public interface RevocationCache {
 
     /**
      * Invokes {@link #revoke(String, String, Duration)} with a default expiration parameter.
@@ -144,9 +43,9 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * 
      * @return true if key has successfully been listed as revoked in the cache
      */
-    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key) {
-        return revoke(context, key, expires);
-    }    
+    default boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final  String key) {
+        return revoke(context, key, "y");
+    }
 
     /**
      * Invokes {@link #revoke(String, String, String, Duration)} with a placeholder value parameter.
@@ -159,12 +58,11 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * 
      * @since 4.3.0
      */
-    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+    default boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull final Duration exp) {
         return revoke(context, key, "y", exp);
     }
 
-    
     /**
      * Invokes {@link #revoke(String, String, String, Duration)} with a default expiration parameter.
      * 
@@ -178,18 +76,16 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * 
      * @since 4.3.0
      */
-    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
-            @Nonnull @NotEmpty final String value) {
-        return revoke(context, key, value, expires);
-    }
-    
+    boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value);
+
     /**
      * Returns true if the value is successfully revoked.
      * 
      * <p>If the key has already been revoked, expiration is updated.</p>
      * 
      * @param context a context label to subdivide the cache
-     * @param s key to revoke
+     * @param key key to revoke
      * @param value value to insert into revocation record
      * @param exp entry expiration
      * 
@@ -197,107 +93,30 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * 
      * @since 4.3.0
      */
-    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
-            @Nonnull @NotEmpty final String value, @Nonnull final Duration exp) {
-        checkComponentActive();
-        
-        final String key;
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (context.length() > caps.getContextSize()) {
-            log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
-            return false;
-        } else if (s.length() > caps.getKeySize()) {
-            key = DigestUtils.sha1Hex(s);
-        } else {
-            key = s;
-        }
-        try {
-            final StorageRecord<?> entry = storage.read(context, key);
-            if (entry == null) {
-                log.debug("Entry '{}' of context '{}' is not yet on list of revoked entries,"
-                        + " adding to cache with expiration time {}", key, context, expires);
-                storage.create(context, key, value, Instant.now().plus(exp).toEpochMilli());
-                return true;
-            }
-            
-            storage.updateExpiration(context, key, Instant.now().plus(exp).toEpochMilli());
-            log.debug("Entry '{}' of context '{}' was already revoked, updating expiration", key, context);
-            return true;
-        } catch (final IOException e) {
-            log.error("Exception reading/writing to storage service, returning {}", strict ? "failure" : "success", e);
-            return !strict;
-        }
-    }
-    
+    boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value, @Nonnull final Duration exp);
+
     /**
      * Remove a revocation record.
      * 
      * @param context a context label to subdivide the cache
-     * @param s value to remove
+     * @param key value to remove
      * 
      * @return true iff a record was removed
      * 
      * @since 4.3.0
      */
-    public synchronized boolean unrevoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s) {
-        checkComponentActive();
-        
-        final String key;
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (context.length() > caps.getContextSize()) {
-            log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
-            return false;
-        } else if (s.length() > caps.getKeySize()) {
-            key = DigestUtils.sha1Hex(s);
-        } else {
-            key = s;
-        }
-
-        try {
-            return storage.delete(context, key);
-        } catch (final IOException e) {
-            log.error("Exception writing to storage service", e);
-            return false;
-        }
-    }
+    boolean unrevoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key);
 
     /**
      * Returns true iff the value has been revoked.
      * 
      * @param context a context label to subdivide the cache
-     * @param s value to check
+     * @param key value to check
      * 
      * @return true iff the check value is found in the cache
      */
-    public synchronized boolean isRevoked(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s) {
-        checkComponentActive();
-
-        final String key;
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (context.length() > caps.getContextSize()) {
-            log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
-            return true;
-        } else if (s.length() > caps.getKeySize()) {
-            key = DigestUtils.sha1Hex(s);
-        } else {
-            key = s;
-        }
-
-        try {
-            final StorageRecord<?> entry = storage.read(context, key);
-            if (entry == null) {
-                log.debug("Entry '{}' is not revoked", key);
-                return false;
-            }
-            
-            log.debug("Entry '{}' is revoked", s);
-            return true;
-        } catch (final IOException e) {
-            log.error("Exception reading  storage service, indicating {}",
-                    strict ? "revoked" : "not revoked", e);
-            return strict;
-        }
-    }
+    boolean isRevoked(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key);
 
     /**
      * Attempts to read back a revocation record for a given context and key.
@@ -306,7 +125,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * rather than simple presence/absence as a signal.</p>
      * 
      * @param context revocation context
-     * @param s revocation key
+     * @param key revocation key
      * 
      * @return the matching record, if found, or null if absent
      * 
@@ -314,38 +133,7 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * 
      * @since 4.3.0
      */
-    @Nullable @NotEmpty public synchronized String getRevocationRecord(@Nonnull @NotEmpty final String context,
-            @Nonnull @NotEmpty final String s) throws IOException {
-        checkComponentActive();
+    @Nullable String getRevocationRecord(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
+            throws IOException;
 
-        final String key;
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (context.length() > caps.getContextSize()) {
-            log.error("context {} too long for StorageService (limit {})", context, caps.getContextSize());
-            throw new IOException("Context exceeded storage service limit.");
-        } else if (s.length() > caps.getKeySize()) {
-            key = DigestUtils.sha1Hex(s);
-        } else {
-            key = s;
-        }
-
-        try {
-            final StorageRecord<?> entry = storage.read(context, key);
-            if (entry == null) {
-                log.debug("Entry '{}' is not revoked", key);
-                return null;
-            }
-        
-            log.debug("Entry '{}' is revoked", s);
-            return entry.getValue();
-        } catch (final IOException e) {
-            if (strict) {
-                throw e;
-            }
-            
-            log.error("Exception reading from storage service, non-strict so treating as non-revoked", e);
-            return null;
-        }
-    }
-    
 }
