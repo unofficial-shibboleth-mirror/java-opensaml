@@ -32,8 +32,8 @@ import org.opensaml.saml.saml2.assertion.tests.BaseAssertionValidationTest;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Condition;
 import org.opensaml.saml.saml2.core.OneTimeUse;
-import org.opensaml.storage.ReplayCache;
 import org.opensaml.storage.impl.MemoryStorageService;
+import org.opensaml.storage.impl.StorageServiceReplayCache;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
@@ -45,7 +45,7 @@ import org.testng.annotations.Test;
 public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTest {
     
     private MemoryStorageService storageService;
-    private ReplayCache replayCache;
+    private StorageServiceReplayCache replayCache;
     
     private OneTimeUseConditionValidator validator;
     
@@ -57,7 +57,7 @@ public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTes
         storageService.setId("mySS");
         storageService.initialize();
         
-        replayCache = new ReplayCache();
+        replayCache = new StorageServiceReplayCache();
         replayCache.setId("myRC");
         replayCache.setStorage(storageService);
         replayCache.initialize();
