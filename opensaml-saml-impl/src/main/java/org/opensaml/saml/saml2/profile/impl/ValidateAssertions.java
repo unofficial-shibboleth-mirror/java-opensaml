@@ -60,9 +60,6 @@ public class ValidateAssertions extends AbstractProfileAction {
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(ValidateAssertions.class);
     
-    /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
-    
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
     
@@ -141,25 +138,6 @@ public class ValidateAssertions extends AbstractProfileAction {
         validationContextBuilder = builder;
     }
 
-    /**
-     * Get the HTTP servlet request being processed.
-     * 
-     * @return the HTTP servlet request
-     */
-    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
-    }
-
-    /**
-     * Set the HTTP servlet request being processed.
-     * 
-     * @param request The HTTP servlet request
-     */
-    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        checkSetterPreconditions();
-        httpServletRequest = request;
-    }
-    
     /**
      * Get flag which indicates whether a failure of Assertion validation should be considered a fatal processing error.
      * 
@@ -249,13 +227,6 @@ public class ValidateAssertions extends AbstractProfileAction {
             }
             log.info("{} Assertion validator is null, must be resovleable via the lookup function", getLogPrefix());
         }
-    }
-
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        httpServletRequest = null;
-        
-        super.doDestroy();
     }
 
     /** {@inheritDoc} */
@@ -402,8 +373,8 @@ public class ValidateAssertions extends AbstractProfileAction {
     /**
      * Class which holds data relevant to validating a SAML 2.0 Assertion.
      */
-    public class AssertionValidationInput {
-        
+    public static class AssertionValidationInput {
+
         /** The profile request context input. */
         private ProfileRequestContext profileContext;
         
