@@ -144,26 +144,47 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * Invokes {@link #revoke(String, String, Duration)} with a default expiration parameter.
      * 
      * @param context a context label to subdivide the cache
-     * @param s value to revoke
+     * @param key key to revoke
      * 
-     * @return true if value has successfully been listed as revoked in the cache.
+     * @return true if key has successfully been listed as revoked in the cache
      */
-    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s) {
-        return revoke(context, s, expires);
+    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key) {
+        return revoke(context, key, expires);
     }    
 
     /**
-     * Returns true if the value is successfully revoked. If value has already been revoked, expiration is updated.
+     * Invokes {@link #revoke(String, String, String, Duration)} with a placeholder value parameter.
      * 
      * @param context a context label to subdivide the cache
-     * @param s value to revoke
+     * @param key key to revoke
      * @param exp entry expiration
      * 
-     * @return true if value has successfully been listed as revoked in the cache
+     * @return true if key has successfully been listed as revoked in the cache
+     * 
+     * @since 4.3.0
      */
-    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String s,
+    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
             @Nonnull final Duration exp) {
-        return revoke(context, s, "y", exp);
+        return revoke(context, key, "y", exp);
+    }
+
+    
+    /**
+     * Invokes {@link #revoke(String, String, String, Duration)} with a default expiration parameter.
+     * 
+     * <p>If the key has already been revoked, expiration is updated.</p>
+     * 
+     * @param context a context label to subdivide the cache
+     * @param key key to revoke
+     * @param value value to insert into revocation record
+     * 
+     * @return true if key has successfully been listed as revoked in the cache
+     * 
+     * @since 4.3.0
+     */
+    public synchronized boolean revoke(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key,
+            @Nonnull @NotEmpty final String value) {
+        return revoke(context, key, value, expires);
     }
     
     /**
@@ -172,11 +193,11 @@ public class RevocationCache extends AbstractIdentifiableInitializableComponent 
      * <p>If the key has already been revoked, expiration is updated.</p>
      * 
      * @param context a context label to subdivide the cache
-     * @param s value to revoke
+     * @param s key to revoke
      * @param value value to insert into revocation record
      * @param exp entry expiration
      * 
-     * @return true if value has successfully been listed as revoked in the cache
+     * @return true if key has successfully been listed as revoked in the cache
      * 
      * @since 4.3.0
      */
