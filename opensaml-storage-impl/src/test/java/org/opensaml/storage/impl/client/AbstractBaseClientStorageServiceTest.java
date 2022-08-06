@@ -23,7 +23,8 @@ import org.testng.Assert;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
+import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestSupplier;
+import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseSupplier;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.impl.BasicKeystoreKeyStrategy;
@@ -53,8 +54,8 @@ public class AbstractBaseClientStorageServiceTest {
         ss.setStorageName(STORAGE_NAME);
 
         final CookieManager cm = new CookieManager();
-        cm.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
-        cm.setHttpServletResponse(new ThreadLocalHttpServletResponseProxy());
+        cm.setHttpServletRequestSupplier(new ThreadLocalHttpServletRequestSupplier());
+        cm.setHttpServletResponseSupplier(new ThreadLocalHttpServletResponseSupplier());
         cm.initialize();
         ss.setCookieManager(cm);
 
