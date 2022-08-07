@@ -22,7 +22,6 @@ import org.testng.Assert;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.CookieManager;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestSupplier;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseSupplier;
 import net.shibboleth.utilities.java.support.resource.Resource;
@@ -78,7 +77,7 @@ public class AbstractBaseClientStorageServiceTest {
 
         ss.setDataSealer(sealer);
         
-        ss.setHttpServletRequest(new ThreadLocalHttpServletRequestProxy());
+        ss.setHttpServletRequestSupplier(new ThreadLocalHttpServletRequestSupplier());
         ss.initialize();
         
         return ss;
