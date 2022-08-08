@@ -19,7 +19,7 @@ package org.opensaml.storage.impl.memcached;
 
 import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import org.opensaml.storage.StorageCapabilitiesEx;
+import org.opensaml.storage.StorageCapabilities;
 
 /**
  * Provides a description of memcached capabilities. Note that only value size is configurable since memcached supports
@@ -28,7 +28,7 @@ import org.opensaml.storage.StorageCapabilitiesEx;
  *
  * @author Marvin S. Addison
  */
-public class MemcachedStorageCapabilities implements StorageCapabilitiesEx {
+public class MemcachedStorageCapabilities implements StorageCapabilities {
 
     /** Memcached supports 1M slabs (i.e. values) by default and issues warning on increase. */
     private static long defaultMaxValue = 1024 * 1024;

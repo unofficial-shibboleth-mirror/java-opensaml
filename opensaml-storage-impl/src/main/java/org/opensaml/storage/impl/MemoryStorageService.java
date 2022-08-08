@@ -36,7 +36,7 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
 
 import org.opensaml.storage.AbstractMapBackedStorageService;
 import org.opensaml.storage.MutableStorageRecord;
-import org.opensaml.storage.StorageCapabilitiesEx;
+import org.opensaml.storage.StorageCapabilities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ import org.slf4j.LoggerFactory;
  * Implementation of {@link AbstractMapBackedStorageService} that stores data in-memory in a shared data structure 
  * with no persistence.
  */
-public class MemoryStorageService extends AbstractMapBackedStorageService implements StorageCapabilitiesEx {
+public class MemoryStorageService extends AbstractMapBackedStorageService implements StorageCapabilities {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(MemoryStorageService.class);

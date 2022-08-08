@@ -25,7 +25,6 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.storage.ReplayCache;
 import org.opensaml.storage.StorageCapabilities;
-import org.opensaml.storage.StorageCapabilitiesEx;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.slf4j.Logger;
@@ -81,10 +80,7 @@ public class StorageServiceReplayCache extends AbstractIdentifiableInitializable
         checkSetterPreconditions();
         
         storage = Constraint.isNotNull(storageService, "StorageService cannot be null");
-        final StorageCapabilities caps = storage.getCapabilities();
-        if (caps instanceof StorageCapabilitiesEx) {
-            Constraint.isTrue(((StorageCapabilitiesEx) caps).isServerSide(), "StorageService cannot be client-side");
-        }
+        Constraint.isTrue(storage.getCapabilities().isServerSide(), "StorageService cannot be client-side");
     }
     
     /**

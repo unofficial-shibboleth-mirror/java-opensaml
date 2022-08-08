@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.storage.AbstractMapBackedStorageService;
 import org.opensaml.storage.MutableStorageRecord;
-import org.opensaml.storage.StorageCapabilitiesEx;
+import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.impl.client.ClientStorageServiceStore.Factory;
 import org.opensaml.storage.impl.client.JSONClientStorageServiceStore.JSONClientStorageServiceStoreFactory;
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ import net.shibboleth.utilities.java.support.security.DataSealerKeyStrategy;
  * load/store of the data to/from that object is driven via companion classes. The serialization
  * of data is inside the storage object class, but the encryption/decryption is here.</p>
  */
-public class ClientStorageService extends AbstractMapBackedStorageService implements Filter, StorageCapabilitiesEx {
+public class ClientStorageService extends AbstractMapBackedStorageService implements Filter, StorageCapabilities {
 
     /** Name of session attribute for session lock. */
     @Nonnull protected static final String LOCK_ATTRIBUTE =

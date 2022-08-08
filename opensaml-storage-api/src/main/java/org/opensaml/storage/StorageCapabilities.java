@@ -44,5 +44,23 @@ public interface StorageCapabilities {
      * @return  max size of values in characters
      */
     long getValueSize();
+    
+    /**
+     * Returns true iff the storage implementation manages data independent of the client.
+     * 
+     * @return  true iff the storage implementation manages data independent of the client
+     * 
+     * @since 5.0.0
+     */
+    boolean isServerSide();
+
+    /**
+     * Returns true iff the storage implementation manages data independent of a single server node.
+     * 
+     * @return true iff the storage implementation manages data independent of a single server node
+     * 
+     * @since 5.0.0
+     */
+    boolean isClustered();
 
 }

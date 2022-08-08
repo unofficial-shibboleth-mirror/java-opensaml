@@ -47,7 +47,7 @@ import org.ldaptive.ext.MergeOperation;
 import org.ldaptive.ext.MergeRequest;
 import org.ldaptive.pool.PooledConnectionFactory;
 import org.opensaml.storage.AbstractStorageService;
-import org.opensaml.storage.StorageCapabilitiesEx;
+import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.VersionMismatchException;
 import org.slf4j.Logger;
@@ -57,7 +57,7 @@ import org.slf4j.LoggerFactory;
  * Implementation of {@link org.opensaml.storage.StorageService} that stores data in an LDAP. Does not support
  * expiration or versioning at this time.
  */
-public class LDAPStorageService extends AbstractStorageService implements StorageCapabilitiesEx {
+public class LDAPStorageService extends AbstractStorageService implements StorageCapabilities {
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(LDAPStorageService.class);
