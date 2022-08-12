@@ -40,7 +40,7 @@ import com.google.common.net.UrlEscapers;
 import jakarta.servlet.http.Cookie;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.HttpServletRequestResponseContext;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
+import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestSupplier;
 
 /** Unit test for {@link LoadClientStorageServices}. */
 public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServiceTest {
@@ -60,7 +60,7 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
         loadCtx.getStorageKeys().add(STORAGE_NAME);
         
         action = new LoadClientStorageServices();
-        action.setHttpServletRequestSupplier(new ThreadLocalHttpServletRequestProxy());
+        action.setHttpServletRequestSupplier(new ThreadLocalHttpServletRequestSupplier());
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
     }
 

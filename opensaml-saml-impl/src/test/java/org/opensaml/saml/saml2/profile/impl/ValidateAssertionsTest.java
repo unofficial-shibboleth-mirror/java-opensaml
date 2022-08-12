@@ -23,7 +23,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
