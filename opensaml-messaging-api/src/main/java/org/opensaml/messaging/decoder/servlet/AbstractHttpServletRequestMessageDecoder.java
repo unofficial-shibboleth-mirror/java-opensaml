@@ -20,15 +20,9 @@ package org.opensaml.messaging.decoder.servlet;
 import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
-
 
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -38,9 +32,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
  */
 public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractMessageDecoder
         implements HttpServletRequestMessageDecoder {
-
-    /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractHttpServletRequestMessageDecoder.class);
 
     /** Current HTTP request, if available. */
     @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
@@ -61,23 +52,6 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      */
     @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    @Deprecated(since = "4.3", forRemoval = true)
-    public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
-        checkSetterPreconditions();
-        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletReqest",
-                getClass().getCanonicalName(), "setHttpServletRequestSupplier");
-        if (request != null && !(request instanceof ThreadLocalHttpServletRequestProxy)) {
-            log.warn("Unsafe HttpServletRequest injected");
-        }
-        httpServletRequestSupplier = new Supplier<>() {
-            public HttpServletRequest get() {
-                return request;
-            };
-        };
     }
 
     /** {@inheritDoc} */

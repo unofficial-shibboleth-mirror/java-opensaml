@@ -22,14 +22,6 @@ import java.util.function.Supplier;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.ComponentSupport;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
@@ -39,9 +31,6 @@ import net.shibboleth.utilities.java.support.component.ComponentInitializationEx
  */
 public abstract class AbstractHttpServletResponseMessageEncoder extends AbstractMessageEncoder
         implements HttpServletResponseMessageEncoder {
-
-    /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractHttpServletResponseMessageEncoder.class);
 
     /** Supplier for the Current HTTP servlet response, if available. */
     @Nullable private Supplier<HttpServletResponse> httpServletResponseSupplier;
@@ -61,8 +50,6 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
      */
     public synchronized void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> supplier) {
         checkSetterPreconditions();
-        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-
         httpServletResponseSupplier = supplier;
     }
 
@@ -73,25 +60,6 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
      */
     @Nullable public Supplier<HttpServletResponse> getHttpServletResponseSupplier() {
         return httpServletResponseSupplier;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Deprecated(since = "4.3", forRemoval = true)
-    public synchronized void setHttpServletResponse(@Nullable final HttpServletResponse response) {
-        checkSetterPreconditions();
-
-        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletResponse",
-                getClass().getCanonicalName(), "setHttpServletResponseSupplier");
-        if (response != null && !(response instanceof ThreadLocalHttpServletResponseProxy)) {
-            log.warn("Unsafe HttpServletRequest injected");
-        }
-        httpServletResponseSupplier = new Supplier<>() {
-            public HttpServletResponse get() {
-                return response;
-            };
-        };
     }
 
     /** {@inheritDoc} */

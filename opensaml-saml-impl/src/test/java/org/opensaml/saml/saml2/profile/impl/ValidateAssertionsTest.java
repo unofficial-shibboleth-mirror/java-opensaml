@@ -66,7 +66,7 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
         resultsMap = new HashMap<>();
         
         action = new ValidateAssertions();
-        action.setHttpServletRequest(httpRequest);
+        action.setHttpServletRequestSupplier(new Supplier<>() { public MockHttpServletRequest get() {return httpRequest;}}); 
         action.setHttpServletResponseSupplier(new Supplier<> () {public HttpServletResponse get() { return httpResponse;}});
         action.setValidationContextBuilder(new MockAssertionValidationContextBuilder());
         action.setAssertionValidator(new MockAssertionValidator(resultsMap));
@@ -295,7 +295,7 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
 
     @Test(expectedExceptions = ComponentInitializationException.class)
     public void testNoHttpRequest() throws ComponentInitializationException {
-        action.setHttpServletRequest(null);
+        action.setHttpServletRequestSupplier(null);
         
         action.initialize();
     }

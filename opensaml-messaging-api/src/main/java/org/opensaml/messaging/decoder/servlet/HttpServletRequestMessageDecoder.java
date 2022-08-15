@@ -39,19 +39,10 @@ public interface HttpServletRequestMessageDecoder extends MessageDecoder {
     @Nullable HttpServletRequest getHttpServletRequest();
     
     /**
-     * Set the HTTP servlet request on which to operate.
-     *
-     * @param request the HTTP servlet request
-     */
-    @Deprecated(forRemoval = true, since="4.3")
-    void setHttpServletRequest(@Nullable final HttpServletRequest request);
-    /**
      * Set the supplier for the HTTP servlet request on which to operate.
      *
      * @param requestSupplier the HTTP servlet request
      */
-    default void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
-        setHttpServletRequest(requestSupplier.get());
-    }
+    void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier);
 }
 

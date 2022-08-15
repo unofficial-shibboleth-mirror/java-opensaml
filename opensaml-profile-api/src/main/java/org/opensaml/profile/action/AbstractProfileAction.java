@@ -26,7 +26,6 @@ import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.MetricContext;
 import org.opensaml.profile.context.PreviousEventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -34,10 +33,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.utilities.java.support.annotation.Prototype;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 /**
  * Base class for profile actions.
@@ -46,9 +41,6 @@ import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.Object
  */
 @Prototype
 public abstract class AbstractProfileAction extends AbstractInitializableComponent implements ProfileAction {
-
-    /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractProfileAction.class);
 
     /** Cached log prefix. */
     @Nullable private String logPrefix;
@@ -81,26 +73,6 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
     }
 
     /**
-     * Set the current HTTP request.
-     *
-     * @param request current HTTP request
-     */
-    @Deprecated(since = "4.3", forRemoval = true)
-    public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
-        checkSetterPreconditions();
-        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletReqest",
-                getLogPrefix(), "setHttpServletRequestSupplier");
-        if (request != null && !(request instanceof ThreadLocalHttpServletRequestProxy)) {
-            log.warn("Unsafe HttpServletRequest injected");
-        }
-        httpServletRequestSupplier = new Supplier<>() {
-            public HttpServletRequest get() {
-                return request;
-            };
-        };
-    }
-
-    /**
      * Set the current HTTP request Supplier.
      *
      * @param requestSupplier Supplier for the current HTTP request
@@ -129,27 +101,6 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      */
     @Nullable public Supplier<HttpServletResponse> getHttpServletResponseSupplier() {
         return httpServletResponseSupplier;
-    }
-
-    /**
-     * Set the current HTTP response.
-     *
-     * @param response current HTTP response
-     */
-    @Deprecated(since = "4.3", forRemoval = true)
-    public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
-        checkSetterPreconditions();
-
-        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletResponse",
-                getLogPrefix(), "setHttpServletResponseSupplier");
-        if (response != null && !(response instanceof ThreadLocalHttpServletResponseProxy)) {
-            log.warn("Unsafe HttpServletRequest injected");
-        }
-        httpServletResponseSupplier = new Supplier<>() {
-            public HttpServletResponse get() {
-                return response;
-            };
-        };
     }
 
     /**

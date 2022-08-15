@@ -38,21 +38,11 @@ public interface HttpServletResponseMessageEncoder extends MessageEncoder {
     @Nullable HttpServletResponse getHttpServletResponse();
     
     /**
-     * Set the Http servlet response on which to operate.
-     * 
-     * @param response the HTTP servlet response
-     */
-    @Deprecated(forRemoval = true, since="4.3")
-    void setHttpServletResponse(@Nullable final HttpServletResponse response);
-    
-    /**
      * Set the supplier for the HTTP servlet response on which to operate.
      *
      * @param responseSupplier the supplier for the HTTP servlet response
      */
-    default void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> responseSupplier) {
-        setHttpServletResponse(responseSupplier.get());
-    }
+    void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> responseSupplier);
 
 }
 
