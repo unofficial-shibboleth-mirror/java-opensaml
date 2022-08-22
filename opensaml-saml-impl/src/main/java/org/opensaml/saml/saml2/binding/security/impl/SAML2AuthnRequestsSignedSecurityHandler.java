@@ -41,7 +41,6 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
     /** Logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML2AuthnRequestsSignedSecurityHandler.class);
 
-// Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
     public void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final Object samlMessage = messageContext.getMessage();
@@ -50,40 +49,14 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
             return;
         }
         
-        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
-        if (peerContext == null || Strings.isNullOrEmpty(peerContext.getEntityId())) {
-            log.warn("SAML peer entityID was not available, unable to evaluate rule");
-            return;
-        }
-        final String messageIssuer = peerContext.getEntityId();
-        
-        final SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class, false);
-        if (metadataContext == null || metadataContext.getRoleDescriptor() == null) {
-            log.warn("SAMLPeerContext did not contain either a SAMLMetadataContext or a RoleDescriptor, " 
-                    + "unable to evaluate rule");
-            return;
-        }
-        
-        if (!(metadataContext.getRoleDescriptor() instanceof SPSSODescriptor)) {
-            log.warn("RoleDescriptor was not an SPSSODescriptor, it was a {}. Unable to evaluate rule", 
-                    metadataContext.getRoleDescriptor().getClass().getName());
-            return;
-        }
-        
-        final SPSSODescriptor spssoRole = (SPSSODescriptor) metadataContext.getRoleDescriptor();
-        
-        if (spssoRole.isAuthnRequestsSigned() == Boolean.TRUE) {
+        if (isRequestSigningRequired(messageContext)) {
             if (!isMessageSigned(messageContext)) {
-                log.error("SPSSODescriptor for entity ID '{}' indicates AuthnRequests must be signed, "
-                        + "but inbound message was not signed", messageIssuer);
+                log.warn("Inbound AuthnRequest message was not signed");
                 throw new MessageHandlerException("Inbound AuthnRequest was required to be signed but was not");
             }
-        } else {
-            log.debug("SPSSODescriptor for entity ID '{}' does not require AuthnRequests to be signed", messageIssuer);
         }
 
     }
-// Checkstyle: ReturnCount ON
     
     /**
      * Determine whether the inbound message is signed.
@@ -93,6 +66,49 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
      */
     protected boolean isMessageSigned(@Nonnull final MessageContext messageContext) {
         return SAMLBindingSupport.isMessageSigned(messageContext);
+    }
+
+    
+    /**
+     * Determine whether a signature is required.
+     * 
+     * @param messageContext message context
+     * 
+     * @return true iff the request must be signed
+     * 
+     * @since 4.3.0
+     */
+    protected boolean isRequestSigningRequired(@Nonnull final MessageContext messageContext) {
+        
+        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        if (peerContext == null || Strings.isNullOrEmpty(peerContext.getEntityId())) {
+            log.warn("SAML peer entityID was not available, unable to evaluate rule");
+            return false;
+        }
+        final String messageIssuer = peerContext.getEntityId();
+        
+        final SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        if (metadataContext == null || metadataContext.getRoleDescriptor() == null) {
+            log.warn("SAMLPeerContext did not contain either a SAMLMetadataContext or a RoleDescriptor, " 
+                    + "unable to evaluate rule");
+            return false;
+        }
+        
+        if (!(metadataContext.getRoleDescriptor() instanceof SPSSODescriptor)) {
+            log.warn("RoleDescriptor was not an SPSSODescriptor, it was a {}. Unable to evaluate rule", 
+                    metadataContext.getRoleDescriptor().getClass().getName());
+            return false;
+        }
+        
+        final SPSSODescriptor spssoRole = (SPSSODescriptor) metadataContext.getRoleDescriptor();
+        
+        if (spssoRole.isAuthnRequestsSigned() == Boolean.TRUE) {
+            log.debug("SPSSODescriptor for entity ID '{}' indicates AuthnRequests must be signed", messageIssuer);
+            return true;
+        }
+        
+        log.debug("SPSSODescriptor for entity ID '{}' does not require AuthnRequests to be signed", messageIssuer);
+        return false;
     }
 
 }
