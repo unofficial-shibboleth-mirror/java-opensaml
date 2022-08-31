@@ -89,6 +89,15 @@
         </dependency>
 
         <dependency>
+            <groupId>net.shibboleth.shared</groupId>
+            <artifactId>shib-security</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>net.shibboleth.shared</groupId>
+            <artifactId>shib-networking</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
         </dependency>
@@ -205,6 +214,11 @@
             <artifactId>opensaml-security-api</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.shibboleth.shared</groupId>
+            <artifactId>shib-testing</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

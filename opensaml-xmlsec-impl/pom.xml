@@ -85,12 +85,10 @@
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
-            <groupId>net.shibboleth.utilities</groupId>
-            <artifactId>java-support</artifactId>
-            <version>${java-support.version}</version>
-            <type>test-jar</type>
+            <groupId>net.shibboleth.shared</groupId>
+            <artifactId>shib-testing</artifactId>
             <scope>test</scope>
         </dependency>
 

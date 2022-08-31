@@ -24,10 +24,10 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import net.shibboleth.ext.spring.resource.HTTPResource;
-import net.shibboleth.ext.spring.testing.ResourceTestHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
-import net.shibboleth.utilities.java.support.test.repository.RepositorySupport;
+import net.shibboleth.utilities.java.support.testing.RepositorySupport;
+import net.shibboleth.utilities.java.support.testing.ResourceTestHelper;
 
 import org.apache.http.client.HttpClient;
 import org.springframework.core.io.ClassPathResource;
@@ -41,10 +41,10 @@ import org.testng.annotations.Test;
  */
 public class SecurityEnhancedHTTPResourceTest {
 
-    private final String path = "net/shibboleth/ext/spring/resource/document.xml";
-    private final String pathPrefix = "src/test/resources/";
-    private final String existsHttps = RepositorySupport.buildHTTPSResourceURL("spring-extensions", pathPrefix+ path);
-    private final String existsHttp = RepositorySupport.buildHTTPResourceURL("spring-extensions", pathPrefix+ path, false);
+    private final String path = "data/org/opensaml/security/httpclient/document.xml";
+    private final String pathPrefix = "opensaml-security-api/src/test/resources/";
+    private final String existsHttps = RepositorySupport.buildHTTPSResourceURL("java-opensaml", pathPrefix+ path);
+    private final String existsHttp = RepositorySupport.buildHTTPResourceURL("java-opensaml", pathPrefix+ path, false);
 
     private HttpClient client;
     private HttpClientSecurityParameters params;
@@ -65,7 +65,7 @@ public class SecurityEnhancedHTTPResourceTest {
         final HTTPResource existsResource = new HTTPResource(client, existsHttp);
         existsResource.setHttpClientContextHandler(handler);
         
-        Assert.assertTrue(ResourceTestHelper.compare(existsResource, new ClassPathResource("net/shibboleth/ext/spring/resource/document.xml")));
+        Assert.assertTrue(ResourceTestHelper.compare(existsResource, new ClassPathResource(path)));
     }
 
     @Test public void testHostnameRejected() throws IOException, ComponentInitializationException {

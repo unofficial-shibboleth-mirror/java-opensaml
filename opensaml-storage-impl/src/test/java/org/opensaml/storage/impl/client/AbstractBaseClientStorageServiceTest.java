@@ -20,6 +20,7 @@ package org.opensaml.storage.impl.client;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 
+import net.shibboleth.ext.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.net.CookieManager;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestSupplier;
@@ -27,7 +28,6 @@ import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseS
 import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.impl.BasicKeystoreKeyStrategy;
-import net.shibboleth.utilities.java.support.test.resource.TestResourceConverter;
 
 /** Base class for client storage tests. */
 public class AbstractBaseClientStorageServiceTest {
@@ -40,11 +40,11 @@ public class AbstractBaseClientStorageServiceTest {
     protected void init() throws ComponentInitializationException {
         ClassPathResource resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.jks");
         Assert.assertTrue(resource.exists());
-        keystoreResource = TestResourceConverter.of(resource);
+        keystoreResource = ResourceHelper.of(resource);
 
         resource = new ClassPathResource("/org/opensaml/storage/impl/SealerKeyStore.kver");
         Assert.assertTrue(resource.exists());
-        versionResource = TestResourceConverter.of(resource);
+        versionResource = ResourceHelper.of(resource);
     }
 
     protected ClientStorageService getStorageService() throws ComponentInitializationException {

@@ -37,7 +37,7 @@ public class TemplateRequestURLBuilderTest {
     
     @BeforeClass
     public void setUp() {
-        engine = net.shibboleth.utilities.java.support.velocity.VelocityEngine.newVelocityEngine();
+        engine = net.shibboleth.utilities.java.support.testing.VelocityEngine.newVelocityEngine();
     }
     
     @Test

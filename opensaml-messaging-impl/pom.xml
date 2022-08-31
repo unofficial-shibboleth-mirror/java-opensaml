@@ -33,6 +33,10 @@
 			<version>${project.version}</version>
 		</dependency>
         <dependency>
+            <groupId>net.shibboleth.shared</groupId>
+            <artifactId>shib-networking</artifactId>
+        </dependency>		
+        <dependency>
         	<groupId>com.google.code.findbugs</groupId>
         	<artifactId>jsr305</artifactId>
         </dependency>
