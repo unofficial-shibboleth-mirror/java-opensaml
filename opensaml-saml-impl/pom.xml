@@ -96,6 +96,10 @@
             <groupId>net.shibboleth.shared</groupId>
             <artifactId>shib-networking</artifactId>
         </dependency>
+        <dependency>
+            <groupId>net.shibboleth.shared</groupId>
+            <artifactId>shib-velocity</artifactId>
+        </dependency>
 
         <dependency>
             <groupId>commons-codec</groupId>
