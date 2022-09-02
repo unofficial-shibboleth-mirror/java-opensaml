@@ -33,13 +33,9 @@
 			<version>${project.version}</version>
 		</dependency>
         <dependency>
-            <groupId>net.shibboleth.shared</groupId>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-networking</artifactId>
         </dependency>		
-        <dependency>
-        	<groupId>com.google.code.findbugs</groupId>
-        	<artifactId>jsr305</artifactId>
-        </dependency>
         <dependency>
         	<groupId>com.google.guava</groupId>
         	<artifactId>guava</artifactId>
@@ -68,8 +64,8 @@
         </dependency>
 
 		<dependency>
-			<groupId>net.shibboleth.ext</groupId>
-			<artifactId>spring-extensions</artifactId>
+            <groupId>${shib-shared.groupId}</groupId>
+			<artifactId>shib-spring</artifactId>
 			<scope>test</scope>
 		</dependency>
 

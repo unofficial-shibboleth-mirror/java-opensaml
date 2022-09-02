@@ -89,26 +89,21 @@
         </dependency>
 
         <dependency>
-            <groupId>net.shibboleth.shared</groupId>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-security</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.shibboleth.shared</groupId>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-networking</artifactId>
         </dependency>
         <dependency>
-            <groupId>net.shibboleth.shared</groupId>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-velocity</artifactId>
         </dependency>
 
         <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
-        </dependency>
-
-        <dependency>
-        	<groupId>com.google.code.findbugs</groupId>
-        	<artifactId>jsr305</artifactId>
         </dependency>
 
         <dependency>
@@ -221,13 +216,13 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>net.shibboleth.shared</groupId>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-testing</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>net.shibboleth.ext</groupId>
-            <artifactId>spring-extensions</artifactId>
+            <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-spring</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
