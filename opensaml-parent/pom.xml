@@ -152,13 +152,6 @@
             <!-- Runtime Dependencies -->
 
             <!-- Test Dependencies -->
-            <dependency>
-                <groupId>${shib-shared.groupId}</groupId>
-                <artifactId>shib-spring</artifactId>
-                <version>${shib-shared.version}</version>
-                <scope>test</scope>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 
