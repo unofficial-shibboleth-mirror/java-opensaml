@@ -27,6 +27,8 @@ import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 import org.ldaptive.AttributeModification;
 import org.ldaptive.AttributeModificationType;
@@ -75,6 +77,8 @@ public class LDAPStorageService extends AbstractStorageService implements Storag
      * @param attrs to include in all LDAP entries
      */
     public LDAPStorageService(@Nonnull final PooledConnectionFactory factory, final LdapAttribute... attrs) {
+        DeprecationSupport.warn(ObjectType.CLASS, getClass().getName(), null, null);
+        
         connectionFactory = Constraint.isNotNull(factory, "ConnectionFactory cannot be null");
         defaultAttributes = attrs;
 
