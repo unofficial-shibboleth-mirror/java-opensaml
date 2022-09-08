@@ -67,6 +67,11 @@
             <artifactId>cryptacular</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+        </dependency>
+
         <!-- Provided Dependencies -->
         <dependency>
             <groupId>jakarta.json</groupId>
@@ -76,6 +81,7 @@
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
+            <scope>provided</scope>
         </dependency>
 
         <!-- Runtime Dependencies -->
@@ -138,15 +144,11 @@
         -->
 
         <dependency>
-            <groupId>${spring.groupId}</groupId>
-            <artifactId>spring-beans</artifactId>
+            <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-spring</artifactId>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>${spring.groupId}</groupId>
-            <artifactId>spring-context</artifactId>
-            <scope>test</scope>
-        </dependency>
+
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-core</artifactId>
@@ -155,23 +157,6 @@
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${spring.groupId}</groupId>
-            <artifactId>spring-web</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>${shib-shared.groupId}</groupId>
-            <artifactId>shib-spring</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15on</artifactId>
             <scope>test</scope>
         </dependency>
 

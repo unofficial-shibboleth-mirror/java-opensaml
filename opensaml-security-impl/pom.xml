@@ -41,6 +41,11 @@
         </dependency>
 
         <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-networking</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>commons-codec</groupId>
             <artifactId>commons-codec</artifactId>
         </dependency>
@@ -49,11 +54,6 @@
         	<groupId>com.google.guava</groupId>
         	<artifactId>guava</artifactId>
         </dependency>
-
-		<dependency>
-			<groupId>org.cryptacular</groupId>
-			<artifactId>cryptacular</artifactId>
-		</dependency>
 
         <dependency>
             <groupId>${httpclient.groupId}</groupId>
@@ -89,6 +89,12 @@
             <artifactId>opensaml-security-api</artifactId>
             <version>${project.version}</version>
             <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.cryptacular</groupId>
+            <artifactId>cryptacular</artifactId>
             <scope>test</scope>
         </dependency>
 

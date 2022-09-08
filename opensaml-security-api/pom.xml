@@ -87,28 +87,19 @@
 
         <dependency>
             <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-spring</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-testing</artifactId>
             <scope>test</scope>
         </dependency>
         
         <dependency>
           <groupId>${spring.groupId}</groupId>
-          <artifactId>spring-beans</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>${spring.groupId}</groupId>
             <artifactId>spring-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>${spring.groupId}</groupId>
-          <artifactId>spring-test</artifactId>
-          <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>${shib-shared.groupId}</groupId>
-            <artifactId>shib-spring</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>

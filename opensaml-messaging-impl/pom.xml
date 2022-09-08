@@ -36,10 +36,6 @@
             <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-networking</artifactId>
         </dependency>		
-        <dependency>
-        	<groupId>com.google.guava</groupId>
-        	<artifactId>guava</artifactId>
-        </dependency>
 
 		<!-- Provided Dependencies -->
 		<dependency>
@@ -64,16 +60,11 @@
         </dependency>
 
 		<dependency>
-            <groupId>${shib-shared.groupId}</groupId>
-			<artifactId>shib-spring</artifactId>
-			<scope>test</scope>
-		</dependency>
-
-		<dependency>
 			<groupId>${spring.groupId}</groupId>
 			<artifactId>spring-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<!-- Needed regardless of dependency:analyze. -->
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-web</artifactId>
