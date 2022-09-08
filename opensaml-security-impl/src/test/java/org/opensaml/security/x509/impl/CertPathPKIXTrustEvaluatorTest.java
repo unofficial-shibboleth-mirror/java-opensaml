@@ -316,7 +316,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Valid path was specified, but depth exceeded max path depth", info, cred);
     }
 
-    @Test
+    @Test(enabled=false)
     public void testAnyPolicy() {
         cred = getCredential("mdt-signer.crt.pem", "mdt-ica.1.crt.pem");
         info = getPKIXInfoSet(
@@ -328,7 +328,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Intermediate CA with anyPolicy (2.5.29.32.0) entry permitted", info, cred, opts);
     }
 
-    @Test
+    @Test(enabled=false)
     public void testExplicitPolicy() {
         cred = getCredential("mdt-signer.crt.pem", "mdt-ica.1.crt.pem");
         info = getPKIXInfoSet(
@@ -348,7 +348,7 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Intermediate CA with explicit policies " + testPolicy1 + ", " + testPolicy2, info, cred, opts);
     }
 
-    @Test
+    @Test(enabled=false)
     public void testExplicitPolicyMap() {
         cred = getCredential("mdt-signer.crt.pem", "mdt-ica.3.crt.pem");
         info = getPKIXInfoSet(
