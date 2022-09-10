@@ -143,11 +143,14 @@ def gen_csr(key, csrout, subject, exts=None, digest=signing_digest):
     execute_openssl("req -new -key {} -out {} -subj {}  -{} {}", key, csrout, subject, digest, "-reqexts " + exts if exts else "")
 
 def gen_key(path, length=key_length):
-    execute_openssl("genrsa -out {} {}", path, length)
+    execute_openssl("genrsa -out {} {}", path, length, include_config=False)
 
-def execute_openssl(cmd, *fmt_params):
+def execute_openssl(cmd, *fmt_params, include_config=True):
     #print("execute_openssl:", cmd, fmt_params)
-    to_execute = " ".join(["openssl", cmd, "-config", openssl_config]).format(*fmt_params)
+    to_execute_list = ["openssl", cmd]
+    if include_config:
+        to_execute_list.extend(["-config", openssl_config])
+    to_execute = " ".join(to_execute_list).format(*fmt_params)
     print("to_execute", to_execute)
     # Just splitting the string like this is quick/dirty/kludgy, doesn't work if the arg values have spaces, etc.
     subprocess.call(to_execute.split())
