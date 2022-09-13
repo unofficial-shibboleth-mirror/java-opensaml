@@ -87,6 +87,11 @@
 
         <dependency>
             <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-networking-spring</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
             <artifactId>shib-spring</artifactId>
             <scope>test</scope>
         </dependency>
