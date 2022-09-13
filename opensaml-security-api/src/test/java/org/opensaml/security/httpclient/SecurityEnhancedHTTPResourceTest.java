@@ -24,10 +24,10 @@ import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
 import net.shibboleth.ext.spring.resource.HTTPResource;
+import net.shibboleth.shared.testing.RepositorySupport;
+import net.shibboleth.shared.testing.ResourceTestHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
-import net.shibboleth.utilities.java.support.testing.RepositorySupport;
-import net.shibboleth.utilities.java.support.testing.ResourceTestHelper;
 
 import org.apache.http.client.HttpClient;
 import org.springframework.core.io.ClassPathResource;
