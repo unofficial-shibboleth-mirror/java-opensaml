@@ -22,7 +22,7 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.ext.spring.factory.AbstractComponentAwareFactoryBean;
+import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.trust.TrustEngine;

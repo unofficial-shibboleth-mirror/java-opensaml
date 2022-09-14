@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
 
-import net.shibboleth.ext.spring.factory.AbstractComponentAwareFactoryBean;
+import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
 /**
  * A factory bean to accumulate the information pertaining to an

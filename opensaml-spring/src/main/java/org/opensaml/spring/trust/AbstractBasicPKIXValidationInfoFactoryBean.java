@@ -24,9 +24,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.ext.spring.factory.AbstractComponentAwareFactoryBean;
-
 import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
+
+import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
 /**
  * A factory bean to collect information to do with a {@link BasicPKIXValidationInformation}.

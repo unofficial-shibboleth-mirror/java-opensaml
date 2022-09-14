@@ -43,7 +43,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
 
-import net.shibboleth.ext.spring.factory.AbstractComponentAwareFactoryBean;
+import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 
 /**
