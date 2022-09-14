@@ -19,8 +19,8 @@ package org.opensaml.profile.logic;
 
 import java.util.Map;
 
-import net.shibboleth.ext.spring.util.ApplicationContextBuilder;
 import net.shibboleth.shared.spring.config.IdentifiableBeanPostProcessor;
+import net.shibboleth.shared.spring.util.ApplicationContextBuilder;
 
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;

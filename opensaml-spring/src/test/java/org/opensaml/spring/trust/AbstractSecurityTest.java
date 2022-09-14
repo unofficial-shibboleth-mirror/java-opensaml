@@ -22,14 +22,14 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collections;
 
-import net.shibboleth.ext.spring.util.ApplicationContextBuilder;
-
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.mock.env.MockPropertySource;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
+
+import net.shibboleth.shared.spring.util.ApplicationContextBuilder;
 
 /**
  * Base mechanics for Security tests using Spring.
