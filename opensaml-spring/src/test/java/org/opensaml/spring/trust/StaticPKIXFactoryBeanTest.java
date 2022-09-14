@@ -34,8 +34,8 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.ext.spring.util.SchemaTypeAwareXMLBeanDefinitionReader;
 import net.shibboleth.shared.spring.context.FilesystemGenericApplicationContext;
+import net.shibboleth.shared.spring.custom.SchemaTypeAwareXMLBeanDefinitionReader;
 import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 
 /**
