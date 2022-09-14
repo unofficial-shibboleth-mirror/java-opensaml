@@ -32,7 +32,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.ext.spring.resource.ResourceHelper;
+import net.shibboleth.shared.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resource.Resource;
 
 /**

@@ -22,7 +22,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Timer;
 
-import net.shibboleth.ext.spring.resource.ResourceHelper;
+import net.shibboleth.shared.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.resource.Resource;

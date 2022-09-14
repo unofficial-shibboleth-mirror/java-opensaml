@@ -20,7 +20,7 @@ package org.opensaml.saml.common.profile.logic.tests;
 import java.util.Arrays;
 import java.util.Collections;
 
-import net.shibboleth.ext.spring.resource.ResourceHelper;
+import net.shibboleth.shared.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
