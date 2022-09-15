@@ -197,7 +197,7 @@ public class BaseContextTest {
         TestContext parent = new TestContext();
         parent.addSubcontext(new TestContext());
         
-        BaseContext child = parent.getSubcontext("org.opensaml.messaging.context.testing.TestContext");
+        BaseContext child = parent.getSubcontext("org.opensaml.messaging.context.TestContext");
         Assert.assertNotNull(child);
         Assert.assertTrue(child instanceof TestContext);
     }
