@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.messaging.context.testing;
+package org.opensaml.messaging.context;
 
 import org.opensaml.messaging.context.BaseContext;
 

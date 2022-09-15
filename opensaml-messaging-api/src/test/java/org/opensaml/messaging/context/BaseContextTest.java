@@ -19,7 +19,6 @@ package org.opensaml.messaging.context;
 
 import java.util.Iterator;
 
-import org.opensaml.messaging.context.testing.TestContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 

@@ -15,8 +15,13 @@
  * limitations under the License.
  */
 
-/**
- * Utility testing classes.
- */
+package org.opensaml.saml.common.messaging.context.tests;
 
-package org.opensaml.messaging.context.testing;
+import org.opensaml.messaging.context.BaseContext;
+
+/**
+ * A concrete test context implementation for use in unit tests.
+ */
+public class TestContext extends BaseContext {
+
+}
