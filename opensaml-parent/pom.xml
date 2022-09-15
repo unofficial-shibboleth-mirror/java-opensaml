@@ -50,6 +50,8 @@
         
         <module>../opensaml-spring</module>
 
+        <module>../opensaml-testing</module>
+
         <module>../opensaml-bom</module>
         <module>../opensaml-tests-bom</module>
     </modules>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
@@ -11,13 +11,13 @@
         <relativePath>../opensaml-parent</relativePath>
     </parent>
 
-    <name>OpenSAML :: Profile Implementations</name>
-    <description>Profile Implementations</description>
-    <artifactId>opensaml-profile-impl</artifactId>
+    <name>OpenSAML :: Testing</name>
+    <description>Testing APIs</description>
+    <artifactId>opensaml-testing</artifactId>
     <packaging>jar</packaging>
 
     <properties>
-        <automatic.module.name>org.opensaml.profile.impl</automatic.module.name>
+        <automatic.module.name>org.opensaml.testing</automatic.module.name>
     </properties>
 
     <dependencies>
@@ -42,53 +42,53 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
+            <artifactId>opensaml-saml-api</artifactId>
+            <version>${project.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-security-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>opensaml-xmlsec-api</artifactId>
+            <artifactId>opensaml-storage-api</artifactId>
             <version>${project.version}</version>
         </dependency>
 
         <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>opensaml-xmlsec-impl</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <!-- Normally test scope. -->
+            <scope>compile</scope>
+        </dependency>        
+        
         <dependency>
-            <groupId>${shib-shared.groupId}</groupId>
-            <artifactId>shib-security</artifactId>
-        </dependency>       
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-core</artifactId>
+            <!-- Normally test scope. -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.xmlunit</groupId>
+            <artifactId>xmlunit-matchers</artifactId>
+            <!-- Normally test scope. -->
+            <scope>compile</scope>
+        </dependency>
+        
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+        </dependency>
 
         <!-- Provided Dependencies -->
-       <dependency>
-            <groupId>jakarta.servlet</groupId>
-            <artifactId>jakarta.servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
 
         <!-- Runtime Dependencies -->
 
         <!-- Test Dependencies -->
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>opensaml-core</artifactId>
-            <version>${project.version}</version>
-            <type>test-jar</type>
-            <scope>test</scope>
-        </dependency>
 
-        <dependency>
-            <groupId>${project.groupId}</groupId>
-            <artifactId>opensaml-testing</artifactId>
-            <version>${project.version}</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- Managed Dependencies -->
     </dependencies>
     
     <scm>

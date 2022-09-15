@@ -17,7 +17,6 @@
 
 package org.opensaml.profile.action.impl;
 
-import org.opensaml.profile.action.impl.SetProfileId;
 import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;

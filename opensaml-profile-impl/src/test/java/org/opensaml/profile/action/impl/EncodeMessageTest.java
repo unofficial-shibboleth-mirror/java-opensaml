@@ -30,7 +30,6 @@ import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.profile.action.EventIds;
-import org.opensaml.profile.action.impl.EncodeMessage;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.testng.Assert;
