@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.algorithm;
+package org.opensaml.xmlsec.algorithm.tests;
 
 import java.util.Objects;
 import java.util.Set;
@@ -25,6 +25,8 @@ import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.testing.SecurityProviderTestSupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.algorithm.descriptors.DigestSHA256;
 import org.opensaml.xmlsec.algorithm.descriptors.SignatureRSASHA256;

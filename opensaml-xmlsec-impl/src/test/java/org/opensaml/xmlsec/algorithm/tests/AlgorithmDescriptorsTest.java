@@ -15,9 +15,17 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.algorithm;
+package org.opensaml.xmlsec.algorithm.tests;
 
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor;
+import org.opensaml.xmlsec.algorithm.BlockEncryptionAlgorithm;
+import org.opensaml.xmlsec.algorithm.DigestAlgorithm;
+import org.opensaml.xmlsec.algorithm.KeyAgreementAlgorithm;
+import org.opensaml.xmlsec.algorithm.KeyTransportAlgorithm;
+import org.opensaml.xmlsec.algorithm.MACAlgorithm;
+import org.opensaml.xmlsec.algorithm.SignatureAlgorithm;
+import org.opensaml.xmlsec.algorithm.SymmetricKeyWrapAlgorithm;
 import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128CBC;
 import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128GCM;
 import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES192CBC;

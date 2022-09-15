@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-package org.opensaml.xmlsec.algorithm;
+package org.opensaml.xmlsec.algorithm.tests;
 
 import java.security.InvalidAlgorithmParameterException;
 import java.security.Key;
@@ -32,6 +32,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
+import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128CBC;
 import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES128GCM;
 import org.opensaml.xmlsec.algorithm.descriptors.BlockEncryptionAES192CBC;
