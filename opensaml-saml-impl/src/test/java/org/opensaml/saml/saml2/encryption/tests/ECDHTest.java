@@ -77,7 +77,6 @@ import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.LocalKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.provider.AgreementMethodKeyInfoProvider;
 import org.opensaml.xmlsec.signature.KeyInfo;
-import org.opensaml.xmlsec.testing.XMLSecurityTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
