@@ -27,7 +27,7 @@
     <packaging>pom</packaging>
 
     <modules>
-        <module>../opensaml-core</module>
+        <module>../opensaml-core-api</module>
         <module>../opensaml-storage-api</module>
         <module>../opensaml-security-api</module>
         <module>../opensaml-xmlsec-api</module>
@@ -36,7 +36,9 @@
         <module>../opensaml-saml-api</module>
         <module>../opensaml-xacml-api</module>
         <module>../opensaml-xacml-saml-api</module>
+        <module>../opensaml-profile-api</module>
 
+        <module>../opensaml-core-impl</module>
         <module>../opensaml-storage-impl</module>
         <module>../opensaml-security-impl</module>
         <module>../opensaml-xmlsec-impl</module>
@@ -45,7 +47,6 @@
         <module>../opensaml-saml-impl</module>
         <module>../opensaml-xacml-impl</module>
         <module>../opensaml-xacml-saml-impl</module>
-        <module>../opensaml-profile-api</module>
         <module>../opensaml-profile-impl</module>
         
         <module>../opensaml-spring</module>

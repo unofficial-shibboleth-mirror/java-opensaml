@@ -79,7 +79,7 @@ public abstract class AbstractNamedCurve extends AbstractInitializableComponent 
      * 
      * @return the parameter spec instance, or null if can not be built
      */
-    @Nullable protected ECParameterSpec buildParameterSpec() {
+    @Nullable public ECParameterSpec buildParameterSpec() {
         ECParameterSpec jcaSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(getObjectIdentifier()));
         if (jcaSpec != null) {
             log.trace("Inited NamedCurve ECParameterSpec from BC curve table for name '{}', OID '{}'",
