@@ -1,12 +1,15 @@
 import os
 import shutil
 import subprocess
+
+from collections import OrderedDict
 from datetime import datetime, timedelta
+
 
 #Adjust as desired
 working_base = "/tmp/pkix-test-data"
 openssl_config="openssl.cnf"
-key_length=2048
+key_length=3072
 signing_digest = "sha256"
 cert_days = 365*10*3
 ca_exts="ca_exts"
@@ -39,20 +42,45 @@ ca_config = {
     "root3-ca" :   {
     },
 
+    "mdt-root" : {
+        "subj": "CN=Snakeoil Root CA",
+        "subs": {
+            "mdt-ica.1":  {
+                "subj": "CN=Snakeoil Metadata Issuing CA #1",
+                "exts": ["any_policy_exts"],
+            },
+            "mdt-ica.2":  {
+                "subj": "CN=Snakeoil Metadata Issuing CA #2",
+                "exts": ["1_policy_exts"],
+            },
+            "mdt-ica.3":  {
+                "subj": "CN=Snakeoil Metadata Issuing CA #3",
+                "exts": ["2_policy_exts"],
+            },
+        }
+    }
+
 }
 
 ee_config = (
     # This one is the standard, normal, valid cert
-    { "name": "foo-1A1-good", "san": "DNS:foo.example.org,URI:https://foo.example.org/sp", "cn" : "/CN=foo.example.org", "signer" : "inter1A1-ca", "days": cert_days},
+    { "name": "foo-1A1-good", "san": "DNS:foo.example.org,URI:https://foo.example.org/sp", "cn" : "/CN=foo.example.org", "signer" : "inter1A1-ca", "days": cert_days, "exts": altname_exts},
 
     # This one is expired, only has validity duration of 10 seconds
-    { "name": "foo-1A1-expired", "san": "DNS:foo.example.org,URI:https://foo.example.org/sp", "cn": "/CN=foo.example.org", "signer": "inter1A1-ca", 
+    { "name": "foo-1A1-expired", "san": "DNS:foo.example.org,URI:https://foo.example.org/sp", "cn": "/CN=foo.example.org", "signer": "inter1A1-ca", "exts": altname_exts,
         "days": None,  
         "startdate": now_utc,
         "enddate": now_utc + timedelta(seconds=10) },
 
     # This one will be revoked, and will appear in generated CRLs
-    { "name": "foo-1A1-revoked", "san": "DNS:foo.example.org,URI:https://foo.example.org/sp", "cn": "/CN=foo.example.org", "signer": "inter1A1-ca", "days": cert_days},
+    { "name": "foo-1A1-revoked", "san": "DNS:foo.example.org,URI:https://foo.example.org/sp", "cn": "/CN=foo.example.org", "signer": "inter1A1-ca", "days": cert_days, "exts": altname_exts},
+
+    # These are for the cert policy stuff
+    # NOTE: can only have 1 -reqexts arg apparently, as of openssl 1.0.2. So don't worry about altnames on these for now.  The original ones didn't have alt names anyway.
+    # When we can assume at least openssl 1.1.1, can use the new -addexts to add extensions directly on the command-line, rather than indirectly via config file.
+    { "name": "mdt-signer.1", "cn": "/CN=Snakeoil Metadata Signer #1", "signer": "mdt-ica.1", "days": cert_days, "exts": "1_policy_exts"},
+    { "name": "mdt-signer.2", "cn": "/CN=Snakeoil Metadata Signer #2", "signer": "mdt-ica.2", "days": cert_days, "exts": "1_policy_exts"},
+    { "name": "mdt-signer.3", "cn": "/CN=Snakeoil Metadata Signer #3", "signer": "mdt-ica.3", "days": cert_days, "exts": "1_policy_exts"},
 )
 
 
@@ -69,6 +97,8 @@ def main():
         ee_keypath=os.path.join(os.getcwd(), ee_name+".key")
         ee_csrpath=os.path.join("/tmp", ee_name+".csr")
         ee_certpath=os.path.join(os.getcwd(), ee_name+".crt")
+        ee_exts = ee_data.get('exts', None)
+        ee_altnames = ee_data.get('san', None)
 
         duration_args = {}
         if "days" in ee_data and ee_data["days"]:
@@ -82,10 +112,12 @@ def main():
         gen_key(ee_keypath)
 
         try:
-            os.environ['SAN'] = ee_data['san']
-            gen_csr(ee_keypath, ee_csrpath, ee_data['cn'], exts=altname_exts)
+            if ee_altnames:
+                os.environ['SAN'] = ee_data['san']
+            gen_csr(ee_keypath, ee_csrpath, ee_data['cn'], exts=ee_exts)
         finally:
-            os.environ.pop('SAN')
+            if ee_altnames:
+                os.environ.pop('SAN')
 
         sign_csr(ee_csrpath, ee_certpath, build_ca_dirpath(ee_data['signer']), end_entity_exts, **duration_args)
 
@@ -113,47 +145,91 @@ def main():
 ##############################
 
 def revoke_cert(cahome, cert_to_revoke):
+    params = {
+        "-revoke": cert_to_revoke,
+    }
+
     try:
         os.environ['CAHOME'] = cahome
-        execute_openssl("ca -revoke {}", cert_to_revoke)
+        execute_openssl("ca", params)
     finally:
         os.environ.pop('CAHOME')
 
 def gen_crl(cahome, crlout, days=crl_days, hours=None, digest=signing_digest, exts=None):
+    # Using this because order matters, "-gencrl" must be first
+    params = OrderedDict()
+    params["-gencrl"] = None
+    params.update({
+        "-out": crlout,
+        "-md": digest,
+    })
+    if days:
+        params["-crldays"] = str(days)
+    if hours:
+        params["-crlhours"] = str(hours)
+    if exts:
+        params["-crlexts"] = str(exts)
+
     try:
         os.environ['CAHOME'] = cahome
-        execute_openssl("ca -gencrl -out {} -md {} {} {} {}", crlout, digest,
-            "-crldays " + str(days) if days else "", 
-            "-crlhours " + str(hours) if hours else "",
-            "-crlexts " + exts if exts else "")
+        execute_openssl("ca", params)
     finally:
         os.environ.pop('CAHOME')
 
 def sign_csr(csr, certout, cahome, exts, days=cert_days, startdate=None, enddate=None, digest=signing_digest):
+    params = {
+        "-in": csr,
+        "-out": certout,
+        "-md": digest,
+        "-extensions": exts,
+    }
+    if days:
+        params["-days"] = str(days)
+    if startdate:
+        params["-startdate"] = startdate
+    if enddate:
+        params["-enddate"] = enddate
+
     try:
         os.environ['CAHOME'] = cahome
-        execute_openssl("ca -in {} -out {} -md {} -extensions {} {} {} {}", csr, certout, digest, exts, 
-            "-days " + str(days) if days else "", 
-            "-startdate " + startdate if startdate else "", 
-            "-enddate " + enddate if enddate else "")
+        execute_openssl("ca", params)
     finally:
         os.environ.pop('CAHOME')
 
 def gen_csr(key, csrout, subject, exts=None, digest=signing_digest):
-    execute_openssl("req -new -key {} -out {} -subj {}  -{} {}", key, csrout, subject, digest, "-reqexts " + exts if exts else "")
+    params = {
+        "-new": None,
+        "-key": key,
+        "-out": csrout,
+        "-subj": subject,
+        "-"+digest: None,
+    }
+    if exts:
+        params['-reqexts'] = exts
+    execute_openssl("req", params)
 
 def gen_key(path, length=key_length):
-    execute_openssl("genrsa -out {} {}", path, length, include_config=False)
+    # Using this because order matters here - the 'length' param must be last
+    params = OrderedDict({
+        "-out": path,
+    })
+    params[str(length)] = None
+    execute_openssl("genrsa", params, include_config=False)
 
-def execute_openssl(cmd, *fmt_params, include_config=True):
-    #print("execute_openssl:", cmd, fmt_params)
-    to_execute_list = ["openssl", cmd]
+def execute_openssl(cmd, params, include_config=True):
+    to_execute = ["openssl", cmd]
     if include_config:
-        to_execute_list.extend(["-config", openssl_config])
-    to_execute = " ".join(to_execute_list).format(*fmt_params)
+        to_execute.extend(["-config", openssl_config])
+    for param,value in params.items():
+        if value is None:
+            to_execute.append(param)
+        elif type(value) is list:
+            for member in value:
+                to_execute.extend([param, member])
+        else:
+            to_execute.extend([param, value])
     print("to_execute", to_execute)
-    # Just splitting the string like this is quick/dirty/kludgy, doesn't work if the arg values have spaces, etc.
-    subprocess.call(to_execute.split())
+    subprocess.run(to_execute)
 
 def init_new_ca_dir(rootdir):
     if os.path.exists(rootdir):
@@ -176,15 +252,27 @@ def init_ca(ca, config, parent):
     csrpath = os.path.join(rootdir, "ca.csr")
     certpath = os.path.join(rootdir, "ca.crt")
 
+    subject= "/" + config.get("subj", "CN="+ca)
+
     gen_key(keypath)
 
     if parent:
         # It's not a root CA, so generate a CSR and sign with the parent CA
-        gen_csr(keypath, csrpath, "/CN="+ca)
+        gen_csr(keypath, csrpath, subject, exts=config.get("exts", None))
         sign_csr(csrpath, certpath, build_ca_dirpath(parent), ca_exts) 
     else:
         # Create self-signed certs for all roots
-        execute_openssl("req -new -x509 -key {} -out {} -days {} -subj {} -{} -extensions {}", keypath, certpath, cert_days, "/CN="+ca, signing_digest, ca_exts)
+        params = {
+            "-new": None,
+            "-x509": None,
+            "-key": keypath,
+            "-out": certpath,
+            "-days": str(cert_days),
+            "-subj": subject,
+            "-"+signing_digest: None,
+            "-extensions": ca_exts,
+        }
+        execute_openssl("req", params)
 
     # Copy the new CA key and cert out to the current working directory
     shutil.copy(keypath, os.path.join(os.getcwd(), ca+".key"))
