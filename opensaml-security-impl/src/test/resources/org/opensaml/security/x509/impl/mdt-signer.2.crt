@@ -1,0 +1,110 @@
+Certificate:
+    Data:
+        Version: 3 (0x2)
+        Serial Number: 1 (0x1)
+    Signature Algorithm: sha256WithRSAEncryption
+        Issuer: CN=Snakeoil Metadata Issuing CA #2
+        Validity
+            Not Before: Sep 16 01:49:52 2022 GMT
+            Not After : Sep  8 01:49:52 2052 GMT
+        Subject: CN=Snakeoil Metadata Signer #2
+        Subject Public Key Info:
+            Public Key Algorithm: rsaEncryption
+                Public-Key: (3072 bit)
+                Modulus:
+                    00:c6:f8:af:60:41:09:99:ea:9a:a6:22:ed:33:3d:
+                    a5:34:ed:c6:f8:54:8b:cc:a1:0a:da:58:d4:53:64:
+                    59:2a:f9:ee:ef:f5:36:b8:ba:54:3a:ff:d1:aa:9c:
+                    d2:e9:0b:42:bf:ff:e6:89:38:f5:af:56:f0:66:5f:
+                    67:00:43:2d:e1:54:b4:7f:63:af:6e:44:9b:1f:4d:
+                    a0:89:53:d9:03:de:27:e5:f0:c1:75:29:38:60:a1:
+                    81:72:98:9f:f0:ac:4e:1e:6e:04:1d:db:94:51:23:
+                    6b:a9:1c:ee:2b:cb:f0:6e:f2:85:17:8c:cf:89:3d:
+                    0e:48:98:ee:89:8c:9c:2b:00:18:44:3f:a9:2c:bf:
+                    91:3c:4e:be:4a:c2:21:26:5a:d0:70:82:7a:a6:b8:
+                    b6:36:ed:f5:89:7b:ea:2d:00:1f:75:6f:d4:4a:b6:
+                    bc:fe:2d:8d:7a:c3:bc:af:c5:36:9e:c9:c8:a9:ee:
+                    4a:d7:f6:2d:4e:d2:01:b6:22:63:87:fd:94:a1:86:
+                    b4:0d:78:37:a0:f1:61:1f:56:95:3d:ff:5d:bf:db:
+                    73:49:aa:83:6b:21:86:cb:95:2a:fd:b8:76:d1:b7:
+                    9e:38:29:2f:e6:b4:9a:ab:12:49:5a:ac:82:08:5e:
+                    8e:53:e3:13:37:78:b2:f6:7f:90:c5:82:ea:b5:5b:
+                    36:18:fe:48:ed:64:0a:32:b9:24:2b:68:58:57:7f:
+                    11:47:0a:76:57:93:9f:de:bc:1e:91:c6:bd:2d:6f:
+                    e5:ac:53:4b:0e:35:9e:b7:af:0d:25:2b:71:17:e7:
+                    ef:78:95:ce:44:de:8d:70:0a:98:75:6f:50:68:fb:
+                    65:6a:0d:ce:8d:78:82:8e:80:22:fc:32:b8:20:2f:
+                    3b:fb:50:3d:69:27:7c:d5:2c:02:0a:51:32:8d:4f:
+                    33:3e:64:51:3c:74:69:52:f4:60:cb:09:ac:05:64:
+                    f6:3d:ca:1c:1e:88:2d:06:20:f0:28:ba:57:e7:39:
+                    58:35:11:cb:49:6e:50:be:08:29
+                Exponent: 65537 (0x10001)
+        X509v3 extensions:
+            X509v3 Basic Constraints: 
+                CA:FALSE
+            Netscape Cert Type: 
+                SSL Client, SSL Server
+            X509v3 Key Usage: critical
+                Digital Signature, Non Repudiation, Key Encipherment
+            Netscape Comment: 
+                OpenSSL Generated Certificate
+            X509v3 Subject Key Identifier: 
+                19:60:27:DF:D4:8D:FD:DF:8E:A2:19:BF:CF:02:C7:B1:F3:2D:A5:9C
+            X509v3 Authority Key Identifier: 
+                keyid:D0:38:B3:C1:65:29:2C:38:E7:4A:F2:80:F0:01:E5:9F:8A:01:83:9D
+                DirName:/CN=Snakeoil Root CA
+                serial:02
+
+            X509v3 Certificate Policies: 
+                Policy: 1.3.6.1.4.1.32473.2011.6.20
+
+    Signature Algorithm: sha256WithRSAEncryption
+         52:b1:b8:3b:33:9e:3f:48:d7:26:f8:7f:f4:ca:c3:a3:9f:9e:
+         60:53:bf:ea:a8:f4:ca:c2:5f:6b:6b:c2:bf:bd:b3:55:9e:95:
+         72:5c:8a:ee:44:1a:55:c2:f1:19:a3:4e:f0:9b:96:33:65:4a:
+         2f:8d:9c:23:06:15:4f:6b:97:23:9f:53:ea:87:2c:41:82:ae:
+         56:43:69:2e:87:d9:78:ee:cf:3a:43:3d:42:15:16:9e:11:00:
+         b1:2b:06:5f:4a:1d:c8:48:c9:7a:ac:03:36:36:e6:a3:57:fe:
+         3d:ae:e7:7d:e7:9c:ed:0d:4a:fa:97:b5:b8:78:b5:fb:3c:20:
+         43:6d:32:c7:5c:11:ca:fe:b2:34:12:c8:d7:f5:17:e4:20:46:
+         7b:9f:86:db:52:42:36:e1:66:24:71:95:15:a9:5e:bb:f8:4a:
+         63:1b:dc:b1:63:6c:e2:bb:54:01:9b:52:85:e7:25:3c:c1:19:
+         cf:a3:5d:dc:22:3e:c7:69:9d:cd:40:f8:ca:53:c7:73:55:68:
+         51:ee:a9:64:c7:c3:27:e8:16:53:ae:93:18:7f:80:1f:64:73:
+         3f:48:d3:27:5f:e8:49:b0:bf:da:ea:cb:49:f5:d9:85:82:4c:
+         2f:6c:4c:53:9a:02:41:c7:a9:f7:78:d2:7e:16:33:fa:5e:01:
+         99:c9:cc:ff:22:76:73:48:ab:8e:48:38:d8:71:46:54:d1:1f:
+         b0:e0:52:db:69:a5:da:6c:bf:8c:9c:5d:90:1f:5d:c4:4a:a1:
+         f2:db:5f:a3:0e:82:e0:92:6e:e2:76:24:95:84:87:4a:2f:da:
+         e7:d7:b1:28:68:a1:7b:4b:88:6a:d2:be:ed:ae:d0:52:f2:a0:
+         47:34:fe:85:1c:25:ea:fc:e3:d9:37:f3:a0:c4:9b:38:2d:60:
+         56:73:f1:97:b8:18:f0:02:ea:23:0a:9a:55:e4:87:6f:32:d9:
+         0a:d6:2a:b4:8c:17:40:ad:13:5e:b4:21:ba:6a:8d:26:8e:13:
+         3a:38:87:b6:19:67
+-----BEGIN CERTIFICATE-----
+MIIErDCCAxSgAwIBAgIBATANBgkqhkiG9w0BAQsFADAqMSgwJgYDVQQDDB9TbmFr
+ZW9pbCBNZXRhZGF0YSBJc3N1aW5nIENBICMyMCAXDTIyMDkxNjAxNDk1MloYDzIw
+NTIwOTA4MDE0OTUyWjAmMSQwIgYDVQQDDBtTbmFrZW9pbCBNZXRhZGF0YSBTaWdu
+ZXIgIzIwggGiMA0GCSqGSIb3DQEBAQUAA4IBjwAwggGKAoIBgQDG+K9gQQmZ6pqm
+Iu0zPaU07cb4VIvMoQraWNRTZFkq+e7v9Ta4ulQ6/9GqnNLpC0K//+aJOPWvVvBm
+X2cAQy3hVLR/Y69uRJsfTaCJU9kD3ifl8MF1KThgoYFymJ/wrE4ebgQd25RRI2up
+HO4ry/Bu8oUXjM+JPQ5ImO6JjJwrABhEP6ksv5E8Tr5KwiEmWtBwgnqmuLY27fWJ
+e+otAB91b9RKtrz+LY16w7yvxTaeycip7krX9i1O0gG2ImOH/ZShhrQNeDeg8WEf
+VpU9/12/23NJqoNrIYbLlSr9uHbRt544KS/mtJqrEklarIIIXo5T4xM3eLL2f5DF
+guq1WzYY/kjtZAoyuSQraFhXfxFHCnZXk5/evB6Rxr0tb+WsU0sONZ63rw0lK3EX
+5+94lc5E3o1wCph1b1Bo+2VqDc6NeIKOgCL8MrggLzv7UD1pJ3zVLAIKUTKNTzM+
+ZFE8dGlS9GDLCawFZPY9yhweiC0GIPAoulfnOVg1EctJblC+CCkCAwEAAaOB3jCB
+2zAJBgNVHRMEAjAAMBEGCWCGSAGG+EIBAQQEAwIGwDAOBgNVHQ8BAf8EBAMCBeAw
+LAYJYIZIAYb4QgENBB8WHU9wZW5TU0wgR2VuZXJhdGVkIENlcnRpZmljYXRlMB0G
+A1UdDgQWBBQZYCff1I39346iGb/PAsex8y2lnDBDBgNVHSMEPDA6gBTQOLPBZSks
+OOdK8oDwAeWfigGDnaEfpB0wGzEZMBcGA1UEAxMQU25ha2VvaWwgUm9vdCBDQYIB
+AjAZBgNVHSAEEjAQMA4GDCsGAQQBgf1Zj1sGFDANBgkqhkiG9w0BAQsFAAOCAYEA
+UrG4OzOeP0jXJvh/9MrDo5+eYFO/6qj0ysJfa2vCv72zVZ6VclyK7kQaVcLxGaNO
+8JuWM2VKL42cIwYVT2uXI59T6ocsQYKuVkNpLofZeO7POkM9QhUWnhEAsSsGX0od
+yEjJeqwDNjbmo1f+Pa7nfeec7Q1K+pe1uHi1+zwgQ20yx1wRyv6yNBLI1/UX5CBG
+e5+G21JCNuFmJHGVFaleu/hKYxvcsWNs4rtUAZtSheclPMEZz6Nd3CI+x2mdzUD4
+ylPHc1VoUe6pZMfDJ+gWU66TGH+AH2RzP0jTJ1/oSbC/2urLSfXZhYJML2xMU5oC
+Qcep93jSfhYz+l4BmcnM/yJ2c0irjkg42HFGVNEfsOBS22ml2my/jJxdkB9dxEqh
+8ttfow6C4JJu4nYklYSHSi/a59exKGihe0uIatK+7a7QUvKgRzT+hRwl6vzj2Tfz
+oMSbOC1gVnPxl7gY8ALqIwqaVeSHbzLZCtYqtIwXQK0TXrQhumqNJo4TOjiHthln
+-----END CERTIFICATE-----

@@ -316,11 +316,11 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateFailure("Valid path was specified, but depth exceeded max path depth", info, cred);
     }
 
-    @Test(enabled=false)
+    @Test
     public void testAnyPolicy() {
-        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.1.crt.pem");
+        cred = getCredential("mdt-signer.1.crt", "mdt-ica.1.crt");
         info = getPKIXInfoSet(
-                getCertificates("mdt-root.crt.pem"),
+                getCertificates("mdt-root.crt"),
                 EMPTY_CRLS,
                 2 );
         opts = getPKIXOptions(testPolicy1, false, false);
@@ -328,31 +328,31 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
         testValidateSuccess("Intermediate CA with anyPolicy (2.5.29.32.0) entry permitted", info, cred, opts);
     }
 
-    @Test(enabled=false)
+    @Test
     public void testExplicitPolicy() {
-        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.1.crt.pem");
+        cred = getCredential("mdt-signer.1.crt", "mdt-ica.1.crt");
         info = getPKIXInfoSet(
-                getCertificates("mdt-root.crt.pem"),
+                getCertificates("mdt-root.crt"),
                 EMPTY_CRLS,
                 2 );
         opts = getPKIXOptions(testPolicy1, false, true);
 
         testValidateFailure("Intermediate CA with anyPolicy (2.5.29.32.0), but anyPolicy is inhibited", info, cred, opts);
 
-        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.2.crt.pem");
+        cred = getCredential("mdt-signer.2.crt", "mdt-ica.2.crt");
 
         testValidateSuccess("Intermediate CA with explicit policy " + testPolicy1, info, cred, opts);
 
-        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.3.crt.pem");
+        cred = getCredential("mdt-signer.3.crt", "mdt-ica.3.crt");
 
         testValidateSuccess("Intermediate CA with explicit policies " + testPolicy1 + ", " + testPolicy2, info, cred, opts);
     }
 
-    @Test(enabled=false)
+    @Test
     public void testExplicitPolicyMap() {
-        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.3.crt.pem");
+        cred = getCredential("mdt-signer.3.crt", "mdt-ica.3.crt");
         info = getPKIXInfoSet(
-                getCertificates("mdt-root.crt.pem"),
+                getCertificates("mdt-root.crt"),
                 EMPTY_CRLS,
                 2 );
         opts = getPKIXOptions(testPolicy2, false, true);
@@ -362,9 +362,9 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testExplicitPolicyNoMap() {
-        cred = getCredential("mdt-signer.crt.pem", "mdt-ica.3.crt.pem");
+        cred = getCredential("mdt-signer.3.crt", "mdt-ica.3.crt");
         info = getPKIXInfoSet(
-                getCertificates("mdt-root.crt.pem"),
+                getCertificates("mdt-root.crt"),
                 EMPTY_CRLS,
                 2 );
         opts = getPKIXOptions(testPolicy2, true, true);
