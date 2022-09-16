@@ -54,7 +54,6 @@
         <module>../opensaml-testing</module>
 
         <module>../opensaml-bom</module>
-        <module>../opensaml-tests-bom</module>
     </modules>
 
     <properties>
