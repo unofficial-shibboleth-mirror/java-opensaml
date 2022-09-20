@@ -51,12 +51,12 @@ import org.slf4j.LoggerFactory;
 import com.google.common.collect.Lists;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.net.HttpServletSupport;
+import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.net.URLBuilder;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 

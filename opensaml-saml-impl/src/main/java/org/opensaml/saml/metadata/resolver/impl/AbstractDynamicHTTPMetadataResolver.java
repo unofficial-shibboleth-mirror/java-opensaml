@@ -51,13 +51,13 @@ import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
 
+import net.shibboleth.shared.net.MediaTypeSupport;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.MediaTypeSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;

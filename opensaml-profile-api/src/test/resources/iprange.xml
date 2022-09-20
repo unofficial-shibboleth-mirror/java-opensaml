@@ -10,8 +10,8 @@
     <bean id="three" class="org.opensaml.profile.logic.IPRangePredicate">
         <property name="ranges">
             <list>
-                <bean class="net.shibboleth.utilities.java.support.net.IPRange"  factory-method="parseCIDRBlock" c:cidrBlock="192.168.1.0/24"/>
-                <bean class="net.shibboleth.utilities.java.support.net.IPRange"  factory-method="parseCIDRBlock" c:cidrBlock="192.168.2.0/28"/>
+                <bean class="net.shibboleth.shared.net.IPRange"  factory-method="parseCIDRBlock" c:cidrBlock="192.168.1.0/24"/>
+                <bean class="net.shibboleth.shared.net.IPRange"  factory-method="parseCIDRBlock" c:cidrBlock="192.168.2.0/28"/>
             </list>
          </property>
     </bean>

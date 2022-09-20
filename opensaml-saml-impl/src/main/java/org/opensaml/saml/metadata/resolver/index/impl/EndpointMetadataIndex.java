@@ -43,13 +43,13 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.MoreObjects;
 import com.google.common.base.Predicates;
 
+import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.utilities.java.support.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotLive;
 import net.shibboleth.utilities.java.support.annotation.constraint.Unmodifiable;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.URLBuilder;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 

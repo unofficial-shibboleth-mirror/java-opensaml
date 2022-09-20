@@ -20,11 +20,11 @@ package org.opensaml.storage.impl.client;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 
+import net.shibboleth.shared.net.CookieManager;
+import net.shibboleth.shared.net.impl.ThreadLocalHttpServletRequestSupplier;
+import net.shibboleth.shared.net.impl.ThreadLocalHttpServletResponseSupplier;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.net.CookieManager;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestSupplier;
-import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseSupplier;
 import net.shibboleth.utilities.java.support.resource.Resource;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.impl.BasicKeystoreKeyStrategy;

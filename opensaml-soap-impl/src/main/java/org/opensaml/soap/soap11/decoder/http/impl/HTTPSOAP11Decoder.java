@@ -35,8 +35,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.net.MediaType;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.net.HttpServletSupport;
 
 /**
  * Basic SOAP 1.1 decoder for HTTP transport.

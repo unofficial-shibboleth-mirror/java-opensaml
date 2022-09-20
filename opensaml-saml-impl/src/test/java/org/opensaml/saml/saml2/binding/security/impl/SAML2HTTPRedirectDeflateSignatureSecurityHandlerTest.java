@@ -62,9 +62,9 @@ import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.net.URLBuilder;
 
 
 /**

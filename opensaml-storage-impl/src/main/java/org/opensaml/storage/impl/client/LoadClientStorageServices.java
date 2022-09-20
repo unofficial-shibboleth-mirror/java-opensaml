@@ -40,10 +40,10 @@ import com.google.common.base.Strings;
 
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.URISupport;
 
 /**
  * An action that loads any number of {@link ClientStorageService} instances from a POST submission

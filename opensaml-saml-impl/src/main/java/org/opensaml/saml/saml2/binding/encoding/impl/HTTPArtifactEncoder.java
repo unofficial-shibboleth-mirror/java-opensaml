@@ -44,6 +44,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
@@ -52,7 +53,6 @@ import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
 import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.net.URLBuilder;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**

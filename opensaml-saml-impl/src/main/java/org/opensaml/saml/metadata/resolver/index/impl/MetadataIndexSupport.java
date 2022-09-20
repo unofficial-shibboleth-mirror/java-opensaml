@@ -22,8 +22,8 @@ import java.net.MalformedURLException;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.net.SimpleURLCanonicalizer;
-import net.shibboleth.utilities.java.support.net.URLBuilder;
+import net.shibboleth.shared.net.SimpleURLCanonicalizer;
+import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
