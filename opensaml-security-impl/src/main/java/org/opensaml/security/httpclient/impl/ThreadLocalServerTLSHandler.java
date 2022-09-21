@@ -28,7 +28,7 @@ import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.httpclient.HttpClientContextHandler;
+import net.shibboleth.shared.httpclient.HttpClientContextHandler;
 
 /**
  * An implementation of {@link HttpClientContextHandler} which handles cleanup and transfer of

@@ -23,11 +23,11 @@ import java.util.Collections;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
+import net.shibboleth.shared.httpclient.HttpClientBuilder;
 import net.shibboleth.shared.spring.httpclient.resource.HTTPResource;
 import net.shibboleth.shared.testing.RepositorySupport;
 import net.shibboleth.shared.testing.ResourceTestHelper;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 
 import org.apache.http.client.HttpClient;
 import org.springframework.core.io.ClassPathResource;

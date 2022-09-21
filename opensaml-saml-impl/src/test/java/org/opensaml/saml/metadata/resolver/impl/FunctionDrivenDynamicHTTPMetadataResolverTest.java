@@ -36,11 +36,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.httpclient.HttpClientBuilder;
 import net.shibboleth.shared.testing.RepositorySupport;
 import net.shibboleth.shared.testing.VelocityEngine;
 import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
-import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCase {

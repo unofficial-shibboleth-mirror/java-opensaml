@@ -143,11 +143,11 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * </p>
      * <ul>
      * <li>
-     * a {@link net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory}
+     * a {@link net.shibboleth.shared.httpclient.TLSSocketFactory}
      * </li>
      * <li>
      * a {@link org.opensaml.security.httpclient.impl.SecurityEnhancedTLSSocketFactory} which wraps
-     * an instance of {@link net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory}, with
+     * an instance of {@link net.shibboleth.shared.httpclient.TLSSocketFactory}, with
      * the latter likely configured in a "no trust" configuration.  This variant is required if either a
      * trust engine or a client TLS credential is to be used.
      * </li>
@@ -155,8 +155,8 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      *
      * <p>
      * For convenience methods for building a 
-     * {@link net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory}, 
-     * see {@link net.shibboleth.utilities.java.support.httpclient.HttpClientSupport}.
+     * {@link net.shibboleth.shared.httpclient.TLSSocketFactory}, 
+     * see {@link net.shibboleth.shared.httpclient.HttpClientSupport}.
      * </p>
      *
      * <p>

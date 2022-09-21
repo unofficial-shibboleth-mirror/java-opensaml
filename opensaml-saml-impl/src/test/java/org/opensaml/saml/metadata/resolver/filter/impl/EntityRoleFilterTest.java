@@ -34,8 +34,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.httpclient.HttpClientBuilder;
 import net.shibboleth.shared.testing.RepositorySupport;
-import net.shibboleth.utilities.java.support.httpclient.HttpClientBuilder;
 
 /**
  * Unit tests for {@link EntityRoleFilter}.

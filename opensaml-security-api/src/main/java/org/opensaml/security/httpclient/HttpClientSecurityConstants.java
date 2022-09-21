@@ -17,7 +17,7 @@
 
 package org.opensaml.security.httpclient;
 
-import net.shibboleth.utilities.java.support.httpclient.TLSSocketFactory;
+import net.shibboleth.shared.httpclient.TLSSocketFactory;
 
 
 /**

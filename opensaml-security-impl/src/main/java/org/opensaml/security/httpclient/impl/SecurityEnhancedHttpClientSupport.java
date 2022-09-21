@@ -31,8 +31,8 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialKeyManager;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;
 
-import net.shibboleth.utilities.java.support.httpclient.HttpClientSupport;
-import net.shibboleth.utilities.java.support.httpclient.TLSSocketFactoryBuilder;
+import net.shibboleth.shared.httpclient.HttpClientSupport;
+import net.shibboleth.shared.httpclient.TLSSocketFactoryBuilder;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**

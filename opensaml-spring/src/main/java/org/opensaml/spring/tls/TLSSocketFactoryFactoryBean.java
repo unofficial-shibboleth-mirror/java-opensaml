@@ -27,7 +27,7 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.springframework.beans.factory.config.AbstractFactoryBean;
 
-import net.shibboleth.utilities.java.support.httpclient.HttpClientSupport;
+import net.shibboleth.shared.httpclient.HttpClientSupport;
 
 /**
  * A factory bean for producing instances of {@link LayeredConnectionSocketFactory} for use in {@link HttpClient}.
