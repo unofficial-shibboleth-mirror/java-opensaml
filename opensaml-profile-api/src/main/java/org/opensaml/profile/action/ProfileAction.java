@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
+import net.shibboleth.shared.component.InitializableComponent;
 
 /**
  * Interface for actions that operate on a {@link ProfileRequestContext}.

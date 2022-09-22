@@ -17,8 +17,6 @@
 
 package org.opensaml.profile.action.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecoder;
@@ -29,6 +27,8 @@ import org.opensaml.profile.testing.ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link DecodeMessage}. */
 public class DecodeMessageTest {

@@ -22,8 +22,6 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
@@ -35,6 +33,8 @@ import org.opensaml.profile.testing.ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link EncodeMessage}. */
 public class EncodeMessageTest {

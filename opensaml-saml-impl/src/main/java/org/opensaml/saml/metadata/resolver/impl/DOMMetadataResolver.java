@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -26,6 +24,8 @@ import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * A <code>MetadataProvider</code> implementation that retrieves metadata from a DOM <code>Element</code> as

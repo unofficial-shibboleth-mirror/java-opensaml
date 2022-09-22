@@ -19,9 +19,9 @@ package org.opensaml.messaging.handler;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
-
 import org.opensaml.messaging.context.MessageContext;
+
+import net.shibboleth.shared.component.InitializableComponent;
 
 
 /**

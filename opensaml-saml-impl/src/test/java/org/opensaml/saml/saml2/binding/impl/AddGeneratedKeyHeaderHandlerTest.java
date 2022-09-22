@@ -21,9 +21,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.List;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.XMLObject;

@@ -19,8 +19,8 @@ package org.opensaml.messaging.decoder;
 
 import org.opensaml.messaging.context.MessageContext;
 
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.UnmodifiableComponent;
+import net.shibboleth.shared.component.AbstractInitializableComponent;
+import net.shibboleth.shared.component.UnmodifiableComponent;
 
 /**
  * Abstract message decoder.

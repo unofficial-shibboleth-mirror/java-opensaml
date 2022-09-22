@@ -33,7 +33,7 @@ import org.opensaml.profile.context.navigate.ParentProfileRequestContextLookup;
 
 import com.google.common.base.Predicates;
 
-import net.shibboleth.utilities.java.support.component.DestructableComponent;
+import net.shibboleth.shared.component.DestructableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 

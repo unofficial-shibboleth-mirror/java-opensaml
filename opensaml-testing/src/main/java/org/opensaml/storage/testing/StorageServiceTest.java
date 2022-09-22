@@ -25,10 +25,6 @@ import java.security.SecureRandom;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.DestructableComponent;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
-
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.opensaml.storage.VersionMismatchException;
@@ -40,6 +36,10 @@ import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.component.DestructableComponent;
+import net.shibboleth.shared.component.InitializableComponent;
 
 /**
  * Test of {@link StorageService} implementations.

@@ -25,8 +25,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  * Unit tests for {@link SchemaValidationFilter}.

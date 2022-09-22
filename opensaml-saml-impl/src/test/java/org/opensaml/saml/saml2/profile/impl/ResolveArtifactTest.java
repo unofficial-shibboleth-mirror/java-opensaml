@@ -25,7 +25,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import org.opensaml.saml.common.binding.artifact.impl.BasicSAMLArtifactMap;

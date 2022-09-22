@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -28,6 +26,8 @@ import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link ExtractConsentFromRequestHandler} unit test. */
 public class ExtractConsentFromRequestHandlerTest extends OpenSAMLInitBaseTestCase {

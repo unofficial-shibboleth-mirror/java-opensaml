@@ -24,8 +24,8 @@ import javax.annotation.Nullable;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.client.protocol.HttpClientContext;
 
+import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.httpclient.HttpClientContextHandler;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 
 /**
  * An {@link HttpClientContextHandler} that supports this package's security capabilities.

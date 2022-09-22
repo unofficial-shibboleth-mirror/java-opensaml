@@ -19,8 +19,6 @@ package org.opensaml.saml.common.profile.impl;
 
 import java.security.KeyPair;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -35,6 +33,8 @@ import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link SignAssertions} unit test. */
 public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {

@@ -22,7 +22,7 @@ import java.security.NoSuchProviderException;
 import java.util.Collections;
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;

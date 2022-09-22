@@ -29,7 +29,7 @@ import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.annotation.Prototype;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

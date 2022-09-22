@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.common.profile.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -32,6 +30,8 @@ import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link VerifyChannelBindings} unit test. */
 public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {

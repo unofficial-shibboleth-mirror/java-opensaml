@@ -23,8 +23,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
@@ -42,6 +40,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Predicates;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Test for {@link AddNameIdentifierToSubjects}. */
 public class AddNameIdentifierToSubjectsTest extends OpenSAMLInitBaseTestCase {

@@ -28,7 +28,7 @@ import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  *

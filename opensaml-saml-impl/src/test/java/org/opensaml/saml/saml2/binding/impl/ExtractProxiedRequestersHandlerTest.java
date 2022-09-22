@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import java.util.Arrays;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
@@ -34,6 +32,8 @@ import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link ExtractProxiedRequestersHandler} unit test. */
 public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCase {

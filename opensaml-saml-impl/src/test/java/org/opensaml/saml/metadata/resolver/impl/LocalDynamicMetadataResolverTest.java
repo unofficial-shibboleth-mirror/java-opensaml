@@ -35,9 +35,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;

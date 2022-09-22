@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.common.binding.security.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import java.time.Duration;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -31,6 +29,8 @@ import org.opensaml.storage.impl.StorageServiceReplayCache;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Testing SAML message replay security policy rule.

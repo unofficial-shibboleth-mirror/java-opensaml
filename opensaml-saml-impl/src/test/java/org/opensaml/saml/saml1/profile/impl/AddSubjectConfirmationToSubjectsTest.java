@@ -20,8 +20,6 @@ package org.opensaml.saml.saml1.profile.impl;
 import java.util.Arrays;
 import java.util.Collections;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -37,6 +35,8 @@ import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 
 /** Test for {@link AddSubjectConfirmationToSubjects}. */

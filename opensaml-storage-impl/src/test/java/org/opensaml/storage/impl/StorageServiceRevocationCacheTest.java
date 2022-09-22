@@ -28,7 +28,7 @@ import org.opensaml.storage.impl.client.ClientStorageService;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.testng.annotations.BeforeMethod;

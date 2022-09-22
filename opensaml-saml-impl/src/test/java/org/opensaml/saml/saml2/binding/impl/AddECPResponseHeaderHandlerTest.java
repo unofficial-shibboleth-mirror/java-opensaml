@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.binding.impl;
 
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -37,6 +35,8 @@ import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddECPResponseHeaderHandler} unit test. */
 public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {

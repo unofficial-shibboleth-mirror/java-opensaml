@@ -20,8 +20,6 @@ package org.opensaml.saml.saml2.profile.impl;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.profile.action.EventIds;
@@ -42,6 +40,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link EncryptNameIDs}. */
 public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {

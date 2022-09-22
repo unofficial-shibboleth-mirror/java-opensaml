@@ -38,7 +38,7 @@ import org.w3c.dom.Document;
 
 import com.google.common.io.Files;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 

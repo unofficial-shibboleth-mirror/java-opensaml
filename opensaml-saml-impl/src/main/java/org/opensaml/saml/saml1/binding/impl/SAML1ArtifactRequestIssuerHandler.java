@@ -22,7 +22,7 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.messaging.context.MessageContext;

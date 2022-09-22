@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.client.soap11.encoder.http.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.apache.http.client.methods.HttpPost;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -31,6 +29,8 @@ import org.opensaml.soap.wsaddressing.Action;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 public class HttpClientRequestSOAP11EncoderTest extends XMLObjectBaseTestCase {
     

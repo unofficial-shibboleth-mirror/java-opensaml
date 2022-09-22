@@ -17,8 +17,8 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.collection.Pair;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import java.util.Set;

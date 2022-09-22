@@ -36,7 +36,7 @@ import org.testng.annotations.Test;
 import com.google.common.io.Resources;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Test basic SOAP 1.1 message decoding.

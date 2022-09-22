@@ -19,8 +19,6 @@ package org.opensaml.soap.wsaddressing.messaging.impl;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -31,6 +29,8 @@ import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  *

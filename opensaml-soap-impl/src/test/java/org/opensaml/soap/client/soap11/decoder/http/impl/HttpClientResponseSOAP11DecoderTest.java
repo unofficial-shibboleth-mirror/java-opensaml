@@ -22,7 +22,7 @@ import java.io.IOException;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.http.HttpResponse;

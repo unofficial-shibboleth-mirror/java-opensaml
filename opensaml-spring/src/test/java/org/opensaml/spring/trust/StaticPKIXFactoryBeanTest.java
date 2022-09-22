@@ -34,9 +34,9 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.spring.context.FilesystemGenericApplicationContext;
 import net.shibboleth.shared.spring.custom.SchemaTypeAwareXMLBeanDefinitionReader;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
 
 /**
  * Unit test for {@link StaticPKIXFactoryBean}.

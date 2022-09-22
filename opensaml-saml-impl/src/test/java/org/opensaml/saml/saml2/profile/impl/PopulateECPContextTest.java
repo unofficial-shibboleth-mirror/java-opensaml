@@ -19,12 +19,13 @@ package org.opensaml.saml.saml2.profile.impl;
 
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
+
 import org.testng.annotations.BeforeMethod;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;

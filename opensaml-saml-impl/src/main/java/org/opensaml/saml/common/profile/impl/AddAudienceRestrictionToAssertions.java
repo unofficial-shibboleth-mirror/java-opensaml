@@ -39,7 +39,7 @@ import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

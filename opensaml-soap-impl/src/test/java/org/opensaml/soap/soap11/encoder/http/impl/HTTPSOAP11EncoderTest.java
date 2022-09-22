@@ -49,7 +49,7 @@ import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
 
 import jakarta.servlet.http.HttpServletResponse;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**

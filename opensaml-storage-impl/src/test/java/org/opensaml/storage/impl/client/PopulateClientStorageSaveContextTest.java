@@ -31,8 +31,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.impl.HttpServletRequestResponseContext;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /** Unit test for {@link PopulateClientStorageSaveContext}. */
 public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStorageServiceTest {

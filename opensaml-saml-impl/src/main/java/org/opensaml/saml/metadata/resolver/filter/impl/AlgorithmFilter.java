@@ -58,7 +58,7 @@ import com.google.common.collect.Multimap;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

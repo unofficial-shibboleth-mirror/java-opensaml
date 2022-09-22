@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.security.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
@@ -33,6 +31,8 @@ import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link ExtractChannelBindingsExtensionsHandler} unit test. */
 public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBaseTestCase {

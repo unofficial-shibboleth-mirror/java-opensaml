@@ -32,7 +32,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 import org.opensaml.storage.AbstractMapBackedStorageService;
 import org.opensaml.storage.MutableStorageRecord;

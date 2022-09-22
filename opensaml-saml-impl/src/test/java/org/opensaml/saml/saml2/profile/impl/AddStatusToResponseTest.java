@@ -23,9 +23,6 @@ import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
@@ -33,6 +30,8 @@ import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddStatusToResponse} unit test. */
 public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {

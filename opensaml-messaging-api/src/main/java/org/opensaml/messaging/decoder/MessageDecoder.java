@@ -17,10 +17,10 @@
 
 package org.opensaml.messaging.decoder;
 
-import net.shibboleth.utilities.java.support.component.DestructableComponent;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
-
 import org.opensaml.messaging.context.MessageContext;
+
+import net.shibboleth.shared.component.DestructableComponent;
+import net.shibboleth.shared.component.InitializableComponent;
 
 /**
  * Interface for component that decodes message data from a source into a {@link MessageContext}. Before the decoder can

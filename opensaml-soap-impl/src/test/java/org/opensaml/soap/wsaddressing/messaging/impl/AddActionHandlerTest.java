@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.wsaddressing.messaging.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.Fault;
@@ -31,6 +29,8 @@ import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  *

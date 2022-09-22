@@ -28,7 +28,7 @@ import java.util.Properties;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 import net.shibboleth.utilities.java.support.xml.XMLParserException;
 

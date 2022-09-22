@@ -38,9 +38,9 @@ import org.testng.annotations.Test;
 import com.google.common.net.UrlEscapers;
 
 import jakarta.servlet.http.Cookie;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.impl.HttpServletRequestResponseContext;
 import net.shibboleth.shared.net.impl.ThreadLocalHttpServletRequestSupplier;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /** Unit test for {@link LoadClientStorageServices}. */
 public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServiceTest {

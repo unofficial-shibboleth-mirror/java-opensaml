@@ -32,7 +32,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.annotation.Prototype;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
+import net.shibboleth.shared.component.AbstractInitializableComponent;
 
 /**
  * Base class for profile actions.

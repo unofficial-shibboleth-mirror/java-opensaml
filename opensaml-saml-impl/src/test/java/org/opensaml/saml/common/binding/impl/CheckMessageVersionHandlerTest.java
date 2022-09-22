@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.common.binding.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -28,6 +26,8 @@ import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link CheckMessageVersionHandler} unit test. */
 public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {

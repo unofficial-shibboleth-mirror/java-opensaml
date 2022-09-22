@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver;
 
-import net.shibboleth.utilities.java.support.component.IdentifiedComponent;
+import net.shibboleth.shared.component.IdentifiedComponent;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;
 

@@ -23,8 +23,8 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.UnmodifiableComponentException;
+import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.component.UnmodifiableComponentException;
 
 /**
  *

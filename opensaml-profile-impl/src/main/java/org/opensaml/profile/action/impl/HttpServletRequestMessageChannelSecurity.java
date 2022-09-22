@@ -21,7 +21,7 @@ import org.opensaml.messaging.context.MessageChannelSecurityContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Profile action which populates a {@link MessageChannelSecurityContext} based on a

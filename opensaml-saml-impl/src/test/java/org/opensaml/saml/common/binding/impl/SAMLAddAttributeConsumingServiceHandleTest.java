@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.common.binding.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ParentContextLookup;
@@ -35,6 +33,8 @@ import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * test for {@link SAMLAddAttributeConsumingServiceHandler}.

@@ -47,9 +47,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Charsets;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  *

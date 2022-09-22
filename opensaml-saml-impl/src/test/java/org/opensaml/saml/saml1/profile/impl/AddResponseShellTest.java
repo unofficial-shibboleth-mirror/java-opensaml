@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.saml1.profile.impl;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.action.EventIds;
@@ -33,6 +31,8 @@ import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddResponseShell} unit test. */
 public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {

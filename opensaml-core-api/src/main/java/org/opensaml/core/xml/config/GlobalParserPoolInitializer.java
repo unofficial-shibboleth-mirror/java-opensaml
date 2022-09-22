@@ -17,7 +17,7 @@
 
 package org.opensaml.core.xml.config;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.xml.BasicParserPool;
 
 import org.opensaml.core.config.ConfigurationService;

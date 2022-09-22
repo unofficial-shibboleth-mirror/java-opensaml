@@ -50,9 +50,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.ByteStreams;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
 import net.shibboleth.shared.testing.RepositorySupport;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 

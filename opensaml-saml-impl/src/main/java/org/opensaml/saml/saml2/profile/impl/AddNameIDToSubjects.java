@@ -55,9 +55,9 @@ import com.google.common.base.Strings;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.security.impl.SecureRandomIdentifierGenerationStrategy;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

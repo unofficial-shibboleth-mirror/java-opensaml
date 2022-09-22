@@ -30,8 +30,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.URLBuilder;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 /**
  * Message handler which populates a {@link MessageChannelSecurityContext} based on evaluating a

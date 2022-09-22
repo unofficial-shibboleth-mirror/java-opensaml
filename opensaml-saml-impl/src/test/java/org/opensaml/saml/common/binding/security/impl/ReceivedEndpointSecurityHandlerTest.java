@@ -22,8 +22,7 @@ import java.net.URL;
 import java.util.function.Supplier;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.MessageException;

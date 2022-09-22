@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Sets;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.CriterionPredicateRegistry;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;

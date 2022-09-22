@@ -21,9 +21,9 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.component.InitializableComponent;
 import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.component.InitializableComponent;
 
 /**
  * Specialized collection type for holding sets of parameters to key agreement operations.

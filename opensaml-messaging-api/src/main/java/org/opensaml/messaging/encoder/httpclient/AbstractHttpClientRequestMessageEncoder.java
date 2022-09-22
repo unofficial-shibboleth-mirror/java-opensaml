@@ -23,7 +23,7 @@ import org.apache.http.HttpRequest;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.

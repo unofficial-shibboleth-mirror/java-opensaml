@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
 import jakarta.servlet.http.HttpServletResponse;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.

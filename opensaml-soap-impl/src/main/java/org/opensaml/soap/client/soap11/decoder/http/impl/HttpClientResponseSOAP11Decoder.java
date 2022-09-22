@@ -22,8 +22,6 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -39,6 +37,8 @@ import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Basic SOAP 1.1 decoder for HTTP transport via an HttpClient's {@link HttpResponse}.

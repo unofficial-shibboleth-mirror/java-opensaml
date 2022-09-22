@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -42,8 +43,6 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     

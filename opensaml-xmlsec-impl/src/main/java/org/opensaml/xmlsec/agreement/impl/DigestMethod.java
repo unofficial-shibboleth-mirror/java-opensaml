@@ -27,8 +27,8 @@ import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.XMLExpressableKeyAgreementParameter;
 
-import net.shibboleth.utilities.java.support.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.AbstractInitializableComponent;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 

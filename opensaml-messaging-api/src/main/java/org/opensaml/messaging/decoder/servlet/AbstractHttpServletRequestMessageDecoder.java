@@ -25,7 +25,7 @@ import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.

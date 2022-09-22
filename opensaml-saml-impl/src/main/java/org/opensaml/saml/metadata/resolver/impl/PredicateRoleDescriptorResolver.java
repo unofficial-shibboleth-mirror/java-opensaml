@@ -46,8 +46,8 @@ import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.utilities.java.support.component.AbstractIdentifiedInitializableComponent;
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.CriterionPredicateRegistry;

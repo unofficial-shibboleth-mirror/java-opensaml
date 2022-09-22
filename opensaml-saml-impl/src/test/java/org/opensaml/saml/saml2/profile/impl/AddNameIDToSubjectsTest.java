@@ -26,7 +26,7 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;

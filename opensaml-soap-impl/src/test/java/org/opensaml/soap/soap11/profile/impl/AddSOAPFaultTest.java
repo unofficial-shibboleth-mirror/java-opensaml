@@ -19,7 +19,7 @@ package org.opensaml.soap.soap11.profile.impl;
 
 import java.util.Collections;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;

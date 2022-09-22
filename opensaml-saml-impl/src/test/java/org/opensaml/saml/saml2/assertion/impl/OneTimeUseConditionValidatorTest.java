@@ -20,7 +20,7 @@ package org.opensaml.saml.saml2.assertion.impl;
 import java.time.Duration;
 import java.util.Map;
 
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.saml.common.assertion.AssertionValidationException;
