@@ -22,8 +22,6 @@ import java.time.Instant;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
-
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -35,6 +33,8 @@ import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 
 /** Helper methods for SAML 2 IdP actions. */
 public final class SAML2ActionSupport {

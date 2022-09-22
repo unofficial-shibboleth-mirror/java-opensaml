@@ -19,8 +19,8 @@ package org.opensaml.soap.wsaddressing.messaging.impl;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
 
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;

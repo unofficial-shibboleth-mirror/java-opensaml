@@ -32,7 +32,7 @@ import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.security.IdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 
 /**
  * Handler implementation that adds a wsa:MessageID header to the outbound SOAP envelope.

@@ -25,7 +25,7 @@ import org.opensaml.messaging.context.BaseContext;
 
 /**
  * A context component which holds state for making an access control decision using
- * the {@link net.shibboleth.utilities.java.support.security.AccessControl} interface.
+ * the {@link net.shibboleth.shared.security.AccessControl} interface.
  * 
  * @since 3.3.0
  */

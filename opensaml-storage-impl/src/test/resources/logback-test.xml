@@ -16,6 +16,6 @@
     
     <logger name="org.opensaml.storage" level="TRACE"/>
     <logger name="org.opensaml.storage" level="DEBUG"/>
-    <logger name="net.shibboleth.utilities.java.support.security.DataSealer" level="TRACE"/>
+    <logger name="net.shibboleth.shared.security.DataSealer" level="TRACE"/>
     
 </configuration>
