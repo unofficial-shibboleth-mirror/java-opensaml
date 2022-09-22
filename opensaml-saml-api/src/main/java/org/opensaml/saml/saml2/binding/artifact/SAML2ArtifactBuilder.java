@@ -20,9 +20,9 @@ package org.opensaml.saml.saml2.binding.artifact;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.messaging.context.MessageContext;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Builder of typed SAML 2 artifacts.

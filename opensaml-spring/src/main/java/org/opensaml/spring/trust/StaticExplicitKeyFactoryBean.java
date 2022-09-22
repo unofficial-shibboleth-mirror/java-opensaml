@@ -43,8 +43,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 
 /**
  * Factory bean for simple use cases involving the {@link ExplicitKeyTrustEngine} and static credentials.

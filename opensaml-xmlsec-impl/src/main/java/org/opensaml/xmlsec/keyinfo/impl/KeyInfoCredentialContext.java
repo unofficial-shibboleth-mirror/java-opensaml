@@ -22,7 +22,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.security.credential.CredentialContext;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 
 /**
  * Context for credentials resolved from a {@link KeyInfo} element.

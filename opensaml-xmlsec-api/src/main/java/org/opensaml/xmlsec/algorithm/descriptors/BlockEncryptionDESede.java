@@ -19,11 +19,11 @@ package org.opensaml.xmlsec.algorithm.descriptors;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.algorithm.BlockEncryptionAlgorithm;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Algorithm descriptor for block encryption algorithm: DESede-CBC.

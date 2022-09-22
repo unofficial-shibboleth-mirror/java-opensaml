@@ -26,7 +26,7 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.MessageContext;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

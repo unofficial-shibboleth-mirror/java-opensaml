@@ -19,7 +19,7 @@ package org.opensaml.xmlsec.algorithm;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for key transport algorithm descriptors.

@@ -20,12 +20,12 @@ package org.opensaml.saml.saml1.profile;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.profile.NameIdentifierGenerator;
 import org.opensaml.saml.saml1.core.NameIdentifier;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /** Specialization of {@link NameIdentifierGenerator} for SAML 1.x. */
 public interface SAML1NameIdentifierGenerator extends NameIdentifierGenerator<NameIdentifier> {

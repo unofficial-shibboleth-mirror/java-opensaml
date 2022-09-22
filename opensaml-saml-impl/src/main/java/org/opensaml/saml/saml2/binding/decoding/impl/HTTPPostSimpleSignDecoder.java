@@ -26,7 +26,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /** Message decoder implementing the SAML 2.0 HTTP POST-SimpleSign binding. */
 public class HTTPPostSimpleSignDecoder extends HTTPPostDecoder {

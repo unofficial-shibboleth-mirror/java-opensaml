@@ -22,11 +22,11 @@ import java.time.Instant;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.SAMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /** Extension of {@link BasicSAMLArtifactMapEntry} that tracks expiration. */
 public class ExpiringSAMLArtifactMapEntry extends BasicSAMLArtifactMapEntry {

@@ -19,11 +19,11 @@ package org.opensaml.xmlsec.algorithm.descriptors;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.algorithm.MACAlgorithm;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Algorithm descriptor for MAC algorithm: HMAC MD5.

@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.security.credential.impl.AbstractChainingCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 
 /**
  * A concrete implementation of {@link AbstractChainingCredentialResolver} which is scoped to 

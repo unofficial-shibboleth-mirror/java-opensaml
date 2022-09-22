@@ -31,7 +31,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Element;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

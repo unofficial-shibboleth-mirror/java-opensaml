@@ -22,11 +22,11 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.Live;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 
 /**
  * Context, usually attached to a {@link org.opensaml.messaging.context.MessageContext}

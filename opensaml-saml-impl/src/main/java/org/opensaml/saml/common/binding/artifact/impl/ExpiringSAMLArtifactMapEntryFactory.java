@@ -20,8 +20,6 @@ package org.opensaml.saml.common.binding.artifact.impl;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -29,6 +27,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.ExpiringSAMLArtifactMapEntry;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntryFactory;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * A factory for instances of {@link ExpiringSAMLArtifactMapEntry}.

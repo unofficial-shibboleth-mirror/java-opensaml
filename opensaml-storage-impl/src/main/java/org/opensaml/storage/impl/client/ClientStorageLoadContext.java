@@ -24,8 +24,8 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.messaging.context.BaseContext;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.Live;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 
 /**
  * A subcontext for driving the loading of data from a client into one or more

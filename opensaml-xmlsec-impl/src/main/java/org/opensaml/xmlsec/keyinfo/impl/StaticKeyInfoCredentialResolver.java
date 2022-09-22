@@ -25,7 +25,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 
 /**
  * Simple implementation of {@link KeyInfoCredentialResolver} which just stores and returns a static set of credentials.

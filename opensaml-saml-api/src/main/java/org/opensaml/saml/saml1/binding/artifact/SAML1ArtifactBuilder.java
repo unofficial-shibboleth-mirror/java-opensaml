@@ -20,10 +20,10 @@ package org.opensaml.saml.saml1.binding.artifact;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.saml1.core.Assertion;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Builder of typed SAML 1 artifacts.

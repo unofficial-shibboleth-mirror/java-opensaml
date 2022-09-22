@@ -20,10 +20,10 @@ package org.opensaml.core.xml.schema.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSQName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Builder of {@link org.opensaml.core.xml.schema.impl.XSQNameImpl} objects.

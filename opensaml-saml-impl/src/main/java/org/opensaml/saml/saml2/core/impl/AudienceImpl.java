@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.Audience;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Concrete implementation of {@link Audience}.

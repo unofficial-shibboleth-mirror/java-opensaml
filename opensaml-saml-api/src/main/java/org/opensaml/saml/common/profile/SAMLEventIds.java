@@ -19,7 +19,7 @@ package org.opensaml.saml.common.profile;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML-specific constants to use for {@link org.opensaml.profile.action.ProfileAction}

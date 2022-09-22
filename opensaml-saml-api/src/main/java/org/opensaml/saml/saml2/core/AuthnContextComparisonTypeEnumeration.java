@@ -19,7 +19,7 @@ package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Enumeration of {@link org.opensaml.saml.saml2.core.RequestedAuthnContext} comparison types.

@@ -26,7 +26,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * A functional interface for SAMLElements that provide cache duration information.

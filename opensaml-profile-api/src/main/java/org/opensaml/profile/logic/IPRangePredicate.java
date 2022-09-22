@@ -29,9 +29,9 @@ import org.opensaml.messaging.context.BaseContext;
 import com.google.common.net.InetAddresses;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.shared.net.IPRange;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.Predicate;
 

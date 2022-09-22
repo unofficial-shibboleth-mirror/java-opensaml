@@ -19,9 +19,9 @@ package org.opensaml.saml.common.profile;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.saml.common.SAMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Specialized type of {@link NameIdentifierGenerator} that is locked to a specific Format

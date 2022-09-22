@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.Live;
 
 /**
  * A context subclass for holding arbitrary data in a map.

@@ -33,7 +33,7 @@ import org.opensaml.security.x509.TrustedNamesCriterion;
 
 import com.google.common.collect.ImmutableSet;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
 

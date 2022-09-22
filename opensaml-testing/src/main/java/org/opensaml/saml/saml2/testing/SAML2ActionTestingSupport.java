@@ -23,9 +23,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
@@ -47,6 +44,9 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Scoping;
 import org.opensaml.saml.saml2.core.Subject;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Helper methods for creating/testing SAML 2 objects within profile action tests. When methods herein refer to mock

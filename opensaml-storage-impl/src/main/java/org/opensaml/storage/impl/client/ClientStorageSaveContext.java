@@ -27,8 +27,8 @@ import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource
 
 import com.google.common.collect.Iterables;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.Live;
-import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 
 /**
  * A subcontext for driving the saving of data to a client from one or more

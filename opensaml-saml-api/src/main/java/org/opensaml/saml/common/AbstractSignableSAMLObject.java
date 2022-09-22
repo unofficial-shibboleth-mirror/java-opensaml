@@ -20,10 +20,10 @@ package org.opensaml.saml.common;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.xmlsec.signature.AbstractSignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Abstract SAMLObject implementation that also implements {@link org.opensaml.xmlsec.signature.SignableXMLObject}.

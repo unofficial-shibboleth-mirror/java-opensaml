@@ -25,14 +25,14 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanCreationException;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * A factory bean to collect information to do with an X509 backed {@link BasicX509Credential}.

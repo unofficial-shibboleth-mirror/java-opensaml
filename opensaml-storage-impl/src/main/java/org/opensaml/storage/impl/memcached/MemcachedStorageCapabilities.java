@@ -17,7 +17,7 @@
 
 package org.opensaml.storage.impl.memcached;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.Positive;
+import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import org.opensaml.storage.StorageCapabilities;
 

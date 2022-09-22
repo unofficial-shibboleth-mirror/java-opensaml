@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * A concrete implementation of {@link AuthnContextClassRef}.

@@ -19,14 +19,14 @@ package org.opensaml.saml.common.binding.artifact;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.core.xml.util.XMLObjectSupport.CloneOutputOption;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /** Basic implementation of {@link SAMLArtifactMapEntry}. */
 public class BasicSAMLArtifactMapEntry implements SAMLArtifactMapEntry {

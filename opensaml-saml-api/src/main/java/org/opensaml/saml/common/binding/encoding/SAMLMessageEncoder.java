@@ -19,9 +19,9 @@ package org.opensaml.saml.common.binding.encoding;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
-
 import org.opensaml.messaging.encoder.MessageEncoder;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML extension to the generic message encoder.

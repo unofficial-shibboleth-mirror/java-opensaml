@@ -26,7 +26,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 
 /**
  * An implementation of {@link KeyInfoCredentialResolver} which uses a {@link Collection} as the

@@ -31,7 +31,7 @@ import javax.crypto.SecretKey;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 

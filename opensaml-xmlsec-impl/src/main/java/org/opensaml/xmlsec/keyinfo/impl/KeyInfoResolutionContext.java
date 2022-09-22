@@ -29,7 +29,7 @@ import javax.annotation.Nullable;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
-import net.shibboleth.utilities.java.support.annotation.ParameterName;
+import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.collection.LazySet;
 
