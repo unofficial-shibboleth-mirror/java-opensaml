@@ -25,8 +25,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.resource.Resource;
+import net.shibboleth.shared.resolver.ResolverException;
+import net.shibboleth.shared.resource.Resource;
 
 /**
  * A metadata provider that reads metadata from a {#link {@link Resource}.

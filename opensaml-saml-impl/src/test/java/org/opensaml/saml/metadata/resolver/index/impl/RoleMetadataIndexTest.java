@@ -22,8 +22,6 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.criterion.EntityRoleCriterion;
@@ -37,6 +35,8 @@ import org.opensaml.saml.saml2.metadata.impl.RoleDescriptorImpl;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 
 /**

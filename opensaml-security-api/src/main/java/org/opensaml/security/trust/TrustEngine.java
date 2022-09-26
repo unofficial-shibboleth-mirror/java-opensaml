@@ -20,9 +20,9 @@ package org.opensaml.security.trust;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
 import org.opensaml.security.SecurityException;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  * Evaluates the trustworthiness and validity of a token against 

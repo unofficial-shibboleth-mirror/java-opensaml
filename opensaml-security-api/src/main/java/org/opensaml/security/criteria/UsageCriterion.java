@@ -20,9 +20,9 @@ package org.opensaml.security.criteria;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.resolver.Criterion;
-
 import org.opensaml.security.credential.UsageType;
+
+import net.shibboleth.shared.resolver.Criterion;
 
 
 /**

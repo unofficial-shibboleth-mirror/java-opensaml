@@ -26,7 +26,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
  * specifically the {@link SigningMethod} and {@link DigestMethod} extension elements.
  * 
  * <p>
- * In addition to the {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs documented in 
+ * In addition to the {@link net.shibboleth.shared.resolver.Criterion} inputs documented in 
  * {@link BasicSignatureSigningParametersResolver}, the following inputs are also supported:
  * </p>
  * <ul>

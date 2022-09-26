@@ -22,9 +22,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.EntityGroupName;
@@ -35,6 +32,9 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 
 public class EntitiesDescriptorNameProcessorTest extends XMLObjectBaseTestCase {
     

@@ -20,7 +20,7 @@ package org.opensaml.security.testing;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 public class MockTrustEngine<TokenType> implements TrustEngine<TokenType> {
     

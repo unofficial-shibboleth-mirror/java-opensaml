@@ -17,8 +17,8 @@
 
 package org.opensaml.security.httpclient;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Resolver;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Resolver;
 
 /**
  * An interface for components which resolve {@link HttpClientSecurityParameters} based on a {@link CriteriaSet}.

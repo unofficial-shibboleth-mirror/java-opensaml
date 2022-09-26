@@ -22,8 +22,8 @@ import java.math.BigInteger;
 import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
  * An implementation of {@link Criterion} which specifies criteria based on

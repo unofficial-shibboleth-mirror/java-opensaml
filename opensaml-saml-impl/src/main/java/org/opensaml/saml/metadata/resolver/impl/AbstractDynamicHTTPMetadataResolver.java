@@ -57,10 +57,10 @@ import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.MediaTypeSupport;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Abstract subclass for dynamic metadata resolvers that implement metadata resolution based on HTTP requests.

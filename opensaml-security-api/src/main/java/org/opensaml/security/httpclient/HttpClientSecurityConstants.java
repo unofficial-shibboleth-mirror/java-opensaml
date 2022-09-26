@@ -33,7 +33,7 @@ public final class HttpClientSecurityConstants {
     public static final String CONTEXT_KEY_TRUST_ENGINE = "opensaml.TrustEngine";
     
     /** Context key for a criteria set instance supplied by an HttpClient caller. 
-     * Value must be an instance of {@link net.shibboleth.utilities.java.support.resolver.CriteriaSet}. */
+     * Value must be an instance of {@link net.shibboleth.shared.resolver.CriteriaSet}. */
     public static final String CONTEXT_KEY_CRITERIA_SET = "opensaml.CriteriaSet";
     
     /** Context key for a server TLS credential evaluation result, populated by specialized instances 

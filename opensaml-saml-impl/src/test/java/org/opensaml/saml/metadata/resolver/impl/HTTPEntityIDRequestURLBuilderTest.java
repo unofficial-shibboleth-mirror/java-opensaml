@@ -17,8 +17,8 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.testng.Assert;

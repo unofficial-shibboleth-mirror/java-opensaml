@@ -19,9 +19,9 @@ package org.opensaml.xmlsec.keyinfo;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.resolver.Criterion;
-
 import org.opensaml.xmlsec.signature.KeyInfo;
+
+import net.shibboleth.shared.resolver.Criterion;
 
 /**
  * An implementation of {@link Criterion} which specifies criteria based

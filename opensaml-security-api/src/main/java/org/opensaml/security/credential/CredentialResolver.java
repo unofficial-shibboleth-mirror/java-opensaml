@@ -18,11 +18,11 @@
 package org.opensaml.security.credential;
 
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Resolver;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Resolver;
 
 /**
- * A resolver which uses {@link net.shibboleth.utilities.java.support.resolver.Criterion}
+ * A resolver which uses {@link net.shibboleth.shared.resolver.Criterion}
  * to resolve and return instances of {@link Credential}.
  */
 public interface CredentialResolver extends Resolver<Credential, CriteriaSet>{

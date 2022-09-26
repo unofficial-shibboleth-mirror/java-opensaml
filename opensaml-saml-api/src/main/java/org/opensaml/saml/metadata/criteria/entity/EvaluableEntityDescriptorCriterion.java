@@ -21,7 +21,7 @@ import java.util.function.Predicate;
 
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
-import net.shibboleth.utilities.java.support.resolver.Criterion;
+import net.shibboleth.shared.resolver.Criterion;
 
 /**
  * Marker interface for evaluable {@link EntityDescriptor} criteria.

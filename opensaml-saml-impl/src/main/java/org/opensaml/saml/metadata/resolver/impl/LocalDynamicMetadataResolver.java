@@ -31,8 +31,8 @@ import org.opensaml.core.xml.persist.XMLObjectLoadSaveManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  * Resolver which dynamically resolves metadata from a local source managed by an instance

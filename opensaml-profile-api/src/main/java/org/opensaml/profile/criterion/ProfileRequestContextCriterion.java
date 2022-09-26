@@ -21,8 +21,8 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 
+import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
  * {@link Criterion} representing a {@link ProfileRequestContext}.

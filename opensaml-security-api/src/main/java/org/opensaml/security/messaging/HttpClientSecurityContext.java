@@ -25,7 +25,7 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  * A context implementation holding parameters related to {@link org.apache.http.client.HttpClient} security features.

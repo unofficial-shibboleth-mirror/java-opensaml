@@ -35,9 +35,9 @@ import java.util.Set;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.Credential;

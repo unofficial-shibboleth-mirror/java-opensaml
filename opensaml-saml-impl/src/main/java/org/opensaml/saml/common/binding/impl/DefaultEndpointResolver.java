@@ -21,8 +21,6 @@ import java.util.Objects;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
 import org.opensaml.saml.common.binding.AbstractEndpointResolver;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
@@ -32,10 +30,12 @@ import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
+
 /**
  * Default implementation that performs additional endpoint validation.
  * 
- * <p>The supported {@link net.shibboleth.utilities.java.support.resolver.Criterion} types and their use follows:</p>
+ * <p>The supported {@link net.shibboleth.shared.resolver.Criterion} types and their use follows:</p>
  * 
  * <dl>
  *  <dt> {@link EndpointCriterion} </dt>

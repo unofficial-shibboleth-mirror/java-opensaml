@@ -66,7 +66,7 @@ public final class SAML2AssertionValidationParameters {
     public static final String SIGNATURE_REQUIRED = STD_PREFIX + ".SignatureRequired";
 
     /**
-     * Carries a {@link net.shibboleth.utilities.java.support.resolver.CriteriaSet} which will be used as the 
+     * Carries a {@link net.shibboleth.shared.resolver.CriteriaSet} which will be used as the 
      * input to a {@link org.opensaml.xmlsec.signature.support.SignatureTrustEngine}.
      */
     public static final String SIGNATURE_VALIDATION_CRITERIA_SET = STD_PREFIX + ".SignatureValidationCriteriaSet";

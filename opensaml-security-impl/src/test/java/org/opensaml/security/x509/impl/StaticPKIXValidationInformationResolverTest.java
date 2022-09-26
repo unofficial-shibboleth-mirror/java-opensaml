@@ -22,14 +22,14 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.TrustedNamesCriterion;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 
 public class StaticPKIXValidationInformationResolverTest {
     

@@ -19,9 +19,9 @@ package org.opensaml.security.x509;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.resolver.Criterion;
-
 import org.apache.commons.codec.binary.Hex;
+
+import net.shibboleth.shared.resolver.Criterion;
 
 /**
  * An implementation of {@link Criterion} which specifies criteria based on

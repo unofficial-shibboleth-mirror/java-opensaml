@@ -17,11 +17,11 @@
 
 package org.opensaml.security.credential.criteria.impl;
 
-import net.shibboleth.utilities.java.support.resolver.Criterion;
-
 import java.util.function.Predicate;
 
 import org.opensaml.security.credential.Credential;
+
+import net.shibboleth.shared.resolver.Criterion;
 
 /**
  * Marker interface for evaluable credential resolver criteria.

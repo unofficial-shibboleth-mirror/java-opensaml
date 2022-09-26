@@ -25,8 +25,8 @@ import org.opensaml.saml.metadata.resolver.DetectDuplicateEntityIDs;
 
 import com.google.common.base.MoreObjects;
 
+import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
  * Criterion which holds an instance of {@link DetectDuplicateEntityIDs}.

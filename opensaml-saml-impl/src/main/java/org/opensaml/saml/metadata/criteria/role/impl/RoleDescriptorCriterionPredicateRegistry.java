@@ -19,7 +19,7 @@ package org.opensaml.saml.metadata.criteria.role.impl;
 
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 
-import net.shibboleth.utilities.java.support.resolver.CriterionPredicateRegistry;
+import net.shibboleth.shared.resolver.CriterionPredicateRegistry;
 
 /**
  * Default {@link CriterionPredicateRegistry} for {@link RoleDescriptor}.

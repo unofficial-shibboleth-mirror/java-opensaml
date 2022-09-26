@@ -15,5 +15,5 @@
  * limitations under the License.
  */
 
-/** Core {@link net.shibboleth.utilities.java.support.resolver.Criterion} subclasses. */
+/** Core {@link net.shibboleth.shared.resolver.Criterion} subclasses. */
 package org.opensaml.core.criterion;

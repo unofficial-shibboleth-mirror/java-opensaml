@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 
 /**
- * An implementation of {@link net.shibboleth.utilities.java.support.resolver.Criterion} which specifies
+ * An implementation of {@link net.shibboleth.shared.resolver.Criterion} which specifies
  * criteria based on the digest of an X.509 certificate.
  */
 public final class EvaluableX509DigestCredentialCriterion extends AbstractTriStatePredicate<Credential> 

@@ -21,9 +21,6 @@ import java.io.File;
 import java.net.URL;
 import java.util.ArrayList;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLSchemaBuilder;
@@ -35,6 +32,9 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 
 public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
 

@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 //TODO amend docs (and impl) for symmetric key storage and retrieval
 

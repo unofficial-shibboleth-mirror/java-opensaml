@@ -33,7 +33,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.BaseEncoding;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  *

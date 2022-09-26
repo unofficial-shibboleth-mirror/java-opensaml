@@ -19,7 +19,7 @@ package org.opensaml.saml.metadata.resolver;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.shared.resolver.ResolverException;
 
 /**
  * Specialization of {@link MetadataResolver} that supports on-demand clearing of the resolver's

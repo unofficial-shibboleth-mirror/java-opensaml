@@ -52,9 +52,9 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.InitializableComponent;
 import net.shibboleth.shared.component.UninitializedComponentException;
 import net.shibboleth.shared.component.UnmodifiableComponentException;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * A credential resolver capable of resolving credentials from SAML 2 metadata.
@@ -65,7 +65,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * </p>
  * 
  * <p>
- * The following resolution modes and associated {@link net.shibboleth.utilities.java.support.resolver.Criterion}
+ * The following resolution modes and associated {@link net.shibboleth.shared.resolver.Criterion}
  * inputs are supported:
  * </p>
  * 

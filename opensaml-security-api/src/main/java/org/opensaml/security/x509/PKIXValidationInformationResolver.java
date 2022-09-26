@@ -22,12 +22,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Resolver;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Resolver;
+import net.shibboleth.shared.resolver.ResolverException;
 
 /**
- * A resolver which uses {@link net.shibboleth.utilities.java.support.resolver.Criterion} to resolve
+ * A resolver which uses {@link net.shibboleth.shared.resolver.Criterion} to resolve
  * {@link PKIXValidationInformation}, which will typically be used by PKIX-based trust engines.
  * 
  * Implementations must also implement {@link #resolveTrustedNames(CriteriaSet)}, which will 

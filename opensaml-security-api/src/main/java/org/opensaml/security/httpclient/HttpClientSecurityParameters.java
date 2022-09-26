@@ -24,8 +24,8 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;

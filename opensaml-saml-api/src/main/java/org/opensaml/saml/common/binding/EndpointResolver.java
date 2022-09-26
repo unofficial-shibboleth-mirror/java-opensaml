@@ -19,8 +19,8 @@ package org.opensaml.saml.common.binding;
 
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Resolver;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Resolver;
 
 /**
  * A resolver that is capable of resolving {@link Endpoint} instances

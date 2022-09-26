@@ -25,7 +25,7 @@ import org.opensaml.saml.metadata.resolver.impl.MetadataQueryProtocolRequestURLB
 
 import com.google.common.io.BaseEncoding;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  * Implementation of {@link MetadataQueryProtocolURLBuilder} which understands {@link ArtifactCriterion}.

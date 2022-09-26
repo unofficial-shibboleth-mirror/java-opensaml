@@ -23,9 +23,9 @@ import org.testng.Assert;
 import java.security.KeyPair;
 import java.time.Instant;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.security.impl.RandomIdentifierGenerationStrategy;
 import net.shibboleth.shared.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;

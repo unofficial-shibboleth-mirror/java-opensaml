@@ -21,9 +21,9 @@ import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 import org.apache.commons.codec.binary.Hex;
 

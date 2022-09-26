@@ -33,7 +33,7 @@ import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;
 
 import net.shibboleth.shared.httpclient.HttpClientSupport;
 import net.shibboleth.shared.httpclient.TLSSocketFactoryBuilder;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  * Support class for working with security-enhanced components related to use of {@link HttpClient}.

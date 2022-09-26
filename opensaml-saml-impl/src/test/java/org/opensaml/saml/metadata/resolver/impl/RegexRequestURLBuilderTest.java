@@ -21,7 +21,7 @@ import org.opensaml.core.criterion.EntityIdCriterion;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 public class RegexRequestURLBuilderTest {
     

@@ -47,7 +47,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Predicates;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  *

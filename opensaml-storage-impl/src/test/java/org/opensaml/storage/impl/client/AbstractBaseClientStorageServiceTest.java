@@ -24,10 +24,10 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.CookieManager;
 import net.shibboleth.shared.net.impl.ThreadLocalHttpServletRequestSupplier;
 import net.shibboleth.shared.net.impl.ThreadLocalHttpServletResponseSupplier;
+import net.shibboleth.shared.resource.Resource;
 import net.shibboleth.shared.security.DataSealer;
 import net.shibboleth.shared.security.impl.BasicKeystoreKeyStrategy;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
-import net.shibboleth.utilities.java.support.resource.Resource;
 
 /** Base class for client storage tests. */
 public class AbstractBaseClientStorageServiceTest {

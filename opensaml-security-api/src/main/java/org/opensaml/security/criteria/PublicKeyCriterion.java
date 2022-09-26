@@ -21,8 +21,8 @@ import java.security.PublicKey;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /**
  * An implementation of {@link Criterion} which specifies public key criteria.

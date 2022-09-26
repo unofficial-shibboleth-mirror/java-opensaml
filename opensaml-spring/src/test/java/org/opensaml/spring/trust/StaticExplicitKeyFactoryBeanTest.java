@@ -21,8 +21,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Iterator;
 
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
-
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.trust.TrustEngine;
@@ -30,6 +28,8 @@ import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.resolver.ResolverException;
 
 /**
  * Test for StaticExplicitKey factory bean.

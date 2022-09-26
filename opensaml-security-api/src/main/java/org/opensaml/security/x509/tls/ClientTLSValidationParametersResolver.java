@@ -17,8 +17,8 @@
 
 package org.opensaml.security.x509.tls;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Resolver;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Resolver;
 
 /**
  * An interface for components which resolve {@link ClientTLSValidationParameters} based on a {@link CriteriaSet}.

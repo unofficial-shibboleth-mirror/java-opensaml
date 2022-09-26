@@ -16,7 +16,7 @@
  */
 
 /**
- * Profile {@link net.shibboleth.utilities.java.support.resolver.Criterion} implementations.
+ * Profile {@link net.shibboleth.shared.resolver.Criterion} implementations.
  */
 
 package org.opensaml.profile.criterion;

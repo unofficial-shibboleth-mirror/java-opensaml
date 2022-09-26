@@ -48,7 +48,7 @@ import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.collection.Pair;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  *

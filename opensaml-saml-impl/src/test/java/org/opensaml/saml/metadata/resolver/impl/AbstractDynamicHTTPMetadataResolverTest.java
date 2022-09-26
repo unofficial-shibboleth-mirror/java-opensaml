@@ -39,9 +39,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Criterion;
+import net.shibboleth.shared.resolver.ResolverException;
 
 public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     

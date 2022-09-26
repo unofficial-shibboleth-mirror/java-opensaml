@@ -26,8 +26,8 @@ import org.opensaml.saml.criterion.ArtifactCriterion;
 
 import com.google.common.io.BaseEncoding;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.codec.StringDigester;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  * A default implementation of {@link EntityIDDigestGenerator} for use as a source key generator 

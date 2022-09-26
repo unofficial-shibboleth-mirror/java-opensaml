@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  * Function which just reflects back the entityID from the passed {@link EntityIdCriterion}.

@@ -20,8 +20,8 @@ package org.opensaml.saml.criterion;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.Criterion;
 
 /** {@link Criterion} representing an entity role. */
 public final class EntityRoleCriterion implements Criterion {

@@ -17,10 +17,10 @@
 
 package org.opensaml.spring.trust;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 @SuppressWarnings("javadoc")
 public class MockTrustEngine<T> implements TrustEngine<T> {

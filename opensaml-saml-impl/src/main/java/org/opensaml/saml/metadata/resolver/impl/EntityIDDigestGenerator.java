@@ -26,10 +26,10 @@ import javax.annotation.Nullable;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.security.crypto.JCAConstants;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.codec.StringDigester;
 import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
  * Strategy for processing input criteria to extract the entityID from an {@link EntityIdCriterion} 

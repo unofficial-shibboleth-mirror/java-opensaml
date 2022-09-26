@@ -52,16 +52,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.PredicateSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * Basic implementation of {@link EncryptionParametersResolver}.
  * 
  * <p>
- * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
+ * The following {@link net.shibboleth.shared.resolver.Criterion} inputs are supported:
  * </p>
  * <ul>
  * <li>{@link EncryptionConfigurationCriterion} - required</li> 

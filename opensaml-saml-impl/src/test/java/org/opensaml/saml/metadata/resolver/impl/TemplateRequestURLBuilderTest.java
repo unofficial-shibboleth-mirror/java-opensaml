@@ -19,8 +19,8 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.util.function.Function;
 
+import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.core.criterion.EntityIdCriterion;

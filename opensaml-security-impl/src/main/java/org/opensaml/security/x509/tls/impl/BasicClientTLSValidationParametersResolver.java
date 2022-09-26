@@ -23,9 +23,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
@@ -39,7 +39,7 @@ import org.opensaml.security.x509.tls.ClientTLSValidationParametersResolver;
  * Basic implementation of {@link ClientTLSValidationParametersResolver}.
  * 
  * <p>
- * The following {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs are supported:
+ * The following {@link net.shibboleth.shared.resolver.Criterion} inputs are supported:
  * </p>
  * <ul>
  * <li>{@link ClientTLSValidationConfigurationCriterion} - required</li> 

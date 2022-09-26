@@ -18,8 +18,8 @@
 package org.opensaml.saml.metadata.resolver;
 
 import net.shibboleth.shared.component.IdentifiedComponent;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.Resolver;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Resolver;
 
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 

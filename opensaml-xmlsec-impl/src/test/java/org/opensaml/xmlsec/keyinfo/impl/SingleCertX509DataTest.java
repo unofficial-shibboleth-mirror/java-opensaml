@@ -18,6 +18,10 @@
 package org.opensaml.xmlsec.keyinfo.impl;
 
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.security.cert.X509Certificate;
@@ -25,9 +29,6 @@ import java.security.interfaces.RSAPublicKey;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.Credential;

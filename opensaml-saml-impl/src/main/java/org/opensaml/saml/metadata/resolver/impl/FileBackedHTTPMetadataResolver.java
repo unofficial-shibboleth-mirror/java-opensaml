@@ -39,8 +39,8 @@ import org.w3c.dom.Document;
 import com.google.common.io.Files;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 /**
  * An HTTP metadata provider that caches a copy of the retrieved metadata to disk so that, in the event that

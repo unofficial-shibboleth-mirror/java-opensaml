@@ -19,7 +19,7 @@ package org.opensaml.saml.metadata.criteria.entity.impl;
 
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
-import net.shibboleth.utilities.java.support.resolver.CriterionPredicateRegistry;
+import net.shibboleth.shared.resolver.CriterionPredicateRegistry;
 
 /**
  * Default {@link CriterionPredicateRegistry} for {@link EntityDescriptor}.

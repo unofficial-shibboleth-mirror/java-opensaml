@@ -20,8 +20,6 @@ package org.opensaml.saml.common.binding.security.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
@@ -38,6 +36,8 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
  * Base class for SAML security message handlers which evaluate a signature with a signature trust engine.

@@ -21,7 +21,7 @@ import java.time.Instant;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.shared.resolver.ResolverException;
 
 /**
  * Specialization of {@link MetadataResolver} that supports on-demand refresh.

@@ -31,11 +31,11 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.PredicateSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
@@ -67,7 +67,7 @@ import org.slf4j.LoggerFactory;
  * credentials and algorithm preferences against SAML metadata via a {@link MetadataCredentialResolver}.
  * 
  * <p>
- * In addition to the {@link net.shibboleth.utilities.java.support.resolver.Criterion} inputs documented in 
+ * In addition to the {@link net.shibboleth.shared.resolver.Criterion} inputs documented in 
  * {@link BasicEncryptionParametersResolver}, the inputs and associated modes of operation documented for 
  * {@link MetadataCredentialResolver} are also supported and required.
  * </p>

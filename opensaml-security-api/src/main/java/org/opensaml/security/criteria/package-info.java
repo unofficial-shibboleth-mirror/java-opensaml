@@ -17,11 +17,11 @@
 
 /**
  * Classes which model lookup criteria used as input to a
- * {@link net.shibboleth.utilities.java.support.resolver.Resolver}.
+ * {@link net.shibboleth.shared.resolver.Resolver}.
  * Criteria are typically used by resolvers in a resolver-specific manner to either lookup or extract
  * information from a source, or to constrain or filter the type of information that will be returned.
  * 
- * <p>This package provides some implementations of {@link net.shibboleth.utilities.java.support.resolver.Criterion}
+ * <p>This package provides some implementations of {@link net.shibboleth.shared.resolver.Criterion}
  * which may have general applicability throughout the library. Criterion implementations which are more
  * specialized in nature may be found in other packages, such as {@link org.opensaml.security.x509}.</p>
  */

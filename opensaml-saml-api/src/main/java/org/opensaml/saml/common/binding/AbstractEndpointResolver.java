@@ -39,8 +39,8 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.AbstractIdentifiedInitializableComponent;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 
 /**
  * Base implementation that resolves and validates protocol/profile endpoints using a combination of supplied
@@ -50,7 +50,7 @@ import net.shibboleth.utilities.java.support.resolver.ResolverException;
  * only a subset of required functionality, then extracts a set of candidates from metadata if present, and
  * delegates to a subclass to actually evaluate each one for acceptability.</p>
  * 
- * <p>The supported {@link net.shibboleth.utilities.java.support.resolver.Criterion} types and their use follows:</p>
+ * <p>The supported {@link net.shibboleth.shared.resolver.Criterion} types and their use follows:</p>
  * 
  * <dl>
  *  <dt>{@link EndpointCriterion} (required)</dt>

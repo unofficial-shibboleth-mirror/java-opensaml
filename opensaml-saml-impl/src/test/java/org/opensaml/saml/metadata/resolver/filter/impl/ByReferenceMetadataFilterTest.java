@@ -38,8 +38,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.resolver.ResolverException;
+import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.ResolverException;
 
 /** Unit test for {@link ByReferenceMetadataFilter}. */
 public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase implements Predicate<EntityDescriptor> {

@@ -21,7 +21,7 @@ import java.util.Objects;
 
 import com.google.common.base.MoreObjects;
 
-import net.shibboleth.utilities.java.support.resolver.Criterion;
+import net.shibboleth.shared.resolver.Criterion;
 
 /**
  * A criterion which allows to specify at runtime whether candidates being evaluated
