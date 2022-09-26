@@ -33,12 +33,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.codec.HTMLEncoder;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
 
 /**
  * SAML 1.X HTTP POST message encoder.

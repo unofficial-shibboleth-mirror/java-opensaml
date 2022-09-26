@@ -25,9 +25,9 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 
+import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.credential.BasicCredential;

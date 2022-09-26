@@ -41,9 +41,9 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
 
 /**
  *

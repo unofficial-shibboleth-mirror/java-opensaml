@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.binding.decoding.impl;
 import java.util.function.Supplier;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.codec.DecodingException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -31,8 +32,6 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import net.shibboleth.utilities.java.support.codec.DecodingException;
 
 /**
  * Test case for HTTP POST decoders.

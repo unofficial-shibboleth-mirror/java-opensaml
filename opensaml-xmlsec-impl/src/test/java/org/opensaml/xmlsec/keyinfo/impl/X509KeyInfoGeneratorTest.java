@@ -35,8 +35,8 @@ import java.util.List;
 
 import javax.security.auth.x500.X500Principal;
 
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;

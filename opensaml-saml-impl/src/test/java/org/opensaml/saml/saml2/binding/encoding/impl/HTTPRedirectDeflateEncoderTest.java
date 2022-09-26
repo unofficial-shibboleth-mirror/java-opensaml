@@ -49,9 +49,9 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.net.URLBuilder;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 /**
  * Unit test for redirect encoding.

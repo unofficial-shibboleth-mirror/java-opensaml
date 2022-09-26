@@ -92,9 +92,9 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.DecodingException;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

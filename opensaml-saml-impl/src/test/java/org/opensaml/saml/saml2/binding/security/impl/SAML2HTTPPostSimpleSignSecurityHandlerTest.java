@@ -68,11 +68,11 @@ import org.w3c.dom.Element;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.XMLParserException;
 import net.shibboleth.shared.xml.impl.BasicParserPool;
-import net.shibboleth.utilities.java.support.codec.DecodingException;
 
 /**
  * Test SAML simple signature via HTTP POST-SimpleSign binding

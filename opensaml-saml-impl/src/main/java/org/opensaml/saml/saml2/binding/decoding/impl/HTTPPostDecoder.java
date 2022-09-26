@@ -40,8 +40,8 @@ import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.DecodingException;
 
 /** Message decoder implementing the SAML 2.0 HTTP POST binding. */
 public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder implements SAMLMessageDecoder {

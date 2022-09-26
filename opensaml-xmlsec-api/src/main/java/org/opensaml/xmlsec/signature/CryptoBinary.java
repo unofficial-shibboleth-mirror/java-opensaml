@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
-import net.shibboleth.utilities.java.support.codec.EncodingException;
+import net.shibboleth.shared.codec.EncodingException;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, CryptoBinary simple type.

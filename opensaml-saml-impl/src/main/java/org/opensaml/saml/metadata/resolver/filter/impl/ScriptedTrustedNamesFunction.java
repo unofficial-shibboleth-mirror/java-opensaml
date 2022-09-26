@@ -29,8 +29,8 @@ import javax.script.ScriptException;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.resource.Resource;
-import net.shibboleth.utilities.java.support.scripting.AbstractScriptEvaluator;
-import net.shibboleth.utilities.java.support.scripting.EvaluableScript;
+import net.shibboleth.shared.scripting.AbstractScriptEvaluator;
+import net.shibboleth.shared.scripting.EvaluableScript;
 
 import org.opensaml.core.xml.XMLObject;
 

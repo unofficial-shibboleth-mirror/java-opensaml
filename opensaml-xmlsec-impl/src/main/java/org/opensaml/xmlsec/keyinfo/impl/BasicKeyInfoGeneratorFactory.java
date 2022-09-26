@@ -41,7 +41,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.codec.EncodingException;
+import net.shibboleth.shared.codec.EncodingException;
 
 
 /**

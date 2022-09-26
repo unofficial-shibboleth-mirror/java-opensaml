@@ -25,9 +25,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.codec.StringDigester;
+import net.shibboleth.shared.codec.StringDigester.OutputFormat;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.codec.StringDigester;
-import net.shibboleth.utilities.java.support.codec.StringDigester.OutputFormat;
 
 /**
  *

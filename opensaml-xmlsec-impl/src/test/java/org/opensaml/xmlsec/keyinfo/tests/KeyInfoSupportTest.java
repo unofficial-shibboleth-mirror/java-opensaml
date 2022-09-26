@@ -42,10 +42,6 @@ import java.util.List;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.security.auth.x500.X500Principal;
 
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-import net.shibboleth.utilities.java.support.codec.DecodingException;
-import net.shibboleth.utilities.java.support.codec.EncodingException;
-
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.security.SecurityException;
@@ -81,6 +77,10 @@ import org.opensaml.xmlsec.signature.Y;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.codec.EncodingException;
 
 /**
  * Test to exercise the KeyInfoSupport methods to convert between XMLObject's contained within KeyInfo and Java security

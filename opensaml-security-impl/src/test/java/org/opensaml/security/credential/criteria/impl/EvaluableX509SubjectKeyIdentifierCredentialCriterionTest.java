@@ -18,14 +18,15 @@
 package org.opensaml.security.credential.criteria.impl;
 
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.codec.Base64Support;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.X509Certificate;
-
-import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;

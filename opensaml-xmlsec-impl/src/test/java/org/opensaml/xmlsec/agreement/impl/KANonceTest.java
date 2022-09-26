@@ -22,9 +22,9 @@ import org.opensaml.core.xml.XMLObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.UnmodifiableComponentException;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
 
 /**
  *

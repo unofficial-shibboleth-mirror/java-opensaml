@@ -61,7 +61,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletResponse;
-import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.shared.codec.Base64Support;
 
 /**
  * Test case for {@link HTTPPostEncoder}.

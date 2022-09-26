@@ -28,7 +28,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.codec.Base64Support;
+import net.shibboleth.shared.codec.Base64Support;
 
 /**
  *

@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.binding.impl;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.codec.Base64Support;
-
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -31,6 +29,8 @@ import org.opensaml.saml.ext.samlec.GeneratedKey;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
+
+import net.shibboleth.shared.codec.Base64Support;
 
 /**
  * MessageHandler to add the ECP {@link GeneratedKey} header to an outgoing SOAP envelope.
