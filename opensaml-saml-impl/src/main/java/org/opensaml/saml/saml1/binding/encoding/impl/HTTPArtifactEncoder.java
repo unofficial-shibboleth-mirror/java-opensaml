@@ -44,11 +44,11 @@ import org.slf4j.LoggerFactory;
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

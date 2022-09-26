@@ -24,11 +24,11 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.LazyMap;
-
 import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.collection.LazyMap;
 
 /**
  * A manager for named sets of {@link KeyInfoGeneratorFactory} instances. Each name key serves as an index to an

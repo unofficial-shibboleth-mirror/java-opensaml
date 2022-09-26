@@ -50,9 +50,9 @@ import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.collection.LazyList;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.collection.LazyList;
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

@@ -28,7 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.shared.collection.LazyList;
 
 import org.cryptacular.util.KeyPairUtil;
 import org.opensaml.security.x509.X509Support;

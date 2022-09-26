@@ -31,9 +31,9 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.collection.LazySet;
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 

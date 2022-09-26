@@ -54,7 +54,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {

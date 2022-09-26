@@ -47,7 +47,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**

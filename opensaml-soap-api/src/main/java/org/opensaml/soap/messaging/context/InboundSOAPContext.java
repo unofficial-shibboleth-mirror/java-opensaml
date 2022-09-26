@@ -21,10 +21,10 @@ import java.util.Set;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.BaseContext;
+
+import net.shibboleth.shared.collection.LazySet;
 
 /**
  * A subcontext holding information related to processing of an inbound SOAP message.

@@ -48,7 +48,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

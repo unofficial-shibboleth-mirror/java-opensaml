@@ -22,7 +22,7 @@ import java.util.Map;
 
 import javax.annotation.concurrent.NotThreadSafe;
 
-import net.shibboleth.utilities.java.support.collection.LazyMap;
+import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**

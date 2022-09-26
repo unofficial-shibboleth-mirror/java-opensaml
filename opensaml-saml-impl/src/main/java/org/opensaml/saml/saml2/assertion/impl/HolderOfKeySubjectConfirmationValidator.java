@@ -29,8 +29,8 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.LazyList;
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.LazyList;
+import net.shibboleth.shared.collection.Pair;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.assertion.AssertionValidationException;

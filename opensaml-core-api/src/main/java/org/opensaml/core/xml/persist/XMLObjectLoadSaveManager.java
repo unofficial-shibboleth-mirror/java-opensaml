@@ -29,7 +29,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 
 /**
  * Interface for a component which is capable of loading and saving instances of {@link XMLObject},

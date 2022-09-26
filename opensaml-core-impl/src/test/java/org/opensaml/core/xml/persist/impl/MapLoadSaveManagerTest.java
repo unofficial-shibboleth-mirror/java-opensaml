@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 import com.google.common.collect.Sets;
 import com.google.common.util.concurrent.Uninterruptibles;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 
 /**
  *

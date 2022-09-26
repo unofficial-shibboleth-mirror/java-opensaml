@@ -25,8 +25,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.RequestContextBuilder;
@@ -46,6 +44,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.Pair;
 
 /**
  *

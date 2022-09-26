@@ -72,9 +72,9 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.collection.LazySet;
-import net.shibboleth.utilities.java.support.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;

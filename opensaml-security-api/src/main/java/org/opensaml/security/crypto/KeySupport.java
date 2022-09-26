@@ -61,9 +61,9 @@ import javax.crypto.interfaces.DHPrivateKey;
 import javax.crypto.interfaces.DHPublicKey;
 import javax.crypto.spec.SecretKeySpec;
 
+import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
-import net.shibboleth.utilities.java.support.collection.LazyMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.bouncycastle.jcajce.provider.asymmetric.util.EC5Util;

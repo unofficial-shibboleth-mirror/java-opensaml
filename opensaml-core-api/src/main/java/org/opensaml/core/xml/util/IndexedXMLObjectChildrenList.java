@@ -27,8 +27,8 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.collection.LazyList;
-import net.shibboleth.utilities.java.support.collection.LazyMap;
+import net.shibboleth.shared.collection.LazyList;
+import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;

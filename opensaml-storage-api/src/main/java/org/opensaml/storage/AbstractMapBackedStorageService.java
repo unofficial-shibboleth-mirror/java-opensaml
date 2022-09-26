@@ -32,7 +32,7 @@ import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.Positive;
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

@@ -27,7 +27,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.Resolver;

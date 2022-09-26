@@ -17,7 +17,7 @@
 
 package org.opensaml.security.credential;
 
-import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
+import net.shibboleth.shared.collection.ClassIndexedSet;
 
 /**
  * This class holds instances of {@link CredentialContext} which represent information

@@ -47,11 +47,11 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.InitializableComponent;
 import net.shibboleth.shared.component.UninitializedComponentException;
 import net.shibboleth.shared.component.UnmodifiableComponentException;
-import net.shibboleth.utilities.java.support.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;

@@ -25,8 +25,8 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.shared.annotation.constraint.ThreadSafeAfterInit;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.IdentifiedComponent;
-import net.shibboleth.utilities.java.support.collection.Pair;
 
 /**
  * Generic data storage facility. Implementations will vary in how much

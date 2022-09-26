@@ -24,7 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.collection.LazyList;
+import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObject;

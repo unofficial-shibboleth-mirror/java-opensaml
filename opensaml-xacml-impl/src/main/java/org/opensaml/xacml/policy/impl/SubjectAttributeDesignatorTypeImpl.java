@@ -19,10 +19,10 @@ package org.opensaml.xacml.policy.impl;
 
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.collection.LazyList;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xacml.policy.SubjectAttributeDesignatorType;
+
+import net.shibboleth.shared.collection.LazyList;
 
 /**
  * Implementation of {@link SubjectAttributeDesignatorType}.

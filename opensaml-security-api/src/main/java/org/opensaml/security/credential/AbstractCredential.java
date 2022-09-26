@@ -25,7 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 

@@ -17,7 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.filter;
 
-import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
+import net.shibboleth.shared.collection.ClassIndexedSet;
 
 /**
  * Class used to provide contextual information at runtime to {@link MetadataFilter} implementations.

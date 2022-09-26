@@ -38,7 +38,7 @@ import org.opensaml.xmlsec.signature.KeyValue;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**

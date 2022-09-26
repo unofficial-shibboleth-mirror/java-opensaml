@@ -24,8 +24,6 @@ import java.util.Iterator;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
-
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLObject;
@@ -39,6 +37,8 @@ import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.collection.Pair;
 
 /**
  * Action to decrypt an {@link EncryptedAttribute} element and replace it with the decrypted

@@ -24,7 +24,7 @@ import java.util.Collection;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.LazySet;
+import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;

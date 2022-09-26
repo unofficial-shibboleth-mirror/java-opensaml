@@ -49,7 +49,7 @@ import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.xml.ParserPool;

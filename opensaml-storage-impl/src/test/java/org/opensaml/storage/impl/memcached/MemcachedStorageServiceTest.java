@@ -17,7 +17,7 @@
 
 package org.opensaml.storage.impl.memcached;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 import net.spy.memcached.BinaryConnectionFactory;
 import net.spy.memcached.MemcachedClient;
 import org.cryptacular.generator.IdGenerator;

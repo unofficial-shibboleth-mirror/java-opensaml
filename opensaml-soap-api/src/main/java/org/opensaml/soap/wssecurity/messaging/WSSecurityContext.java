@@ -23,9 +23,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.collection.LazyList;
-
 import org.opensaml.messaging.context.BaseContext;
+
+import net.shibboleth.shared.collection.LazyList;
 
 /**
  * A subcontext that carries information related to WS-Security processing.

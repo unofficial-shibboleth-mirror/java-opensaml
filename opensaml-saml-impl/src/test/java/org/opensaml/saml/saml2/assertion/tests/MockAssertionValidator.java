@@ -26,7 +26,7 @@ import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.assertion.SAML20AssertionValidator;
 import org.opensaml.saml.saml2.core.Assertion;
 
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 public class MockAssertionValidator extends SAML20AssertionValidator {

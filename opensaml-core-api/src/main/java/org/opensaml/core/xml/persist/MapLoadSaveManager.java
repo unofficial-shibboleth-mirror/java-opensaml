@@ -32,7 +32,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.utilities.java.support.collection.Pair;
+import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**

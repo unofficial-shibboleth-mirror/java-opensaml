@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.collection.LazyMap;
+import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;

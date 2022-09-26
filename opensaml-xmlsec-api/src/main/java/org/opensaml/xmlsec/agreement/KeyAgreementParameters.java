@@ -21,23 +21,15 @@ import java.util.Collection;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.collection.ClassIndexedSet;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.InitializableComponent;
-import net.shibboleth.utilities.java.support.collection.ClassIndexedSet;
 
 /**
  * Specialized collection type for holding sets of parameters to key agreement operations.
  */
 public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParameter> {
     
-    /**
-     * Constructor.
-     *
-     */
-    public KeyAgreementParameters() {
-        super();
-    }
-
     /**
      * Copy constructor.
      *
@@ -55,7 +47,6 @@ public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParamete
      *              will be cloned before being added
      */
     public KeyAgreementParameters(@Nonnull final Collection<KeyAgreementParameter> source, final boolean clone) {
-        this();
         for (final KeyAgreementParameter param : source) {
             if (clone && CloneableKeyAgreementParameter.class.isInstance(param)) {
                 add(CloneableKeyAgreementParameter.class.cast(param).clone());
