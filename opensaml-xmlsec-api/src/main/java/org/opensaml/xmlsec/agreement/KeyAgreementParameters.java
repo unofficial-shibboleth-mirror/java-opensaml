@@ -31,6 +31,14 @@ import net.shibboleth.shared.component.InitializableComponent;
 public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParameter> {
     
     /**
+     * Constructor.
+     *
+     */
+    public KeyAgreementParameters() {
+        
+    }
+
+    /**
      * Copy constructor.
      *
      * @param source the source set from which to copy
@@ -47,6 +55,7 @@ public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParamete
      *              will be cloned before being added
      */
     public KeyAgreementParameters(@Nonnull final Collection<KeyAgreementParameter> source, final boolean clone) {
+        this();
         for (final KeyAgreementParameter param : source) {
             if (clone && CloneableKeyAgreementParameter.class.isInstance(param)) {
                 add(CloneableKeyAgreementParameter.class.cast(param).clone());
