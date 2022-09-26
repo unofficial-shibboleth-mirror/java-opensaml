@@ -22,8 +22,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.trust.impl.ChainingTrustEngine;

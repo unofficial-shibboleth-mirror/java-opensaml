@@ -21,8 +21,6 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -31,6 +29,8 @@ import org.opensaml.profile.context.ProxiedRequesterContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.RequesterID;
 import org.opensaml.saml.saml2.core.Scoping;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * MessageHandler to extract the proxied chain of requesters from an {@link AuthnRequest} message's

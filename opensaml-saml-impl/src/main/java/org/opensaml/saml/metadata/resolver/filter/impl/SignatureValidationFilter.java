@@ -49,8 +49,8 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A metadata filter that validates XML signatures.

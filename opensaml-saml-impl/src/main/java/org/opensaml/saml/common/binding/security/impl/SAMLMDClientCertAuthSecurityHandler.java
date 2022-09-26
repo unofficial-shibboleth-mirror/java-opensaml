@@ -31,9 +31,9 @@ import org.opensaml.security.messaging.impl.BaseClientCertAuthSecurityHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 /**
  * SAML specialization of {@link BaseClientCertAuthSecurityHandler} which provides support for X509Credential 

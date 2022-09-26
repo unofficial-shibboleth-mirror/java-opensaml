@@ -20,7 +20,7 @@ package org.opensaml.security.x509;
 import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Basic implementation of {@link X500DNHandler} which uses the internal built-in mechanisms

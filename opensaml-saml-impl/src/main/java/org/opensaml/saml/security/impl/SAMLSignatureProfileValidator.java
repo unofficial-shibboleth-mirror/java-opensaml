@@ -19,8 +19,6 @@ package org.opensaml.saml.security.impl;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.Reference;
 import org.apache.xml.security.signature.XMLSignature;
@@ -38,6 +36,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A validator for instances of {@link Signature}, which validates that the signature meets security-related

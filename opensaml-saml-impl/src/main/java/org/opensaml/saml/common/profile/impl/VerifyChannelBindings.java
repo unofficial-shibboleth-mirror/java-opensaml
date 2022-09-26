@@ -36,8 +36,8 @@ import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Action that verifies two sets of {@link ChannelBindings} from two different {@link ChannelBindingsContext}

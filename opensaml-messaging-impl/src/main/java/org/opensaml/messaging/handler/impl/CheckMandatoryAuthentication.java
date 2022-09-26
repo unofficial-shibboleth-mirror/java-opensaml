@@ -27,7 +27,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Message handler that checks that a message context is authenticated.

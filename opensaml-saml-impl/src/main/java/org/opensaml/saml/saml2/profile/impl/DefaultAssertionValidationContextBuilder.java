@@ -74,11 +74,11 @@ import com.google.common.base.Predicates;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.FunctionSupport;
 import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.FunctionSupport;
 
 /**
  *  Function which implements default behavior for building an instance of {@link ValidationContext}

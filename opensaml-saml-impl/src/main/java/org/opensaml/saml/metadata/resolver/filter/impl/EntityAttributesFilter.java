@@ -51,7 +51,7 @@ import com.google.common.collect.Multimap;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A filter that adds {@link EntityAttributes} extension content to entities in order to drive software

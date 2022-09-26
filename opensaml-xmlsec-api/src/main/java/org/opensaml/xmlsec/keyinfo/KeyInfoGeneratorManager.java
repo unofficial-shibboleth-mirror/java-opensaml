@@ -25,9 +25,9 @@ import java.util.Map;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.security.credential.Credential;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A manager for {@link KeyInfoGeneratorFactory} instances.  Factories are uniquely indexed according to the 

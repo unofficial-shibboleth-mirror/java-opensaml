@@ -36,7 +36,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /** Artifact map implementation backed by {@link StorageService}. */
 public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponent implements SAMLArtifactMap {

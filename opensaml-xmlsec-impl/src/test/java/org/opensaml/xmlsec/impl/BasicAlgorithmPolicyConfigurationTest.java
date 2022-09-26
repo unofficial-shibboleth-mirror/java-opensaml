@@ -22,11 +22,11 @@ import static org.testng.Assert.*;
 
 import java.util.Arrays;
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-
 import org.opensaml.xmlsec.AlgorithmPolicyConfiguration.Precedence;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 public class BasicAlgorithmPolicyConfigurationTest {
     

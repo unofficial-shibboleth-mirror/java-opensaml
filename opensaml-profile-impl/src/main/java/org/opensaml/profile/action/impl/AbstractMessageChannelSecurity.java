@@ -26,7 +26,7 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Abstract base class for profile actions which populate a

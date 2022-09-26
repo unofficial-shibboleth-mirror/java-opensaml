@@ -33,7 +33,7 @@ import org.opensaml.security.credential.Credential;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.collection.LazySet;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A basic implementation of {@link X509Credential}.

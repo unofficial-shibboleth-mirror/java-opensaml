@@ -25,11 +25,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * This thread-safe factory creates {@link org.opensaml.core.xml.io.Marshaller}s that can be used to convert

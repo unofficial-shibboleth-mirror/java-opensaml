@@ -27,7 +27,7 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LazyMap;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 

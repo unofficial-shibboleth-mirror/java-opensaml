@@ -24,7 +24,7 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageContext;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A context intended to be used as a subcontext of a {@link MessageContext} that carries

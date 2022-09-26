@@ -20,7 +20,7 @@ package org.opensaml.saml.common.binding;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 public class SAMLBindingSupportTest {
     

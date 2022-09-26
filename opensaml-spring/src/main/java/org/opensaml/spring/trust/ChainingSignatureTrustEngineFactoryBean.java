@@ -22,8 +22,8 @@ import java.util.List;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.impl.ChainingSignatureTrustEngine;

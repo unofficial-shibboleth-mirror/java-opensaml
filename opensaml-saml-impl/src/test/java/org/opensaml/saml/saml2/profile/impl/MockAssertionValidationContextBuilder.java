@@ -24,7 +24,7 @@ import java.util.function.Function;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.saml2.profile.impl.ValidateAssertions.AssertionValidationInput;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  *

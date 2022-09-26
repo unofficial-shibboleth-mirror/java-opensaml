@@ -34,10 +34,10 @@ import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.ObjectSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Basic implementation of {@link HttpClientSecurityParametersResolver}.

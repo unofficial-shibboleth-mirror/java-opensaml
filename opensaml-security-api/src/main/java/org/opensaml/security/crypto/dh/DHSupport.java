@@ -39,7 +39,7 @@ import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Cryptography support related to Elliptic Curve.

@@ -35,7 +35,7 @@ import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Handler implementation that checks and records the result of {@link HttpClient} server TLS authentication 

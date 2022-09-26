@@ -21,9 +21,9 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A predicate which evaluates whether a cryptographic algorithm URI is effectively supported by

@@ -42,8 +42,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /** A wrapper that changes a {@link KeyStore} in to a {@link X509Credential}. */
 public class KeyStoreX509CredentialAdapter extends AbstractCredential implements X509Credential {

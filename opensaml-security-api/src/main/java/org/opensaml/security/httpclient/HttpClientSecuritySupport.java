@@ -41,8 +41,8 @@ import org.opensaml.security.x509.TrustedNamesCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Support class for working with {@link org.apache.http.client.HttpClient} security features.

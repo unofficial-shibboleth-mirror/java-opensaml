@@ -23,8 +23,8 @@ import java.util.Arrays;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.AbstractTriStatePredicate;
+import net.shibboleth.shared.logic.Constraint;
 
 import org.apache.commons.codec.binary.Hex;
 import org.opensaml.security.credential.Credential;

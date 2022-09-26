@@ -20,11 +20,11 @@ package org.opensaml.xmlsec.encryption.support;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Parameters for encrypting XMLObjects.

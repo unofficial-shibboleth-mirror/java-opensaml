@@ -21,7 +21,7 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Key agreement parameter used to explicitly represent the size of the derived key.

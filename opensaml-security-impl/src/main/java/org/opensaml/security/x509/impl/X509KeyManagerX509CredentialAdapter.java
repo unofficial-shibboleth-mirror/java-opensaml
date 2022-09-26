@@ -35,8 +35,8 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /** A class that wraps a {@link X509KeyManager} and exposes it as an {@link X509Credential}. */
 public class X509KeyManagerX509CredentialAdapter extends AbstractCredential implements X509Credential {

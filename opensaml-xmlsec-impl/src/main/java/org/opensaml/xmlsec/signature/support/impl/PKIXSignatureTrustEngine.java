@@ -24,9 +24,9 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;

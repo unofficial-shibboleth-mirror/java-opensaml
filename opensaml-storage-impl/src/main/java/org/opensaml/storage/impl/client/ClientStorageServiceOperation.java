@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A wrapper for a storage operation to capture the current or intended state of the data for

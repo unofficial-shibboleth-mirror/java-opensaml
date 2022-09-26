@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Predicates;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Base class for conditional profile actions.

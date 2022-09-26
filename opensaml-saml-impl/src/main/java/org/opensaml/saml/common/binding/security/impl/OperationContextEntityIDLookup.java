@@ -27,7 +27,7 @@ import org.opensaml.messaging.context.navigate.RecursiveTypedParentContextLookup
 import org.opensaml.saml.common.messaging.context.AbstractAuthenticatableSAMLEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Function for resolving the SAML entity ID from the parent {@link InOutOperationContext}.

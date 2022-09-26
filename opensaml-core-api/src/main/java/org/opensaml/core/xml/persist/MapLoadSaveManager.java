@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.collection.Pair;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Simple implementation of {@link XMLObjectLoadSaveManager} which uses an in-memory map.

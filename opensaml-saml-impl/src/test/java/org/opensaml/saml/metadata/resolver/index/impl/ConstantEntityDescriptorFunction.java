@@ -28,8 +28,8 @@ import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 public class ConstantEntityDescriptorFunction implements Function<EntityDescriptor, Set<MetadataIndexKey>> {
     

@@ -25,8 +25,8 @@ import org.opensaml.security.crypto.ec.NamedCurve;
 
 import com.google.common.base.MoreObjects;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Basic implementations of {@link NamedCurve} where all required properties are simply supplied at

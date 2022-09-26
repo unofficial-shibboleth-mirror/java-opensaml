@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Strings;
 
 import net.shibboleth.shared.collection.LazySet;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A factory implementation which produces instances of {@link KeyInfoGenerator} capable of 

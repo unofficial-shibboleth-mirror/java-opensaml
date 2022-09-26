@@ -17,13 +17,13 @@
 
 package org.opensaml.messaging.context.navigate;
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 /**
  *

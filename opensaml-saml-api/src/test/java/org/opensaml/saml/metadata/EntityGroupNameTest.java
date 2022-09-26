@@ -19,10 +19,10 @@ package org.opensaml.saml.metadata;
 
 
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 public class EntityGroupNameTest {
     

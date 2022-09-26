@@ -21,9 +21,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;

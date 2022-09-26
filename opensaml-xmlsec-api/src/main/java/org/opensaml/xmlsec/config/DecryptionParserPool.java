@@ -21,8 +21,8 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.config.ConfigurationService;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.xml.ParserPool;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A wrapper bean containing an instance of {@link ParserPool} used with XML decryption

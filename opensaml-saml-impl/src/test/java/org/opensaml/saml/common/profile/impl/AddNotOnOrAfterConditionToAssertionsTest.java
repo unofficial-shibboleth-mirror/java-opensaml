@@ -18,7 +18,7 @@
 package org.opensaml.saml.common.profile.impl;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.FunctionSupport;
+import net.shibboleth.shared.logic.FunctionSupport;
 
 import java.time.Duration;
 

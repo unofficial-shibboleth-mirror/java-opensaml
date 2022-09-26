@@ -58,9 +58,9 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Action that encrypts all {@link NameID}s in a message obtained from a lookup strategy,

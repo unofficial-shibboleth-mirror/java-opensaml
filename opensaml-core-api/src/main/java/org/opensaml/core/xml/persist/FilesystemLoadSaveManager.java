@@ -50,10 +50,10 @@ import com.google.common.io.Files;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.XMLParserException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Implementation of {@link XMLObjectLoadSaveManager} which uses a local filesystem to load and store serialized XML.

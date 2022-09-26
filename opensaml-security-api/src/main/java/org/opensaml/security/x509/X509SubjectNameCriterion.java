@@ -20,8 +20,8 @@ package org.opensaml.security.x509;
 import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * An implementation of {@link Criterion} which specifies criteria based on

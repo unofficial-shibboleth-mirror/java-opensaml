@@ -20,9 +20,9 @@ package org.opensaml.core.criterion;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /** {@link Criterion} representing an entity ID. */
 public final class EntityIdCriterion implements Criterion {

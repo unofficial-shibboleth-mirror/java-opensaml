@@ -20,11 +20,11 @@ package org.opensaml.messaging.pipeline;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.decoder.MessageDecoder;
 import org.opensaml.messaging.encoder.MessageEncoder;
 import org.opensaml.messaging.handler.MessageHandler;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Basic implementation of {@link MessagePipeline}.

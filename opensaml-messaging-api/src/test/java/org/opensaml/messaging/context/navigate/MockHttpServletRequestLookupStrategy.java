@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.context.MessageContext;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  *  A lookup strategy that returns an instance of {@link HttpServletRequest} supplied at construction time.

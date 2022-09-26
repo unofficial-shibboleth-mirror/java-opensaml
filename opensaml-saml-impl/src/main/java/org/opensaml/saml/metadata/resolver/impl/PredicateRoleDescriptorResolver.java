@@ -48,11 +48,11 @@ import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.CriterionPredicateRegistry;
 import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.shared.resolver.ResolverSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Implementation of {@link RoleDescriptorResolver} which wraps an instance of {@link MetadataResolver} to

@@ -22,7 +22,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.FunctionSupport;
+import net.shibboleth.shared.logic.FunctionSupport;
 
 /** Unit test for {@link CheckMandatoryIssuer}. */
 public class CheckExpectedIssuerTest {

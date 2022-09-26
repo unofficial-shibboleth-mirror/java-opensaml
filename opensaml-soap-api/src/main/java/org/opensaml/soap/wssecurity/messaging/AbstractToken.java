@@ -19,7 +19,7 @@ package org.opensaml.soap.wssecurity.messaging;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Base abstract implementation of {@link Token}.

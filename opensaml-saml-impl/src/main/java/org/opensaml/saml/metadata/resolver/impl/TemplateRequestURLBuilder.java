@@ -33,10 +33,10 @@ import org.slf4j.LoggerFactory;
 import com.google.common.net.UrlEscapers;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.velocity.Template;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Function which produces a URL by substituting an entity ID value from criteria into a Velocity template string.

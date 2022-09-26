@@ -31,7 +31,7 @@ import com.codahale.metrics.MetricSet;
 import com.codahale.metrics.Timer;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * {@link MetricRegistry} that returns a metric or a disabled wrapper for a metric based

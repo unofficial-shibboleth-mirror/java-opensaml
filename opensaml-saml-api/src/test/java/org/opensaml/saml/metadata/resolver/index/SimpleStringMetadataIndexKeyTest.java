@@ -17,10 +17,10 @@
 
 package org.opensaml.saml.metadata.resolver.index;
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 /**
  *

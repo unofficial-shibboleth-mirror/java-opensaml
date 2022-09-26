@@ -20,9 +20,9 @@ package org.opensaml.saml.metadata.resolver.index.impl;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import com.google.common.base.MoreObjects;
 

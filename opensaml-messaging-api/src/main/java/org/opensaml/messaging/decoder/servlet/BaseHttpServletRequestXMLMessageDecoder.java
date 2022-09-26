@@ -34,10 +34,10 @@ import org.w3c.dom.Element;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Base class for message decoders which decode XML messages from an {@link jakarta.servlet.http.HttpServletRequest}.

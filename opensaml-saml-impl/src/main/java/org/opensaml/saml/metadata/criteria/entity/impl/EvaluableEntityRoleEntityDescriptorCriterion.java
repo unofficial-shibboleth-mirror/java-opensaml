@@ -27,7 +27,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 import com.google.common.base.MoreObjects;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Implementation of {@link EvaluableEntityDescriptorCriterion} which evaluates that an entity descriptor

@@ -19,8 +19,6 @@ package org.opensaml.xmlsec.signature.support.impl.provider;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
@@ -31,6 +29,8 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignerProvider;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Implementation of {@link SignerProvider} which is based on the Apache Santuario library

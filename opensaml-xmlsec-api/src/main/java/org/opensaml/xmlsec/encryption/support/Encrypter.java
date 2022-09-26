@@ -31,7 +31,7 @@ import javax.crypto.SecretKey;
 
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;

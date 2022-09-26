@@ -38,9 +38,9 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.codec.StringDigester.OutputFormat;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 
 /**
  * Unit test for {@link LocalDynamicMetadataResolver}.

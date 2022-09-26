@@ -26,9 +26,9 @@ import javax.annotation.Nullable;
 import org.opensaml.security.credential.Credential;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Simple implementation of {@link org.opensaml.security.credential.CredentialResolver} which just stores

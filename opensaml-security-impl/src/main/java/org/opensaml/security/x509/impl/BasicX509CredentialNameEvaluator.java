@@ -31,7 +31,7 @@ import javax.security.auth.x500.X500Principal;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.x509.InternalX500DNHandler;

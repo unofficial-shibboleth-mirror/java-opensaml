@@ -29,7 +29,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.LazyMap;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 import org.opensaml.core.xml.XMLObject;
 

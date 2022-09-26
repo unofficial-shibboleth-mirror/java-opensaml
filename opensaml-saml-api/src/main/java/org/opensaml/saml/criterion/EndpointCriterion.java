@@ -23,8 +23,8 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * {@link Criterion} representing a SAML metadata endpoint object.

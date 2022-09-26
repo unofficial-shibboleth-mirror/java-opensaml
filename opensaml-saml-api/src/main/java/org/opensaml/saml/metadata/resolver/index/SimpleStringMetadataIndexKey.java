@@ -21,8 +21,8 @@ import javax.annotation.Nonnull;
 
 import com.google.common.base.MoreObjects;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A simple implementation of {@link MetadataIndexKey} based on a single input string.

@@ -23,11 +23,11 @@ import static org.testng.Assert.*;
 import java.util.Arrays;
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-
 import org.opensaml.xmlsec.WhitelistBlacklistConfiguration.Precedence;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 @SuppressWarnings("removal")
 public class BasicWhitelistBlacklistConfigurationTest {

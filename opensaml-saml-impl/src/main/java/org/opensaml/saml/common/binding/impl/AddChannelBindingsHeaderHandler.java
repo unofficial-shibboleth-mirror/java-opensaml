@@ -36,7 +36,7 @@ import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * MessageHandler to add {@link ChannelBindings} headers to an outgoing SOAP envelope.

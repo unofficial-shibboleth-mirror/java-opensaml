@@ -24,7 +24,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Key agreement parameter used to pass a Credential holding a required private key.

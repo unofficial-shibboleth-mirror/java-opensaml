@@ -22,9 +22,9 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.security.credential.Credential;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * An interface for predicates which allow evaluation of a candidate key transport algorithm relative to

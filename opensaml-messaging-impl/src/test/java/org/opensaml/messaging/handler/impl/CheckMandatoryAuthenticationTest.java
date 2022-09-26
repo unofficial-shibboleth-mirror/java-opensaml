@@ -21,7 +21,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.testng.annotations.Test;
 
-import net.shibboleth.utilities.java.support.logic.FunctionSupport;
+import net.shibboleth.shared.logic.FunctionSupport;
 
 /** Unit test for {@link CheckMandatoryAuthentication}. */
 public class CheckMandatoryAuthenticationTest {

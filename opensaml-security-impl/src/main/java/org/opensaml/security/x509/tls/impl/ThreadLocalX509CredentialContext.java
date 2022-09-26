@@ -20,9 +20,9 @@ package org.opensaml.security.x509.tls.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.security.x509.X509Credential;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Class which holds and makes available an instance of {@link X509Credential} via ThreadLocal storage, 

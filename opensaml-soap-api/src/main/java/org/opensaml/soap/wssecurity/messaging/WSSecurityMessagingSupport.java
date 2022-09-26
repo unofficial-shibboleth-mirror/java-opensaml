@@ -23,13 +23,13 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wssecurity.Security;
+
+import net.shibboleth.shared.logic.Constraint;
 
 
 /**

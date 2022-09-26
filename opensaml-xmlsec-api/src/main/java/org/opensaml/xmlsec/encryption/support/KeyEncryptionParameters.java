@@ -19,9 +19,9 @@ package org.opensaml.xmlsec.encryption.support;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.xmlsec.EncryptionParameters;
+
+import net.shibboleth.shared.logic.Constraint;
 
 
 /**

@@ -48,8 +48,8 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URLBuilder;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * SAML 1.X HTTP Artifact message encoder.

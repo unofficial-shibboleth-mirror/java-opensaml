@@ -36,7 +36,7 @@ import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Action to create and populate an {@link ECPContext} based on the request and, when encryption is in use,

@@ -32,7 +32,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Implementation of {@link KeyInfoGenerator} which always returns static {@link KeyInfo} data.

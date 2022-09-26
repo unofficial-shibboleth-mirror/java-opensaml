@@ -25,11 +25,11 @@ import java.util.Collection;
 
 import javax.net.ssl.X509KeyManager;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * An implementation of {@link X509KeyManager} based on a single statically configured

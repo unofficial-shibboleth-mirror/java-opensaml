@@ -28,8 +28,8 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import com.google.common.base.MoreObjects;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Implementation of {@link EvaluableRoleDescriptorCriterion} which evaluates that a role descriptor

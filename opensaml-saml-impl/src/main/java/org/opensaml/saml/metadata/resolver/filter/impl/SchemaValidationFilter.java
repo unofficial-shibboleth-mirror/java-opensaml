@@ -32,8 +32,8 @@ import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.xml.SchemaBuilder;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A metadata filter that schema validates an incoming metadata file.

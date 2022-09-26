@@ -36,7 +36,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Abstract base class for simple implementations of {@link SAML2NameIDGenerator}.

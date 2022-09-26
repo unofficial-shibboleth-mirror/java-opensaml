@@ -27,10 +27,10 @@ import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.DeprecationSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;

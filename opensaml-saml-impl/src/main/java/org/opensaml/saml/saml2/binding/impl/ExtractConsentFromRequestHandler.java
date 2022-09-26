@@ -21,14 +21,14 @@ import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
-
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLConsentContext;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
+
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * MessageHandler to get the Consent attribute from a {@link RequestAbstractType} message.

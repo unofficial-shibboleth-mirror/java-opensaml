@@ -38,7 +38,7 @@ import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * An action that performs any number of {@link ClientStorageServiceOperation} instances sourced from

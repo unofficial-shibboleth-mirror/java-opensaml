@@ -32,7 +32,7 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * An implementation of {@link MetadataFilter} which applies a {@link MetadataNodeProcessor} to each element node in the

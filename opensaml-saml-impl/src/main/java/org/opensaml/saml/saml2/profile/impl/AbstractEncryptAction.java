@@ -43,8 +43,8 @@ import org.slf4j.LoggerFactory;
 import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.collection.Pair;
-import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.FunctionSupport;
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.FunctionSupport;
 
 /**
  * Abstract base class for actions that perform simple unicast SAML encryption to a single

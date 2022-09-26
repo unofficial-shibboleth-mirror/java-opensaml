@@ -28,8 +28,8 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 
 import com.google.common.base.MoreObjects;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * An implementation of {@link Criterion} which specifies criteria

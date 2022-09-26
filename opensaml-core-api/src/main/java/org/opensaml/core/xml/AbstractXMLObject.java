@@ -34,10 +34,10 @@ import org.w3c.dom.Element;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LockableClassToInstanceMultiMap;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.shared.xml.XMLConstants;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * An abstract implementation of XMLObject.

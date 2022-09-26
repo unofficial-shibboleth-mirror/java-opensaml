@@ -39,13 +39,13 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.DataSealerException;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
 import net.shibboleth.shared.xml.impl.BasicParserPool;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * XML-based storage for {@link ClientStorageService}.

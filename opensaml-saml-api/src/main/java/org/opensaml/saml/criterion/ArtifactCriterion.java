@@ -24,8 +24,8 @@ import javax.annotation.Nonnull;
 import org.apache.commons.codec.binary.Hex;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifact;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /** {@link Criterion} representing a {@link SAMLArtifact}. */
 public final class ArtifactCriterion implements Criterion {

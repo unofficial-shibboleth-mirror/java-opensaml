@@ -39,7 +39,7 @@ import org.opensaml.saml.saml1.profile.SAML1ActionSupport;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Action to add a {@link DoNotCacheCondition} to every {@link Assertion} in a {@link Response} message.

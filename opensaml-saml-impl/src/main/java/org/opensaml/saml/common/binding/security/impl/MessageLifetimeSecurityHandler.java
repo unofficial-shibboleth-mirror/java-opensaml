@@ -29,7 +29,7 @@ import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Security message handler implementation that checks for validity of SAML message issue instant date and time.

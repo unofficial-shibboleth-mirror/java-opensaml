@@ -42,8 +42,8 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URISupport;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * An action that loads any number of {@link ClientStorageService} instances from a POST submission

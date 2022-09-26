@@ -21,13 +21,13 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-
 import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 /**
  *

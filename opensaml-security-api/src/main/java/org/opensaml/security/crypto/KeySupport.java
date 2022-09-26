@@ -64,7 +64,7 @@ import javax.crypto.spec.SecretKeySpec;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.collection.LazyMap;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 import org.bouncycastle.jcajce.provider.asymmetric.util.EC5Util;
 import org.cryptacular.util.KeyPairUtil;

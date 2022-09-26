@@ -23,7 +23,7 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.context.BaseContext;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * A {@link ContextDataLookupFunction} that recurses up the parent chain of the input via 

@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Action adds an {@link ProxyRestriction} to every {@link Assertion} contained in a SAML 2

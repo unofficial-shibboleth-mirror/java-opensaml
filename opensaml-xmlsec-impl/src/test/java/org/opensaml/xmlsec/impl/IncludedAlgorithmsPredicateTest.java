@@ -19,10 +19,10 @@ package org.opensaml.xmlsec.impl;
 
 import java.util.List;
 
-import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 /**
  *

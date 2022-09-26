@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Action to add a {@link GeneratedKey} extension to every {@link Assertion} in a {@link Response} message.

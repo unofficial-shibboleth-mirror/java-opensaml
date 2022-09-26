@@ -42,12 +42,12 @@ import org.w3c.dom.Node;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * A factory and {@link StorageSerializer} for instances of {@link BasicSAMLArtifactMapEntry}.

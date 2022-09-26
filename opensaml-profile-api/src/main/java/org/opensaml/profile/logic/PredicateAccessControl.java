@@ -30,8 +30,8 @@ import org.slf4j.LoggerFactory;
 import jakarta.servlet.ServletRequest;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.AccessControl;
-import net.shibboleth.utilities.java.support.logic.Constraint;
 
 /**
  * Access control implementation based on a predicate over a {@link ProfileRequestContext}.
