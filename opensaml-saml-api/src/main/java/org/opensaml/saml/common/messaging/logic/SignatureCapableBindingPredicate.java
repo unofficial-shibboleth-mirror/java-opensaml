@@ -17,12 +17,12 @@
 
 package org.opensaml.saml.common.messaging.logic;
 
+import java.util.function.Predicate;
+
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
-
-import net.shibboleth.utilities.java.support.logic.Predicate;
 
 /**
  * Predicate that determines whether the binding associated with a message context is

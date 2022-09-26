@@ -26,7 +26,7 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.Extensions;
 
-import net.shibboleth.utilities.java.support.logic.Predicate;
+import java.util.function.Predicate;
 
 /**
  * Base class for predicate that acts on {@link RegistrationInfo} content.

@@ -53,7 +53,7 @@ import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.logic.Predicate;
+import java.util.function.Predicate;
 
 /**
  * Predicate to determine whether an {@link EntityDescriptor} or its parent groups contain an {@link EntityAttributes}

@@ -46,7 +46,7 @@ import org.opensaml.profile.context.navigate.ParentProfileRequestContextLookup;
  * </p>
  */
 public class MessageContextPredicateAdapter
-        implements net.shibboleth.utilities.java.support.logic.Predicate<MessageContext> {
+        implements Predicate<MessageContext> {
     
     /** The lookup function for the ProfileRequestContext. */
     @Nonnull private static final ParentProfileRequestContextLookup<MessageContext> PRC_LOOKUP
