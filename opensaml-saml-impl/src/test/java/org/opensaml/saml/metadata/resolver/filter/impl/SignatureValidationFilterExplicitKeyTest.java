@@ -22,8 +22,8 @@ import java.security.cert.X509Certificate;
 import java.util.Collections;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.xml.XMLParserException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;

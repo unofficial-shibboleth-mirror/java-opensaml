@@ -17,11 +17,10 @@
 
 package org.opensaml.saml.saml1.binding.decoding.impl;
 
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
 import java.util.function.Supplier;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.xml.SerializeSupport;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;

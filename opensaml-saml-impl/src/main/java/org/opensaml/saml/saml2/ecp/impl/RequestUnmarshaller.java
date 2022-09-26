@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.ecp.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -29,6 +27,8 @@ import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.ecp.Request;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * Unmarshaller for instances of {@link Request}.

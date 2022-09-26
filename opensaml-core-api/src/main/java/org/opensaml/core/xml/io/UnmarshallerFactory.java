@@ -25,9 +25,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

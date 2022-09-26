@@ -50,7 +50,7 @@ import org.xmlunit.diff.Diff;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Test basic SOAP 1.1 message encoding.

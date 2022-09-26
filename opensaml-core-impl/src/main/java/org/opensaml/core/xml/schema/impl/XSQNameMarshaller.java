@@ -17,14 +17,14 @@
 
 package org.opensaml.core.xml.schema.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSQName;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.ElementSupport;
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * A thread-safe marshaller for {@link XSQName}s.

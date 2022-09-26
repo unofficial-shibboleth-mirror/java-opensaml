@@ -17,14 +17,14 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDType;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.ElementSupport;
 
 /**
  * A thread safe Marshaller for {@link NameIDType} objects.

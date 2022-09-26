@@ -29,8 +29,8 @@ import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
+import net.shibboleth.shared.xml.XMLParserException;
+import net.shibboleth.shared.xml.impl.BasicParserPool;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;

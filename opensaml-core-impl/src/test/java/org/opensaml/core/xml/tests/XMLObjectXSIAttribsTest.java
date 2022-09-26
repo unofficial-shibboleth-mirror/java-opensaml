@@ -21,14 +21,14 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.w3c.dom.Document;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Test support for attributes from the XML Schema Instance namespace.

@@ -19,8 +19,6 @@ package org.opensaml.soap.wssecurity.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -28,6 +26,8 @@ import org.opensaml.soap.wssecurity.AttributedDateTime;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * AttributedDateTimeUnmarshaller.

@@ -20,8 +20,8 @@ package org.opensaml.soap.wssecurity.util;
 import java.util.List;
 
 import net.shibboleth.shared.collection.LazyList;
+import net.shibboleth.shared.xml.XMLConstants;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;

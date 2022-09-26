@@ -26,8 +26,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.ParserPool;
-
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.io.Marshaller;
@@ -37,6 +35,8 @@ import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.ParserPool;
 
 /** Configuration registry component for registering and retrieving implementation instances 
  * and related configuration relevant to working with XMLObjects, 

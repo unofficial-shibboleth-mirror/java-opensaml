@@ -24,9 +24,9 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.xml.XMLParserException;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 import net.shibboleth.utilities.java.support.resolver.ResolverException;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;

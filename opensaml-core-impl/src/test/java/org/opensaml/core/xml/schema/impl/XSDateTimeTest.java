@@ -26,8 +26,6 @@ import java.time.temporal.ChronoUnit;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.Marshaller;
@@ -36,6 +34,8 @@ import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSDateTime;
 import org.w3c.dom.Document;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Unit test for {@link XSDateTime}

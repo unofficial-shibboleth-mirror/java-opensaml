@@ -22,8 +22,6 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -42,6 +40,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Tests marshalling and unmarshalling SOAP messages.

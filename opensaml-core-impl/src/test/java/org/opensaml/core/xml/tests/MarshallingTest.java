@@ -21,8 +21,6 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -32,6 +30,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Unit test for marshalling functions.

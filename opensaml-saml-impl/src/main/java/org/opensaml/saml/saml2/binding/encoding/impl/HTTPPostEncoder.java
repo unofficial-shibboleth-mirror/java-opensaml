@@ -37,10 +37,10 @@ import org.w3c.dom.Element;
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.HttpServletSupport;
+import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.codec.HTMLEncoder;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * SAML 2.0 HTTP Post binding message encoder.

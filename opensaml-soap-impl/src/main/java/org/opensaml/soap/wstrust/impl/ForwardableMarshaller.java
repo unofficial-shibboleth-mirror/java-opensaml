@@ -18,13 +18,13 @@
 package org.opensaml.soap.wstrust.impl;
 
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.wstrust.Forwardable;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.ElementSupport;
 
 /**
  * Marshaller for the Forwardable element.

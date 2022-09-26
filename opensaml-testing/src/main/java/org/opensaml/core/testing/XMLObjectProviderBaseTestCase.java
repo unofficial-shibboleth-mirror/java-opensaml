@@ -27,8 +27,8 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
+import net.shibboleth.shared.xml.ElementSupport;
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Base test case for {@link org.opensaml.core.xml.XMLObject}s in XMLTooling for which we need a full set

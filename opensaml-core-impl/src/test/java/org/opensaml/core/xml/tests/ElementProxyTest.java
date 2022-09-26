@@ -19,8 +19,6 @@ package org.opensaml.core.xml.tests;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -28,6 +26,8 @@ import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSAny;
 import org.w3c.dom.Document;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /** Test unmarshalling content for which no specific object providers were registered. */
 public class ElementProxyTest extends XMLObjectBaseTestCase {

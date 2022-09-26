@@ -19,13 +19,13 @@ package org.opensaml.saml.saml1.core.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml1.core.StatusCode;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.StatusCode} objects.

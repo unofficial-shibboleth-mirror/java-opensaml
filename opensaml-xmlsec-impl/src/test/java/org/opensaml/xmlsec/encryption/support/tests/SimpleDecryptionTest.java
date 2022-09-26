@@ -27,8 +27,6 @@ import java.util.Collections;
 
 import javax.crypto.SecretKey;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.BasicCredential;
@@ -56,6 +54,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Simple tests for decryption.

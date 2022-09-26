@@ -17,9 +17,9 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import net.shibboleth.shared.xml.ElementSupport;
+import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;

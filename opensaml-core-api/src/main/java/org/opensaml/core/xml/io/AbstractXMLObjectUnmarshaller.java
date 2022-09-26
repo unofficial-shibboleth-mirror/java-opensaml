@@ -23,10 +23,10 @@ import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import net.shibboleth.shared.xml.ParserPool;
+import net.shibboleth.shared.xml.QNameSupport;
+import net.shibboleth.shared.xml.XMLConstants;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
@@ -57,7 +57,7 @@ import org.w3c.dom.Text;
  * which is to be unmarshalled. DOM elements containing either comment or CDATA Node children will be rejected,
  * resulting in a thrown {@link UnmarshallingException}. When using a JAXP parser, this may be accomplished by setting
  * both {@link DocumentBuilderFactory#setIgnoringComments(boolean)} and
- * {@link DocumentBuilderFactory#setCoalescing(boolean)} to <code>true</code>. Our {@link BasicParserPool}
+ * {@link DocumentBuilderFactory#setCoalescing(boolean)} to <code>true</code>. Our default {@link ParserPool}
  * implementation defaults both of these appropriately and we highly recommend its use.
  * </p>
  *

@@ -19,8 +19,8 @@ package org.opensaml.xacml.policy.impl;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;

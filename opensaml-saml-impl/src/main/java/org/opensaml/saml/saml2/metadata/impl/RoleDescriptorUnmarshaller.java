@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.StringTokenizer;
 
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -35,6 +33,8 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
  * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.RoleDescriptor} objects.

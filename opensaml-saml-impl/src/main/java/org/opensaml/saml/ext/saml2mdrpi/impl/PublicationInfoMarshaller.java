@@ -23,7 +23,7 @@ import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.ext.saml2mdrpi.PublicationInfo;
 import org.w3c.dom.Element;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.shared.xml.AttributeSupport;
 
 
 /**

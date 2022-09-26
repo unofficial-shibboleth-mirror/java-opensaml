@@ -19,8 +19,6 @@ package org.opensaml.soap.soap11.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -28,6 +26,8 @@ import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * A thread-safe unmarshaller for {@link org.opensaml.soap.soap11.Envelope}s.

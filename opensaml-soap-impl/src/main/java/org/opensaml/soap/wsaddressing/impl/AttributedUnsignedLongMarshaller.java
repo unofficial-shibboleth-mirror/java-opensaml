@@ -17,13 +17,13 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.soap.wsaddressing.AttributedUnsignedLong;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.ElementSupport;
 
 /**
  * Marshaller for instances of {@link AttributedUnsignedLong}.

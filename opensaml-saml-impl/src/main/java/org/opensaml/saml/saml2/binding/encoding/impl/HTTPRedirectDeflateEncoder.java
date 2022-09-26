@@ -55,10 +55,10 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * SAML 2.0 HTTP Redirect encoder using the DEFLATE encoding method.

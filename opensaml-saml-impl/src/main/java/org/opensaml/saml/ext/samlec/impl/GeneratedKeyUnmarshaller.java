@@ -19,14 +19,14 @@ package org.opensaml.saml.ext.samlec.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller;
 import org.opensaml.saml.ext.samlec.GeneratedKey;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * A thread-safe Unmarshaller for {@link GeneratedKey} objects.

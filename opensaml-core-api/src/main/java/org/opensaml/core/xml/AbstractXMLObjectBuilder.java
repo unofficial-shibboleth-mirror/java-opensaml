@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.DOMTypeSupport;
 
 import org.w3c.dom.Element;
 

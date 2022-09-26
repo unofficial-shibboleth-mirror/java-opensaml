@@ -30,7 +30,7 @@ import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.w3c.dom.Element;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
  * A thread safe Marshaller for {@link AffiliationDescriptor} objects.

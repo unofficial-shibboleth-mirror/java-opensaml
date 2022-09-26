@@ -17,9 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
+import net.shibboleth.shared.xml.AttributeSupport;
+import net.shibboleth.shared.xml.ElementSupport;
+import net.shibboleth.shared.xml.XMLConstants;
 
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;

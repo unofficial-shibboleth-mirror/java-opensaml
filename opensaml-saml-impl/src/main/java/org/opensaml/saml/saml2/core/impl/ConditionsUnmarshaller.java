@@ -30,7 +30,7 @@ import org.w3c.dom.Attr;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Conditions} objects.

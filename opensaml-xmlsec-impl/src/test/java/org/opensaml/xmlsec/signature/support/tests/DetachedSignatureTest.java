@@ -48,8 +48,8 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.testing.RepositorySupport;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+import net.shibboleth.shared.xml.SerializeSupport;
+import net.shibboleth.shared.xml.impl.BasicParserPool;
 
 public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 

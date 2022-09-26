@@ -19,12 +19,12 @@ package org.opensaml.xmlsec.encryption.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.EncryptionProperty} objects.

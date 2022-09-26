@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.net.HttpServletSupport;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
  * Basic SOAP 1.1 encoder for HTTP transport.

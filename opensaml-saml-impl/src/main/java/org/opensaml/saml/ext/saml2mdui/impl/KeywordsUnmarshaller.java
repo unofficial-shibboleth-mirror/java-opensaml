@@ -19,14 +19,14 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import java.util.ArrayList;
 
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
-
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.ext.saml2mdui.Keywords;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.XMLConstants;
 
 /**
  * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.Keywords} objects.

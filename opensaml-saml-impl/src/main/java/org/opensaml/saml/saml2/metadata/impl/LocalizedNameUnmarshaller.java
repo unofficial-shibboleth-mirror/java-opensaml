@@ -17,14 +17,14 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
-
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
 import org.opensaml.saml.saml2.metadata.LocalizedName;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.XMLConstants;
 
 /**
  * A thread-safe unmarshaller for {@link LocalizedName} objects.

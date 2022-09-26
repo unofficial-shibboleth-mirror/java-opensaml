@@ -21,7 +21,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.schema.XSDateTime;
 
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
  * Thread-safe unmarshaller for {@link XSDateTime} objects.

@@ -24,7 +24,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
+import net.shibboleth.shared.xml.XMLConstants;
 
 /**
  * XSBoolean is the <code>xs:boolean</code> schema type.

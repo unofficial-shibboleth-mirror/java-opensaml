@@ -51,8 +51,8 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import jakarta.xml.bind.ValidationException;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
+import net.shibboleth.shared.xml.SerializeSupport;
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Test to verify {@link org.opensaml.xmlsec.signature.Signature} and its marshallers and unmarshallers.

@@ -22,10 +22,10 @@ import java.io.InputStream;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.xml.ParserPool;
+import net.shibboleth.shared.xml.SerializeSupport;
+import net.shibboleth.shared.xml.XMLParserException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.ParserPool;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.apache.http.HttpResponse;
 import org.opensaml.core.xml.XMLObject;

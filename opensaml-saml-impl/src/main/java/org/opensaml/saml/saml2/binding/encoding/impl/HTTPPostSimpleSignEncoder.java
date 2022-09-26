@@ -19,10 +19,10 @@ package org.opensaml.saml.saml2.binding.encoding.impl;
 
 import java.io.UnsupportedEncodingException;
 
+import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.apache.velocity.VelocityContext;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;

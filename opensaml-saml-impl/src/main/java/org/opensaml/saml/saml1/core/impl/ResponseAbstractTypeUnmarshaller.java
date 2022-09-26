@@ -37,7 +37,7 @@ import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
  * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for

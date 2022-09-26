@@ -24,7 +24,7 @@ import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.w3c.dom.Element;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
  * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Assertion} objects.

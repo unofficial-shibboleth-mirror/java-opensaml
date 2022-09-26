@@ -23,7 +23,7 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wssecurity.AttributedDateTime;
 import org.opensaml.soap.wssecurity.IdBearing;
 
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
  * Implementation of {@link AttributedDateTime}.

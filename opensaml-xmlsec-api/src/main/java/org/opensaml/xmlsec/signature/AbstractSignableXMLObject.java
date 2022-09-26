@@ -20,11 +20,11 @@ package org.opensaml.xmlsec.signature;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.ElementSupport;
 
 
 /**

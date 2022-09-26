@@ -25,8 +25,6 @@ import org.testng.annotations.Test;
 import org.testng.Assert;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -37,6 +35,8 @@ import org.opensaml.saml.saml1.core.Evidence;
 import org.opensaml.saml.saml1.core.Subject;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * 

@@ -22,10 +22,9 @@ import java.net.URL;
 import java.util.function.Supplier;
 
 import jakarta.servlet.http.HttpServletRequest;
-
+import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.DecodingException;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;

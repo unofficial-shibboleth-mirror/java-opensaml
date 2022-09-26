@@ -21,8 +21,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.ParserPool;
-
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
@@ -30,6 +28,8 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
+
+import net.shibboleth.shared.xml.ParserPool;
 
 /** Class for loading library configuration files and retrieving the configured components. */
 public class XMLObjectProviderRegistrySupport {

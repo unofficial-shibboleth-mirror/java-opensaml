@@ -45,8 +45,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * Action that encrypts all attributes in a {@link Response} message obtained from a lookup strategy,

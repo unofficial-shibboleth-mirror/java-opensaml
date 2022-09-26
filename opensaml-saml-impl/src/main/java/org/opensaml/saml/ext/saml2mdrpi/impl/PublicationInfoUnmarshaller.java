@@ -24,7 +24,7 @@ import org.opensaml.saml.ext.saml2mdrpi.PublicationInfo;
 import org.opensaml.saml.ext.saml2mdrpi.UsagePolicy;
 import org.w3c.dom.Attr;
 
-import net.shibboleth.utilities.java.support.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
  * An unmarshaller for {@link PublicationInfo}.

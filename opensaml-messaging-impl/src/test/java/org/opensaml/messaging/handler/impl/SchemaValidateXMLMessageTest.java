@@ -21,8 +21,6 @@ import javax.xml.validation.Schema;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
-import net.shibboleth.utilities.java.support.xml.SchemaBuilder;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -32,6 +30,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.xml.SchemaBuilder;
 
 /** Unit test for {@link SchemaValidateXMLMessage}. */
 public class SchemaValidateXMLMessageTest extends XMLObjectBaseTestCase {

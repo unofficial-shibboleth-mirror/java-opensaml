@@ -26,7 +26,7 @@ import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
+import net.shibboleth.shared.xml.ElementSupport;
 
 /**
  * Thread-safe marshaller of {@link XSAny} objects.

@@ -19,8 +19,6 @@ package org.opensaml.saml.saml2.metadata.tests;
 
 import java.io.InputStream;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -29,6 +27,8 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Test cases that parses real, "in-the-wild", metadata files. Currently uses the InCommon and SWITCH federation

@@ -27,8 +27,8 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
+import net.shibboleth.shared.xml.XMLParserException;
+import net.shibboleth.shared.xml.impl.BasicParserPool;
 
 /**
  * Unit test for unmarshalling functions.

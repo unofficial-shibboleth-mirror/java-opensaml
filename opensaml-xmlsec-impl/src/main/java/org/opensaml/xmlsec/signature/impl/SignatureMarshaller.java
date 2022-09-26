@@ -20,8 +20,6 @@ package org.opensaml.xmlsec.signature.impl;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import net.shibboleth.utilities.java.support.xml.ElementSupport;
-
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
@@ -37,6 +35,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.ElementSupport;
 
 /**
  * A marshaller for {@link org.opensaml.xmlsec.signature.Signature} objects. This marshaller is really a no-op class.

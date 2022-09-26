@@ -20,7 +20,7 @@ package org.opensaml.core.xml;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
+import net.shibboleth.shared.xml.XMLConstants;
 
 /**
  * Interface for element having a <code>@xml:base</code> attribute.

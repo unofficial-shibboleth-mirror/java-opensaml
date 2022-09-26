@@ -19,9 +19,9 @@ package org.opensaml.soap.wssecurity;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
-
 import org.opensaml.core.xml.schema.XSInteger;
+
+import net.shibboleth.shared.xml.XMLConstants;
 
 /**
  * The &lt;wsse11:Iteration&gt; element within a &lt;wsse:UsernameToken&gt;

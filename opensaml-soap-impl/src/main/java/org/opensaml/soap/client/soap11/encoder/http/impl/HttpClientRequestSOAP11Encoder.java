@@ -24,8 +24,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpRequest;
 import org.apache.http.client.methods.HttpPost;
@@ -47,6 +45,8 @@ import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.wsaddressing.Action;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
  * Basic SOAP 1.1 encoder for HTTP transport via an HttpClient's {@link HttpRequest}.

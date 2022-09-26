@@ -17,13 +17,13 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
  * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml.saml1.core.AuthorityBinding}

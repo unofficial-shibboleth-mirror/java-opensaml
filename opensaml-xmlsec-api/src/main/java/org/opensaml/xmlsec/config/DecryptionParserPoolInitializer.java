@@ -24,7 +24,7 @@ import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.BasicParserPool;
+import net.shibboleth.shared.xml.impl.BasicParserPool;
 
 /**
  * An initializer for the global parser pool for XML decryption use, wrapped by {@link DecryptionParserPool}.

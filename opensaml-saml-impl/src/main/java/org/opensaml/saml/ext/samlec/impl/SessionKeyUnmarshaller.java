@@ -19,8 +19,6 @@ package org.opensaml.saml.ext.samlec.impl;
 
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.QNameSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -29,6 +27,8 @@ import org.opensaml.saml.ext.samlec.EncType;
 import org.opensaml.saml.ext.samlec.SessionKey;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.xml.QNameSupport;
 
 /**
  * A thread-safe Unmarshaller for {@link SessionKey} objects.

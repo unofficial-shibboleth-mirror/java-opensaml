@@ -22,10 +22,10 @@ import java.math.BigInteger;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.utilities.java.support.xml.XMLConstants;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+
+import net.shibboleth.shared.xml.XMLConstants;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, X509SerialNumber element.

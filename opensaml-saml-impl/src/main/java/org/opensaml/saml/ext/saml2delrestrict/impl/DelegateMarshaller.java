@@ -25,7 +25,7 @@ import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.utilities.java.support.xml.AttributeSupport;
+import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
  * Marshaller for instances of {@link Delegate}.

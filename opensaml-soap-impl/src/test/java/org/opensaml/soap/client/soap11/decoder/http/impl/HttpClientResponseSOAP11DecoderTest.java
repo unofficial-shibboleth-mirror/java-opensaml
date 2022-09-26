@@ -23,7 +23,7 @@ import java.io.IOException;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
+import net.shibboleth.shared.xml.SerializeSupport;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;

@@ -26,8 +26,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyPair;
 
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -56,6 +54,8 @@ import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Test decryption of signed content.
