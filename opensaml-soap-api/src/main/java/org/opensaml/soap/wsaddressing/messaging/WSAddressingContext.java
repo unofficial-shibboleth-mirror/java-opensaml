@@ -17,9 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.messaging;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.messaging.context.BaseContext;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * A subcontext that carries information related to WS-Addressing processing.

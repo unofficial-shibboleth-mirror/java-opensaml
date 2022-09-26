@@ -21,7 +21,7 @@ import java.util.Arrays;
 
 import org.opensaml.saml.common.binding.artifact.SAMLSourceLocationArtifact;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * SAML 1 Type 0x0002 Artifact. SAML 1, type 2, artifacts contains a 2 byte type code with a value of 1 followed by a 20

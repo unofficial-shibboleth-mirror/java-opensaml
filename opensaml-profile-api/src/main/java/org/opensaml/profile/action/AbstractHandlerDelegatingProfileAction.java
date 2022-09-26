@@ -34,8 +34,8 @@ import org.opensaml.profile.context.navigate.ParentProfileRequestContextLookup;
 import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.component.DestructableComponent;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Base class for a profile action which just delegates to an instance of {@link MessageHandler}.

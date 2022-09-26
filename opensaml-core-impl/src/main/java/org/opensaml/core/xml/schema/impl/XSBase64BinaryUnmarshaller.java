@@ -19,11 +19,11 @@ package org.opensaml.core.xml.schema.impl;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.schema.XSBase64Binary;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Thread-safe unmarshaller for {@link XSBase64Binary} objects.

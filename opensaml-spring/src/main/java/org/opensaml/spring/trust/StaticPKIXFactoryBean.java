@@ -48,8 +48,8 @@ import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * File system specific bean for PKIXX509CredentialTrustEngine.

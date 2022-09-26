@@ -17,12 +17,12 @@
 
 package org.opensaml.xacml.policy.impl;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.policy.SubjectAttributeDesignatorType;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.primitive.StringSupport;
 /**
  * Unmarshaller for {@link SubjectAttributeDesignatorType}.
  */

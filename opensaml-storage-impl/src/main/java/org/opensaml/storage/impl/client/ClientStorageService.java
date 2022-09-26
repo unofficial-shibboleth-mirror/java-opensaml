@@ -53,13 +53,13 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.CookieManager;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.security.DataExpiredException;
 import net.shibboleth.shared.security.DataSealer;
 import net.shibboleth.shared.security.DataSealerException;
 import net.shibboleth.shared.security.DataSealerKeyStrategy;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Implementation of {@link org.opensaml.storage.StorageService} that stores data in-memory in a

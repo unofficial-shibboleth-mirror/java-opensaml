@@ -46,8 +46,8 @@ import org.opensaml.security.messaging.HttpClientSecurityContext;
 import org.opensaml.soap.client.SOAPClientContext;
 import org.opensaml.soap.client.security.SOAPClientSecurityContext;
 
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 //TODO when impl finished, document required vs optional data and derivation rules
 

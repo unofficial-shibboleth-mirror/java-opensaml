@@ -28,8 +28,8 @@ import org.opensaml.security.crypto.JCAConstants;
 
 import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.codec.StringDigester.OutputFormat;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Strategy for processing input criteria to extract the entityID from an {@link EntityIdCriterion} 

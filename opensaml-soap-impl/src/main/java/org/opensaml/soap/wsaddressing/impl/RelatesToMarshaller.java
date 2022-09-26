@@ -17,14 +17,14 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.soap.wsaddressing.RelatesTo;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Marshaller for instances of {@link RelatesTo}.

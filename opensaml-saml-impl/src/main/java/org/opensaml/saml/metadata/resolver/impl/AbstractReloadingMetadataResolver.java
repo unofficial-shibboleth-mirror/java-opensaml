@@ -41,9 +41,9 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.TimerSupport;
 import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.TimerSupport;
 
 /**
  * Base class for metadata providers that cache and periodically refresh their metadata.

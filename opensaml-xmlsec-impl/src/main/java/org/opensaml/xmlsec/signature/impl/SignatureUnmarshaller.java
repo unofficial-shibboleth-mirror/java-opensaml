@@ -19,8 +19,8 @@ package org.opensaml.xmlsec.signature.impl;
 
 import java.util.List;
 
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;

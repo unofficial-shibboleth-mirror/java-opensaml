@@ -28,7 +28,7 @@ import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * A component representing the specific configuration for a key agreement encryption operation.

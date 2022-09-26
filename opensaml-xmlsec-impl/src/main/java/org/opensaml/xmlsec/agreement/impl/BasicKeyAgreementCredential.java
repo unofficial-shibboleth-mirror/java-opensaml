@@ -25,8 +25,8 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Basic implementation of {@link KeyAgreementCredential}.

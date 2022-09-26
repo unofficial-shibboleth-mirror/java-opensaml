@@ -18,6 +18,9 @@
 package org.opensaml.core.xml.util.tests;
 
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.primitive.StringSupport;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 
@@ -25,8 +28,6 @@ import java.util.Objects;
 import java.util.Set;
 
 import javax.xml.namespace.QName;
-
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;

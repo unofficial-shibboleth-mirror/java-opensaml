@@ -20,9 +20,9 @@ package org.opensaml.security.credential.criteria.impl;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.AbstractTriStatePredicate;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.criteria.KeyNameCriterion;

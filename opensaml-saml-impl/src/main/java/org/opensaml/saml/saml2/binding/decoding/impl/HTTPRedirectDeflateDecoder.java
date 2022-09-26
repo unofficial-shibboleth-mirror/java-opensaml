@@ -43,7 +43,7 @@ import com.google.common.base.Strings;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * SAML 2.0 HTTP Redirect decoder using the DEFLATE encoding method.

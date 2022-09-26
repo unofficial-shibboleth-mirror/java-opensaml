@@ -21,8 +21,8 @@ import java.util.Objects;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.XMLConstants;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /** Data structure for representing XML namespace attributes. */
 public class Namespace {

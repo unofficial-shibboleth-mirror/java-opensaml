@@ -37,7 +37,7 @@ import org.opensaml.saml.saml2.core.SubjectLocality;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * {@link StatementValidator} implementation for {@link AuthnStatement} conditions.

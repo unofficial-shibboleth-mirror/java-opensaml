@@ -24,11 +24,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * A configuration properties source implementation which obtains the properties set

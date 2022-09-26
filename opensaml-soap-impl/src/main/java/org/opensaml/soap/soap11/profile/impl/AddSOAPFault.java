@@ -44,8 +44,8 @@ import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Action that resolves or builds a SOAP 1.1 {@link Fault} object, and stores it in the outbound message context.

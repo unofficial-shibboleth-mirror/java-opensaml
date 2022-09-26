@@ -26,8 +26,8 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * A criterion implementation for conveying a dynamically-generated set of trusted

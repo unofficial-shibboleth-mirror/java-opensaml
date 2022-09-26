@@ -20,9 +20,9 @@ package org.opensaml.soap.client.http;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.soap.client.SOAPClient.SOAPRequestParameters;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /** HTTP transported SOAP request parameters. */
 @ThreadSafe

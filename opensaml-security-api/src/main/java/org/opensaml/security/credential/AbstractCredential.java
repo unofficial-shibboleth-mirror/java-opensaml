@@ -26,8 +26,8 @@ import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Base class for {@link org.opensaml.security.credential.Credential} implementations.

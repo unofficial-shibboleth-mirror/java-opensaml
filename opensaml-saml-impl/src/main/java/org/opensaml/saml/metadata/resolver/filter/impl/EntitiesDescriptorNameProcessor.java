@@ -19,8 +19,6 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import javax.annotation.Nonnull;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.EntityGroupName;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
@@ -29,6 +27,8 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * A metadata node processor implementation which attaches an instance of

@@ -31,7 +31,7 @@ import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * SAML-related configuration information.

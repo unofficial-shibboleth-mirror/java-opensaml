@@ -26,8 +26,8 @@ import java.util.Set;
 
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.XMLConstants;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.Namespace;

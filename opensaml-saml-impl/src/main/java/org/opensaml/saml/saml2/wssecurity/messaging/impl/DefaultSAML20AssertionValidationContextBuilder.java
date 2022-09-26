@@ -34,8 +34,8 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.net.HttpServletSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;

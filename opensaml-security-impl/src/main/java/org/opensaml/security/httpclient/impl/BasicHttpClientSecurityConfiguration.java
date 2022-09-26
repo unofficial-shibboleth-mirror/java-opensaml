@@ -32,7 +32,7 @@ import org.opensaml.security.httpclient.HttpClientSecurityConfiguration;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Basic implementation of {@link HttpClientSecurityConfiguration}.

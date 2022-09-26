@@ -38,8 +38,8 @@ import com.google.common.primitives.Bytes;
 
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Implementation of the key derivation function used with Diffie-Hellman Key Agreement With Legacy Key Derivation

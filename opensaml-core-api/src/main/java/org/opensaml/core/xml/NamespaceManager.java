@@ -30,9 +30,9 @@ import javax.xml.namespace.QName;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.XMLConstants;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import com.google.common.base.Strings;
 

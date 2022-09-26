@@ -29,8 +29,8 @@ import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Predicate;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Predicate that matches an {@link EntityDescriptor} against a set of entityIDs.

@@ -19,9 +19,9 @@ package org.opensaml.xacml.ctx.provider.impl;
 
 import java.util.Objects;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.xacml.policy.ObligationType;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Base class for all obligation handlers.

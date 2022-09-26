@@ -57,8 +57,8 @@ import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * SAML 2.0 HTTP Redirect encoder using the DEFLATE encoding method.

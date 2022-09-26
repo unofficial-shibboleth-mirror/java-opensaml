@@ -52,8 +52,8 @@ import net.shibboleth.shared.codec.HTMLEncoder;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * SAML 2 Artifact Binding encoder, support both HTTP GET and POST.

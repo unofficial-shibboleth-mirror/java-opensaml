@@ -29,9 +29,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.context.ProxiedRequesterContext;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.Predicate;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
  * Predicate that determines whether one of a set of candidates is contained in a

@@ -24,7 +24,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.net.SimpleURLCanonicalizer;
 import net.shibboleth.shared.net.URLBuilder;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Support methods for metadata indexing.

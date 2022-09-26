@@ -21,9 +21,9 @@ import java.util.function.Function;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.messaging.context.InOutOperationContext;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Static strategy function for resolving a pipeline name.

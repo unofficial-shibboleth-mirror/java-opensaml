@@ -17,7 +17,7 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Class for representing parameter inputs to the RSA-OAEP key transport algorithm.

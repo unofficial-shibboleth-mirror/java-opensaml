@@ -17,14 +17,14 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.soap.wstrust.BinaryExchange;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Marshaller for the BinaryExchange element.

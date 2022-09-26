@@ -29,7 +29,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Client-side message handler for validating that the inbound SAML response inResponseTo ID matches the corresponding

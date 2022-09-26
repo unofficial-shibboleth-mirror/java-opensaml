@@ -35,8 +35,8 @@ import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.shibboleth.utilities.java.support.primitive.ObjectSupport;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.ObjectSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * A base class for {@link SubjectConfirmationValidator} implementations. 

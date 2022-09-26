@@ -19,7 +19,7 @@ package org.opensaml.core.xml.schema;
 
 import javax.annotation.Nullable;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * A class representing a boolean attribute. This class tracks the usage of the literals {true, false, 1, 0} to ensure

@@ -23,7 +23,7 @@ import java.util.Map;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.shared.collection.LazyMap;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Context which holds state related to a single validation event.

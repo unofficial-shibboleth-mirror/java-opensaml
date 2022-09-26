@@ -17,13 +17,13 @@
 
 package org.opensaml.xacml.ctx.impl;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
-
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xacml.ctx.AttributeValueType;
 import org.opensaml.xacml.impl.AbstractXACMLObjectUnmarshaller;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.primitive.StringSupport;
 
 /** Unmarshaller for {@link AttributeValueType} objects. */
 public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshaller {

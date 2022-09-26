@@ -30,7 +30,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.X509Certificate;
 
 import net.shibboleth.shared.collection.IndexingObjectStore;
-import net.shibboleth.utilities.java.support.primitive.CleanerSupport;
+import net.shibboleth.shared.primitive.CleanerSupport;
 
 /** Concrete implementation of {@link X509Certificate}. */
 public class X509CertificateImpl extends AbstractXMLObject implements X509Certificate {

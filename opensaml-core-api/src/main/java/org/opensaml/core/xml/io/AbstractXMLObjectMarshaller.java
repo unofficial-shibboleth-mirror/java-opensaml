@@ -24,12 +24,12 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.NamespaceSupport;
 import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.shared.xml.XMLConstants;
 import net.shibboleth.shared.xml.XMLParserException;
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;

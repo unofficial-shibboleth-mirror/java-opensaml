@@ -23,7 +23,7 @@ import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.soap.client.SOAPClient.SOAPRequestParameters;
 import org.opensaml.soap.client.http.PipelineFactoryHttpSOAPClient;
 
-import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /** Message context for SOAP client messages. */
 public final class SOAPClientContext extends BaseContext {
