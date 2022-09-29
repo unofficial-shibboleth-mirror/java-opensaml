@@ -55,9 +55,9 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.collection.Pair;
-import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.shared.primitive.StringSupport;
+import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**

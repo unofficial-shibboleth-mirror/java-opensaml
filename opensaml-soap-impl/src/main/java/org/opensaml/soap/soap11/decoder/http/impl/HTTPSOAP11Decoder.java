@@ -36,7 +36,7 @@ import com.google.common.net.MediaType;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.net.HttpServletSupport;
+import net.shibboleth.shared.servlet.HttpServletSupport;
 
 /**
  * Basic SOAP 1.1 decoder for HTTP transport.

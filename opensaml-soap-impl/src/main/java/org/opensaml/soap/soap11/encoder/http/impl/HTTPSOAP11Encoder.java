@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import jakarta.servlet.http.HttpServletResponse;
-import net.shibboleth.shared.net.HttpServletSupport;
+import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**

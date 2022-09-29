@@ -39,7 +39,7 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.codec.HTMLEncoder;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.net.HttpServletSupport;
+import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**

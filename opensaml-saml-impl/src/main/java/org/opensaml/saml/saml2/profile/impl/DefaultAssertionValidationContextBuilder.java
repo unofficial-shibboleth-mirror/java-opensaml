@@ -76,9 +76,9 @@ import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.FunctionSupport;
-import net.shibboleth.shared.net.HttpServletSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.servlet.HttpServletSupport;
 
 /**
  *  Function which implements default behavior for building an instance of {@link ValidationContext}
