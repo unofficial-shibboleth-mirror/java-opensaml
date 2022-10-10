@@ -25,8 +25,7 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 /**
  * Basic implementation of {@link SignatureValidationConfiguration}.
  */
-@SuppressWarnings("removal")
-public class BasicSignatureValidationConfiguration extends BasicWhitelistBlacklistConfiguration
+public class BasicSignatureValidationConfiguration extends BasicAlgorithmPolicyConfiguration
         implements SignatureValidationConfiguration {
     
     /** The signature trust engine to use. */

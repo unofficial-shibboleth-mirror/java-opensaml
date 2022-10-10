@@ -26,8 +26,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 /**
  * Basic implementation of {@link DecryptionConfiguration}.
  */
-@SuppressWarnings("removal")
-public class BasicDecryptionConfiguration extends BasicWhitelistBlacklistConfiguration 
+public class BasicDecryptionConfiguration extends BasicAlgorithmPolicyConfiguration 
         implements DecryptionConfiguration {
     
     /** The EncryptedData's KeyInfo credential resolver. */

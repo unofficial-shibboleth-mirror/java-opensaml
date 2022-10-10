@@ -37,8 +37,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Basic implementation of {@link SignatureSigningConfiguration}.
  */
-@SuppressWarnings("removal")
-public class BasicSignatureSigningConfiguration extends BasicWhitelistBlacklistConfiguration 
+public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConfiguration 
         implements SignatureSigningConfiguration {
     
     /** Class logger. */

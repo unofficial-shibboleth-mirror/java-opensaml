@@ -36,8 +36,7 @@ import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 /**
  * The configuration information to use when generating encrypted XML.
  */
-@SuppressWarnings("removal")
-public interface EncryptionConfiguration extends WhitelistBlacklistConfiguration {
+public interface EncryptionConfiguration extends AlgorithmPolicyConfiguration {
     
     /**
      * Get the list of data encryption credentials to use, in preference order.

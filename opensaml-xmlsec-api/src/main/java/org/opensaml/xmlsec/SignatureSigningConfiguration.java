@@ -33,8 +33,7 @@ import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 /**
  * The configuration information to use when generating an XML signature.
  */
-@SuppressWarnings("removal")
-public interface SignatureSigningConfiguration extends WhitelistBlacklistConfiguration {
+public interface SignatureSigningConfiguration extends AlgorithmPolicyConfiguration {
     
     /**
      * Get the list of signing credentials to use when signing, in preference order.

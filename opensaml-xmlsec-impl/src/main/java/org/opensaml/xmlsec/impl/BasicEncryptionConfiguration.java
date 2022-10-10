@@ -42,8 +42,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Basic implementation of {@link EncryptionConfiguration}.
  */
-@SuppressWarnings("removal")
-public class BasicEncryptionConfiguration extends BasicWhitelistBlacklistConfiguration 
+public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfiguration 
         implements EncryptionConfiguration {
     
     /** Class logger. */
