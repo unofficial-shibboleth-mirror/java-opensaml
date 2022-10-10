@@ -168,7 +168,7 @@ public class DefaultSAML20AssertionValidationContextBuilderTest extends XMLObjec
         
         File presenterCertFile = new File(this.getClass().getResource("/org/opensaml/saml/saml2/wssecurity/messaging/impl/presenter.crt").toURI());
         clientTLSCert = X509Support.decodeCertificate(presenterCertFile);
-        request.setAttribute("javax.servlet.request.X509Certificate", new X509Certificate[] {clientTLSCert});
+        request.setAttribute("jakarta.servlet.request.X509Certificate", new X509Certificate[] {clientTLSCert});
         
         return request;
     }
