@@ -25,15 +25,16 @@ import java.io.IOException;
 import javax.annotation.Nonnull;
 
 import org.cryptacular.util.KeyPairUtil;
+import org.ldaptive.ConnectException;
 import org.ldaptive.Connection;
 import org.ldaptive.ConnectionConfig;
+import org.ldaptive.ConnectionFactory;
 import org.ldaptive.DefaultConnectionFactory;
 import org.ldaptive.LdapException;
-import org.ldaptive.Response;
 import org.ldaptive.ResultCode;
 import org.ldaptive.SearchOperation;
 import org.ldaptive.SearchRequest;
-import org.ldaptive.SearchResult;
+import org.ldaptive.SearchResponse;
 import org.ldaptive.ssl.SslConfig;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
@@ -79,18 +80,14 @@ public class TrustEngineX509TrustManagerTest {
      * 
      * @throws LdapException ...
      */
-    @Test(expectedExceptions=LdapException.class)
+    @Test(expectedExceptions=ConnectException.class)
     public void testDefaultTrust() throws LdapException {
-        final ConnectionConfig config = new ConnectionConfig();
-        config.setLdapUrl("ldap://localhost:10389");
-        config.setUseStartTLS(true);
-        final DefaultConnectionFactory factory = new DefaultConnectionFactory(config);
-        final Connection conn = factory.getConnection();
-        try {
-            conn.open();
-        } finally {
-            conn.close();
-        }
+        doOpen(DefaultConnectionFactory.builder()
+            .config(ConnectionConfig.builder()
+                .url("ldap://localhost:10389")
+                .useStartTLS(true)
+                .build())
+            .build());
     }
     
     /**
@@ -98,22 +95,18 @@ public class TrustEngineX509TrustManagerTest {
      * 
      * @throws LdapException ...
      */
-    @Test(expectedExceptions=LdapException.class)
+    @Test(expectedExceptions=ConnectException.class)
     public void testNullTrust() throws LdapException {
         final TrustEngineX509TrustManager trustManager = new TrustEngineX509TrustManager();
-        final SslConfig sslConfig = new SslConfig();
-        sslConfig.setTrustManagers(trustManager);
-        final ConnectionConfig config = new ConnectionConfig();
-        config.setLdapUrl("ldap://localhost:10389");
-        config.setUseStartTLS(true);
-        config.setSslConfig(sslConfig);
-        final DefaultConnectionFactory factory = new DefaultConnectionFactory(config);
-        final Connection conn = factory.getConnection();
-        try {
-            conn.open();
-        } finally {
-            conn.close();
-        }
+        doOpen(DefaultConnectionFactory.builder()
+            .config(ConnectionConfig.builder()
+                .url("ldap://localhost:10389")
+                .useStartTLS(true)
+                .sslConfig(SslConfig.builder()
+                    .trustManagers(trustManager)
+                    .build())
+                .build())
+            .build());
     }
     
     /**
@@ -126,33 +119,37 @@ public class TrustEngineX509TrustManagerTest {
     @Test
     public void testStaticTrust() throws LdapException, FileNotFoundException, IOException {
         final StaticCredentialResolver resolver;
-        try (final FileInputStream is = new FileInputStream(new File(DATA_PATH + "test-ldap.key"))) {
+        try (final FileInputStream is = new FileInputStream(DATA_PATH + "test-ldap.key")) {
             resolver = new StaticCredentialResolver(new BasicCredential(KeyPairUtil.readPublicKey(is)));
         }
         final TrustEngineX509TrustManager trustManager = new TrustEngineX509TrustManager();
         trustManager.setTLSTrustEngine(new ExplicitKeyTrustEngine(resolver));
-        final SslConfig sslConfig = new SslConfig();
-        sslConfig.setTrustManagers(trustManager);
-        final ConnectionConfig config = new ConnectionConfig();
-        config.setLdapUrl("ldap://localhost:10389");
-        config.setUseStartTLS(true);
-        config.setSslConfig(sslConfig);
-        final DefaultConnectionFactory factory = new DefaultConnectionFactory(config);
+        doSearch(DefaultConnectionFactory.builder()
+            .config(ConnectionConfig.builder()
+                .url("ldap://localhost:10389")
+                .useStartTLS(true)
+                .sslConfig(SslConfig.builder()
+                    .trustManagers(trustManager)
+                    .build())
+                .build())
+            .build());
+    }
+
+    protected void doOpen(@Nonnull final ConnectionFactory factory) throws LdapException {
         final Connection conn = factory.getConnection();
         try {
             conn.open();
-            doSearch(conn);
         } finally {
             conn.close();
         }
     }
 
-    protected void doSearch(@Nonnull final Connection conn) throws LdapException {
-        final SearchOperation search = new SearchOperation(conn);
-        final Response<SearchResult> result =
-                search.execute(SearchRequest.newObjectScopeSearchRequest(context, new String[] {"description"}));
-        Assert.assertNotNull(result);
-        Assert.assertEquals(result.getResultCode(), ResultCode.SUCCESS);
+    protected void doSearch(@Nonnull final ConnectionFactory factory) throws LdapException {
+        final SearchOperation search = new SearchOperation(factory);
+        final SearchResponse response =
+                search.execute(SearchRequest.objectScopeSearchRequest(context, new String[] {"description"}));
+        Assert.assertNotNull(response);
+        Assert.assertEquals(response.getResultCode(), ResultCode.SUCCESS);
     }
     
 }
