@@ -69,12 +69,13 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Resolver;
 import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
-import net.shibboleth.shared.security.impl.SecureRandomIdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
 /** 
  * SAML 2 Artifact Binding decoder, support both HTTP GET and POST.
@@ -135,7 +136,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
         }
         
         if (idStrategy == null) {
-            idStrategy = new SecureRandomIdentifierGenerationStrategy();
+            idStrategy = IdentifierGenerationStrategy.getInstance(ProviderType.SECURE);
         }
         
         if (artifactBuilderFactory == null) {
@@ -178,9 +179,9 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * 
      * @param strategy the identifier generation strategy
      */
-    public void setIdentifierGenerationStrategy(@Nullable final IdentifierGenerationStrategy strategy) {
+    public void setIdentifierGenerationStrategy(@Nonnull final IdentifierGenerationStrategy strategy) {
         checkSetterPreconditions();
-        idStrategy = strategy;
+        idStrategy = Constraint.isNotNull(strategy, "IdentifierGenerationStrategy cannot be null");
     }
     
     /**

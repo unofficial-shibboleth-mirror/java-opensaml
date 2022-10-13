@@ -45,7 +45,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
-import net.shibboleth.shared.security.impl.SecureRandomIdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
 /**
  * Action that creates an empty object derived from {@link StatusResponseType},
@@ -87,7 +87,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
     /** Constructor. */
     public AddStatusResponseShell() {
         // Default strategy is a 16-byte secure random source.
-        idGeneratorLookupStrategy = prc -> new SecureRandomIdentifierGenerationStrategy();
+        idGeneratorLookupStrategy = prc ->IdentifierGenerationStrategy.getInstance(ProviderType.SECURE);
     }
     
     /**

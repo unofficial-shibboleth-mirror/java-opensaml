@@ -42,7 +42,7 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
-import net.shibboleth.shared.security.impl.SecureRandomIdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
 /**
  * Abstract action that creates an empty object derived from {@link StatusResponseType},
@@ -84,7 +84,7 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
     /** Constructor. */
     public AbstractResponseShellAction() {
         // Default strategy is a 16-byte secure random source.
-        idGeneratorLookupStrategy = prc -> new SecureRandomIdentifierGenerationStrategy();
+        idGeneratorLookupStrategy = prc ->IdentifierGenerationStrategy.getInstance(ProviderType.SECURE);
     }
     
     /**

@@ -21,10 +21,12 @@ import java.security.Key;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
-import net.shibboleth.shared.security.impl.RandomIdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 import org.opensaml.core.xml.XMLObject;
@@ -222,7 +224,7 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
                 (XMLEncryptionBuilder<CarriedKeyName>) builderFactory.<CarriedKeyName>getBuilderOrThrow(
                         CarriedKeyName.DEFAULT_ELEMENT_NAME);
 
-        idGenerator = new RandomIdentifierGenerationStrategy();
+        idGenerator = IdentifierGenerationStrategy.getInstance(ProviderType.RANDOM);
 
         keyPlacement = KeyPlacement.PEER;
     }
@@ -232,8 +234,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
      * 
      * @param newIDGenerator the new IdentifierGenerator to use
      */
-    public void setIDGenerator(final IdentifierGenerationStrategy newIDGenerator) {
-        this.idGenerator = newIDGenerator;
+    public void setIDGenerator(@Nonnull final IdentifierGenerationStrategy newIDGenerator) {
+        idGenerator = Constraint.isNotNull(newIDGenerator, "IdentifierGenerationStrategy cannot be null");
     }
 
     /**

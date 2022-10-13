@@ -24,7 +24,8 @@ import java.security.KeyPair;
 import java.time.Instant;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.shared.security.impl.RandomIdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -74,7 +75,7 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
     private XMLObjectBuilder<Signature> signatureBuilder;
     
     /** Generator of element IDs. */
-    private RandomIdentifierGenerationStrategy idGenerator;
+    private IdentifierGenerationStrategy idGenerator;
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -90,7 +91,7 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
                 AuthnStatement.DEFAULT_ELEMENT_NAME);
         signatureBuilder = builderFactory.getBuilderOrThrow(Signature.DEFAULT_ELEMENT_NAME);
         
-        idGenerator = new RandomIdentifierGenerationStrategy();
+        idGenerator = IdentifierGenerationStrategy.getInstance(ProviderType.RANDOM);
     }
     
     /**

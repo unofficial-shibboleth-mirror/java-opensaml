@@ -58,7 +58,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
-import net.shibboleth.shared.security.impl.SecureRandomIdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
 /**
  * Action that builds a {@link NameID} and adds it to the {@link Subject} of all the assertions
@@ -152,11 +152,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         assertionsLookupStrategy = new AssertionStrategy();
 
         // Default strategy is a 16-byte secure random source.
-        idGeneratorLookupStrategy = new Function<>() {
-            public IdentifierGenerationStrategy apply(final ProfileRequestContext input) {
-                return new SecureRandomIdentifierGenerationStrategy();
-            }
-        };
+        idGeneratorLookupStrategy = prc ->IdentifierGenerationStrategy.getInstance(ProviderType.SECURE);
         
         // Default predicate pulls SPNameQualifier from NameIDPolicy and does a direct match
         // against issuer. Handles simple cases, overridden for complex ones.

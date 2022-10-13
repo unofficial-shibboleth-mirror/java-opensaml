@@ -40,7 +40,7 @@ import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
-import net.shibboleth.shared.security.impl.SecureRandomIdentifierGenerationStrategy;
+import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
 /**
  * Action that creates an empty {@link Response}, and sets it as the
@@ -72,7 +72,7 @@ public class AddResponseShell extends AbstractProfileAction {
     /** Constructor. */
     public AddResponseShell() {
         // Default strategy is a 16-byte secure random source.
-        idGeneratorLookupStrategy = prc -> new SecureRandomIdentifierGenerationStrategy();
+        idGeneratorLookupStrategy = prc ->IdentifierGenerationStrategy.getInstance(ProviderType.SECURE);
     }
     
     /**
