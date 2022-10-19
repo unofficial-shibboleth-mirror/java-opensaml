@@ -683,7 +683,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      */
     @Nonnull @NotEmpty protected String getLogPrefix() {
         if (logPrefix == null) {
-            logPrefix = String.format("Metadata Resolver %s %s:", getClass().getSimpleName(), getId());
+            logPrefix = String.format("%s %s:", getClass().getSimpleName(), getId());
         }
         return logPrefix;
     }
