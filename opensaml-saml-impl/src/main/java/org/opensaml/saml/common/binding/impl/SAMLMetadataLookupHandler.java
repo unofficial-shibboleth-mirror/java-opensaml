@@ -26,8 +26,11 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
+import org.opensaml.messaging.context.navigate.ParentContextLookup;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
+import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.criterion.ProfileRequestContextCriterion;
 import org.opensaml.saml.common.messaging.context.AbstractSAMLEntityContext;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataLookupParametersContext;
@@ -80,10 +83,19 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     
     /** The context class representing the SAML entity whose data is to be resolved. 
      * Defaults to: {@link SAMLPeerEntityContext}. */
-    @Nonnull private Class<? extends AbstractSAMLEntityContext> entityContextClass = SAMLPeerEntityContext.class;
+    @Nonnull private Class<? extends AbstractSAMLEntityContext> entityContextClass;
 
     /** Optional strategy for resolving an existing metadata context from which to copy data. */
-    @Nullable private Function<MessageContext, SAMLMetadataContext> copyContextStrategy;
+    @Nullable private Function<MessageContext,SAMLMetadataContext> copyContextStrategy;
+    
+    /** Optional but defaulted strategy for locating a PRC. */
+    @Nullable private Function<MessageContext,ProfileRequestContext> profileRequestContextLookupStrategy;
+    
+    /** Constructor. */
+    public SAMLMetadataLookupHandler() {
+        entityContextClass = SAMLPeerEntityContext.class;
+        profileRequestContextLookupStrategy = new ParentContextLookup<>(ProfileRequestContext.class);
+    }
 
     /**
      * Set the optional strategy for resolving an existing metadata context from which to copy data.
@@ -115,6 +127,22 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
     public void setRoleDescriptorResolver(@Nonnull final RoleDescriptorResolver resolver) {
         checkSetterPreconditions();
         metadataResolver = Constraint.isNotNull(resolver, "RoleDescriptorResolver cannot be null");
+    }
+    
+    /**
+     * Set optional lookup strategy for locating {@link ProfileRequestContext}.
+     * 
+     * <p>Defaults to parent lookup. If set and found, a {@link ProfileRequestContextCriterion} will be included
+     * in the attempt.</p>
+     * 
+     * @param strategy
+     * 
+     * @since 5.0.0
+     */
+    public void setProfileRequestContextLookupStrategy(
+            @Nullable final Function<MessageContext,ProfileRequestContext> strategy) {
+        checkSetterPreconditions();
+        profileRequestContextLookupStrategy = strategy;
     }
     
     /** {@inheritDoc} */
@@ -207,8 +235,16 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
                     new DetectDuplicateEntityIDsCriterion(lookupParamsContext.getDetectDuplicateEntityIDs()); 
         }
         
+        ProfileRequestContextCriterion prcCriterion = null;
+        if (profileRequestContextLookupStrategy != null) {
+            final ProfileRequestContext prc = profileRequestContextLookupStrategy.apply(messageContext);
+            if (prc != null) {
+                prcCriterion = new ProfileRequestContextCriterion(prc);
+            }
+        }
+        
         final CriteriaSet criteria = new CriteriaSet(entityIdCriterion, protocolCriterion, roleCriterion,
-                detectDuplicatesCriterion);
+                detectDuplicatesCriterion, prcCriterion);
         return criteria;
     }
 
