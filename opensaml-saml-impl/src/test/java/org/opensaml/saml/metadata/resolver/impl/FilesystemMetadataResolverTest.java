@@ -33,6 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicates;
 import com.google.common.io.Files;
 
 public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
@@ -56,6 +57,27 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
 
+    @Test
+    public void testInactive() throws Exception {
+        
+        metadataProvider = new FilesystemMetadataResolver(mdFile);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setActivationCondition(Predicates.alwaysFalse());
+        metadataProvider.initialize();
+
+        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
+        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        Assert.assertNull(metadataProvider.getLastFailureCause());
+        
+        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
+        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        Assert.assertNull(metadataProvider.getLastFailureCause());
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNull(descriptor, "Retrieved entity descriptor was not null");
+    }
+    
     /**
      * Tests the {@link HTTPMetadataResolver#lookupEntityID(String)} method.
      * 

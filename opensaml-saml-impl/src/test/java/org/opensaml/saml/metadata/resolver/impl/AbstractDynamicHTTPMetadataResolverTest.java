@@ -53,6 +53,8 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
     
     private byte[] entityDescriptorBytes;
     
+    private boolean allowActivation;
+    
     @BeforeMethod
     public void setUp() throws Exception {
         httpClientBuilder = new HttpClientBuilder();
@@ -70,7 +72,10 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
         resolver = new MockDynamicHTTPMetadataResolver(httpClient);
         resolver.setId("myDynamicResolver");
         resolver.setParserPool(parserPool);
+        resolver.setActivationCondition(prc -> {return allowActivation;});
         resolver.initialize();
+        
+        allowActivation = true;
     }
     
     @AfterMethod
@@ -78,6 +83,21 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
         if (resolver != null) {
             resolver.destroy();
         }
+    }
+    
+    @Test
+    public void testInactive() throws ResolverException {
+        allowActivation = false;
+        
+        // Test uses MDQ protocol
+        String baseURL = "https://mdq.incommon.org";
+        String entityID = "urn:mace:incommon:osu.edu";
+        String requestURL = new MetadataQueryProtocolRequestURLBuilder(baseURL).apply(new CriteriaSet(new EntityIdCriterion(entityID)));
+        
+        CriteriaSet criteriaSet = new CriteriaSet(new RequestURLCriterion(requestURL));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNull(ed);
     }
     
     @Test

@@ -45,6 +45,8 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
     private String entityID;
 
     private CriteriaSet criteriaSet;
+    
+    private boolean allowActivation;
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -60,6 +62,7 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
         }
         
         metadataProvider.setId("test");
+        metadataProvider.setActivationCondition(prc -> {return allowActivation;});
         metadataProvider.initialize();
         
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
@@ -67,9 +70,16 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
+        allowActivation = true;
+        
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
+
+        allowActivation = false;
+        
+        descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNull(descriptor, "Retrieved entity descriptor was not null");
     }
     
     @Test

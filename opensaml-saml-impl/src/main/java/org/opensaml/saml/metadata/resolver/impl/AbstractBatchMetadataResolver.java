@@ -70,8 +70,6 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     
     /** Constructor. */
     public AbstractBatchMetadataResolver() {
-        super();
-        
         indexes = Collections.emptySet();
         
         setCacheSourceMetadata(true);
@@ -165,7 +163,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull public Iterable<EntityDescriptor> resolve(final CriteriaSet criteria) throws ResolverException {
+    @Override @Nonnull protected Iterable<EntityDescriptor> doResolve(final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
         
         final EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);

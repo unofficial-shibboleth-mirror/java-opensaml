@@ -92,6 +92,29 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         Files.deleteIfExists(nioBackupFilePath);
     }
     
+    @Test
+    public void testInactive() throws Exception {
+        final boolean allowActivation = false;
+
+        Assert.assertFalse(backupFile.exists());
+        
+        metadataProvider = new FileBackedHTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp, backupFilePath);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setId("test");
+        metadataProvider.setActivationCondition(prc -> {return allowActivation;});
+        metadataProvider.initialize();
+
+        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
+        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        Assert.assertNull(metadataProvider.getLastFailureCause());
+        
+        Assert.assertFalse(metadataProvider.isInitializedFromBackupFile());
+        Assert.assertTrue(backupFile.exists());
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNull(descriptor, "Retrieved entity descriptor was not null");
+    }
+    
     /**
      * Tests the basic success case.
      * 

@@ -191,8 +191,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @param backgroundTaskTimer the {@link Timer} instance used to run resolver background management tasks
      */
     public AbstractDynamicMetadataResolver(@Nullable final Timer backgroundTaskTimer) {
-        super();
-        
         indexes = Collections.emptySet();
         
         if (backgroundTaskTimer == null) {
@@ -640,7 +638,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull public Iterable<EntityDescriptor> resolve(@Nonnull final CriteriaSet criteria) throws ResolverException {
+    @Nonnull protected Iterable<EntityDescriptor> doResolve(@Nonnull final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
         
         final Context contextResolve = MetricsSupport.startTimer(timerResolve);

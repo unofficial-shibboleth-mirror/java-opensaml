@@ -35,6 +35,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicates;
+
 /** Unit test for {@link ResourceBackedMetadataResolver}. */
 public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
 
@@ -43,14 +45,14 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
     private String entityID;
 
     private CriteriaSet criteriaSet;
-
+    
     @BeforeMethod
     protected void setUp() throws Exception {
         entityID = "urn:mace:incommon:washington.edu";
 
-        URL mdURL = ResourceBackedMetadataResolverTest.class
+        final URL mdURL = ResourceBackedMetadataResolverTest.class
                 .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
-        Resource mdResource = ResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
+        final Resource mdResource = ResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
 
         metadataProvider = new ResourceBackedMetadataResolver(new Timer(true), mdResource);
         metadataProvider.setParserPool(parserPool);
@@ -61,6 +63,25 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
     }
 
+    @Test
+    protected void testInactive() throws Exception {
+        entityID = "urn:mace:incommon:washington.edu";
+
+        final URL mdURL = ResourceBackedMetadataResolverTest.class
+                .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
+        final Resource mdResource = ResourceHelper.of(new FileSystemResource(new File(mdURL.toURI()).getAbsolutePath()));
+
+        metadataProvider = new ResourceBackedMetadataResolver(new Timer(true), mdResource);
+        metadataProvider.setParserPool(parserPool);
+        metadataProvider.setMaxRefreshDelay(Duration.ofSeconds(500));
+        metadataProvider.setId("test");
+        metadataProvider.setActivationCondition(Predicates.alwaysFalse());
+        metadataProvider.initialize();
+        
+        criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
+        Assert.assertNull(metadataProvider.resolveSingle(criteriaSet));
+    }
+
     /**
      * Tests the {@link ResourceBackedMetadataResolver#lookupEntityID(String)} method.
      * 
@@ -68,7 +89,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }

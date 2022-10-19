@@ -36,6 +36,8 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicates;
+
 import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.codec.StringDigester.OutputFormat;
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
@@ -59,6 +61,33 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         if (resolver != null) {
             resolver.destroy();
         }
+    }
+    
+    
+    @Test
+    public void testInactive() throws Exception {
+        // Repo should return 'text/xml', which is supported by default.
+        String template = RepositorySupport.buildHTTPResourceURL("java-opensaml", "opensaml-saml-impl/src/test/resources/org/opensaml/saml/metadata/resolver/impl/${entityID}.xml", false);
+        String entityID = "https://www.example.org/sp";
+        
+        // Digesting the entityID is a little artificial for the test, but means we can test more easily against a path in the repo.
+        TemplateRequestURLBuilder requestURLBuilder = new TemplateRequestURLBuilder(
+                VelocityEngine.newVelocityEngine(), 
+                template, 
+                EncodingStyle.path, 
+                new StringDigester("SHA-1", OutputFormat.HEX_LOWER));
+        
+        resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());
+        resolver.setId("myDynamicResolver");
+        resolver.setParserPool(parserPool);
+        resolver.setRequestURLBuilder(requestURLBuilder);
+        resolver.setActivationCondition(Predicates.alwaysFalse());
+        resolver.initialize();
+        
+        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
+        
+        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        Assert.assertNull(ed);
     }
     
     @Test

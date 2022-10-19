@@ -48,6 +48,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicates;
 import com.google.common.io.ByteStreams;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
@@ -86,6 +87,31 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         entityID = "https://www.example.org/sp";
         
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));
+    }
+    
+    /**
+     * Tests failed condition.
+     * 
+     * @throws Exception 
+     */
+    @Test
+    public void testInactive() throws Exception {
+        try {
+            metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp);
+            metadataProvider.setParserPool(parserPool);
+            metadataProvider.setId("test");
+            metadataProvider.setActivationCondition(Predicates.alwaysFalse());
+            metadataProvider.initialize();
+            
+            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
+            Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+            Assert.assertNull(metadataProvider.getLastFailureCause());
+        } catch (ComponentInitializationException e) {
+            Assert.fail("Valid metadata failed init");
+        }
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        Assert.assertNull(descriptor, "Retrieved entity descriptor was not null");
     }
     
     /**

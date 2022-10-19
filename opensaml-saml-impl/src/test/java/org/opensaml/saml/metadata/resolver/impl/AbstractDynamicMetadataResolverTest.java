@@ -98,6 +98,8 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     private SignatureTrustEngine signatureTrustEngine;
     private SignatureValidationFilter signatureValidationFilter;
     
+    private boolean allowActivation;
+    
     @BeforeClass
     protected void setUpSigningSupport() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 1024, null);
@@ -165,7 +167,10 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver = new MockDynamicResolver(sourceMap);
         resolver.setId("test123");
+        resolver.setActivationCondition(prc -> {return allowActivation;});
         resolver.setParserPool(XMLObjectProviderRegistrySupport.getParserPool());
+        
+        allowActivation = true;
     }
     
     @AfterMethod
@@ -174,7 +179,19 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
             resolver.destroy();
         }
     }
+
     
+    @Test
+    public void testInactive() throws ComponentInitializationException, ResolverException {
+        allowActivation = false;
+        
+        resolver.initialize();
+        
+        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        
+        Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
+    }
+
     @Test
     public void testNoEntities() throws ComponentInitializationException, ResolverException {
         resolver.initialize();

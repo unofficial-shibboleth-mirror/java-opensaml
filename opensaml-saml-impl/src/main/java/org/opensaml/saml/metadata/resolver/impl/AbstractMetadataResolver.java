@@ -37,6 +37,8 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
+import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.criterion.ProfileRequestContextCriterion;
 import org.opensaml.saml.metadata.criteria.entity.EvaluableEntityDescriptorCriterion;
 import org.opensaml.saml.metadata.criteria.entity.impl.EntityDescriptorCriterionPredicateRegistry;
 import org.opensaml.saml.metadata.resolver.MetadataResolver;
@@ -73,19 +75,19 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         MetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
 
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
-    private UnmarshallerFactory unmarshallerFactory;
+    @Nonnull private UnmarshallerFactory unmarshallerFactory;
 
     /** Whether metadata is required to be valid. */
     private boolean requireValidMetadata;
 
     /** Filter applied to all metadata. */
-    private MetadataFilter mdFilter;
+    @Nullable private MetadataFilter mdFilter;
     
     /** Logging prefix. */
-    private String logPrefix;
+    @Nullable @NotEmpty private String logPrefix;
     
     /**
      * Whether problems during initialization should cause the provider to fail or go on without metadata. The
@@ -94,21 +96,24 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     private boolean failFastInitialization;
 
     /** Backing store for runtime EntityDescriptor data. */
-    private EntityBackingStore entityBackingStore;
+    @Nullable private EntityBackingStore entityBackingStore;
 
     /** Pool of parsers used to process XML. */
-    private ParserPool parser;
+    @NonnullAfterInit private ParserPool parser;
     
     /** Flag which determines whether predicates used in filtering are connected by 
      * a logical 'OR' (true) or by logical 'AND' (false). Defaults to false. */
     private boolean satisfyAnyPredicates;
     
     /** Registry used in resolving predicates from criteria. */
-    private CriterionPredicateRegistry<EntityDescriptor> criterionPredicateRegistry;
+    @Nullable private CriterionPredicateRegistry<EntityDescriptor> criterionPredicateRegistry;
     
     /** Flag which determines whether the default predicate registry will be used if one is not supplied explicitly.
      * Defaults to true. */
     private boolean useDefaultPredicateRegistry;
+    
+    /** Activation condition. */
+    @Nullable private Predicate<ProfileRequestContext> activationCondition;
     
     /** Constructor. */
     public AbstractMetadataResolver() {
@@ -166,7 +171,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * 
      * @return pool of parsers to use to parse XML
      */
-    @Nonnull public ParserPool getParserPool() {
+    @NonnullAfterInit public ParserPool getParserPool() {
         return parser;
     }
 
@@ -249,8 +254,27 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         useDefaultPredicateRegistry = flag;
     }
 
+    /**
+     * Get an activation condition for this resolver.
+     * 
+     * @return activation condition
+     */
+    @Nullable public Predicate<ProfileRequestContext> getActivationCondition() {
+        return activationCondition;
+    }
+    
+    /**
+     * Set an activation condition for this resolver.
+     * 
+     * @param condition condition to set
+     */
+    public void setActivationCondition(@Nullable final Predicate<ProfileRequestContext> condition) {
+        checkSetterPreconditions();
+        activationCondition = condition;
+    }
+
     /** {@inheritDoc} */
-    @Override @Nullable public EntityDescriptor resolveSingle(final CriteriaSet criteria) throws ResolverException {
+    @Nullable public EntityDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
         final Iterable<EntityDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
@@ -262,12 +286,38 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         return null;
     }
     
+    /** {@inheritDoc} */
+    @Nullable public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+        checkComponentActive();
+        if (activationCondition != null) {
+            final ProfileRequestContextCriterion prc = criteria.get(ProfileRequestContextCriterion.class);
+            if (!activationCondition.test(prc != null ? prc.getProfileRequestContext() : null)) {
+                log.info("{} Metadata resolver bypassed due to failed activation condition", getLogPrefix());
+                return null; 
+            }
+        }
+        
+        return doResolve(criteria);
+    }
+    
+    /**
+     * Subclasses should override this method.
+     * 
+     * @param criteria input criteria
+     * 
+     * @return resolution outcome
+     * 
+     * @throws ResolverException if an error occurs
+     */
+    @Nullable protected abstract Iterable<EntityDescriptor> doResolve(@Nullable final CriteriaSet criteria)
+            throws ResolverException;
+    
     /**
      * Get the XMLObject unmarshaller factory to use.
      * 
      * @return the unmarshaller factory instance to use
      */
-    protected UnmarshallerFactory getUnmarshallerFactory() {
+    @Nonnull protected UnmarshallerFactory getUnmarshallerFactory() {
         return unmarshallerFactory;
     }
 
@@ -279,11 +329,11 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
             initMetadataResolver();
         } catch (final ComponentInitializationException e) {
             if (isFailFastInitialization()) {
-                log.error("{} Metadata provider failed to properly initialize, fail-fast=true, halting", 
+                log.error("{} Metadata resolver failed to properly initialize, fail-fast=true, halting", 
                         getLogPrefix());
                 throw e;
             }
-            log.error("{} Metadata provider failed to properly initialize, fail-fast=false, "
+            log.error("{} Metadata resolver failed to properly initialize, fail-fast=false, "
                     + "continuing on in a degraded state", getLogPrefix(), e);
         }
     }
@@ -295,6 +345,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         entityBackingStore = null;
         parser = null;
         criterionPredicateRegistry = null;
+        activationCondition = null;
 
         super.doDestroy();
     }

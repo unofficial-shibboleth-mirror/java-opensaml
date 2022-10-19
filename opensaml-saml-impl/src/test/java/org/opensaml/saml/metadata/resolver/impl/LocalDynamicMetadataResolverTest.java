@@ -33,6 +33,7 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicates;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import net.shibboleth.shared.codec.StringDigester;
@@ -84,6 +85,20 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         if (resolver != null) {
             resolver.destroy();
         }
+    }
+    
+    @Test
+    public void testInactive() throws ComponentInitializationException, IOException, ResolverException {
+        
+        resolver = new LocalDynamicMetadataResolver(null, sourceManager, new IdentityEntityIDGenerator());
+        resolver.setId("abc123");
+        resolver.setParserPool(parserPool);
+        resolver.setActivationCondition(Predicates.alwaysFalse());
+        resolver.initialize();
+        
+        sourceManager.save(entityID1, entity1);
+        
+        Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID1))));
     }
     
     @Test
