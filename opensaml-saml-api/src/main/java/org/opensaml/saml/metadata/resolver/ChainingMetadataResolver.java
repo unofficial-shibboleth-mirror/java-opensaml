@@ -23,12 +23,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.profile.context.ProfileRequestContext;
+import org.opensaml.profile.criterion.ProfileRequestContextCriterion;
 import org.opensaml.saml.metadata.criteria.entity.DetectDuplicateEntityIDsCriterion;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -61,6 +64,9 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /** Strategy for detecting duplicate entityIDs across resolvers. */
     @Nonnull private DetectDuplicateEntityIDs detectDuplicateEntityIDs;
 
+    /** Activation condition. */
+    @Nullable private Predicate<ProfileRequestContext> activationCondition;
+    
     /** Constructor. */
     public ChainingMetadataResolver() {
         resolvers = Collections.emptyList();
@@ -110,6 +116,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * @param strategy the strategy to configure
      */
     public void setDetectDuplicateEntityIDs(@Nullable final DetectDuplicateEntityIDs strategy) {
+        checkSetterPreconditions();
         detectDuplicateEntityIDs = strategy != null ? strategy : DetectDuplicateEntityIDs.Off;
     }
 
@@ -135,6 +142,25 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataResolver");
     }
 
+    /**
+     * Get an activation condition for this resolver.
+     * 
+     * @return activation condition
+     */
+    @Nullable public Predicate<ProfileRequestContext> getActivationCondition() {
+        return activationCondition;
+    }
+    
+    /**
+     * Set an activation condition for this resolver.
+     * 
+     * @param condition condition to set
+     */
+    public void setActivationCondition(@Nullable final Predicate<ProfileRequestContext> condition) {
+        checkSetterPreconditions();
+        activationCondition = condition;
+    }
+    
     /** {@inheritDoc} */
     @Override
     @Nullable public EntityDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
@@ -155,6 +181,14 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     @Nonnull public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
 
+        if (activationCondition != null) {
+            final ProfileRequestContextCriterion prc = criteria.get(ProfileRequestContextCriterion.class);
+            if (!activationCondition.test(prc != null ? prc.getProfileRequestContext() : null)) {
+                log.info("Metadata Resolver {}: Bypassed due to failed activation condition", getId());
+                return null;
+            }
+        }
+        
         DetectDuplicateEntityIDs detectDuplicates = getDetectDuplicateEntityIDs();
         if (criteria.contains(DetectDuplicateEntityIDsCriterion.class)) {
             detectDuplicates = criteria.get(DetectDuplicateEntityIDsCriterion.class).getValue();

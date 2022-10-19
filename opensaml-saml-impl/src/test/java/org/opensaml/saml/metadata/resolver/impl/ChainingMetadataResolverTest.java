@@ -33,8 +33,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import com.google.common.base.Predicates;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.shared.resolver.ResolverException;
 
 public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
 
@@ -76,12 +78,21 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         
         metadataProvider.setResolvers(resolvers);
         metadataProvider.setId("test");
-
+    }
+    
+    @Test()
+    public void testInactive() throws Exception {
+        metadataProvider.setActivationCondition(Predicates.alwaysFalse());
         metadataProvider.initialize();
+        
+        EntityDescriptor descriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
+        Assert.assertNull(descriptor, "Retrieved entity descriptor was not null");
     }
 
     @Test()
-    public void testGetEntityDescriptor() throws ResolverException {
+    public void testGetEntityDescriptor() throws Exception {
+        metadataProvider.initialize();
+        
         EntityDescriptor descriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
         Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
@@ -92,7 +103,9 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
     }
 
     @Test()
-    public void testFilterDisallowed() {
+    public void testFilterDisallowed() throws ComponentInitializationException {
+        metadataProvider.initialize();
+
         try {
             metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11)));
             Assert.fail("Should fail with an UnsupportedOperationException");
