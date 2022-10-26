@@ -20,6 +20,7 @@ package org.opensaml.security.trust.impl;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.net.InetAddress;
 import java.security.GeneralSecurityException;
 
 import javax.annotation.Nonnull;
@@ -59,8 +60,9 @@ public class InMemoryDirectory {
         try {
             final SSLUtil sslUtil =
                     new SSLUtil(new KeyStoreKeyManager(keystore, "changeit".toCharArray()), null);
-            config.setListenerConfigs(InMemoryListenerConfig.createLDAPConfig("default", null, 10389,
-                    sslUtil.createSSLSocketFactory()));
+            config.setListenerConfigs(
+                InMemoryListenerConfig.createLDAPConfig(
+                    "default", InetAddress.getByName("localhost"), 10389, sslUtil.createSSLSocketFactory()));
         } catch (GeneralSecurityException e) {
             throw new IOException("Error reading keystore", e);
         }
