@@ -266,7 +266,7 @@ public class SAMLSchemaBuilder {
     /**
      * Configure the appropriate {@link SchemaBuilder} with the right set of schemas.
      */
-    @Nonnull private void configureBuilder() {
+    private void configureBuilder() {
         for (final String source : baseXMLSchemas) {
             addSchemaToBuilder(source);
         }

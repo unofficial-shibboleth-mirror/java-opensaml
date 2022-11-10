@@ -56,7 +56,7 @@ public class ProxiedRequesterPredicate implements Predicate<MessageContext> {
     }
     
     /** {@inheritDoc} */
-    @Nullable public boolean test(@Nullable final MessageContext input) {
+    public boolean test(@Nullable final MessageContext input) {
         
         final ProxiedRequesterContext ctx = input != null ? input.getSubcontext(ProxiedRequesterContext.class) : null;
         if (ctx != null) {

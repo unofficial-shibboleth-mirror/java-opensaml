@@ -1000,7 +1000,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * 
      * @throws FilterException if there is a problem filtering the metadata
      */
-    @Nonnull protected void processNewMetadata(@Nonnull final XMLObject root, @Nonnull final String expectedEntityID) 
+    protected void processNewMetadata(@Nonnull final XMLObject root, @Nonnull final String expectedEntityID) 
             throws FilterException {
         try {
             processNewMetadata(root, expectedEntityID, false);
@@ -1028,7 +1028,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      * @throws ResolverException if there is a problem processing the metadata
      */
     //CheckStyle: ReturnCount|CyclomaticComplexity OFF
-    @Nonnull protected void processNewMetadata(@Nonnull final XMLObject root, @Nonnull final String expectedEntityID,
+    protected void processNewMetadata(@Nonnull final XMLObject root, @Nonnull final String expectedEntityID,
             final boolean fromPersistentCache) throws FilterException, ResolverException {
         
         final XMLObject filteredMetadata = filterMetadata(prepareForFiltering(root));

@@ -353,7 +353,7 @@ public final class SAMLBindingSupport {
      * @param artifactEndpointIndex the endpoint index byte array, must have length == 2, and big endian byte order.
      * @return the convert integer value
      */
-    @Nonnull public static int convertSAML2ArtifactEndpointIndex(@Nonnull final byte[] artifactEndpointIndex) {
+    public static int convertSAML2ArtifactEndpointIndex(@Nonnull final byte[] artifactEndpointIndex) {
         Constraint.isNotNull(artifactEndpointIndex, "Artifact endpoint index cannot be null");
         Constraint.isTrue(artifactEndpointIndex.length == 2, "Artifact endpoint index length was not 2, was: "
                 + artifactEndpointIndex.length);

@@ -197,7 +197,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
      * @param container extension container
      * @param input input object
      */
-    @Nonnull private void addEntityAttribute(@Nonnull final EntityDescriptor descriptor,
+    private void addEntityAttribute(@Nonnull final EntityDescriptor descriptor,
             @Nonnull final EntityAttributes container, @Nonnull final Attribute input) {
         
         Attribute toMutate = null;
@@ -247,7 +247,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
      * 
      * @param descriptor input to evaluate
      */
-    @Nullable private void applyFilter(@Nonnull final EntityDescriptor descriptor) {
+    private void applyFilter(@Nonnull final EntityDescriptor descriptor) {
         final Extensions ext = descriptor.getExtensions();
         if (ext != null) {
             final Collection<XMLObject> entityAttributesCollection =
