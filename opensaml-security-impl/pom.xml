@@ -97,6 +97,12 @@
         </dependency>
 
         <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-testing</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.cryptacular</groupId>
             <artifactId>cryptacular</artifactId>
             <scope>test</scope>
@@ -114,12 +120,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>com.unboundid</groupId>
-            <artifactId>unboundid-ldapsdk</artifactId>
-            <scope>test</scope>
-        </dependency>
-        
         <dependency>
             <groupId>${slf4j.groupId}</groupId>
             <artifactId>jcl-over-slf4j</artifactId>

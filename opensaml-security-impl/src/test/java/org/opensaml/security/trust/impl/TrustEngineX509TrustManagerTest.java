@@ -17,12 +17,14 @@
 
 package org.opensaml.security.trust.impl;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Optional;
 
 import javax.annotation.Nonnull;
+
+import net.shibboleth.shared.testing.InMemoryDirectory;
 
 import org.cryptacular.util.KeyPairUtil;
 import org.ldaptive.ConnectException;
@@ -38,12 +40,13 @@ import org.ldaptive.SearchResponse;
 import org.ldaptive.ssl.SslConfig;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
+import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import com.unboundid.ldap.sdk.LDAPException;
+import static org.testng.Assert.assertEquals;
 
 /**
  * Test of {@link TrustEngineX509TrustManager} implementation.
@@ -51,20 +54,25 @@ import com.unboundid.ldap.sdk.LDAPException;
 public class TrustEngineX509TrustManagerTest {
 
     private final static String DATA_PATH = "src/test/resources/org/opensaml/security/ldap/impl/";
-    
+
+    private final static String DATA_CLASSPATH = "/org/opensaml/security/ldap/impl/";
+
     private InMemoryDirectory directoryServer;
 
     /** LDAP DN to test. */
     private final String context = "ou=people,dc=example,dc=org";
 
     /**
-     * Creates an UnboundID in-memory directory server. Leverages LDIF found in test resources.
-     * 
-     * @throws LDAPException if the in-memory directory server cannot be created
-     * @throws IOException ...
+     * Creates an in-memory directory server. Leverages LDIF found in test resources.
      */
-    @BeforeClass public void setupDirectoryServer() throws IOException, LDAPException {
-        directoryServer = new InMemoryDirectory(new File(DATA_PATH + "test-ldap.ldif"), new File(DATA_PATH + "test-ldap.keystore"));
+    @BeforeClass public void setupDirectoryServer() {
+        directoryServer =
+            new InMemoryDirectory(
+                new String[] {"dc=example,dc=org"},
+                new ClassPathResource(DATA_CLASSPATH + "test-ldap.ldif"),
+                10389,
+                new ClassPathResource(DATA_CLASSPATH + "test-ldap.keystore"),
+                Optional.empty());
         directoryServer.start();
     }
 
@@ -72,7 +80,8 @@ public class TrustEngineX509TrustManagerTest {
      * Shutdown the in-memory directory server.
      */
     @AfterClass public void teardownDirectoryServer() {
-        directoryServer.stop();
+        assertEquals(directoryServer.openConnectionCount(), 0);
+        directoryServer.stop(true);
     }
 
     /**
