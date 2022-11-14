@@ -131,7 +131,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     /** {@inheritDoc} */
     @Override
     @Nonnull @NonnullElements public Collection<X509Certificate> getEntityCertificateChain() {
-        synchronized(entityCertChain) {
+        synchronized(this) {
             if (entityCertChain == null) {
                 final LazySet<X509Certificate> constructedChain = new LazySet<>();
                 constructedChain.add(entityCert);
@@ -151,7 +151,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
         Constraint.isNotNull(newCertificateChain, "Certificate chain collection cannot be null");
         Constraint.isNotEmpty(newCertificateChain, "Certificate chain collection cannot be empty");
         
-        synchronized(entityCertChain) {
+        synchronized(this) {
             entityCertChain = new ArrayList<>(newCertificateChain);
         }
     }
