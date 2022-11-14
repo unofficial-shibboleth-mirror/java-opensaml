@@ -19,34 +19,37 @@ package org.opensaml.saml.saml2.metadata;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata SPSSODescriptorType.
  */
 public interface SPSSODescriptor extends SSODescriptor {
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPSSODescriptor";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPSSODescriptor";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SPSSODescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SPSSODescriptorType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "AuthnRequestsSigned" attribute's local name. */
-    public static final String AUTH_REQUESTS_SIGNED_ATTRIB_NAME = "AuthnRequestsSigned";
+    @Nonnull @NotEmpty public static final String AUTH_REQUESTS_SIGNED_ATTRIB_NAME = "AuthnRequestsSigned";
 
     /** "WantAssertionsSigned" attribute's local name. */
-    public static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
+    @Nonnull @NotEmpty public static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
 
     /**
      * Gets whether this service signs AuthN requests.

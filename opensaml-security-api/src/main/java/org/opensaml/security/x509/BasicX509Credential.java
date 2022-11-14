@@ -32,6 +32,8 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
 
@@ -41,13 +43,13 @@ import net.shibboleth.shared.logic.Constraint;
 public class BasicX509Credential extends BasicCredential implements X509Credential {
 
     /** Entity certificate. */
-    private X509Certificate entityCert;
+    @Nonnull private X509Certificate entityCert;
 
     /** Entity certificate chain, must include entity certificate. */
-    private Collection<X509Certificate> entityCertChain;
+    @Nullable @NonnullElements private Collection<X509Certificate> entityCertChain;
 
     /** CRLs for this credential. */
-    private Collection<X509CRL> crls;
+    @Nullable @NonnullElements private Collection<X509CRL> crls;
     
     /**
      * Constructor.
@@ -56,7 +58,6 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      */
     public BasicX509Credential(
             @Nonnull @ParameterName(name="entityCertificate") final X509Certificate entityCertificate) {
-        super();
         setEntityCertificate(entityCertificate);
     }
     
@@ -69,7 +70,6 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     public BasicX509Credential(
             @Nonnull @ParameterName(name="entityCertificate") final X509Certificate entityCertificate,
             @ParameterName(name="privateKey") @Nonnull final PrivateKey privateKey) {
-        super();
         setEntityCertificate(entityCertificate);
         setPrivateKey(privateKey);
     }
@@ -82,7 +82,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
 
     /** {@inheritDoc} */
     @Override
-    @Nullable public Collection<X509CRL> getCRLs() {
+    @Nullable @NonnullElements public Collection<X509CRL> getCRLs() {
         return crls;
     }
 
@@ -91,7 +91,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * 
      * @param newCRLs CRLs for this credential
      */
-    public void setCRLs(@Nullable final Collection<X509CRL> newCRLs) {
+    public void setCRLs(@Nullable @NonnullElements final Collection<X509CRL> newCRLs) {
         crls = newCRLs;
     }
 
@@ -130,7 +130,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull public Collection<X509Certificate> getEntityCertificateChain() {
+    @Nonnull @NonnullElements public Collection<X509Certificate> getEntityCertificateChain() {
         if (entityCertChain == null) {
             final LazySet<X509Certificate> constructedChain = new LazySet<>();
             constructedChain.add(entityCert);
@@ -145,7 +145,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * 
      * @param newCertificateChain entity certificate chain for this credential
      */
-    public void setEntityCertificateChain(@Nonnull final Collection<X509Certificate> newCertificateChain) {
+    public void setEntityCertificateChain(@Nonnull @NotEmpty @NonnullElements final Collection<X509Certificate> newCertificateChain) {
         Constraint.isNotNull(newCertificateChain, "Certificate chain collection cannot be null");
         Constraint.isNotEmpty(newCertificateChain, "Certificate chain collection cannot be empty");
         entityCertChain = new ArrayList<>(newCertificateChain);

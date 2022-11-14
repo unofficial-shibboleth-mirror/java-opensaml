@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2mdattr;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -26,21 +27,23 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /** SAML V2.0 Metadata Extension for Entity Attributes EntityAttributes SAML object. */
 public interface EntityAttributes extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityAttributes";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityAttributes";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20MDATTR_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDATTR_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EntityAttributesType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EntityAttributesType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20MDATTR_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDATTR_PREFIX);
 
     /**

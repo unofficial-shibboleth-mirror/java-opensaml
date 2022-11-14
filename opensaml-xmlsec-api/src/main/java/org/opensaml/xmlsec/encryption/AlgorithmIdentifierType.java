@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Encryption, version 1.1, AlgorithmIdentifierType complex type.
@@ -29,14 +32,14 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 public interface AlgorithmIdentifierType extends XMLObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AlgorithmIdentifierType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AlgorithmIdentifierType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC11_PREFIX);
     
     /** Algorithm attribute name. */
-    public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
 
     /**
      * Gets the algorithm URI attribute.

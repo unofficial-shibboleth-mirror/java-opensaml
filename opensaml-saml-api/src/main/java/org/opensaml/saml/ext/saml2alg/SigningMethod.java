@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.ext.saml2alg;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -24,31 +25,33 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /** SAML v2.0 Metadata Profile for Algorithm Support Version 1.0 SigningMethod SAMLObject. */
 public interface SigningMethod extends SAMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SigningMethod";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SigningMethod";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ALG_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ALG_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SigningMethodType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SigningMethodType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ALG_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ALG_PREFIX);
     
     /** Algorithm attribute name. */
-    public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /** MinKeySize attribute name. */
-    public static final String MIN_KEY_SIZE_ATTRIB_NAME = "MinKeySize";
+    @Nonnull @NotEmpty public static final String MIN_KEY_SIZE_ATTRIB_NAME = "MinKeySize";
     
     /** MaxKeySize attribute name. */
-    public static final String MAX_KEY_SIZE_ATTRIB_NAME = "MaxKeySize";
+    @Nonnull @NotEmpty public static final String MAX_KEY_SIZE_ATTRIB_NAME = "MaxKeySize";
     
     /**
      * Get the value of the Algorithm URI attribute.

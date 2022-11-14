@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -153,7 +154,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * 
      * @return the XMLObject from the file
      */
-    protected <T extends XMLObject> T unmarshallElement(String elementFile) {
+    @Nullable protected <T extends XMLObject> T unmarshallElement(String elementFile) {
         try {
             return unmarshallElement(elementFile, false);
         } catch (XMLParserException | UnmarshallingException e) {
@@ -175,7 +176,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @throws XMLParserException ...
      * @throws UnmarshallingException ...
      */
-    protected <T extends XMLObject> T unmarshallElement(String elementFile, boolean propagateErrors) 
+    @Nullable protected <T extends XMLObject> T unmarshallElement(String elementFile, boolean propagateErrors) 
             throws XMLParserException, UnmarshallingException {
         try {
             final Document doc = parseXMLDocument(elementFile);
