@@ -46,9 +46,12 @@ public final class AttributeConsumingServiceContext extends BaseContext {
      * 
      * @param acs assertion to be validated
      * 
+     * @return this context
      */
-    public void setAttributeConsumingService(@Nullable final AttributeConsumingService acs) {
+    @Nonnull public AttributeConsumingServiceContext setAttributeConsumingService(
+            @Nullable final AttributeConsumingService acs) {
         attributeConsumingService = acs;
+        return this;
     }
     
 }

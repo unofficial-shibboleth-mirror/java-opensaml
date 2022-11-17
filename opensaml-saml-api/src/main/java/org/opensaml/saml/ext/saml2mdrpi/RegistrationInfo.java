@@ -20,11 +20,14 @@ package org.opensaml.saml.ext.saml2mdrpi;
 import java.time.Instant;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Representation of the <code>&lt;mdrpi:RegistrationInfo&gt;</code> element.
@@ -36,27 +39,27 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface RegistrationInfo extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationInfo";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationInfo";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RegistrationInfoType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RegistrationInfoType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** registrationAuthority attribute name. */
-    public static String REGISTRATION_AUTHORITY_ATTRIB_NAME = "registrationAuthority";
+    @Nonnull @NotEmpty public static String REGISTRATION_AUTHORITY_ATTRIB_NAME = "registrationAuthority";
 
     /** registrationInstant attribute name. */
-    public static String REGISTRATION_INSTANT_ATTRIB_NAME = "registrationInstant";
+    @Nonnull @NotEmpty public static String REGISTRATION_INSTANT_ATTRIB_NAME = "registrationInstant";
 
     /** QName of the registrationInstant attribute. */
-    public static final QName REGISTRATION_INSTANT_ATTRIB_QNAME =
+    @Nonnull public static final QName REGISTRATION_INSTANT_ATTRIB_QNAME =
             new QName(null, REGISTRATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
     /**

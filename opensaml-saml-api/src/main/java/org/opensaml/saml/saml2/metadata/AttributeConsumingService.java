@@ -19,11 +19,14 @@ package org.opensaml.saml.saml2.metadata;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata AttributeAuthorityDescriptor.
@@ -31,24 +34,24 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AttributeConsumingService extends SAMLObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeConsumingService";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeConsumingService";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributeConsumingServiceType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributeConsumingServiceType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "index" attribute's local name. */
-    public static final String INDEX_ATTRIB_NAME = "index";
+    @Nonnull @NotEmpty public static final String INDEX_ATTRIB_NAME = "index";
 
     /** "isDefault" attribute's local name. */
-    public static final String IS_DEFAULT_ATTRIB_NAME = "isDefault";
+    @Nonnull @NotEmpty public static final String IS_DEFAULT_ATTRIB_NAME = "isDefault";
 
     /**
      * Gets the index for this service.
