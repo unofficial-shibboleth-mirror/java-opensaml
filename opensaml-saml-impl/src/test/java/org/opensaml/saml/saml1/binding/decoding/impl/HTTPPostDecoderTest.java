@@ -19,12 +19,6 @@ package org.opensaml.saml.saml1.binding.decoding.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.function.Supplier;
-
-import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.codec.Base64Support;
-import net.shibboleth.shared.codec.DecodingException;
-import net.shibboleth.shared.xml.SerializeSupport;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -36,6 +30,12 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
  * Test case for SAML 1 HTTP POST decoding.
@@ -59,7 +59,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
 
         decoder = new HTTPPostDecoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }
 

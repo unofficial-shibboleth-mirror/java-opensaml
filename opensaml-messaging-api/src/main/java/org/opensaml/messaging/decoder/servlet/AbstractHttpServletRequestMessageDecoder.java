@@ -17,8 +17,6 @@
 
 package org.opensaml.messaging.decoder.servlet;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
@@ -26,6 +24,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
@@ -34,7 +33,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
         implements HttpServletRequestMessageDecoder {
 
     /** Current HTTP request, if available. */
-    @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @Nullable private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** {@inheritDoc} */
     @Override
@@ -50,13 +49,13 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
         httpServletRequestSupplier = requestSupplier;

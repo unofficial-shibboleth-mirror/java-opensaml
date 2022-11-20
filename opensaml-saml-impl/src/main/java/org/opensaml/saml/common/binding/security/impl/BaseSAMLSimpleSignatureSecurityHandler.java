@@ -19,7 +19,6 @@ package org.opensaml.saml.common.binding.security.impl;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -51,6 +50,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -63,7 +63,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseSAMLSimpleSignatureSecurityHandler.class);
 
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** The context representing the SAML peer entity. */
     @Nullable private SAMLPeerEntityContext peerContext;
@@ -100,7 +100,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -109,7 +109,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
         httpServletRequestSupplier = requestSupplier;

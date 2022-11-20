@@ -17,14 +17,13 @@
 
 package org.opensaml.messaging.encoder.servlet;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.
@@ -33,7 +32,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
         implements HttpServletResponseMessageEncoder {
 
     /** Supplier for the Current HTTP servlet response, if available. */
-    @Nullable private Supplier<HttpServletResponse> httpServletResponseSupplier;
+    @Nullable private NonNullSupplier<HttpServletResponse> httpServletResponseSupplier;
 
     /**
      * {@inheritDoc}
@@ -48,7 +47,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
     /**
      * {@inheritDoc}
      */
-    public synchronized void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> supplier) {
+    public synchronized void setHttpServletResponseSupplier(@Nullable final NonNullSupplier<HttpServletResponse> supplier) {
         checkSetterPreconditions();
         httpServletResponseSupplier = supplier;
     }
@@ -58,7 +57,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
      *
      * @return the supplier for the current HTTP response or null
      */
-    @Nullable public Supplier<HttpServletResponse> getHttpServletResponseSupplier() {
+    @Nullable public NonNullSupplier<HttpServletResponse> getHttpServletResponseSupplier() {
         return httpServletResponseSupplier;
     }
 

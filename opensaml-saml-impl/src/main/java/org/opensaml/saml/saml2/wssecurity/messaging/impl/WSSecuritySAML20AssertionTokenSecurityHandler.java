@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.wssecurity.messaging.impl;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -54,6 +53,7 @@ import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * A security handler which resolves SAML 2.0 Assertion tokens from a SOAP envelope's
@@ -66,7 +66,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     @Nonnull private final Logger log = LoggerFactory.getLogger(WSSecuritySAML20AssertionTokenSecurityHandler.class);
     
     /** Supplier for the Current HTTP request, if available. */
-    @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @Nullable private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
@@ -136,7 +136,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -145,7 +145,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
         httpServletRequestSupplier = requestSupplier;

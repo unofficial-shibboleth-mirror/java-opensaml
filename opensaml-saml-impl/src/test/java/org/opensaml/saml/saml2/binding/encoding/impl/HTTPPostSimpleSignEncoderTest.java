@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.security.KeyPair;
 import java.time.Instant;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.apache.velocity.app.VelocityEngine;
 import org.apache.velocity.runtime.RuntimeConstants;
@@ -62,6 +61,7 @@ import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * Test case for {@link HTTPPostEncoder}.
@@ -126,7 +126,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         
@@ -220,7 +220,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         
@@ -322,7 +322,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         

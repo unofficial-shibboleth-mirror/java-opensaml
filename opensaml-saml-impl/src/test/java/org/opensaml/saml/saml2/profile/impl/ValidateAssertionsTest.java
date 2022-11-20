@@ -21,10 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
-
-import jakarta.servlet.http.HttpServletResponse;
-import net.shibboleth.shared.component.ComponentInitializationException;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -43,6 +39,10 @@ import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     
@@ -65,8 +65,8 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
         resultsMap = new HashMap<>();
         
         action = new ValidateAssertions();
-        action.setHttpServletRequestSupplier(new Supplier<>() { public MockHttpServletRequest get() {return httpRequest;}}); 
-        action.setHttpServletResponseSupplier(new Supplier<> () {public HttpServletResponse get() { return httpResponse;}});
+        action.setHttpServletRequestSupplier(new NonNullSupplier<>() { public MockHttpServletRequest get() {return httpRequest;}}); 
+        action.setHttpServletResponseSupplier(new NonNullSupplier<> () {public HttpServletResponse get() { return httpResponse;}});
         action.setValidationContextBuilder(new MockAssertionValidationContextBuilder());
         action.setAssertionValidator(new MockAssertionValidator(resultsMap));
         

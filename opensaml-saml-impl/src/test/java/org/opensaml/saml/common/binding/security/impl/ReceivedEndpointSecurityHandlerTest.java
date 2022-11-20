@@ -19,10 +19,6 @@ package org.opensaml.saml.common.binding.security.impl;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.function.Supplier;
-
-import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.component.ComponentInitializationException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.MessageException;
@@ -36,6 +32,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * Test the received endpoint check message handler.
@@ -67,7 +67,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         intendedDestinationUri = SAMLBindingSupport.getIntendedDestinationEndpointURI(messageContext);
         
         handler = new ReceivedEndpointSecurityHandler();
-        handler.setHttpServletRequestSupplier(new Supplier<>() { public HttpServletRequest get() {return httpRequest;}});
+        handler.setHttpServletRequestSupplier(new NonNullSupplier<>() { public HttpServletRequest get() {return httpRequest;}});
         handler.initialize();
     }
     

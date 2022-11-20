@@ -17,13 +17,6 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.logic.FunctionSupport;
-
-import java.util.function.Supplier;
-
-import jakarta.servlet.http.HttpServletRequest;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -42,6 +35,11 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.primitive.NonNullSupplier;
+
 
 /** Test for {@link AddSubjectConfirmationToSubjects}. */
 @SuppressWarnings("javadoc")
@@ -57,7 +55,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         
         action = new AddSubjectConfirmationToSubjects();
         final MockHttpServletRequest request = new MockHttpServletRequest();
-        action.setHttpServletRequestSupplier(new Supplier<> () {public HttpServletRequest get() { return request;}});
+        action.setHttpServletRequestSupplier(new NonNullSupplier<> () {public HttpServletRequest get() { return request;}});
     }
 
     @Test(expectedExceptions = ComponentInitializationException.class)

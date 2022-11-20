@@ -17,11 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.decoding.impl;
 
-import java.util.function.Supplier;
-
-import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.codec.DecodingException;
-
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
@@ -32,6 +27,10 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * Test case for HTTP POST decoders.
@@ -55,7 +54,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPPostDecoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }
 

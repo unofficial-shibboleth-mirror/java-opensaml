@@ -21,7 +21,6 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Supplier;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -52,6 +51,7 @@ import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 
 /**
@@ -160,7 +160,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         params.setCertificateNameOptions(nameOptions);
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
-        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() {return request;}});
+        handler.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() {return request;}});
         handler.initialize();
         
         messageContext = new MessageContext();
@@ -201,7 +201,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
         handler.setEntityContextClass(SAMLPresenterEntityContext.class);
-        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() {return request;}});
+        handler.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() {return request;}});
         handler.initialize();
         
         messageContext.removeSubcontext(SAMLPeerEntityContext.class);

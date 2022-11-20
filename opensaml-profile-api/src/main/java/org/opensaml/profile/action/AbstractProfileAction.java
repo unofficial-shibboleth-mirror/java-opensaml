@@ -17,8 +17,6 @@
 
 package org.opensaml.profile.action;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -33,6 +31,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.annotation.Prototype;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * Base class for profile actions.
@@ -46,10 +45,10 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
     @Nullable private String logPrefix;
     
     /** Supplier for the Current HTTP request, if available. */
-    @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @Nullable private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Current HTTP response, if available. */
-    @Nullable private  Supplier<HttpServletResponse> httpServletResponseSupplier;
+    @Nullable private  NonNullSupplier<HttpServletResponse> httpServletResponseSupplier;
 
     /**
      * Get the current HTTP request if available.
@@ -68,7 +67,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -77,7 +76,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
         httpServletRequestSupplier = requestSupplier;
     }
@@ -99,7 +98,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @return current HTTP response supplier or null
      */
-    @Nullable public Supplier<HttpServletResponse> getHttpServletResponseSupplier() {
+    @Nullable public NonNullSupplier<HttpServletResponse> getHttpServletResponseSupplier() {
         return httpServletResponseSupplier;
     }
 
@@ -108,7 +107,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @param supplier what to set
      */
-    public void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> supplier) {
+    public void setHttpServletResponseSupplier(@Nullable final NonNullSupplier<HttpServletResponse> supplier) {
         checkSetterPreconditions();
 
         httpServletResponseSupplier = supplier;

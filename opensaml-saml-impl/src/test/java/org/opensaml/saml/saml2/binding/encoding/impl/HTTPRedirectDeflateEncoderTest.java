@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.security.KeyPair;
 import java.time.Instant;
 import java.util.Map;
-import java.util.function.Supplier;
 import java.util.zip.Inflater;
 import java.util.zip.InflaterInputStream;
 
@@ -52,6 +51,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * Unit test for redirect encoding.
@@ -103,7 +103,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -180,7 +180,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -261,7 +261,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -352,7 +352,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -440,7 +440,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();
@@ -490,7 +490,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         
         encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response2;}});
+        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response2;}});
         
         encoder.initialize();
         encoder.prepareContext();

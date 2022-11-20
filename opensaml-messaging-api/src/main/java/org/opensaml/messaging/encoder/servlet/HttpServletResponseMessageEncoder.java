@@ -17,13 +17,12 @@
 
 package org.opensaml.messaging.encoder.servlet;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.encoder.MessageEncoder;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 
 /**
  * A specialization of {@link MessageEncoder} that operates on a sink message data type of {@link HttpServletResponse}.
@@ -42,7 +41,7 @@ public interface HttpServletResponseMessageEncoder extends MessageEncoder {
      *
      * @param responseSupplier the supplier for the HTTP servlet response
      */
-    void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> responseSupplier);
+    void setHttpServletResponseSupplier(@Nullable final NonNullSupplier<HttpServletResponse> responseSupplier);
 
 }
 

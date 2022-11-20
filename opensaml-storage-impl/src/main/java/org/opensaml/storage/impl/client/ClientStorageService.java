@@ -26,7 +26,6 @@ import java.util.TimerTask;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -55,6 +54,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.net.CookieManager;
+import net.shibboleth.shared.primitive.NonNullSupplier;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.security.DataExpiredException;
 import net.shibboleth.shared.security.DataSealer;
@@ -99,7 +99,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     @Nonnull @NotEmpty private Map<ClientStorageSource,Integer> capabilityMap; 
 
     /** Servlet request Supplier. */
-    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** Manages creation of cookies. */
     @NonnullAfterInit private CookieManager cookieManager;
@@ -168,7 +168,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @param requestSupplier supplier for the servlet request in which to manage data
      */
-    public void setHttpServletRequestSupplier(@Nonnull final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nonnull final NonNullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
         httpServletRequestSupplier = Constraint.isNotNull(requestSupplier, "HttpServletRequest cannot be null");
     }
