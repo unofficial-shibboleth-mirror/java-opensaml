@@ -26,7 +26,6 @@ import java.util.TimerTask;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReadWriteLock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -39,6 +38,14 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.opensaml.storage.AbstractMapBackedStorageService;
+import org.opensaml.storage.MutableStorageRecord;
+import org.opensaml.storage.StorageCapabilitiesEx;
+import org.opensaml.storage.impl.client.ClientStorageServiceStore.Factory;
+import org.opensaml.storage.impl.client.JSONClientStorageServiceStore.JSONClientStorageServiceStoreFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.shibboleth.utilities.java.support.annotation.constraint.Live;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.utilities.java.support.annotation.constraint.NonnullElements;
@@ -48,19 +55,12 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.logic.ConstraintViolationException;
 import net.shibboleth.utilities.java.support.net.CookieManager;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 import net.shibboleth.utilities.java.support.security.DataExpiredException;
 import net.shibboleth.utilities.java.support.security.DataSealer;
 import net.shibboleth.utilities.java.support.security.DataSealerException;
 import net.shibboleth.utilities.java.support.security.DataSealerKeyStrategy;
-
-import org.opensaml.storage.AbstractMapBackedStorageService;
-import org.opensaml.storage.MutableStorageRecord;
-import org.opensaml.storage.StorageCapabilitiesEx;
-import org.opensaml.storage.impl.client.ClientStorageServiceStore.Factory;
-import org.opensaml.storage.impl.client.JSONClientStorageServiceStore.JSONClientStorageServiceStoreFactory;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link org.opensaml.storage.StorageService} that stores data in-memory in a
@@ -100,7 +100,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     @Nonnull @NotEmpty private Map<ClientStorageSource,Integer> capabilityMap; 
 
     /** Servlet request Supplier. */
-    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** Manages creation of cookies. */
     @NonnullAfterInit private CookieManager cookieManager;
@@ -169,7 +169,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @param requestSupplier supplier for the servlet request in which to manage data
      */
-    public void setHttpServletRequestSupplier(@Nonnull final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nonnull final NonnullSupplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
         
         httpServletRequestSupplier = Constraint.isNotNull(requestSupplier, "HttpServletRequest cannot be null");

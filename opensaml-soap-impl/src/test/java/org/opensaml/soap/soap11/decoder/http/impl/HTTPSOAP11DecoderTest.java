@@ -18,7 +18,6 @@
 package org.opensaml.soap.soap11.decoder.http.impl;
 
 import java.io.IOException;
-import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -38,6 +37,7 @@ import org.testng.annotations.Test;
 import com.google.common.io.Resources;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 /**
  * Test basic SOAP 1.1 message decoding.
@@ -56,7 +56,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPSOAP11Decoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
         // Let actual test method do the initialize(), so can set own body handler.
     }
     

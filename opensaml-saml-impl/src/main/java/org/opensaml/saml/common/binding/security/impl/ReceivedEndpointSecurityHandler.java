@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.common.binding.security.impl;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -39,6 +37,7 @@ import net.shibboleth.utilities.java.support.logic.Constraint;
 import net.shibboleth.utilities.java.support.net.URIComparator;
 import net.shibboleth.utilities.java.support.net.URIException;
 import net.shibboleth.utilities.java.support.net.impl.BasicURLComparator;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
 
 /**
@@ -54,7 +53,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
     @Nonnull private URIComparator uriComparator;
     
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
@@ -99,7 +98,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -108,7 +107,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         httpServletRequestSupplier = requestSupplier;

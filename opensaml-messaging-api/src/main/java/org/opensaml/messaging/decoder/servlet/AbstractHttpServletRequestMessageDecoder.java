@@ -17,21 +17,20 @@
 
 package org.opensaml.messaging.decoder.servlet;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
+
+import org.opensaml.messaging.decoder.AbstractMessageDecoder;
+import org.opensaml.messaging.decoder.MessageDecodingException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
-
-import org.opensaml.messaging.decoder.AbstractMessageDecoder;
-import org.opensaml.messaging.decoder.MessageDecodingException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
@@ -43,7 +42,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     private final Logger log = LoggerFactory.getLogger(AbstractHttpServletRequestMessageDecoder.class);
 
     /** Current HTTP request, if available. */
-    @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @Nullable private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** {@inheritDoc} */
     @Override
@@ -59,7 +58,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -73,7 +72,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
         if (request != null && !(request instanceof ThreadLocalHttpServletRequestProxy)) {
             log.warn("Unsafe HttpServletRequest injected");
         }
-        httpServletRequestSupplier = new Supplier<>() {
+        httpServletRequestSupplier = new NonnullSupplier<>() {
             public HttpServletRequest get() {
                 return request;
             };
@@ -82,7 +81,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
 
     /** {@inheritDoc} */
     @Override
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         httpServletRequestSupplier = requestSupplier;

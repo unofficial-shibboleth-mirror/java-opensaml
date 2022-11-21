@@ -21,7 +21,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -44,6 +43,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     
@@ -66,8 +66,8 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
         resultsMap = new HashMap<>();
         
         action = new ValidateAssertions();
-        action.setHttpServletRequestSupplier(new Supplier<>() { public MockHttpServletRequest get() {return httpRequest;}}); 
-        action.setHttpServletResponseSupplier(new Supplier<> () {public HttpServletResponse get() { return httpResponse;}});
+        action.setHttpServletRequestSupplier(new NonnullSupplier<>() { public MockHttpServletRequest get() {return httpRequest;}}); 
+        action.setHttpServletResponseSupplier(new NonnullSupplier<> () {public HttpServletResponse get() { return httpResponse;}});
         action.setValidationContextBuilder(new MockAssertionValidationContextBuilder());
         action.setAssertionValidator(new MockAssertionValidator(resultsMap));
         

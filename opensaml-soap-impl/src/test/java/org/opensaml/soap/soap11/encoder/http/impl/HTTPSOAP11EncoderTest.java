@@ -20,12 +20,8 @@ package org.opensaml.soap.soap11.encoder.http.impl;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletResponse;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
-import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
@@ -52,6 +48,10 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
+import net.shibboleth.utilities.java.support.xml.XMLParserException;
 
 /**
  * Test basic SOAP 1.1 message encoding.
@@ -84,7 +84,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public MockHttpServletResponse get() { return response;}} );
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public MockHttpServletResponse get() { return response;}} );
         
         encoder.initialize();
         encoder.prepareContext();
@@ -140,7 +140,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public MockHttpServletResponse get() { return response;}} );
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public MockHttpServletResponse get() { return response;}} );
         
         encoder.initialize();
         encoder.prepareContext();
@@ -203,7 +203,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public MockHttpServletResponse get() { return response;}} );
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public MockHttpServletResponse get() { return response;}} );
         
         encoder.initialize();
         encoder.prepareContext();
@@ -267,7 +267,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public MockHttpServletResponse get() { return response;}} );
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public MockHttpServletResponse get() { return response;}} );
         
         encoder.initialize();
         encoder.prepareContext();
@@ -300,7 +300,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public MockHttpServletResponse get() { return response;}} );
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public MockHttpServletResponse get() { return response;}} );
         
         encoder.initialize();
         encoder.prepareContext();
@@ -351,7 +351,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public MockHttpServletResponse get() { return response;}} );
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public MockHttpServletResponse get() { return response;}} );
         
         encoder.initialize();
         encoder.prepareContext();
@@ -387,7 +387,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public MockHttpServletResponse get() { return response;}} );
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public MockHttpServletResponse get() { return response;}} );
         
         encoder.initialize();
         encoder.prepareContext();

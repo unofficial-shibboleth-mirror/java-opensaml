@@ -17,10 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.decoding.impl;
 
-import net.shibboleth.utilities.java.support.xml.SerializeSupport;
-
-import java.util.function.Supplier;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -33,6 +29,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
+import net.shibboleth.utilities.java.support.xml.SerializeSupport;
 
 /**
  * Test case for HTTP SOAP 1.1 decoder.
@@ -51,7 +50,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPSOAP11Decoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }
 

@@ -21,7 +21,6 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -50,6 +49,7 @@ import net.shibboleth.utilities.java.support.codec.Base64Support;
 import net.shibboleth.utilities.java.support.codec.EncodingException;
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 import net.shibboleth.utilities.java.support.resolver.CriteriaSet;
 
 /**
@@ -99,7 +99,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
     @Nullable private CertificateNameOptions certNameOptions;
     
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /**
      * Get the current HTTP request if available.
@@ -118,7 +118,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -127,7 +127,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         httpServletRequestSupplier = requestSupplier;

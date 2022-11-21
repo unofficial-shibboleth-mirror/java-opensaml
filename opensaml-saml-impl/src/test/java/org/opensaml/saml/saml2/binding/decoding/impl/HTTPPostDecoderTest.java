@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.saml2.binding.decoding.impl;
 
-import java.util.function.Supplier;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -33,6 +31,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.utilities.java.support.codec.DecodingException;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 /**
  * Test case for HTTP POST decoders.
@@ -56,7 +55,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPPostDecoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }
 

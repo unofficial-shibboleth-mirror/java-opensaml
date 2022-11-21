@@ -17,12 +17,17 @@
 
 package org.opensaml.profile.action;
 
-import java.util.function.Supplier;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.opensaml.profile.context.EventContext;
+import org.opensaml.profile.context.MetricContext;
+import org.opensaml.profile.context.PreviousEventContext;
+import org.opensaml.profile.context.ProfileRequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.shibboleth.utilities.java.support.annotation.Prototype;
 import net.shibboleth.utilities.java.support.annotation.constraint.NotEmpty;
@@ -32,13 +37,7 @@ import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestPr
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
-
-import org.opensaml.profile.context.EventContext;
-import org.opensaml.profile.context.MetricContext;
-import org.opensaml.profile.context.PreviousEventContext;
-import org.opensaml.profile.context.ProfileRequestContext;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 /**
  * Base class for profile actions.
@@ -55,10 +54,10 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
     @Nullable private String logPrefix;
     
     /** Supplier for the Current HTTP request, if available. */
-    @Nullable private Supplier<HttpServletRequest> httpServletRequestSupplier;
+    @Nullable private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Current HTTP response, if available. */
-    @Nullable private  Supplier<HttpServletResponse> httpServletResponseSupplier;
+    @Nullable private  NonnullSupplier<HttpServletResponse> httpServletResponseSupplier;
 
     /**
      * Get the current HTTP request if available.
@@ -77,7 +76,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @return current HTTP request
      */
-    @Nullable public Supplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -94,7 +93,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         if (request != null && !(request instanceof ThreadLocalHttpServletRequestProxy)) {
             log.warn("Unsafe HttpServletRequest injected");
         }
-        httpServletRequestSupplier = new Supplier<>() {
+        httpServletRequestSupplier = new NonnullSupplier<>() {
             public HttpServletRequest get() {
                 return request;
             };
@@ -106,7 +105,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         httpServletRequestSupplier = requestSupplier;
@@ -129,7 +128,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @return current HTTP response supplier or null
      */
-    @Nullable public Supplier<HttpServletResponse> getHttpServletResponseSupplier() {
+    @Nullable public NonnullSupplier<HttpServletResponse> getHttpServletResponseSupplier() {
         return httpServletResponseSupplier;
     }
 
@@ -147,7 +146,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         if (response != null && !(response instanceof ThreadLocalHttpServletResponseProxy)) {
             log.warn("Unsafe HttpServletRequest injected");
         }
-        httpServletResponseSupplier = new Supplier<>() {
+        httpServletResponseSupplier = new NonnullSupplier<>() {
             public HttpServletResponse get() {
                 return response;
             };
@@ -159,7 +158,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      *
      * @param supplier what to set
      */
-    public void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> supplier) {
+    public void setHttpServletResponseSupplier(@Nullable final NonnullSupplier<HttpServletResponse> supplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         httpServletResponseSupplier = supplier;

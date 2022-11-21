@@ -17,7 +17,6 @@
 
 package org.opensaml.messaging.encoder.servlet;
 
-import java.util.function.Supplier;
 
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletResponse;
@@ -31,6 +30,7 @@ import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
 import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 /**
  * Abstract implementation of {@link HttpServletResponseMessageEncoder}.
@@ -42,7 +42,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
     private final Logger log = LoggerFactory.getLogger(AbstractHttpServletResponseMessageEncoder.class);
 
     /** Supplier for the Current HTTP servlet response, if available. */
-    @Nullable private Supplier<HttpServletResponse> httpServletResponseSupplier;
+    @Nullable private NonnullSupplier<HttpServletResponse> httpServletResponseSupplier;
 
     /**
      * {@inheritDoc}
@@ -57,7 +57,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
     /**
      * {@inheritDoc}
      */
-    public synchronized void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> supplier) {
+    public synchronized void setHttpServletResponseSupplier(@Nullable final NonnullSupplier<HttpServletResponse> supplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
         httpServletResponseSupplier = supplier;
@@ -68,7 +68,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
      *
      * @return the supplier for the current HTTP response or null
      */
-    @Nullable public Supplier<HttpServletResponse> getHttpServletResponseSupplier() {
+    @Nullable public NonnullSupplier<HttpServletResponse> getHttpServletResponseSupplier() {
         return httpServletResponseSupplier;
     }
 
@@ -84,7 +84,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
         if (response != null && !(response instanceof ThreadLocalHttpServletResponseProxy)) {
             log.warn("Unsafe HttpServletRequest injected");
         }
-        httpServletResponseSupplier = new Supplier<>() {
+        httpServletResponseSupplier = new NonnullSupplier<>() {
             public HttpServletResponse get() {
                 return response;
             };

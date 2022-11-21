@@ -19,7 +19,6 @@ package org.opensaml.saml.saml2.binding.encoding.impl;
 
 import java.io.ByteArrayInputStream;
 import java.time.Instant;
-import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletResponse;
 
@@ -41,6 +40,8 @@ import org.opensaml.soap.soap11.Envelope;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 /**
  * Test for SAML 2 SOAP 1.1 message encoder.
@@ -89,7 +90,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new Supplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.initialize();
         encoder.prepareContext();

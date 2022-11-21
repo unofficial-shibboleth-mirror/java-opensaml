@@ -21,11 +21,8 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.function.Supplier;
 
 import javax.servlet.http.HttpServletRequest;
-
-import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -40,8 +37,8 @@ import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
-import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.messaging.ClientTLSSecurityParametersContext;
+import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.trust.impl.ExplicitX509CertificateTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
@@ -53,6 +50,9 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 
 /**
@@ -161,7 +161,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         params.setCertificateNameOptions(nameOptions);
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
-        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() {return request;}});
+        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() {return request;}});
         handler.initialize();
         
         messageContext = new MessageContext();
@@ -202,7 +202,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
         handler.setEntityContextClass(SAMLPresenterEntityContext.class);
-        handler.setHttpServletRequestSupplier(new Supplier<>() {public HttpServletRequest get() {return request;}});
+        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() {return request;}});
         handler.initialize();
         
         messageContext.removeSubcontext(SAMLPeerEntityContext.class);
