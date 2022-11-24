@@ -51,7 +51,7 @@ import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.codec.Base64Support;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 /**
  * Test case for {@link HTTPPostEncoder}.
@@ -116,7 +116,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostEncoder encoder = new HTTPPostEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         
@@ -210,7 +210,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostEncoder encoder = new HTTPPostEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         encoder.setVelocityEngine(velocityEngine);
         

@@ -61,7 +61,7 @@ import org.testng.annotations.Test;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 /**
  *
@@ -85,7 +85,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         httpServletRequest = buildHttpServletRequest();
         
         handler = new WSSecuritySAML20AssertionTokenSecurityHandler();
-        handler.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() {return httpServletRequest;}});
+        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() {return httpServletRequest;}});
         // do init in the test methods
     }
     

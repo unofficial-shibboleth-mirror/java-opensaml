@@ -24,7 +24,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 /**
  * Abstract implementation of {@link HttpServletRequestMessageDecoder}.
@@ -33,7 +33,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
         implements HttpServletRequestMessageDecoder {
 
     /** Current HTTP request, if available. */
-    @Nullable private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
+    @Nullable private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** {@inheritDoc} */
     @Override
@@ -49,13 +49,13 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      *
      * @return current HTTP request
      */
-    @Nullable public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
     /** {@inheritDoc} */
     @Override
-    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
         httpServletRequestSupplier = requestSupplier;

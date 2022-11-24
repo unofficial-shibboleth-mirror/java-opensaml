@@ -54,7 +54,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.net.CookieManager;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.security.DataExpiredException;
 import net.shibboleth.shared.security.DataSealer;
@@ -99,7 +99,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
     @Nonnull @NotEmpty private Map<ClientStorageSource,Integer> capabilityMap; 
 
     /** Servlet request Supplier. */
-    @NonnullAfterInit private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** Manages creation of cookies. */
     @NonnullAfterInit private CookieManager cookieManager;
@@ -168,7 +168,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @param requestSupplier supplier for the servlet request in which to manage data
      */
-    public void setHttpServletRequestSupplier(@Nonnull final NonNullSupplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nonnull final NonnullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
         httpServletRequestSupplier = Constraint.isNotNull(requestSupplier, "HttpServletRequest cannot be null");
     }

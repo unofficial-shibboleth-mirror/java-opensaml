@@ -48,7 +48,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -98,7 +98,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
     @Nullable private CertificateNameOptions certNameOptions;
     
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /**
      * Get the current HTTP request if available.
@@ -117,7 +117,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      *
      * @return current HTTP request
      */
-    @Nullable public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -126,7 +126,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
         httpServletRequestSupplier = requestSupplier;

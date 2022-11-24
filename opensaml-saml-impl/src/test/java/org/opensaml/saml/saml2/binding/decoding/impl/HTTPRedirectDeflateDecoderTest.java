@@ -42,7 +42,7 @@ import org.testng.annotations.Test;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -67,7 +67,7 @@ public class HTTPRedirectDeflateDecoderTest extends XMLObjectBaseTestCase {
 
         decoder = new HTTPRedirectDeflateDecoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }      
 

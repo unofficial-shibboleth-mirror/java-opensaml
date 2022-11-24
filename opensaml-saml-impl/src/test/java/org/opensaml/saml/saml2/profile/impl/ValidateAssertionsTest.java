@@ -42,7 +42,7 @@ import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     
@@ -65,8 +65,8 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
         resultsMap = new HashMap<>();
         
         action = new ValidateAssertions();
-        action.setHttpServletRequestSupplier(new NonNullSupplier<>() { public MockHttpServletRequest get() {return httpRequest;}}); 
-        action.setHttpServletResponseSupplier(new NonNullSupplier<> () {public HttpServletResponse get() { return httpResponse;}});
+        action.setHttpServletRequestSupplier(new NonnullSupplier<>() { public MockHttpServletRequest get() {return httpRequest;}}); 
+        action.setHttpServletResponseSupplier(new NonnullSupplier<> () {public HttpServletResponse get() { return httpResponse;}});
         action.setValidationContextBuilder(new MockAssertionValidationContextBuilder());
         action.setAssertionValidator(new MockAssertionValidator(resultsMap));
         

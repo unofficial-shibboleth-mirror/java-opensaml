@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.codec.DecodingException;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 /**
  * Test case for HTTP POST decoders.
@@ -54,7 +54,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPPostDecoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
         decoder.initialize();
     }
 

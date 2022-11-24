@@ -36,7 +36,7 @@ import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URIComparator;
 import net.shibboleth.shared.net.URIException;
 import net.shibboleth.shared.net.impl.BasicURLComparator;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -52,7 +52,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
     @Nonnull private URIComparator uriComparator;
     
     /** The HttpServletRequest being processed. */
-    @NonnullAfterInit private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
@@ -96,7 +96,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      *
      * @return current HTTP request
      */
-    @NonnullAfterInit public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @NonnullAfterInit public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -105,7 +105,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
         httpServletRequestSupplier = requestSupplier;

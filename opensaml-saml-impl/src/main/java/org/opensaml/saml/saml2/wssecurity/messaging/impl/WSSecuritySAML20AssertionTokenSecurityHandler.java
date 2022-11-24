@@ -53,7 +53,7 @@ import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 /**
  * A security handler which resolves SAML 2.0 Assertion tokens from a SOAP envelope's
@@ -66,7 +66,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     @Nonnull private final Logger log = LoggerFactory.getLogger(WSSecuritySAML20AssertionTokenSecurityHandler.class);
     
     /** Supplier for the Current HTTP request, if available. */
-    @Nullable private NonNullSupplier<HttpServletRequest> httpServletRequestSupplier;
+    @Nullable private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
     
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
@@ -136,7 +136,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      *
      * @return current HTTP request
      */
-    @Nullable public NonNullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 
@@ -145,7 +145,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      *
      * @param requestSupplier Supplier for the current HTTP request
      */
-    public void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier) {
+    public void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier) {
         checkSetterPreconditions();
 
         httpServletRequestSupplier = requestSupplier;

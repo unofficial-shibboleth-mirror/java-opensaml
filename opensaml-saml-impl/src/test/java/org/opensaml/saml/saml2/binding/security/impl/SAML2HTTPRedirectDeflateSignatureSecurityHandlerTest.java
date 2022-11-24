@@ -64,7 +64,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.URLBuilder;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 
 /**
@@ -205,7 +205,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         
         handler = new SAML2HTTPRedirectDeflateSignatureSecurityHandler();
         final HttpServletRequest request = buildServletRequest();
-        handler.setHttpServletRequestSupplier(new NonNullSupplier<>() {public HttpServletRequest get() { return request;}});
+        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return request;}});
         handler.initialize();
         
         messageContext = new MessageContext();
@@ -330,7 +330,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         
         final HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(mc);
-        encoder.setHttpServletResponseSupplier(new NonNullSupplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public HttpServletResponse get() {return response;}});
         
         try {
             encoder.initialize();

@@ -22,7 +22,7 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.decoder.MessageDecoder;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.primitive.NonNullSupplier;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 
 
 /**
@@ -42,6 +42,6 @@ public interface HttpServletRequestMessageDecoder extends MessageDecoder {
      *
      * @param requestSupplier the HTTP servlet request
      */
-    void setHttpServletRequestSupplier(@Nullable final NonNullSupplier<HttpServletRequest> requestSupplier);
+    void setHttpServletRequestSupplier(@Nullable final NonnullSupplier<HttpServletRequest> requestSupplier);
 }
 
