@@ -33,9 +33,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonnullSupplier;
+import net.shibboleth.shared.testing.ConstantSupplier;
 
 /**
  * Test the received endpoint check message handler.
@@ -67,7 +66,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         intendedDestinationUri = SAMLBindingSupport.getIntendedDestinationEndpointURI(messageContext);
         
         handler = new ReceivedEndpointSecurityHandler();
-        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() { public HttpServletRequest get() {return httpRequest;}});
+        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(httpRequest));
         handler.initialize();
     }
     

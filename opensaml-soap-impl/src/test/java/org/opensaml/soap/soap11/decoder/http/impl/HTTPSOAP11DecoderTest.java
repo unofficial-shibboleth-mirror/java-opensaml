@@ -34,9 +34,8 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.Resources;
 
-import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonnullSupplier;
+import net.shibboleth.shared.testing.ConstantSupplier;
 
 /**
  * Test basic SOAP 1.1 message decoding.
@@ -55,7 +54,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPSOAP11Decoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new ConstantSupplier<>(httpRequest));
         // Let actual test method do the initialize(), so can set own body handler.
     }
     

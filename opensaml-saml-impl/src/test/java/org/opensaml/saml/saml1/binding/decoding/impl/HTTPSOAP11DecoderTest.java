@@ -28,8 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.primitive.NonnullSupplier;
+import net.shibboleth.shared.testing.ConstantSupplier;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -49,7 +48,7 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder = new HTTPSOAP11Decoder();
         decoder.setParserPool(parserPool);
-        decoder.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return httpRequest;}});
+        decoder.setHttpServletRequestSupplier(new ConstantSupplier<>(httpRequest));
         decoder.initialize();
     }
 

@@ -46,9 +46,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.codec.Base64Support;
-import net.shibboleth.shared.primitive.NonnullSupplier;
+import net.shibboleth.shared.testing.ConstantSupplier;
 
 /**
  * Test class for SAML 1 HTTP Post encoding.
@@ -96,7 +95,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         
         HTTPPostEncoder encoder = new HTTPPostEncoder();
         encoder.setMessageContext(messageContext);
-        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new ConstantSupplier<>(response));
         
         encoder.setVelocityEngine(velocityEngine);
 

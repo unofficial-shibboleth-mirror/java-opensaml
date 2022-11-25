@@ -22,7 +22,6 @@ import java.time.Duration;
 import javax.annotation.Nonnull;
 
 import org.opensaml.storage.StorageService;
-import org.opensaml.storage.impl.MemoryStorageService;
 import org.opensaml.storage.testing.StorageServiceTest;
 import org.testng.annotations.Test;
 

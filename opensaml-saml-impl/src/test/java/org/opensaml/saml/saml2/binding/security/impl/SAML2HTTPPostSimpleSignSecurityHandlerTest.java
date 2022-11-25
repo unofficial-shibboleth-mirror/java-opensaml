@@ -66,10 +66,9 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonnullSupplier;
+import net.shibboleth.shared.testing.ConstantSupplier;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.XMLParserException;
 import net.shibboleth.shared.xml.impl.BasicParserPool;
@@ -223,8 +222,8 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         sigValParams.setSignatureTrustEngine(signatureTrustEngine);
 
         handler = new SAML2HTTPPostSimpleSignSecurityHandler();
-        final HttpServletRequest request = buildServletRequest();
-        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() { return request;}});
+        final HttpServletRequest httpRequest = buildServletRequest();
+        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(httpRequest));
         handler.setParser(parserPool);
         handler.setKeyInfoResolver(kiResolver);
         handler.initialize();
@@ -419,7 +418,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         
         final HTTPPostSimpleSignEncoder encoder = new HTTPPostSimpleSignEncoder();
         encoder.setMessageContext(mc);
-        encoder.setHttpServletResponseSupplier(new NonnullSupplier<>() {public HttpServletResponse get() {return response;}});
+        encoder.setHttpServletResponseSupplier(new ConstantSupplier<>(response));
         
         encoder.setVelocityEngine(velocityEngine);
         encoder.setVelocityTemplateId("/templates/saml2-post-simplesign-binding.vm");

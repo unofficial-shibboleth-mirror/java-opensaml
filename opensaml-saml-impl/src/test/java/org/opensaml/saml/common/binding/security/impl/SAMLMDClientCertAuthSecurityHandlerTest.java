@@ -49,9 +49,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.primitive.NonnullSupplier;
+import net.shibboleth.shared.testing.ConstantSupplier;
 
 
 /**
@@ -160,7 +159,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         params.setCertificateNameOptions(nameOptions);
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
-        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() {return request;}});
+        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(request));
         handler.initialize();
         
         messageContext = new MessageContext();
@@ -201,7 +200,7 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         handler = new SAMLMDClientCertAuthSecurityHandler();
         handler.setEntityContextClass(SAMLPresenterEntityContext.class);
-        handler.setHttpServletRequestSupplier(new NonnullSupplier<>() {public HttpServletRequest get() {return request;}});
+        handler.setHttpServletRequestSupplier(new ConstantSupplier<>(request));
         handler.initialize();
         
         messageContext.removeSubcontext(SAMLPeerEntityContext.class);
