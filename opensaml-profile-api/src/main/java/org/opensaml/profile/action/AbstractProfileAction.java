@@ -35,8 +35,6 @@ import net.shibboleth.utilities.java.support.component.AbstractInitializableComp
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletRequestProxy;
 import net.shibboleth.utilities.java.support.net.ThreadLocalHttpServletResponseProxy;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
-import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 /**
@@ -88,8 +86,6 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
     @Deprecated(since = "4.3", forRemoval = true)
     public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletReqest",
-                getLogPrefix(), "setHttpServletRequestSupplier");
         if (request != null && !(request instanceof ThreadLocalHttpServletRequestProxy)) {
             log.warn("Unsafe HttpServletRequest injected");
         }
@@ -141,8 +137,6 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
     public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
 
-        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletResponse",
-                getLogPrefix(), "setHttpServletResponseSupplier");
         if (response != null && !(response instanceof ThreadLocalHttpServletResponseProxy)) {
             log.warn("Unsafe HttpServletRequest injected");
         }
