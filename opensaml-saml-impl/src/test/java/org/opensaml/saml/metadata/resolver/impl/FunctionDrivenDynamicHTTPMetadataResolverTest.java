@@ -247,7 +247,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testMDQ() throws Exception {
-        String baseURL = "https://mdq.incommon.org";
+        String baseURL = "http://mdq.incommon.org";
         String entityID = "urn:mace:incommon:osu.edu";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL);
@@ -269,7 +269,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
     
     @Test
     public void testMDQViaArtifact() throws Exception {
-        String baseURL = "https://mdq.incommon.org";
+        String baseURL = "http://mdq.incommon.org";
         String entityID = "urn:mace:incommon:osu.edu";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL,

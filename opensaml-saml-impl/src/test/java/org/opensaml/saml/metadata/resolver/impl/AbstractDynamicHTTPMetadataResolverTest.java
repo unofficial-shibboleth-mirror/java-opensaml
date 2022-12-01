@@ -90,7 +90,7 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
         allowActivation = false;
         
         // Test uses MDQ protocol
-        String baseURL = "https://mdq.incommon.org";
+        String baseURL = "http://mdq.incommon.org";
         String entityID = "urn:mace:incommon:osu.edu";
         String requestURL = new MetadataQueryProtocolRequestURLBuilder(baseURL).apply(new CriteriaSet(new EntityIdCriterion(entityID)));
         
@@ -103,7 +103,7 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
     @Test
     public void testBasicRequest() throws ResolverException {
         // Test uses MDQ protocol
-        String baseURL = "https://mdq.incommon.org";
+        String baseURL = "http://mdq.incommon.org";
         String entityID = "urn:mace:incommon:osu.edu";
         String requestURL = new MetadataQueryProtocolRequestURLBuilder(baseURL).apply(new CriteriaSet(new EntityIdCriterion(entityID)));
         
