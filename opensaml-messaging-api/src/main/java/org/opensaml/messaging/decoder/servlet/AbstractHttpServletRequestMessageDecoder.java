@@ -67,7 +67,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     @Deprecated(since = "4.3", forRemoval = true)
     public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletReqest",
+        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletRequest",
                 getClass().getCanonicalName(), "setHttpServletRequestSupplier");
         if (request != null && !(request instanceof ThreadLocalHttpServletRequestProxy)) {
             log.warn("Unsafe HttpServletRequest injected");
