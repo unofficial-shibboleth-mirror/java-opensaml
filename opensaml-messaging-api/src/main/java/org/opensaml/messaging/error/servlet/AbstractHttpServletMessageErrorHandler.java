@@ -17,9 +17,15 @@
 
 package org.opensaml.messaging.error.servlet;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
 
 
 /**
@@ -27,30 +33,41 @@ import javax.servlet.http.HttpServletResponse;
  */
 public abstract class AbstractHttpServletMessageErrorHandler implements HttpServletMessageErrorHandler {
     
-    /** The HTTP servlet request. */
-    private HttpServletRequest request;
+    /** The HTTP servlet request Supplier. */
+    private Supplier<HttpServletRequest> requestSupplier;
     
-    /** The HTTP servlet response. */
-    private HttpServletResponse response;
+    /** The HTTP servlet response Supplier. */
+    private Supplier<HttpServletResponse> responseSupplier;
 
     /** {@inheritDoc} */
-    @Nullable public HttpServletRequest getHttpServletRequest() {
-        return request;
+    @Override @Nullable public HttpServletRequest getHttpServletRequest() {
+        return requestSupplier == null ? null : requestSupplier.get();
     }
 
     /** {@inheritDoc} */
-    @Nullable public HttpServletResponse getHttpServletResponse() {
-        return response;
+    @Override @Nullable public HttpServletResponse getHttpServletResponse() {
+        return responseSupplier == null ? null : responseSupplier.get();
     }
 
     /** {@inheritDoc} */
-    public void setHttpServletRequest(@Nullable final HttpServletRequest servletRequest) {
-        request = servletRequest;
+    public void setHttpServletRequest(@Nullable final HttpServletRequest request) {
+        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletRequest", null, "setHttpServletRequestSupplier");
+        requestSupplier = NonnullSupplier.of(request);
     }
 
     /** {@inheritDoc} */
-    public void setHttpServletResponse(@Nullable final HttpServletResponse servletResponse) {
-        response = servletResponse;
+    @Override public void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> servletRequestSupplier) {
+        requestSupplier = servletRequestSupplier;
     }
 
+    /** {@inheritDoc} */
+    @Override public void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> servletResponseSupplier) {
+        responseSupplier = servletResponseSupplier;
+    }
+
+    /** {@inheritDoc} */
+    public void setHttpServletResponse(@Nullable final HttpServletResponse response) {
+        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletResponse", null, "setHttpServletResponseSupplier");
+        responseSupplier = NonnullSupplier.of(response);
+    }
 }

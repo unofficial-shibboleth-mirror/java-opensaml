@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.handler.impl;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
@@ -25,7 +27,10 @@ import net.shibboleth.utilities.java.support.annotation.constraint.NonnullAfterI
 import net.shibboleth.utilities.java.support.component.ComponentInitializationException;
 import net.shibboleth.utilities.java.support.component.ComponentSupport;
 import net.shibboleth.utilities.java.support.logic.Constraint;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport;
 import net.shibboleth.utilities.java.support.primitive.StringSupport;
+import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.ObjectType;
+import net.shibboleth.utilities.java.support.primitive.NonnullSupplier;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -51,11 +56,11 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
     private boolean requireSecured;
     
     /** The HTTP servlet request being evaluated. */
-    @NonnullAfterInit private HttpServletRequest httpServletRequest;
+    @NonnullAfterInit private Supplier<HttpServletRequest> httpServletRequestSupplier;
 
     /**
      * Get the required content type.
-     * 
+     *
      * @return the required content type
      */
     public String getRequiredContentType() {
@@ -64,7 +69,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Set the required content type.
-     * 
+     *
      * @param contentType the content type
      */
     public void setRequiredContentType(final String contentType) {
@@ -74,7 +79,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Get the required request method.
-     * 
+     *
      * @return the required request method
      */
     public String getRequiredRequestMethod() {
@@ -83,7 +88,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Set the required request method.
-     * 
+     *
      * @param requestMethod the required request method
      */
     public void setRequiredRequestMethod(final String requestMethod) {
@@ -93,7 +98,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Get whether request is required to be secure.
-     * 
+     *
      * @return true if required to be secure, false otherwise
      */
     public boolean isRequireSecured() {
@@ -102,7 +107,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Set whether request is required to be secure. 
-     * 
+     *
      * @param secured true if required to be secure, false otherwise
      */
     public void setRequireSecured(final boolean secured) {
@@ -112,21 +117,32 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Get the HTTP servlet request instance being evaluated.
-     * 
+     *
      * @return returns the request instance
      */
-    public HttpServletRequest getHttpServletRequest() {
-        return httpServletRequest;
+    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
+        return httpServletRequestSupplier == null ? null : httpServletRequestSupplier.get();
     }
 
     /**
      * Set the HTTP servlet request instance being evaluated.
-     * 
+     *
      * @param request the request instance
      */
     public void setHttpServletRequest(final HttpServletRequest request) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
-        httpServletRequest = Constraint.isNotNull(request, "HttpServletRequest may not be null");
+        DeprecationSupport.warnOnce(ObjectType.METHOD, "setHttpServletRequest", null, "setHttpServletRequestSupplier");
+        httpServletRequestSupplier = NonnullSupplier.of(Constraint.isNotNull(request, "HttpServletRequest may not be null"));
+    }
+
+    /**
+     * Set the HTTP servlet request supplier
+     *
+     * @param requestSupplier the request instance
+     */
+    public void setHttpServletRequestSupplier(final Supplier<HttpServletRequest> requestSupplier) {
+        ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
+        httpServletRequestSupplier = Constraint.isNotNull(requestSupplier, "HttpServletRequest may not be null");
     }
 
     /** {@inheritDoc} */
@@ -138,9 +154,9 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Evaluates whether the specified HTTP servlet request meets all requirements.
-     * 
+     *
      * @param messageContext message context being evaluated
-     * 
+     *
      * @throws MessageHandlerException thrown if the request does not meet the requirements of the handler
      */
     protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
@@ -151,9 +167,9 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Checks if the request is of the correct content type.
-     * 
+     *
      * @param request the request being evaluated
-     * 
+     *
      * @throws MessageHandlerException thrown if the content type was an unexpected value
      */
     protected void evaluateContentType(final HttpServletRequest request) throws MessageHandlerException {
@@ -168,9 +184,9 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Checks if the request contains the correct request method.
-     * 
+     *
      * @param request the request being evaluated
-     * 
+     *
      * @throws MessageHandlerException thrown if the request method was an unexpected value
      */
     protected void evaluateRequestMethod(final HttpServletRequest request) throws MessageHandlerException {
@@ -185,9 +201,9 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
 
     /**
      * Checks if the request is secured.
-     * 
+     *
      * @param request the request being evaluated
-     * 
+     *
      * @throws MessageHandlerException thrown if the request is not secure and was required to be
      */
     protected void evaluateSecured(final HttpServletRequest request) throws MessageHandlerException {

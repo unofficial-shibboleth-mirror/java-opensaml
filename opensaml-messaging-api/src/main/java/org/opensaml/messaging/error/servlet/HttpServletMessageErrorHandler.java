@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.error.servlet;
 
+import java.util.function.Supplier;
+
 import javax.annotation.Nullable;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -41,8 +43,18 @@ public interface HttpServletMessageErrorHandler extends MessageErrorHandler {
      * 
      * @param request the HTTP servlet request
      */
+    @Deprecated(forRemoval = true, since="4.3")
     void setHttpServletRequest(@Nullable final HttpServletRequest request);
-    
+
+    /**
+     * Set the supplier for the HTTP servlet request on which to operate.
+     *
+     * @param requestSupplier the HTTP servlet request
+     */
+    default void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
+        setHttpServletRequest(requestSupplier.get());
+    }
+
     /**
      * Get the HTTP servlet response.
      * 
@@ -55,6 +67,16 @@ public interface HttpServletMessageErrorHandler extends MessageErrorHandler {
      * 
      * @param response the HTTP servlet response
      */
+    @Deprecated(forRemoval = true, since="4.3")
     void setHttpServletResponse(@Nullable final HttpServletResponse response);
+
+    /**
+     * Set the supplier for the HTTP servlet response on which to operate.
+     *
+     * @param requestSupplier the HTTP servlet response
+     */
+    default void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> responseSupplier) {
+        setHttpServletResponse(responseSupplier.get());
+    }
 
 }
