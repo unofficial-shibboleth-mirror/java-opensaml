@@ -20,6 +20,8 @@ package org.opensaml.profile.logic;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.function.Supplier;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -32,9 +34,10 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.IPRange;
+import net.shibboleth.shared.primitive.DeprecationSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
+import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.servlet.HttpServletSupport;
-
-import java.util.function.Predicate;
 
 /**
  * A {@link Predicate} that checks if a request is from a set of one or more {@link IPRange}s.
@@ -42,7 +45,7 @@ import java.util.function.Predicate;
 public class IPRangePredicate implements Predicate<BaseContext> {
 
     /** Servlet request to evaluate. */
-    @Nullable private HttpServletRequest httpRequest;
+    @Nullable private Supplier<HttpServletRequest> httpRequestSupplier;
     
     /** IP ranges to match against. */
     @Nonnull @NonnullElements private Collection<IPRange> addressRanges;
@@ -54,9 +57,9 @@ public class IPRangePredicate implements Predicate<BaseContext> {
     
     /**
      * Set the address ranges to check against.
-     * 
+     *
      * @param ranges    address ranges to check against
-     * 
+     *
      * @since 3.3.0
      */
     public void setRanges(@Nonnull @NonnullElements final Collection<IPRange> ranges) {
@@ -64,19 +67,20 @@ public class IPRangePredicate implements Predicate<BaseContext> {
         
         addressRanges = List.copyOf(ranges);
     }
-    
+
     /**
-     * Set the servlet request to evaluate.
-     * 
-     * @param request servlet request to evaluate
+     * Set the Supplier for the servlet request to evaluate.
+     *
+     * @param request servlet request supplier to use
      */
-    public void setHttpServletRequest(@Nonnull final HttpServletRequest request) {
-        httpRequest = Constraint.isNotNull(request, "HttpServletRequest cannot be null");
+    public void setHttpServletRequestSupplier(@Nonnull final Supplier<HttpServletRequest> supplier) {
+        httpRequestSupplier = Constraint.isNotNull(supplier, "HttpServletRequestSupplier cannot be null");
     }
 
     /** {@inheritDoc} */
     public boolean test(@Nullable final BaseContext input) {
-        final String address = httpRequest != null ? HttpServletSupport.getRemoteAddr(httpRequest) : null;
+        final HttpServletRequest request = httpRequestSupplier != null ? httpRequestSupplier.get() : null;
+        final String address = request != null ? HttpServletSupport.getRemoteAddr(request) : null;
         if (address == null || !InetAddresses.isInetAddress(address)) {
             return false;
         }

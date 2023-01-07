@@ -18,7 +18,9 @@
 package org.opensaml.profile.logic;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
+import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.spring.config.IdentifiableBeanPostProcessor;
 import net.shibboleth.shared.spring.util.ApplicationContextBuilder;
 
@@ -27,6 +29,8 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Unit test of {@link IPRangePredicate}.
@@ -45,9 +49,10 @@ public class IPRangePredicateTest {
         Assert.assertEquals(map.size(), 2);
 
         final MockHttpServletRequest request = new MockHttpServletRequest();
+        final Supplier<HttpServletRequest> supplier = NonnullSupplier.of(request);
    
         IPRangePredicate condition = map.get("three");
-        condition.setHttpServletRequest(request);
+        condition.setHttpServletRequestSupplier(supplier);
    
         request.setRemoteAddr("192.168.1.128");
         Assert.assertTrue(condition.test(null));
@@ -59,7 +64,7 @@ public class IPRangePredicateTest {
         Assert.assertFalse(condition.test(null));
 
         condition = map.get("four");
-        condition.setHttpServletRequest(request);
+        condition.setHttpServletRequestSupplier(supplier);
 
         request.setRemoteAddr("2620:df:8000:ff14:0:0:0:2");
         Assert.assertTrue(condition.test(null));
