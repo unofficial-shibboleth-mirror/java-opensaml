@@ -29,6 +29,7 @@ import org.opensaml.messaging.error.MessageErrorHandler;
 /**
  * A specialization of message error handler for HTTP servlet container environments.
  */
+@Deprecated(forRemoval = true, since="4.3")
 public interface HttpServletMessageErrorHandler extends MessageErrorHandler {
     
     /**

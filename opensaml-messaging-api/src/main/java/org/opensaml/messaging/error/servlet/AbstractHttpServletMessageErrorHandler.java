@@ -31,6 +31,7 @@ import net.shibboleth.utilities.java.support.primitive.DeprecationSupport.Object
 /**
  * Abstract implementation of {@link HttpServletMessageErrorHandler}.
  */
+@Deprecated(forRemoval = true, since="4.3")
 public abstract class AbstractHttpServletMessageErrorHandler implements HttpServletMessageErrorHandler {
     
     /** The HTTP servlet request Supplier. */
