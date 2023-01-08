@@ -50,7 +50,7 @@ public interface HttpServletMessageErrorHandler extends MessageErrorHandler {
     /**
      * Set the supplier for the HTTP servlet request on which to operate.
      *
-     * @param requestSupplier the HTTP servlet request
+     * @param requestSupplier supplier for the HTTP servlet request
      */
     default void setHttpServletRequestSupplier(@Nullable final Supplier<HttpServletRequest> requestSupplier) {
         setHttpServletRequest(requestSupplier.get());
@@ -74,7 +74,7 @@ public interface HttpServletMessageErrorHandler extends MessageErrorHandler {
     /**
      * Set the supplier for the HTTP servlet response on which to operate.
      *
-     * @param requestSupplier the HTTP servlet response
+     * @param responseSupplier the supplier for the HTTP servlet response
      */
     default void setHttpServletResponseSupplier(@Nullable final Supplier<HttpServletResponse> responseSupplier) {
         setHttpServletResponse(responseSupplier.get());

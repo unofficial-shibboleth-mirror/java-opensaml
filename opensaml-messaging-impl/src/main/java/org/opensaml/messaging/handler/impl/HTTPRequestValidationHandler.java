@@ -139,7 +139,7 @@ public class HTTPRequestValidationHandler extends AbstractMessageHandler {
     /**
      * Set the HTTP servlet request supplier
      *
-     * @param requestSupplier the request instance
+     * @param requestSupplier the supplier for the request instance
      */
     public void setHttpServletRequestSupplier(final Supplier<HttpServletRequest> requestSupplier) {
         ComponentSupport.ifInitializedThrowUnmodifiabledComponentException(this);
