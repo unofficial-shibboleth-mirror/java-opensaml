@@ -71,7 +71,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
     /**
      * Set the Supplier for the servlet request to evaluate.
      *
-     * @param request servlet request supplier to use
+     * @param supplier servlet request supplier to use
      */
     public void setHttpServletRequestSupplier(@Nonnull final Supplier<HttpServletRequest> supplier) {
         httpRequestSupplier = Constraint.isNotNull(supplier, "HttpServletRequestSupplier cannot be null");
