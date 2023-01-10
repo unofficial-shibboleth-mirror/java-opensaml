@@ -29,10 +29,12 @@ import javax.crypto.SecretKey;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
@@ -44,6 +46,7 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
+import org.opensaml.xmlsec.encryption.support.PreDecryptionValidationException;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
@@ -163,6 +166,75 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         assertXMLEquals(targetDOM, decryptedXMLObject);
         
+    }
+    
+    /**
+     * Test simple decryption of an EncryptedKey object with a null pre-decryption validator.
+     */
+    @Test
+    public void testEncryptedKeyWithNoPreValidator() {
+        Decrypter decrypter = new Decrypter(null, kekResolver, null);
+
+        decrypter.setPreDecryptionValidator(null);
+       
+        Key decryptedKey = null;
+        try {
+            decryptedKey = decrypter.decryptKey(encryptedKey, encURI);
+        } catch (DecryptionException e) {
+            Assert.fail("Error on decryption of EncryptedKey: " + e);
+        }
+        
+        Assert.assertEquals(encKey, decryptedKey, "Decrypted EncryptedKey");
+        
+    }
+    
+    /**
+     *  Test simple decryption of an EncryptedData object which is of type Element,
+     *  with a null pre-decryption validator.
+     */
+    @Test
+    public void testEncryptedElementWithNoPrevalidator() {
+        Decrypter decrypter = new Decrypter(keyResolver, null, null);
+
+        decrypter.setPreDecryptionValidator(null);
+        
+        XMLObject decryptedXMLObject = null;
+        try {
+            decryptedXMLObject = decrypter.decryptData(encryptedData);
+        } catch (DecryptionException e) {
+            Assert.fail("Error on decryption of EncryptedData to element: " + e);
+        }
+        
+        assertXMLEquals(targetDOM, decryptedXMLObject);
+        
+    }
+    
+    /**
+     * Test EncryptedData decryption which should fail due to presence of CipherReference failing
+     * default pre-decryption validator.
+     * 
+     * @throws DecryptionException
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedDataWithCipherReference() throws DecryptionException {
+        encryptedData.getCipherData().setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
+
+        Decrypter decrypter = new Decrypter(keyResolver, null, null);
+        decrypter.decryptData(encryptedData);
+    }
+    
+    /**
+     * Test EncryptedData decryption which should fail due to presence of CipherReference failing
+     * default pre-decryption validator.
+     * 
+     * @throws DecryptionException
+     */
+    @Test(expectedExceptions=DecryptionException.class)
+    public void testEncryptedKeyWithCipherReference() throws DecryptionException {
+        encryptedKey.getCipherData().setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
+
+        Decrypter decrypter = new Decrypter(null, kekResolver, null);
+        decrypter.decryptKey(encryptedKey, encURI);
     }
     
     /**

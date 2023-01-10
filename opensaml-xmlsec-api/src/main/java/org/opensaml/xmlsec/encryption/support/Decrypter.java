@@ -222,6 +222,9 @@ public class Decrypter {
      * root of a new DOM document. */
     private boolean defaultRootInNewDocument;
     
+    /** The pre-decryption validator instance. */
+    private PreDecryptionValidator preDecryptionValidator;
+    
     /**
      * Constructor.
      *
@@ -288,8 +291,28 @@ public class Decrypter {
         unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
         
         defaultRootInNewDocument = false;
+        
+        preDecryptionValidator = new DefaultPreDecryptionValidator();
     }
     
+    /**
+     * Get the instance of {@link PreDecryptionValidator}. 
+     * 
+     * @return the validator, may be null
+     */
+    @Nullable PreDecryptionValidator getPreDecryptionValidator() {
+        return preDecryptionValidator;
+    }
+
+    /**
+     * Set the instance of {@link PreDecryptionValidator}. 
+     * 
+     * @param validator the validator, may be null
+     */
+    public void setPreDecryptionValidator(@Nullable final PreDecryptionValidator validator) {
+        preDecryptionValidator = validator;
+    }
+
     /**
      * Get the flag which indicates whether by default the DOM Element which backs a decrypted SAML object
      * will be the root of a new DOM document.  Defaults to false.
@@ -572,6 +595,9 @@ public class Decrypter {
             log.error("Error marshalling EncryptedData for decryption", e);
             throw e;
         }
+
+        preProcessEncryptedData(encryptedData, dataEncKey);
+        
         final Element targetElement = encryptedData.getDOM();
 
         final XMLCipher xmlCipher;
@@ -675,6 +701,7 @@ public class Decrypter {
             log.error("Error marshalling EncryptedKey for decryption: {}", e.getMessage());
             throw e;
         }
+
         preProcessEncryptedKey(encryptedKey, algorithm, kek);
         
         final XMLCipher xmlCipher;
@@ -717,7 +744,31 @@ public class Decrypter {
     }
 
     /**
-     * Preprocess the EncryptedKey. For example, check for supported algorithms.
+     * Preprocess the EncryptedData.
+     * 
+     * <p>
+     * For example, perform pre-decryption validation of the encrypted type.
+     * </p>
+     * 
+     * @param encryptedData encrypted data element containing the encrypted data to be decrypted
+     * @param dataEncKey the key with which to attempt decryption of the encrypted data
+     * 
+     * @throws DecryptionException exception indicating a decryption error
+     */
+    protected void preProcessEncryptedData(@Nonnull final EncryptedData encryptedData,
+            @Nonnull final Key dataEncKey) throws DecryptionException {
+        
+        if (getPreDecryptionValidator() != null) {
+            getPreDecryptionValidator().validate(encryptedData);
+        }
+    }
+
+    /**
+     * Preprocess the EncryptedKey.
+     * 
+     * <p>
+     * For example, perform pre-decryption validation of the encrypted type.
+     * </p>
      * 
      * @param encryptedKey encrypted key element containing the encrypted key to be decrypted
      * @param algorithm the algorithm associated with the decrypted key
@@ -728,7 +779,9 @@ public class Decrypter {
     protected void preProcessEncryptedKey(@Nonnull final EncryptedKey encryptedKey, @Nonnull final String algorithm,
             @Nonnull final Key kek) throws DecryptionException {
         
-        // No-op for now.  Subclasses can do things here if they want.
+        if (getPreDecryptionValidator() != null) {
+            getPreDecryptionValidator().validate(encryptedKey);
+        }
     }
 
     /**
