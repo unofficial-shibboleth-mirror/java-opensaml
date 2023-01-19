@@ -96,10 +96,23 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @param <T> the type of subcontext being operated on
      * @param clazz the class type to obtain
+     * 
      * @return the held instance of the class, or null
      */
     @Nullable public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz) {
         return getSubcontext(clazz, false);
+    }
+    
+    /**
+     * Get a subcontext of the current context, creating it if it does not exist.
+     * 
+     * @param <T> the type of subcontext being operated on
+     * @param clazz the class type to obtain
+     * 
+     * @return the held instance of the class, or null
+     */ 
+    @Nonnull public <T extends BaseContext> T getOrCreateSubcontext(@Nonnull final Class<T> clazz) {
+        return Constraint.isNotNull(getSubcontext(clazz, true), "Auto-creation of subcontext failed");
     }
     
     /**
@@ -108,6 +121,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param <T> the type of subcontext being operated on
      * @param clazz the class type to obtain
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
+     * 
      * @return the held instance of the class, or null
      */ 
     @Nullable public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz, final boolean autocreate) {
@@ -135,30 +149,38 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * Get a subcontext of the current context.
      * 
      * @param className the name of the class type to obtain
+     * 
      * @return the held instance of the class, or null
-     * @throws ClassNotFoundException if the named class does not exist
      */ 
-    @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className)
-            throws ClassNotFoundException {
+    @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className) {
         return getSubcontext(className, false);
+    }
+    
+
+    /**
+     * Get a subcontext of the current context, creating it if necessary.
+     * 
+     * @param className the name of the class type to obtain
+     * 
+     * @return the held instance of the class, or null
+     */ 
+    @Nullable public BaseContext getOrCreateSubcontext(@Nonnull @NotEmpty final String className) {
+        return Constraint.isNotNull(getSubcontext(className, true), "Auto-creation of subcontext failed");
     }
     
     /**
      * Get a subcontext of the current context.
      * 
-     * <p>As of V3.4.0, if autocreate is false, this method will respond to a {@link ClassNotFoundException}
+     * <p>If autocreate is false, this method will respond to a {@link ClassNotFoundException}
      * by attempting to locate a matching subcontext based on the simple class name of the children and
-     * return the first match. If no match is found, it will proceed with the throw, but a future version
-     * of the API will eliminate that from the signature and simply return a null.</p>
-     * 
+     * return the first match. If no match is found or if auto-creation is set, it will return a null.</p>
      * 
      * @param className the name of the class type to obtain
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
+     * 
      * @return the held instance of the class, or null
-     * @throws ClassNotFoundException if the named class does not exist
      */ 
-    @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate)
-            throws ClassNotFoundException {
+    @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate) {
         try {
             return getSubcontext(Class.forName(className).asSubclass(BaseContext.class), autocreate);
         } catch (final ClassNotFoundException e) {
@@ -169,7 +191,9 @@ public abstract class BaseContext implements Iterable<BaseContext> {
                     }
                 }
             }
-            throw e;
+            
+            log.warn("Trapped ClassNotFoundException on input: " + className);
+            return null;
         }
     }
     

@@ -193,7 +193,10 @@ public class BaseContextTest {
         Assert.assertNull(parent1.getSubcontext(TestContext.class, false));
     }
 
-    public void testStringAccess() throws ClassNotFoundException {
+    /**
+     * Test accessing context by class name.
+     */
+    public void testStringAccess() {
         TestContext parent = new TestContext();
         parent.addSubcontext(new TestContext());
         
@@ -202,7 +205,10 @@ public class BaseContextTest {
         Assert.assertTrue(child instanceof TestContext);
     }
 
-    public void testStringAccessMissing() throws ClassNotFoundException {
+    /**
+     * Test accessing missing context by class name.
+     */
+    public void testStringAccessMissing() {
         TestContext parent = new TestContext();
         parent.addSubcontext(new TestContext());
         
@@ -210,7 +216,10 @@ public class BaseContextTest {
         Assert.assertNull(child);
     }
 
-    public void testSimpleStringAccess() throws ClassNotFoundException {
+    /**
+     * Test accessing context by truncated class name.
+     */
+    public void testSimpleStringAccess() {
         TestContext parent = new TestContext();
         parent.addSubcontext(new TestContext());
         
@@ -219,12 +228,16 @@ public class BaseContextTest {
         Assert.assertTrue(child instanceof TestContext);
     }
 
-    @Test(expectedExceptions = ClassNotFoundException.class)
-    public void testSimpleStringError() throws ClassNotFoundException {
+    /**
+     * Test accessing context using non-existent truncated class name.
+     */
+    @Test
+    public void testSimpleStringError() {
         TestContext parent = new TestContext();
         parent.addSubcontext(new TestContext());
         
-        parent.getSubcontext("NoContext");
+        // This threw in V4, is now returning null.
+        Assert.assertNull(parent.getSubcontext("NoContext"));
     }
     
 }
