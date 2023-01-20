@@ -126,12 +126,8 @@ public final class XMLObjectSupport {
      * @throws MarshallingException if original object can not be marshalled
      * @throws UnmarshallingException if cloned object tree can not be unmarshalled
      */
-    @Nullable public static <T extends XMLObject> T cloneXMLObject(@Nullable final T originalXMLObject,
+    @Nonnull public static <T extends XMLObject> T cloneXMLObject(@Nonnull final T originalXMLObject,
             @Nonnull final CloneOutputOption cloneOutputOption) throws MarshallingException, UnmarshallingException {
-        
-        if (originalXMLObject == null) {
-            return null;
-        }
         
         Element origElement = null;
         if (originalXMLObject.getDOM() == null) {
@@ -190,7 +186,7 @@ public final class XMLObjectSupport {
      * @throws XMLParserException if there is a problem parsing the input data
      * @throws UnmarshallingException if there is a problem unmarshalling the parsed DOM
      */
-    public static XMLObject unmarshallFromInputStream(final ParserPool parserPool, final InputStream inputStream)
+    @Nonnull public static XMLObject unmarshallFromInputStream(final ParserPool parserPool, final InputStream inputStream)
             throws XMLParserException, UnmarshallingException {
         LOG.debug("Parsing InputStream into DOM document");
 
@@ -231,7 +227,7 @@ public final class XMLObjectSupport {
      * @throws XMLParserException if there is a problem parsing the input data
      * @throws UnmarshallingException if there is a problem unmarshalling the parsed DOM
      */
-    public static XMLObject unmarshallFromReader(final ParserPool parserPool, final Reader reader)
+    @Nonnull public static XMLObject unmarshallFromReader(final ParserPool parserPool, final Reader reader)
             throws XMLParserException, UnmarshallingException {
         LOG.debug("Parsing Reader into DOM document");
         
@@ -319,7 +315,7 @@ public final class XMLObjectSupport {
      * @param prefix the prefix to search
      * @return the namespace URI bound to the prefix, or none if not found
      */
-    public static String lookupNamespaceURI(final XMLObject xmlObject, final String prefix) {
+    @Nullable public static String lookupNamespaceURI(final XMLObject xmlObject, final String prefix) {
         XMLObject current = xmlObject;
         
         while (current != null) {
@@ -342,7 +338,7 @@ public final class XMLObjectSupport {
      * @param namespaceURI the namespace URI to search
      * @return the prefix bound to the namespace URI, or none if not found
      */
-    public static String lookupNamespacePrefix(final XMLObject xmlObject, final String namespaceURI) {
+    @Nullable public static String lookupNamespacePrefix(final XMLObject xmlObject, final String namespaceURI) {
         XMLObject current = xmlObject;
         
         while (current != null) {
@@ -480,7 +476,7 @@ public final class XMLObjectSupport {
      * @return an XMLObject
      * @throws XMLRuntimeException if the required builder can not be obtained
      */
-    public static XMLObject buildXMLObject(final QName elementName) {
+    @Nonnull public static XMLObject buildXMLObject(final QName elementName) {
         final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
         return builder.buildObject(elementName);
     }
@@ -493,7 +489,7 @@ public final class XMLObjectSupport {
      * @return an XMLObject
      * @throws XMLRuntimeException if the required builder can not be obtained
      */
-    public static XMLObject buildXMLObject(final QName elementName, final QName typeName) {
+    @Nonnull public static XMLObject buildXMLObject(final QName elementName, final QName typeName) {
         final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
         return builder.buildObject(elementName, typeName);
     }
@@ -504,7 +500,7 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject builder, or null if no provider registered
      */
-    public static XMLObjectBuilder<?> getBuilder(final QName typeOrName) {
+    @Nullable public static XMLObjectBuilder<?> getBuilder(final QName typeOrName) {
         return getProviderRegistry().getBuilderFactory().getBuilder(typeOrName);
     }
     
@@ -514,7 +510,7 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject marshaller, or null if no provider registered
      */
-    public static Marshaller getMarshaller(final QName typeOrName) {
+    @Nullable public static Marshaller getMarshaller(final QName typeOrName) {
         return getProviderRegistry().getMarshallerFactory().getMarshaller(typeOrName);
     }
     
@@ -524,7 +520,7 @@ public final class XMLObjectSupport {
      * @param xmlObject the XMLObject to be marshalled
      * @return an XMLObject marshaller, or null if no provider registered
      */
-    public static Marshaller getMarshaller(final XMLObject xmlObject) {
+    @Nullable public static Marshaller getMarshaller(final XMLObject xmlObject) {
         return getProviderRegistry().getMarshallerFactory().getMarshaller(xmlObject);
     }
     
@@ -534,7 +530,7 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject unmarshaller, or null if no provider registered
      */
-    public static Unmarshaller getUnmarshaller(final QName typeOrName) {
+    @Nullable public static Unmarshaller getUnmarshaller(final QName typeOrName) {
         return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(typeOrName);
     }
     
@@ -544,7 +540,7 @@ public final class XMLObjectSupport {
      * @param element the DOM element
      * @return an XMLObject unmarshaller, or null if no provider registered
      */
-    public static Unmarshaller getUnmarshaller(final Element element) {
+    @Nullable public static Unmarshaller getUnmarshaller(final Element element) {
         return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(element);
     }
     
@@ -554,11 +550,12 @@ public final class XMLObjectSupport {
      * @return the configured XMLObject provider registry
      * @throws XMLRuntimeException if the registry is not available
      */
-    private static XMLObjectProviderRegistry getProviderRegistry() {
+    @Nonnull private static XMLObjectProviderRegistry getProviderRegistry() {
         final XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
         if (registry == null) {
             throw new XMLRuntimeException("XMLObjectProviderRegistry was not available from the ConfigurationService");
         }
         return registry;
     }
+    
 }
