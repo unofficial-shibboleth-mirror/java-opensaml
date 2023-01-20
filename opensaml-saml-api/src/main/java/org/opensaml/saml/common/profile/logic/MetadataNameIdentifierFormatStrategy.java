@@ -34,6 +34,7 @@ import org.opensaml.saml.saml2.metadata.SSODescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -63,7 +64,7 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
     }
     
     /** {@inheritDoc} */
-    @Nullable public List<String> apply(@Nullable final ProfileRequestContext input) {
+    @Nonnull @NonnullElements public List<String> apply(@Nullable final ProfileRequestContext input) {
         final SSODescriptor role = ssoDescriptorLookupStrategy.apply(input);
         if (role != null) {
             final List<String> strings = new ArrayList<>();
