@@ -63,8 +63,9 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.testing.ConstantSupplier;
 
 /**
- *
+ * Unit test for {@link WSSecuritySAML20AssertionTokenSecurityHandler}.
  */
+@SuppressWarnings("javadoc")
 public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObjectBaseTestCase {
     private WSSecuritySAML20AssertionTokenSecurityHandler handler;
     
@@ -344,7 +345,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         private SubjectConfirmation confirmedSubjectConfirmation;
         
         public MockAssertionValidator(ValidationResult result, SubjectConfirmation confirmed, boolean throwException) {
-            super(null, null, null, null, null);
+            super(null, null, null, null, null, null);
             validationResult = result;
             confirmedSubjectConfirmation = confirmed;
             isThrowException = throwException;

@@ -26,8 +26,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core Action.
@@ -118,27 +116,5 @@ public interface Action extends SAMLObject, XSString {
      * @param newNamespace the namespace scope of the specified action
      */
     void setNamespace(@Nullable final String newNamespace);
-    
-    /**
-     * Gets the value of the action to be performed.
-     * 
-     * @return the value of the action to be performed
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getAction() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getAction", Action.class.toString(), "getValue");
-        return getValue();
-    }
-
-    /**
-     * Sets the value of the action to be performed.
-     * 
-     * @param value the value of the action to be performed
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setAction(@Nullable final String value) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setAction", Action.class.toString(), "setValue");
-        setValue(value);
-    }
     
 }

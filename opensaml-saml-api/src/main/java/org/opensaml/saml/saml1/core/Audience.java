@@ -22,7 +22,6 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
@@ -30,8 +29,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * This interface describes how an object representing a SAML1 <code>Audience</code> element will behave.
@@ -44,27 +41,5 @@ public interface Audience extends SAMLObject, XSURI {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-    
-    /**
-     * Gets the URI of the audience for the assertion.
-     * 
-     * @return the URI of the audience for the assertion
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getUri() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getUri", Audience.class.toString(), "getURI");
-        return getURI();
-    }
-
-    /**
-     * Sets the URI of the audience for the assertion.
-     * 
-     * @param uri the URI of the audience for the assertion
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setUri(@Nullable final String uri) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setUri", Audience.class.toString(), "setURI");
-        setURI(uri);
-    }
 
 }

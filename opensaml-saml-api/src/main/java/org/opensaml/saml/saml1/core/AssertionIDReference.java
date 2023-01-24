@@ -22,12 +22,9 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -43,27 +40,5 @@ public interface AssertionIDReference extends XSString, Evidentiary {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-    
-    /**
-     * Gets the ID of the assertion this references.
-     * 
-     * @return the ID of the assertion this references
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getReference() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getReference", AssertionIDReference.class.toString(), "getValue");
-        return getValue();
-    }
-
-    /**
-     * Sets the ID of the assertion this references.
-     * 
-     * @param value the ID of the assertion this references
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setReference(@Nullable final String value) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setReference", AssertionIDReference.class.toString(), "setValue");
-        setValue(value);
-    }
 
 }

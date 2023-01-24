@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.metadata;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -26,8 +25,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata Company.
@@ -41,25 +38,4 @@ public interface Company extends SAMLObject, XSString {
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
-    /**
-     * Gets the name of the company.
-     * 
-     * @return the name of the company
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getName() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getName", Company.class.toString(), "getValue");
-        return getValue();
-    }
-
-    /**
-     * Sets the name of the company.
-     * 
-     * @param value the name of the company
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setName(@Nullable final String value) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setName", Company.class.toString(), "setValue");
-        setValue(value);
-    }
 }

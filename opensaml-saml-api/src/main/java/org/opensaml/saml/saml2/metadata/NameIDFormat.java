@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.metadata;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
@@ -26,8 +25,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata NameIDFormat.
@@ -40,27 +37,5 @@ public interface NameIDFormat extends SAMLObject, XSURI {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
-
-    /**
-     * Gets the format of the NameID.
-     * 
-     * @return the format of the NameID
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getFormat() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getFormat", NameIDFormat.class.toString(), "getURI");
-        return getURI();
-    }
-
-    /**
-     * Sets the format of the NameID.
-     * 
-     * @param uri the format of the NameID
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setFormat(@Nullable final String uri) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setFormat", NameIDFormat.class.toString(), "setURI");
-        setURI(uri);
-    }
     
 }

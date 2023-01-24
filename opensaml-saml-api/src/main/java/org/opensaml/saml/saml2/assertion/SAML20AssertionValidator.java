@@ -209,32 +209,6 @@ public class SAML20AssertionValidator {
         signaturePrevalidator = newSignaturePrevalidator;
     }
 // Checkstyle: ParameterNumber ON
-    
-    /**
-     * Constructor.
-     * 
-     * @param newConditionValidators validators used to validate the {@link Condition}s within the assertion
-     * @param newConfirmationValidators validators used to validate {@link SubjectConfirmation} methods within the
-     *            assertion
-     * @param newStatementValidators validators used to validate {@link Statement}s within the assertion
-     * @param newTrustEngine the trust used to validate the Assertion signature
-     * @param newSignaturePrevalidator the signature pre-validator used to pre-validate the Assertion signature
-     * 
-     * @deprecated
-     */
-    @Deprecated
-    public SAML20AssertionValidator(@Nullable final Collection<ConditionValidator> newConditionValidators,
-            @Nullable final Collection<SubjectConfirmationValidator> newConfirmationValidators,
-            @Nullable final Collection<StatementValidator> newStatementValidators, 
-            @Nullable final SignatureTrustEngine newTrustEngine,
-            @Nullable final SignaturePrevalidator newSignaturePrevalidator) {
-        
-        this(newConditionValidators, newConfirmationValidators, newStatementValidators, null,
-                newTrustEngine, newSignaturePrevalidator);
-        
-        DeprecationSupport.warn(ObjectType.METHOD, "SAML20AssertionValidator 5 argument constructor", null,
-                "SAML20AssertionValidator 6 argument constructor");
-    }
 
     /**
      * Gets the lifetime duration from the {@link ValidationContext#getStaticParameters()} parameters.

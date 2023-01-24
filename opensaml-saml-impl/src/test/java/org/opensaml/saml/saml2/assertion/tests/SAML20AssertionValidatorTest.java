@@ -77,6 +77,8 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 
+/** Unit test for {@link SAML20AssertionValidator}. */
+@SuppressWarnings("javadoc")
 public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     private SAML20AssertionValidator validator;
@@ -237,7 +239,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         trustedCredentials.add(cred1);
         signAssertion(getAssertion(), cred1);
         
-        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, signaturePrevalidator);
+        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, null, signaturePrevalidator);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
@@ -258,7 +260,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         trustedCredentials.add(cred1);
         signAssertion(getAssertion(), cred1);
         
-        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, signatureTrustEngine, null);
+        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, signatureTrustEngine, null);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
@@ -295,7 +297,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     public void testWithSignatureNoSignatureTrustEngine() throws AssertionValidationException, SecurityException, MarshallingException, SignatureException {
         signAssertion(getAssertion(), cred1);
         
-        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, signaturePrevalidator);
+        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, null, signaturePrevalidator);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
@@ -318,7 +320,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
             }
         };
         
-        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, signatureTrustEngine, failingValidator);
+        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, signatureTrustEngine, failingValidator);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
@@ -349,7 +351,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
             }
         };
         
-        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, failingEngine, signaturePrevalidator);
+        validator = new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, failingEngine, signaturePrevalidator);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_REQUIRED, true);
@@ -718,7 +720,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     // Helper methods
     
     private SAML20AssertionValidator getCurrentValidator() {
-        return new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, signatureTrustEngine, signaturePrevalidator);
+        return new SAML20AssertionValidator(conditionValidators, subjectConfirmationValidators, statementValidators, null, signatureTrustEngine, signaturePrevalidator);
     }
     
     public static class MockCondition extends AbstractXMLObject implements Condition {

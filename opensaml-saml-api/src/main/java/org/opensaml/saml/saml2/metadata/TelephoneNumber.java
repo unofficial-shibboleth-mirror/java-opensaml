@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.metadata;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -26,8 +25,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata TelephoneNumber.
@@ -40,27 +37,5 @@ public interface TelephoneNumber extends SAMLObject, XSString {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
-
-    /**
-     * Gets the telephone number.
-     * 
-     * @return the telephone number
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getNumber() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getNumber", TelephoneNumber.class.toString(), "getValue");
-        return getValue();
-    }
-
-    /**
-     * Sets the telephone number.
-     * 
-     * @param value the telephone number
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setNumber(@Nullable final String value) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setNumber", TelephoneNumber.class.toString(), "setValue");
-        setValue(value);
-    }
     
 }

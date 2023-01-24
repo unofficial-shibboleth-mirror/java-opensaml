@@ -21,7 +21,6 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
@@ -29,8 +28,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * This interface defines how the object representing a SAML1 <code> ConfirmationMethod </code> element behaves.
@@ -59,29 +56,5 @@ public interface ConfirmationMethod extends SAMLObject, XSURI {
 
     /** Sender-Vouches confirmation method. */
     @Nonnull @NotEmpty static final String METHOD_SENDER_VOUCHES = "urn:oasis:names:tc:SAML:1.0:cm:sender-vouches";
-    
-    /**
-     * Gets the confirmation method.
-     * 
-     * @return the confirmation method
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getConfirmationMethod() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getConfirmationMethod", ConfirmationMethod.class.toString(),
-                "getURI");
-        return getURI();
-    }
-    
-    /**
-     * Sets the confirmation method.
-     * 
-     * @param uri the confirmation method
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setConfirmationMethod(@Nullable final String uri) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setConfirmationMethod", ConfirmationMethod.class.toString(),
-                "setURI");
-        setURI(uri);
-    }
     
 }

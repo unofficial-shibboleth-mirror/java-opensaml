@@ -34,7 +34,7 @@ public class MockAssertionValidator extends SAML20AssertionValidator {
     private Map<Assertion, Object> resultsMap;
 
     public MockAssertionValidator(Map<Assertion, Object> results) {
-        super(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), null, null);
+        super(Collections.emptyList(), Collections.emptyList(), Collections.emptyList(), null, null, null);
         resultsMap = Constraint.isNotNull(results, "Results map was null");
     }
 

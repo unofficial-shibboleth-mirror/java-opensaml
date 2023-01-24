@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
@@ -26,8 +25,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Core RequesterID.
@@ -40,27 +37,5 @@ public interface RequesterID extends SAMLObject, XSURI {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
-
-    /**
-     * Gets the RequesterID value.
-     * 
-     * @return RequesterID value
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getRequesterID() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getRequesterID", RequesterID.class.toString(), "getURI");
-        return getURI();
-    }
-
-    /**
-     * Sets the RequesterID value.
-     * 
-     * @param value the RequesterID value
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setRequesterID(@Nullable final String value) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setRequesterID", RequesterID.class.toString(), "setURI");
-        setURI(value);
-    }
     
 }

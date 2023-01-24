@@ -26,8 +26,6 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.saml.common.SAMLObject;
@@ -68,27 +66,5 @@ public interface Action extends SAMLObject, XSString {
      * @param namespace what to set
      */
     void setNamespace(@Nullable final String namespace);
-
-    /**
-     * Gets the value of the action to be performed.
-     * 
-     * @return the value of the action to be performed
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getContents() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getContents", Action.class.toString(), "getValue");
-        return getValue();
-    }
-
-    /**
-     * Sets the value of the action to be performed.
-     * 
-     * @param value the value of the action to be performed
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setContents(@Nullable final String value) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setContents", Action.class.toString(), "setValue");
-        setValue(value);
-    }
     
 }

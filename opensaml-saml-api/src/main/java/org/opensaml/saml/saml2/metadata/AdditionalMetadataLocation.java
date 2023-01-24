@@ -26,8 +26,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * SAML 2.0 Metadata AdditionalMetadataLocation.
@@ -50,30 +48,6 @@ public interface AdditionalMetadataLocation extends SAMLObject, XSURI {
 
     /** "affiliationOwnerID" attribute's local name. */
     @Nonnull @NotEmpty static final String NAMESPACE_ATTRIB_NAME = "namespace";
-
-    /**
-     * Gets the location URI.
-     * 
-     * @return the location URI
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getLocationURI() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getLocationURI", AdditionalMetadataLocation.class.toString(),
-                "getURI");
-        return getURI();
-    }
-
-    /**
-     * Sets the location URI.
-     * 
-     * @param uri the location URI
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setLocationURI(@Nullable final String uri) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setLocationURI", AdditionalMetadataLocation.class.toString(),
-                "setURI");
-        setURI(uri);
-    }
 
     /**
      * Gets the namespace URI.

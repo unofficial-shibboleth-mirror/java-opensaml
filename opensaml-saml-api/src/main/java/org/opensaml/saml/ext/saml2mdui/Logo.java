@@ -26,8 +26,6 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 /**
  * Localized logo type.
@@ -59,28 +57,6 @@ public interface Logo extends LocalizedURI, SAMLObject {
 
     /** Attribute label. */
     @Nonnull @NotEmpty static final String WIDTH_ATTR_NAME = "width";
-
-    /**
-     * Gets the URL.
-     * 
-     * @return the URL
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getURL() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getURL", Logo.class.toString(), "getURI");
-        return getURI();
-    }
-    
-    /**
-     * Sets the URL.
-     * 
-     * @param uri the URL
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setURL(@Nullable final String uri) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setURL", Logo.class.toString(), "setURI");
-        setURI(uri);
-    }
 
     /**
      * Get the height of the logo.
