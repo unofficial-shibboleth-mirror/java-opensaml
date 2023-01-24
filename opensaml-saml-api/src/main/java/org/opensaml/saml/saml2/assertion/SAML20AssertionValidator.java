@@ -29,9 +29,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.LazyMap;
-import net.shibboleth.shared.primitive.DeprecationSupport;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -254,10 +252,6 @@ public class SAML20AssertionValidator {
                 final Object raw = context.getStaticParameters().get(paramName);
                 if (raw instanceof Duration) {
                     duration = (Duration) raw;
-                } else if (raw instanceof Long) {
-                    duration = Duration.ofMillis((Long) raw);
-                    // This is a V4 deprecation, remove in V5.
-                    DeprecationSupport.warn(ObjectType.CONFIGURATION, paramName, null, Duration.class.getName());
                 }
                 
                 if (duration.isZero()) {

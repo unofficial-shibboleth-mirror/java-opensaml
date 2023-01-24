@@ -28,9 +28,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.primitive.DeprecationSupport;
 import net.shibboleth.shared.primitive.StringSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
@@ -157,11 +155,6 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
                 SAML2AssertionValidationParameters.COND_ONE_TIME_USE_EXPIRES);
         if (raw instanceof Duration) {
             expires = (Duration) raw;
-        } else if (raw instanceof Long) {
-            expires = Duration.ofMillis((Long) raw);
-            // V4 deprecation, remove in V5
-            DeprecationSupport.warn(ObjectType.CONFIGURATION,
-                    SAML2AssertionValidationParameters.COND_ONE_TIME_USE_EXPIRES, null, Duration.class.getName());
         }
         
         log.debug("Saw one-time use cache expires context param: {}", expires);
