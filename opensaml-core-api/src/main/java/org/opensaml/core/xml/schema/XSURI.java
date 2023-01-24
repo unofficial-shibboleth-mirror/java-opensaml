@@ -22,8 +22,6 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.shared.xml.XMLConstants;
 
 import org.opensaml.core.xml.XMLObject;
@@ -53,25 +51,4 @@ public interface XSURI extends XMLObject {
      */
     void setURI(@Nullable final String uri);
 
-    /**
-     * Gets the URI content of the element.
-     * 
-     * @return the URI content of the element
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getValue() {
-        DeprecationSupport.warn(ObjectType.METHOD, "getValue", XSURI.class.toString(), "getURI");
-        return getURI();
-    }
-    
-    /**
-     * Sets the URI content of the element.
-     * 
-     * @param uri the URI content of the element
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setValue(@Nullable final String uri) {
-        DeprecationSupport.warn(ObjectType.METHOD, "setValue", XSURI.class.toString(), "setURI");
-        setURI(uri);
-    }
 }
