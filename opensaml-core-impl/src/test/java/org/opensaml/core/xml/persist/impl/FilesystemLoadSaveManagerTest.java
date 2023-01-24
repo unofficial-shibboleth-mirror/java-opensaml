@@ -40,8 +40,6 @@ import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.persist.FilesystemLoadSaveManager;
-import org.opensaml.core.xml.persist.impl.PassthroughSourceStrategy;
-import org.opensaml.core.xml.persist.impl.SegmentingIntermediateDirectoryStrategy;
 import org.opensaml.core.xml.util.XMLObjectSource;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
@@ -54,6 +52,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.util.concurrent.Uninterruptibles;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
@@ -111,11 +110,11 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         
         manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
         manager.save("baz", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         
         // Duplicate with overwrite
         manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray), true);
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         
         // Duplicate without overwrite
         try {
@@ -124,17 +123,17 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         } catch (IOException e) {
             // expected, do nothing
         }
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         
         // Test again. Since checkModifyTime=false, we should get back data even though unmodified
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         
         Assert.assertTrue(manager.updateKey("foo", "foo2"));
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         
         // Doesn't exist anymore
         Assert.assertFalse(manager.updateKey("foo", "foo2"));
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         
         // Can't update to an existing name
         try {
@@ -143,14 +142,14 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         } catch (IOException e) {
             // expected, do nothing
         }
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         
         // Doesn't exist anymore
         Assert.assertFalse(manager.remove("foo"));
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         
         Assert.assertTrue(manager.remove("foo2"));
-        testState(Set.of("bar", "baz"));
+        testState(CollectionSupport.setOf("bar", "baz"));
         
         Assert.assertTrue(manager.remove("bar"));
         Assert.assertTrue(manager.remove("baz"));
@@ -174,13 +173,13 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         Assert.assertFalse(new File(parentPath(baseDir, "ba"), "baz").exists());
         manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
         manager.save("baz", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         Assert.assertTrue(new File(parentPath(baseDir, "ba"), "bar").exists());
         Assert.assertTrue(new File(parentPath(baseDir, "ba"), "baz").exists());
         
         // Duplicate with overwrite
         manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray), true);
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         
         // Duplicate without overwrite
         try {
@@ -189,19 +188,19 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         } catch (IOException e) {
             // expected, do nothing
         }
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         
         // Test again. Since checkModifyTime=false, we should get back data even though unmodified
-        testState(Set.of("foo", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo", "bar", "baz"));
         
         Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo2").exists());
         Assert.assertTrue(manager.updateKey("foo", "foo2"));
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         Assert.assertTrue(new File(parentPath(baseDir, "fo"), "foo2").exists());
         
         // Doesn't exist anymore
         Assert.assertFalse(manager.updateKey("foo", "foo2"));
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         
         // Can't update to an existing name
         try {
@@ -210,16 +209,16 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         } catch (IOException e) {
             // expected, do nothing
         }
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         
         // Doesn't exist anymore
         Assert.assertFalse(manager.remove("foo"));
-        testState(Set.of("foo2", "bar", "baz"));
+        testState(CollectionSupport.setOf("foo2", "bar", "baz"));
         Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo").exists());
         
         Assert.assertTrue(new File(parentPath(baseDir, "fo"), "foo2").exists());
         Assert.assertTrue(manager.remove("foo2"));
-        testState(Set.of("bar", "baz"));
+        testState(CollectionSupport.setOf("bar", "baz"));
         Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo2").exists());
         
         Assert.assertTrue(new File(parentPath(baseDir, "ba"), "bar").exists());

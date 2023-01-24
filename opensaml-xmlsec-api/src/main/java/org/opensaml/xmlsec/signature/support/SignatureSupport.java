@@ -38,6 +38,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -50,7 +51,7 @@ public final class SignatureSupport {
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SignatureSupport.class);
     
     /** Set of known canonicalization algorithm URIs. */
-    @Nonnull @NonnullElements private static final Set<String> C14N_ALGORITHMS = Set.of(
+    @Nonnull @NonnullElements private static final Set<String> C14N_ALGORITHMS = CollectionSupport.setOf(
             SignatureConstants.ALGO_ID_C14N11_OMIT_COMMENTS,
             SignatureConstants.ALGO_ID_C14N11_WITH_COMMENTS,
             SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS,

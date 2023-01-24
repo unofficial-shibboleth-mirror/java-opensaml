@@ -62,6 +62,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
@@ -159,7 +160,7 @@ public class DefaultSecurityConfigurationBootstrap {
                 ecConcatKDF.setPartyUInfo("00");
                 ecConcatKDF.setPartyVInfo("00");
                 ecConcatKDF.initialize();
-                ecConfig.setParameters(Set.of(ecConcatKDF));
+                ecConfig.setParameters(CollectionSupport.singleton(ecConcatKDF));
             } else if (PBKDF2.equals(ecKDF)) {
                 final PBKDF2 ecPBKDF2 = new PBKDF2();
                 ecPBKDF2.initialize();
@@ -179,7 +180,7 @@ public class DefaultSecurityConfigurationBootstrap {
             final KANonce nonce = new KANonce();
             // This will use an auto-generated nonce value each time
             nonce.initialize();
-            dhConfig.setParameters(Set.of(digestMethod, nonce));
+            dhConfig.setParameters(CollectionSupport.setOf(digestMethod, nonce));
             kaConfigs.put(JCAConstants.KEY_ALGO_DH, dhConfig);
             
         } catch (final ComponentInitializationException e) {

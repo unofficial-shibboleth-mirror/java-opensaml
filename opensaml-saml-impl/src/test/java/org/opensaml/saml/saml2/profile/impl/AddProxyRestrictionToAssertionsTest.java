@@ -17,11 +17,6 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import net.shibboleth.shared.collection.Pair;
-import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.logic.FunctionSupport;
-
-import java.util.Set;
 import java.util.stream.Collectors;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
@@ -41,6 +36,11 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.FunctionSupport;
+
 /** {@link AddProxyRestrictionToAssertions} unit test. */
 public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCase {
 
@@ -51,7 +51,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
     
     @BeforeMethod public void setUp() {
         action = new AddProxyRestrictionToAssertions();
-        action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(1,Set.of(AUDIENCE1, AUDIENCE2))));
+        action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(1,CollectionSupport.setOf(AUDIENCE1, AUDIENCE2))));
     }
     
     /**
@@ -95,7 +95,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
-        action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(0,Set.of(AUDIENCE1, AUDIENCE2))));
+        action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(0,CollectionSupport.setOf(AUDIENCE1, AUDIENCE2))));
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -153,7 +153,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
 
-        action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(null, Set.of(AUDIENCE1, AUDIENCE2))));
+        action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(null, CollectionSupport.setOf(AUDIENCE1, AUDIENCE2))));
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -166,7 +166,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
         Assert.assertNull(proxy.getProxyCount());
         Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
-                Set.of(AUDIENCE1, AUDIENCE2));
+                CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));
     }
     
     /**
@@ -195,7 +195,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
         Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
-                Set.of(AUDIENCE1, AUDIENCE2));
+                CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));
     }
 
     /**
@@ -227,7 +227,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
         Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
-                Set.of(AUDIENCE1, AUDIENCE2));
+                CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));
     }
 
     /** Test that the condition is properly added if there are multiple assertions in the response.
@@ -255,7 +255,7 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
             final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
             Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
             Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
-                    Set.of(AUDIENCE1, AUDIENCE2));
+                    CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));
         }
     }
 

@@ -32,6 +32,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -74,9 +75,9 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         criteriaSet = new CriteriaSet(criterion);
         
-        set1 = Set.of("A", "B", "C", "D");
-        set2 = Set.of("X", "Y", "Z");
-        set3 = Set.of("foo", "bar", "baz");
+        set1 = CollectionSupport.setOf("A", "B", "C", "D");
+        set2 = CollectionSupport.setOf("X", "Y", "Z");
+        set3 = CollectionSupport.setOf("foo", "bar", "baz");
     }
     
     @Test

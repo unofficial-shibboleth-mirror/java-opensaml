@@ -17,8 +17,6 @@
 
 package org.opensaml.xmlsec.config.impl;
 
-import java.util.Set;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessorRegistry;
 import org.opensaml.xmlsec.agreement.KeyAgreementSupport;
@@ -28,6 +26,8 @@ import org.opensaml.xmlsec.agreement.impl.ECDHKeyAgreementProcessor;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  *
@@ -41,7 +41,7 @@ public class GlobalKeyAgreementProcessorRegistryTest extends OpenSAMLInitBaseTes
        Assert.assertNotNull(registry);
        Assert.assertEquals(registry.getRegisteredAlgorithms().size(), 3);
        
-       Assert.assertEquals(registry.getRegisteredAlgorithms(), Set.of(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
+       Assert.assertEquals(registry.getRegisteredAlgorithms(), CollectionSupport.setOf(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,
                EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH, EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF));
        
        Assert.assertNotNull(registry.getProcessor(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES));

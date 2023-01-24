@@ -70,6 +70,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -129,7 +130,7 @@ public class DHWithLegacyKDFTest extends XMLObjectBaseTestCase {
         dm.initialize();
         KANonce nonce = new KANonce();
         nonce.initialize();
-        kaConfig.setParameters(Set.of(dm, nonce));
+        kaConfig.setParameters(CollectionSupport.setOf(dm, nonce));
         encConfig2.setKeyAgreementConfigurations(Map.of("DH", kaConfig));
         
         decryptConfig = new BasicDecryptionConfiguration();

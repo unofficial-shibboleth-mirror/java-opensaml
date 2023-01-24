@@ -23,6 +23,8 @@ import org.opensaml.security.credential.Credential;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  *
  */
@@ -40,7 +42,7 @@ public class KeyAgreementProcessorRegistryTest {
         
         registry.register(foo1);
         Assert.assertEquals(registry.getRegisteredAlgorithms().size(), 1);
-        Assert.assertEquals(registry.getRegisteredAlgorithms(), Set.of("urn:test:KeyAgreementProcessor:Foo"));
+        Assert.assertEquals(registry.getRegisteredAlgorithms(), CollectionSupport.singleton("urn:test:KeyAgreementProcessor:Foo"));
         Assert.assertSame(registry.getProcessor("urn:test:KeyAgreementProcessor:Foo"), foo1);
         
         registry.register(foo2);
@@ -50,13 +52,13 @@ public class KeyAgreementProcessorRegistryTest {
         
         registry.register(bar);
         Assert.assertEquals(registry.getRegisteredAlgorithms().size(), 2);
-        Assert.assertEquals(registry.getRegisteredAlgorithms(), Set.of("urn:test:KeyAgreementProcessor:Foo", "urn:test:KeyAgreementProcessor:Bar"));
+        Assert.assertEquals(registry.getRegisteredAlgorithms(), CollectionSupport.setOf("urn:test:KeyAgreementProcessor:Foo", "urn:test:KeyAgreementProcessor:Bar"));
         Assert.assertSame(registry.getProcessor("urn:test:KeyAgreementProcessor:Foo"), foo2);
         Assert.assertSame(registry.getProcessor("urn:test:KeyAgreementProcessor:Bar"), bar);
         
         registry.deregister("urn:test:KeyAgreementProcessor:Foo");
         Assert.assertEquals(registry.getRegisteredAlgorithms().size(), 1);
-        Assert.assertEquals(registry.getRegisteredAlgorithms(), Set.of("urn:test:KeyAgreementProcessor:Bar"));
+        Assert.assertEquals(registry.getRegisteredAlgorithms(), CollectionSupport.singleton("urn:test:KeyAgreementProcessor:Bar"));
         Assert.assertNull(registry.getProcessor("urn:test:KeyAgreementProcessor:Foo"));
         Assert.assertSame(registry.getProcessor("urn:test:KeyAgreementProcessor:Bar"), bar);
         

@@ -35,6 +35,8 @@ import org.opensaml.security.crypto.ec.curves.Secp521r1;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  *
  */
@@ -93,7 +95,7 @@ public class NamedCurveRegistryTest extends BaseNamedCurveTest {
         
         Assert.assertEquals(registry.getRegisteredCurves().size(), 3);
         Assert.assertEquals(registry.getRegisteredCurves().stream().map(NamedCurve::getName).collect(Collectors.toSet()),
-                Set.of("secp256r1", "secp384r1", "secp521r1"));
+                CollectionSupport.setOf("secp256r1", "secp384r1", "secp521r1"));
         Assert.assertTrue(registry.getRegisteredCurves().contains(secp256r1));
         Assert.assertTrue(registry.getRegisteredCurves().contains(secp384r1));
         Assert.assertTrue(registry.getRegisteredCurves().contains(secp521r1));
@@ -114,7 +116,7 @@ public class NamedCurveRegistryTest extends BaseNamedCurveTest {
         
         Assert.assertEquals(registry.getRegisteredCurves().size(), 2);
         Assert.assertEquals(registry.getRegisteredCurves().stream().map(NamedCurve::getName).collect(Collectors.toSet()),
-                Set.of("secp256r1", "secp384r1"));
+                CollectionSupport.setOf("secp256r1", "secp384r1"));
         Assert.assertTrue(registry.getRegisteredCurves().contains(secp256r1));
         Assert.assertTrue(registry.getRegisteredCurves().contains(secp384r1));
         Assert.assertFalse(registry.getRegisteredCurves().contains(secp521r1));

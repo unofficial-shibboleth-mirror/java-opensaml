@@ -34,6 +34,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -273,7 +274,7 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
                         new SimpleStringCriteriaFunction());
         
         MetadataIndexManager<EntityDescriptor> manager =
-                new MetadataIndexManager<>(Set.of(roleIndex, functionIndex), extractionFunction);
+                new MetadataIndexManager<>(CollectionSupport.setOf(roleIndex, functionIndex), extractionFunction);
         
         manager.indexEntityDescriptor(a);
         manager.indexEntityDescriptor(b);
@@ -298,7 +299,7 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
                         new SimpleStringCriteriaFunction());
         
         MetadataIndexManager<EntityDescriptor> manager =
-                new MetadataIndexManager<>(Set.of(roleIndex, functionIndex), extractionFunction);
+                new MetadataIndexManager<>(CollectionSupport.setOf(roleIndex, functionIndex), extractionFunction);
         
         manager.indexEntityDescriptor(a);
         manager.indexEntityDescriptor(b);
@@ -321,7 +322,7 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
                         new SimpleStringCriteriaFunction());
         
         MetadataIndexManager<EntityDescriptor> manager =
-                new MetadataIndexManager<>(Set.of(roleIndex, functionIndex), extractionFunction);
+                new MetadataIndexManager<>(CollectionSupport.setOf(roleIndex, functionIndex), extractionFunction);
         
         manager.indexEntityDescriptor(a);
         manager.indexEntityDescriptor(b);

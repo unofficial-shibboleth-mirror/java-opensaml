@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * WS-Addressing 1.0 constants.
@@ -86,7 +87,7 @@ public final class WSAddressingConstants {
         new QName(WSA_NS, "EndpointUnavailable", WSA_PREFIX);
     
     /** Set of all WS-Addressing SOAP fault codes. */
-    @Nonnull @NonnullElements public static final Set<QName> WS_ADDRESSING_FAULTS = Set.of(
+    @Nonnull @NonnullElements public static final Set<QName> WS_ADDRESSING_FAULTS = CollectionSupport.setOf(
             SOAP_FAULT_INVALID_ADDRESSING_HEADER, 
             SOAP_FAULT_INVALID_ADDRESS,
             SOAP_FAULT_INVALID_EPR,

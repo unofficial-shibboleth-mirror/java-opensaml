@@ -76,6 +76,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -641,12 +642,12 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         indexedData = backingStore.getSecondaryIndexManager().lookupIndexedItems(new CriteriaSet(new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME)));
         Assert.assertTrue(indexedData.isPresent());
-        Assert.assertEquals(indexedData.get(), Set.of(id1, id2));
+        Assert.assertEquals(indexedData.get(), CollectionSupport.setOf(id1, id2));
         
         results.clear();
         Iterables.addAll(results, resolver.resolve(new CriteriaSet(new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME))));
         Assert.assertEquals(results.size(), 2);
-        Assert.assertEquals(results, Set.of(ed1, ed2));
+        Assert.assertEquals(results, CollectionSupport.setOf(ed1, ed2));
     }
     
     @Test

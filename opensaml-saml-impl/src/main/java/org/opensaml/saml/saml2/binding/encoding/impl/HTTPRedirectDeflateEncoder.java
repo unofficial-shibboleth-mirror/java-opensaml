@@ -54,6 +54,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.net.URLBuilder;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -69,7 +70,7 @@ public class HTTPRedirectDeflateEncoder extends BaseSAML2MessageEncoder {
     
     /** Params which are disallowed from appearing in the input endpoint URL. */
     @Nonnull @NonnullElements private static final Set<String> DISALLOWED_ENDPOINT_QUERY_PARAMS = 
-            Set.of("SAMLEncoding", "SAMLRequest", "SAMLResponse", "RelayState", "SigAlg", "Signature");
+            CollectionSupport.setOf("SAMLEncoding", "SAMLRequest", "SAMLResponse", "RelayState", "SigAlg", "Signature");
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPRedirectDeflateEncoder.class);
