@@ -627,14 +627,6 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         validationContext = new ValidationContext(staticParams);
         Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(8));
         
-        staticParams.put(SAML2AssertionValidationParameters.LIFETIME, 7*60*1000l);
-        validationContext = new ValidationContext(staticParams);
-        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(7));
-        
-        staticParams.put(SAML2AssertionValidationParameters.LIFETIME, -9*60*1000l);
-        validationContext = new ValidationContext(staticParams);
-        Assert.assertEquals(SAML20AssertionValidator.getLifetime(validationContext), Duration.ofMinutes(9));
-        
         // Duration==0 means use default
         staticParams.put(SAML2AssertionValidationParameters.LIFETIME, Duration.ofSeconds(0));
         validationContext = new ValidationContext(staticParams);
