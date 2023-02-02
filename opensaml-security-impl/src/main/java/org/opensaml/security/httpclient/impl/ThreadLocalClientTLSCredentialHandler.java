@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -39,14 +39,14 @@ public class ThreadLocalClientTLSCredentialHandler implements HttpClientContextH
     private final Logger log = LoggerFactory.getLogger(ThreadLocalClientTLSCredentialHandler.class);
 
     /** {@inheritDoc} */
-    public void invokeBefore(@Nonnull final HttpClientContext context, @Nonnull final HttpUriRequest request)
+    public void invokeBefore(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)
             throws IOException {
         // Do nothing here
         
     }
 
     /** {@inheritDoc} */
-    public void invokeAfter(@Nonnull final HttpClientContext context, @Nonnull final HttpUriRequest request)
+    public void invokeAfter(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)
             throws IOException {
         log.trace("Clearing thread-local client TLS X509Credential");
         ThreadLocalX509CredentialContext.clearCurrent();

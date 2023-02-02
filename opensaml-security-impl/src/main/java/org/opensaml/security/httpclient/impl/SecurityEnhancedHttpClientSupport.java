@@ -25,8 +25,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialKeyManager;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;

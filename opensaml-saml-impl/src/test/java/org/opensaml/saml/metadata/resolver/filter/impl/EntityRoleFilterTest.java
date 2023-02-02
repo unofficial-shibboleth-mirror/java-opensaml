@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 import javax.xml.namespace.QName;
 
-import org.apache.http.client.HttpClient;
+import org.apache.hc.client5.http.classic.HttpClient;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolverTest;

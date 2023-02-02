@@ -19,7 +19,7 @@ package org.opensaml.messaging.decoder.httpclient;
 
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.opensaml.messaging.decoder.MessageDecoder;
 
 
@@ -33,13 +33,13 @@ public interface HttpClientResponseMessageDecoder extends MessageDecoder {
      * 
      * @return the HTTP client response
      */
-    @Nullable HttpResponse getHttpResponse();
+    @Nullable ClassicHttpResponse getHttpResponse();
     
     /**
      * Set the HTTP client response on which to operate.
      * 
      * @param response the HTTP client response 
      */
-    void setHttpResponse(@Nullable final HttpResponse response);
+    void setHttpResponse(@Nullable final ClassicHttpResponse response);
     
 }

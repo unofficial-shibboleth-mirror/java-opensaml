@@ -22,7 +22,7 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 
-import org.apache.http.client.CredentialsProvider;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 

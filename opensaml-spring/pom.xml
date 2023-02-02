@@ -81,7 +81,7 @@
 
         <dependency>
             <groupId>${httpclient.groupId}</groupId>
-            <artifactId>httpclient</artifactId>
+            <artifactId>${httpclient.artifactId}</artifactId>
         </dependency>
 
         <dependency>

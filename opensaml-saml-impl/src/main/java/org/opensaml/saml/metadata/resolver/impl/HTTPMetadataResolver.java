@@ -26,15 +26,15 @@ import java.util.Timer;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.util.EntityUtils;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.Header;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.slf4j.Logger;
@@ -203,13 +203,13 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     protected byte[] fetchMetadata() throws ResolverException {
         final HttpGet httpGet = buildHttpGet();
         final HttpClientContext context = buildHttpClientContext(httpGet);
-        HttpResponse response = null;
+        ClassicHttpResponse response = null;
 
         try {
             log.debug("{} Attempting to fetch metadata document from '{}'", getLogPrefix(), metadataURI);
-            response = httpClient.execute(httpGet, context);
+            response = httpClient.executeOpen(null, httpGet, context);
             HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, metadataURI.getScheme());
-            final int httpStatusCode = response.getStatusLine().getStatusCode();
+            final int httpStatusCode = response.getCode();
 
             if (httpStatusCode == HttpStatus.SC_NOT_MODIFIED) {
                 log.debug("{} Metadata document from '{}' has not changed since last retrieval", 
@@ -273,7 +273,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @return a new instance of {@link HttpClientContext}
      */
-    protected HttpClientContext buildHttpClientContext(@Nonnull final HttpUriRequest request) {
+    protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
         // TODO Really request should be @Nonnull, change when we remove deprecated buildHttpClientContext()
         final HttpClientContext context = HttpClientContext.create();
         
@@ -288,7 +288,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @param response GetMethod containing a valid HTTP response
      */
-    protected void processConditionalRetrievalHeaders(final HttpResponse response) {
+    protected void processConditionalRetrievalHeaders(final ClassicHttpResponse response) {
         Header httpHeader = response.getFirstHeader("ETag");
         if (httpHeader != null) {
             cachedMetadataETag = httpHeader.getValue();
@@ -309,7 +309,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @throws ResolverException thrown if there is a problem getting the raw metadata bytes from the response
      */
-    protected byte[] getMetadataBytesFromResponse(final HttpResponse response) throws ResolverException {
+    protected byte[] getMetadataBytesFromResponse(final ClassicHttpResponse response) throws ResolverException {
         log.debug("{} Attempting to extract metadata from response to request for metadata from '{}'", 
                 getLogPrefix(), getMetadataURI());
         try {

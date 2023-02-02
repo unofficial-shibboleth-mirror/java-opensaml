@@ -17,7 +17,7 @@
 
 package org.opensaml.soap.client.soap11.encoder.http.impl;
 
-import org.apache.http.client.methods.HttpPost;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.messaging.context.MessageContext;
@@ -68,8 +68,8 @@ public class HttpClientRequestSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         Assert.assertNotNull(request.getEntity());
         
-        Assert.assertTrue(request.getEntity().getContentType().getValue().startsWith("text/xml;"), "Unexpected content type");
-        Assert.assertEquals(request.getEntity().getContentType().getElements()[0].getParameterByName("charset").getValue(), "UTF-8", "Unexpected character encoding");
+        Assert.assertTrue(request.getEntity().getContentType().startsWith("text/xml;"), "Unexpected content type");
+        Assert.assertEquals(request.getEntity().getContentEncoding(), "UTF-8", "Unexpected character encoding");
         Assert.assertEquals(request.getFirstHeader("SOAPAction").getValue(), "");
     }
 
@@ -98,8 +98,8 @@ public class HttpClientRequestSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         Assert.assertNotNull(request.getEntity());
         
-        Assert.assertTrue(request.getEntity().getContentType().getValue().startsWith("text/xml;"), "Unexpected content type");
-        Assert.assertEquals(request.getEntity().getContentType().getElements()[0].getParameterByName("charset").getValue(), "UTF-8", "Unexpected character encoding");
+        Assert.assertTrue(request.getEntity().getContentType().startsWith("text/xml;"), "Unexpected content type");
+        Assert.assertEquals(request.getEntity().getContentEncoding(), "UTF-8", "Unexpected character encoding");
         Assert.assertEquals(request.getFirstHeader("SOAPAction").getValue(), "urn:test:action:foo");
     }
 

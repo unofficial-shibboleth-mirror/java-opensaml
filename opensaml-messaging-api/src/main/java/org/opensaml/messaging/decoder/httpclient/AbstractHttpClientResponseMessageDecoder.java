@@ -19,7 +19,7 @@ package org.opensaml.messaging.decoder.httpclient;
 
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 
@@ -32,15 +32,15 @@ public abstract class AbstractHttpClientResponseMessageDecoder extends AbstractM
         implements HttpClientResponseMessageDecoder {
 
     /** The HTTP client response. */
-    private HttpResponse response;
+    private ClassicHttpResponse response;
 
     /** {@inheritDoc} */
-    @Nullable public HttpResponse getHttpResponse() {
+    @Nullable public ClassicHttpResponse getHttpResponse() {
         return response;
     }
 
     /** {@inheritDoc} */
-    public synchronized void setHttpResponse(@Nullable final HttpResponse clientResponse) {
+    public synchronized void setHttpResponse(@Nullable final ClassicHttpResponse clientResponse) {
         checkSetterPreconditions();
 
         response = clientResponse;

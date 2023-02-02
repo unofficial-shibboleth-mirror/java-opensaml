@@ -22,9 +22,9 @@ import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.conn.ssl.DefaultHostnameVerifier;
-import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
+import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.trust.TrustEngine;
@@ -80,7 +80,7 @@ public class BasicHttpClientSecurityConfigurationTest {
     @Test
     public void testCredentialsProvider() {
         BasicHttpClientSecurityConfiguration config = new BasicHttpClientSecurityConfiguration();
-        config.setBasicCredentials(new UsernamePasswordCredentials("test", "test"));
+        config.setBasicCredentials(new UsernamePasswordCredentials("test", "test".toCharArray()));
         
         Assert.assertNotNull(config.getCredentialsProvider());
     }

@@ -28,10 +28,11 @@ import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSocket;
 import javax.net.ssl.X509TrustManager;
 
-import org.apache.http.HttpHost;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.core5.util.TimeValue;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
@@ -139,7 +140,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
 
 // CheckStyle: ParameterNumber OFF
     /** {@inheritDoc} */
-    public Socket connectSocket(final int connectTimeout, final Socket sock, final HttpHost host,
+    public Socket connectSocket(TimeValue connectTimeout, final Socket sock, final HttpHost host,
             final InetSocketAddress remoteAddress, final InetSocketAddress localAddress,
             final HttpContext context) throws IOException {
         

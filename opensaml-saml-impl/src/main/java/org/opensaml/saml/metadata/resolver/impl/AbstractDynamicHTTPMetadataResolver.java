@@ -30,14 +30,13 @@ import java.util.stream.Collectors;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.Header;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpGet;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSource;
@@ -93,7 +92,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     @NonnullAfterInit private Set<MediaType> supportedMediaTypes;
     
     /** HttpClient ResponseHandler instance to use. */
-    @Nonnull private ResponseHandler<XMLObject> responseHandler;
+    @Nonnull private HttpClientResponseHandler<XMLObject> responseHandler;
         
     /** Optional HttpClient security parameters.*/
     @Nullable private HttpClientSecurityParameters httpClientSecurityParameters;
@@ -257,7 +256,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     @Nullable protected XMLObject fetchFromOriginSource(@Nonnull final CriteriaSet criteria) 
             throws IOException {
             
-        final HttpUriRequest request = buildHttpRequest(criteria);
+        final ClassicHttpRequest request = buildHttpRequest(criteria);
         if (request == null) {
             log.debug("{} Could not build request based on input criteria, unable to query", getLogPrefix());
             return null;
@@ -266,9 +265,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         final HttpClientContext context = buildHttpClientContext(request);
         
         try {
-            MDC.put(MDC_ATTRIB_CURRENT_REQUEST_URI, request.getURI().toString());
-            final XMLObject result = httpClient.execute(request, responseHandler, context);
-            HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getURI().getScheme());
+            MDC.put(MDC_ATTRIB_CURRENT_REQUEST_URI, request.getRequestUri());
+            final XMLObject result = httpClient.execute(request, context, responseHandler);
+            HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getScheme());
             return result;
         } finally {
             MDC.remove(MDC_ATTRIB_CURRENT_REQUEST_URI);
@@ -281,7 +280,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param criteria the input criteria set
      * @return the newly constructed request, or null if it can not be built from the supplied criteria
      */
-    @Nullable protected HttpUriRequest buildHttpRequest(@Nonnull final CriteriaSet criteria) {
+    @Nullable protected ClassicHttpRequest buildHttpRequest(@Nonnull final CriteriaSet criteria) {
         final String url = buildRequestURL(criteria);
         log.debug("{} Built request URL of: {}", getLogPrefix(), url);
         
@@ -316,7 +315,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * 
      * @return a new instance of {@link HttpClientContext}
      */
-    protected HttpClientContext buildHttpClientContext(@Nonnull final HttpUriRequest request) {
+    protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
         final HttpClientContext context = HttpClientContext.create();
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, true);
@@ -328,13 +327,13 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     /**
      * Basic HttpClient response handler for processing metadata fetch requests.
      */
-    public class BasicMetadataResponseHandler implements ResponseHandler<XMLObject> {
+    public class BasicMetadataResponseHandler implements HttpClientResponseHandler<XMLObject> {
 
         /** {@inheritDoc} */
         @Override
-        public XMLObject handleResponse(@Nonnull final HttpResponse response) throws IOException {
+        public XMLObject handleResponse(@Nonnull final ClassicHttpResponse response) throws IOException {
             
-            final int httpStatusCode = response.getStatusLine().getStatusCode();
+            final int httpStatusCode = response.getCode();
             
             final String currentRequestURI = MDC.get(MDC_ATTRIB_CURRENT_REQUEST_URI);
             
@@ -380,18 +379,14 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
          * @param response the received response
          * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
          */
-        protected void validateHttpResponse(@Nonnull final HttpResponse response) throws ResolverException {
+        protected void validateHttpResponse(@Nonnull final ClassicHttpResponse response) throws ResolverException {
             if (!getSupportedMediaTypes().isEmpty()) {
-                String contentTypeValue = null;
-                final Header contentType = response.getEntity().getContentType();
-                if (contentType != null && contentType.getValue() != null) {
-                    contentTypeValue = StringSupport.trimOrNull(contentType.getValue());
-                }
-                log.debug("{} Saw raw Content-Type from response header '{}'", getLogPrefix(), contentTypeValue);
+                final String contentType = StringSupport.trimOrNull(response.getEntity().getContentType());
+                log.debug("{} Saw raw Content-Type from response header '{}'", getLogPrefix(), contentType);
                 
-                if (!MediaTypeSupport.validateContentType(contentTypeValue, getSupportedMediaTypes(), true, false)) {
+                if (!MediaTypeSupport.validateContentType(contentType, getSupportedMediaTypes(), true, false)) {
                     throw new ResolverException("HTTP response specified an unsupported Content-Type MIME type: " 
-                            + contentTypeValue);
+                            + contentType);
                 }
             }
         }

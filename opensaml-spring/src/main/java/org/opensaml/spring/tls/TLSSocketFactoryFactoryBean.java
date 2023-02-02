@@ -19,8 +19,7 @@ package org.opensaml.spring.tls;
 
 import javax.annotation.Nullable;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.impl.SecurityEnhancedHttpClientSupport;
 import org.opensaml.security.trust.TrustEngine;

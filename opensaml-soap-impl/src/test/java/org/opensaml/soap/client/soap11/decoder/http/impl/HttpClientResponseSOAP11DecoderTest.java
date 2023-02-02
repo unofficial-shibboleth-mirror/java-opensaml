@@ -25,11 +25,13 @@ import javax.xml.namespace.QName;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.xml.SerializeSupport;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.HttpVersion;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.message.BasicHttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.HttpVersion;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
+import org.apache.hc.core5.http.message.BasicHttpResponse;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -63,7 +65,7 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
     public void testDecodeToPayload() throws ComponentInitializationException, MessageDecodingException, MarshallingException, IOException {
         Envelope envelope = buildMessageSkeleton();
         envelope.getBody().getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
-        HttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
+        ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
         
         decoder.setBodyHandler(new TestPayloadBodyHandler());
         decoder.setHttpResponse(httpResponse);
@@ -87,7 +89,7 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
     public void testDecodeToEnvelope() throws ComponentInitializationException, MessageDecodingException, MarshallingException, IOException {
         Envelope envelope = buildMessageSkeleton();
         envelope.getBody().getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
-        HttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
+        ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
         
         decoder.setBodyHandler(new TestEnvelopeBodyHandler());
         decoder.setHttpResponse(httpResponse);
@@ -113,7 +115,7 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         Envelope envelope = buildMessageSkeleton();
         envelope.getBody().getUnknownXMLObjects().add(fault);
-        HttpResponse httpResponse = buildResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, envelope);
+        ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, envelope);
         
         decoder.setBodyHandler(new TestPayloadBodyHandler());
         decoder.setHttpResponse(httpResponse);
@@ -122,15 +124,15 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         decoder.decode();
     }
     
-    private HttpResponse buildResponse(int statusResponseCode, Envelope envelope) throws MarshallingException, IOException {
-        BasicHttpResponse response = new BasicHttpResponse(HttpVersion.HTTP_1_1, statusResponseCode, null);
+    private ClassicHttpResponse buildResponse(int statusResponseCode, Envelope envelope) throws MarshallingException, IOException {
+        BasicClassicHttpResponse response = new BasicClassicHttpResponse(statusResponseCode, null);
         Element envelopeElement = XMLObjectSupport.marshall(envelope);
         
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializeSupport.writeNode(envelopeElement, baos);
         baos.flush();
         
-        ByteArrayEntity entity = new ByteArrayEntity(baos.toByteArray());
+        ByteArrayEntity entity = new ByteArrayEntity(baos.toByteArray(), ContentType.TEXT_XML);
         response.setEntity(entity);
         return response;
     }

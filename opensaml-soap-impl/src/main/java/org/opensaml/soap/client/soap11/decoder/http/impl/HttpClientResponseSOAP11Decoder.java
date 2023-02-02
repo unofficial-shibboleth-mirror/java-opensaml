@@ -22,9 +22,9 @@ import java.util.List;
 
 import javax.xml.namespace.QName;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.HttpStatus;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
@@ -83,11 +83,11 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
         final MessageContext messageContext = new MessageContext();
-        final HttpResponse response = getHttpResponse();
+        final ClassicHttpResponse response = getHttpResponse();
         
         log.debug("Unmarshalling SOAP message");
         try {
-            final int responseStatusCode = response.getStatusLine().getStatusCode();
+            final int responseStatusCode = response.getCode();
             
             switch(responseStatusCode) {
                 case HttpStatus.SC_OK:
@@ -139,7 +139,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * @throws MessageDecodingException  if message can not be unmarshalled
      * @throws IOException if there is a problem with the response entity input stream
      */
-    protected void processSuccessResponse(final HttpResponse httpResponse, final SOAP11Context soapContext) 
+    protected void processSuccessResponse(final ClassicHttpResponse httpResponse, final SOAP11Context soapContext) 
             throws MessageDecodingException, IOException {
         
         if (httpResponse.getEntity() == null) {
@@ -154,7 +154,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
         }
         
         soapContext.setEnvelope(soapMessage);
-        soapContext.setHTTPResponseStatus(httpResponse.getStatusLine().getStatusCode());
+        soapContext.setHTTPResponseStatus(httpResponse.getCode());
     }
 
     /**
@@ -166,7 +166,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * @throws MessageDecodingException if message can not be unmarshalled
      * @throws IOException if there is a problem with the response entity input stream
      */
-    protected MessageDecodingException buildFaultException(final HttpResponse response) 
+    protected MessageDecodingException buildFaultException(final ClassicHttpResponse response) 
             throws MessageDecodingException, IOException {
         
         if (response.getEntity() == null) {

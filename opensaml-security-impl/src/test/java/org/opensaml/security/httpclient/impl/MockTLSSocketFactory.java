@@ -24,9 +24,10 @@ import java.net.UnknownHostException;
 import java.security.cert.Certificate;
 import java.util.List;
 
-import org.apache.http.HttpHost;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.core5.util.TimeValue;
 
 /**
  * Mock HttpClient SSL/TLS socket factory.
@@ -49,7 +50,7 @@ public class MockTLSSocketFactory implements LayeredConnectionSocketFactory {
     }
 
     /** {@inheritDoc} */
-    public Socket connectSocket(int connectTimeout, Socket sock, HttpHost host, InetSocketAddress remoteAddress,
+    public Socket connectSocket(TimeValue connectTimeout, Socket sock, HttpHost host, InetSocketAddress remoteAddress,
             InetSocketAddress localAddress, HttpContext context) throws IOException {
         return this.socket;
     }

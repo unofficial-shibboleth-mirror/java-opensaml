@@ -8,11 +8,15 @@
         </encoder>
     </appender>
     
-    <logger name="org.apache.http">
+    <logger name="org.apache.hc">
         <level value="WARN"/>
     </logger>
     
-    <logger name="org.apache.http.wire">
+    <logger name="org.apache.hc.core5.http.wire">
+        <level value="WARN"/>
+    </logger>
+    
+    <logger name="org.apache.hc.client5.http.wire">
         <level value="WARN"/>
     </logger>
     
@@ -33,6 +37,14 @@
     </logger>
     
     <logger name="org.opensaml.security.httpclient.impl.ThreadLocalServerTLSHandler">
+        <level value="INFO"/>
+    </logger>
+    
+    <logger name="org.opensaml.saml.metadata.resolver.impl.HTTPMetadataResolver">
+        <level value="INFO"/>
+    </logger>
+    
+    <logger name="net.shibboleth.shared.httpclient.RequestConnectionClose">
         <level value="INFO"/>
     </logger>
     

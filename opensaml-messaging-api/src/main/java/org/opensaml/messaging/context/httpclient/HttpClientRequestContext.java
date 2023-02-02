@@ -19,11 +19,12 @@ package org.opensaml.messaging.context.httpclient;
 
 import javax.annotation.Nullable;
 
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
 import org.opensaml.messaging.context.BaseContext;
 
 /**
- * A context impl holding data related to the execution of an {@link org.apache.http.client.HttpClient} request.
+ * A context impl holding data related to the execution of an {@link org.apache.hc.client5.http.classic.HttpClient}
+ * request.
  */
 public final class HttpClientRequestContext extends BaseContext {
     

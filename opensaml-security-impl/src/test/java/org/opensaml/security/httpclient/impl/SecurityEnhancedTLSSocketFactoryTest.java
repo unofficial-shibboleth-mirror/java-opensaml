@@ -26,10 +26,11 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
-import org.apache.http.HttpHost;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
-import org.apache.http.protocol.HttpContext;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.core5.http.HttpHost;
+import org.apache.hc.core5.http.protocol.HttpContext;
+import org.apache.hc.core5.util.TimeValue;
 import org.opensaml.security.credential.impl.StaticCredentialResolver;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
@@ -72,7 +73,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
         securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(null, hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
-        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 80, "http"), null, null, httpContext);
+        securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("http", hostname, 80), null, null, httpContext);
 
         Assert.assertFalse(ThreadLocalX509TrustEngineContext.haveCurrent());
         Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
@@ -91,7 +92,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
                 Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
-        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+        securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
 
         Assert.assertFalse(ThreadLocalX509TrustEngineContext.haveCurrent());
         Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(
@@ -112,7 +113,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
                 Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
-        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+        securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
        
         Assert.assertTrue(ThreadLocalX509TrustEngineContext.haveCurrent());
         Assert.assertSame(ThreadLocalX509TrustEngineContext.getTrustEngine(), trustEngine);
@@ -139,7 +140,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
                 Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
-        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+        securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
        
         Assert.assertTrue(ThreadLocalX509TrustEngineContext.haveCurrent());
         Assert.assertSame(ThreadLocalX509TrustEngineContext.getTrustEngine(), trustEngine);
@@ -167,7 +168,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
                 Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
-        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+        securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
        
         Assert.assertTrue(ThreadLocalX509TrustEngineContext.haveCurrent());
         Assert.assertSame(ThreadLocalX509TrustEngineContext.getTrustEngine(), trustEngine);
@@ -189,7 +190,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
         securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(null, hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
-        securityEnhancedSocketFactory.connectSocket(0, socket, new HttpHost(hostname, 443, "https"), null, null, httpContext);
+        securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
         
         Assert.assertFalse(ThreadLocalX509TrustEngineContext.haveCurrent());
         Assert.assertFalse(HttpClientSupport.getDynamicContextHandlerList(

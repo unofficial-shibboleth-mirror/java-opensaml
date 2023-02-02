@@ -28,14 +28,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
+import org.apache.hc.core5.http.ClassicHttpResponse;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -211,10 +211,10 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
         try {
             post = createPostMethod(endpoint, soapRequestParams, soapCtx.getEnvelope());
 
-            HttpResponse response = null;
+            ClassicHttpResponse response = null;
             try {
-                response = httpClient.execute(post);
-                final int code = response.getStatusLine().getStatusCode();
+                response = httpClient.executeOpen(null, post, null);
+                final int code = response.getCode();
                 log.debug("Received HTTP status code of {} when POSTing SOAP message to {}", code, endpoint);
 
                 if (code == HttpStatus.SC_OK) {
@@ -291,7 +291,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
                         SerializeSupport.prettyPrintXML(marshaller.marshall(message)));
             }
             SerializeSupport.writeNode(marshaller.marshall(message), arrayOut);
-            return new ByteArrayEntity(arrayOut.toByteArray(), ContentType.create("text/xml", charset));
+            return new ByteArrayEntity(arrayOut.toByteArray(), ContentType.TEXT_XML);
         } catch (final MarshallingException e) {
             throw new SOAPClientException("Unable to marshall SOAP envelope", e);
         }
@@ -305,7 +305,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * 
      * @throws SOAPClientException thrown if there is a problem reading the response from the {@link HttpPost}
      */
-    protected void processSuccessfulResponse(@Nonnull final HttpResponse httpResponse,
+    protected void processSuccessfulResponse(@Nonnull final ClassicHttpResponse httpResponse,
             @Nonnull final InOutOperationContext context) throws SOAPClientException {
         try {
             if (httpResponse.getEntity() == null) {
@@ -330,7 +330,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
      * @throws SOAPClientException thrown if the response can not be read from the {@link HttpPost}
      * @throws SOAPFaultException an exception containing the SOAP fault
      */
-    protected void processFaultResponse(@Nonnull final HttpResponse httpResponse,
+    protected void processFaultResponse(@Nonnull final ClassicHttpResponse httpResponse,
             @Nonnull final InOutOperationContext context) throws SOAPClientException, SOAPFaultException {
         try {
             if (httpResponse.getEntity() == null) {

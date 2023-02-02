@@ -29,12 +29,12 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.net.ssl.SSLException;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.hc.client5.http.ClientProtocolException;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.httpclient.HttpClientRequestContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
@@ -194,7 +194,7 @@ public abstract class AbstractPipelineHttpSOAPClient
                 pipeline.getOutboundPayloadMessageHandler().invoke(operationContext.getOutboundMessageContext());
             }
             
-            final HttpUriRequest httpRequest = buildHttpRequest(endpoint, operationContext);
+            final ClassicHttpRequest httpRequest = buildHttpRequest(endpoint, operationContext);
             // Request encoding + outbound transport handling
             final HttpClientRequestMessageEncoder encoder = pipeline.getEncoder();
             encoder.setHttpRequest(httpRequest);
@@ -209,8 +209,8 @@ public abstract class AbstractPipelineHttpSOAPClient
             
             // HttpClient execution
             final HttpClientContext httpContext = buildHttpContext(httpRequest, operationContext);
-            final HttpResponse httpResponse = getHttpClient().execute(httpRequest, httpContext);
-            HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getURI().getScheme());
+            final ClassicHttpResponse httpResponse = getHttpClient().executeOpen(null, httpRequest, httpContext);
+            HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getScheme());
             
             // Response decoding
             final HttpClientResponseMessageDecoder decoder = pipeline.getDecoder();
@@ -297,13 +297,13 @@ public abstract class AbstractPipelineHttpSOAPClient
             throws SOAPException;
         
     /**
-     * Build the {@link HttpUriRequest} instance to be executed by the HttpClient.
+     * Build the {@link ClassicHttpRequest} instance to be executed by the HttpClient.
      * 
      * @param endpoint the endpoint to which the message will be sent
      * @param operationContext the current operation context
      * @return the HTTP request to be executed
      */
-    @Nonnull protected HttpUriRequest buildHttpRequest(@Nonnull @NotEmpty final String endpoint, 
+    @Nonnull protected ClassicHttpRequest buildHttpRequest(@Nonnull @NotEmpty final String endpoint, 
             @Nonnull final InOutOperationContext operationContext) {
         return new HttpPost(endpoint);
     }
@@ -315,7 +315,7 @@ public abstract class AbstractPipelineHttpSOAPClient
      * @param operationContext the current operation context
      * @return the client context instance
      */
-    @Nonnull protected HttpClientContext buildHttpContext(@Nonnull final HttpUriRequest request, 
+    @Nonnull protected HttpClientContext buildHttpContext(@Nonnull final ClassicHttpRequest request, 
             @Nonnull final InOutOperationContext operationContext) {
         
         final HttpClientContext clientContext = resolveClientContext(operationContext);
@@ -327,7 +327,7 @@ public abstract class AbstractPipelineHttpSOAPClient
         
         HttpClientSecuritySupport.marshalSecurityParameters(clientContext, getHttpClientSecurityParameters(), false);
         
-        if ("https".equalsIgnoreCase(request.getURI().getScheme()) 
+        if ("https".equalsIgnoreCase(request.getScheme()) 
                 && clientContext.getAttribute(CONTEXT_KEY_TRUST_ENGINE) != null) {
             
             if (clientContext.getAttribute(CONTEXT_KEY_CRITERIA_SET) == null) {
@@ -408,7 +408,7 @@ public abstract class AbstractPipelineHttpSOAPClient
      * @param operationContext the current operation context
      * @return the new criteria set instance
      */
-    @Nonnull protected CriteriaSet buildTLSCriteriaSet(@Nonnull final HttpUriRequest request, 
+    @Nonnull protected CriteriaSet buildTLSCriteriaSet(@Nonnull final ClassicHttpRequest request, 
             @Nonnull final InOutOperationContext operationContext) {
         
         final CriteriaSet criteriaSet = new CriteriaSet();

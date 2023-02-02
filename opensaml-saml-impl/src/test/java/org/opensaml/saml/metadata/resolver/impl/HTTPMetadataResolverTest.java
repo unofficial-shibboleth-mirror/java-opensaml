@@ -25,7 +25,7 @@ import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.Set;
 
-import org.apache.http.conn.socket.LayeredConnectionSocketFactory;
+import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;

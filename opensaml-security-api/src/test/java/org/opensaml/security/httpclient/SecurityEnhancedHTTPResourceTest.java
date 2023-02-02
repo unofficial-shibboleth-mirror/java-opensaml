@@ -29,7 +29,7 @@ import net.shibboleth.shared.spring.httpclient.resource.HTTPResource;
 import net.shibboleth.shared.testing.RepositorySupport;
 import net.shibboleth.shared.testing.ResourceTestHelper;
 
-import org.apache.http.client.HttpClient;
+import org.apache.hc.client5.http.classic.HttpClient;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;

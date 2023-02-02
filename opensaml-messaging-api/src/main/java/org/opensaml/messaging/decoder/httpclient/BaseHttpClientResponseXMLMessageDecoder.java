@@ -27,7 +27,6 @@ import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
 
-import org.apache.http.HttpResponse;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;

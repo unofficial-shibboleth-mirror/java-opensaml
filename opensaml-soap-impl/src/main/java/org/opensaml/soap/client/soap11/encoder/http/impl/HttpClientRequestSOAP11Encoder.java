@@ -24,11 +24,11 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpRequest;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.core5.http.ClassicHttpRequest;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpEntity;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -83,7 +83,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * 
      * <p>This encoder implementation only operates on instances of {@link HttpPost}.</p>
      */
-    public synchronized void setHttpRequest(final HttpRequest httpRequest) {
+    public synchronized void setHttpRequest(final ClassicHttpRequest httpRequest) {
         if (!(httpRequest instanceof HttpPost)) {
             throw new IllegalArgumentException("HttpClient SOAP message encoder only operates on HttpPost");
         }
@@ -130,7 +130,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
         try {
             final ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
             SerializeSupport.writeNode(XMLObjectSupport.marshall(message), arrayOut);
-            return new ByteArrayEntity(arrayOut.toByteArray(), ContentType.create("text/xml", charset));
+            return new ByteArrayEntity(arrayOut.toByteArray(), ContentType.TEXT_XML, charset.name());
         } catch (final MarshallingException e) {
             throw new MessageEncodingException("Unable to marshall SOAP envelope", e);
         }

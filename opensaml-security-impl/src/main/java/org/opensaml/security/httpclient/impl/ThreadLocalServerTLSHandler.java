@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import javax.annotation.Nonnull;
 
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineContext;
 import org.slf4j.Logger;
@@ -40,14 +40,14 @@ public class ThreadLocalServerTLSHandler implements HttpClientContextHandler {
     private final Logger log = LoggerFactory.getLogger(ThreadLocalServerTLSHandler.class);
 
     /** {@inheritDoc} */
-    public void invokeBefore(@Nonnull final HttpClientContext context, @Nonnull final HttpUriRequest request)
+    public void invokeBefore(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)
             throws IOException {
         // Do nothing here
         
     }
 
     /** {@inheritDoc} */
-    public void invokeAfter(@Nonnull final HttpClientContext context, @Nonnull final HttpUriRequest request)
+    public void invokeAfter(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)
             throws IOException {
         
         log.trace("Saw ThreadLocalX509TrustEngineContext.getTrusted: {}",

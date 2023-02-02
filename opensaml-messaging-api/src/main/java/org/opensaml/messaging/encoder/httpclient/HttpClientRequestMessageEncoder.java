@@ -19,7 +19,7 @@ package org.opensaml.messaging.encoder.httpclient;
 
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpRequest;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.messaging.encoder.MessageEncoder;
 
 /**
@@ -32,13 +32,13 @@ public interface HttpClientRequestMessageEncoder extends MessageEncoder {
      * 
      * @return the HTTP client request
      */
-    @Nullable HttpRequest getHttpRequest();
+    @Nullable ClassicHttpRequest getHttpRequest();
     
     /**
      * Set the HTTP client request on which to operate.
      * 
      * @param request the HTTP client request
      */
-    void setHttpRequest(@Nullable final HttpRequest request);
+    void setHttpRequest(@Nullable final ClassicHttpRequest request);
 
 }

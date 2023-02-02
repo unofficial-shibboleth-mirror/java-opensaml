@@ -34,14 +34,14 @@
         	<artifactId>guava</artifactId>
         </dependency>
 
-        <dependency>
-            <groupId>${httpclient.groupId}</groupId>
-            <artifactId>httpclient</artifactId>
-        </dependency>
 
         <dependency>
             <groupId>${httpclient.groupId}</groupId>
-            <artifactId>httpcore</artifactId>
+            <artifactId>${httpclient.artifactId}</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>${httpclient.httpcore.groupId}</groupId>
+            <artifactId>${httpclient.httpcore.artifactId}</artifactId>
         </dependency>
 
         <!-- Provided Dependencies -->

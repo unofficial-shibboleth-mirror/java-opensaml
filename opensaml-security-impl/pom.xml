@@ -57,13 +57,12 @@
 
         <dependency>
             <groupId>${httpclient.groupId}</groupId>
-            <artifactId>httpclient</artifactId>
+            <artifactId>${httpclient.artifactId}</artifactId>
             <optional>true</optional>
         </dependency>
-
         <dependency>
-            <groupId>${httpclient.groupId}</groupId>
-            <artifactId>httpcore</artifactId>
+            <groupId>${httpclient.httpcore.groupId}</groupId>
+            <artifactId>${httpclient.httpcore.artifactId}</artifactId>
             <optional>true</optional>
         </dependency>
 

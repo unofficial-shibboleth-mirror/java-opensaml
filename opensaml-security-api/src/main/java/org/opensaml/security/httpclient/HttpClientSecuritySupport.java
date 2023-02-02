@@ -26,14 +26,15 @@ import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTE
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE;
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL;
 
+import java.net.URISyntaxException;
 import java.util.Collections;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.HttpRequest;
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
@@ -45,7 +46,7 @@ import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
- * Support class for working with {@link org.apache.http.client.HttpClient} security features.
+ * Support class for working with {@link org.apache.hc.client5.http.classic.HttpClient} security features.
  */
 public final class HttpClientSecuritySupport {
     
@@ -71,25 +72,29 @@ public final class HttpClientSecuritySupport {
      * @param request the current HTTP request
      */
     public static void addDefaultTLSTrustEngineCriteria(@Nonnull final HttpClientContext context, 
-            @Nonnull final HttpUriRequest request) {
+            @Nonnull final HttpRequest request) {
         
-        if ("https".equalsIgnoreCase(request.getURI().getScheme()) 
+        if ("https".equalsIgnoreCase(request.getScheme()) 
                 && context.getAttribute(CONTEXT_KEY_TRUST_ENGINE) != null) {
-            
+
             CriteriaSet criteria = (CriteriaSet) context.getAttribute(CONTEXT_KEY_CRITERIA_SET);
             if (criteria == null) {
                 criteria = new CriteriaSet();
                 context.setAttribute(CONTEXT_KEY_CRITERIA_SET, criteria);
             }
-            
+
             if (!criteria.contains(UsageCriterion.class)) {
                 criteria.add(new UsageCriterion(UsageType.SIGNING));
             }
-            
+
             if (!criteria.contains(TrustedNamesCriterion.class)) {
-                criteria.add(new TrustedNamesCriterion(Collections.singleton(request.getURI().getHost())));
+                try {
+                    criteria.add(new TrustedNamesCriterion(Collections.singleton(request.getUri().getHost())));
+                } catch (URISyntaxException e) {
+                    LOG.error("HttpRequest URI was invalid, got not extract hostname for TrustedNamesCriterion", e);
+                }
             }
-            
+
         }
     }
     

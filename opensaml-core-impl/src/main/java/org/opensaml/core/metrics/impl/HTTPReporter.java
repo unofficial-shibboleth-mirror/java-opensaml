@@ -28,14 +28,14 @@ import java.util.concurrent.TimeUnit;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.entity.EntityBuilder;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
-import org.apache.http.entity.ContentType;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.client5.http.classic.methods.HttpPost;
+import org.apache.hc.client5.http.entity.EntityBuilder;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpRequest;
+import org.apache.hc.core5.http.HttpResponse;
+import org.apache.hc.core5.http.HttpStatus;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.slf4j.Logger;
@@ -266,13 +266,13 @@ public class HTTPReporter extends ScheduledReporter implements InitializableComp
                 entityBuilder.setBinary(output.toByteArray());
                 httpRequest.setEntity(entityBuilder.build());
 
-                final HttpResponse response = httpClient.execute(httpRequest, httpContext);
-                HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getURI().getScheme());
+                final HttpResponse response = httpClient.executeOpen(null, httpRequest, httpContext);
+                HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getScheme());
                 
-                if (response.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+                if (response.getCode() == HttpStatus.SC_OK) {
                     log.debug("Metrics delivered successfully to collector");
                 } else {
-                    log.error("Collector responded with HTTP status {}", response.getStatusLine().getStatusCode());
+                    log.error("Collector responded with HTTP status {}", response.getCode());
                 }
             } catch (final IOException e) {
                 log.error("Error sending metric registry to collection point {}", collectorURL, e);
@@ -295,7 +295,7 @@ public class HTTPReporter extends ScheduledReporter implements InitializableComp
      * @param request the HTTP client request
      * @return the client context instance
      */
-    @Nonnull private HttpClientContext buildHttpContext(@Nonnull final HttpUriRequest request) {
+    @Nonnull private HttpClientContext buildHttpContext(@Nonnull final HttpRequest request) {
         final HttpClientContext clientContext = HttpClientContext.create();
         HttpClientSecuritySupport.marshalSecurityParameters(clientContext, httpClientSecurityParameters, false);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(clientContext, request);

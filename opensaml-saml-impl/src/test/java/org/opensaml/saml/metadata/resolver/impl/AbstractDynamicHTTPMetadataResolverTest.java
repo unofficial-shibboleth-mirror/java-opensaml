@@ -19,14 +19,12 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.ByteArrayOutputStream;
 
-import org.apache.http.HttpHeaders;
-import org.apache.http.HttpStatus;
-import org.apache.http.ProtocolVersion;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.ResponseHandler;
-import org.apache.http.entity.ByteArrayEntity;
-import org.apache.http.message.BasicHeader;
-import org.apache.http.message.BasicHttpResponse;
+import org.apache.hc.client5.http.classic.HttpClient;
+import org.apache.hc.core5.http.ContentType;
+import org.apache.hc.core5.http.HttpStatus;
+import org.apache.hc.core5.http.io.HttpClientResponseHandler;
+import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
+import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
@@ -117,11 +115,10 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
     
     @Test
     public void testResponseHandlerXMLObjectSource() throws Exception {
-        ResponseHandler<XMLObject> responseHandler = resolver.new BasicMetadataResponseHandler();
+        HttpClientResponseHandler<XMLObject> responseHandler = resolver.new BasicMetadataResponseHandler();
         
-        BasicHttpResponse httpResponse = new BasicHttpResponse(new ProtocolVersion("HTTP", 1, 1), HttpStatus.SC_OK, "OK");
-        ByteArrayEntity entity = new ByteArrayEntity(entityDescriptorBytes);
-        entity.setContentType(new BasicHeader(HttpHeaders.CONTENT_TYPE, "text/xml"));
+        BasicClassicHttpResponse httpResponse = new BasicClassicHttpResponse(HttpStatus.SC_OK, "OK");
+        ByteArrayEntity entity = new ByteArrayEntity(entityDescriptorBytes, ContentType.TEXT_XML);
         httpResponse.setEntity(entity);
         
         XMLObject result = responseHandler.handleResponse(httpResponse);
@@ -133,9 +130,9 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
     
     @Test
     public void testResponseHandlerBadStatusCode() throws Exception {
-        ResponseHandler<XMLObject> responseHandler = resolver.new BasicMetadataResponseHandler();
+        HttpClientResponseHandler<XMLObject> responseHandler = resolver.new BasicMetadataResponseHandler();
         
-        BasicHttpResponse httpResponse = new BasicHttpResponse(new ProtocolVersion("HTTP", 1, 1), HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal Error");
+        BasicClassicHttpResponse httpResponse = new BasicClassicHttpResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, "Internal Error");
         
         XMLObject result = responseHandler.handleResponse(httpResponse);
         Assert.assertNull(result);
@@ -143,11 +140,10 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
     
     @Test
     public void testResponseHandlerUnsupportedContentType() throws Exception {
-        ResponseHandler<XMLObject> responseHandler = resolver.new BasicMetadataResponseHandler();
+        HttpClientResponseHandler<XMLObject> responseHandler = resolver.new BasicMetadataResponseHandler();
         
-        BasicHttpResponse httpResponse = new BasicHttpResponse(new ProtocolVersion("HTTP", 1, 1), HttpStatus.SC_OK, "OK");
-        ByteArrayEntity entity = new ByteArrayEntity(entityDescriptorBytes);
-        entity.setContentType(new BasicHeader(HttpHeaders.CONTENT_TYPE, "application/foobar"));
+        BasicClassicHttpResponse httpResponse = new BasicClassicHttpResponse(HttpStatus.SC_OK, "OK");
+        ByteArrayEntity entity = new ByteArrayEntity(entityDescriptorBytes, ContentType.create("application/foobar"));
         httpResponse.setEntity(entity);
         
         XMLObject result = responseHandler.handleResponse(httpResponse);

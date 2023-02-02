@@ -21,8 +21,8 @@ import java.io.IOException;
 
 import javax.annotation.Nullable;
 
-import org.apache.http.client.methods.HttpUriRequest;
-import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.httpclient.HttpClientContextHandler;
@@ -59,7 +59,7 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
     }
     
     /** {@inheritDoc} */
-    public void invokeBefore(final HttpClientContext context, final HttpUriRequest request) throws IOException {
+    public void invokeBefore(final HttpClientContext context, final ClassicHttpRequest request) throws IOException {
         checkComponentActive();
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, false);
@@ -67,10 +67,10 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
     }
 
     /** {@inheritDoc} */
-    public void invokeAfter(final HttpClientContext context, final HttpUriRequest request) throws IOException {
+    public void invokeAfter(final HttpClientContext context, final ClassicHttpRequest request) throws IOException {
         checkComponentActive();
         
-        HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getURI().getScheme());
+        HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getScheme());
     }
 
 }

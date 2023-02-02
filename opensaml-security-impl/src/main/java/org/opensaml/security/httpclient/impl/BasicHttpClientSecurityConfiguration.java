@@ -24,10 +24,10 @@ import java.util.List;
 import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.CredentialsProvider;
-import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.hc.client5.http.auth.AuthScope;
+import org.apache.hc.client5.http.auth.CredentialsProvider;
+import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
+import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.opensaml.security.httpclient.HttpClientSecurityConfiguration;
 import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
@@ -117,7 +117,7 @@ public class BasicHttpClientSecurityConfiguration implements HttpClientSecurityC
         if (credentials != null) {
             AuthScope authScope = scope;
             if (authScope == null) {
-                authScope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT);
+                authScope = new AuthScope(null, -1);
             }
             final BasicCredentialsProvider provider = new BasicCredentialsProvider();
             provider.setCredentials(authScope, credentials);

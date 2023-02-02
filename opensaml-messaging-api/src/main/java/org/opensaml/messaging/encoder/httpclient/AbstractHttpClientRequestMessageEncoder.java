@@ -19,7 +19,7 @@ package org.opensaml.messaging.encoder.httpclient;
 
 import javax.annotation.Nullable;
 
-import org.apache.http.HttpRequest;
+import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
 
@@ -32,15 +32,15 @@ public abstract class AbstractHttpClientRequestMessageEncoder extends AbstractMe
         implements HttpClientRequestMessageEncoder {
 
     /** The HTTP client request. */
-    @Nullable private HttpRequest request;
+    @Nullable private ClassicHttpRequest request;
 
     /** {@inheritDoc} */
-    @Nullable public HttpRequest getHttpRequest() {
+    @Nullable public ClassicHttpRequest getHttpRequest() {
         return request;
     }
 
     /** {@inheritDoc} */
-    public synchronized void setHttpRequest(@Nullable final HttpRequest httpRequest) {
+    public synchronized void setHttpRequest(@Nullable final ClassicHttpRequest httpRequest) {
         checkSetterPreconditions();
 
         request = httpRequest;

@@ -28,7 +28,8 @@ import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
- * A context implementation holding parameters related to {@link org.apache.http.client.HttpClient} security features.
+ * A context implementation holding parameters related to {@link org.apache.hc.client5.http.classic.HttpClient}
+ * security features.
  */
 public final class HttpClientSecurityContext extends BaseContext {
     
