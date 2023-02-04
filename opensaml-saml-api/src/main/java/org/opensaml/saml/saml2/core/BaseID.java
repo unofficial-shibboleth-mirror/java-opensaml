@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -28,24 +29,24 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface BaseID extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "BaseID";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "BaseID";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "BaseIDAbstractType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "BaseIDAbstractType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** NameQualifier attribute name. */
-    public static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
+    @Nonnull public static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
 
     /** SPNameQualifier attribute name. */
-    public static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
+    @Nonnull public static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
 
     /**
      * Gets the NameQualifier value.

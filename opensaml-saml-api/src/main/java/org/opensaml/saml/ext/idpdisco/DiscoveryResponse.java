@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.ext.idpdisco;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -26,9 +27,9 @@ import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 public interface DiscoveryResponse extends IndexedEndpoint {
 
     /** Name of the element inside the Extensions. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoveryResponse";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoveryResponse";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML_IDP_DISCO_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML_IDP_DISCO_PREFIX);
 }

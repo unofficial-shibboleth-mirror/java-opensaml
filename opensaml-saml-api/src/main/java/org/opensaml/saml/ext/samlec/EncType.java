@@ -21,6 +21,7 @@
 
 package org.opensaml.saml.ext.samlec;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -34,10 +35,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface EncType extends XSString, SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncType";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncType";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAMLEC_GSS_PREFIX);
 
 }

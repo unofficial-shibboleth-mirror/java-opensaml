@@ -19,6 +19,7 @@ package org.opensaml.saml.saml1.core;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -31,26 +32,26 @@ import org.opensaml.saml.common.SignableSAMLObject;
 public interface ResponseAbstractType extends SignableSAMLObject {
 
     /** Name for the attribute which defines InResponseTo. */
-    static final String INRESPONSETO_ATTRIB_NAME = "InResponseTo";
+    @Nonnull static final String INRESPONSETO_ATTRIB_NAME = "InResponseTo";
 
     /** Name for the attribute which defines the MajorVersion (which must be "1". */
-    static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
+    @Nonnull static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
 
     /** Name for the attribute which defines the MinorVersion. */
-    static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
+    @Nonnull static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
 
     /** Name for the attribute which defines the IssueInstant. */
-    static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
+    @Nonnull static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** QName for the attribute which defines the IssueInstant. */
-    static final QName ISSUEINSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName ISSUEINSTANT_ATTRIB_QNAME =
             new QName(null, "IssueInstant", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** Name for the attribute which defines the Recipient. */
-    static final String RECIPIENT_ATTRIB_NAME = "Recipient";
+    @Nonnull static final String RECIPIENT_ATTRIB_NAME = "Recipient";
 
     /** Name for the attribute which defines the ResponseID. */
-    static final String ID_ATTRIB_NAME = "ResponseID";
+    @Nonnull static final String ID_ATTRIB_NAME = "ResponseID";
 
     /**
      * Return the InResponseTo (attribute).

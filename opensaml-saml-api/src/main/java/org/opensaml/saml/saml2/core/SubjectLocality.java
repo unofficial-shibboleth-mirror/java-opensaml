@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -28,24 +29,24 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface SubjectLocality extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectLocality";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectLocality";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Address attribute name. */
-    public static final String ADDRESS_ATTRIB_NAME = "Address";
+    @Nonnull public static final String ADDRESS_ATTRIB_NAME = "Address";
 
     /** DNSName attribute name. */
-    public static final String DNS_NAME_ATTRIB_NAME = "DNSName";
+    @Nonnull public static final String DNS_NAME_ATTRIB_NAME = "DNSName";
 
     /**
      * Gets the IP address of the system from which the subject was authenticated.

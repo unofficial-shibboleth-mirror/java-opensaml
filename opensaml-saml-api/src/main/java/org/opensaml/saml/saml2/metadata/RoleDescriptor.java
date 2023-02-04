@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -35,27 +36,27 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
         AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RoleDescriptor";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RoleDescriptor";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RoleDescriptorType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "RoleDescriptorType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "ID" attribute's local name. */
-    public static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull public static final String ID_ATTRIB_NAME = "ID";
 
     /** "protocolEnumeration" attribute's local name. */
-    public static final String PROTOCOL_ENUMERATION_ATTRIB_NAME = "protocolSupportEnumeration";
+    @Nonnull public static final String PROTOCOL_ENUMERATION_ATTRIB_NAME = "protocolSupportEnumeration";
 
     /** "errorURL" attribute's local name. */
-    public static final String ERROR_URL_ATTRIB_NAME = "errorURL";
+    @Nonnull public static final String ERROR_URL_ATTRIB_NAME = "errorURL";
 
     /**
      * Gets the ID of this role descriptor.

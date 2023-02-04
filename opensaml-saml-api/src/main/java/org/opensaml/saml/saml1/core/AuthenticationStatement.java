@@ -20,6 +20,7 @@ package org.opensaml.saml.saml1.core;
 import java.time.Instant;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -32,61 +33,61 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthenticationStatement extends SAMLObject, SubjectStatement {
 
     /** Element name, no namespace. */
-    static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationStatement";
+    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationStatement";
     
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "AuthenticationStatementType"; 
+    @Nonnull static final String TYPE_LOCAL_NAME = "AuthenticationStatementType"; 
         
     /** QName of the XSI type. */
-    static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name of the AuthenticationMethod attribute. */
-    static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod";
+    @Nonnull static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod";
 
     /** Name of the AuthenticationInstant attribute. */
-    static final String AUTHENTICATIONINSTANT_ATTRIB_NAME = "AuthenticationInstant";
+    @Nonnull static final String AUTHENTICATIONINSTANT_ATTRIB_NAME = "AuthenticationInstant";
 
     /** QName of the AuthenticationInstant attribute. */
-    static final QName AUTHENTICATIONINSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName AUTHENTICATIONINSTANT_ATTRIB_QNAME =
             new QName(null, "AuthenticationInstant", XMLConstants.DEFAULT_NS_PREFIX);
 
     /** URI for Kerberos authentication method. */
-    static final String KERBEROS_AUTHN_METHOD = "urn:ietf:rfc:1510";
+    @Nonnull static final String KERBEROS_AUTHN_METHOD = "urn:ietf:rfc:1510";
     
     /** URI for Hardware Token authentication method. */
-    static final String HARDWARE_TOKEN_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:HardwareToken";
+    @Nonnull static final String HARDWARE_TOKEN_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:HardwareToken";
 
     /** URI for Password authentication method. */
-    static final String PASSWORD_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:password";
+    @Nonnull static final String PASSWORD_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:password";
 
     /** URI for X509 Public Key authentication method. */
-    static final String X509_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:X509-PKI";
+    @Nonnull static final String X509_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:X509-PKI";
 
     /** URI for PGP authentication method. */
-    static final String PGP_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:PGP";
+    @Nonnull static final String PGP_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:PGP";
 
     /** URI for SPKI authentication method. */
-    static final String SPKI_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:SPKI";
+    @Nonnull static final String SPKI_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:SPKI";
 
     /** URI for XKMS authentication method. */
-    static final String XKMS_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:XKMS";
+    @Nonnull static final String XKMS_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:XKMS";
     
     /** URI for XML Digital Signature authentication method. */
-    static final String XML_DSIG_AUTHN_METHOD = "urn:ietf:rfc:3075";
+    @Nonnull static final String XML_DSIG_AUTHN_METHOD = "urn:ietf:rfc:3075";
 
     /** URI for Secure Remote Password authentication method. */
-    static final String SRP_AUTHN_METHOD = "urn:ietf:rfc:2945";
+    @Nonnull static final String SRP_AUTHN_METHOD = "urn:ietf:rfc:2945";
 
     /** URI for SSL/TLS Client authentication method. */
-    static final String TLS_CLIENT_AUTHN_METHOD = "urn:ietf:rfc:2246";
+    @Nonnull static final String TLS_CLIENT_AUTHN_METHOD = "urn:ietf:rfc:2246";
 
     /** URI for unspecified authentication method. */
-    static final String UNSPECIFIED_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:unspecified";    
+    @Nonnull static final String UNSPECIFIED_AUTHN_METHOD = "urn:oasis:names:tc:SAML:1.0:am:unspecified";    
     
     /**
      * Return the contents of the AuthenticationMethod attribute.

@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2delrestrict;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -30,10 +31,10 @@ import org.opensaml.saml.saml2.core.Condition;
 public interface DelegationRestrictionType extends Condition {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /**

@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2mdui;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.LangBearing;
@@ -38,17 +39,17 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Keywords extends SAMLObject, LangBearing  {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Keywords";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Keywords";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "KeywordsType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "KeywordsType";
            
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**

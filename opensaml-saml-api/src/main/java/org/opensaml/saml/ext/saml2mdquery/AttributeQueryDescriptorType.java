@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2mdquery;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -30,10 +31,10 @@ import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 public interface AttributeQueryDescriptorType extends QueryDescriptorType {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributeQueryDescriptorType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributeQueryDescriptorType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MDQUERY_PREFIX);
 
     /**

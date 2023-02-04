@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -28,30 +29,30 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface SubjectConfirmation extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Method attribute name. */
-    public static final String METHOD_ATTRIB_NAME = "Method";
+    @Nonnull public static final String METHOD_ATTRIB_NAME = "Method";
     
     /** URI for the Holder of Key subject confirmation method, {@value}. */
-    public static final String METHOD_HOLDER_OF_KEY = "urn:oasis:names:tc:SAML:2.0:cm:holder-of-key";
+    @Nonnull public static final String METHOD_HOLDER_OF_KEY = "urn:oasis:names:tc:SAML:2.0:cm:holder-of-key";
     
     /** URI for the Sender Vouches subject confirmation method, {@value}. */
-    public static final String METHOD_SENDER_VOUCHES = "urn:oasis:names:tc:SAML:2.0:cm:sender-vouches";
+    @Nonnull public static final String METHOD_SENDER_VOUCHES = "urn:oasis:names:tc:SAML:2.0:cm:sender-vouches";
     
     /** URI for the Bearer subject confirmation method, {@value}. */
-    public static final String METHOD_BEARER = "urn:oasis:names:tc:SAML:2.0:cm:bearer";
+    @Nonnull public static final String METHOD_BEARER = "urn:oasis:names:tc:SAML:2.0:cm:bearer";
 
     /**
      * Get the method used to confirm this subject.

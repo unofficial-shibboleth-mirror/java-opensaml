@@ -22,6 +22,7 @@ package org.opensaml.saml.saml1.core;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -33,17 +34,17 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Evidence extends SAMLObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Evidence";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Evidence";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EvidenceType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "EvidenceType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /**

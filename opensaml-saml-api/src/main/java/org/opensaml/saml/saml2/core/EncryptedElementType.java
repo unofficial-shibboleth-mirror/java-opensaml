@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.core;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -32,10 +33,10 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 public interface EncryptedElementType extends SAMLObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncryptedElementType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "EncryptedElementType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
     
     /**

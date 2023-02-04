@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -27,36 +28,36 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface NameIdentifier extends SAMLObject, XSString {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIdentifier";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIdentifier";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "NameIdentifierType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "NameIdentifierType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the attribute which defines Name Qualifier. */
-    public static final String NAMEQUALIFIER_ATTRIB_NAME = "NameQualifier";
+    @Nonnull public static final String NAMEQUALIFIER_ATTRIB_NAME = "NameQualifier";
 
     /** Name for the attribute which defines Name Qualifier. */
-    public static final String FORMAT_ATTRIB_NAME = "Format";
+    @Nonnull public static final String FORMAT_ATTRIB_NAME = "Format";
 
     /** URI for unspecified name format. */
-    public static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+    @Nonnull public static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
     /** URI for email name format. */
-    public static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
+    @Nonnull public static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
 
     /** URI for X509 subject name format. */
-    public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
+    @Nonnull public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
 
     /** URI for windows domain qualified name name format. */
-    public static final String WIN_DOMAIN_QUALIFIED =
+    @Nonnull public static final String WIN_DOMAIN_QUALIFIED =
             "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
     
     /**

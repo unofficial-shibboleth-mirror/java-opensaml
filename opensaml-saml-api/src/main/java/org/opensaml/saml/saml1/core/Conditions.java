@@ -20,6 +20,7 @@ package org.opensaml.saml.saml1.core;
 import java.time.Instant;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -32,30 +33,30 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Conditions extends SAMLObject {
 
     /** Element name, no namespace. */
-    static final String DEFAULT_ELEMENT_LOCAL_NAME = "Conditions";
+    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "Conditions";
     
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "ConditionsType"; 
+    @Nonnull static final String TYPE_LOCAL_NAME = "ConditionsType"; 
         
     /** QName of the XSI type. */
-    static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the NotBefore attribute. */
-    static final String NOTBEFORE_ATTRIB_NAME = "NotBefore";
+    @Nonnull static final String NOTBEFORE_ATTRIB_NAME = "NotBefore";
 
     /** QName for the NotBefore attribute. */
-    static final QName NOTBEFORE_ATTRIB_QNAME = new QName(null, "NotBefore", XMLConstants.DEFAULT_NS_PREFIX);
+    @Nonnull static final QName NOTBEFORE_ATTRIB_QNAME = new QName(null, "NotBefore", XMLConstants.DEFAULT_NS_PREFIX);
 
     /** Name for the NotOnOrAfter attribute. */
-    static final String NOTONORAFTER_ATTRIB_NAME = "NotOnOrAfter";
+    @Nonnull static final String NOTONORAFTER_ATTRIB_NAME = "NotOnOrAfter";
 
     /** QName for the NotOnOrAfter attribute. */
-    static final QName NOTONORAFTER_ATTRIB_QNAME =
+    @Nonnull static final QName NOTONORAFTER_ATTRIB_QNAME =
             new QName(null, "NotOnOrAfter", XMLConstants.DEFAULT_NS_PREFIX);
 
     /**

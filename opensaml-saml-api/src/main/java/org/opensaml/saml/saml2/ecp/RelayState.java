@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.ecp;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -31,17 +32,17 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public interface RelayState extends XSString, SAMLObject, MustUnderstandBearing, ActorBearing {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RelayState";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RelayState";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RelayStateType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "RelayStateType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
 }

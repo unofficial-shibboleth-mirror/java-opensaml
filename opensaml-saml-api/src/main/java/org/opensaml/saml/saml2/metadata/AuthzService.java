@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -27,9 +28,9 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthzService extends Endpoint {
 
     /** Default element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthzService";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthzService";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 }

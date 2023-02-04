@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -27,17 +28,17 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface SubjectQuery extends Query {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SubjectQueryAbstractType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "SubjectQueryAbstractType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /**

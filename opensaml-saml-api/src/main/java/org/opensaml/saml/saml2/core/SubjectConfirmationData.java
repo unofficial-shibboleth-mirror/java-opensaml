@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.core;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -33,40 +34,40 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface SubjectConfirmationData extends SAMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Element local name. */
-    static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmationData";
+    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmationData";
 
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "SubjectConfirmationDataType";
+    @Nonnull static final String TYPE_LOCAL_NAME = "SubjectConfirmationDataType";
 
     /** QName of the XSI type. */
-    static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** NotBefore attribute name. */
-    static final String NOT_BEFORE_ATTRIB_NAME = "NotBefore";
+    @Nonnull static final String NOT_BEFORE_ATTRIB_NAME = "NotBefore";
 
     /** QName for the NotBefore attribute. */
-    static final QName NOT_BEFORE_ATTRIB_QNAME = new QName(null, "NotBefore", XMLConstants.DEFAULT_NS_PREFIX);
+    @Nonnull static final QName NOT_BEFORE_ATTRIB_QNAME = new QName(null, "NotBefore", XMLConstants.DEFAULT_NS_PREFIX);
 
     /** Name for the NotOnOrAfter attribute. */
-    static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
+    @Nonnull static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
 
     /** QName for the NotOnOrAfter attribute. */
-    static final QName NOT_ON_OR_AFTER_ATTRIB_QNAME =
+    @Nonnull static final QName NOT_ON_OR_AFTER_ATTRIB_QNAME =
             new QName(null, "NotOnOrAfter", XMLConstants.DEFAULT_NS_PREFIX);
 
     /** Recipient attribute name. */
-    static final String RECIPIENT_ATTRIB_NAME = "Recipient";
+    @Nonnull static final String RECIPIENT_ATTRIB_NAME = "Recipient";
 
     /** InResponseTo attribute name. */
-    static final String IN_RESPONSE_TO_ATTRIB_NAME = "InResponseTo";
+    @Nonnull static final String IN_RESPONSE_TO_ATTRIB_NAME = "InResponseTo";
 
     /** Address attribute name. */
-    static final String ADDRESS_ATTRIB_NAME = "Address";
+    @Nonnull static final String ADDRESS_ATTRIB_NAME = "Address";
 
     /**
      * Gets the time before which this subject is not valid.

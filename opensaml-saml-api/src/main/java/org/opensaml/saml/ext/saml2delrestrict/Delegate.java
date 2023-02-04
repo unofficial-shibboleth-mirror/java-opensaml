@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2delrestrict;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -34,28 +35,28 @@ import org.opensaml.saml.saml2.core.NameID;
 public interface Delegate extends SAMLObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Delegate";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Delegate";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "DelegateType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "DelegateType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /** DelegationInstant attribute name. */
-    public static final String DELEGATION_INSTANT_ATTRIB_NAME = "DelegationInstant";
+    @Nonnull public static final String DELEGATION_INSTANT_ATTRIB_NAME = "DelegationInstant";
 
     /** DelegationInstant attribute QName. */
-    public static final QName DELEGATION_INSTANT_ATTRIB_QNAME =
+    @Nonnull public static final QName DELEGATION_INSTANT_ATTRIB_QNAME =
             new QName(null, DELEGATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
     /** ConfirmationMethod attribute name. */
-    public static final String CONFIRMATION_METHOD_ATTRIB_NAME = "ConfirmationMethod";    
+    @Nonnull public static final String CONFIRMATION_METHOD_ATTRIB_NAME = "ConfirmationMethod";    
 
     /**
      * Gets the BaseID child element of the delegate.
@@ -69,7 +70,7 @@ public interface Delegate extends SAMLObject {
      * 
      * @param newBaseID the base identifier of the delegate
      */
-    public void setBaseID(BaseID newBaseID);
+    public void setBaseID(@Nonnull BaseID newBaseID);
 
     /**
      * Gets the NameID child element of the delegate.
@@ -83,7 +84,7 @@ public interface Delegate extends SAMLObject {
      * 
      * @param newNameID the name identifier of the delegate
      */
-    public void setNameID(NameID newNameID);
+    public void setNameID(@Nonnull NameID newNameID);
 
     /**
      * Gets the EncryptedID child element of the delegate.

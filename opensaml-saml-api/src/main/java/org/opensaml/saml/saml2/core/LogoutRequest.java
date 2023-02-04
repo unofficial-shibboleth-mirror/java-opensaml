@@ -23,6 +23,7 @@ package org.opensaml.saml.saml2.core;
 import java.time.Instant;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -34,40 +35,40 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface LogoutRequest extends RequestAbstractType {
     
     /** Element local name. */
-    static final String DEFAULT_ELEMENT_LOCAL_NAME = "LogoutRequest";
+    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "LogoutRequest";
     
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "LogoutRequestType"; 
+    @Nonnull static final String TYPE_LOCAL_NAME = "LogoutRequestType"; 
         
     /** QName of the XSI type. */
-    static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Reason attribute name. */
-    static final String REASON_ATTRIB_NAME = "Reason";
+    @Nonnull static final String REASON_ATTRIB_NAME = "Reason";
     
     /** NotOnOrAfter attribute name. */
-    static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
+    @Nonnull static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
 
     /** QName for the NotOnOrAfter attribute. */
-    static final QName NOT_ON_OR_AFTER_ATTRIB_QNAME =
+    @Nonnull static final QName NOT_ON_OR_AFTER_ATTRIB_QNAME =
             new QName(null, "NotOnOrAfter", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** User-initiated logout reason. */
-    static final String USER_REASON = "urn:oasis:names:tc:SAML:2.0:logout:user";
+    @Nonnull static final String USER_REASON = "urn:oasis:names:tc:SAML:2.0:logout:user";
 
     /** Admin-initiated logout reason. */
-    static final String ADMIN_REASON = "urn:oasis:names:tc:SAML:2.0:logout:admin";
+    @Nonnull static final String ADMIN_REASON = "urn:oasis:names:tc:SAML:2.0:logout:admin";
     
     /** Global timeout logout reason. */
-    static final String GLOBAL_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:global-timeout";
+    @Nonnull static final String GLOBAL_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:global-timeout";
     
     /** SP timeout logout reason. */
-    static final String SP_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:sp-timeout";
+    @Nonnull static final String SP_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:sp-timeout";
     
     /**
      * Get the Reason attrib value of the request.

@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.samlec;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -34,21 +35,21 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 public interface SessionKey extends SAMLObject, MustUnderstandBearing, ActorBearing {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SessionKey";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SessionKey";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SessionKeyType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "SessionKeyType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Algorithm attribute name. */
-    public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /**
      * Get the session key derivation algorithm.

@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -30,27 +31,27 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Endpoint extends SAMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Endpoint";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Endpoint";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EndpointType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "EndpointType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "Binding" attribute name. */
-    public static final String BINDING_ATTRIB_NAME = "Binding";
+    @Nonnull public static final String BINDING_ATTRIB_NAME = "Binding";
 
     /** "Location" attribute name. */
-    public static final String LOCATION_ATTRIB_NAME = "Location";
+    @Nonnull public static final String LOCATION_ATTRIB_NAME = "Location";
 
     /** "ResponseLocation" attribute name. */
-    public static final String RESPONSE_LOCATION_ATTRIB_NAME = "ResponseLocation";
+    @Nonnull public static final String RESPONSE_LOCATION_ATTRIB_NAME = "ResponseLocation";
 
     /**
      * Gets the URI identifier for the binding supported by this Endpoint.

@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -28,58 +29,58 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface StatusCode extends SAMLObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusCode";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusCode";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML1P_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "StatusCodeType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "StatusCodeType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML1P_PREFIX);
 
     /** Success status value. */
-    public static final QName SUCCESS = new QName(SAMLConstants.SAML10P_NS, "Success", SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName SUCCESS = new QName(SAMLConstants.SAML10P_NS, "Success", SAMLConstants.SAML1P_PREFIX);
 
     /** VersionMismatch status value. */
-    public static final QName VERSION_MISMATCH = new QName(SAMLConstants.SAML10P_NS, "VersionMismatch",
+    @Nonnull public static final QName VERSION_MISMATCH = new QName(SAMLConstants.SAML10P_NS, "VersionMismatch",
             SAMLConstants.SAML1P_PREFIX);
 
     /** Requester status value. */
-    public static final QName REQUESTER = new QName(SAMLConstants.SAML10P_NS, "Requester", SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName REQUESTER = new QName(SAMLConstants.SAML10P_NS, "Requester", SAMLConstants.SAML1P_PREFIX);
 
     /** Responder status value. */
-    public static final QName RESPONDER = new QName(SAMLConstants.SAML10P_NS, "Responder", SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName RESPONDER = new QName(SAMLConstants.SAML10P_NS, "Responder", SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionTooHigh status value. */
-    public static final QName REQUEST_VERSION_TOO_HIGH = new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooHigh",
+    @Nonnull public static final QName REQUEST_VERSION_TOO_HIGH = new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooHigh",
             SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionTooLow status value. */
-    public static final QName REQUEST_VERSION_TOO_LOW = new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooLow",
+    @Nonnull public static final QName REQUEST_VERSION_TOO_LOW = new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooLow",
             SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionDepricated status value. */
-    public static final QName REQUEST_VERSION_DEPRECATED = new QName(SAMLConstants.SAML10P_NS,
+    @Nonnull public static final QName REQUEST_VERSION_DEPRECATED = new QName(SAMLConstants.SAML10P_NS,
             "RequestVersionDeprecated", SAMLConstants.SAML1P_PREFIX);
 
     /** TooManyResponses status value. */
-    public static final QName TOO_MANY_RESPONSES = new QName(SAMLConstants.SAML10P_NS, "TooManyResponses",
+    @Nonnull public static final QName TOO_MANY_RESPONSES = new QName(SAMLConstants.SAML10P_NS, "TooManyResponses",
             SAMLConstants.SAML1P_PREFIX);
 
     /** RequestDenied status value. */
-    public static final QName REQUEST_DENIED = new QName(SAMLConstants.SAML10P_NS, "RequestDenied",
+    @Nonnull public static final QName REQUEST_DENIED = new QName(SAMLConstants.SAML10P_NS, "RequestDenied",
             SAMLConstants.SAML1P_PREFIX);
 
     /** ResourceNotRecognized status value. */
-    public static final QName RESOURCE_NOT_RECOGNIZED = new QName(SAMLConstants.SAML10P_NS, "ResourceNotRecognized",
+    @Nonnull public static final QName RESOURCE_NOT_RECOGNIZED = new QName(SAMLConstants.SAML10P_NS, "ResourceNotRecognized",
             SAMLConstants.SAML1P_PREFIX);
 
     /** Name for the attribute which defines the Value. */
-    public static final String VALUE_ATTRIB_NAME = "Value";
+    @Nonnull public static final String VALUE_ATTRIB_NAME = "Value";
 
     /**
      * Gets the value of the status code.

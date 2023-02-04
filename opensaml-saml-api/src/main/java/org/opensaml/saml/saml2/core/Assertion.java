@@ -34,31 +34,31 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Assertion extends SignableSAMLObject, Evidentiary {
 
     /** Element local name. */
-    static final String DEFAULT_ELEMENT_LOCAL_NAME = "Assertion";
+    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "Assertion";
 
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "AssertionType";
+    @Nonnull static final String TYPE_LOCAL_NAME = "AssertionType";
 
     /** QName of the XSI type. */
-    static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Version attribute name. */
-    static final String VERSION_ATTRIB_NAME = "Version";
+    @Nonnull static final String VERSION_ATTRIB_NAME = "Version";
 
     /** IssueInstant attribute name. */
-    static final String ISSUE_INSTANT_ATTRIB_NAME = "IssueInstant";
+    @Nonnull static final String ISSUE_INSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** IssueInstant attribute QName. */
     @Nonnull static final QName ISSUEINSTANT_ATTRIB_QNAME =
             new QName(null, "IssueInstant", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** ID attribute name. */
-    static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull static final String ID_ATTRIB_NAME = "ID";
 
     /**
      * Gets the SAML Version of this assertion.

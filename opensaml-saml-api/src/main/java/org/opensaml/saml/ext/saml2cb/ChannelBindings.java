@@ -21,6 +21,7 @@
 
 package org.opensaml.saml.ext.saml2cb;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBase64Binary;
@@ -36,21 +37,21 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public interface ChannelBindings extends XSBase64Binary, MustUnderstandBearing, ActorBearing, SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ChannelBindings";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ChannelBindings";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20CB_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20CB_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ChannelBindingsType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "ChannelBindingsType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20CB_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20CB_PREFIX);
 
     /** Type attribute name. */
-    public static final String TYPE_ATTRIB_NAME = "Type";
+    @Nonnull public static final String TYPE_ATTRIB_NAME = "Type";
 
     /**
      * Get the Type attribute value.
@@ -64,5 +65,5 @@ public interface ChannelBindings extends XSBase64Binary, MustUnderstandBearing, 
      * 
      * @param newType the new Type attribute value
      */
-    public void setType(String newType);
+    public void setType(@Nonnull String newType);
 }

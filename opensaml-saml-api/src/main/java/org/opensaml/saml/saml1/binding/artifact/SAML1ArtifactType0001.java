@@ -19,6 +19,8 @@ package org.opensaml.saml.saml1.binding.artifact;
 
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.saml.common.binding.artifact.SAMLSourceIDArtifact;
 
 /**
@@ -28,7 +30,7 @@ import org.opensaml.saml.common.binding.artifact.SAMLSourceIDArtifact;
 public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAMLSourceIDArtifact {
 
     /** Artifact type code (0x0001). */
-    public static final byte[] TYPE_CODE = { 0, 1 };
+    @Nonnull public static final byte[] TYPE_CODE = { 0, 1 };
 
     /** 20 byte artifact source ID. */
     private byte[] sourceID;

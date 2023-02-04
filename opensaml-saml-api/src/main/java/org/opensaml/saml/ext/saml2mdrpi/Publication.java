@@ -19,6 +19,7 @@ package org.opensaml.saml.ext.saml2mdrpi;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -35,31 +36,31 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Publication extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Publication";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Publication";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "PublicationType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "PublicationType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** publisher attribute name. */
-    public static String PUBLISHER_ATTRIB_NAME = "publisher";
+    @Nonnull public static String PUBLISHER_ATTRIB_NAME = "publisher";
 
     /** creation attribute name. */
-    public static String CREATION_INSTANT_ATTRIB_NAME = "creationInstant";
+    @Nonnull public static String CREATION_INSTANT_ATTRIB_NAME = "creationInstant";
 
     /** QName of the creation attribute. */
-    public static final QName CREATION_INSTANT_ATTRIB_QNAME =
+    @Nonnull public static final QName CREATION_INSTANT_ATTRIB_QNAME =
             new QName(null, CREATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
     /** publication id attribute name. */
-    public static String PUBLICATION_ID_ATTRIB_NAME = "publicationId";
+    @Nonnull public static String PUBLICATION_ID_ATTRIB_NAME = "publicationId";
 
     /**
      * Get the publisher.

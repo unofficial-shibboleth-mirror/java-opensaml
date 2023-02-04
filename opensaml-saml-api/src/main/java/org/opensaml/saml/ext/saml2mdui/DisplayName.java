@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.ext.saml2mdui;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -37,7 +38,7 @@ public interface DisplayName extends LocalizedName {
     public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DisplayName";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
 }

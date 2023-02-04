@@ -23,6 +23,7 @@ package org.opensaml.saml.saml2.core;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -34,21 +35,21 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface RequestedAuthnContext extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAuthnContext";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAuthnContext";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RequestedAuthnContextType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "RequestedAuthnContextType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** SessionIndex attribute name. */
-    public static final String COMPARISON_ATTRIB_NAME = "Comparison";
+    @Nonnull public static final String COMPARISON_ATTRIB_NAME = "Comparison";
 
     /**
      * Gets the Comparison attribute value of the requested authn context.

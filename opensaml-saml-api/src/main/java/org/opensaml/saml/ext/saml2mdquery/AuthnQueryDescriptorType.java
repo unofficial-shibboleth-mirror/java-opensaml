@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.ext.saml2mdquery;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -27,9 +28,9 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthnQueryDescriptorType extends QueryDescriptorType {
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AuthnQueryDescriptorType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthnQueryDescriptorType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MDQUERY_PREFIX);
 }

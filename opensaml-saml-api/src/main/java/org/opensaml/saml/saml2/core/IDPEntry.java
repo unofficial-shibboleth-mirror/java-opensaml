@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -28,27 +29,27 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface IDPEntry extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPEntry";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPEntry";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "IDPEntryType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "IDPEntryType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** ProviderID attribute name. */
-    public static final String PROVIDER_ID_ATTRIB_NAME = "ProviderID";
+    @Nonnull public static final String PROVIDER_ID_ATTRIB_NAME = "ProviderID";
 
     /** Name attribute name. */
-    public static final String NAME_ATTRIB_NAME = "Name";
+    @Nonnull public static final String NAME_ATTRIB_NAME = "Name";
 
     /** Loc attribute name. */
-    public static final String LOC_ATTRIB_NAME = "Loc";
+    @Nonnull public static final String LOC_ATTRIB_NAME = "Loc";
 
     /**
      * Gets ProviderID URI.

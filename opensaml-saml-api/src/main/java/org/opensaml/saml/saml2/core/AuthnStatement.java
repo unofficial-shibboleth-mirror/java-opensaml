@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.core;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -30,34 +31,34 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthnStatement extends Statement {
 
     /** Element local name. */
-    static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnStatement";
+    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnStatement";
 
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "AuthnStatementType";
+    @Nonnull static final String TYPE_LOCAL_NAME = "AuthnStatementType";
 
     /** QName of the XSI type. */
-    static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** AuthnInstant attribute name. */
-    static final String AUTHN_INSTANT_ATTRIB_NAME = "AuthnInstant";
+    @Nonnull static final String AUTHN_INSTANT_ATTRIB_NAME = "AuthnInstant";
 
     /** AuthnInstant attribute QName. */
-    static final QName AUTHN_INSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName AUTHN_INSTANT_ATTRIB_QNAME =
             new QName(null, "AuthnInstant", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** SessionIndex attribute name. */
-    static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
+    @Nonnull static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
 
     /** SessionNoOnOrAfter attribute name. */
-    static final String SESSION_NOT_ON_OR_AFTER_ATTRIB_NAME = "SessionNotOnOrAfter";
+    @Nonnull static final String SESSION_NOT_ON_OR_AFTER_ATTRIB_NAME = "SessionNotOnOrAfter";
 
     /** SessionNotOnOrAfter attribute QName. */
-    static final QName SESSION_NOT_ON_OR_AFTER_ATTRIB_QNAME =
+    @Nonnull static final QName SESSION_NOT_ON_OR_AFTER_ATTRIB_QNAME =
             new QName(null, "SessionNotOnOrAfter", XMLConstants.DEFAULT_NS_PREFIX);
 
     /**

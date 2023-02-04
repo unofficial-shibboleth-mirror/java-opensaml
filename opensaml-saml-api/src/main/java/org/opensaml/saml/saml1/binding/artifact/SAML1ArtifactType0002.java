@@ -19,6 +19,8 @@ package org.opensaml.saml.saml1.binding.artifact;
 
 import java.util.Arrays;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.saml.common.binding.artifact.SAMLSourceLocationArtifact;
 
 import net.shibboleth.shared.primitive.StringSupport;
@@ -30,7 +32,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAMLSourceLocationArtifact {
 
     /** Artifact type code (0x0002). */
-    public static final byte[] TYPE_CODE = { 0, 2 };
+    @Nonnull public static final byte[] TYPE_CODE = { 0, 2 };
 
     /** 20 byte assertion handle. */
     private byte[] assertionHandle;

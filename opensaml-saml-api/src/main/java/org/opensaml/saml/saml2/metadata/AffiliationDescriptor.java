@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.metadata;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -34,24 +35,24 @@ public interface AffiliationDescriptor extends SignableSAMLObject, TimeBoundSAML
         AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AffiliationDescriptor";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AffiliationDescriptor";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AffiliationDescriptorType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "AffiliationDescriptorType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "affiliationOwnerID" attribute's local name. */
-    public static final String OWNER_ID_ATTRIB_NAME = "affiliationOwnerID";
+    @Nonnull public static final String OWNER_ID_ATTRIB_NAME = "affiliationOwnerID";
 
     /** ID attribute's local name. */
-    public static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull public static final String ID_ATTRIB_NAME = "ID";
 
     /**
      * Gets the ID of the owner of this affiliation. The owner may, or may not, be a member of the affiliation.

@@ -21,6 +21,7 @@
 
 package org.opensaml.saml.ext.saml2aslo;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -32,16 +33,16 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Asynchronous extends SAMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Asynchronous";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Asynchronous";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PASLO_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PASLO_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20PASLO_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AsynchronousType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "AsynchronousType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20PASLO_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20PASLO_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20PASLO_PREFIX);
 }

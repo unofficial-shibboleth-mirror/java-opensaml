@@ -20,6 +20,7 @@
  */
 package org.opensaml.saml.saml1.core;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -30,21 +31,21 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthenticationQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationQuery";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationQuery";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AuthenticationQueryType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthenticationQueryType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** AuthenticationMethod attribute name. */
-    public static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod"; 
+    @Nonnull public static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod"; 
 
     /**
      * Get AuthenticationMethod attribute.

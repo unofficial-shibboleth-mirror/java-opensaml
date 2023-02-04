@@ -24,6 +24,7 @@ package org.opensaml.saml.saml1.core;
 import java.time.Instant;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -36,20 +37,20 @@ import org.opensaml.saml.common.SignableSAMLObject;
 public interface RequestAbstractType extends SignableSAMLObject {
 
     /** Name for the attribute which defines the MajorVersion (which must be "1". */
-    static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
+    @Nonnull static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
 
     /** Name for the attribute which defines the MinorVersion. */
-    static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
+    @Nonnull static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
 
     /** Name for the attribute which defines the IssueInstant. */
-    static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
+    @Nonnull static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
     
     /** QName for the attribute which defines the IssueInstant. */
-    static final QName ISSUEINSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName ISSUEINSTANT_ATTRIB_QNAME =
             new QName(null, "IssueInstant", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** Name for the attribute which defines the Issue Instant. */
-    static final String ID_ATTRIB_NAME = "RequestID";
+    @Nonnull static final String ID_ATTRIB_NAME = "RequestID";
 
     /**
      * Gets the SAML version of this message.

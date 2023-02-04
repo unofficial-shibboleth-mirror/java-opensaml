@@ -23,6 +23,7 @@ package org.opensaml.saml.saml2.core;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -36,54 +37,54 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface StatusResponseType extends SignableSAMLObject {
 
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "StatusResponseType";
+    @Nonnull static final String TYPE_LOCAL_NAME = "StatusResponseType";
 
     /** QName of the XSI type. */
-    static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** ID attribute name. */
-    static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull static final String ID_ATTRIB_NAME = "ID";
 
     /** InResponseTo attribute name. */
-    static final String IN_RESPONSE_TO_ATTRIB_NAME = "InResponseTo";
+    @Nonnull static final String IN_RESPONSE_TO_ATTRIB_NAME = "InResponseTo";
 
     /** Version attribute name. */
-    static final String VERSION_ATTRIB_NAME = "Version";
+    @Nonnull static final String VERSION_ATTRIB_NAME = "Version";
 
     /** IssueInstant attribute name. */
-    static final String ISSUE_INSTANT_ATTRIB_NAME = "IssueInstant";
+    @Nonnull static final String ISSUE_INSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** QName for the attribute which defines the IssueInstant. */
-    static final QName ISSUE_INSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName ISSUE_INSTANT_ATTRIB_QNAME =
             new QName(null, "IssueInstant", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** Destination attribute name. */
-    static final String DESTINATION_ATTRIB_NAME = "Destination";
+    @Nonnull static final String DESTINATION_ATTRIB_NAME = "Destination";
 
     /** Consent attribute name. */
-    static final String CONSENT_ATTRIB_NAME = "Consent";
+    @Nonnull static final String CONSENT_ATTRIB_NAME = "Consent";
 
     /** Unspecified consent URI. */
-    static final String UNSPECIFIED_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:unspecified";
+    @Nonnull static final String UNSPECIFIED_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:unspecified";
 
     /** Obtained consent URI. */
-    static final String OBTAINED_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:obtained";
+    @Nonnull static final String OBTAINED_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:obtained";
 
     /** Prior consent URI. */
-    static final String PRIOR_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:prior";
+    @Nonnull static final String PRIOR_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:prior";
 
     /** Implicit consent URI. */
-    static final String IMPLICIT_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:current-implicit";
+    @Nonnull static final String IMPLICIT_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:current-implicit";
 
     /** Explicit consent URI. */
-    static final String EXPLICIT_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:current-explicit";
+    @Nonnull static final String EXPLICIT_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:current-explicit";
 
     /** Unavailable consent URI. */
-    static final String UNAVAILABLE_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:unavailable";
+    @Nonnull static final String UNAVAILABLE_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:unavailable";
 
     /** Inapplicable consent URI. */
-    static final String INAPPLICABLE_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:inapplicable";
+    @Nonnull static final String INAPPLICABLE_CONSENT = "urn:oasis:names:tc:SAML:2.0:consent:inapplicable";
 
     /**
      * Gets the SAML Version of this response.
