@@ -30,12 +30,6 @@
 
         <dependency>
             <groupId>${project.groupId}</groupId>
-            <artifactId>opensaml-core-api</artifactId>
-            <version>${project.version}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-messaging-api</artifactId>
             <version>${project.version}</version>
         </dependency>
@@ -117,6 +111,12 @@
         <dependency>
             <groupId>org.ldaptive</groupId>
             <artifactId>ldaptive</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>${spring.groupId}</groupId>
+            <artifactId>spring-core</artifactId>
             <scope>test</scope>
         </dependency>
 
