@@ -24,7 +24,8 @@ import org.opensaml.messaging.decoder.MessageDecoder;
 
 
 /**
- * A specialization of {@link MessageDecoder} that operates on a source message data type of {@link HttpResponse}.
+ * A specialization of {@link MessageDecoder} that operates on a source message data type of
+ * {@link ClassicHttpResponse}.
  */
 public interface HttpClientResponseMessageDecoder extends MessageDecoder {
     

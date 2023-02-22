@@ -29,7 +29,8 @@ import org.springframework.beans.factory.config.AbstractFactoryBean;
 import net.shibboleth.shared.httpclient.HttpClientSupport;
 
 /**
- * A factory bean for producing instances of {@link LayeredConnectionSocketFactory} for use in {@link HttpClient}.
+ * A factory bean for producing instances of {@link LayeredConnectionSocketFactory} for use in
+ * {@link org.apache.hc.client5.http.classic.HttpClient}.
  */
 public class TLSSocketFactoryFactoryBean extends AbstractFactoryBean<LayeredConnectionSocketFactory> {
     

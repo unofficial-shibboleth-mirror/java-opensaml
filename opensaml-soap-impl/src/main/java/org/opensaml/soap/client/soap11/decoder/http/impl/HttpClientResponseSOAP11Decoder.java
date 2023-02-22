@@ -41,7 +41,7 @@ import org.slf4j.LoggerFactory;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
- * Basic SOAP 1.1 decoder for HTTP transport via an HttpClient's {@link HttpResponse}.
+ * Basic SOAP 1.1 decoder for HTTP transport via an HttpClient's {@link ClassicHttpResponse}.
  * 
  * <p>
  * This decoder takes a mandatory {@link MessageHandler} instance which is used to

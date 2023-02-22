@@ -182,7 +182,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
      * </p>
      *
      * @param socket the current socket being evaluated
-     * @throws IOException
+     * @throws IOException if the certificate chain was not trusted by the supplied TrustEngine
      */
     protected void checkAndEvaluateServerTLS(@Nonnull final Socket socket) throws IOException {
         if (!SSLSocket.class.isInstance(socket)) {

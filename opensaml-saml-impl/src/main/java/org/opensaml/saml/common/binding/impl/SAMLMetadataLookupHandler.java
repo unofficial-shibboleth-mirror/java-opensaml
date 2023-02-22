@@ -135,7 +135,7 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * <p>Defaults to parent lookup. If set and found, a {@link ProfileRequestContextCriterion} will be included
      * in the attempt.</p>
      * 
-     * @param strategy
+     * @param strategy the lookup strategy
      * 
      * @since 5.0.0
      */

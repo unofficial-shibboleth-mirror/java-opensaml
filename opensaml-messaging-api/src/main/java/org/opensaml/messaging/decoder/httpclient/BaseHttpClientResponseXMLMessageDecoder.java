@@ -38,7 +38,8 @@ import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
- * Base class for message decoders which decode XML messages from an {@link HttpResponse}.
+ * Base class for message decoders which decode XML messages from a
+ * {@link org.apache.hc.core5.http.ClassicHttpResponse}.
  */
 public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHttpClientResponseMessageDecoder {
     

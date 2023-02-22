@@ -37,8 +37,8 @@ import org.slf4j.LoggerFactory;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
- * Handler implementation that checks and records the result of {@link HttpClient} server TLS authentication 
- * as stored in the @link {@link HttpClientContext} resolved via strategy function.
+ * Handler implementation that checks and records the result of {@link org.apache.hc.client5.http.classic.HttpClient}
+ * server TLS authentication as stored in the @link {@link HttpClientContext} resolved via strategy function.
  * 
  * <p>
  * If server TLS was performed and successful, 

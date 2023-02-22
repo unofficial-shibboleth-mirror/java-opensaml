@@ -49,7 +49,7 @@ import org.slf4j.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
- * Basic SOAP 1.1 encoder for HTTP transport via an HttpClient's {@link HttpRequest}.
+ * Basic SOAP 1.1 encoder for HTTP transport via an HttpClient's {@link ClassicHttpRequest}.
  */
 public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMessageEncoder {
     
@@ -182,7 +182,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
     
     /**
      * <p>
-     * This implementation performs the following actions on the context's {@link HttpRequest}:
+     * This implementation performs the following actions on the context's {@link ClassicHttpRequest}:
      * </p>
      * <ol>
      *   <li>Sets the SOAPAction HTTP header the value returned by {@link #getSOAPAction()}, if

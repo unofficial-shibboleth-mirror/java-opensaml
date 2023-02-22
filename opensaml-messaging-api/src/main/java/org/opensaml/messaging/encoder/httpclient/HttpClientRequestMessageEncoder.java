@@ -23,7 +23,7 @@ import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.messaging.encoder.MessageEncoder;
 
 /**
- * A specialization of {@link MessageEncoder} that operates on a sink message data type of {@link HttpRequest}.
+ * A specialization of {@link MessageEncoder} that operates on a sink message data type of {@link ClassicHttpRequest}.
  */
 public interface HttpClientRequestMessageEncoder extends MessageEncoder {
     

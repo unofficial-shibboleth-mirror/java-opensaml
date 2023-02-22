@@ -35,7 +35,8 @@ import net.shibboleth.shared.httpclient.TLSSocketFactoryBuilder;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
- * Support class for working with security-enhanced components related to use of {@link HttpClient}.
+ * Support class for working with security-enhanced components related to use of
+ * {@link org.apache.hc.client5.http.classic.HttpClient}.
  */
 public final class SecurityEnhancedHttpClientSupport {
     

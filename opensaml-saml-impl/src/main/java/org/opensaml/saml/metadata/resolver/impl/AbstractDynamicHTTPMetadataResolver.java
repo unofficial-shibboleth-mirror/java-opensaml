@@ -71,7 +71,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             new String[] {"application/samlmetadata+xml", "application/xml", "text/xml"};
     
     /** MDC attribute representing the current request URI. Will be available during the execution of the 
-     * configured {@link ResponseHandler}. */
+     * configured {@link HttpClientResponseHandler}. */
     public static final String MDC_ATTRIB_CURRENT_REQUEST_URI = 
             AbstractDynamicHTTPMetadataResolver.class.getName() + ".currentRequestURI";
     
@@ -275,7 +275,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     }
         
     /**
-     * Build an appropriate instance of {@link HttpUriRequest} based on the input criteria set.
+     * Build an appropriate instance of {@link ClassicHttpRequest} based on the input criteria set.
      * 
      * @param criteria the input criteria set
      * @return the newly constructed request, or null if it can not be built from the supplied criteria

@@ -39,6 +39,7 @@ public final class AssertionValidationSupport {
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(AssertionValidationSupport.class);
     
+    /** Constructor. */
     private AssertionValidationSupport() { }
     
     /**

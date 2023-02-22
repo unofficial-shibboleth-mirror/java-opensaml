@@ -34,6 +34,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
  */
 public final class ThreadLocalX509TrustEngineContext {
     
+    /** Unified class representing the data that will be managed by the thread local storage. */
     private static final class Data {
         
         /** Trust engine. */
@@ -48,6 +49,13 @@ public final class ThreadLocalX509TrustEngineContext {
         /** Whether trust engine evaluation failure should be treated as fatal. Defaults to true. */
         private Boolean failureFatal;
         
+        /**
+         * Constructor.
+         *
+         * @param engine the trust engine
+         * @param criteria the trust criteria
+         * @param fatal whether trust engine failure should be treated as fatal
+         */
         private Data(@Nonnull final TrustEngine<? super X509Credential> engine, @Nonnull final CriteriaSet criteria,
                 @Nullable final Boolean fatal) {
             
