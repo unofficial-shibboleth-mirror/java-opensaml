@@ -297,7 +297,7 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nullable public static Collection<X509Certificate> decodeCertificates(@Nonnull final File certs)
+    @Nonnull public static Collection<X509Certificate> decodeCertificates(@Nonnull final File certs)
             throws CertificateException {
         Constraint.isNotNull(certs, "Input file cannot be null");
         if (!certs.exists()) {
@@ -346,7 +346,7 @@ public class X509Support {
      * 
      * @throws CertificateException thrown if the certificates cannot be decoded
      */
-    @Nullable public static Collection<X509Certificate> decodeCertificates(@Nonnull final byte[] certs)
+    @Nonnull public static Collection<X509Certificate> decodeCertificates(@Nonnull final byte[] certs)
             throws CertificateException {
         try {
             return Arrays.asList(CertUtil.decodeCertificateChain(certs));
