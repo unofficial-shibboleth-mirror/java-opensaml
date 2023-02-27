@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.binding.impl;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.function.Function;
 
@@ -44,6 +45,7 @@ import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -66,7 +68,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
     @Nullable private Integer index;
 
     /** {@link RequestedAttribute} list - if specified. */
-    @Nullable private List<RequestedAttribute> requestedAttributes;
+    @Nullable private Collection<RequestedAttribute> requestedAttributes;
 
     /**
      * Constructor.
@@ -110,30 +112,38 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
 
         if (authn != null) {
             index = authn.getAttributeConsumingServiceIndex();
-            requestedAttributes = getRequestedAttributes(authn);
+            requestedAttributes = getRequestedAttributes(messageContext, authn);
 
             if (index != null && requestedAttributes != null && !requestedAttributes.isEmpty()) {
-                log.info("{} AuthnRequest from {} contained a AttributeConsumingServiceIndex"
-                        + " and RequestedAttributes; ignoring the RequestedAttributes.",
+                log.info("{} AuthnRequest from {} contained AttributeConsumingServiceIndex"
+                        + " and RequestedAttributes; ignoring AttributeConsumingServiceIndex.",
                         getLogPrefix(), authn.getProviderName());
-                requestedAttributes = null;
+                index = null;
             }
         }
         return true;
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc}*/
     @Override protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+
+        final SPSSODescriptor ssoDescriptor;
+        
         final SAMLMetadataContext metadataContext = metadataContextLookupStrategy.apply(messageContext);
         if (metadataContext == null) {
             log.debug("{} No metadata context found, nothing to do", getLogPrefix());
             return;
-        } else if (!(metadataContext.getRoleDescriptor() instanceof SPSSODescriptor)) {
-            log.debug("{} Metadata context did not contain an SPSSODescriptor, nothing to do", getLogPrefix());
-            return;
         }
         
-        final SPSSODescriptor ssoDescriptor = (SPSSODescriptor) metadataContext.getRoleDescriptor();
+        if (metadataContext.getRoleDescriptor() instanceof SPSSODescriptor) {
+            ssoDescriptor = (SPSSODescriptor) metadataContext.getRoleDescriptor();
+        } else if (index != null) {
+            log.info("{} No metadata available, ignoring AttributeConsumingServiceIndex", getLogPrefix());
+            return;
+        } else {
+            ssoDescriptor = null;
+        }
         
         AttributeConsumingService acs = null;
         if (null != index) {
@@ -145,24 +155,27 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
                 }
             }
         }
+        
         if (null == acs) {
             if (requestedAttributes != null && !requestedAttributes.isEmpty()) {
-                log.debug("{} Creating AttributeConsumingService with requested Attributes {}", 
+                log.debug("{} Creating AttributeConsumingService around RequestedAttributes {}", 
                         getLogPrefix(), requestedAttributes);
                 acs = attributeConsumingServiceFromRequestedAttributes();
-            } else {
+            } else if (ssoDescriptor != null) {
                 log.debug("{} Selecting default AttributeConsumingService, if any", getLogPrefix());
                 acs = ssoDescriptor.getDefaultAttributeConsumingService();
             }
         }
+        
         if (null != acs) {
             log.debug("{} Selected AttributeConsumingService with index {}", getLogPrefix(), acs.getIndex());
-            metadataContext.getSubcontext(
-                    AttributeConsumingServiceContext.class, true).setAttributeConsumingService(acs);
+            metadataContext.getOrCreateSubcontext(
+                    AttributeConsumingServiceContext.class).setAttributeConsumingService(acs);
         } else {
             log.debug("{} No AttributeConsumingService selected", getLogPrefix());
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /** Generate an {@link AttributeConsumingService } from the {@link RequestedAttributes}.
      * @return a suitable AttributeConsumingService
@@ -184,20 +197,25 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         return newAcs;
     }
 
-    /** Grab the {@link RequestedAttribute} (if any) from the {@link AuthnRequest}.
+    /**
+     * Grab the {@link RequestedAttribute} (if any) from the {@link AuthnRequest}.
+     * 
+     * @param messageContext current message context
      * @param authn the request to interrogate
-     * @return null or the list.
+     * 
+     * @return null or the list
      */
-    private List<RequestedAttribute> getRequestedAttributes(final AuthnRequest authn) {
+    @Nullable @NonnullElements protected Collection<RequestedAttribute> getRequestedAttributes(
+            @Nonnull final MessageContext messageContext, @Nonnull final AuthnRequest authn) {
         final Extensions extensions = authn.getExtensions();
         if (extensions == null) {
             return null;
         }
-        final List<XMLObject> bindings = extensions.getUnknownXMLObjects(RequestedAttributes.DEFAULT_ELEMENT_NAME);
-        if (bindings == null || bindings.isEmpty()) {
+        final List<XMLObject> exts = extensions.getUnknownXMLObjects(RequestedAttributes.DEFAULT_ELEMENT_NAME);
+        if (exts == null || exts.isEmpty()) {
             return null;
         }
-        return ((RequestedAttributes)bindings.get(0)).getRequestedAttributes();
+        return ((RequestedAttributes)exts.get(0)).getRequestedAttributes();
     }
 
     /** Default lookup function that find a SAML 2 {@link AuthnRequest}. */
