@@ -147,8 +147,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         }
         if (null == acs) {
             if (requestedAttributes != null && !requestedAttributes.isEmpty()) {
-                log.debug("{} Creating AttributeConsumingService with requested Attributes {}", 
-                        getLogPrefix(), requestedAttributes);
+                log.debug("{} Creating AttributeConsumingService around RequestedAttributes", getLogPrefix());
                 acs = attributeConsumingServiceFromRequestedAttributes();
             } else {
                 log.debug("{} Selecting default AttributeConsumingService, if any", getLogPrefix());
