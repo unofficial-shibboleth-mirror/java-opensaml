@@ -26,6 +26,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.FunctionSupport;
+
 /**
  * Message handler that runs an injected function (expected to have side effects).
  * 
@@ -36,7 +39,12 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 public final class FunctionMessageHandler extends AbstractMessageHandler {
     
     /** The {@link Function} to run. */
-    @Nullable private Function<MessageContext,Exception> messageContextConsumer;
+    @Nonnull private Function<MessageContext,Function<MessageContext,Exception>> lookupStrategy;
+    
+    /** Constructor. */
+    public FunctionMessageHandler() {
+        lookupStrategy = FunctionSupport.constant(null);
+    }
     
     /**
      * Set the {@link Function} to use.
@@ -46,15 +54,30 @@ public final class FunctionMessageHandler extends AbstractMessageHandler {
     public void setFunction(@Nullable final Function<MessageContext,Exception> function) {
         checkSetterPreconditions();
 
-        messageContextConsumer = function;
+        lookupStrategy = FunctionSupport.constant(function);
+    }
+    
+    /**
+     * Set a lookup strategy for the {@link Function} to use.
+     * 
+     * @param strategy lookup strategy
+     * 
+     * @since 5.0.0
+     */
+    public void setFunctionLookupStrategy(
+            @Nonnull final Function<MessageContext,Function<MessageContext,Exception>> strategy) {
+        checkSetterPreconditions();
+        
+        lookupStrategy = Constraint.isNotNull(strategy, "Function lookup strategy cannot be null");
     }
     
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        if (messageContextConsumer != null) {
+        final Function<MessageContext,Exception> f = lookupStrategy.apply(messageContext);
+        if (f != null) {
             try {
-                final Exception e = messageContextConsumer.apply(messageContext);
+                final Exception e = f.apply(messageContext);
                 if (e != null) {
                     throw e;
                 }
