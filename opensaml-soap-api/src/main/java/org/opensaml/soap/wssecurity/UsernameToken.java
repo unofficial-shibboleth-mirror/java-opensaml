@@ -17,10 +17,14 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The &lt;wsse:UsernameToken&gt; element.
@@ -32,17 +36,17 @@ public interface UsernameToken extends IdBearing, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "UsernameToken";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "UsernameToken";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "UsernameTokenType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "UsernameTokenType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
     /**
@@ -50,7 +54,7 @@ public interface UsernameToken extends IdBearing, AttributeExtensibleXMLObject,
      * 
      * @return the {@link Username} child element.
      */
-    public Username getUsername();
+    @Nullable public Username getUsername();
 
     /**
      * Sets the &lt;wsse:Username&gt; child element.
@@ -58,6 +62,6 @@ public interface UsernameToken extends IdBearing, AttributeExtensibleXMLObject,
      * @param username
      *            the {@link Username} child element to set.
      */
-    public void setUsername(Username username);
+    public void setUsername(@Nullable Username username);
 
 }

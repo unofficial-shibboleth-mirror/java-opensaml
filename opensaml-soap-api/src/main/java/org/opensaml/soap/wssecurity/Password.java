@@ -17,7 +17,11 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The <code>Password</code> element.
@@ -27,37 +31,37 @@ import javax.xml.namespace.QName;
  */
 public interface Password extends AttributedString {
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Password";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Password";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME = 
+    @Nonnull public static final QName ELEMENT_NAME = 
         new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
     /** The <code>Type</code> attribute local name. */
-    public static final String TYPE_ATTRIB_NAME = "Type";
+    @Nonnull @NotEmpty public static final String TYPE_ATTRIB_NAME = "Type";
     
     /**
      * The <code>wsse:Password/@Type</code> attribute URI value <code>#PasswordText</code> (DEFAULT).
      */
-    public static final String TYPE_PASSWORD_TEXT = WSSecurityConstants.WSSE_NS + "#PasswordText";
+    @Nonnull @NotEmpty public static final String TYPE_PASSWORD_TEXT = WSSecurityConstants.WSSE_NS + "#PasswordText";
 
     /**
      * The <code>wsse:Password/@Type</code> attribute URI value <code>#PasswordDigest</code>.
      */
-    public static final String TYPE_PASSWORD_DIGEST = WSSecurityConstants.WSSE_NS + "#PasswordDigest";
+    @Nonnull @NotEmpty public static final String TYPE_PASSWORD_DIGEST = WSSecurityConstants.WSSE_NS + "#PasswordDigest";
 
     /**
      * Returns the <code>wsse:Password/@Type</code> attribute URI value.
      * 
      * @return the <code>Type</code> attribute URI value.
      */
-    public String getType();
+    @Nullable public String getType();
 
     /**
      * Sets the <code>wsse:Password/@Type</code> attribute URI value.
      * 
      * @param type the <code>Type</code> attribute URI value to set.
      */
-    public void setType(String type);
+    public void setType(@Nullable String type);
 
 }
