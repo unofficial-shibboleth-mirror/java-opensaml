@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -30,15 +31,15 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface Detail extends SOAPObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "detail";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "detail";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "detail"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "detail"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 }

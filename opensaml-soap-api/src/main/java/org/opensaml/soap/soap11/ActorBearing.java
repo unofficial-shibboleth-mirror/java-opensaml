@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -28,14 +29,14 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface ActorBearing {
     
     /** The soap11:@actor attribute local name. */
-    public static final String SOAP11_ACTOR_ATTR_LOCAL_NAME = "actor";
+    @Nonnull  public static final String SOAP11_ACTOR_ATTR_LOCAL_NAME = "actor";
 
     /** The soap11:@actor qualified attribute name. */
-    public static final QName SOAP11_ACTOR_ATTR_NAME =
+    @Nonnull public static final QName SOAP11_ACTOR_ATTR_NAME =
         new QName(SOAPConstants.SOAP11_NS, SOAP11_ACTOR_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
     /** The specification-defined value 'http://schemas.xmlsoap.org/soap/actor/next'. */
-    public static final String SOAP11_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
+    @Nonnull public static final String SOAP11_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
     
     /**
      * Get the attribute value.

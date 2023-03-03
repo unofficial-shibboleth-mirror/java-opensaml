@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -30,16 +31,16 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface Header extends SOAPObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Header";
+    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "Header";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "Header"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "Header"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 }

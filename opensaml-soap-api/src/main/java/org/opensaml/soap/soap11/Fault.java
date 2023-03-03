@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -29,17 +30,17 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface Fault extends SOAPObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Fault";
-    
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Fault";
+
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
-    
+
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "Fault"; 
-        
+    @Nonnull public static final String TYPE_LOCAL_NAME = "Fault"; 
+
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(SOAPConstants.SOAP11_NS, TYPE_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
 
     /**

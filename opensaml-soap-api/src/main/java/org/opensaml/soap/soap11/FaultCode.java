@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap11;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSQName;
@@ -29,22 +30,22 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface FaultCode extends SOAPObject, XSQName {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultcode";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultcode";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
     
     /** FaultCode value <code>VersionMismatch</code>. */
-    public static final QName VERSION_MISMATCH = new QName(SOAPConstants.SOAP11_NS, "VersionMismatch",
+    @Nonnull public static final QName VERSION_MISMATCH = new QName(SOAPConstants.SOAP11_NS, "VersionMismatch",
             SOAPConstants.SOAP11_PREFIX);
 
     /** FaultCode value <code>MustUnderstand</code>. */
-    public static final QName MUST_UNDERSTAND = new QName(SOAPConstants.SOAP11_NS, "MustUnderstand",
+    @Nonnull public static final QName MUST_UNDERSTAND = new QName(SOAPConstants.SOAP11_NS, "MustUnderstand",
             SOAPConstants.SOAP11_PREFIX);
 
     /** FaultCode value <code>Server</code>. */
-    public static final QName SERVER = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
+    @Nonnull public static final QName SERVER = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
 
     /** FaultCode value <code>Client</code>. */
-    public static final QName CLIENT = new QName(SOAPConstants.SOAP11_NS, "Client", SOAPConstants.SOAP11_PREFIX);
+    @Nonnull public static final QName CLIENT = new QName(SOAPConstants.SOAP11_NS, "Client", SOAPConstants.SOAP11_PREFIX);
 }
