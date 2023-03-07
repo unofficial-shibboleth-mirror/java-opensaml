@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -45,13 +46,13 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class SAMLConfiguration {
     
     /** Lowercase string function. */
-    private static Function<String, String> lowercaseFunction = new LowercaseFunction();
+    @Nonnull private static final Function<String, String> lowercaseFunction = new LowercaseFunction();
 
     /** SAML 1 Artifact factory. */
-    private SAML1ArtifactBuilderFactory saml1ArtifactBuilderFactory;
+    @Nullable private SAML1ArtifactBuilderFactory saml1ArtifactBuilderFactory;
 
     /** SAML 2 Artifact factory. */
-    private SAML2ArtifactBuilderFactory saml2ArtifactBuilderFactory;
+    @Nullable private SAML2ArtifactBuilderFactory saml2ArtifactBuilderFactory;
     
     /** The list of schemes allowed to appear in binding URLs when encoding a message. 
      * Defaults to 'http' and 'https'. */
@@ -63,7 +64,7 @@ public class SAMLConfiguration {
      *
      */
     public SAMLConfiguration() {
-        setAllowedBindingURLSchemes(List.of("http", "https"));
+        setAllowedBindingURLSchemes(CollectionSupport.listOf("http", "https"));
     }
 
     /**
@@ -71,7 +72,7 @@ public class SAMLConfiguration {
      * 
      * @return artifact factory for the library
      */
-    public SAML1ArtifactBuilderFactory getSAML1ArtifactBuilderFactory() {
+    @Nullable public SAML1ArtifactBuilderFactory getSAML1ArtifactBuilderFactory() {
         return saml1ArtifactBuilderFactory;
     }
 
@@ -80,7 +81,7 @@ public class SAMLConfiguration {
      * 
      * @param factory artifact factory for the library
      */
-    public void setSAML1ArtifactBuilderFactory(final SAML1ArtifactBuilderFactory factory) {
+    public void setSAML1ArtifactBuilderFactory(@Nullable final SAML1ArtifactBuilderFactory factory) {
         saml1ArtifactBuilderFactory = factory;
     }
 
@@ -89,7 +90,7 @@ public class SAMLConfiguration {
      * 
      * @return artifact factory for the library
      */
-    public SAML2ArtifactBuilderFactory getSAML2ArtifactBuilderFactory() {
+    @Nullable public SAML2ArtifactBuilderFactory getSAML2ArtifactBuilderFactory() {
         return saml2ArtifactBuilderFactory;
     }
 
@@ -98,7 +99,7 @@ public class SAMLConfiguration {
      * 
      * @param factory artifact factory for the library
      */
-    public void setSAML2ArtifactBuilderFactory(final SAML2ArtifactBuilderFactory factory) {
+    public void setSAML2ArtifactBuilderFactory(@Nullable final SAML2ArtifactBuilderFactory factory) {
         saml2ArtifactBuilderFactory = factory;
     }
 
@@ -115,8 +116,7 @@ public class SAMLConfiguration {
      * 
      * @return list of URL schemes allowed to appear in a message
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive
-    public List<String> getAllowedBindingURLSchemes() {
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getAllowedBindingURLSchemes() {
         return allowedBindingURLSchemes;
     }
 

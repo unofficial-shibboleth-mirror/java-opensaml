@@ -28,6 +28,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.AttributeSupport;
 import net.shibboleth.shared.xml.ParserPool;
@@ -46,8 +47,9 @@ import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -103,7 +105,7 @@ public final class XMLObjectSupport {
      * @throws MarshallingException if original object can not be marshalled
      * @throws UnmarshallingException if cloned object tree can not be unmarshalled
      */
-    public static <T extends XMLObject> T cloneXMLObject(final T originalXMLObject)
+    public static <T extends XMLObject> T cloneXMLObject(@Nonnull final T originalXMLObject)
             throws MarshallingException, UnmarshallingException {
         return cloneXMLObject(originalXMLObject, CloneOutputOption.DropDOM);
     }
@@ -129,16 +131,14 @@ public final class XMLObjectSupport {
     @Nonnull public static <T extends XMLObject> T cloneXMLObject(@Nonnull final T originalXMLObject,
             @Nonnull final CloneOutputOption cloneOutputOption) throws MarshallingException, UnmarshallingException {
         
-        Element origElement = null;
-        if (originalXMLObject.getDOM() == null) {
+        Element origElement = originalXMLObject.getDOM();
+        if (origElement == null) {
             final Marshaller marshaller = getMarshaller(originalXMLObject);
             if (marshaller == null) {
                 throw new MarshallingException("Unable to obtain Marshaller for XMLObject: "
                         + originalXMLObject.getElementQName());
             }
             origElement = marshaller.marshall(originalXMLObject);
-        } else {
-            origElement = originalXMLObject.getDOM();
         }
         
         Element clonedElement = null;
@@ -146,7 +146,11 @@ public final class XMLObjectSupport {
         switch (cloneOutputOption) {
             case RootDOMInNewDocument:
                 try {
-                    final Document newDocument = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
+                    final ParserPool parser = XMLObjectProviderRegistrySupport.getParserPool();
+                    if (parser == null) {
+                        throw new XMLParserException("Unable to obtain ParserPool");
+                    }
+                    final Document newDocument = parser.newDocument();
                     // Note: importNode copies the node tree and does not modify the source document
                     clonedElement = (Element) newDocument.importNode(origElement, true);
                     newDocument.appendChild(clonedElement);
@@ -186,8 +190,8 @@ public final class XMLObjectSupport {
      * @throws XMLParserException if there is a problem parsing the input data
      * @throws UnmarshallingException if there is a problem unmarshalling the parsed DOM
      */
-    @Nonnull public static XMLObject unmarshallFromInputStream(final ParserPool parserPool, final InputStream inputStream)
-            throws XMLParserException, UnmarshallingException {
+    @Nonnull public static XMLObject unmarshallFromInputStream(@Nonnull final ParserPool parserPool,
+            @Nonnull final InputStream inputStream) throws XMLParserException, UnmarshallingException {
         LOG.debug("Parsing InputStream into DOM document");
 
         try {
@@ -227,10 +231,9 @@ public final class XMLObjectSupport {
      * @throws XMLParserException if there is a problem parsing the input data
      * @throws UnmarshallingException if there is a problem unmarshalling the parsed DOM
      */
-    @Nonnull public static XMLObject unmarshallFromReader(final ParserPool parserPool, final Reader reader)
-            throws XMLParserException, UnmarshallingException {
+    @Nonnull public static XMLObject unmarshallFromReader(@Nonnull final ParserPool parserPool,
+            @Nonnull final Reader reader) throws XMLParserException, UnmarshallingException {
         LOG.debug("Parsing Reader into DOM document");
-        
 
         try {
             final Document messageDoc = parserPool.parse(reader);
@@ -270,10 +273,11 @@ public final class XMLObjectSupport {
      */
     @Nonnull public static Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException {
         LOG.debug("Marshalling XMLObject");
-        
-        if (xmlObject.getDOM() != null) {
+
+        final Element domElement = xmlObject.getDOM();
+        if (domElement != null) {
             LOG.debug("XMLObject already had cached DOM, returning that element");
-            return xmlObject.getDOM();
+            return domElement;
         }
 
         final Marshaller marshaller = getMarshaller(xmlObject);
@@ -301,8 +305,8 @@ public final class XMLObjectSupport {
      * @param outputStream the OutputStream to which to marshall
      * @throws MarshallingException if there is a problem marshalling the object
      */
-    public static void marshallToOutputStream(final XMLObject xmlObject, final OutputStream outputStream) 
-            throws MarshallingException {
+    public static void marshallToOutputStream(@Nonnull final XMLObject xmlObject,
+            @Nonnull final OutputStream outputStream) throws MarshallingException {
         final Element element = marshall(xmlObject);
         SerializeSupport.writeNode(element, outputStream);
     }
@@ -363,8 +367,9 @@ public final class XMLObjectSupport {
      * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
      *            attribute
      */
-    public static void marshallAttribute(final QName attributeName, final List<String> attributeValues,
-            final Element domElement, final boolean isIDAttribute) {
+    public static void marshallAttribute(@Nonnull final QName attributeName,
+            @Nonnull final List<String> attributeValues, @Nonnull final Element domElement,
+            final boolean isIDAttribute) {
         marshallAttribute(attributeName, StringSupport.listToStringValue(attributeValues, " "), domElement,
                 isIDAttribute);
     }
@@ -379,8 +384,8 @@ public final class XMLObjectSupport {
      * @param isIDAttribute flag indicating whether the attribute being marshalled should be handled as an ID-typed
      *            attribute
      */
-    public static void marshallAttribute(final QName attributeName, final String attributeValue,
-            final Element domElement, final boolean isIDAttribute) {
+    public static void marshallAttribute(@Nonnull final QName attributeName, @Nullable final String attributeValue,
+            @Nonnull final Element domElement, final boolean isIDAttribute) {
         final Document document = domElement.getOwnerDocument();
         final Attr attribute = AttributeSupport.constructAttribute(document, attributeName);
         attribute.setValue(attributeValue);
@@ -396,7 +401,8 @@ public final class XMLObjectSupport {
      * @param attributeMap the AttributeMap
      * @param domElement the target Element
      */
-    public static void marshallAttributeMap(final AttributeMap attributeMap, final Element domElement) {
+    public static void marshallAttributeMap(@Nonnull final AttributeMap attributeMap,
+            @Nonnull final Element domElement) {
         final Document document = domElement.getOwnerDocument();
         Attr attribute = null;
         for (final Entry<QName, String> entry : attributeMap.entrySet()) {
@@ -416,7 +422,8 @@ public final class XMLObjectSupport {
      * @param attributeMap the AttributeMap
      * @param domElement the target Element
      */
-    public static void marshallAttributeMapIDness(final AttributeMap attributeMap, final Element domElement) {
+    public static void marshallAttributeMapIDness(@Nonnull final AttributeMap attributeMap,
+            @Nonnull final Element domElement) {
         for (final QName qname : attributeMap.keySet()) {
             if (XMLObjectProviderRegistrySupport.isIDAttribute(qname) || attributeMap.isIDAttribute(qname)) {
                 marshallAttributeIDness(qname, domElement, true);
@@ -460,7 +467,8 @@ public final class XMLObjectSupport {
      * @param attributeMap the target AttributeMap
      * @param attribute the target DOM Attr
      */
-    public static void unmarshallToAttributeMap(@Nonnull final AttributeMap attributeMap, @Nonnull final Attr attribute) {
+    public static void unmarshallToAttributeMap(@Nonnull final AttributeMap attributeMap,
+            @Nonnull final Attr attribute) {
         final QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(),
                 attribute.getPrefix());
         attributeMap.put(attribQName, attribute.getValue());

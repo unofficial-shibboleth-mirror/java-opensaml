@@ -100,12 +100,12 @@ public class MapLoadSaveManager<T extends XMLObject> extends AbstractConditional
     }
 
     /** {@inheritDoc} */
-    public Set<String> listKeys() throws IOException {
+    @Nonnull public Set<String> listKeys() throws IOException {
         return backingMap.keySet();
     }
 
     /** {@inheritDoc} */
-    public Iterable<Pair<String, T>> listAll() throws IOException {
+    @Nonnull public Iterable<Pair<String, T>> listAll() throws IOException {
         final ArrayList<Pair<String,T>> list = new ArrayList<>();
         for (final String key : listKeys()) {
             list.add(new Pair<>(key, load(key)));

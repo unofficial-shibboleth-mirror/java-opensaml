@@ -161,7 +161,7 @@ public class XMLObjectChildrenList<ElementType extends XMLObject> extends Abstra
     }
 
     /** {@inheritDoc} */
-    @Nonnull public ElementType remove(final int index) {
+    public ElementType remove(final int index) {
         final ElementType element = elements.remove(index);
 
         if (element != null) {

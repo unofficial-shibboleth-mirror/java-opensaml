@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml.util;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,6 +25,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.logic.Constraint;
 
@@ -65,13 +65,11 @@ public class IDIndex {
      * @param referent the XMLObject child
      */
     public void registerIDMapping(@Nonnull @NotEmpty final String id, @Nonnull final XMLObject referent) {
-        if (id == null) {
-            return;
-        }
-        
         idMappings.put(id, referent);
         if (owner.hasParent()) {
-            owner.getParent().getIDIndex().registerIDMapping(id, referent);
+            final XMLObject parent = owner.getParent();
+            assert parent != null;
+            parent.getIDIndex().registerIDMapping(id, referent);
         }
     }
     
@@ -87,7 +85,9 @@ public class IDIndex {
         
         idMappings.putAll(idIndex.getIDMappings());
         if (owner.hasParent()) {
-            owner.getParent().getIDIndex().registerIDMappings(idIndex);
+            final XMLObject parent = owner.getParent();
+            assert parent != null;
+            parent.getIDIndex().registerIDMappings(idIndex);
         }
     }
     
@@ -97,13 +97,11 @@ public class IDIndex {
      * @param id the ID attribute value of the XMLObject child to deregister
      */  
     public void deregisterIDMapping(@Nonnull @NotEmpty final String id) {
-        if (id == null) {
-            return;
-        }
-        
         idMappings.remove(id);
         if (owner.hasParent()) {
-            owner.getParent().getIDIndex().deregisterIDMapping(id);
+            final XMLObject parent = owner.getParent();
+            assert parent != null;
+            parent.getIDIndex().deregisterIDMapping(id);
         }
     }
     
@@ -121,7 +119,9 @@ public class IDIndex {
             idMappings.remove(id);
         }
         if (owner.hasParent()) {
-            owner.getParent().getIDIndex().deregisterIDMappings(idIndex);
+            final XMLObject parent = owner.getParent();
+            assert parent != null;
+            parent.getIDIndex().deregisterIDMappings(idIndex);
         }
     }
  
@@ -150,7 +150,7 @@ public class IDIndex {
      * @return the set of ID strings which are keys to the index
      */
     @Nonnull public Set<String> getIDs() {
-        return Collections.unmodifiableSet(idMappings.keySet());
+        return CollectionSupport.copyToSet(idMappings.keySet());
     }
     
     /**
@@ -159,7 +159,7 @@ public class IDIndex {
      * @return the ID-to-XMLObject mapping
      */
     @Nonnull protected Map<String, XMLObject> getIDMappings() {
-        return Collections.unmodifiableMap(idMappings);
+        return CollectionSupport.copyToMap(idMappings);
     }
     
 }

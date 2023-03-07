@@ -29,12 +29,12 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
 import org.opensaml.core.xml.util.XMLObjectSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LockableClassToInstanceMultiMap;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.shared.xml.XMLConstants;
@@ -48,28 +48,28 @@ public abstract class AbstractXMLObject implements XMLObject {
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractXMLObject.class);
 
     /** Parent of this element. */
-    private XMLObject parent;
+    @Nullable private XMLObject parent;
 
     /** The name of this element with namespace and prefix information. */
     @Nonnull private QName elementQname;
 
     /** Schema locations for this XML object. */
-    private String schemaLocation;
+    @Nullable private String schemaLocation;
 
     /** No-namespace schema locations for this XML object. */
-    private String noNamespaceSchemaLocation;
+    @Nullable private String noNamespaceSchemaLocation;
 
     /** The schema type of this element with namespace and prefix information. */
-    private QName typeQname;
+    @Nullable private QName typeQname;
 
     /** DOM Element representation of this object. */
-    private Element dom;
+    @Nullable private Element dom;
     
     /** The value of the <code>xsi:nil</code> attribute. */
-    private  XSBooleanValue nil;
+    @Nullable private XSBooleanValue nil;
     
     /** The namespace manager for this XML object. */
-    private NamespaceManager nsManager;
+    @Nonnull private NamespaceManager nsManager;
     
     /** The multimap holding class-indexed instances of additional info associated with this XML object. */
     @Nonnull private final LockableClassToInstanceMultiMap<Object> objectMetadata;
@@ -78,7 +78,7 @@ public abstract class AbstractXMLObject implements XMLObject {
      * Mapping of ID attributes to XMLObjects in the subtree rooted at this object. This allows constant-time
      * dereferencing of ID-typed attributes within the subtree.
      */
-    private final IDIndex idIndex;
+    @Nonnull private final IDIndex idIndex;
 
     /**
      * Constructor.
@@ -393,8 +393,9 @@ public abstract class AbstractXMLObject implements XMLObject {
     public void releaseChildrenDOM(final boolean propagateRelease) {
         log.trace("Releasing cached DOM reprsentation for children of {} with propagation set to {}",
                 getElementQName(), propagateRelease);
-        if (getOrderedChildren() != null) {
-            for (final XMLObject child : getOrderedChildren()) {
+        final List<XMLObject> children = getOrderedChildren();
+        if (children != null) {
+            for (final XMLObject child : children) {
                 if (child != null) {
                     child.releaseDOM();
                     if (propagateRelease) {
@@ -421,9 +422,9 @@ public abstract class AbstractXMLObject implements XMLObject {
                 propagateRelease);
         final XMLObject parentElement = getParent();
         if (parentElement != null) {
-            parent.releaseDOM();
+            parentElement.releaseDOM();
             if (propagateRelease) {
-                parent.releaseParentDOM(propagateRelease);
+                parentElement.releaseParentDOM(propagateRelease);
             }
         }
     }
@@ -458,7 +459,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     /** {@inheritDoc} */
     @Nullable public XMLObject resolveIDFromRoot(@Nonnull @NotEmpty final String id) {
         XMLObject root = this;
-        while (root.hasParent()) {
+        while (root != null && root.hasParent()) {
             root = root.getParent();
         }
         return root.resolveID(id);

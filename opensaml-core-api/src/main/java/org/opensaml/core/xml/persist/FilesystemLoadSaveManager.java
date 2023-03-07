@@ -262,7 +262,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     }
 
     /** {@inheritDoc} */
-    public Set<String> listKeys() throws IOException {
+    @Nonnull public Set<String> listKeys() throws IOException {
         return java.nio.file.Files.walk(baseDirectory.toPath())
                 .filter(java.nio.file.Files::isRegularFile)
                 .map(Path::getFileName)
@@ -271,7 +271,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     }
 
     /** {@inheritDoc} */
-    public Iterable<Pair<String, T>> listAll() throws IOException {
+    @Nonnull public Iterable<Pair<String, T>> listAll() throws IOException {
         return new FileIterable(listKeys());
     }
 

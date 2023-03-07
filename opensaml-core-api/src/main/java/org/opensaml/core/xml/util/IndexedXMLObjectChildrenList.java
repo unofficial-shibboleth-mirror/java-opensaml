@@ -274,7 +274,7 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
 
     /** {@inheritDoc} */
     @Override
-    public boolean addAll(@Nonnull final Collection<? extends ElementType> c) {
+    public boolean addAll(final Collection<? extends ElementType> c) {
         final boolean result = backingList.addAll(c);
         indexList = backingList.get(index);
         return result;
@@ -282,7 +282,7 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
 
     /** {@inheritDoc} */
     @Override
-    public boolean addAll(final int i, @Nonnull final Collection<? extends ElementType> c) {
+    public boolean addAll(final int i, final Collection<? extends ElementType> c) {
         throw new UnsupportedOperationException();
     }
 
@@ -370,7 +370,7 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
 
     /** {@inheritDoc} */
     @Override
-    public ElementType set(final int newIndex, @Nonnull final ElementType element) {
+    public ElementType set(final int newIndex, final ElementType element) {
         throw new UnsupportedOperationException();
     }
 
@@ -388,7 +388,7 @@ class ListView<ElementType extends XMLObject> extends AbstractList<ElementType> 
 
     /** {@inheritDoc} */
     @Override
-    public <T extends Object> T[] toArray(@Nonnull final T[] a) {
+    public <T extends Object> T[] toArray(final T[] a) {
         return indexList.toArray(a);
     }
 }

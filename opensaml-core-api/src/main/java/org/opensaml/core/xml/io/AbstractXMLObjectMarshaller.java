@@ -24,9 +24,11 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.NamespaceSupport;
+import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.shared.xml.XMLConstants;
 import net.shibboleth.shared.xml.XMLParserException;
@@ -35,10 +37,12 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.Namespace;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.DOMException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -72,7 +76,11 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
     /** {@inheritDoc} */
     @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException {
         try {
-            final Document document = XMLObjectProviderRegistrySupport.getParserPool().newDocument();
+            final ParserPool parser = XMLObjectProviderRegistrySupport.getParserPool();
+            if (parser == null) {
+                throw new MarshallingException("Unable to obtain ParserPool instance");
+            }
+            final Document document = parser.newDocument();
             return marshall(xmlObject, document);
         } catch (final XMLParserException e) {
             throw new MarshallingException("Unable to create Document to place marshalled elements in", e);
@@ -85,10 +93,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         Element domElement;
 
         log.trace("Starting to marshall {}", xmlObject.getElementQName());
-
-        if (document == null) {
-            throw new MarshallingException("Given document may not be null");
-        }
 
         log.trace("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
         domElement = xmlObject.getDOM();
@@ -134,10 +138,6 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
 
         log.trace("Starting to marshall {} as child of {}", xmlObject.getElementQName(), QNameSupport
                 .getNodeQName(parentElement));
-
-        if (parentElement == null) {
-            throw new MarshallingException("Given parent element is null");
-        }
 
         log.trace("Checking if {} contains a cached DOM representation", xmlObject.getElementQName());
         domElement = xmlObject.getDOM();
@@ -312,10 +312,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 }
             }
             log.trace("Adding namespace declaration {} to {}", namespace, xmlObject.getElementQName());
-            final String nsURI = StringSupport.trimOrNull(namespace.getNamespaceURI());
-            final String nsPrefix = StringSupport.trimOrNull(namespace.getNamespacePrefix());
-
-            NamespaceSupport.appendNamespaceDeclaration(domElement, nsURI, nsPrefix);
+            NamespaceSupport.appendNamespaceDeclaration(domElement, namespace.getNamespaceURI(),
+                    namespace.getNamespacePrefix());
         }
     }
 
@@ -344,10 +342,11 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                     xmlObject.getNoNamespaceSchemaLocation());
         }
         
-        if (xmlObject.isNilXSBoolean() != null && xmlObject.isNil()) {
+        final Boolean nil = xmlObject.isNil();
+        final XSBooleanValue nilValue = xmlObject.isNilXSBoolean();
+        if (nilValue != null && nil != null && nil) {
             log.trace("Setting xsi:nil for XMLObject {} to true", xmlObject.getElementQName());
-            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":nil",
-                    xmlObject.isNilXSBoolean().toString());
+            domElement.setAttributeNS(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX + ":nil", nilValue.toString());
         }
 
         final QName type = xmlObject.getSchemaType();
