@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -36,7 +37,7 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class SessionKeyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final SessionKey key = (SessionKey) parentObject;
 
@@ -50,7 +51,8 @@ public class SessionKeyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final SessionKey key = (SessionKey) samlObject;
 
         final QName attrName = QNameSupport.getNodeQName(attribute);

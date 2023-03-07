@@ -22,6 +22,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -136,7 +137,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * 
      * @return the built XMLObject
      */
-    protected <T extends XMLObject> T buildXMLObject(QName name) {
+    protected <T extends XMLObject> T buildXMLObject(@Nonnull final QName name) {
         final XMLObjectBuilder<T> builder = getBuilder(name);
         if (builder == null) {
             Assert.fail("no builder registered for: " + name);
@@ -154,7 +155,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * 
      * @return the XMLObject from the file
      */
-    @Nullable protected <T extends XMLObject> T unmarshallElement(String elementFile) {
+    @Nullable protected <T extends XMLObject> T unmarshallElement(@Nonnull final String elementFile) {
         try {
             return unmarshallElement(elementFile, false);
         } catch (XMLParserException | UnmarshallingException e) {
@@ -176,7 +177,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @throws XMLParserException ...
      * @throws UnmarshallingException ...
      */
-    @Nullable protected <T extends XMLObject> T unmarshallElement(String elementFile, boolean propagateErrors) 
+    @Nullable protected <T extends XMLObject> T unmarshallElement(@Nonnull final String elementFile, boolean propagateErrors) 
             throws XMLParserException, UnmarshallingException {
         try {
             final Document doc = parseXMLDocument(elementFile);
@@ -207,7 +208,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param node node to print
      * @param filename name of file to print to
      */
-    protected void printXML(Node node, String filename) {
+    protected void printXML(@Nonnull final Node node, @Nonnull final String filename) {
         try {
             SerializeSupport.writeNode(node, new FileOutputStream(new File(filename)));
         } catch (IOException e) {
@@ -222,7 +223,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param xmlObject {@link XMLObject} to print
      * @param filename name of file to print to
      */
-    protected void printXML(XMLObject xmlObject, String filename) {
+    protected void printXML(@Nonnull final XMLObject xmlObject, @Nonnull final String filename) {
         Element elem = null;
         try {
             elem = marshallerFactory.getMarshaller(xmlObject).marshall(xmlObject);
@@ -240,7 +241,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * 
      * @return the XMLObjectBuilder
      */
-    protected <T extends XMLObject> XMLObjectBuilder<T> getBuilder(QName qname) {
+    protected <T extends XMLObject> XMLObjectBuilder<T> getBuilder(@Nonnull final QName qname) {
         return builderFactory.getBuilderOrThrow(qname);
     }
 
@@ -250,7 +251,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param qname the QName for which to find the marshaller
      * @return the marshaller
      */
-    protected Marshaller getMarshaller(QName qname) {
+    protected Marshaller getMarshaller(@Nonnull final QName qname) {
         Marshaller marshaller = marshallerFactory.getMarshaller(qname);
         if (marshaller == null) {
             Assert.fail("no marshaller registered for " + qname);
@@ -264,7 +265,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param xmlObject the XMLObject for which to find the marshaller
      * @return the marshaller
      */
-    protected Marshaller getMarshaller(XMLObject xmlObject) {
+    protected Marshaller getMarshaller(@Nonnull final XMLObject xmlObject) {
         Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         if (marshaller == null) {
             Assert.fail("no marshaller registered for " + xmlObject.getClass().getName());
@@ -278,7 +279,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param qname the QName for which to find the unmarshaller
      * @return the unmarshaller
      */
-    protected Unmarshaller getUnmarshaller(QName qname) {
+    protected Unmarshaller getUnmarshaller(@Nonnull final QName qname) {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(qname);
         if (unmarshaller == null) {
             Assert.fail("no unmarshaller registered for " + qname);
@@ -292,7 +293,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param xmlObject the XMLObject for which to find the unmarshaller
      * @return the unmarshaller
      */
-    protected Unmarshaller getUnmarshaller(XMLObject xmlObject) {
+    protected Unmarshaller getUnmarshaller(@Nonnull final XMLObject xmlObject) {
         return getUnmarshaller(xmlObject.getElementQName());
     }
 
@@ -302,7 +303,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param element the Element for which to find the unmarshaller
      * @return the unmarshaller
      */
-    protected Unmarshaller getUnmarshaller(Element element) {
+    protected Unmarshaller getUnmarshaller(@Nonnull final Element element) {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(element);
         if (unmarshaller == null) {
             Assert.fail("no unmarshaller registered for " + QNameSupport.getNodeQName(element));
@@ -317,7 +318,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @return the parsed Document
      * @throws XMLParserException if parsing did not succeed
      */
-    protected Document parseXMLDocument(String xmlFilename) throws XMLParserException {
+    protected Document parseXMLDocument(@Nonnull final String xmlFilename) throws XMLParserException {
         InputStream is = getClass().getResourceAsStream(xmlFilename);
         Document doc = parserPool.parse(is);
         return doc;

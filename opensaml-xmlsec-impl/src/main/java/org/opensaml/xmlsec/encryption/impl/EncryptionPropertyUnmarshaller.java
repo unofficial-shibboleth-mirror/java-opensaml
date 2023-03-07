@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -32,7 +33,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class EncryptionPropertyUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final EncryptionProperty ep = (EncryptionProperty) xmlObject;
 
         if (attribute.getLocalName().equals(EncryptionProperty.ID_ATTRIB_NAME)) {
@@ -50,8 +52,8 @@ public class EncryptionPropertyUnmarshaller extends AbstractXMLEncryptionUnmarsh
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final EncryptionProperty ep = (EncryptionProperty) parentXMLObject;
 
         // <any> content model

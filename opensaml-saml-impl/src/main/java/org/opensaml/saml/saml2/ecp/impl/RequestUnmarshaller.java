@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -36,7 +37,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class RequestUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final Request request = (Request) samlObject;
         
         final QName attrName = QNameSupport.getNodeQName(attribute);
@@ -54,8 +56,8 @@ public class RequestUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentSAMLObject,
+            @Nonnull final XMLObject childSAMLObject) throws UnmarshallingException {
         final Request request = (Request) parentSAMLObject;
         
         if (childSAMLObject instanceof Issuer) {
@@ -67,5 +69,4 @@ public class RequestUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         }
     }
     
-
 }

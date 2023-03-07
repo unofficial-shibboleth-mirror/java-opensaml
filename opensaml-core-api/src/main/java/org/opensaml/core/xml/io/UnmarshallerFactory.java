@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml.io;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -25,6 +24,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 import net.shibboleth.shared.xml.QNameSupport;
@@ -61,11 +61,7 @@ public class UnmarshallerFactory {
      * 
      * @return the Unmarshaller
      */
-    @Nullable public Unmarshaller getUnmarshaller(@Nullable final QName key) {
-        if (key == null) {
-            return null;
-        }
-
+    @Nullable public Unmarshaller getUnmarshaller(@Nonnull final QName key) {
         return unmarshallers.get(key);
     }
 
@@ -77,10 +73,13 @@ public class UnmarshallerFactory {
      * 
      * @return the unmarshaller for the XMLObject the given element can be unmarshalled into
      */
-    @Nullable public Unmarshaller getUnmarshaller(@Nullable final Element domElement) {
-        Unmarshaller unmarshaller;
+    @Nullable public Unmarshaller getUnmarshaller(@Nonnull final Element domElement) {
+        Unmarshaller unmarshaller = null;
 
-        unmarshaller = getUnmarshaller(DOMTypeSupport.getXSIType(domElement));
+        final QName xsitype = DOMTypeSupport.getXSIType(domElement);
+        if (xsitype != null) {
+            unmarshaller = getUnmarshaller(xsitype);
+        }
 
         if (unmarshaller == null) {
             unmarshaller = getUnmarshaller(QNameSupport.getNodeQName(domElement));
@@ -95,7 +94,7 @@ public class UnmarshallerFactory {
      * @return a listing of all the Unmarshallers currently registered
      */
     @Nonnull public Map<QName, Unmarshaller> getUnmarshallers() {
-        return Collections.unmodifiableMap(unmarshallers);
+        return CollectionSupport.copyToMap(unmarshallers);
     }
 
     /**

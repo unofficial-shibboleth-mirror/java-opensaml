@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -34,7 +35,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class GeneratedKeyUnmarshaller extends XSBase64BinaryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final GeneratedKey key = (GeneratedKey) samlObject;
 
         final QName attrName = QNameSupport.getNodeQName(attribute);

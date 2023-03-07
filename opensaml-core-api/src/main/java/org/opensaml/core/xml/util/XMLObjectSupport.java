@@ -460,7 +460,7 @@ public final class XMLObjectSupport {
      * @param attributeMap the target AttributeMap
      * @param attribute the target DOM Attr
      */
-    public static void unmarshallToAttributeMap(final AttributeMap attributeMap, final Attr attribute) {
+    public static void unmarshallToAttributeMap(@Nonnull final AttributeMap attributeMap, @Nonnull final Attr attribute) {
         final QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(),
                 attribute.getPrefix());
         attributeMap.put(attribQName, attribute.getValue());
@@ -476,7 +476,7 @@ public final class XMLObjectSupport {
      * @return an XMLObject
      * @throws XMLRuntimeException if the required builder can not be obtained
      */
-    @Nonnull public static XMLObject buildXMLObject(final QName elementName) {
+    @Nonnull public static XMLObject buildXMLObject(@Nonnull final QName elementName) {
         final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
         return builder.buildObject(elementName);
     }
@@ -489,7 +489,7 @@ public final class XMLObjectSupport {
      * @return an XMLObject
      * @throws XMLRuntimeException if the required builder can not be obtained
      */
-    @Nonnull public static XMLObject buildXMLObject(final QName elementName, final QName typeName) {
+    @Nonnull public static XMLObject buildXMLObject(@Nonnull final QName elementName, @Nullable final QName typeName) {
         final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
         return builder.buildObject(elementName, typeName);
     }
@@ -500,7 +500,7 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject builder, or null if no provider registered
      */
-    @Nullable public static XMLObjectBuilder<?> getBuilder(final QName typeOrName) {
+    @Nullable public static XMLObjectBuilder<?> getBuilder(@Nonnull final QName typeOrName) {
         return getProviderRegistry().getBuilderFactory().getBuilder(typeOrName);
     }
     
@@ -510,7 +510,7 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject marshaller, or null if no provider registered
      */
-    @Nullable public static Marshaller getMarshaller(final QName typeOrName) {
+    @Nullable public static Marshaller getMarshaller(@Nonnull final QName typeOrName) {
         return getProviderRegistry().getMarshallerFactory().getMarshaller(typeOrName);
     }
     
@@ -520,7 +520,7 @@ public final class XMLObjectSupport {
      * @param xmlObject the XMLObject to be marshalled
      * @return an XMLObject marshaller, or null if no provider registered
      */
-    @Nullable public static Marshaller getMarshaller(final XMLObject xmlObject) {
+    @Nullable public static Marshaller getMarshaller(@Nonnull final XMLObject xmlObject) {
         return getProviderRegistry().getMarshallerFactory().getMarshaller(xmlObject);
     }
     
@@ -530,17 +530,17 @@ public final class XMLObjectSupport {
      * @param typeOrName the element name or type
      * @return an XMLObject unmarshaller, or null if no provider registered
      */
-    @Nullable public static Unmarshaller getUnmarshaller(final QName typeOrName) {
+    @Nullable public static Unmarshaller getUnmarshaller(@Nonnull final QName typeOrName) {
         return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(typeOrName);
     }
     
     /**
-     * Obtain an XMLObject unmarshaller  for the given DOM Element.
+     * Obtain an XMLObject unmarshaller for the given DOM Element.
      * 
      * @param element the DOM element
      * @return an XMLObject unmarshaller, or null if no provider registered
      */
-    @Nullable public static Unmarshaller getUnmarshaller(final Element element) {
+    @Nullable public static Unmarshaller getUnmarshaller(@Nonnull final Element element) {
         return getProviderRegistry().getUnmarshallerFactory().getUnmarshaller(element);
     }
     

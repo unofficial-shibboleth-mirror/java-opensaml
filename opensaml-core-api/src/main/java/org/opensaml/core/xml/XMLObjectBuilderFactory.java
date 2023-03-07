@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -27,6 +26,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 import net.shibboleth.shared.xml.QNameSupport;
@@ -60,10 +60,7 @@ public class XMLObjectBuilderFactory {
      * 
      * @return the builder, or null
      */
-    @Nullable public XMLObjectBuilder<?> getBuilder(@Nullable final QName key) {
-        if (key == null){
-            return null;
-        }
+    @Nullable public XMLObjectBuilder<?> getBuilder(@Nonnull final QName key) {
         return builders.get(key);
     }
 
@@ -75,9 +72,14 @@ public class XMLObjectBuilderFactory {
      * 
      * @return the builder for the XMLObject the given element can be unmarshalled into, or null
      */
-    @Nullable public XMLObjectBuilder<?> getBuilder(@Nullable final Element domElement) {
+    @Nullable public XMLObjectBuilder<?> getBuilder(@Nonnull final Element domElement) {
     
-        XMLObjectBuilder<?> builder = getBuilder(DOMTypeSupport.getXSIType(domElement));
+        XMLObjectBuilder<?> builder = null;
+        
+        final QName xsitype = DOMTypeSupport.getXSIType(domElement);
+        if (xsitype != null) {
+            builder = getBuilder(xsitype);
+        }
     
         if (builder == null) {
             builder = getBuilder(QNameSupport.getNodeQName(domElement));
@@ -135,7 +137,7 @@ public class XMLObjectBuilderFactory {
      * @return list of all the builders currently registered
      */
     @Nonnull @NotLive @Unmodifiable public Map<QName, XMLObjectBuilder<?>> getBuilders() {
-        return Collections.unmodifiableMap(builders);
+        return CollectionSupport.copyToMap(builders);
     }
 
     /**

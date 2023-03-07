@@ -17,6 +17,7 @@
 
 package org.opensaml.xacml.policy.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.primitive.StringSupport;
@@ -33,7 +34,8 @@ public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshal
 
     /** {@inheritDoc} */
     @Override
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AttributeValueType attributeValue = (AttributeValueType) xmlObject;
 
         final QName attribQName = QNameSupport.getNodeQName(attribute);
@@ -51,15 +53,15 @@ public class AttributeValueTypeUnmarshaller extends AbstractXACMLObjectUnmarshal
 
     /** {@inheritDoc} */
     @Override
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final AttributeValueType attributeValue = (AttributeValueType) parentXMLObject;
         attributeValue.getUnknownXMLObjects().add(childXMLObject);
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         final AttributeValueType attributeValue = (AttributeValueType) xmlObject;
         attributeValue.setValue(elementContent);
     }

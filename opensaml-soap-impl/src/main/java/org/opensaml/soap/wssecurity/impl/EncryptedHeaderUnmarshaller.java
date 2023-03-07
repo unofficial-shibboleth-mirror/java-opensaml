@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -34,7 +35,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class EncryptedHeaderUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final EncryptedHeader eh = (EncryptedHeader) xmlObject;
         final QName attrName = QNameSupport.getNodeQName(attribute);
         if (EncryptedHeader.WSU_ID_ATTR_NAME.equals(attrName)) {
@@ -56,8 +58,8 @@ public class EncryptedHeaderUnmarshaller extends AbstractWSSecurityObjectUnmarsh
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final EncryptedHeader eh = (EncryptedHeader) parentXMLObject;
         if (childXMLObject instanceof EncryptedData) {
             eh.setEncryptedData((EncryptedData) childXMLObject);

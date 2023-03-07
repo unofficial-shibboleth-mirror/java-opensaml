@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -35,7 +36,7 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final SubjectConfirmation sc = (SubjectConfirmation) parentObject;
 
@@ -47,7 +48,8 @@ public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshal
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final SubjectConfirmation sc = (SubjectConfirmation) samlObject;
 
         final QName attrName = QNameSupport.getNodeQName(attribute);

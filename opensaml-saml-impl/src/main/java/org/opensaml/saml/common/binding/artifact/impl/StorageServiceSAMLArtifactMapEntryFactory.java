@@ -160,7 +160,7 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
                 throw new IOException("SAMLArtifactMapEntry XML missing issuer or relyingParty attributes");
             }
             
-            final Unmarshaller unmarshaller = XMLObjectSupport.getUnmarshaller((Element) rootElement.getFirstChild());
+            final Unmarshaller unmarshaller = XMLObjectSupport.getUnmarshaller((Element) messageElement);
             if (unmarshaller == null) {
                 throw new UnmarshallingException("Unable to obtain unmarshaller for element "
                         + QNameSupport.getNodeQName(rootElement.getFirstChild()));
