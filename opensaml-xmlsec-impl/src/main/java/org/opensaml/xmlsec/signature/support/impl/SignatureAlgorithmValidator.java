@@ -148,12 +148,15 @@ public class SignatureAlgorithmValidator {
         final Element signature = signatureXMLObject.getDOM();
         final Element signedInfo = ElementSupport.getFirstChildElement(signature, ELEMENT_NAME_SIGNED_INFO);
         final Element signatureMethod = ElementSupport.getFirstChildElement(signedInfo, ELEMENT_NAME_SIGNATURE_METHOD);
-        final String signatureMethodAlgorithm = StringSupport.trimOrNull(
-                AttributeSupport.getAttributeValue(signatureMethod, null, ATTR_NAME_ALGORTHM));
-        if (signatureMethodAlgorithm != null) {
-            return signatureMethodAlgorithm;
+        
+        if (signatureMethod != null) {
+            final String signatureMethodAlgorithm = StringSupport.trimOrNull(
+                    AttributeSupport.getAttributeValue(signatureMethod, null, ATTR_NAME_ALGORTHM));
+            if (signatureMethodAlgorithm != null) {
+                return signatureMethodAlgorithm;
+            }
         }
-        throw new SignatureException("SignatureMethod Algorithm was null");
+        throw new SignatureException("SignatureMethod element or Algorithm was null");
     }
 
     
@@ -174,12 +177,14 @@ public class SignatureAlgorithmValidator {
         
         for (final Element reference : ElementSupport.getChildElements(signedInfo, ELEMENT_NAME_REFERENCE)) {
             final Element digestMethod = ElementSupport.getFirstChildElement(reference, ELEMENT_NAME_DIGEST_METHOD);
-            final String digestMethodAlgorithm = StringSupport.trimOrNull(
-                    AttributeSupport.getAttributeValue(digestMethod, null, ATTR_NAME_ALGORTHM));
-            if (digestMethodAlgorithm != null) {
-                digestMethodAlgorithms.add(digestMethodAlgorithm);
-            } else {
-                throw new SignatureException("Saw null DigestMethod Algorithm");
+            if (digestMethod != null) {
+                final String digestMethodAlgorithm = StringSupport.trimOrNull(
+                        AttributeSupport.getAttributeValue(digestMethod, null, ATTR_NAME_ALGORTHM));
+                if (digestMethodAlgorithm != null) {
+                    digestMethodAlgorithms.add(digestMethodAlgorithm);
+                } else {
+                    throw new SignatureException("DigestMethod Algorithm was null");
+                }
             }
         }
         

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -31,8 +33,8 @@ import net.shibboleth.shared.xml.AttributeSupport;
 public class StatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentSAMLObject,
+            @Nonnull final XMLObject childSAMLObject) throws UnmarshallingException {
 
         final StatusCode statusCode = (StatusCode) parentSAMLObject;
 
@@ -45,7 +47,8 @@ public class StatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
         final StatusCode statusCode = (StatusCode) samlObject;
 

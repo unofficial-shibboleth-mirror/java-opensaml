@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -34,15 +35,16 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class SecurityTokenReferenceUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final SecurityTokenReference str = (SecurityTokenReference) parentXMLObject;
 
         str.getUnknownXMLObjects().add(childXMLObject);
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final SecurityTokenReference str = (SecurityTokenReference) xmlObject;
         
         final QName attribQName = 

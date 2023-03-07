@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -32,7 +34,8 @@ import net.shibboleth.shared.xml.AttributeSupport;
 public class AuthorityBindingUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
         final AuthorityBinding authorityBinding = (AuthorityBinding) samlObject;
 

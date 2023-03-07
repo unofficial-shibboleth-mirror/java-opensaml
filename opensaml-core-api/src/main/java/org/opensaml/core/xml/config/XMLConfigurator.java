@@ -233,11 +233,16 @@ public class XMLConfigurator {
 
             // Get the element name of type this object provider is for
             final Attr qNameAttrib = objectProvider.getAttributeNodeNS(null, "qualifiedName");
-            final QName objectProviderName = AttributeSupport.getAttributeValueAsQName(qNameAttrib);
+            final QName objectProviderName = qNameAttrib != null ?
+                    AttributeSupport.getAttributeValueAsQName(qNameAttrib) : null;
 
             log.debug("Initializing object provider {}", objectProviderName);
 
             try {
+                if (objectProviderName == null) {
+                    throw new XMLConfigurationException("qualifiedName attribute was missing");
+                }
+                
                 Element configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
                 final XMLObjectBuilder<?> builder = (XMLObjectBuilder<?>) createClassInstance(configuration);
@@ -256,7 +261,9 @@ public class XMLConfigurator {
             } catch (final XMLConfigurationException e) {
                 log.error("Error initializing object provier {}: {}", objectProvider, e.getMessage());
                 // clean up any parts of the object provider that might have been registered before the failure
-                getRegistry().deregisterObjectProvider(objectProviderName);
+                if (objectProviderName != null) {
+                    getRegistry().deregisterObjectProvider(objectProviderName);
+                }
                 throw e;
             }
         }
