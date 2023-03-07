@@ -19,6 +19,9 @@ package org.opensaml.xmlsec.signature.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 
@@ -53,7 +56,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
     }
 
     /** {@inheritDoc} */
-    public Signature unmarshall(final Element signatureElement) throws UnmarshallingException {
+    public Signature unmarshall(@Nonnull final Element signatureElement) throws UnmarshallingException {
         log.debug("Starting to unmarshall Apache XML-Security-based SignatureImpl element");
 
         final SignatureImpl signature =
@@ -95,7 +98,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
      * @param signatureMethodElement the ds:SignatureMethod element
      * @return the HMAC output length value, or null if not present
      */
-    private Integer getHMACOutputLengthValue(final Element signatureMethodElement) {
+    private Integer getHMACOutputLengthValue(@Nullable final Element signatureMethodElement) {
         if (signatureMethodElement == null) {
             return null;
         }

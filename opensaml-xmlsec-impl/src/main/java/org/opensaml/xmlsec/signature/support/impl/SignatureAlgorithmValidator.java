@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.AttributeSupport;
@@ -52,23 +53,27 @@ import org.w3c.dom.Element;
 public class SignatureAlgorithmValidator {
     
     /** QName of 'ds:SignedInfo' element. */
-    private static final QName ELEMENT_NAME_SIGNED_INFO = new QName(SignatureConstants.XMLSIG_NS, "SignedInfo");
+    @Nonnull private static final QName ELEMENT_NAME_SIGNED_INFO =
+            new QName(SignatureConstants.XMLSIG_NS, "SignedInfo");
     
     /** QName of 'ds:SignatureMethod' element. */
-    private static final QName ELEMENT_NAME_SIGNATURE_METHOD = new QName(SignatureConstants.XMLSIG_NS, 
+    @Nonnull private static final QName ELEMENT_NAME_SIGNATURE_METHOD =
+            new QName(SignatureConstants.XMLSIG_NS, 
             "SignatureMethod");
     
     /** QName of 'ds:Reference' element. */
-    private static final QName ELEMENT_NAME_REFERENCE = new QName(SignatureConstants.XMLSIG_NS, "Reference");
+    @Nonnull private static final QName ELEMENT_NAME_REFERENCE =
+            new QName(SignatureConstants.XMLSIG_NS, "Reference");
     
     /** QName of 'ds:DigestMethod' element. */
-    private static final QName ELEMENT_NAME_DIGEST_METHOD = new QName(SignatureConstants.XMLSIG_NS, "DigestMethod");
+    @Nonnull private static final QName ELEMENT_NAME_DIGEST_METHOD =
+            new QName(SignatureConstants.XMLSIG_NS, "DigestMethod");
     
     /** Local name of 'Algorithm' attribute. */
-    private static final String ATTR_NAME_ALGORTHM = "Algorithm";
+    @Nonnull @NotEmpty private static final String ATTR_NAME_ALGORTHM = "Algorithm";
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SignatureAlgorithmValidator.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SignatureAlgorithmValidator.class);
     
     /** The collection of algorithm URIs which are included. */
     private Collection<String> includedAlgorithmURIs;
@@ -146,17 +151,22 @@ public class SignatureAlgorithmValidator {
     @Nonnull protected String getSignatureAlgorithm(@Nonnull final Signature signatureXMLObject) 
             throws SignatureException {
         final Element signature = signatureXMLObject.getDOM();
-        final Element signedInfo = ElementSupport.getFirstChildElement(signature, ELEMENT_NAME_SIGNED_INFO);
-        final Element signatureMethod = ElementSupport.getFirstChildElement(signedInfo, ELEMENT_NAME_SIGNATURE_METHOD);
-        
-        if (signatureMethod != null) {
-            final String signatureMethodAlgorithm = StringSupport.trimOrNull(
-                    AttributeSupport.getAttributeValue(signatureMethod, null, ATTR_NAME_ALGORTHM));
-            if (signatureMethodAlgorithm != null) {
-                return signatureMethodAlgorithm;
+        if (signature != null) {
+            final Element signedInfo = ElementSupport.getFirstChildElement(signature, ELEMENT_NAME_SIGNED_INFO);
+            if (signedInfo != null) {
+                final Element signatureMethod =
+                        ElementSupport.getFirstChildElement(signedInfo, ELEMENT_NAME_SIGNATURE_METHOD);
+                
+                if (signatureMethod != null) {
+                    final String signatureMethodAlgorithm = StringSupport.trimOrNull(
+                            AttributeSupport.getAttributeValue(signatureMethod, null, ATTR_NAME_ALGORTHM));
+                    if (signatureMethodAlgorithm != null) {
+                        return signatureMethodAlgorithm;
+                    }
+                }
             }
         }
-        throw new SignatureException("SignatureMethod element or Algorithm was null");
+        throw new SignatureException("Signature/SignedInfo/SignatureMethod elements or Algorithm were null");
     }
 
     
@@ -171,9 +181,20 @@ public class SignatureAlgorithmValidator {
             @Nonnull final Signature signatureXMLObject) throws SignatureException {
         final ArrayList<String> digestMethodAlgorithms = new ArrayList<>();
         
+        // TODO: should these null checks throw?
+        // I suspect so necause the getSignatureAlgorithm logic did/does.
+        
         final Element signature = signatureXMLObject.getDOM();
+        if (signature == null) {
+            log.warn("Signature element was null");
+            return digestMethodAlgorithms;
+        }
         
         final Element signedInfo = ElementSupport.getFirstChildElement(signature, ELEMENT_NAME_SIGNED_INFO);
+        if (signedInfo == null) {
+            log.warn("SignedInfo element was absent");
+            return digestMethodAlgorithms;
+        }
         
         for (final Element reference : ElementSupport.getChildElements(signedInfo, ELEMENT_NAME_REFERENCE)) {
             final Element digestMethod = ElementSupport.getFirstChildElement(reference, ELEMENT_NAME_DIGEST_METHOD);

@@ -49,8 +49,9 @@ public abstract class AbstractSignableXMLObject extends AbstractXMLObject implem
 
     /** {@inheritDoc} */
     public boolean isSigned() {
+        final Element root = getDOM();
         
-        Element child = ElementSupport.getFirstChildElement(getDOM());
+        Element child = root != null ? ElementSupport.getFirstChildElement(root) : null;
         while (child != null && !ElementSupport.isElementNamed(child, SignatureConstants.XMLSIG_NS,
                 Signature.DEFAULT_ELEMENT_LOCAL_NAME)) {
             child = ElementSupport.getNextSiblingElement(child);

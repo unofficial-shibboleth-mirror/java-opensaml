@@ -21,6 +21,8 @@ import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.QNameSupport;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -28,19 +30,20 @@ import org.opensaml.core.xml.schema.XSQName;
 import org.w3c.dom.Text;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.core.xml.schema.XSQName}s.
+ * A thread-safe unmarshaller for {@link XSQName}s.
  */
 public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         // no child elements
         // left this in to bypass the "ignore" logging message since we're not in fact ignoring the content
     }
 
     /** {@inheritDoc} */
-    protected void unmarshallTextContent(final XMLObject xmlObject, final Text content) throws UnmarshallingException {
+    protected void unmarshallTextContent(@Nonnull final XMLObject xmlObject, @Nonnull final Text content)
+            throws UnmarshallingException {
         final String textContent = StringSupport.trimOrNull(content.getData());
         if (textContent != null) {
             final XSQName qname = (XSQName) xmlObject;

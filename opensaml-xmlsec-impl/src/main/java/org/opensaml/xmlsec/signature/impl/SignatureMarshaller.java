@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -98,7 +99,7 @@ public class SignatureMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if the signature can not be constructed
      */
-    private Element createSignatureElement(final Signature signature, final Document document)
+    @Nonnull private Element createSignatureElement(final Signature signature, final Document document)
             throws MarshallingException {
         log.debug("Starting to marshall {}", signature.getElementQName());
 
