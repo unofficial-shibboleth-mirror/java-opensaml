@@ -44,6 +44,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.logic.Constraint;
@@ -77,37 +78,37 @@ import com.google.common.net.InetAddresses;
 public class X509Support {
 
     /** Common Name (CN) OID. */
-    public static final String CN_OID = "2.5.4.3";
+    @Nonnull @NotEmpty public static final String CN_OID = "2.5.4.3";
     
     /** Subject Key Identifier (SKI) OID. */
-    public static final String SKI_OID = "2.5.29.14";
+    @Nonnull @NotEmpty public static final String SKI_OID = "2.5.29.14";
 
     /** RFC 2459 Other Subject Alt Name type. */
-    public static final Integer OTHER_ALT_NAME = 0;
+    @Nonnull public static final Integer OTHER_ALT_NAME = 0;
 
     /** RFC 2459 RFC 822 (email address) Subject Alt Name type. */
-    public static final Integer RFC822_ALT_NAME = 1;
+    @Nonnull public static final Integer RFC822_ALT_NAME = 1;
 
     /** RFC 2459 DNS Subject Alt Name type. */
-    public static final Integer DNS_ALT_NAME = 2;
+    @Nonnull public static final Integer DNS_ALT_NAME = 2;
 
     /** RFC 2459 X.400 Address Subject Alt Name type. */
-    public static final Integer X400ADDRESS_ALT_NAME = 3;
+    @Nonnull public static final Integer X400ADDRESS_ALT_NAME = 3;
 
     /** RFC 2459 Directory Name Subject Alt Name type. */
-    public static final Integer DIRECTORY_ALT_NAME = 4;
+    @Nonnull public static final Integer DIRECTORY_ALT_NAME = 4;
 
     /** RFC 2459 EDI Party Name Subject Alt Name type. */
-    public static final Integer EDI_PARTY_ALT_NAME = 5;
+    @Nonnull public static final Integer EDI_PARTY_ALT_NAME = 5;
 
     /** RFC 2459 URI Subject Alt Name type. */
-    public static final Integer URI_ALT_NAME = 6;
+    @Nonnull public static final Integer URI_ALT_NAME = 6;
 
     /** RFC 2459 IP Address Subject Alt Name type. */
-    public static final Integer IP_ADDRESS_ALT_NAME = 7;
+    @Nonnull public static final Integer IP_ADDRESS_ALT_NAME = 7;
 
     /** RFC 2459 Registered ID Subject Alt Name type. */
-    public static final Integer REGISTERED_ID_ALT_NAME = 8;
+    @Nonnull public static final Integer REGISTERED_ID_ALT_NAME = 8;
     
     /** Logger. */
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(X509Support.class);
@@ -324,7 +325,7 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nullable public static Collection<X509Certificate> decodeCertificates(@Nonnull final InputStream certs)
+    @Nonnull public static Collection<X509Certificate> decodeCertificates(@Nonnull final InputStream certs)
             throws CertificateException {
         Constraint.isNotNull(certs, "Input Stream cannot be null");
         
@@ -366,7 +367,7 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nullable public static X509Certificate decodeCertificate(@Nonnull final File cert) throws CertificateException {
+    @Nonnull public static X509Certificate decodeCertificate(@Nonnull final File cert) throws CertificateException {
         Constraint.isNotNull(cert, "Input file cannot be null");
         if (!cert.exists()) {
             throw new CertificateException("Certificate file " + cert.getAbsolutePath() + " does not exist");
@@ -390,7 +391,7 @@ public class X509Support {
      * 
      * @throws CertificateException thrown if the certificate cannot be decoded
      */
-    @Nullable public static X509Certificate decodeCertificate(@Nonnull final byte[] cert) throws CertificateException {
+    @Nonnull public static X509Certificate decodeCertificate(@Nonnull final byte[] cert) throws CertificateException {
         try {
             return CertUtil.decodeCertificate(cert);
         } catch (final IllegalArgumentException | EncodingException e) {
@@ -405,7 +406,7 @@ public class X509Support {
      * @return a native Java X509 certificate
      * @throws CertificateException thrown if there is an error constructing certificate
      */
-    @Nullable public static X509Certificate decodeCertificate(@Nonnull final String base64Cert)
+    @Nonnull public static X509Certificate decodeCertificate(@Nonnull final String base64Cert)
             throws CertificateException {
         try {
             return decodeCertificate(Base64Support.decode(base64Cert));
@@ -426,7 +427,7 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nullable public static Collection<X509CRL> decodeCRLs(@Nonnull final File crls) throws CRLException{
+    @Nonnull public static Collection<X509CRL> decodeCRLs(@Nonnull final File crls) throws CRLException{
         Constraint.isNotNull(crls, "Input file cannot be null");
         if (!crls.exists()) {
             throw new CRLException("CRL file " + crls.getAbsolutePath() + " does not exist");
@@ -453,7 +454,7 @@ public class X509Support {
      * 
      * @since 1.2
      */
-    @Nullable public static Collection<X509CRL> decodeCRLs(@Nonnull final InputStream crls) throws CRLException{
+    @Nonnull public static Collection<X509CRL> decodeCRLs(@Nonnull final InputStream crls) throws CRLException{
         Constraint.isNotNull(crls, "Input stream cannot be null");
         
         try {
@@ -474,7 +475,7 @@ public class X509Support {
      * 
      * @throws CRLException thrown if the CRLs can not be decoded
      */
-    @Nullable public static Collection<X509CRL> decodeCRLs(@Nonnull final byte[] crls) throws CRLException {
+    @Nonnull public static Collection<X509CRL> decodeCRLs(@Nonnull final byte[] crls) throws CRLException {
         try {
             final CertificateFactory cf = CertificateFactory.getInstance("X.509");
             return (Collection<X509CRL>) cf.generateCRLs(new ByteArrayInputStream(crls));
@@ -491,7 +492,7 @@ public class X509Support {
      * @throws CertificateException thrown if there is an error constructing certificate
      * @throws CRLException thrown if there is an error constructing CRL
      */
-    @Nullable public static X509CRL decodeCRL(@Nonnull final String base64CRL)
+    @Nonnull public static X509CRL decodeCRL(@Nonnull final String base64CRL)
             throws CertificateException, CRLException {
         try {
             final CertificateFactory cf = CertificateFactory.getInstance("X.509");

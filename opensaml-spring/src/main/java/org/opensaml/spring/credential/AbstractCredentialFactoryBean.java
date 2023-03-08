@@ -19,7 +19,6 @@ package org.opensaml.spring.credential;
 
 import java.util.List;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
@@ -34,19 +33,19 @@ import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 public abstract class AbstractCredentialFactoryBean<T extends Credential> extends AbstractComponentAwareFactoryBean<T> {
 
     /** Usage type of the credential. */
-    private String usageType;
+    @Nullable private String usageType;
 
     /** Names for the key represented by the credential. */
-    private List<String> keyNames;
+    @Nullable  private List<String> keyNames;
 
     /** Identifier for the owner of the credential. */
-    private String entityID;
+    @Nullable private String entityID;
     
     /** The privateKey Password (if any). */
     @Nullable private char[] privateKeyPassword;
 
     /** For logging: The description of the source of the configuration.*/
-    @Nonnull private String configDescription;
+    @Nullable private String configDescription;
    
     /**
      * Gets the names for the key represented by the credential.
@@ -131,14 +130,14 @@ public abstract class AbstractCredentialFactoryBean<T extends Credential> extend
     /** For logging, get the description of the resource that defined this bean.
      * @return Returns the description.
      */
-    public String getConfigDescription() {
+    @Nullable public String getConfigDescription() {
         return configDescription;
     }
 
     /** For logging, set the description of the resource that defined this bean.
      * @param desc what to set.
      */
-    public void setConfigDescription(@Nonnull final String desc) {
+    public void setConfigDescription(@Nullable final String desc) {
         configDescription = desc;
     }
 }

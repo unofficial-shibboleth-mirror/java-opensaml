@@ -17,6 +17,7 @@
 
 package org.opensaml.spring.tls;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
@@ -35,10 +36,10 @@ import net.shibboleth.shared.httpclient.HttpClientSupport;
 public class TLSSocketFactoryFactoryBean extends AbstractFactoryBean<LayeredConnectionSocketFactory> {
     
     /** The optional trust engine used in evaluating server TLS credentials. */
-    private TrustEngine<?> tlsTrustEngine;
+    @Nullable private TrustEngine<?> tlsTrustEngine;
     
     /** The optional HttpClient security parameters instance that will be used with the HttpClient instance. */
-    private HttpClientSecurityParameters httpClientSecurityParameters;
+    @Nullable private HttpClientSecurityParameters httpClientSecurityParameters;
     
     /** Whether the responder's SSL/TLS certificate should be ignored. */
     private boolean connectionDisregardTLSCertificate;
@@ -79,7 +80,8 @@ public class TLSSocketFactoryFactoryBean extends AbstractFactoryBean<LayeredConn
     }
 
     /** {@inheritDoc} */
-    @Override protected LayeredConnectionSocketFactory createInstance() throws Exception {
+    @Override
+    @Nonnull protected LayeredConnectionSocketFactory createInstance() throws Exception {
         final boolean haveTrustEngine = tlsTrustEngine != null 
                 || (httpClientSecurityParameters != null && httpClientSecurityParameters.getTLSTrustEngine() != null);
         final boolean haveClientTLSCred = 

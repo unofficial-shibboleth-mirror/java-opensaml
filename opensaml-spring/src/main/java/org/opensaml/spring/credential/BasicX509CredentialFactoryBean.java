@@ -26,19 +26,20 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
 
@@ -53,19 +54,19 @@ import org.springframework.core.io.Resource;
 public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactoryBean {
 
     /** log. */
-    private final Logger log = LoggerFactory.getLogger(BasicX509CredentialFactoryBean.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicX509CredentialFactoryBean.class);
 
     /** The specification of where the entity Resource is to be found. */
-    private Resource entityResource;
+    @Nullable private Resource entityResource;
 
     /** Where the certificates are to be found. */
-    private List<Resource> certificateResources;
+    @Nullable private List<Resource> certificateResources;
 
     /** Where the private key is to be found. */
-    private Resource privateKeyResource;
+    @Nullable private Resource privateKeyResource;
 
     /** Where the crls are to be found. */
-    private List<Resource> crlResources;
+    @Nullable private List<Resource> crlResources;
 
     /**
      * Set the Resource with the entity certificate.
@@ -121,7 +122,11 @@ public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactor
      * @param password password for the private key, may be null if the key is not encrypted
      */
     public void setPrivateKeyPassword(@Nullable final String password) {
-        setPrivateKeyPassword(password.toCharArray());
+        if (password != null) {
+            setPrivateKeyPassword(password.toCharArray());
+        } else {
+            setPrivateKeyPassword((char[]) null);
+        }
     }
 
     /**
@@ -130,7 +135,7 @@ public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactor
      * @param res certificate resource
      */
     public void setCertificateResource(@Nonnull final Resource res) {
-        setCertificates(Collections.singletonList(res));
+        setCertificates(CollectionSupport.singletonList(res));
     }
 
     /**
@@ -150,11 +155,12 @@ public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactor
     /** {@inheritDoc}. */
     @Override @Nullable protected X509Certificate getEntityCertificate() {
 
-        if (null == entityResource) {
+        final Resource localEntityResource = entityResource;
+        if (null == localEntityResource) {
             return null;
         }
         try {
-            final Collection<X509Certificate> certs = X509Support.decodeCertificates(entityResource.getInputStream());
+            final Collection<X509Certificate> certs = X509Support.decodeCertificates(localEntityResource.getInputStream());
             if (certs.size() > 1) {
                 log.error("{}: Configuration element indicated an entityCertificate,"
                         + " but multiple certificates were decoded", getConfigDescription());
@@ -164,9 +170,9 @@ public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactor
             return certs.iterator().next();
         } catch (final CertificateException | IOException e) {
             log.error("{}: Could not decode provided Entity Certificate at {}: {}", getConfigDescription(),
-                    entityResource.getDescription(), e.getMessage());
+                    localEntityResource.getDescription(), e.getMessage());
             throw new FatalBeanException("Could not decode provided Entity Certificate file "
-                    + entityResource.getDescription(), e);
+                    + localEntityResource.getDescription(), e);
         }
     }
 
@@ -174,10 +180,11 @@ public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactor
     @Override @Nonnull protected List<X509Certificate> getCertificates() {
         
         if (certificateResources == null) {
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         
         final List<X509Certificate> certificates = new LazyList<>();
+        assert certificateResources != null;
         for (final Resource r : certificateResources) {
             try(InputStream is = r.getInputStream()) {
                 certificates.addAll(X509Support.decodeCertificates(is));
@@ -192,15 +199,16 @@ public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactor
 
     /** {@inheritDoc} */
     @Override @Nullable protected PrivateKey getPrivateKey() {
-        if (null == privateKeyResource) {
+        final Resource localResource = privateKeyResource; 
+        if (null == localResource) {
             return null;
         }
-        try (InputStream is = privateKeyResource.getInputStream()) {
+        try (InputStream is = localResource.getInputStream()) {
             return KeySupport.decodePrivateKey(is, getPrivateKeyPassword());
         } catch (final KeyException | IOException e) {
             log.error("{}: Could not decode KeyFile at {}: {}", getConfigDescription(),
-                    privateKeyResource.getDescription(), e.getMessage());
-            throw new FatalBeanException("Could not decode provided KeyFile " + privateKeyResource.getDescription(), e);
+                    localResource.getDescription(), e.getMessage());
+            throw new FatalBeanException("Could not decode provided KeyFile " + localResource.getDescription(), e);
         }
     }
 
@@ -210,6 +218,7 @@ public class BasicX509CredentialFactoryBean extends AbstractX509CredentialFactor
             return null;
         }
         final List<X509CRL> crls = new LazyList<>();
+        assert crlResources != null;
         for (final Resource crl : crlResources) {
             try (InputStream is = crl.getInputStream()) {
                 crls.addAll(X509Support.decodeCRLs(is));

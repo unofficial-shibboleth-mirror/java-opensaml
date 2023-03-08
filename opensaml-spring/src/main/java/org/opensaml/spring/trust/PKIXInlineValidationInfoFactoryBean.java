@@ -24,12 +24,14 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.FatalBeanException;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * File system specific bean for PKIXValidationInfo.
@@ -37,13 +39,13 @@ import org.springframework.beans.FatalBeanException;
 public class PKIXInlineValidationInfoFactoryBean extends AbstractBasicPKIXValidationInfoFactoryBean {
 
     /** log. */
-    private Logger log = LoggerFactory.getLogger(PKIXInlineValidationInfoFactoryBean.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(PKIXInlineValidationInfoFactoryBean.class);
 
     /** The strings to be turned into the certificates. */
-    private List<String> certificateFiles;
+    @Nullable private List<String> certificateFiles;
 
     /** The strings to be turned into the crls. */
-    private List<String> crlStrings;
+    @Nullable private List<String> crlStrings;
 
     /**
      * Set the file names which we will convert into certificates.
@@ -72,7 +74,10 @@ public class PKIXInlineValidationInfoFactoryBean extends AbstractBasicPKIXValida
         if (null == certificateFiles) {
             return null;
         }
+        
+        assert certificateFiles != null;
         final List<X509Certificate> certificates = new ArrayList<>(certificateFiles.size());
+        assert certificateFiles != null;
         for (final String cert : certificateFiles) {
             try {
                 certificates.add(X509Support.decodeCertificate(cert.trim()));
@@ -93,9 +98,12 @@ public class PKIXInlineValidationInfoFactoryBean extends AbstractBasicPKIXValida
         if (null == crlStrings) {
             return null;
         }
+        assert crlStrings != null;
         final List<X509CRL> crls = new ArrayList<>(crlStrings.size());
+        assert crlStrings != null;
         for (final String crl : crlStrings) {
             try {
+                assert crl != null;
                 crls.add(X509Support.decodeCRL(crl));
             } catch (final CRLException | CertificateException e) {
                 log.error("{}: Could not decode provided CRL: {}", getConfigDescription(), e.getMessage());

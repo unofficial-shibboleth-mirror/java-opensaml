@@ -23,17 +23,20 @@ import java.security.KeyException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import org.cryptacular.util.KeyPairUtil;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.core.io.Resource;
 
 import com.google.common.io.ByteStreams;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Spring bean factory for producing a {@link org.opensaml.security.credential.BasicCredential} from {@link Resource}s.
@@ -41,7 +44,7 @@ import com.google.common.io.ByteStreams;
 public class BasicResourceCredentialFactoryBean extends AbstractBasicCredentialFactoryBean {
 
     /** log. */
-    private final Logger log = LoggerFactory.getLogger(BasicResourceCredentialFactoryBean.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicResourceCredentialFactoryBean.class);
 
     /** Configured public key Info. */
     @Nullable private Resource publicKeyInfo;
@@ -108,10 +111,11 @@ public class BasicResourceCredentialFactoryBean extends AbstractBasicCredentialF
 
     /** {@inheritDoc} */
     @Override @Nullable protected PublicKey getPublicKey() {
-        if (null == getPublicKeyInfo()) {
+        final Resource pkinfo = getPublicKeyInfo();
+        if (null == pkinfo) {
             return null;
         }
-        try (InputStream is = getPublicKeyInfo().getInputStream()) {
+        try (final InputStream is = pkinfo.getInputStream()) {
             return KeyPairUtil.readPublicKey(is);
         } catch (final IOException e) {
             log.error("{}: Could not decode public key: {}", getConfigDescription(), e.getMessage());
@@ -121,10 +125,11 @@ public class BasicResourceCredentialFactoryBean extends AbstractBasicCredentialF
 
     /** {@inheritDoc} */
     @Override @Nullable protected PrivateKey getPrivateKey() {
-        if (null == getPrivateKeyInfo()) {
+        final Resource pkinfo = getPrivateKeyInfo();
+        if (null == pkinfo) {
             return null;
         }
-        try (InputStream is = getPrivateKeyInfo().getInputStream()) {
+        try (final InputStream is = pkinfo.getInputStream()) {
             return KeySupport.decodePrivateKey(is, getPrivateKeyPassword());
         } catch (final KeyException | IOException e) {
             log.error("{}: Could not decode private key: {}", getConfigDescription(), e.getMessage());
@@ -134,11 +139,17 @@ public class BasicResourceCredentialFactoryBean extends AbstractBasicCredentialF
 
     /** {@inheritDoc} */
     @Override @Nullable protected SecretKey getSecretKey() {
-        if (null == getSecretKeyInfo()) {
+        final Resource skinfo = getSecretKeyInfo(); 
+        if (null == skinfo) {
             return null;
         }
-        try (InputStream is = getSecretKeyInfo().getInputStream()) {
-            return KeySupport.decodeSecretKey(decodeSecretKey(ByteStreams.toByteArray(is)), getSecretKeyAlgorithm());
+        
+        try (final InputStream is = skinfo.getInputStream()) {
+            final String alg = getSecretKeyAlgorithm();
+            if (alg == null) {
+                throw new KeyException("Key algorithm was null");
+            }
+            return KeySupport.decodeSecretKey(decodeSecretKey(ByteStreams.toByteArray(is)), alg);
         } catch (final KeyException | IOException e) {
             log.error("{}: Could not decode secret key: {}", getConfigDescription(), e.getMessage());
             throw new BeanCreationException("Could not decode secret key", e);

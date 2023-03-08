@@ -23,7 +23,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -39,11 +38,13 @@ import org.opensaml.security.trust.impl.ExplicitKeyTrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
 /**
@@ -57,15 +58,15 @@ public class StaticExplicitKeyFactoryBean extends AbstractComponentAwareFactoryB
     @Nonnull private Logger log = LoggerFactory.getLogger(StaticExplicitKeyFactoryBean.class);
 
     /** The resources to be turned into keys. */
-    private List<Resource> keyResources;
+    @Nonnull private List<Resource> keyResources;
 
     /** The resources to be turned into certificates. */
-    private List<Resource> certificateResources;
+    @Nonnull private List<Resource> certificateResources;
 
     /** Constructor. */
     public StaticExplicitKeyFactoryBean() {
-        keyResources = Collections.emptyList();
-        certificateResources = Collections.emptyList();
+        keyResources = CollectionSupport.emptyList();
+        certificateResources = CollectionSupport.emptyList();
     }
     
     /**
@@ -74,7 +75,7 @@ public class StaticExplicitKeyFactoryBean extends AbstractComponentAwareFactoryB
      * @param keys the resources
      */
     public void setPublicKeys(@Nullable final List<Resource> keys) {
-        keyResources = keys != null ? keys : Collections.emptyList();
+        keyResources = keys != null ? keys : CollectionSupport.emptyList();
     }
     
     /**
@@ -83,7 +84,7 @@ public class StaticExplicitKeyFactoryBean extends AbstractComponentAwareFactoryB
      * @param certs the resources
      */
     public void setCertificates(@Nullable final List<Resource> certs) {
-        certificateResources = certs != null ? certs : Collections.emptyList();
+        certificateResources = certs != null ? certs : CollectionSupport.emptyList();
     }
 
     /**
@@ -91,7 +92,7 @@ public class StaticExplicitKeyFactoryBean extends AbstractComponentAwareFactoryB
      * 
      * @return the certificates null
      */
-    @Nullable @NonnullElements protected List<Credential> getCredentials() {
+    @Nonnull @NonnullElements protected List<Credential> getCredentials() {
         
         final List<Credential> credentials = new ArrayList<>(keyResources.size() + certificateResources.size());
 
@@ -127,13 +128,13 @@ public class StaticExplicitKeyFactoryBean extends AbstractComponentAwareFactoryB
 
     /** {@inheritDoc} */
     @Override
-    public Class<?> getObjectType() {
+    @Nonnull  public Class<?> getObjectType() {
         return ExplicitKeyTrustEngine.class;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected ExplicitKeyTrustEngine doCreateInstance() throws Exception {
+    @Nonnull protected ExplicitKeyTrustEngine doCreateInstance() throws Exception {
         return new ExplicitKeyTrustEngine(new StaticCredentialResolver(getCredentials()));
     }
     

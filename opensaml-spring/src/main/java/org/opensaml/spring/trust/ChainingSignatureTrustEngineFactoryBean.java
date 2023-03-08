@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
@@ -37,30 +38,36 @@ public class ChainingSignatureTrustEngineFactoryBean extends
         AbstractComponentAwareFactoryBean<ChainingSignatureTrustEngine> {
 
     /** The unfiltered list of putative trust engines. */
-    private final List<Object> engines;
+    @Nullable private final List<Object> engines;
 
     /**
      * Constructor.
      * 
      * @param list the putative trust engines.
      */
-    public ChainingSignatureTrustEngineFactoryBean(@Nonnull final List<Object> list) {
-        engines = Constraint.isNotNull(list, "Engine list must be non null");
+    public ChainingSignatureTrustEngineFactoryBean(@Nullable final List<Object> list) {
+        engines = list;
     }
 
     /** {@inheritDoc} */
-    @Override public Class<?> getObjectType() {
+    @Override
+    @Nonnull public Class<?> getObjectType() {
         return ChainingSignatureTrustEngine.class;
     }
 
     /** {@inheritDoc} */
-    @Override protected ChainingSignatureTrustEngine doCreateInstance() throws Exception {
-        final List<SignatureTrustEngine> list = new ArrayList<>(engines.size());
+    @Override
+    @Nonnull protected ChainingSignatureTrustEngine doCreateInstance() throws Exception {
+        if (engines == null) {
+            return new ChainingSignatureTrustEngine(CollectionSupport.emptyList());
+        }
 
+        assert engines != null;
+        final List<SignatureTrustEngine> list = new ArrayList<>(engines.size());
+        assert engines != null;
         for (final Object engine : engines) {
             if (engine instanceof SignatureTrustEngine) {
                 list.add((SignatureTrustEngine) engine);
-
             }
         }
         return new ChainingSignatureTrustEngine(list);

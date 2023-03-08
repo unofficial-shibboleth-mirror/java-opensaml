@@ -28,12 +28,14 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.cryptacular.util.KeyPairUtil;
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.FatalBeanException;
 
 /**
@@ -42,19 +44,19 @@ import org.springframework.beans.FatalBeanException;
 public class X509InlineCredentialFactoryBean extends AbstractX509CredentialFactoryBean {
 
     /** log. */
-    private final Logger log = LoggerFactory.getLogger(X509InlineCredentialFactoryBean.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(X509InlineCredentialFactoryBean.class);
 
     /** The entity certificate. */
-    private String entityCertificate;
+    @Nullable private String entityCertificate;
 
     /** The certificates. */
-    private List<String> certificates;
+    @Nullable private List<String> certificates;
 
     /** The private key. */
-    private byte[] privateKey;
+    @Nullable private byte[] privateKey;
 
     /** The crls. */
-    private List<String> crls;
+    @Nullable private List<String> crls;
     
     /**
      * Set the file with the entity certificate.
@@ -99,6 +101,7 @@ public class X509InlineCredentialFactoryBean extends AbstractX509CredentialFacto
             return null;
         }
         try {
+            assert entityCertificate != null;
             return X509Support.decodeCertificate(entityCertificate);
         } catch (final CertificateException e) {
             log.error("{}: Could not decode provided Entity Certificate: {}", getConfigDescription(), e.getMessage());
@@ -108,7 +111,13 @@ public class X509InlineCredentialFactoryBean extends AbstractX509CredentialFacto
 
     /** {@inheritDoc} */
     @Override @Nonnull protected List<X509Certificate> getCertificates() {
+        
+        if (certificates == null) {
+            return CollectionSupport.emptyList();
+        }
+        
         final List<X509Certificate> certs = new LazyList<>();
+        assert certificates != null;
         for (final String cert : certificates) {
             try {
                 certs.add(X509Support.decodeCertificate(cert.trim()));
@@ -134,8 +143,10 @@ public class X509InlineCredentialFactoryBean extends AbstractX509CredentialFacto
             return null;
         }
         final List<X509CRL> result = new LazyList<>();
+        assert crls != null;
         for (final String crl : crls) {
             try {
+                assert crl != null;
                 result.add(X509Support.decodeCRL(crl));
             } catch (final CRLException | CertificateException e) {
                 log.error("{}: Could not decode provided CRL: {}", getConfigDescription(), e.getMessage());

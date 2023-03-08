@@ -21,8 +21,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
 import org.opensaml.security.trust.TrustEngine;
@@ -37,7 +38,7 @@ public class ChainingTrustEngineFactoryBean extends
         AbstractComponentAwareFactoryBean<ChainingTrustEngine<?>> {
 
     /** The unfiltered list of putative trust engines. */
-    private final List<Object> engines;
+    @Nullable private final List<Object> engines;
 
     /**
      * Constructor.
@@ -45,19 +46,26 @@ public class ChainingTrustEngineFactoryBean extends
      * @param list the putative trust engines.
      */
     public ChainingTrustEngineFactoryBean(@Nonnull final List<Object> list) {
-        engines = Constraint.isNotNull(list, "Engine list must be non null");
+        engines = list;
     }
 
     /** {@inheritDoc} */
-    @Override public Class<?> getObjectType() {
+    @Override @Nonnull public Class<?> getObjectType() {
         return ChainingTrustEngine.class;
     }
 
     /** {@inheritDoc} */
     @SuppressWarnings({"rawtypes", "unchecked"})
-    @Override protected ChainingTrustEngine<?> doCreateInstance() throws Exception {
+    @Override
+    @Nonnull protected ChainingTrustEngine<?> doCreateInstance() throws Exception {
+        
+        if (engines == null) {
+            return new ChainingTrustEngine(CollectionSupport.emptyList());
+        }
+        
+        assert engines != null;
         final List<TrustEngine<?>> list = new ArrayList<>(engines.size());
-
+        assert engines != null;
         for (final Object engine : engines) {
             if (engine instanceof TrustEngine) {
                 list.add((TrustEngine<?>) engine);

@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.apache.commons.codec.binary.Base64;
@@ -34,7 +35,7 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.BeanCreationException;
 
 /**
@@ -53,7 +54,7 @@ public abstract class AbstractBasicCredentialFactoryBean extends AbstractCredent
     }
     
     /** Log. */
-    private final Logger log = LoggerFactory.getLogger(AbstractBasicCredentialFactoryBean.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractBasicCredentialFactoryBean.class);
 
     /** The SecretKey algorithm. */
     @Nullable private String secretKeyAlgorithm;
@@ -67,7 +68,7 @@ public abstract class AbstractBasicCredentialFactoryBean extends AbstractCredent
      * @param data the Secret key data
      * @return the decoded SecretKey byte array
      */
-    protected byte[] decodeSecretKey(final String data) {
+    @Nonnull protected byte[] decodeSecretKey(final String data) {
         Constraint.isNotNull(data, "SecretKey data was null");
         switch (getSecretKeyEncoding()) {
             case binary:
@@ -76,7 +77,7 @@ public abstract class AbstractBasicCredentialFactoryBean extends AbstractCredent
                     return data.getBytes("UTF-8");
                 } catch (final UnsupportedEncodingException e) {
                     // Can't actually happen, UTF-8 always supported.
-                    return null;
+                    throw new UnsupportedOperationException(e);
                 }
             case hex:
                 return Hex.decode(data);
@@ -94,7 +95,7 @@ public abstract class AbstractBasicCredentialFactoryBean extends AbstractCredent
      * @param data the Secret key data
      * @return the decoded SecretKey byte array
      */
-    protected byte[] decodeSecretKey(final byte[] data) {
+    @Nonnull protected byte[] decodeSecretKey(final byte[] data) {
         Constraint.isNotNull(data, "SecretKey data was null");
         switch (getSecretKeyEncoding()) {
             case binary:
@@ -110,7 +111,8 @@ public abstract class AbstractBasicCredentialFactoryBean extends AbstractCredent
     }
 
     /** {@inheritDoc} */
-    @Override protected BasicCredential doCreateInstance() throws Exception {
+    @Override
+    @Nonnull protected BasicCredential doCreateInstance() throws Exception {
 
         final PrivateKey privateKey = getPrivateKey();
         final PublicKey publicKey = getPublicKey();

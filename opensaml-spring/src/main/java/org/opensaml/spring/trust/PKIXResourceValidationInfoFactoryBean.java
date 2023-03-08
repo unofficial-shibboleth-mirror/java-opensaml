@@ -26,13 +26,16 @@ import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * File system specific bean for PKIXValidationInfo.
@@ -40,13 +43,13 @@ import org.springframework.core.io.Resource;
 public class PKIXResourceValidationInfoFactoryBean extends AbstractBasicPKIXValidationInfoFactoryBean {
 
     /** log. */
-    private Logger log = LoggerFactory.getLogger(PKIXResourceValidationInfoFactoryBean.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(PKIXResourceValidationInfoFactoryBean.class);
 
     /** The file to be turned into the certificates. */
-    private List<Resource> certificateFiles;
+    @Nullable private List<Resource> certificateFiles;
 
     /** The file to be turned into the crls. */
-    private List<Resource> crlFiles;
+    @Nullable private List<Resource> crlFiles;
 
     /**
      * Set the file names which we will convert into certificates.
@@ -75,7 +78,9 @@ public class PKIXResourceValidationInfoFactoryBean extends AbstractBasicPKIXVali
         if (null == certificateFiles) {
             return null;
         }
+        assert certificateFiles != null;
         final List<X509Certificate> certificates = new ArrayList<>(certificateFiles.size());
+        assert certificateFiles != null;
         for (final Resource f : certificateFiles) {
             try(InputStream is = f.getInputStream()) {
                 certificates.addAll(X509Support.decodeCertificates(is));
@@ -97,7 +102,9 @@ public class PKIXResourceValidationInfoFactoryBean extends AbstractBasicPKIXVali
         if (null == crlFiles) {
             return null;
         }
+        assert crlFiles != null;
         final List<X509CRL> crls = new ArrayList<>(crlFiles.size());
+        assert crlFiles != null;
         for (final Resource crlFile : crlFiles) {
             try(InputStream is = crlFile.getInputStream())  {
                 crls.addAll(X509Support.decodeCRLs(is));

@@ -29,10 +29,10 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanCreationException;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A factory bean to collect information to do with an X509 backed {@link BasicX509Credential}.
@@ -40,11 +40,12 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public abstract class AbstractX509CredentialFactoryBean extends AbstractCredentialFactoryBean<BasicX509Credential> {
 
     /** Log. */
-    private final Logger log = LoggerFactory.getLogger(AbstractX509CredentialFactoryBean.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractX509CredentialFactoryBean.class);
 
     /** {@inheritDoc} */
     // Checkstyle: CyclomaticComplexity OFF
-    @Override protected BasicX509Credential doCreateInstance() throws Exception {
+    @Override
+    @Nonnull protected BasicX509Credential doCreateInstance() throws Exception {
 
         final List<X509Certificate> certificates = getCertificates();
         if (null == certificates || certificates.isEmpty()) {
@@ -56,6 +57,8 @@ public abstract class AbstractX509CredentialFactoryBean extends AbstractCredenti
         if (null == entityCertificate) {
             entityCertificate = certificates.get(0);
         }
+        
+        assert entityCertificate != null;
 
         final PrivateKey privateKey = getPrivateKey();
 

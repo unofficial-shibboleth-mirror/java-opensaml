@@ -22,6 +22,7 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.spring.context.FilesystemGenericApplicationContext;
 import net.shibboleth.shared.spring.custom.SchemaTypeAwareXMLBeanDefinitionReader;
 
@@ -30,6 +31,9 @@ import net.shibboleth.shared.spring.custom.SchemaTypeAwareXMLBeanDefinitionReade
  */
 public class BasicX509CredentialFactoryBeanTest {
 
+    /**
+     * Test.
+     */
     @Test public void bean() {
         final GenericApplicationContext context = new FilesystemGenericApplicationContext();
             context.setDisplayName("ApplicationContext: X509Credential");
@@ -46,8 +50,8 @@ public class BasicX509CredentialFactoryBeanTest {
              
              Assert.assertEquals("http://example.org/enc", cred2.getEntityId()); 
              
-             final byte[] cb1 = cred1.getPrivateKey().getEncoded();
-             final byte[] cb2 = cred2.getPrivateKey().getEncoded();
+             final byte[] cb1 = Constraint.isNotNull(cred1.getPrivateKey(), "Private key was null").getEncoded();
+             final byte[] cb2 = Constraint.isNotNull(cred2.getPrivateKey(), "Private key was null").getEncoded();
              
              Assert.assertEquals(cb1.length, cb2.length);
 

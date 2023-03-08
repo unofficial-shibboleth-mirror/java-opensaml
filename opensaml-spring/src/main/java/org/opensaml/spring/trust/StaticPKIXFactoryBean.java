@@ -43,11 +43,13 @@ import org.opensaml.security.x509.impl.PKIXX509CredentialTrustEngine;
 import org.opensaml.security.x509.impl.StaticPKIXValidationInformationResolver;
 import org.opensaml.security.x509.impl.X509CredentialNameEvaluator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.FatalBeanException;
 import org.springframework.core.io.Resource;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.spring.factory.AbstractComponentAwareFactoryBean;
 
@@ -91,7 +93,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
     
     /** {@inheritDoc} */
     @Override
-    public Class<?> getObjectType() {
+    @Nonnull public Class<?> getObjectType() {
         return PKIXX509CredentialTrustEngine.class;
     }
     
@@ -118,7 +120,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      * 
      * @param depth value to set
      */
-    public void setVerifyDepth(final int depth) {
+    public void setVerifyDepth(@Nullable final Integer depth) {
         verifyDepth = depth;
     }
 
@@ -187,10 +189,12 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      */
     @Nonnull @NonnullElements protected List<X509Certificate> getCertificates() {
         if (certificateResources == null) {
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         
+        assert certificateResources != null;
         final List<X509Certificate> certificates = new ArrayList<>(certificateResources.size());
+        assert certificateResources != null;
         for (final Resource f : certificateResources) {
             try(final InputStream is = f.getInputStream()) {
                 certificates.addAll(X509Support.decodeCertificates(is));
@@ -209,10 +213,12 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
      */
     @Nonnull @NonnullElements protected List<X509CRL> getCRLs() {
         if (crlResources == null) {
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         
+        assert crlResources != null;
         final List<X509CRL> crls = new ArrayList<>(crlResources.size());
+        assert crlResources != null;
         for (final Resource crlFile : crlResources) {
             try(final InputStream is = crlFile.getInputStream())  {
                 crls.addAll(X509Support.decodeCRLs(is));
@@ -226,7 +232,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
 
     /** {@inheritDoc} */
     @Override
-    protected PKIXX509CredentialTrustEngine doCreateInstance() throws Exception {
+    @Nonnull protected PKIXX509CredentialTrustEngine doCreateInstance() throws Exception {
         final BasicPKIXValidationInformation info =
                 new BasicPKIXValidationInformation(getCertificates(), getCRLs(), verifyDepth);
         

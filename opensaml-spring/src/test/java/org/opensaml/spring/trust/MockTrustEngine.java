@@ -17,6 +17,8 @@
 
 package org.opensaml.spring.trust;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
 
@@ -37,7 +39,7 @@ public class MockTrustEngine<T> implements TrustEngine<T> {
     }
     
     /** {@inheritDoc} */
-    @Override public boolean validate(T token, CriteriaSet trustBasisCriteria) throws SecurityException {
+    @Override public boolean validate(@Nullable final T token, @Nullable CriteriaSet trustBasisCriteria) throws SecurityException {
         return result;
     }
 

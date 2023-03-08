@@ -38,14 +38,14 @@ public abstract class AbstractBasicPKIXValidationInfoFactoryBean extends
     @Nullable private Integer verifyDepth;
 
     /** The description of the file with the configuration us. */
-    @Nonnull private String configDescription;
+    @Nullable private String configDescription;
 
     /**
      * Get the verify Depth.
      * 
      * @return Returns the depth.
      */
-    public int getVerifyDepth() {
+    @Nullable public Integer getVerifyDepth() {
         return verifyDepth;
     }
 
@@ -54,7 +54,7 @@ public abstract class AbstractBasicPKIXValidationInfoFactoryBean extends
      * 
      * @param depth The value to set.
      */
-    public void setVerifyDepth(final int depth) {
+    public void setVerifyDepth(@Nullable final Integer depth) {
         verifyDepth = depth;
     }
 
@@ -63,7 +63,7 @@ public abstract class AbstractBasicPKIXValidationInfoFactoryBean extends
      * 
      * @return Returns the description.
      */
-    public String getConfigDescription() {
+    @Nullable public String getConfigDescription() {
         return configDescription;
     }
 
@@ -72,7 +72,7 @@ public abstract class AbstractBasicPKIXValidationInfoFactoryBean extends
      * 
      * @param desc what to set.
      */
-    public void setConfigDescription(@Nonnull final String desc) {
+    public void setConfigDescription(@Nullable final String desc) {
         configDescription = desc;
     }
 
@@ -82,7 +82,8 @@ public abstract class AbstractBasicPKIXValidationInfoFactoryBean extends
     }
 
     /** {@inheritDoc} */
-    @Override protected BasicPKIXValidationInformation doCreateInstance() throws Exception {
+    @Override
+    @Nonnull protected BasicPKIXValidationInformation doCreateInstance() throws Exception {
         return new BasicPKIXValidationInformation(getCertificates(), getCRLs(), verifyDepth);
     }
 

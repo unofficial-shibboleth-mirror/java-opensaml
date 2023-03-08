@@ -19,6 +19,9 @@ package org.opensaml.spring.trust;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.x509.PKIXTrustEvaluator;
 import org.opensaml.security.x509.PKIXValidationInformation;
@@ -41,6 +44,7 @@ import net.shibboleth.shared.spring.custom.SchemaTypeAwareXMLBeanDefinitionReade
 /**
  * Unit test for {@link StaticPKIXFactoryBean}.
  */
+@SuppressWarnings("javadoc")
 public class StaticPKIXFactoryBeanTest {
 
     @Test
@@ -109,14 +113,14 @@ public class StaticPKIXFactoryBeanTest {
     public static class MockPKIXTrustEvaluator extends AbstractInitializableComponent implements PKIXTrustEvaluator {
 
         /** {@inheritDoc} */
-        public boolean validate(PKIXValidationInformation validationInfo, X509Credential untrustedCredential)
-                throws SecurityException {
+        public boolean validate(@Nonnull final PKIXValidationInformation validationInfo,
+                @Nonnull final X509Credential untrustedCredential) throws SecurityException {
             return false;
         }
 
         /** {@inheritDoc} */
-        public PKIXValidationOptions getPKIXValidationOptions() {
-            return null;
+        @Nonnull public PKIXValidationOptions getPKIXValidationOptions() {
+            throw new UnsupportedOperationException();
         }
         
     }
@@ -124,7 +128,8 @@ public class StaticPKIXFactoryBeanTest {
     public static class MockX509CredentialNameEvaluator extends AbstractInitializableComponent implements X509CredentialNameEvaluator {
 
         /** {@inheritDoc} */
-        public boolean evaluate(X509Credential credential, Set<String> trustedNames) throws SecurityException {
+        public boolean evaluate(@Nonnull final X509Credential credential, @Nullable final Set<String> trustedNames)
+                throws SecurityException {
             return false;
         }
         

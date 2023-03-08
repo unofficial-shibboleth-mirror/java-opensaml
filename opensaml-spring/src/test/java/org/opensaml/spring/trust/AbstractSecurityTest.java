@@ -19,8 +19,6 @@
 package org.opensaml.spring.trust;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
 
 import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.io.ClassPathResource;
@@ -29,6 +27,7 @@ import org.springframework.mock.env.MockPropertySource;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeSuite;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.spring.util.ApplicationContextBuilder;
 
 /**
@@ -81,9 +80,9 @@ public class AbstractSecurityTest {
         
         final MockPropertySource mockEnvVars = new MockPropertySource();
         mockEnvVars.setProperty("DIR", workspaceDirName);
-        builder.setPropertySources(Collections.singletonList(mockEnvVars));
+        builder.setPropertySources(CollectionSupport.singletonList(mockEnvVars));
         
-        builder.setServiceConfigurations(Arrays.asList(resources));
+        builder.setServiceConfigurations(CollectionSupport.arrayAsList(resources));
 
         final GenericApplicationContext context = builder.build();
         

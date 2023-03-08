@@ -118,7 +118,11 @@ public class BasicInlineCredentialFactoryBean extends AbstractBasicCredentialFac
             return null;
         }
         try {
-            return KeySupport.decodeSecretKey(decodeSecretKey(getSecretKeyInfo()), getSecretKeyAlgorithm());
+            final String alg = getSecretKeyAlgorithm();
+            if (alg == null) {
+                throw new KeyException("Key algorithm was null");
+            }
+            return KeySupport.decodeSecretKey(decodeSecretKey(getSecretKeyInfo()), alg);
         } catch (final KeyException e) {
             throw new BeanCreationException("Could not decode secret key", e);
         }

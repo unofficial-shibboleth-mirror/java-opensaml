@@ -43,8 +43,8 @@ public class StaticExplicitKeyFactoryBeanTest extends AbstractSecurityTest {
         final ExplicitKeyTrustEngine engine = (ExplicitKeyTrustEngine) getBean("staticKeySingle", TrustEngine.class, TESTPATH);
         
         final StaticCredentialResolver resolver = (StaticCredentialResolver) engine.getCredentialResolver();
-        Credential credential  = resolver.resolveSingle(null);
-        
+        final Credential credential  = resolver.resolveSingle(null);
+        assert credential != null;
         Assert.assertNotNull(credential.getPublicKey());
     }
     
@@ -52,7 +52,8 @@ public class StaticExplicitKeyFactoryBeanTest extends AbstractSecurityTest {
         final ExplicitKeyTrustEngine engine = (ExplicitKeyTrustEngine) getBean("staticX509Single", TrustEngine.class, TESTPATH);
         
         final StaticCredentialResolver resolver = (StaticCredentialResolver) engine.getCredentialResolver();
-        X509Credential credential  = (X509Credential) resolver.resolveSingle(null);
+        final X509Credential credential  = (X509Credential) resolver.resolveSingle(null);
+        assert credential != null;
         
         Assert.assertEquals(credential.getEntityCertificateChain().size(), 1);
         Assert.assertTrue(credential.getEntityCertificateChain().contains(credential.getEntityCertificate()));
@@ -65,7 +66,7 @@ public class StaticExplicitKeyFactoryBeanTest extends AbstractSecurityTest {
         
         final StaticCredentialResolver resolver = (StaticCredentialResolver) engine.getCredentialResolver();
         
-        Iterator<Credential> credentials = resolver.resolve(null).iterator();
+        final Iterator<Credential> credentials = resolver.resolve(null).iterator();
         
         Assert.assertTrue(credentials.hasNext());
         final X509Credential first = (X509Credential) credentials.next();
@@ -81,7 +82,7 @@ public class StaticExplicitKeyFactoryBeanTest extends AbstractSecurityTest {
         
         final StaticCredentialResolver resolver = (StaticCredentialResolver) engine.getCredentialResolver();
         
-        Iterator<Credential> credentials = resolver.resolve(null).iterator();
+        final Iterator<Credential> credentials = resolver.resolve(null).iterator();
         
         Assert.assertTrue(credentials.hasNext());
         final Credential first = credentials.next();
