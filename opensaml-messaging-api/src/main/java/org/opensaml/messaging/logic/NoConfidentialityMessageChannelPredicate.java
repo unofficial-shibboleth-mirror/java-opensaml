@@ -35,7 +35,7 @@ public class NoConfidentialityMessageChannelPredicate implements Predicate<Messa
     /** {@inheritDoc} */
     public boolean test(@Nullable final MessageContext input) {
         return input == null
-                || !input.getSubcontext(MessageChannelSecurityContext.class, true).isConfidentialityActive();
+                || !input.getOrCreateSubcontext(MessageChannelSecurityContext.class).isConfidentialityActive();
     }
     
 }

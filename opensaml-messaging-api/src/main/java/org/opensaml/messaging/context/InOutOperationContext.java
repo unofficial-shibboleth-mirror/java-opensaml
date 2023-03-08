@@ -17,6 +17,7 @@
 
 package org.opensaml.messaging.context;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -59,6 +60,22 @@ public class InOutOperationContext extends BaseContext {
     }
     
     /**
+     * Gets the inbound message context, creating an empty one if it does not already exist.
+     * 
+     * @return an existing, or new, inbound message context
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public MessageContext ensureInboundMessageContext() {
+        if (inboundContext != null) {
+            return inboundContext;
+        }
+
+        setInboundMessageContext(new MessageContext());
+        return ensureInboundMessageContext();
+    }
+    
+    /**
      * Sets the inbound message context.
      * 
      * @param context inbound message context, may be null
@@ -84,6 +101,22 @@ public class InOutOperationContext extends BaseContext {
      */
     @Nullable public MessageContext getOutboundMessageContext() {
         return outboundContext;
+    }
+
+    /**
+     * Gets the outbound message context, creating an empty one if it does not already exist.
+     * 
+     * @return an existing, or new, outbound message context
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public MessageContext ensureOutboundMessageContext() {
+        if (outboundContext != null) {
+            return outboundContext;
+        }
+
+        setOutboundMessageContext(new MessageContext());
+        return ensureOutboundMessageContext();
     }
     
     /**

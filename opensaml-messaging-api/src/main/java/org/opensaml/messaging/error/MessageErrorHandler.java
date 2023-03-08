@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.error;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.messaging.context.MessageContext;
 
 /**
@@ -31,6 +33,6 @@ public interface MessageErrorHandler {
      * @param messageContext the message context being processed, if available
      * @return true if error was successfully handled, false otherwise
      */
-    boolean handleError(Throwable t, MessageContext messageContext);
+    boolean handleError(@Nonnull Throwable t, @Nonnull MessageContext messageContext);
 
 }

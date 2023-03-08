@@ -23,11 +23,13 @@ import javax.annotation.Nullable;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -43,8 +45,14 @@ public abstract class BaseHttpClientRequestXMLMessageEncoder  extends AbstractHt
 
     /** {@inheritDoc} */
     public void encode() throws MessageEncodingException {
-        if (log.isDebugEnabled() && getMessageContext().getMessage() != null) {
-            log.debug("Beginning encode of message of type: {}", getMessageContext().getMessage().getClass().getName());
+        if (log.isDebugEnabled()) {
+            final MessageContext mc = getMessageContext();
+            if (mc != null) {
+                final Object msg = mc.getMessage();
+                if (msg != null) {
+                    log.debug("Beginning encode of message of type: {}", msg.getClass().getName());
+                }
+            }
         }
 
         super.encode();
@@ -80,7 +88,8 @@ public abstract class BaseHttpClientRequestXMLMessageEncoder  extends AbstractHt
      * @return the XMLObject message considered to be the protocol message for logging purposes
      */
     @Nullable protected Object getMessageToLog() {
-        return getMessageContext().getMessage();
+        final MessageContext mc = getMessageContext();
+        return mc != null ? mc.getMessage() : null;
     }
 
     /**

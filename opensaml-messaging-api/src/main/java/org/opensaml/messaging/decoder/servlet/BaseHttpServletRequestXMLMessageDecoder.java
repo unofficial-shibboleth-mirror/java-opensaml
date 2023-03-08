@@ -20,21 +20,25 @@ package org.opensaml.messaging.decoder.servlet;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Element;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
@@ -51,7 +55,7 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
     @Nonnull private final Logger log = LoggerFactory.getLogger(BaseHttpServletRequestXMLMessageDecoder.class);
 
     /** Parser pool used to deserialize the message. */
-    @Nonnull private ParserPool parserPool;
+    @NonnullAfterInit private ParserPool parserPool;
 
     /** Constructor. */
     public BaseHttpServletRequestXMLMessageDecoder() {
@@ -62,9 +66,14 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
     public void decode() throws MessageDecodingException {
         log.debug("Beginning to decode message from HttpServletRequest");
         
-        log.debug("HttpServletRequest indicated Content-Type: {}", getHttpServletRequest().getContentType());
+        final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            throw new MessageDecodingException("HttpServletRequest was null");
+        }
         
-        validateHttpRequest(getHttpServletRequest());
+        log.debug("HttpServletRequest indicated Content-Type: {}", request.getContentType());
+        
+        validateHttpRequest(request);
         
         super.decode();
         
@@ -78,7 +87,7 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
      * 
      * @return parser pool used to deserialize incoming messages
      */
-    @Nonnull public ParserPool getParserPool() {
+    @NonnullAfterInit public ParserPool getParserPool() {
         return parserPool;
     }
 
@@ -88,15 +97,7 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
      * @param pool parser pool used to deserialize incoming messages
      */
     public void setParserPool(@Nonnull final ParserPool pool) {
-        Constraint.isNotNull(pool, "ParserPool cannot be null");
-        parserPool = pool;
-    }
-    
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        parserPool = null;
-        
-        super.doDestroy();
+        parserPool = Constraint.isNotNull(pool, "ParserPool cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -114,7 +115,7 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
     protected void logDecodedMessage() {
         if (protocolMessageLog.isDebugEnabled() ){
             final Object message = getMessageToLog();
-            if (message == null || !(message instanceof XMLObject)) {
+            if (!(message instanceof XMLObject)) {
                 log.warn("Decoded message was null or unsupported, nothing to log");
                 return;
             }
@@ -133,8 +134,9 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
      * 
      * @return the XMLObject message considered to be the protocol message for logging purposes
      */
-    protected Object getMessageToLog() {
-        return getMessageContext().getMessage();
+    @Nullable protected Object getMessageToLog() {
+        final MessageContext mc = getMessageContext();
+        return mc != null ? mc.getMessage() : null;
     }
 
     /**
@@ -146,7 +148,7 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
      * 
      * @throws MessageDecodingException thrown if there is a problem deserializing and unmarshalling the message
      */
-    protected XMLObject unmarshallMessage(final InputStream messageStream) throws MessageDecodingException {
+    protected XMLObject unmarshallMessage(@Nonnull final InputStream messageStream) throws MessageDecodingException {
         try {
             final XMLObject message = XMLObjectSupport.unmarshallFromInputStream(getParserPool(), messageStream);
             return message;
@@ -174,7 +176,7 @@ public abstract class BaseHttpServletRequestXMLMessageDecoder extends AbstractHt
      * 
      * @throws MessageDecodingException if request is not considered valid
      */
-    protected void validateHttpRequest(final HttpServletRequest request) throws MessageDecodingException {
+    protected void validateHttpRequest(@Nonnull final HttpServletRequest request) throws MessageDecodingException {
         // Default is no-op
     }
 

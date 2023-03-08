@@ -20,9 +20,12 @@ package org.opensaml.messaging.decoder.httpclient;
 import java.io.InputStream;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
@@ -32,9 +35,10 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Element;
 
 /**
@@ -44,13 +48,13 @@ import org.w3c.dom.Element;
 public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHttpClientResponseMessageDecoder {
     
     /** Used to log protocol messages. */
-    private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
+    @Nonnull private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseHttpClientResponseXMLMessageDecoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BaseHttpClientResponseXMLMessageDecoder.class);
 
     /** Parser pool used to deserialize the message. */
-    private ParserPool parserPool;
+    @NonnullAfterInit private ParserPool parserPool;
 
     /** Constructor. */
     public BaseHttpClientResponseXMLMessageDecoder() {
@@ -73,7 +77,7 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
      * 
      * @return parser pool used to deserialize incoming messages
      */
-    @Nonnull public ParserPool getParserPool() {
+    @NonnullAfterInit public ParserPool getParserPool() {
         return parserPool;
     }
 
@@ -85,13 +89,6 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
     public void setParserPool(@Nonnull final ParserPool pool) {
         Constraint.isNotNull(pool, "ParserPool cannot be null");
         parserPool = pool;
-    }
-    
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        parserPool = null;
-        
-        super.doDestroy();
     }
     
     /** {@inheritDoc} */
@@ -128,8 +125,9 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
      * 
      * @return the XMLObject message considered to be the protocol message for logging purposes
      */
-    protected Object getMessageToLog() {
-        return getMessageContext().getMessage();
+    @Nullable protected Object getMessageToLog() {
+        final MessageContext mc = getMessageContext();
+        return mc != null ? mc.getMessage() : null;
     }
 
     /**
@@ -141,7 +139,7 @@ public abstract class BaseHttpClientResponseXMLMessageDecoder extends AbstractHt
      * 
      * @throws MessageDecodingException thrown if there is a problem deserializing and unmarshalling the message
      */
-    protected XMLObject unmarshallMessage(final InputStream messageStream) throws MessageDecodingException {
+    protected XMLObject unmarshallMessage(@Nonnull final InputStream messageStream) throws MessageDecodingException {
         try {
             final XMLObject message = XMLObjectSupport.unmarshallFromInputStream(getParserPool(), messageStream);
             return message;

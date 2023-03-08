@@ -17,7 +17,6 @@
 
 package org.opensaml.messaging.context;
 
-import org.opensaml.messaging.context.BaseContext;
 
 /**
  * A concrete test context implementation for use in unit tests.

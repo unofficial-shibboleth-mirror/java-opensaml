@@ -42,12 +42,12 @@ public class BasicHttpServletMessagePipeline extends BasicMessagePipeline implem
     }
 
     /** {@inheritDoc} */
-    public HttpServletResponseMessageEncoder getEncoder() {
+    @Nonnull public HttpServletResponseMessageEncoder getEncoder() {
         return (HttpServletResponseMessageEncoder) super.getEncoder();
     }
 
     /** {@inheritDoc} */
-    protected void setEncoder(final MessageEncoder encoder) {
+    protected void setEncoder(@Nonnull final MessageEncoder encoder) {
         if (!(encoder instanceof HttpServletResponseMessageEncoder)) {
             throw new IllegalArgumentException("HttpServletResponseMessageEncoder is required");
         }
@@ -55,12 +55,12 @@ public class BasicHttpServletMessagePipeline extends BasicMessagePipeline implem
     }
 
     /** {@inheritDoc} */
-    public HttpServletRequestMessageDecoder getDecoder() {
+    @Nonnull public HttpServletRequestMessageDecoder getDecoder() {
         return (HttpServletRequestMessageDecoder) super.getDecoder();
     }
 
     /** {@inheritDoc} */
-    protected void setDecoder(final MessageDecoder decoder) {
+    protected void setDecoder(@Nonnull final MessageDecoder decoder) {
         if (!(decoder instanceof HttpServletRequestMessageDecoder)) {
             throw new IllegalArgumentException("HttpServletRequestMessageDecoder is required");
         }

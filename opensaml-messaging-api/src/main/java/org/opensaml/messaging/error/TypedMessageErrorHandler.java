@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.error;
 
+import javax.annotation.Nonnull;
+
 /**
  * A specialization of error handler that explicitly indicates that it is capable of handling 
  * one or more types of throwable errors.
@@ -29,6 +31,6 @@ public interface TypedMessageErrorHandler extends MessageErrorHandler {
      * @param t the type of error about which to query
      * @return true iff the handle can handle the specified error type
      */
-    boolean handlesError(Throwable t);
+    boolean handlesError(@Nonnull Throwable t);
 
 }

@@ -47,13 +47,6 @@ public abstract class AbstractHttpClientRequestMessageEncoder extends AbstractMe
     }
 
     /** {@inheritDoc} */
-    protected void doDestroy() {
-        request = null;
-
-        super.doDestroy();
-    }
-
-    /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
 

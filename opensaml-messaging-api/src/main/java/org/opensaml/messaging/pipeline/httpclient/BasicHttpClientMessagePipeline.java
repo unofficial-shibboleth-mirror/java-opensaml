@@ -42,12 +42,12 @@ public class BasicHttpClientMessagePipeline extends BasicMessagePipeline impleme
     }
 
     /** {@inheritDoc} */
-    public HttpClientRequestMessageEncoder getEncoder() {
+    @Nonnull public HttpClientRequestMessageEncoder getEncoder() {
         return (HttpClientRequestMessageEncoder) super.getEncoder();
     }
 
     /** {@inheritDoc} */
-    protected void setEncoder(final MessageEncoder encoder) {
+    protected void setEncoder(@Nonnull final MessageEncoder encoder) {
         if (!(encoder instanceof HttpClientRequestMessageEncoder)) {
             throw new IllegalArgumentException("HttpClientRequestMessageEncoder is required");
         }
@@ -55,12 +55,12 @@ public class BasicHttpClientMessagePipeline extends BasicMessagePipeline impleme
     }
 
     /** {@inheritDoc} */
-    public HttpClientResponseMessageDecoder getDecoder() {
+    @Nonnull public HttpClientResponseMessageDecoder getDecoder() {
         return (HttpClientResponseMessageDecoder) super.getDecoder();
     }
 
     /** {@inheritDoc} */
-    protected void setDecoder(final MessageDecoder decoder) {
+    protected void setDecoder(@Nonnull final MessageDecoder decoder) {
         if (!(decoder instanceof HttpClientResponseMessageDecoder)) {
             throw new IllegalArgumentException("HttpClientResponseMessageDecoder is required");
         }

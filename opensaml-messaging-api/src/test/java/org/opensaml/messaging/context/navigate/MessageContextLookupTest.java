@@ -25,8 +25,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
-
+/**
+ * Unit test for {@link MessageContextLookup}.
+ */
+@SuppressWarnings("javadoc")
 public class MessageContextLookupTest {
     
     private InOutOperationContext opContext;
@@ -39,7 +41,7 @@ public class MessageContextLookupTest {
     @Test
     public void testInboundFromSame() {
         MockContext input = new MockContext();
-        opContext.getInboundMessageContext().addSubcontext(input);
+        opContext.ensureInboundMessageContext().addSubcontext(input);
         MessageContextLookup<BaseContext> lookup  = new MessageContextLookup<>(Direction.INBOUND);
         Assert.assertSame(lookup.apply(input), opContext.getInboundMessageContext());
     }
@@ -47,7 +49,7 @@ public class MessageContextLookupTest {
     @Test
     public void testOutboundFromSame() {
         MockContext input = new MockContext();
-        opContext.getOutboundMessageContext().addSubcontext(input);
+        opContext.ensureOutboundMessageContext().addSubcontext(input);
         MessageContextLookup<BaseContext> lookup  = new MessageContextLookup<>(Direction.OUTBOUND);
         Assert.assertSame(lookup.apply(input), opContext.getOutboundMessageContext());
     }
@@ -55,7 +57,7 @@ public class MessageContextLookupTest {
     @Test
     public void testInboundFromCrosswalk() {
         MockContext input = new MockContext();
-        opContext.getOutboundMessageContext().addSubcontext(input);
+        opContext.ensureOutboundMessageContext().addSubcontext(input);
         MessageContextLookup<BaseContext> lookup  = new MessageContextLookup<>(Direction.INBOUND);
         Assert.assertSame(lookup.apply(input), opContext.getInboundMessageContext());
     }
@@ -63,7 +65,7 @@ public class MessageContextLookupTest {
     @Test
     public void testOutboundFromCrosswalk() {
         MockContext input = new MockContext();
-        opContext.getInboundMessageContext().addSubcontext(input);
+        opContext.ensureInboundMessageContext().addSubcontext(input);
         MessageContextLookup<BaseContext> lookup  = new MessageContextLookup<>(Direction.OUTBOUND);
         Assert.assertSame(lookup.apply(input), opContext.getOutboundMessageContext());
     }
@@ -73,17 +75,6 @@ public class MessageContextLookupTest {
         MessageContextLookup<BaseContext> lookup  = new MessageContextLookup<>(Direction.INBOUND);
         Assert.assertNull(lookup.apply(new MessageContext()));
     }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testCtorNoDirection() {
-        new MessageContextLookup<>(null);
-    }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testCtorNoLookup() {
-        new MessageContextLookup<>(Direction.INBOUND, null);
-    }
-    
     
     // Helpers
     

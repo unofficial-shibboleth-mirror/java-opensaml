@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.decoder;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.context.MessageContext;
 
 import net.shibboleth.shared.component.AbstractInitializableComponent;
@@ -29,11 +31,10 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
         implements MessageDecoder, UnmodifiableComponent {
 
     /** Message context. */
-    private MessageContext messageContext;
+    @Nullable private MessageContext messageContext;
 
     /** {@inheritDoc} */
-    @Override
-    public MessageContext getMessageContext() {
+    @Nullable public MessageContext getMessageContext() {
         return messageContext;
     }
 
@@ -42,22 +43,14 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
      * 
      * @param context the message context
      */
-    protected void setMessageContext(final MessageContext context) {
+    protected void setMessageContext(@Nullable final MessageContext context) {
         messageContext = context;
     }
 
     /** {@inheritDoc} */
-    @Override
     public void decode() throws MessageDecodingException {
         checkComponentActive();
         doDecode();
-    }
-    
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        messageContext = null;
-        
-        super.doDestroy();
     }
 
     /**
@@ -67,4 +60,5 @@ public abstract class AbstractMessageDecoder extends AbstractInitializableCompon
      * @throws MessageDecodingException thrown if there is a problem decoding the message
      */
     protected abstract void doDecode() throws MessageDecodingException;
+
 }

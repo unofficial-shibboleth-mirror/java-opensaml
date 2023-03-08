@@ -60,6 +60,7 @@ public class RootContextLookup<StartContext extends BaseContext, RootContext ext
         if (input.getParent() == null){
             if (claz != null) {
                 if (claz.isInstance(input)) {
+                    assert claz != null;
                     return claz.cast(input);
                 }
                 throw new ClassCastException("Root context was not of the expected type");

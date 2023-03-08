@@ -24,7 +24,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
+import net.shibboleth.shared.logic.PredicateSupport;
 
 /** Unit test for {@link AbstractMessageHandler}. */
 public class AbstractMessageHandlerTest {
@@ -129,23 +129,33 @@ public class AbstractMessageHandlerTest {
         }
     }
     
+    /**
+     * Test handler with an always true activation condition.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testTrueActivationCondition() throws Exception {
         final MockMutatingHandler handler = new MockMutatingHandler();
-        handler.setActivationCondition(Predicates.alwaysTrue());
+        handler.setActivationCondition(PredicateSupport.alwaysTrue());
         handler.initialize();
         
         MessageContext messageContext = new MessageContext();
         handler.invoke(messageContext);
         
         Assert.assertTrue(messageContext.containsSubcontext(MockContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(MockContext.class).value, "hello");
+        Assert.assertEquals(messageContext.getOrCreateSubcontext(MockContext.class).value, "hello");
     }
 
+    /**
+     * Test handler with an always false activation condition.
+     * 
+     * @throws Exception
+     */
     @Test
     public void testFalseActivationCondition() throws Exception {
         final MockMutatingHandler handler = new MockMutatingHandler();
-        handler.setActivationCondition(Predicates.alwaysFalse());
+        handler.setActivationCondition(PredicateSupport.alwaysFalse());
         handler.initialize();
         
         MessageContext messageContext = new MessageContext();
@@ -211,12 +221,17 @@ public class AbstractMessageHandlerTest {
     
     private class MockMutatingHandler extends AbstractMessageHandler {
 
-        protected void doInvoke(MessageContext messageContext) throws MessageHandlerException {
-            messageContext.getSubcontext(MockContext.class, true).value = "hello";
+        protected void doInvoke(@Nonnull MessageContext messageContext) throws MessageHandlerException {
+            messageContext.getOrCreateSubcontext(MockContext.class).value = "hello";
         }
     }
     
+    /**
+     * Mock context
+     */
     public static class MockContext extends BaseContext {
+        
+        /** Mock value. */
         public String value;
     }
 

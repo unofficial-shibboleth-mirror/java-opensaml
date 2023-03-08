@@ -35,7 +35,6 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     @Nullable private MessageContext messageContext;
 
     /** {@inheritDoc} */
-    @Override
     public synchronized void setMessageContext(@Nullable final MessageContext context) {
         checkSetterPreconditions();
 
@@ -43,7 +42,6 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
     }
 
     /** {@inheritDoc} */
-    @Override
     public void encode() throws MessageEncodingException {
         checkComponentActive();
         doEncode();
@@ -53,7 +51,6 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
      * 
      * Default implementation is a no-op.
      */
-    @Override
     public void prepareContext() throws MessageEncodingException {
         
     }
@@ -65,13 +62,6 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
      */
     @Nullable protected MessageContext getMessageContext() {
         return messageContext;
-    }
-
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        messageContext = null;
-
-        super.doDestroy();
     }
 
     /** {@inheritDoc} */

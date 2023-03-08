@@ -21,8 +21,9 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /**
- *
+ * Unit test for {@link InOutOperationContext}.
  */
+@SuppressWarnings("javadoc")
 public class InOutOperationContextText {
     
     @Test

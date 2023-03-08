@@ -23,13 +23,14 @@ import org.opensaml.messaging.context.MessageContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
-
 /**
- *
+ * Unit test for {@link RecursiveTypedParentContextLookup}.
  */
 public class RecursiveTypedParentContextLookupTest {
 
+    /**
+     * Unit test.
+     */
     @Test
     public void testBasic() {
         MockContext1 mc1 = new MockContext1();
@@ -39,7 +40,7 @@ public class RecursiveTypedParentContextLookupTest {
         InOutOperationContext opContext = new InOutOperationContext(null, null);
         
         opContext.setInboundMessageContext(in);
-        opContext.getInboundMessageContext().addSubcontext(mc1);
+        opContext.ensureInboundMessageContext().addSubcontext(mc1);
         mc1.addSubcontext(mc2);
         mc2.addSubcontext(mc3);
         
@@ -50,11 +51,6 @@ public class RecursiveTypedParentContextLookupTest {
         
         Assert.assertNull(new RecursiveTypedParentContextLookup<>(MockContextNotThere.class).apply(mc3));
         Assert.assertNull(new RecursiveTypedParentContextLookup<>(InOutOperationContext.class).apply(null));
-    }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testCtor() {
-        new RecursiveTypedParentContextLookup<>(null);
     }
     
     // Helpers

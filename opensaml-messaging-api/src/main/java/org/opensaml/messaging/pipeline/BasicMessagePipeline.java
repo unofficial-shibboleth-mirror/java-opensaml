@@ -33,10 +33,10 @@ public class BasicMessagePipeline
         implements MessagePipeline {
     
     /** Message encoder. */
-    private MessageEncoder encoder;
+    @Nonnull private MessageEncoder encoder;
     
     /** Message decoder. */
-    private MessageDecoder decoder;
+    @Nonnull  private MessageDecoder decoder;
     
     /** Outbound payload message handler. */
     private MessageHandler outboundPayloadHandler;
@@ -55,12 +55,12 @@ public class BasicMessagePipeline
      */
     public BasicMessagePipeline(@Nonnull final MessageEncoder newEncoder, 
             @Nonnull final MessageDecoder newDecoder) {
-        setEncoder(newEncoder);
-        setDecoder(newDecoder);
+        encoder = Constraint.isNotNull(newEncoder, "MessageEncoder can not be null");
+        decoder = Constraint.isNotNull(newDecoder, "MessageDecoder can not be null");
     }
 
     /** {@inheritDoc} */
-    public MessageEncoder getEncoder() {
+    @Nonnull public MessageEncoder getEncoder() {
         return encoder;
     }
     
@@ -70,11 +70,11 @@ public class BasicMessagePipeline
      * @param newEncoder the new message encoder
      */
     protected void setEncoder(@Nonnull final MessageEncoder newEncoder) {
-       encoder = Constraint.isNotNull(newEncoder, "MessageEncoder can not be null") ;
+       encoder = Constraint.isNotNull(newEncoder, "MessageEncoder can not be null");
     }
 
     /** {@inheritDoc} */
-    public MessageDecoder getDecoder() {
+    @Nonnull public MessageDecoder getDecoder() {
         return decoder;
     }
     

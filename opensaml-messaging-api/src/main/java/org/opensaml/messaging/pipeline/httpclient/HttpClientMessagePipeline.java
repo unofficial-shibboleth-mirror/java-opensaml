@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.pipeline.httpclient;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.messaging.decoder.httpclient.HttpClientResponseMessageDecoder;
 import org.opensaml.messaging.encoder.httpclient.HttpClientRequestMessageEncoder;
 import org.opensaml.messaging.pipeline.MessagePipeline;
@@ -31,13 +33,13 @@ public interface HttpClientMessagePipeline extends MessagePipeline {
      * 
      * <p>Narrows the super-interface return type to {@link HttpClientRequestMessageEncoder}.</p>
      */
-    public HttpClientRequestMessageEncoder getEncoder();
+    @Nonnull public HttpClientRequestMessageEncoder getEncoder();
     
     /**
      * {@inheritDoc} 
      * 
      * <p>Narrows the super-interface return type to {@link HttpClientResponseMessageDecoder}.</p>
      */
-    public HttpClientResponseMessageDecoder getDecoder();
+    @Nonnull public HttpClientResponseMessageDecoder getDecoder();
 
 }

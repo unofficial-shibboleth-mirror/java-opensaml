@@ -36,12 +36,12 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     @Nullable private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public HttpServletRequest getHttpServletRequest() {
-        if (httpServletRequestSupplier == null) {
-            return null;
+        if (httpServletRequestSupplier != null) {
+            return httpServletRequestSupplier.get();
         }
-        return httpServletRequestSupplier.get();
+        
+        return null;
     }
 
     /**
@@ -75,4 +75,5 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
             throw new ComponentInitializationException("HTTP Servlet request cannot be null");
         }
     }
+
 }

@@ -23,15 +23,17 @@ import java.util.Iterator;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.ClassIndexedSet;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.messaging.MessageRuntimeException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * Base implementation of a component which represents the context used to store state 
@@ -57,6 +59,7 @@ import org.slf4j.LoggerFactory;
  * to this convention, auto-creation will fail.
  * </p>
  */
+@NotThreadSafe
 public abstract class BaseContext implements Iterable<BaseContext> {
 
     /** Logger. */
@@ -239,7 +242,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
             log.trace("New subcontext with type '{}' is currently a subcontext of "
                     + "parent with type '{}', removing it",
                     new Object[]{subcontext.getClass().getName(), oldParent.getClass().getName(),});
-            subcontext.getParent().removeSubcontext(subcontext);
+            oldParent.removeSubcontext(subcontext);
         }
         
         // Set parent pointer of new subcontext to this instance

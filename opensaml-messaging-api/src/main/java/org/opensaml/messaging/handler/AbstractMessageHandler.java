@@ -23,14 +23,13 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.annotation.Prototype;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A base abstract implementation of {@link MessageHandler}.
@@ -39,14 +38,14 @@ import net.shibboleth.shared.logic.Constraint;
 public abstract class AbstractMessageHandler extends AbstractInitializableComponent implements MessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AbstractMessageHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AbstractMessageHandler.class);
     
     /** Condition dictating whether to run or not. */
     @Nonnull private Predicate<MessageContext> activationCondition;
     
     /** Constructor. */
     public AbstractMessageHandler() {
-        activationCondition = Predicates.alwaysTrue();
+        activationCondition = PredicateSupport.alwaysTrue();
     }
     
     /**

@@ -29,7 +29,7 @@ import org.opensaml.messaging.context.BaseContext;
 public final class HttpClientRequestContext extends BaseContext {
     
     /** The HttpClientContext instance. */
-    private HttpClientContext httpClientContext;
+    @Nullable private HttpClientContext httpClientContext;
 
     /**
      * Get the {@link HttpClientContext} instance.

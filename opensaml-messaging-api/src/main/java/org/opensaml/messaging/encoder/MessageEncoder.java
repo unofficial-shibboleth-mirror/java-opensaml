@@ -17,6 +17,8 @@
 
 package org.opensaml.messaging.encoder;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.context.MessageContext;
 
 import net.shibboleth.shared.component.DestructableComponent;
@@ -69,5 +71,5 @@ public interface MessageEncoder extends InitializableComponent, DestructableComp
      * 
      * @param messageContext the message context
      */
-    void setMessageContext(MessageContext messageContext);
+    void setMessageContext(@Nullable MessageContext messageContext);
 }
