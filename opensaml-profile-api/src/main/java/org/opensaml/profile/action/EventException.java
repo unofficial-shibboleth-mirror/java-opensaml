@@ -32,7 +32,7 @@ public class EventException extends Exception {
     private static final long serialVersionUID = -6394047591957378161L;
     
     /** The event ID. */
-    private final String eventID;
+    @Nonnull private final String eventID;
 
     /**
      * Constructor.

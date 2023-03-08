@@ -24,9 +24,8 @@ import javax.annotation.Nonnull;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
 
 /**
  * Base class for conditional profile actions.
@@ -42,7 +41,7 @@ public abstract class AbstractConditionalProfileAction extends AbstractProfileAc
     
     /** Constructor. */
     public AbstractConditionalProfileAction() {
-        activationCondition = Predicates.alwaysTrue();
+        activationCondition = PredicateSupport.alwaysTrue();
     }
     
     /**

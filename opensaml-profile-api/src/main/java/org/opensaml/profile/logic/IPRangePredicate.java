@@ -18,8 +18,6 @@
 package org.opensaml.profile.logic;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -32,11 +30,9 @@ import com.google.common.net.InetAddresses;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.IPRange;
-import net.shibboleth.shared.primitive.DeprecationSupport;
-import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
-import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 
 /**
@@ -52,7 +48,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
 
     /** Constructor. */
     IPRangePredicate() {
-        addressRanges = Collections.emptyList();
+        addressRanges = CollectionSupport.emptyList();
     }
     
     /**
@@ -65,7 +61,7 @@ public class IPRangePredicate implements Predicate<BaseContext> {
     public void setRanges(@Nonnull @NonnullElements final Collection<IPRange> ranges) {
         Constraint.isNotNull(ranges, "Address range collection cannot be null");
         
-        addressRanges = List.copyOf(ranges);
+        addressRanges = CollectionSupport.copyToList(ranges);
     }
 
     /**

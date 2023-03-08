@@ -25,12 +25,12 @@ import javax.annotation.Nullable;
 import org.opensaml.profile.context.AccessControlContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.ServletRequest;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.AccessControl;
 
 /**
@@ -71,7 +71,7 @@ public class PredicateAccessControl extends AbstractIdentifiableInitializableCom
         final Object attribute = request.getAttribute(ProfileRequestContext.BINDING_KEY);
         if (attribute != null && attribute instanceof ProfileRequestContext) {
             final ProfileRequestContext prc = (ProfileRequestContext) attribute;
-            final AccessControlContext acc = prc.getSubcontext(AccessControlContext.class, true);
+            final AccessControlContext acc = prc.getOrCreateSubcontext(AccessControlContext.class);
             acc.setOperation(operation);
             acc.setResource(resource);
             if (predicate.test(prc)) {

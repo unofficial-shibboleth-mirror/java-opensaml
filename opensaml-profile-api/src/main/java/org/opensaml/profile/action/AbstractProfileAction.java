@@ -56,10 +56,11 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      * @return current HTTP request
      */
     @Nullable public HttpServletRequest getHttpServletRequest() {
-        if (httpServletRequestSupplier == null) {
-            return null;
+        if (httpServletRequestSupplier != null) {
+            return httpServletRequestSupplier.get();
         }
-        return httpServletRequestSupplier.get();
+        
+        return null;
     }
 
     /**
@@ -87,10 +88,11 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      * @return current HTTP response or null
      */
     @Nullable public HttpServletResponse getHttpServletResponse() {
-        if (httpServletResponseSupplier == null) {
-            return null;
+        if (httpServletResponseSupplier != null) {
+            return httpServletResponseSupplier.get();
         }
-        return httpServletResponseSupplier.get();
+        
+        return null;
     }
 
     /**
@@ -121,7 +123,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         // because it may be from an earlier error of interest to other actions.
         final EventContext previousEvent = profileRequestContext.getSubcontext(EventContext.class);
         if (previousEvent != null) {
-            profileRequestContext.getSubcontext(PreviousEventContext.class, true).setEvent(previousEvent.getEvent());
+            profileRequestContext.getOrCreateSubcontext(PreviousEventContext.class).setEvent(previousEvent.getEvent());
             profileRequestContext.removeSubcontext(EventContext.class);
         }
 
@@ -205,6 +207,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         final MetricContext metricCtx = profileRequestContext.getSubcontext(MetricContext.class);
         if (metricCtx != null) {
             final String name = getClass().getSimpleName();
+            assert name != null;
             metricCtx.stop(name);
             metricCtx.inc(name);
         }
@@ -246,6 +249,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         if (logPrefix == null) {
             logPrefix = "Profile Action " + getClass().getSimpleName() + ":";
         }
+        assert logPrefix != null;
         return logPrefix;
     }
 

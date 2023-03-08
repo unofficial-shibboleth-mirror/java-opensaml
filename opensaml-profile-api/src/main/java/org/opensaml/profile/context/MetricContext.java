@@ -27,6 +27,7 @@ import javax.annotation.Nonnull;
 import org.opensaml.core.metrics.MetricsSupport;
 import org.opensaml.messaging.context.BaseContext;
 
+import com.codahale.metrics.MetricRegistry;
 import com.codahale.metrics.Timer;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -139,10 +140,14 @@ public final class MetricContext extends BaseContext {
      */
     public void start(@Nonnull @NotEmpty final String objectId) {
         
+        final MetricRegistry registry = MetricsSupport.getMetricRegistry();
+        if (registry == null) {
+            return;
+        }
+        
         for (final Pair<String,String> timer : timerMap.get(objectId)) {
             if (timer != null) {
-                timerContextMap.put(timer.getSecond(),
-                        MetricsSupport.getMetricRegistry().timer(timer.getFirst()).time());
+                timerContextMap.put(timer.getSecond(), registry.timer(timer.getFirst()).time());
             }
         }
     }
@@ -170,9 +175,14 @@ public final class MetricContext extends BaseContext {
      * @param objectId ID of object
      */
     public void inc(@Nonnull @NotEmpty final String objectId) {
+        final MetricRegistry registry = MetricsSupport.getMetricRegistry();
+        if (registry == null) {
+            return;
+        }
+
         final String name = counterMap.get(objectId);
         if (name != null) {
-            MetricsSupport.getMetricRegistry().counter(name).inc();
+            registry.counter(name).inc();
         }
     }
 
@@ -182,9 +192,14 @@ public final class MetricContext extends BaseContext {
      * @param objectId ID of object
      */
     public void dec(@Nonnull @NotEmpty final String objectId) {
+        final MetricRegistry registry = MetricsSupport.getMetricRegistry();
+        if (registry == null) {
+            return;
+        }
+
         final String name = counterMap.get(objectId);
         if (name != null) {
-            MetricsSupport.getMetricRegistry().counter(name).dec();
+            registry.counter(name).dec();
         }
     }
 

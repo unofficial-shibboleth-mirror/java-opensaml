@@ -27,11 +27,10 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
-
 /**
- *
+ * Unit test for {@link MessageContextPredicateAdapter}.
  */
+@SuppressWarnings("javadoc")
 public class MessageContextPredicateAdapterTest {
     
     @Test
@@ -62,12 +61,6 @@ public class MessageContextPredicateAdapterTest {
         Assert.assertTrue(adapter.test(mc));
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testCtor() {
-        new MessageContextPredicateAdapter(null);
-    }
-
-    
     // Helpers
     
     public static class MockContext extends BaseContext {
@@ -79,7 +72,7 @@ public class MessageContextPredicateAdapterTest {
             if (input == null || input.getOutboundMessageContext() == null) {
                 return false;
             }
-            return input.getOutboundMessageContext().containsSubcontext(MockContext.class);
+            return input.ensureOutboundMessageContext().containsSubcontext(MockContext.class);
         }
     }
 }

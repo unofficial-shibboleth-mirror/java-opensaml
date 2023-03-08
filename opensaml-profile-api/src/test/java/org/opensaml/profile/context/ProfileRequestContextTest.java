@@ -21,6 +21,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /** Unit test for {@link ProfileRequestContext}. */
+@SuppressWarnings("javadoc")
 public class ProfileRequestContextTest {
 
     @Test public void testBrowserProfile() {

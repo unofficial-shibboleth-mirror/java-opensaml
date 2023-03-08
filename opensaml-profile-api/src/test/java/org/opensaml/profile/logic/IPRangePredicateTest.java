@@ -37,6 +37,9 @@ import jakarta.servlet.http.HttpServletRequest;
  */
 public class IPRangePredicateTest {
 
+    /**
+     * Tests.
+     */
     @Test public void testRanges() {
 
         final GenericApplicationContext ctx = new ApplicationContextBuilder()
