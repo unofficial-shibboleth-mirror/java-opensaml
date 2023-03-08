@@ -24,7 +24,10 @@ import org.opensaml.messaging.handler.MessageHandler;
 /**
  * A specialization of error handler where the error is handled via use of a specified message handler
  * and message encoder.
+ * 
+ * @deprecated
  */
+@Deprecated(since="5.0.0", forRemoval=true)
 public interface PipelineMessageErrorHandler extends MessageErrorHandler {
     
     /**
