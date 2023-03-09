@@ -54,13 +54,15 @@ public final class AnnotationSupport {
      * @throws IllegalArgumentException if the target object doesn't declare a {@link Context} annotation
      * @throws RuntimeException if the field cannot be read on the target object
      */
-    @Nonnull @NotEmpty public static String getContext(@Nonnull final Object target) {
+    @Nullable @NotEmpty public static String getContext(@Nonnull final Object target) {
         final Context ctxField = getAnnotation(target, Context.class);
         final Object value = getFieldValue(target, ctxField.value());
         if (value instanceof String) {
             return (String) value;
+        } else if (value != null) {
+            return value.toString();
         }
-        return value.toString();
+        return null;
     }
 
     /**
@@ -90,13 +92,15 @@ public final class AnnotationSupport {
      * @throws IllegalArgumentException if the target object doesn't declare a {@link Key} annotation
      * @throws RuntimeException if the field cannot be read on the target object
      */
-    @Nonnull @NotEmpty public static String getKey(@Nonnull final Object target) {
+    @Nullable @NotEmpty public static String getKey(@Nonnull final Object target) {
         final Key keyField = getAnnotation(target, Key.class);
         final Object value = getFieldValue(target, keyField.value());
         if (value instanceof String) {
             return (String) value;
+        } else if (value != null) {
+            return value.toString();
         }
-        return value.toString();
+        return null;
     }
 
     /**
@@ -126,13 +130,15 @@ public final class AnnotationSupport {
      * @throws IllegalArgumentException if the target object doesn't declare a {@link Value} annotation
      * @throws RuntimeException if the field cannot be read on the target object
      */
-    @Nonnull @NotEmpty public static String getValue(@Nonnull final Object target) {
+    @Nullable @NotEmpty public static String getValue(@Nonnull final Object target) {
         final Value valueField = getAnnotation(target, Value.class);
         final Object value = getFieldValue(target, valueField.value());
         if (value instanceof String) {
             return (String) value;
+        } else if (value != null) {
+            return value.toString();
         }
-        return value.toString();
+        return null;
     }
 
     /**
@@ -206,17 +212,17 @@ public final class AnnotationSupport {
         final Expiration expField = getAnnotation(target, Expiration.class);
         if (expiration == null) {
             setFieldValue(target, expField.value(), null);
-        }
-        
-        final Class<?> type = getField(target, expField.value()).getType();
-        if (Long.class.isAssignableFrom(type)) {
-            setFieldValue(target, expField.value(), expiration);
-        } else if (Date.class.isAssignableFrom(type)) {
-            setFieldValue(target, expField.value(), new Date(expiration));
-        } else if (Instant.class.isAssignableFrom(type)) {
-            setFieldValue(target, expField.value(), Instant.ofEpochMilli(expiration));
         } else {
-            throw new RuntimeException(type + " is an unsupported data type for an expiration field.");
+            final Class<?> type = getField(target, expField.value()).getType();
+            if (Long.class.isAssignableFrom(type)) {
+                setFieldValue(target, expField.value(), expiration);
+            } else if (Date.class.isAssignableFrom(type)) {
+                setFieldValue(target, expField.value(), new Date(expiration));
+            } else if (Instant.class.isAssignableFrom(type)) {
+                setFieldValue(target, expField.value(), Instant.ofEpochMilli(expiration));
+            } else {
+                throw new RuntimeException(type + " is an unsupported data type for an expiration field.");
+            }
         }
     }
 
@@ -235,7 +241,7 @@ public final class AnnotationSupport {
         final Class<?> targetClass = target.getClass();
         final T keyField = targetClass.getAnnotation(annotationType);
         if (keyField == null) {
-            throw new IllegalArgumentException("Key annotation not found on " + target);
+            throw new IllegalArgumentException("Annotation not found on " + target);
         }
         return keyField;
     }

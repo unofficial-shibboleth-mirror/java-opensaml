@@ -48,13 +48,13 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
     @Nonnull private Duration cleanupInterval;
 
     /** Timer used to schedule cleanup tasks. */
-    private Timer cleanupTaskTimer;
+    @Nullable private Timer cleanupTaskTimer;
 
     /** Timer used to schedule cleanup tasks if no external one set. */
-    private Timer internalTaskTimer;
+    @Nullable private Timer internalTaskTimer;
 
     /** Task that cleans up expired records. */
-    private TimerTask cleanupTask;
+    @Nullable private TimerTask cleanupTask;
 
     /** Configurable context size limit. */
     @Positive private int contextSize;
@@ -178,6 +178,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
             } else {
                 internalTaskTimer = cleanupTaskTimer;
             }
+            assert internalTaskTimer != null;
             internalTaskTimer.schedule(cleanupTask, cleanupInterval.toMillis(), cleanupInterval.toMillis());
         }
     }
@@ -188,6 +189,7 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
             cleanupTask.cancel();
             cleanupTask = null;
             if (cleanupTaskTimer == null) {
+                assert internalTaskTimer != null;
                 internalTaskTimer.cancel();
             }
             internalTaskTimer = null;
@@ -225,13 +227,26 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
 
     /** {@inheritDoc} */
     @Override public boolean create(@Nonnull final Object value) throws IOException {
-        return create(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
-                AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
+        
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        final String val = AnnotationSupport.getValue(value);
+        if (context == null || key == null || val == null) {
+            throw new IOException("Context, key, and value must be non-null");
+        }
+        
+        return create(context, key, val, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
     @Override @Nullable public Object read(@Nonnull final Object value) throws IOException {
-        final StorageRecord<?> record = read(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+        
+        final StorageRecord<?> record = read(context, key);
         if (record != null) {
             AnnotationSupport.setValue(value, record.getValue());
             AnnotationSupport.setExpiration(value, record.getExpiration());
@@ -262,32 +277,61 @@ public abstract class AbstractStorageService extends AbstractIdentifiableInitial
 
     /** {@inheritDoc} */
     @Override public boolean update(@Nonnull final Object value) throws IOException {
-        return update(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
-                AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        final String val = AnnotationSupport.getValue(value);
+        if (context == null || key == null || val == null) {
+            throw new IOException("Context, key, and value must be non-null");
+        }
+        
+        return update(context, key, val, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
     @Override @Nullable public Long updateWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
-        return updateWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
-                AnnotationSupport.getValue(value), AnnotationSupport.getExpiration(value));
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        final String val = AnnotationSupport.getValue(value);
+        if (context == null || key == null || val == null) {
+            throw new IOException("Context, key, and value must be non-null");
+        }
+        
+        return updateWithVersion(version, context, key, val, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
     @Override public boolean updateExpiration(@Nonnull final Object value) throws IOException {
-        return updateExpiration(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value),
-                AnnotationSupport.getExpiration(value));
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+
+        return updateExpiration(context, key, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
     @Override public boolean delete(@Nonnull final Object value) throws IOException {
-        return delete(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+
+        return delete(context, key);
     }
 
     /** {@inheritDoc} */
     @Override public boolean deleteWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
-        return deleteWithVersion(version, AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+        
+        return deleteWithVersion(version, context, key);
     }
 
 }

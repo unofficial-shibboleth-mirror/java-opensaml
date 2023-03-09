@@ -33,9 +33,9 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Partial implementation of {@link StorageService} that stores data in-memory with no persistence
@@ -149,8 +149,8 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
 
     /** {@inheritDoc} */
     @Override
-    public boolean deleteWithVersion(final long version, final String context, final String key) throws IOException,
-            VersionMismatchException {
+    public boolean deleteWithVersion(final long version, @Nonnull final String context, @Nonnull final String key)
+            throws IOException, VersionMismatchException {
         return deleteImpl(version, context, key);
     }
     
@@ -476,6 +476,7 @@ public abstract class AbstractMapBackedStorageService extends AbstractStorageSer
         
         return dataMap.entrySet().removeIf(new Predicate<Entry<String, MutableStorageRecord<?>>>() {
                 public boolean test(@Nullable final Entry<String, MutableStorageRecord<?>> entry) {
+                    assert entry != null;
                     final Long exp = entry.getValue().getExpiration();
                     return exp != null && exp <= expiration;
                 }

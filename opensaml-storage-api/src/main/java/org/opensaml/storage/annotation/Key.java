@@ -22,6 +22,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import javax.annotation.Nonnull;
+
 /**
  * Identifies the field of a class that serves as the key of a
  * {@link org.opensaml.storage.StorageService} record.
@@ -35,5 +37,5 @@ public @interface Key {
      * 
      * @return value of this annotation
      */
-    public String value();
+    @Nonnull public String value();
 }

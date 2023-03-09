@@ -38,10 +38,10 @@ public class StorageRecord<Type> {
     private long version;
     
     /** Value field. */
-    private String value;
+    @Nonnull @NotEmpty private String value;
     
     /** Expiration field. */
-    private Long expiration;
+    @Nullable private Long expiration;
     
     /**
      * Constructor.
