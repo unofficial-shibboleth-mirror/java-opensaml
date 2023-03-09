@@ -126,7 +126,9 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * 
      * @return the held instance of the class, or null
+     * @deprecated use {@link #getOrCreateSubcontext(Class)} or {#link {@link #getSubcontext(Class)}.
      */ 
+    @Deprecated(since = "5.0.0", forRemoval = false)
     @Nullable public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz, final boolean autocreate) {
         Constraint.isNotNull(clazz, "Class type cannot be null");
         
@@ -182,7 +184,9 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * 
      * @return the held instance of the class, or null
+     * @deprecated use {@link #getOrCreateSubcontext(String)} or {#link {@link #getSubcontext(String)}.
      */ 
+    @Deprecated(since = "5.0.0", forRemoval = false)
     @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate) {
         try {
             return getSubcontext(Class.forName(className).asSubclass(BaseContext.class), autocreate);
@@ -273,7 +277,17 @@ public abstract class BaseContext implements Iterable<BaseContext> {
         subcontext.setParent(null);
         subcontexts.remove(subcontext);
     }
-    
+
+    /** Remove from our parent (if there is one).
+     */
+    public void removeFromParent() {
+        final BaseContext parent = getParent();
+        if (parent == null) {
+            return;
+        }
+        parent.removeSubcontext(this);
+    }
+
     /**
      * Remove the subcontext from the current context which corresponds to the supplied class.
      * 
@@ -281,7 +295,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param clazz the subcontext class to remove
      */
     public <T extends BaseContext>void removeSubcontext(@Nonnull final Class<T> clazz) {
-        final BaseContext subcontext = getSubcontext(clazz, false);
+        final BaseContext subcontext = getSubcontext(clazz);
         if (subcontext != null) {
             removeSubcontext(subcontext);
         }
