@@ -41,6 +41,11 @@ public class MemoryStorageServiceTest extends StorageServiceTest {
         return ss;
     }
         
+    /**
+     * Test config.
+     * 
+     * @throws ComponentInitializationException
+     */
     @Test
     public void validConfig() throws ComponentInitializationException {
         MemoryStorageService ss = new MemoryStorageService();

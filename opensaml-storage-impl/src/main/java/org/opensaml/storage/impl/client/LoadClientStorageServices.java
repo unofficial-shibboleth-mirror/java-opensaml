@@ -19,9 +19,7 @@ package org.opensaml.storage.impl.client;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -34,7 +32,6 @@ import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -42,8 +39,10 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URISupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An action that loads any number of {@link ClientStorageService} instances from a POST submission
@@ -81,7 +80,7 @@ public class LoadClientStorageServices extends AbstractProfileAction {
     /** Constructor. */
     public LoadClientStorageServices() {
         useLocalStorage = false;
-        storageServices = Collections.emptyMap();
+        storageServices = CollectionSupport.emptyMap();
     }
 
     /**
@@ -105,8 +104,10 @@ public class LoadClientStorageServices extends AbstractProfileAction {
         
         Constraint.isNotNull(services, "StorageService collection cannot be null");
         storageServices = new HashMap<>(services.size());
-        for (final ClientStorageService ss : List.copyOf(services)) {
-            storageServices.put(ss.getStorageName(), ss);
+        for (final ClientStorageService ss : services) {
+            if (ss != null) {
+                storageServices.put(ss.getStorageName(), ss);
+            }
         }
     }
     
@@ -129,27 +130,30 @@ public class LoadClientStorageServices extends AbstractProfileAction {
             return false;
         }
         
-        if (getHttpServletRequest() == null) {
-            log.error("{} HttpServletRequest not available", getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_PROFILE_CTX);
-            return false;
-        }
-        
         return true;
     }
 
     /** {@inheritDoc} */
     @Override protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+
+        final HttpServletRequest httpRequest = getHttpServletRequest(); 
+        if (httpRequest == null) {
+            log.error("{} HttpServletRequest not available", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_PROFILE_CTX);
+            return;
+        }
         
+
         boolean useLS = useLocalStorage;
         if (useLS) {
-            final String param = getHttpServletRequest().getParameter(SUPPORT_FORM_FIELD);
+            final String param = httpRequest.getParameter(SUPPORT_FORM_FIELD);
             if (param == null || !Boolean.valueOf(param)) {
                 log.debug("{} Local storage not available, backing off to cookies", getLogPrefix());
                 useLS = false;
             }
         }
         
+        assert clientStorageLoadCtx != null;
         for (final String storageKey : clientStorageLoadCtx.getStorageKeys()) {
             
             final ClientStorageService storageService = storageServices.get(storageKey);
@@ -160,28 +164,30 @@ public class LoadClientStorageServices extends AbstractProfileAction {
             }
             
             if (useLS) {
-                loadFromLocalStorage(storageService);
+                loadFromLocalStorage(httpRequest, storageService);
             } else {
-                loadFromCookie(storageService, ClientStorageSource.COOKIE);
+                loadFromCookie(httpRequest, storageService, ClientStorageSource.COOKIE);
             }
         }
         
+        assert clientStorageLoadCtx != null;
         profileRequestContext.removeSubcontext(clientStorageLoadCtx);
     }
 
     /**
      * Load the specified storage service from a cookie.
      * 
+     * @param httpRequest servlet request
      * @param storageService service to load
      * @param source source to apply to load operation
      */
-    private void loadFromCookie(@Nonnull final ClientStorageService storageService,
-            @Nonnull final ClientStorageSource source) {
+    private void loadFromCookie(@Nonnull final HttpServletRequest httpRequest,
+            @Nonnull final ClientStorageService storageService, @Nonnull final ClientStorageSource source) {
         
         Optional<Cookie> cookie = Optional.empty();
         
         // Search for our cookie.
-        final Cookie[] cookies = getHttpServletRequest().getCookies();
+        final Cookie[] cookies = httpRequest.getCookies();
         if (cookies != null) {
             cookie = Arrays.asList(cookies).stream().filter(
                     c -> c != null && c.getName().equals(storageService.getStorageName())
@@ -201,26 +207,26 @@ public class LoadClientStorageServices extends AbstractProfileAction {
     /**
      * Load the specified storage service from local storage data supplied in the POST.
      * 
+     * @param httpRequest servlet request
      * @param storageService service to load
      */
-    private void loadFromLocalStorage(@Nonnull final ClientStorageService storageService) {
+    private void loadFromLocalStorage(@Nonnull final HttpServletRequest httpRequest,
+            @Nonnull final ClientStorageService storageService) {
         
-        final HttpServletRequest request = getHttpServletRequest();
-        
-        String param = request.getParameter(SUCCESS_FORM_FIELD + '.' + storageService.getStorageName());
+        String param = httpRequest.getParameter(SUCCESS_FORM_FIELD + '.' + storageService.getStorageName());
         if (param == null || !Boolean.valueOf(param)) {
-            param = request.getParameter(EXCEPTION_FORM_FIELD + '.' + storageService.getStorageName());
+            param = httpRequest.getParameter(EXCEPTION_FORM_FIELD + '.' + storageService.getStorageName());
             log.debug("{} Load from local storage failed ({}), initializing StorageService '{}' to empty state",
                     getLogPrefix(), param, storageService.getId());
             storageService.load(null, ClientStorageSource.HTML_LOCAL_STORAGE);
             return;
         }
         
-        param = request.getParameter(VALUE_FORM_FIELD + '.' + storageService.getStorageName());
+        param = httpRequest.getParameter(VALUE_FORM_FIELD + '.' + storageService.getStorageName());
         if (param == null || param.isEmpty()) {
             log.debug("{} No local storage data present, checking for a cookie set by older storage implementation",
                     getLogPrefix(), storageService.getId());
-            loadFromCookie(storageService, ClientStorageSource.HTML_LOCAL_STORAGE);
+            loadFromCookie(httpRequest, storageService, ClientStorageSource.HTML_LOCAL_STORAGE);
         } else {
             log.debug("{} Initializing StorageService '{}' from local storage data", getLogPrefix(),
                     storageService.getId());

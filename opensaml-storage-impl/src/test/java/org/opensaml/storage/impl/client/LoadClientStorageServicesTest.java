@@ -18,7 +18,6 @@
 package org.opensaml.storage.impl.client;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.concurrent.locks.Lock;
 
 import org.opensaml.profile.action.EventIds;
@@ -38,11 +37,13 @@ import org.testng.annotations.Test;
 import com.google.common.net.UrlEscapers;
 
 import jakarta.servlet.http.Cookie;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.servlet.impl.HttpServletRequestResponseContext;
 import net.shibboleth.shared.servlet.impl.ThreadLocalHttpServletRequestSupplier;
 
 /** Unit test for {@link LoadClientStorageServices}. */
+@SuppressWarnings("javadoc")
 public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServiceTest {
 
     private ProfileRequestContext prc;
@@ -56,7 +57,7 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
 
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        loadCtx = prc.getSubcontext(ClientStorageLoadContext.class, true);
+        loadCtx = prc.getOrCreateSubcontext(ClientStorageLoadContext.class);
         loadCtx.getStorageKeys().add(STORAGE_NAME);
         
         action = new LoadClientStorageServices();
@@ -65,7 +66,7 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
     }
 
     @Test public void testNoContext() throws ComponentInitializationException {
-        action.setStorageServices(Collections.singletonList(getStorageService()));
+        action.setStorageServices(CollectionSupport.singletonList(getStorageService()));
         action.initialize();
         
         prc.removeSubcontext(loadCtx);
@@ -102,11 +103,13 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
             lock.unlock();
         }
 
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
 
         final Cookie cookie = new Cookie("bar", "ignored");
-        ((MockHttpServletRequest) HttpServletRequestResponseContext.getRequest()).setCookies(cookie);
+        final MockHttpServletRequest request = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
+        assert request != null;
+        request.setCookies(cookie);
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -122,11 +125,13 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
 
     @Test public void testInvalid() throws ComponentInitializationException, IOException {
         final ClientStorageService ss = getStorageService();
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
 
         final Cookie cookie = new Cookie(STORAGE_NAME, "error");
-        ((MockHttpServletRequest) HttpServletRequestResponseContext.getRequest()).setCookies(cookie);
+        final MockHttpServletRequest request = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
+        assert request != null;
+        request.setCookies(cookie);
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -155,11 +160,14 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
 
         Assert.assertFalse(ss.isLoaded());
         
+        assert saved != null;
         final Cookie cookie = new Cookie("foo", UrlEscapers.urlFormParameterEscaper().escape(saved.getValue()));
-        ((MockHttpServletRequest) HttpServletRequestResponseContext.getRequest()).setCookies(cookie);
+        final MockHttpServletRequest request = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
+        assert request != null;
+        request.setCookies(cookie);
 
         action.setUseLocalStorage(true);
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
 
         action.execute(prc);
@@ -176,19 +184,23 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
         ss.create("context2", "key", "value", null);
         
         final ClientStorageServiceOperation saved = ss.save();
-        Assert.assertNotNull(saved);
+        assert saved != null;
 
+        final String value = saved.getValue();
+        assert value != null;
+        
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
 
         Assert.assertFalse(ss.isLoaded());
         
         final MockHttpServletRequest request = (MockHttpServletRequest) HttpServletRequestResponseContext.getRequest();
+        assert request != null;
         request.setParameter(LoadClientStorageServices.SUPPORT_FORM_FIELD, "true");
         request.setParameter(LoadClientStorageServices.SUCCESS_FORM_FIELD + '.' + ss.getStorageName(), "true");
-        request.setParameter(LoadClientStorageServices.VALUE_FORM_FIELD + '.' + ss.getStorageName(), saved.getValue());
+        request.setParameter(LoadClientStorageServices.VALUE_FORM_FIELD + '.' + ss.getStorageName(), value);
 
         action.setUseLocalStorage(true);
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
 
         action.execute(prc);
@@ -201,17 +213,17 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
         Assert.assertNull(loadCtx.getParent());
 
         StorageRecord<?> record = ss.read("context1", "key1");
-        Assert.assertNotNull(record);
+        assert record != null;
         Assert.assertEquals(record.getValue(), "value1");
         Assert.assertNull(record.getExpiration());
         
         record = ss.read("context1", "key2");
-        Assert.assertNotNull(record);
+        assert record != null;
         Assert.assertEquals(record.getValue(), "value2");
         Assert.assertNull(record.getExpiration());
 
         record = ss.read("context2", "key");
-        Assert.assertNotNull(record);
+        assert record != null;
         Assert.assertEquals(record.getValue(), "value");
         Assert.assertNull(record.getExpiration());
     }

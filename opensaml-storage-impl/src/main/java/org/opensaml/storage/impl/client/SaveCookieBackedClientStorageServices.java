@@ -18,9 +18,7 @@
 package org.opensaml.storage.impl.client;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -32,13 +30,14 @@ import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An action that performs any number of {@link ClientStorageServiceOperation} instances sourced from
@@ -67,7 +66,7 @@ public class SaveCookieBackedClientStorageServices
     
     /** Constructor. */
     public SaveCookieBackedClientStorageServices() {
-        storageServices = Collections.emptyMap();
+        storageServices = CollectionSupport.emptyMap();
         escaper = UrlEscapers.urlFormParameterEscaper();
     }
     
@@ -81,8 +80,10 @@ public class SaveCookieBackedClientStorageServices
         
         Constraint.isNotNull(services, "StorageService collection cannot be null");
         storageServices = new HashMap<>(services.size());
-        for (final ClientStorageService ss : List.copyOf(services)) {
-            storageServices.put(ss.getId(), ss);
+        for (final ClientStorageService ss : services) {
+            if (ss != null) {
+                storageServices.put(ss.getId(), ss);
+            }
         }
     }
     
@@ -105,8 +106,10 @@ public class SaveCookieBackedClientStorageServices
             return false;
         }
         
+        assert clientStorageSaveCtx != null;
         if (!clientStorageSaveCtx.isSourceRequired(ClientStorageSource.COOKIE)) {
             log.debug("{} No cookie operations required", getLogPrefix());
+            assert clientStorageSaveCtx != null;
             profileRequestContext.removeSubcontext(clientStorageSaveCtx);
             return false;
         }
@@ -117,6 +120,7 @@ public class SaveCookieBackedClientStorageServices
     /** {@inheritDoc} */
     @Override protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        assert clientStorageSaveCtx != null;
         for (final ClientStorageServiceOperation operation : clientStorageSaveCtx.getStorageOperations()) {
             
             final ClientStorageService storageService = storageServices.get(operation.getStorageServiceID());
@@ -137,6 +141,7 @@ public class SaveCookieBackedClientStorageServices
             }
         }
         
+        assert clientStorageSaveCtx != null;
         profileRequestContext.removeSubcontext(clientStorageSaveCtx);
     }
 

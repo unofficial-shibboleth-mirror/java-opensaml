@@ -30,7 +30,6 @@ import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
@@ -39,6 +38,7 @@ import net.shibboleth.shared.annotation.constraint.ThreadSafeAfterInit;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Stores and checks for revocation entries via a {@link StorageService}.
@@ -78,7 +78,7 @@ public class StorageServiceRevocationCache extends AbstractIdentifiableInitializ
      * 
      * @param entryExpiration lifetime of an revocation entry in milliseconds
      */
-    public void setEntryExpiration(@Positive final Duration entryExpiration) {
+    public void setEntryExpiration(@Positive @Nonnull final Duration entryExpiration) {
         checkSetterPreconditions();
         
         Constraint.isTrue(entryExpiration != null && !entryExpiration.isNegative() && !entryExpiration.isZero(),

@@ -36,7 +36,6 @@ import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.impl.client.ClientStorageServiceStore.Factory;
 import org.opensaml.storage.impl.client.JSONClientStorageServiceStore.JSONClientStorageServiceStoreFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -54,6 +53,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.net.CookieManager;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.security.DataExpiredException;
@@ -382,7 +382,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
      * 
      * @throws IOException to signal an error
      */
-    @Nonnull ClientStorageSource getSource() throws IOException {
+    @Nullable ClientStorageSource getSource() throws IOException {
        final Lock lock = getLock().readLock();
        try {
            lock.lock();
@@ -451,7 +451,7 @@ public class ClientStorageService extends AbstractMapBackedStorageService implem
                 
                 if (keyStrategy != null) {
                     try {
-                        if (!keyStrategy.getDefaultKey().getFirst().equals(keyAliasUsed.toString())) {
+                        if (!keyStrategy.getDefaultKeyRecord().name().equals(keyAliasUsed.toString())) {
                             storageObject.setDirty(true);
                         }
                     } catch (final KeyException e) {

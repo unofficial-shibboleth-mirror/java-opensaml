@@ -20,8 +20,6 @@ package org.opensaml.storage.impl.client;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 
 import javax.annotation.Nonnull;
 
@@ -29,11 +27,12 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An action that creates and populates a {@link ClientStorageLoadContext} with any storage keys identified
@@ -58,7 +57,7 @@ public class PopulateClientStorageLoadContext extends AbstractProfileAction {
     
     /** Constructor. */
     public PopulateClientStorageLoadContext() {
-        storageServices = Collections.emptyList();
+        storageServices = CollectionSupport.emptyList();
     }
     
     /**
@@ -69,7 +68,8 @@ public class PopulateClientStorageLoadContext extends AbstractProfileAction {
     public void setStorageServices(@Nonnull @NonnullElements final Collection<ClientStorageService> services) {
         checkSetterPreconditions();
         
-        storageServices = List.copyOf(Constraint.isNotNull(services, "StorageService collection cannot be null"));
+        storageServices = CollectionSupport.copyToList(
+                Constraint.isNotNull(services, "StorageService collection cannot be null"));
     }
     
     /** {@inheritDoc} */

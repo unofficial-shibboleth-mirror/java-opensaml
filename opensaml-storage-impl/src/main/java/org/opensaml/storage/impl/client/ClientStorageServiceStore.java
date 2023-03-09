@@ -42,7 +42,7 @@ public interface ClientStorageServiceStore {
      * 
      * @return data source
      */
-    @Nonnull ClientStorageSource getSource();
+    @Nullable ClientStorageSource getSource();
 
     /**
      * Get the dirty bit for the current data.

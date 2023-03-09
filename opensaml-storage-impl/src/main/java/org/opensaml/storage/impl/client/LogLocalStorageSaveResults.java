@@ -24,10 +24,10 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An action that logs the results of Local Storage-based {@link ClientStorageService} save operations.
@@ -60,11 +60,6 @@ public class LogLocalStorageSaveResults extends AbstractProfileAction {
             return false;
         }
         
-        if (getHttpServletRequest() == null) {
-            log.error("{} HttpServletRequest not available", getLogPrefix());
-            return false;
-        }
-        
         return true;
     }
 
@@ -72,7 +67,13 @@ public class LogLocalStorageSaveResults extends AbstractProfileAction {
     @Override protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            log.error("{} HttpServletRequest not available", getLogPrefix());
+            return;
+        }
+        
 
+        assert clientStorageSaveCtx != null;
         for (final ClientStorageServiceOperation operation : clientStorageSaveCtx.getStorageOperations()) {
             if (operation.getStorageSource() == ClientStorageSource.HTML_LOCAL_STORAGE) {
                 String param = request.getParameter(

@@ -18,6 +18,7 @@
 package org.opensaml.storage.impl.memcached;
 
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.logic.Constraint;
 import net.spy.memcached.BinaryConnectionFactory;
 import net.spy.memcached.MemcachedClient;
 import org.cryptacular.generator.IdGenerator;
@@ -47,6 +48,7 @@ import static org.testng.Assert.*;
  * profile if a local memcached service is available.
  */
 @Test(groups = {"needs-external-fixture"}, enabled=false)
+@SuppressWarnings("javadoc")
 public class MemcachedStorageServiceTest {
 
     private MemcachedStorageService service;
@@ -135,7 +137,7 @@ public class MemcachedStorageServiceTest {
         assertTrue((updatedVersion > r1.getVersion()));
         final Pair<Long, StorageRecord<String>> pair1 = service.read(context, key, r1.getVersion());
         assertEquals(pair1.getFirst(), updatedVersion);
-        assertEquals(pair1.getSecond().getValue(), updatedValue);
+        assertEquals(Constraint.isNotNull(pair1.getSecond(), "Value was null").getValue(), updatedValue);
         final Pair<Long, StorageRecord<String>> pair2 = service.read(context, key, updatedVersion);
         assertEquals(pair2.getFirst(), updatedVersion);
         assertNull(pair2.getSecond());

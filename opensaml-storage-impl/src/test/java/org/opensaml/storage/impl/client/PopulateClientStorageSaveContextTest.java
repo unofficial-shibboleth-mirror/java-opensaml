@@ -18,7 +18,6 @@
 package org.opensaml.storage.impl.client;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
@@ -31,10 +30,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.servlet.impl.HttpServletRequestResponseContext;
 
 /** Unit test for {@link PopulateClientStorageSaveContext}. */
+@SuppressWarnings("javadoc")
 public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStorageServiceTest {
 
     private ProfileRequestContext prc;
@@ -59,7 +60,7 @@ public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStor
     }
  
     @Test public void testUnloaded() throws ComponentInitializationException {
-        action.setStorageServices(Collections.singletonList(getStorageService()));
+        action.setStorageServices(CollectionSupport.singletonList(getStorageService()));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
@@ -72,7 +73,7 @@ public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStor
 
     @Test public void testClean() throws ComponentInitializationException {
         final ClientStorageService ss = getStorageService();
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
@@ -87,7 +88,7 @@ public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStor
 
     @Test public void testDirty() throws ComponentInitializationException, IOException {
         final ClientStorageService ss = getStorageService();
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
@@ -99,7 +100,7 @@ public class PopulateClientStorageSaveContextTest extends AbstractBaseClientStor
         ActionTestingSupport.assertProceedEvent(prc);
         
         final ClientStorageSaveContext saveCtx = prc.getSubcontext(ClientStorageSaveContext.class); 
-        Assert.assertNotNull(saveCtx);
+        assert saveCtx != null;
         Assert.assertTrue(saveCtx.isSourceRequired(ClientStorageSource.HTML_LOCAL_STORAGE));
         Assert.assertEquals(saveCtx.getStorageOperations().size(), 1);
         

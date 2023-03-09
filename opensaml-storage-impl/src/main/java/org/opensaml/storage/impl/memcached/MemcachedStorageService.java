@@ -22,6 +22,7 @@ import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.spy.memcached.CASResponse;
 import net.spy.memcached.CASValue;
@@ -38,7 +39,6 @@ import org.opensaml.storage.StorageService;
 import org.opensaml.storage.VersionMismatchException;
 import org.opensaml.storage.annotation.AnnotationSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -164,9 +164,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nonnull
-    public StorageCapabilities getCapabilities() {
+    @Nonnull public StorageCapabilities getCapabilities() {
         return storageCapabilities;
     }
 
@@ -182,7 +180,6 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean create(@Nonnull @NotEmpty final String context,
                           @Nonnull @NotEmpty final String key,
                           @Nonnull @NotEmpty final String value,
@@ -216,7 +213,6 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public <T> boolean create(@Nonnull @NotEmpty final String context,
                           @Nonnull @NotEmpty final String key,
                           @Nonnull final T value,
@@ -227,18 +223,20 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean create(@Nonnull final Object value) throws IOException {
         Constraint.isNotNull(value, "Value cannot be null");
-        return create(
-                AnnotationSupport.getContext(value),
-                AnnotationSupport.getKey(value),
-                AnnotationSupport.getValue(value),
-                AnnotationSupport.getExpiration(value));
+
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        final String val = AnnotationSupport.getValue(value);
+        if (context == null || key == null || val == null) {
+            throw new IOException("Context, key, and value must be non-null");
+        }
+
+        return create(context, key, val, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
-    @Override
     public <T> StorageRecord<T> read(@Nonnull @NotEmpty final String context,
                               @Nonnull @NotEmpty final String key) throws IOException {
         Constraint.isNotNull(StringSupport.trimOrNull(context), "Context cannot be null or empty");
@@ -264,15 +262,19 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public Object read(@Nonnull final Object value) throws IOException {
         Constraint.isNotNull(value, "Value cannot be null");
-        return read(AnnotationSupport.getContext(value), AnnotationSupport.getKey(value));
+
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+        return read(context, key);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public <T> Pair<Long, StorageRecord<T>> read(@Nonnull @NotEmpty final String context,
+    @Nonnull public <T> Pair<Long, StorageRecord<T>> read(@Nonnull @NotEmpty final String context,
                                            @Nonnull @NotEmpty final String key,
                                            @Positive final long version) throws IOException {
         Constraint.isGreaterThan(0, version, "Version must be positive");
@@ -289,7 +291,6 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean update(@Nonnull @NotEmpty final String context,
                           @Nonnull @NotEmpty final String key,
                           @Nonnull @NotEmpty final String value,
@@ -311,7 +312,6 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public <T> boolean update(@Nonnull @NotEmpty final String context,
                           @Nonnull @NotEmpty final String key,
                           @Nonnull final T value,
@@ -322,18 +322,20 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean update(@Nonnull final Object value) throws IOException {
         Constraint.isNotNull(value, "Value cannot be null");
-        return update(
-                AnnotationSupport.getContext(value),
-                AnnotationSupport.getKey(value),
-                AnnotationSupport.getValue(value),
-                AnnotationSupport.getExpiration(value));
+
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        final String val = AnnotationSupport.getValue(value);
+        if (context == null || key == null || val == null) {
+            throw new IOException("Context, key, and value must be non-null");
+        }
+
+        return update(context, key, val, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
-    @Override
     public Long updateWithVersion(@Positive final long version,
                                   @Nonnull @NotEmpty final String context,
                                   @Nonnull @NotEmpty final String key,
@@ -373,7 +375,6 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
 
 // Checkstyle: ParameterNumber OFF
     /** {@inheritDoc} */
-    @Override
     @Nullable public <T> Long updateWithVersion(@Positive final long version,
                                   @Nonnull @NotEmpty final String context,
                                   @Nonnull @NotEmpty final String key,
@@ -388,21 +389,21 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
 // Checkstyle: ParameterNumber ON
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public Long updateWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
-
         Constraint.isNotNull(value, "Value cannot be null");
-        return updateWithVersion(
-                version,
-                AnnotationSupport.getContext(value),
-                AnnotationSupport.getKey(value),
-                AnnotationSupport.getValue(value),
-                AnnotationSupport.getExpiration(value));
+
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        final String val = AnnotationSupport.getValue(value);
+        if (context == null || key == null || val == null) {
+            throw new IOException("Context, key, and value must be non-null");
+        }
+
+        return updateWithVersion(version, context, key, val, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean updateExpiration(@Nonnull @NotEmpty final String context,
                                     @Nonnull @NotEmpty final String key,
                                     @Nullable @Positive final Long expiration) throws IOException {
@@ -421,17 +422,19 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean updateExpiration(@Nonnull final Object value) throws IOException {
         Constraint.isNotNull(value, "Value cannot be null");
-        return updateExpiration(
-                AnnotationSupport.getContext(value),
-                AnnotationSupport.getKey(value),
-                AnnotationSupport.getExpiration(value));
+
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+
+        return updateExpiration(context, key, AnnotationSupport.getExpiration(value));
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean delete(@Nonnull @NotEmpty final String context, @Nonnull @NotEmpty final String key)
             throws IOException {
 
@@ -455,16 +458,19 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean delete(@Nonnull final Object value) throws IOException {
         Constraint.isNotNull(value, "Value cannot be null");
-        return delete(
-                AnnotationSupport.getContext(value),
-                AnnotationSupport.getKey(value));
+
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+
+        return delete(context, key);
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean deleteWithVersion(@Positive final long version,
                                      @Nonnull @NotEmpty final String context,
                                      @Nonnull @NotEmpty final String key) throws IOException, VersionMismatchException {
@@ -489,26 +495,26 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean deleteWithVersion(@Positive final long version, @Nonnull final Object value)
             throws IOException, VersionMismatchException {
-
         Constraint.isNotNull(value, "Value cannot be null");
-        return deleteWithVersion(
-                version,
-                AnnotationSupport.getContext(value),
-                AnnotationSupport.getKey(value));
+
+        final String context = AnnotationSupport.getContext(value);
+        final String key = AnnotationSupport.getKey(value);
+        if (context == null || key == null) {
+            throw new IOException("Context and key must be non-null");
+        }
+
+        return deleteWithVersion(version, context, key);
     }
 
     /** {@inheritDoc} */
-    @Override
     public void reap(@Nonnull @NotEmpty final String context) throws IOException {
         return;
     }
 
 // Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
-    @Override
     public void updateContextExpiration(@Nonnull @NotEmpty final String context, @Nullable final Long expiration)
             throws IOException {
         if (!trackContextKeys) {
@@ -546,7 +552,6 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
 // Checkstyle: ReturnCount ON
 
     /** {@inheritDoc} */
-    @Override
     public void deleteContext(@Nonnull @NotEmpty final String context) throws IOException {
         Constraint.isNotNull(StringSupport.trimOrNull(context), "Context cannot be null or empty");
         final String namespace = lookupNamespace(context);
@@ -583,7 +588,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
      *
      * @throws java.io.IOException On memcached operation errors.
      */
-    protected String lookupNamespace(final String context) throws IOException {
+    @Nullable protected String lookupNamespace(@Nonnull @NotEmpty final String context) throws IOException {
         try {
             final CASValue<String> result = handleAsyncResult(
                     memcacheClient.asyncGets(memcachedKey(context), stringTranscoder));
@@ -603,7 +608,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
      *
      * @throws java.io.IOException On memcached operation errors.
      */
-    protected String createNamespace(final String context) throws IOException {
+    @Nonnull protected String createNamespace(@Nonnull @NotEmpty final String context) throws IOException {
         String namespace =  null;
         boolean success = false;
         // Perform successive add operations until success to ensure unique namespace
@@ -616,6 +621,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
         if (!handleAsyncResult(memcacheClient.add(memcachedKey(context), 0, namespace, stringTranscoder))) {
             throw new IllegalStateException(context + " already exists");
         }
+        assert namespace != null;
         return namespace;
     }
 
@@ -626,7 +632,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
      *
      * @return Key comprised of 250 characters or less.
      */
-    private String memcachedKey(final String ... parts) {
+    private String memcachedKey(@Nonnull final String ... parts) {
         final String key;
         if (parts.length > 0) {
             final StringBuilder sb = new StringBuilder();
@@ -655,7 +661,7 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
      * @return the result
      * @throws IOException if an error occurs
      */
-    private <T> T handleAsyncResult(final OperationFuture<T> result) throws IOException {
+    private <T> T handleAsyncResult(@Nonnull final OperationFuture<T> result) throws IOException {
         try {
             return result.get(operationTimeout, TimeUnit.SECONDS);
         } catch (final InterruptedException e) {
@@ -676,8 +682,8 @@ public class MemcachedStorageService extends AbstractIdentifiableInitializableCo
      * @return whether the update was a success
      * @throws IOException if an error occurs
      */
-    private boolean updateContextKeyList(final String suffix, final String namespace, final String key)
-            throws IOException {
+    private boolean updateContextKeyList(@Nonnull final String suffix, @Nonnull final String namespace,
+            @Nonnull final String key) throws IOException {
         final String listKey = namespace + suffix;
         final String newItem = key + CTX_KEY_LIST_DELIMITER;
         final boolean success = handleAsyncResult(memcacheClient.append(listKey, newItem, stringTranscoder));

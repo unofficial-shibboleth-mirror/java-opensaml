@@ -38,9 +38,9 @@ import javax.json.stream.JsonGenerator;
 import org.opensaml.storage.MutableStorageRecord;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.DataSealerException;
 
 /**
@@ -102,10 +102,15 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
             return null;
         }
         
+        final ClientStorageSource source = getSource();
+        if (source == null) {
+            throw new IOException("Client storage medium not set");
+        }
+        
         if (getContextMap().isEmpty()) {
             log.trace("{} Data is empty", storageService.getLogPrefix());
             return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
-                    getSource());
+                    source);
         }
 
         long exp = 0L;
@@ -129,7 +134,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
                             gen.writeStartObject(entry.getKey())
                                 .write("v", record.getValue());
                             if (recexp != null) {
-                                gen.write("x", record.getExpiration());
+                                gen.write("x", recexp);
                                 exp = Math.max(exp, recexp);
                             }
                             gen.writeEnd();
@@ -143,7 +148,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
             if (empty) {
                 log.trace("{} Data is empty", storageService.getLogPrefix());
                 return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
-                        getSource());
+                        source);
             }
             
             final String raw = sink.toString();
@@ -156,7 +161,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
                 log.trace("{} Size of data after encryption is {}", storageService.getLogPrefix(), wrapped.length());
                 setDirty(false);
                 return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(),
-                        wrapped, getSource());
+                        wrapped, source);
             } catch (final DataSealerException e) {
                 throw new IOException(e);
             }

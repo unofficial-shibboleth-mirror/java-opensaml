@@ -25,12 +25,17 @@ import static org.testng.Assert.assertNull;
 /**
  * Unit test for {@link MemcachedStorageRecord} class.
  */
+@SuppressWarnings("javadoc")
 public class MemcachedStorageRecordTest {
 
     @Test
     public void testNumericExpiration() {
         final MemcachedStorageRecord<?> record = new MemcachedStorageRecord<>("r1", 5031757792L);
-        assertEquals(record.getExpiration().longValue(), 5031757792L);
+        
+        final Long exp = record.getExpiration();
+        assert exp != null;
+        
+        assertEquals(exp.longValue(), 5031757792L);
         assertEquals(record.getExpiry(), 5031757);
     }
 

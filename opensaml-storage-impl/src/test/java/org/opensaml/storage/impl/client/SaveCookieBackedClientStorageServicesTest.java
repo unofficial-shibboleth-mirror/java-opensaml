@@ -18,7 +18,6 @@
 package org.opensaml.storage.impl.client;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -32,10 +31,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.servlet.impl.HttpServletRequestResponseContext;
 
 /** Unit test for {@link SaveCookieBackedClientStorageServices}. */
+@SuppressWarnings("javadoc")
 public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClientStorageServiceTest {
 
     private ProfileRequestContext prc;
@@ -50,8 +51,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
 
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        saveCtx = new ClientStorageSaveContext();
-        prc.addSubcontext(saveCtx);
+        saveCtx = prc.getOrCreateSubcontext(ClientStorageSaveContext.class);
         action = new SaveCookieBackedClientStorageServices();
     }
         
@@ -63,7 +63,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
     }
 
     @Test public void testNoContext() throws ComponentInitializationException {
-        action.setStorageServices(Collections.singletonList(getStorageService()));
+        action.setStorageServices(CollectionSupport.singletonList(getStorageService()));
         action.initialize();
         
         prc.removeSubcontext(saveCtx);
@@ -74,7 +74,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
     
     @Test public void testNoCookieSources() throws ComponentInitializationException {
         final ClientStorageService ss = getStorageService();
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
@@ -85,12 +85,16 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         Assert.assertNull(saveCtx.getParent());
-        Assert.assertEquals(((MockHttpServletResponse) HttpServletRequestResponseContext.getResponse()).getCookies().length, 0);
+        
+        final MockHttpServletResponse response = (MockHttpServletResponse) HttpServletRequestResponseContext.getResponse();
+        assert response != null;
+        
+        Assert.assertEquals(response.getCookies().length, 0);
     }
     
     @Test public void testSave() throws ComponentInitializationException, IOException {
         final ClientStorageService ss = getStorageService();
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
@@ -103,6 +107,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
         Assert.assertNull(saveCtx.getParent());
         
         final MockHttpServletResponse response = (MockHttpServletResponse) HttpServletRequestResponseContext.getResponse();
+        assert response != null;
         Assert.assertEquals(response.getCookies().length, 1);
         Assert.assertEquals(response.getCookies()[0].getName(), ss.getStorageName());
         Assert.assertEquals(response.getCookies()[0].getValue(), "the+value");

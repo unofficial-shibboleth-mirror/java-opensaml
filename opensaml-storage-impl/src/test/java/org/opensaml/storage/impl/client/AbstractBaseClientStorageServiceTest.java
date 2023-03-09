@@ -17,6 +17,8 @@
 
 package org.opensaml.storage.impl.client;
 
+import javax.annotation.Nonnull;
+
 import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 
@@ -32,7 +34,8 @@ import net.shibboleth.shared.spring.resource.ResourceHelper;
 /** Base class for client storage tests. */
 public class AbstractBaseClientStorageServiceTest {
 
-    public static final String STORAGE_NAME = "foo";
+    /** Storage name. */
+    @Nonnull public static final String STORAGE_NAME = "foo";
     
     private Resource keystoreResource;
     private Resource versionResource;
@@ -47,7 +50,7 @@ public class AbstractBaseClientStorageServiceTest {
         versionResource = ResourceHelper.of(resource);
     }
 
-    protected ClientStorageService getStorageService() throws ComponentInitializationException {
+    @Nonnull protected ClientStorageService getStorageService() throws ComponentInitializationException {
         final ClientStorageService ss = new ClientStorageService();
         ss.setId("test");
         ss.setStorageName(STORAGE_NAME);

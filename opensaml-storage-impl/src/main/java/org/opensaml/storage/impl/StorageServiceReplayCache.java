@@ -28,7 +28,6 @@ import org.opensaml.storage.StorageCapabilities;
 import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageService;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
@@ -38,6 +37,7 @@ import net.shibboleth.shared.codec.StringDigester.OutputFormat;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * {@link ReplayCache} implementation backed by a {@link StorageService}.
@@ -130,6 +130,10 @@ public class StorageServiceReplayCache extends AbstractIdentifiableInitializable
             return false;
         } else if (s.length() > caps.getKeySize()) {
             key = digester.apply(s);
+            if (key == null) {
+                log.error("Result of digesting key was null");
+                return false;
+            }
         } else {
             key = s;
         }
@@ -141,9 +145,10 @@ public class StorageServiceReplayCache extends AbstractIdentifiableInitializable
                 storage.create(context, key, "x", expires.toEpochMilli());
                 return true;
             }
-            
+
+            final Long existingExp = entry.getExpiration();
             log.debug("Replay of value '{}' detected in cache, expires at {}", s,
-                    Instant.ofEpochMilli(entry.getExpiration()));
+                    Instant.ofEpochMilli(existingExp != null ? existingExp : 0));
             return false;
             
         } catch (final IOException e) {

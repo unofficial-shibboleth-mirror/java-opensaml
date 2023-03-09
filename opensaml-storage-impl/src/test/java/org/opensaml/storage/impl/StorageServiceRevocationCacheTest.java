@@ -36,6 +36,7 @@ import org.testng.annotations.BeforeMethod;
 /**
  * Tests for {@link StorageServiceRevocationCache}.
  */
+@SuppressWarnings("javadoc")
 public class StorageServiceRevocationCacheTest {
     
     private MemoryStorageService storageService;
@@ -66,12 +67,6 @@ public class StorageServiceRevocationCacheTest {
     @Test
     public void testInit() {
         revocationCache = new StorageServiceRevocationCache();
-        try {
-            revocationCache.setStorage(null);
-            fail("Null StorageService should have caused constraint violation");
-        } catch (final Exception e) {
-        }
-
         try {
             revocationCache.setStorage(new ClientStorageService());
             

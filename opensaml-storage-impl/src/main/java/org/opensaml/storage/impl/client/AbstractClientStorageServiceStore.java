@@ -26,8 +26,6 @@ import javax.annotation.Nullable;
 
 import org.opensaml.storage.MutableStorageRecord;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
@@ -41,14 +39,11 @@ import net.shibboleth.shared.logic.Constraint;
  */
 public abstract class AbstractClientStorageServiceStore implements ClientStorageServiceStore {
 
-    /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractClientStorageServiceStore.class);
-
     /** The underlying map of data records. */
     @Nonnull @NonnullElements private final Map<String, Map<String, MutableStorageRecord<?>>> contextMap;
     
     /** Data source. */
-    @Nonnull private ClientStorageSource source;
+    @Nullable private ClientStorageSource source;
     
     /** Dirty bit. */
     private boolean dirty;
@@ -61,7 +56,7 @@ public abstract class AbstractClientStorageServiceStore implements ClientStorage
     }
 
     /** {@inheritDoc} */
-    @Nonnull public ClientStorageSource getSource() {
+    @Nullable public ClientStorageSource getSource() {
         return source;
     }
 

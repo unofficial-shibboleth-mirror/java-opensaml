@@ -17,8 +17,6 @@
 
 package org.opensaml.storage.impl.client;
 
-import java.util.Collections;
-
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
@@ -30,10 +28,12 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.servlet.impl.HttpServletRequestResponseContext;
 
 /** Unit test for {@link PopulateClientStorageLoadContext}. */
+@SuppressWarnings("javadoc")
 public class PopulateClientStorageLoadContextTest extends AbstractBaseClientStorageServiceTest {
 
     private ProfileRequestContext prc;
@@ -58,7 +58,7 @@ public class PopulateClientStorageLoadContextTest extends AbstractBaseClientStor
     }
  
     @Test public void testUnloaded() throws ComponentInitializationException {
-        action.setStorageServices(Collections.singletonList(getStorageService()));
+        action.setStorageServices(CollectionSupport.singletonList(getStorageService()));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());
@@ -67,14 +67,14 @@ public class PopulateClientStorageLoadContextTest extends AbstractBaseClientStor
         ActionTestingSupport.assertProceedEvent(prc);
         
         final ClientStorageLoadContext ctx = prc.getSubcontext(ClientStorageLoadContext.class);
-        Assert.assertNotNull(ctx);
+        assert ctx != null;
         Assert.assertEquals(ctx.getStorageKeys().size(), 1);
         Assert.assertTrue(ctx.getStorageKeys().contains(STORAGE_NAME));
     }
 
     @Test public void testLoaded() throws ComponentInitializationException {
         final ClientStorageService ss = getStorageService();
-        action.setStorageServices(Collections.singletonList(ss));
+        action.setStorageServices(CollectionSupport.singletonList(ss));
         action.initialize();
         
         HttpServletRequestResponseContext.loadCurrent(new MockHttpServletRequest(), new MockHttpServletResponse());

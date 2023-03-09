@@ -71,12 +71,6 @@ public class StorageServiceReplayCacheTest {
     public void testInit() {
         replayCache = new StorageServiceReplayCache();
         try {
-            replayCache.setStorage(null);
-            Assert.fail("Null StorageService should have caused constraint violation");
-        } catch (Exception e) {
-        }
-
-        try {
             replayCache.setStorage(new ClientStorageService());
             Assert.fail("ClientStorageService should have caused constraint violation");
         } catch (Exception e) {

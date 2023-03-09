@@ -30,7 +30,7 @@ import javax.annotation.Nullable;
 import org.opensaml.storage.MutableStorageRecord;
 import org.opensaml.storage.impl.client.ClientStorageService.ClientStorageSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -40,6 +40,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.DataSealerException;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.ParserPool;
@@ -125,10 +126,15 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
             return null;
         }
         
+        final ClientStorageSource source = getSource();
+        if (source == null) {
+            throw new IOException("Client storage medium not set");
+        }
+        
         if (getContextMap().isEmpty()) {
             log.trace("{} Data is empty", storageService.getLogPrefix());
             return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
-                    getSource());
+                    source);
         }
 
         long exp = 0L;
@@ -139,8 +145,7 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
             final Document doc = parserPool.newDocument();
             final Element rootElement = doc.createElement("map");
             
-            for (final Map.Entry<String,Map<String, MutableStorageRecord<?>>> context
-                    : getContextMap().entrySet()) {
+            for (final Map.Entry<String,Map<String,MutableStorageRecord<?>>> context : getContextMap().entrySet()) {
                 if (!context.getValue().isEmpty()) {
                     final Element contextElement = doc.createElement("c");
                     contextElement.setAttribute("id", context.getKey());
@@ -169,9 +174,10 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
             if (empty) {
                 log.trace("{} Data is empty", storageService.getLogPrefix());
                 return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
-                        getSource());
+                        source);
             }
             
+            assert rootElement != null;
             final String raw = SerializeSupport.nodeToString(rootElement);
             
             log.trace("{} Size of data before encryption is {}", storageService.getLogPrefix(), raw.length());
@@ -182,7 +188,7 @@ public class XMLClientStorageServiceStore extends AbstractClientStorageServiceSt
                 log.trace("{} Size of data after encryption is {}", storageService.getLogPrefix(), wrapped.length());
                 setDirty(false);
                 return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(),
-                        wrapped, getSource());
+                        wrapped, source);
             } catch (final DataSealerException e) {
                 throw new IOException(e);
             }
