@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -25,6 +24,10 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * AbstractElementExtensible is an element of type <code>xs:any</code>, but without <code>xs:anyAttribute</code>
@@ -50,8 +53,8 @@ public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObje
     }
 
     /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(anyXMLObjects);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(anyXMLObjects);
     }
 
     /** {@inheritDoc} */

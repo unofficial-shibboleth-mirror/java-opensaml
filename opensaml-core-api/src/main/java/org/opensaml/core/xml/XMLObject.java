@@ -28,6 +28,8 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.IDIndex;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LockableClassToInstanceMultiMap;
 
 /**
@@ -92,7 +94,7 @@ public interface XMLObject {
      * 
      * @return ordered list of child elements
      */
-    @Nullable public List<XMLObject> getOrderedChildren();
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren();
 
     /**
      * Gets the parent of this element or null if there is no parent.
@@ -282,7 +284,6 @@ public interface XMLObject {
      * @param newNil whether the object's content model is expressed as null
      */
     public void setNil(@Nullable final XSBooleanValue newNil);
-    
     
     /**
      * Get the mutable multimap which holds additional information (represented by plain Java object instances)

@@ -42,10 +42,10 @@ import com.google.common.collect.Collections2;
 public class XMLObjectChildrenList<ElementType extends XMLObject> extends AbstractList<ElementType> {
 
     /** Parent to the elements in this list. */
-    private final XMLObject parent;
+    @Nonnull private final XMLObject parent;
 
     /** List of elements. */
-    private final List<ElementType> elements;
+    @Nonnull private final List<ElementType> elements;
 
     /**
      * Constructs an empty list with all added XMLObjects being assigned the given parent XMLObject.

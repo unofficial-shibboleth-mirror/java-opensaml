@@ -18,7 +18,6 @@
 package org.opensaml.core.xml;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -27,7 +26,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
@@ -47,24 +50,24 @@ import com.google.common.base.Strings;
 public class NamespaceManager {
     
     /** The token used to represent the default namespace in {@link #getNonVisibleNamespacePrefixes()}. */
-    public static final String DEFAULT_NS_TOKEN = "#default";
+    @Nonnull @NotEmpty public static final String DEFAULT_NS_TOKEN = "#default";
     
     /** The 'xml' namespace. */
-    private static final Namespace XML_NAMESPACE = 
+    @Nonnull private static final Namespace XML_NAMESPACE = 
         new Namespace(XMLConstants.XML_NS, XMLConstants.XML_PREFIX);
     
     /** The 'xsi' namespace. */
-    private static final Namespace XSI_NAMESPACE = 
+    @Nonnull private static final Namespace XSI_NAMESPACE = 
         new Namespace(XMLConstants.XSI_NS, XMLConstants.XSI_PREFIX);
     
     /** The owning XMLObject. */
     @Nonnull private final XMLObject owner;
     
     /** XMLObject name namespace. */
-    private Namespace elementName;
+    @Nullable private Namespace elementName;
     
     /** XMLObject type namespace. */
-    private Namespace elementType;
+    @Nullable private Namespace elementType;
     
     /** Explicitly declared namespaces. */
     @Nonnull private final Set<Namespace> decls;
@@ -117,12 +120,12 @@ public class NamespaceManager {
      * 
      * @return the unmodifiable set of namespaces
      */
-    @Nonnull public Set<Namespace> getNamespaces() {
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<Namespace> getNamespaces() {
         final Set<Namespace> namespaces = mergeNamespaceCollections(decls, attrNames, attrValues.values());
         addNamespace(namespaces, getElementNameNamespace());
         addNamespace(namespaces, getElementTypeNamespace());
         addNamespace(namespaces, contentValue);
-        return Collections.unmodifiableSet(namespaces);
+        return CollectionSupport.copyToSet(namespaces);
     }
     
     /**
@@ -148,8 +151,8 @@ public class NamespaceManager {
      * 
      * @return the set of namespace declarations
      */
-    @Nonnull public Set<Namespace> getNamespaceDeclarations() {
-        return Collections.unmodifiableSet(decls);
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<Namespace> getNamespaceDeclarations() {
+        return CollectionSupport.copyToSet(decls);
     }
     
     /**
@@ -405,6 +408,7 @@ public class NamespaceManager {
      * @param namespaces list of Namespaces to merge
      * @return the a new set of merged Namespaces
      */
+    @SafeVarargs
     @Nonnull private Set<Namespace> mergeNamespaceCollections(final Collection<Namespace> ... namespaces) {
         final LazySet<Namespace> newNamespaces = new LazySet<>();
         

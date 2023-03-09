@@ -49,7 +49,7 @@ public abstract class AbstractExtensibleXMLObjectMarshaller extends AbstractElem
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         final AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;

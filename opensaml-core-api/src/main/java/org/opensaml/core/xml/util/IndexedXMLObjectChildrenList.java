@@ -45,7 +45,7 @@ import com.google.common.collect.Collections2;
 public class IndexedXMLObjectChildrenList<ElementType extends XMLObject> extends XMLObjectChildrenList<ElementType> {
 
     /** Index of objects by type and name. */
-    private final Map<QName, List<ElementType>> objectIndex;
+    @Nonnull private final Map<QName, List<ElementType>> objectIndex;
 
     /**
      * Constructor.

@@ -28,11 +28,12 @@ import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 import net.shibboleth.shared.xml.QNameSupport;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Element;
 
 /**
