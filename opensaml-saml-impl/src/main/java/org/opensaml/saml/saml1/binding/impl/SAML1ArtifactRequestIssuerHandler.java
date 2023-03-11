@@ -96,7 +96,7 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler {
             
             log.debug("{} Derived issuer of aritfact resolution request as {}", getLogPrefix(),
                     entry.getRelyingPartyId());
-            messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(entry.getRelyingPartyId());
+            messageContext.getOrCreateSubcontext(SAMLPeerEntityContext.class).setEntityId(entry.getRelyingPartyId());
         } catch (final IOException e) {
             log.error("{} Error resolving first artifact in request: {}", getLogPrefix(), artifact, e);
         }

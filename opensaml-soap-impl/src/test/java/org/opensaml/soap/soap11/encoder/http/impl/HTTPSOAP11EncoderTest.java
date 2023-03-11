@@ -196,7 +196,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         
         MessageContext messageContext = new MessageContext();
         messageContext.setMessage(payload);
-        messageContext.getSubcontext(SOAP11Context.class, true).setEnvelope(envelope);
+        messageContext.getOrCreateSubcontext(SOAP11Context.class).setEnvelope(envelope);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         
@@ -380,7 +380,7 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         MessageContext messageContext = new MessageContext();
         messageContext.setMessage(payload);
         
-        messageContext.getSubcontext(SOAP11Context.class, true).setHTTPResponseStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
+        messageContext.getOrCreateSubcontext(SOAP11Context.class).setHTTPResponseStatus(HttpServletResponse.SC_SERVICE_UNAVAILABLE);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
         

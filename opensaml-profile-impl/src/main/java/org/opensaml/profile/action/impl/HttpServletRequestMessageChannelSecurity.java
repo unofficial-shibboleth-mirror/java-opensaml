@@ -68,7 +68,7 @@ public class HttpServletRequestMessageChannelSecurity extends AbstractMessageCha
     @Override
     protected void doExecute(final ProfileRequestContext profileRequestContext) {
         final MessageChannelSecurityContext channelContext =
-                getParentContext().getSubcontext(MessageChannelSecurityContext.class, true);
+                getParentContext().getOrCreateSubcontext(MessageChannelSecurityContext.class);
         
         final HttpServletRequest request = getHttpServletRequest();
         if (request.isSecure() && (!defaultPortInsecure || request.getLocalPort() != 443)) {

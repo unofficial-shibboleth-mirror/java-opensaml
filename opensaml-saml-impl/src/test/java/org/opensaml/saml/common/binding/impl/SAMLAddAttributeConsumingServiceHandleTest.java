@@ -45,7 +45,7 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
     private SPSSODescriptor noACS;
     
     private SAMLMetadataContext getMetadataContext(final MessageContext message) {
-        return message.getSubcontext(SAMLPeerEntityContext.class, true).getSubcontext(SAMLMetadataContext.class, true);
+        return message.getOrCreateSubcontext(SAMLPeerEntityContext.class).getSubcontext(SAMLMetadataContext.class, true);
     }
     
     private SAMLAddAttributeConsumingServiceHandler handler() throws ComponentInitializationException {
@@ -157,7 +157,7 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
         
         navigatedHandler.setMetadataContextLookupStrategy(new ParentContextLookup<>(SAMLMetadataContext.class));
         final SAMLMetadataContext metadataContext = new SAMLMetadataContext();
-        final MessageContext messageContext = metadataContext.getSubcontext(MessageContext.class, true);
+        final MessageContext messageContext = metadataContext.getOrCreateSubcontext(MessageContext.class);
         metadataContext.setRoleDescriptor(withACS);
         
         final AuthnRequest request = SAML2ActionTestingSupport.buildAuthnRequest();

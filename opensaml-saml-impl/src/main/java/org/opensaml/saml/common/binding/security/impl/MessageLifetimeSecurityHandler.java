@@ -122,7 +122,7 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     @Override
     public void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        final SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
+        final SAMLMessageInfoContext msgInfoContext = messageContext.getOrCreateSubcontext(SAMLMessageInfoContext.class);
         
         if (msgInfoContext.getMessageIssueInstant() == null) {
             if (requiredRule) {

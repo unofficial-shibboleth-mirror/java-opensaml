@@ -166,7 +166,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         }
         
         final SAMLBindingContext bindingCtx = profileRequestContext.getOutboundMessageContext().getSubcontext(
-                SAMLBindingContext.class, false);
+                SAMLBindingContext.class);
         artifactProfile = bindingCtx != null
                 && Objects.equals(bindingCtx.getBindingUri(), SAMLConstants.SAML1_ARTIFACT_BINDING_URI);
         

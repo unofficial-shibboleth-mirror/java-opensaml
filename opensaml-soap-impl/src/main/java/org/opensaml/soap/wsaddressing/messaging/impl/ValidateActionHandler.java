@@ -79,7 +79,7 @@ public class ValidateActionHandler extends AbstractMessageHandler {
         }
         
         // A non-null subcontext value will override what is statically configured
-        final WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class, false);
+        final WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class);
         if (addressing != null && addressing.getActionURI() != null) {
             expectedActionURI = addressing.getActionURI();
         }

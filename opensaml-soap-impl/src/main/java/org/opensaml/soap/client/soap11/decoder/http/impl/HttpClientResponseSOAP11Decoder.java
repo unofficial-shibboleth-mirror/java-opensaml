@@ -91,7 +91,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
             
             switch(responseStatusCode) {
                 case HttpStatus.SC_OK:
-                    final SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class, true);
+                    final SOAP11Context soapContext = messageContext.getOrCreateSubcontext(SOAP11Context.class);
                     processSuccessResponse(response, soapContext);
                     break;
                 case HttpStatus.SC_INTERNAL_SERVER_ERROR:
@@ -221,7 +221,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
     /** {@inheritDoc} */
     @Override
     protected XMLObject getMessageToLog() {
-        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
+        return getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getEnvelope();
     }
     
 }

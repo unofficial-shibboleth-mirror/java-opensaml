@@ -185,7 +185,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
                 }
             }
             
-            final SAMLMessageInfoContext infoCtx = inMsgCtx.getSubcontext(SAMLMessageInfoContext.class, true);
+            final SAMLMessageInfoContext infoCtx = inMsgCtx.getOrCreateSubcontext(SAMLMessageInfoContext.class);
             if (infoCtx == null) {
                 log.debug("No inbound SAMLMessageInfoContext available");
                 return null;

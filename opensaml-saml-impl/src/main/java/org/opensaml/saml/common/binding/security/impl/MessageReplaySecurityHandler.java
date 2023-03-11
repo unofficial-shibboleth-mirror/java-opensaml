@@ -124,14 +124,14 @@ public class MessageReplaySecurityHandler extends AbstractMessageHandler {
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        final SAMLPeerEntityContext peerContext = messageContext.getOrCreateSubcontext(SAMLPeerEntityContext.class);
         
         String entityID = StringSupport.trimOrNull(peerContext.getEntityId());
         if (entityID == null) {
             entityID = "(unknown)";
         }
         
-        final SAMLMessageInfoContext msgInfoContext = messageContext.getSubcontext(SAMLMessageInfoContext.class, true);
+        final SAMLMessageInfoContext msgInfoContext = messageContext.getOrCreateSubcontext(SAMLMessageInfoContext.class);
 
         final String messageId = StringSupport.trimOrNull(msgInfoContext.getMessageId());
         if (messageId == null) {

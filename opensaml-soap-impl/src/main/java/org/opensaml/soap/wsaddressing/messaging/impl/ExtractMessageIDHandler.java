@@ -52,7 +52,7 @@ public class ExtractMessageIDHandler extends AbstractMessageHandler {
         final String headerValue = header != null ? StringSupport.trimOrNull(header.getURI()) : null;
         log.debug("Extracted inbound WS-Addressing MessageID value: {}", headerValue);
         if (header != null && headerValue != null) {
-            messageContext.getSubcontext(WSAddressingContext.class, true).setMessageIDURI(headerValue);
+            messageContext.getOrCreateSubcontext(WSAddressingContext.class).setMessageIDURI(headerValue);
             SOAPMessagingSupport.registerUnderstoodHeader(messageContext, header);
         }
     }

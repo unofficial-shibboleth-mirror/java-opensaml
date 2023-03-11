@@ -34,9 +34,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.net.MediaType;
 
-import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.servlet.HttpServletSupport;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * Basic SOAP 1.1 decoder for HTTP transport.
@@ -95,7 +96,7 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
         final Envelope soapMessage;
         try {
             soapMessage = (Envelope) unmarshallMessage(request.getInputStream());
-            messageContext.getSubcontext(SOAP11Context.class, true).setEnvelope(soapMessage);
+            messageContext.getOrCreateSubcontext(SOAP11Context.class).setEnvelope(soapMessage);
         } catch (final IOException e) {
             log.error("Unable to obtain input stream from HttpServletRequest: {}", e.getMessage());
             throw new MessageDecodingException("Unable to obtain input stream from HttpServletRequest", e);
@@ -130,7 +131,7 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
     /** {@inheritDoc} */
     @Override
     protected XMLObject getMessageToLog() {
-        return getMessageContext().getSubcontext(SOAP11Context.class, true).getEnvelope();
+        return getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getEnvelope();
     }
 
     /** {@inheritDoc} */

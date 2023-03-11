@@ -123,7 +123,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
                 log.debug("HttpClientContext indicates successful server TLS, storing result in entity context {}", 
                         entityContextClass.getName());
                 final AbstractAuthenticatableSAMLEntityContext entityContext = 
-                        messageContext.getSubcontext(entityContextClass, true);
+                        messageContext.getOrCreateSubcontext(entityContextClass);
                 entityContext.setAuthenticated(true);
                 if (entityContext.getEntityId() == null && entityIDLookup != null) {
                     log.debug("Context entityID was null, attempting to resolve");

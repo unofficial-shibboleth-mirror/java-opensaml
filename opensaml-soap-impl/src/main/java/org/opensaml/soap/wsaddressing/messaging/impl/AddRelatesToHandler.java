@@ -93,7 +93,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
             return false;
         }
         
-        final WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class, false);
+        final WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class);
         if (addressing != null) {
             relatesToURI = addressing.getRelatesToURI();
             if (relationshipType == null) {

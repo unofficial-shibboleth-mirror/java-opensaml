@@ -123,27 +123,27 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler {
         }
         
         if (samlProtocol != null) {
-            messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(samlProtocol);
+            messageContext.getOrCreateSubcontext(SAMLProtocolContext.class).setProtocol(samlProtocol);
         } else if (copySource != null) {
             final SAMLProtocolContext sourceProtocolContext = copySource.getSubcontext(SAMLProtocolContext.class);
             if (sourceProtocolContext != null) {
-                messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(
+                messageContext.getOrCreateSubcontext(SAMLProtocolContext.class).setProtocol(
                         sourceProtocolContext.getProtocol());
             }
         }
-        if (messageContext.getSubcontext(SAMLProtocolContext.class, true).getProtocol() == null) {
+        if (messageContext.getOrCreateSubcontext(SAMLProtocolContext.class).getProtocol() == null) {
             throw new MessageHandlerException("SAML protocol was not supplied and could not be dynamically resolved");
         }
         
         if (peerRole != null) {
-            messageContext.getSubcontext(entityContextClass, true).setRole(peerRole);
+            messageContext.getOrCreateSubcontext(entityContextClass).setRole(peerRole);
         } else if (copySource != null) {
             final AbstractSAMLEntityContext sourceEntityContext = copySource.getSubcontext(entityContextClass);
             if (sourceEntityContext != null) {
-                messageContext.getSubcontext(entityContextClass, true).setRole(sourceEntityContext.getRole());
+                messageContext.getOrCreateSubcontext(entityContextClass).setRole(sourceEntityContext.getRole());
             }
         }
-        if (messageContext.getSubcontext(entityContextClass, true).getRole() == null) {
+        if (messageContext.getOrCreateSubcontext(entityContextClass).getRole() == null) {
             throw new MessageHandlerException("SAML role was not supplied and could not be dynamically resolved");
         }
         

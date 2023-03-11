@@ -98,7 +98,7 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
 
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.getOrCreateSubcontext(SOAP11Context.class).setEnvelope(env);
         
         handler.invoke(messageCtx);
         

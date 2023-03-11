@@ -80,14 +80,14 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
      */
     protected boolean isRequestSigningRequired(@Nonnull final MessageContext messageContext) {
         
-        final SAMLPeerEntityContext peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class, true);
+        final SAMLPeerEntityContext peerContext = messageContext.getOrCreateSubcontext(SAMLPeerEntityContext.class);
         if (peerContext == null || Strings.isNullOrEmpty(peerContext.getEntityId())) {
             log.warn("SAML peer entityID was not available, unable to evaluate rule");
             return false;
         }
         final String messageIssuer = peerContext.getEntityId();
         
-        final SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class, false);
+        final SAMLMetadataContext metadataContext = peerContext.getOrCreateSubcontext(SAMLMetadataContext.class);
         if (metadataContext == null || metadataContext.getRoleDescriptor() == null) {
             log.warn("SAMLPeerContext did not contain either a SAMLMetadataContext or a RoleDescriptor, " 
                     + "unable to evaluate rule");

@@ -89,7 +89,7 @@ public class AddMessageIDHandler extends AbstractHeaderGeneratingMessageHandler 
      * @return the retrieved or generated message ID
      */
     @Nonnull protected String getMessageID(final MessageContext messageContext) {
-        final WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class, false);
+        final WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class);
         if (addressing != null && addressing.getMessageIDURI() != null) {
             return addressing.getMessageIDURI();
         } else if (getIdentifierGenerationStrategy() != null) {

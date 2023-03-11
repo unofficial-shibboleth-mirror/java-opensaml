@@ -103,7 +103,7 @@ public class SOAP11FaultContextDecoratingErrorHandler implements TypedMessageErr
         SOAPMessagingSupport.registerSOAP11Fault(messageContext, fault);
         
         if (wsAddressingActionURI != null) {
-            messageContext.getSubcontext(WSAddressingContext.class, true).setFaultActionURI(wsAddressingActionURI);
+            messageContext.getOrCreateSubcontext(WSAddressingContext.class).setFaultActionURI(wsAddressingActionURI);
         }
         
         return true;

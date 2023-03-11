@@ -193,7 +193,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
      */
     @Nullable protected Instant getCreatedValue(@Nonnull final MessageContext messageContext) {
         Instant value = null;
-        final WSSecurityContext security = messageContext.getSubcontext(WSSecurityContext.class, false);
+        final WSSecurityContext security = messageContext.getSubcontext(WSSecurityContext.class);
         if (security != null) {
             value = security.getTimestampCreated();
         }
@@ -221,7 +221,7 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
     @Nullable protected Instant getExpiresValue(@Nonnull final MessageContext messageContext, 
             @Nullable final Instant created) {
         Instant value = null;
-        final WSSecurityContext security = messageContext.getSubcontext(WSSecurityContext.class, false);
+        final WSSecurityContext security = messageContext.getSubcontext(WSSecurityContext.class);
         if (security != null) {
             value = security.getTimestampExpires();
         }

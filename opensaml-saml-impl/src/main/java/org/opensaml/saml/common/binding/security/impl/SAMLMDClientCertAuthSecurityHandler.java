@@ -130,14 +130,14 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
     protected void setAuthenticatedCertificatePresenterEntityID(@Nonnull final MessageContext messageContext,
             @Nullable final String entityID) {
         log.trace("Storing authenticatable entityID '{}' in context: {}", entityID, entityContextClass);
-        messageContext.getSubcontext(entityContextClass, true).setEntityId(entityID);
+        messageContext.getOrCreateSubcontext(entityContextClass).setEntityId(entityID);
     }
 
     /** {@inheritDoc} */
     @Override
     protected void setAuthenticatedState(@Nonnull final MessageContext messageContext, final boolean authenticated) {
         log.trace("Storing authenticated entity state '{}' in context: {}", authenticated, entityContextClass);
-        messageContext.getSubcontext(entityContextClass, true).setAuthenticated(authenticated);
+        messageContext.getOrCreateSubcontext(entityContextClass).setAuthenticated(authenticated);
     }
     
 }

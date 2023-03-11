@@ -78,7 +78,7 @@ public final class SAMLBindingSupport {
      */
     public static void setRelayState(@Nonnull final MessageContext messageContext, 
             @Nullable final String relayState) {
-        messageContext.getSubcontext(SAMLBindingContext.class, true).setRelayState(relayState);
+        messageContext.getOrCreateSubcontext(SAMLBindingContext.class).setRelayState(relayState);
     }
     
     /**
@@ -266,7 +266,7 @@ public final class SAMLBindingSupport {
      */
     public static boolean isIntendedDestinationEndpointURIRequired(
             @Nonnull final MessageContext messageContext) {
-        final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class, false);
+        final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class);
         if (bindingContext == null) {
             return false;
         }
