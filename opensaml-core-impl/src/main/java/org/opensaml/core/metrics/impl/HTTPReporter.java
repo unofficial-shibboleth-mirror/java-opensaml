@@ -32,9 +32,9 @@ import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
 import org.apache.hc.client5.http.entity.EntityBuilder;
 import org.apache.hc.client5.http.protocol.HttpClientContext;
+import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpRequest;
-import org.apache.hc.core5.http.HttpResponse;
 import org.apache.hc.core5.http.HttpStatus;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.HttpClientSecuritySupport;
@@ -266,13 +266,13 @@ public class HTTPReporter extends ScheduledReporter implements InitializableComp
                 entityBuilder.setBinary(output.toByteArray());
                 httpRequest.setEntity(entityBuilder.build());
 
-                final HttpResponse response = httpClient.executeOpen(null, httpRequest, httpContext);
-                HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getScheme());
-                
-                if (response.getCode() == HttpStatus.SC_OK) {
-                    log.debug("Metrics delivered successfully to collector");
-                } else {
-                    log.error("Collector responded with HTTP status {}", response.getCode());
+                try (final ClassicHttpResponse response = httpClient.executeOpen(null, httpRequest, httpContext)) {
+                    HttpClientSecuritySupport.checkTLSCredentialEvaluated(httpContext, httpRequest.getScheme());
+                    if (response.getCode() == HttpStatus.SC_OK) {
+                        log.debug("Metrics delivered successfully to collector");
+                    } else {
+                        log.error("Collector responded with HTTP status {}", response.getCode());
+                    }
                 }
             } catch (final IOException e) {
                 log.error("Error sending metric registry to collection point {}", collectorURL, e);
@@ -282,9 +282,9 @@ public class HTTPReporter extends ScheduledReporter implements InitializableComp
     
     /** {@inheritDoc} */
     @Override
-    public void report(final SortedMap<String, Gauge> gauges, final SortedMap<String, Counter> counters,
-            final SortedMap<String, Histogram> histograms, final SortedMap<String, Meter> meters,
-            final SortedMap<String, Timer> timers) {
+    public void report(@SuppressWarnings("rawtypes") final SortedMap<String, Gauge> gauges,
+            final SortedMap<String, Counter> counters, final SortedMap<String, Histogram> histograms,
+            final SortedMap<String, Meter> meters, final SortedMap<String, Timer> timers) {
         throw new UnsupportedOperationException("The per-metric report method should never be called.");
     }
 
