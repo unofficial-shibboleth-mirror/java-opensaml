@@ -48,6 +48,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.bouncycastle.asn1.ASN1Primitive;
@@ -65,7 +66,6 @@ import org.cryptacular.x509.dn.StandardAttributeType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.crypto.KeySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 import com.google.common.io.ByteStreams;

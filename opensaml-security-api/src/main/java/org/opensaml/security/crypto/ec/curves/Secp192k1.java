@@ -17,18 +17,20 @@
 
 package org.opensaml.security.crypto.ec.curves;
 
+import javax.annotation.Nonnull;
+
 /**
  * Descriptor for named curve 'secp192k1', OID: 1.3.132.0.31.
  */
 public class Secp192k1 extends AbstractNamedCurve  {
 
     /** {@inheritDoc} */
-    public String getObjectIdentifier() {
+    @Nonnull public String getObjectIdentifier() {
         return "1.3.132.0.31";
     }
 
     /** {@inheritDoc} */
-    public String getName() {
+    @Nonnull public String getName() {
         return "secp192k1";
     }
 

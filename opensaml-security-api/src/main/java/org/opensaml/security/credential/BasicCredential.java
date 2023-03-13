@@ -29,13 +29,19 @@ import javax.crypto.SecretKey;
  */
 public class BasicCredential extends AbstractCredential implements MutableCredential {
 
+
+    /**
+     * Default constructor.
+     */
+    public BasicCredential() {
+    }
+
     /**
      * Constructor.
      *
      * @param publicKey the credential public key
      */
     public BasicCredential(@Nonnull final PublicKey publicKey) {
-        super();
         setPublicKey(publicKey);
     }
     
@@ -46,7 +52,6 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
      * @param privateKey the credential private key
      */
     public BasicCredential(@Nonnull final PublicKey publicKey, @Nullable final PrivateKey privateKey) {
-        super();
         setPublicKey(publicKey);
         if (privateKey != null) {
             setPrivateKey(privateKey);
@@ -59,17 +64,11 @@ public class BasicCredential extends AbstractCredential implements MutableCreden
      * @param secretKey the credential secret key
      */
     public BasicCredential(@Nonnull final SecretKey secretKey) {
-        super();
         setSecretKey(secretKey);
     }
     
-    /** Constructor. */
-    protected BasicCredential() {
-        super();
-    }
-    
     /** {@inheritDoc} */
-    public Class<? extends Credential> getCredentialType() {
+    @Nonnull public Class<? extends Credential> getCredentialType() {
         return Credential.class;
     }
 

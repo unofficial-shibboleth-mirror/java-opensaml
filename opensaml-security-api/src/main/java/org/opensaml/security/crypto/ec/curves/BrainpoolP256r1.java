@@ -17,18 +17,20 @@
 
 package org.opensaml.security.crypto.ec.curves;
 
+import javax.annotation.Nonnull;
+
 /**
  * Descriptor for named curve 'brainpoolP256r1', OID: 1.3.36.3.3.2.8.1.1.7.
  */
 public class BrainpoolP256r1 extends AbstractNamedCurve  {
 
     /** {@inheritDoc} */
-    public String getObjectIdentifier() {
+    @Nonnull public String getObjectIdentifier() {
         return "1.3.36.3.3.2.8.1.1.7";
     }
 
     /** {@inheritDoc} */
-    public String getName() {
+    @Nonnull public String getName() {
         return "brainpoolP256r1";
     }
 

@@ -35,10 +35,11 @@ import java.security.cert.X509Certificate;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.apache.hc.client5.http.auth.CredentialsProvider;
@@ -60,8 +61,9 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 /**
- *
+ * Unit test for {@link HttpClientSecuritySupport}.
  */
+@SuppressWarnings("javadoc")
 public class HttpClientSecuritySupportTest {
     
     private X509Certificate cert;
@@ -72,12 +74,6 @@ public class HttpClientSecuritySupportTest {
     @BeforeClass
     public void generatedTestData() throws NoSuchAlgorithmException, NoSuchProviderException, CertificateException, URISyntaxException {
         cert = X509Support.decodeCertificate(new File(HttpClientSecuritySupportTest.class.getResource(certDERPath).toURI()));
-    }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testMarshalSecurityParametersNullContext() {
-        HttpClientSecurityParameters params = new HttpClientSecurityParameters();
-        HttpClientSecuritySupport.marshalSecurityParameters(null, params, false);
     }
     
     @Test
@@ -233,23 +229,6 @@ public class HttpClientSecuritySupportTest {
         context.setAttribute(attribName, "bar");
         HttpClientSecuritySupport.setContextValue(context, attribName, null, true);
         Assert.assertEquals(context.getAttribute(attribName), "bar");
-        
-        
-        try {
-            HttpClientSecuritySupport.setContextValue(null, attribName, "foo", false);
-            Assert.fail("Null context value");
-        } catch (ConstraintViolationException e) {
-            // Expected
-        }
-        
-        try {
-            context = HttpClientContext.create();
-            HttpClientSecuritySupport.setContextValue(context, null, "foo", false);
-            Assert.fail("Null attribute name");
-        } catch (ConstraintViolationException e) {
-            // Expected
-        }
-        
     }
     
     @DataProvider
@@ -308,12 +287,12 @@ public class HttpClientSecuritySupportTest {
         CriteriaSet criteria = (CriteriaSet) context.getAttribute(CONTEXT_KEY_CRITERIA_SET);
         Assert.assertNotNull(criteria);
         
-        UsageCriterion usage = criteria.get(UsageCriterion.class);
-        Assert.assertNotNull(usage);
+        final UsageCriterion usage = criteria.get(UsageCriterion.class);
+        assert usage != null;
         Assert.assertEquals(usage.getUsage(), UsageType.SIGNING);
         
-        TrustedNamesCriterion trustedNames = criteria.get(TrustedNamesCriterion.class);
-        Assert.assertNotNull(trustedNames);
+        final TrustedNamesCriterion trustedNames = criteria.get(TrustedNamesCriterion.class);
+        assert trustedNames != null;
         Assert.assertEquals(trustedNames.getTrustedNames().size(), 1);
         Assert.assertTrue(trustedNames.getTrustedNames().contains("www.example.com"));
         
@@ -335,7 +314,8 @@ public class HttpClientSecuritySupportTest {
     // Helpers
     
     public static class MockTrustEngine implements TrustEngine<X509Credential>  {
-        public boolean validate(X509Credential token, CriteriaSet trustBasisCriteria) throws SecurityException {
+        public boolean validate(@Nonnull final X509Credential token, @Nullable final CriteriaSet trustBasisCriteria)
+                throws SecurityException {
             return false;
         }
     }

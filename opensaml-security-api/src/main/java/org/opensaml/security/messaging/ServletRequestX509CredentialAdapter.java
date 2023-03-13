@@ -24,6 +24,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.AbstractCredential;
 import org.opensaml.security.credential.Credential;
@@ -31,6 +34,10 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 
 import jakarta.servlet.ServletRequest;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * An adapter that exposes the X.509 certificates contained in the servlet request attribute.
@@ -44,10 +51,10 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
     public static final String JAKARTA_X509_CERT_REQUEST_ATTRIBUTE = "jakarta.servlet.request.X509Certificate";
     
     /** The entity certificate. */
-    private X509Certificate cert;
+    @Nonnull private X509Certificate cert;
     
     /** The certificate chain. */
-    private List<X509Certificate> certChain;
+    @Nonnull @NonnullElements private List<X509Certificate> certChain;
 
     /**
      * Constructor.
@@ -69,32 +76,32 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
         }
 
         cert = chain[0];
-        certChain = Arrays.asList(chain);
+        certChain = CollectionSupport.copyToList(Arrays.asList(chain));
         setUsageType(UsageType.SIGNING);
     }
 
     /** {@inheritDoc} */
-    public Class<? extends Credential> getCredentialType() {
+    @Nonnull public Class<? extends Credential> getCredentialType() {
         return X509Credential.class;
     }
 
     /** {@inheritDoc} */
-    public X509Certificate getEntityCertificate() {
+    @Nonnull public X509Certificate getEntityCertificate() {
         return cert;
     }
 
     /** {@inheritDoc} */
-    public Collection<X509Certificate> getEntityCertificateChain() {
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<X509Certificate> getEntityCertificateChain() {
         return certChain;
     }
 
     /** {@inheritDoc} */
-    public Collection<X509CRL> getCRLs() {
+    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
         return null;
     }
 
     /** {@inheritDoc} */
-    public PublicKey getPublicKey() {
+    @Nullable public PublicKey getPublicKey() {
         return getEntityCertificate().getPublicKey();
     }
     

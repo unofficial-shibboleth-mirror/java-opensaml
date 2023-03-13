@@ -21,6 +21,7 @@ import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.bouncycastle.jce.ECNamedCurveTable;
@@ -49,7 +50,7 @@ public abstract class AbstractNamedCurve extends AbstractInitializableComponent 
     @NonnullAfterInit private ECParameterSpec paramSpec;
     
     /** {@inheritDoc} */
-    @NonnullAfterInit public ECParameterSpec getParameterSpec() {
+    @Nonnull public ECParameterSpec getParameterSpec() {
         checkComponentActive();
         return paramSpec;
     }
@@ -116,4 +117,3 @@ public abstract class AbstractNamedCurve extends AbstractInitializableComponent 
     }
     
 }
-

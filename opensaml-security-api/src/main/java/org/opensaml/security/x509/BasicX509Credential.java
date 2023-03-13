@@ -21,7 +21,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.annotation.Nonnull;
@@ -34,7 +33,9 @@ import org.opensaml.security.credential.Credential;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
-import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -58,7 +59,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      */
     public BasicX509Credential(
             @Nonnull @ParameterName(name="entityCertificate") final X509Certificate entityCertificate) {
-        setEntityCertificate(entityCertificate);
+        entityCert = Constraint.isNotNull(entityCertificate, "Credential certificate cannot be null");
     }
     
     /**
@@ -70,7 +71,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     public BasicX509Credential(
             @Nonnull @ParameterName(name="entityCertificate") final X509Certificate entityCertificate,
             @ParameterName(name="privateKey") @Nonnull final PrivateKey privateKey) {
-        setEntityCertificate(entityCertificate);
+        entityCert = Constraint.isNotNull(entityCertificate, "Credential certificate cannot be null");
         setPrivateKey(privateKey);
     }
 
@@ -81,8 +82,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nullable @NonnullElements public Collection<X509CRL> getCRLs() {
+    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
         return crls;
     }
 
@@ -92,11 +92,14 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * @param newCRLs CRLs for this credential
      */
     public void setCRLs(@Nullable @NonnullElements final Collection<X509CRL> newCRLs) {
-        crls = newCRLs;
+        if (newCRLs != null) {
+            crls = CollectionSupport.copyToList(newCRLs);
+        } else {
+            crls = CollectionSupport.emptyList();
+        }
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull public X509Certificate getEntityCertificate() {
         return entityCert;
     }
@@ -113,7 +116,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull public PublicKey getPublicKey() {
+    @Nullable public PublicKey getPublicKey() {
         return getEntityCertificate().getPublicKey();
     }
     
@@ -124,19 +127,17 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * @param newPublicKey not supported
      */
     @Override
-    public void setPublicKey(final PublicKey newPublicKey) {
+    public void setPublicKey(@Nullable final PublicKey newPublicKey) {
         throw new UnsupportedOperationException("Public key may not be set explicitly on an X509 credential");
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nonnull @NonnullElements public Collection<X509Certificate> getEntityCertificateChain() {
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<X509Certificate> getEntityCertificateChain() {
         synchronized(this) {
             if (entityCertChain == null) {
-                final LazySet<X509Certificate> constructedChain = new LazySet<>();
-                constructedChain.add(entityCert);
-                return constructedChain;
+                return CollectionSupport.singletonList(entityCert);
             }
+            assert entityCertChain != null;
             return entityCertChain;
         }
     }
@@ -147,12 +148,13 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      * 
      * @param newCertificateChain entity certificate chain for this credential
      */
-    public void setEntityCertificateChain(@Nonnull @NotEmpty @NonnullElements final Collection<X509Certificate> newCertificateChain) {
+    public void setEntityCertificateChain(
+            @Nonnull @NotEmpty @NonnullElements final Collection<X509Certificate> newCertificateChain) {
         Constraint.isNotNull(newCertificateChain, "Certificate chain collection cannot be null");
         Constraint.isNotEmpty(newCertificateChain, "Certificate chain collection cannot be empty");
         
         synchronized(this) {
-            entityCertChain = new ArrayList<>(newCertificateChain);
+            entityCertChain = CollectionSupport.copyToList(newCertificateChain);
         }
     }
     
@@ -172,7 +174,7 @@ public class BasicX509Credential extends BasicCredential implements X509Credenti
      *  @param newSecretKey unsupported
      */
     @Override
-    public void setSecretKey(final SecretKey newSecretKey) {
+    public void setSecretKey(@Nullable final SecretKey newSecretKey) {
         throw new UnsupportedOperationException("An X509Credential may not contain a secret key");
     }
 

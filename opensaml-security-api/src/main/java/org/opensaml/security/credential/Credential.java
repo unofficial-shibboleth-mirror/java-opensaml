@@ -38,14 +38,14 @@ public interface Credential {
      * 
      * @return unique ID of the entity this credential is for
      */
-    @Nullable public String getEntityId();
+    @Nullable String getEntityId();
     
     /**
      * Gets usage type of this credential.
      * 
      * @return usage type of this credential
      */
-    @Nullable public UsageType getUsageType();
+    @Nullable UsageType getUsageType();
     
     /**
      * Gets key names for this credential. These names may be used to reference a key(s) exchanged 
@@ -55,28 +55,28 @@ public interface Credential {
      * 
      * @return key names for this credential
      */
-    @Nonnull public Collection<String> getKeyNames();
+    @Nonnull Collection<String> getKeyNames();
 
     /**
      * Gets the public key for the entity.
      * 
      * @return public key for the entity
      */
-    @Nullable public PublicKey getPublicKey();
+    @Nullable PublicKey getPublicKey();
 
     /**
      * Gets the private key for the entity if there is one.
      * 
      * @return the private key for the entity
      */
-    @Nullable public PrivateKey getPrivateKey();
+    @Nullable PrivateKey getPrivateKey();
     
     /**
      * Gets the secret key for this entity.
      * 
      * @return secret key for this entity
      */
-    @Nullable public SecretKey getSecretKey();
+    @Nullable SecretKey getSecretKey();
     
     /**
      * Get the set of credential context information, which provides additional information
@@ -84,7 +84,7 @@ public interface Credential {
      * 
      * @return set of resolution contexts of the credential
      */
-    @Nullable public CredentialContextSet getCredentialContextSet();
+    @Nullable CredentialContextSet getCredentialContextSet();
     
     /**
      * Get the primary type of the credential instance. This will usually be the primary sub-interface
@@ -92,5 +92,5 @@ public interface Credential {
      * 
      * @return the credential type
      */
-    @Nonnull public Class<? extends Credential> getCredentialType();
+    @Nonnull Class<? extends Credential> getCredentialType();
 }

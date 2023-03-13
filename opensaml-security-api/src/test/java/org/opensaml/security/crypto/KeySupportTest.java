@@ -201,21 +201,6 @@ public class KeySupportTest {
         } catch (final SecurityException e) {
            // expected 
         }
-        
-        try {
-            // null key, should be an error
-            Assert.assertFalse(KeySupport.matchKeyPair(kp1rsa.getPublic(), null));
-            Assert.fail("Null key should have caused failure");
-        } catch (final SecurityException e) {
-           // expected 
-        }
-        try {
-            // null key, should be an error
-            Assert.assertFalse(KeySupport.matchKeyPair(null, kp1rsa.getPrivate()));
-            Assert.fail("Key algorithm mismatch should have caused evaluation failure");
-        } catch (final SecurityException e) {
-            // expected
-        }
     }
     
     @Test

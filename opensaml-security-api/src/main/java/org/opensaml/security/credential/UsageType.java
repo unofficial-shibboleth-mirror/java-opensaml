@@ -19,6 +19,8 @@ package org.opensaml.security.credential;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.logic.Constraint;
+
 /** Credential usage types. */
 public enum UsageType {
     
@@ -32,7 +34,7 @@ public enum UsageType {
     UNSPECIFIED("unspecified");
     
     /** Enum string value. */
-    private String value;
+    @Nonnull private String value;
     
     /**
      * Constructor.
@@ -40,7 +42,7 @@ public enum UsageType {
      * @param v the enum string value
      */
     private UsageType(@Nonnull final String v) {
-        value = v;
+        value = Constraint.isNotNull(v, "UsageType string cannot be null");
     }
     
     /**

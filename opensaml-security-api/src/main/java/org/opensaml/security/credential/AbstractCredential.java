@@ -35,25 +35,25 @@ import net.shibboleth.shared.primitive.StringSupport;
 public abstract class AbstractCredential implements Credential {
 
     /** ID of the entity owning this credential. */
-    private String entityId;
+    @Nullable private String entityId;
     
     /** Usage type of this credential. */
-    private UsageType usageType;
+    @Nullable private UsageType usageType;
     
     /** Key names for this credential. */
-    private Collection<String> keyNames;
+    @Nonnull private Collection<String> keyNames;
     
     /** Public key of this credential. */
-    private PublicKey publicKey;
+    @Nullable private PublicKey publicKey;
     
     /** Secret key for this credential. */
-    private SecretKey secretKey;
+    @Nullable private SecretKey secretKey;
     
     /** Private key of this credential. */
-    private PrivateKey privateKey;
+    @Nullable private PrivateKey privateKey;
     
     /** Credential context of this credential. */
-    private final CredentialContextSet credentialContextSet;
+    @Nonnull private final CredentialContextSet credentialContextSet;
     
     /**
      * Constructor.

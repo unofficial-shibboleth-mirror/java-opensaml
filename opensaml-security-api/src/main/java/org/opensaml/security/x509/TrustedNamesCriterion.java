@@ -17,7 +17,6 @@
 
 package org.opensaml.security.x509;
 
-import java.util.Collections;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -26,6 +25,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
 
@@ -37,15 +37,19 @@ import net.shibboleth.shared.resolver.Criterion;
 public class TrustedNamesCriterion implements Criterion {
     
     /** The set of trusted names. */
-    private Set<String> trustedNames;
+    @Nonnull @NonnullElements private Set<String> trustedNames;
     
     /**
      * Constructor.
      *
      * @param names the set of trusted names
      */
-    public TrustedNamesCriterion(@Nonnull final Set<String> names)  {
-        setTrustedNames(names);
+    public TrustedNamesCriterion(@Nullable @NonnullElements final Set<String> names)  {
+        if (names != null) {
+            trustedNames = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(names));
+        } else {
+            trustedNames = CollectionSupport.emptySet();
+        }
     }
     
     /**
@@ -62,13 +66,12 @@ public class TrustedNamesCriterion implements Criterion {
      * 
      * @param names the new trusted names
      */
-    public void setTrustedNames(@Nullable final Set<String> names) {
-        if (names == null) {
-            trustedNames = Collections.emptySet();
-            return;
+    public void setTrustedNames(@Nullable @NonnullElements final Set<String> names) {
+        if (names != null) {
+            trustedNames = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(names));
+        } else {
+            trustedNames = CollectionSupport.emptySet();
         }
-        
-        trustedNames = Set.copyOf(StringSupport.normalizeStringCollection(names));
     }
     
     /** {@inheritDoc} */

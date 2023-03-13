@@ -58,17 +58,17 @@ public class BasicNamedCurve implements NamedCurve {
     }
 
     /** {@inheritDoc} */
-    public String getObjectIdentifier() {
+    @Nonnull public String getObjectIdentifier() {
         return oid;
     }
 
     /** {@inheritDoc} */
-    public String getName() {
+    @Nonnull public String getName() {
         return name;
     }
 
     /** {@inheritDoc} */
-    public ECParameterSpec getParameterSpec() {
+    @Nonnull public ECParameterSpec getParameterSpec() {
         return params;
     }
     
@@ -81,4 +81,3 @@ public class BasicNamedCurve implements NamedCurve {
     }
     
 }
-

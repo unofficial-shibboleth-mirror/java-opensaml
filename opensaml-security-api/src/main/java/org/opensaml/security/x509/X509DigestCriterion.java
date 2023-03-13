@@ -34,10 +34,10 @@ import org.apache.commons.codec.binary.Hex;
 public final class X509DigestCriterion implements Criterion {
     
     /** Digest algorithm. */
-    private String algorithm;
+    @Nonnull private String algorithm;
     
     /** X.509 certificate digest. */
-    private byte[] x509digest;
+    @Nonnull private byte[] x509digest;
     
     /**
      * Constructor.
@@ -46,8 +46,9 @@ public final class X509DigestCriterion implements Criterion {
      * @param digest certificate digest
      */
     public X509DigestCriterion(@Nonnull final String alg, @Nonnull final byte[] digest) {
-        setAlgorithm(alg);
-        setDigest(digest);
+        algorithm = Constraint.isNotNull(
+                StringSupport.trimOrNull(alg), "Certificate digest algorithm cannot be null or empty");
+        x509digest = Constraint.isNotEmpty(digest, "Certificate digest criteria value cannot be null or empty");
     }
 
     /**
@@ -65,10 +66,8 @@ public final class X509DigestCriterion implements Criterion {
      * @param alg the digest algorithm to set
      */
     public void setAlgorithm(@Nonnull final String alg) {
-        final String trimmed = StringSupport.trimOrNull(alg);
-        Constraint.isNotNull(trimmed, "Certificate digest algorithm cannot be null or empty");
-
-        algorithm = trimmed;
+        algorithm = Constraint.isNotNull(
+                StringSupport.trimOrNull(alg), "Certificate digest algorithm cannot be null or empty");
     }
     
     /**
@@ -86,10 +85,7 @@ public final class X509DigestCriterion implements Criterion {
      * @param digest the certificate digest to set
      */
     public void setDigest(@Nonnull final byte[] digest) {
-        if (digest == null || digest.length == 0) {
-            throw new IllegalArgumentException("Certificate digest criteria value cannot be null or empty");
-        }
-        x509digest = digest;
+        x509digest = Constraint.isNotEmpty(digest, "Certificate digest criteria value cannot be null or empty");
     }
     
     /** {@inheritDoc} */

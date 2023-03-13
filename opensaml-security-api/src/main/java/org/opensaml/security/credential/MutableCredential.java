@@ -20,6 +20,8 @@ package org.opensaml.security.credential;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 /**
@@ -32,34 +34,34 @@ public interface MutableCredential extends Credential {
      * 
      * @param newEntityID ID of the entity this credential is for
      */
-    public void setEntityId(String newEntityID);
+    void setEntityId(@Nullable final String newEntityID);
 
     /**
      * Sets the usage type for this credential.
      * 
      * @param newUsageType usage type for this credential
      */
-    public void setUsageType(UsageType newUsageType);
+    void setUsageType(@Nonnull final UsageType newUsageType);
 
     /**
      * Sets the public key for this credential.
      * 
      * @param newPublicKey public key for this credential
      */
-    public void setPublicKey(PublicKey newPublicKey);
+    void setPublicKey(@Nonnull final PublicKey newPublicKey);
     
     /**
      * Sets the private key for this credential.
      * 
      * @param newPrivateKey private key for this credential
      */
-    public void setPrivateKey(PrivateKey newPrivateKey);
+    void setPrivateKey(@Nonnull final PrivateKey newPrivateKey);
 
     /**
      * Sets the secret key for this credential.
      * 
      * @param newSecretKey secret key for this credential
      */ 
-    public void setSecretKey(SecretKey newSecretKey);
+    void setSecretKey(@Nonnull final SecretKey newSecretKey);
 
 }

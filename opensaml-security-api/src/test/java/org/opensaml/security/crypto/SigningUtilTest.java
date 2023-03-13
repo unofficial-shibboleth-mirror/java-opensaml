@@ -35,12 +35,11 @@ import javax.crypto.SecretKey;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
-import org.opensaml.security.crypto.KeySupport;
-import org.opensaml.security.crypto.SigningUtil;
 
 /**
  * Test the SigningUtil operations for generating and verifying simple, raw signatures and MAC's.
  */
+@SuppressWarnings("javadoc")
 public class SigningUtilTest {
     
     private SecretKey secretKeyAES128;

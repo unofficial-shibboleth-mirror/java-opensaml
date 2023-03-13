@@ -27,6 +27,8 @@ import javax.annotation.Nullable;
 import org.opensaml.security.credential.Credential;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * An entity credential based on key material and other information (e.g. certificates and certificate
@@ -51,12 +53,12 @@ public interface X509Credential extends Credential {
      * 
      * @return entities certificate chain
      */
-    @Nonnull @NonnullElements public Collection<X509Certificate> getEntityCertificateChain();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<X509Certificate> getEntityCertificateChain();
 
     /**
      * Gets a collection of CRLs associated with the credential.
      * 
      * @return CRLs associated with the credential
      */
-    @Nullable @NonnullElements public Collection<X509CRL> getCRLs();
+    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509CRL> getCRLs();
 }
