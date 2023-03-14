@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml.io;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -26,10 +25,12 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.XMLRuntimeException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * This thread-safe factory creates {@link org.opensaml.core.xml.io.Marshaller}s that can be used to convert
@@ -40,10 +41,10 @@ import net.shibboleth.shared.logic.Constraint;
 public class MarshallerFactory {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(MarshallerFactory.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(MarshallerFactory.class);
 
     /** Map of marshallers to the elements they are for. */
-    private final Map<QName, Marshaller> marshallers;
+    @Nonnull private final Map<QName, Marshaller> marshallers;
 
     /**
      * Constructor.
@@ -59,11 +60,7 @@ public class MarshallerFactory {
      * 
      * @return the Marshaller or null
      */
-    @Nullable public Marshaller getMarshaller(@Nullable final QName key) {
-        if (key == null) {
-            return null;
-        }
-
+    @Nullable public Marshaller getMarshaller(@Nonnull final QName key) {
         return marshallers.get(key);
     }
 
@@ -76,9 +73,12 @@ public class MarshallerFactory {
      * @return the marshaller that can be used for the given XMLObject
      */
     @Nullable public Marshaller getMarshaller(@Nonnull final XMLObject xmlObject) {
-        Marshaller marshaller;
+        Marshaller marshaller = null;
 
-        marshaller = getMarshaller(xmlObject.getSchemaType());
+        final QName xsitype = xmlObject.getSchemaType();
+        if (xsitype != null) {
+            marshaller = getMarshaller(xsitype);
+        }
 
         if (marshaller == null) {
             marshaller = getMarshaller(xmlObject.getElementQName());
@@ -88,12 +88,50 @@ public class MarshallerFactory {
     }
 
     /**
+     * Call {@link #getMarshaller(QName)} and raise an exception if no marshaller is registered.
+     * 
+     * @param key type of marshaller to fetch
+     * 
+     * @return the registered marshaller
+     * 
+     * @throw XMLRuntimeException if no marshaller is registered
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public Marshaller ensureMarshaller(@Nonnull final QName key) {
+        final Marshaller m = getMarshaller(key);
+        if (m != null) {
+            return m;
+        }
+        throw new XMLRuntimeException("Unable to obtain marshaller for " + key.toString());
+    }
+
+    /**
+     * Call {@link #getMarshaller(XMLObject)} and raise an exception if no marshaller is registered.
+     * 
+     * @param xmlObject type of marshaller to fetch
+     * 
+     * @return the registered marshaller
+     * 
+     * @throw XMLRuntimeException if no marshaller is registered
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public Marshaller ensureMarshaller(@Nonnull final XMLObject xmlObject) {
+        final Marshaller m = getMarshaller(xmlObject);
+        if (m != null) {
+            return m;
+        }
+        throw new XMLRuntimeException("Unable to obtain marshaller for " + xmlObject.getClass().getName());
+    }
+
+    /**
      * Gets an immutable listing of all the Marshallers currently registered.
      * 
      * @return a listing of all the Marshallers currently registered
      */
     @Nonnull public Map<QName, Marshaller> getMarshallers() {
-        return Collections.unmodifiableMap(marshallers);
+        return CollectionSupport.copyToMap(marshallers);
     }
 
     /**
@@ -120,10 +158,6 @@ public class MarshallerFactory {
      */
     @Nullable public Marshaller deregisterMarshaller(@Nonnull final QName key) {
         log.debug("Deregistering marshaller for object type {}", key);
-        if(key != null){
-            return marshallers.remove(key);
-        }
-        
-        return null;
+        return marshallers.remove(key);
     }
 }

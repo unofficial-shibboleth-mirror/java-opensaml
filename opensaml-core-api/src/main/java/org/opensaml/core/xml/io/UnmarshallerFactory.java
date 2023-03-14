@@ -26,11 +26,12 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 import net.shibboleth.shared.xml.QNameSupport;
 
+import org.opensaml.core.xml.XMLRuntimeException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -42,10 +43,10 @@ import org.w3c.dom.Element;
 public class UnmarshallerFactory {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(UnmarshallerFactory.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(UnmarshallerFactory.class);
 
     /** Map of unmarshallers to the elements they are for. */
-    private final Map<QName, Unmarshaller> unmarshallers;
+    @Nonnull private final Map<QName, Unmarshaller> unmarshallers;
 
     /**
      * Constructor.
@@ -87,6 +88,45 @@ public class UnmarshallerFactory {
 
         return unmarshaller;
     }
+    
+    /**
+     * Call {@link #getUnmarshaller(QName)} and raise an exception if no unmarshaller is registered.
+     * 
+     * @param key type of unmarshaller to fetch
+     * 
+     * @return the registered unmarshaller
+     * 
+     * @throw XMLRuntimeException if no unmarshaller is registered
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public Unmarshaller ensureUnmarshaller(@Nonnull final QName key) {
+        final Unmarshaller m = getUnmarshaller(key);
+        if (m != null) {
+            return m;
+        }
+        throw new XMLRuntimeException("Unable to obtain unmarshaller for " + key.toString());
+    }
+
+    /**
+     * Call {@link #getUnmarshaller(Element)} and raise an exception if no unmarshaller is registered.
+     * 
+     * @param domElement element to find unmarshaller for
+     * 
+     * @return the registered unmarshaller
+     * 
+     * @throw XMLRuntimeException if no unmarshaller is registered
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public Unmarshaller ensureUnmarshaller(@Nonnull final Element domElement) {
+        final Unmarshaller m = getUnmarshaller(domElement);
+        if (m != null) {
+            return m;
+        }
+        throw new XMLRuntimeException("Unable to obtain unmarshaller for " +
+                QNameSupport.getNodeQName(domElement).toString());
+    }
 
     /**
      * Gets an immutable listing of all the Unarshallers currently registered.
@@ -121,10 +161,7 @@ public class UnmarshallerFactory {
      */
     @Nullable public Unmarshaller deregisterUnmarshaller(@Nonnull final QName key) {
         log.debug("Deregistering marshaller for object type {}", key);
-        if (key != null) {
-            return unmarshallers.remove(key);
-        }
-
-        return null;
+        return unmarshallers.remove(key);
     }
+
 }

@@ -158,6 +158,7 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         log.trace("{} does not contain a cached DOM representation. Creating Element to marshall into.", xmlObject
                 .getElementQName());
         final Document owningDocument = parentElement.getOwnerDocument();
+        assert owningDocument != null;
         domElement = ElementSupport.constructElement(owningDocument, xmlObject.getElementQName());
 
         log.trace("Appending newly created element to given parent element");

@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 import javax.xml.parsers.DocumentBuilderFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.QNameSupport;
@@ -37,7 +38,7 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
