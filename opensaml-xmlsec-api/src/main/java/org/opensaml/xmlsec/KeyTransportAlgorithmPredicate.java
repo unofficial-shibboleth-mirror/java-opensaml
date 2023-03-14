@@ -38,13 +38,13 @@ public interface KeyTransportAlgorithmPredicate extends Predicate<KeyTransportAl
     public static final class SelectionInput {
         
         /** The candidate key transport algorithm. */
-        private String keyTransportAlgorithm;
+        @Nonnull private final String keyTransportAlgorithm;
         
         /** The candidate data encryption algorithm. */
-        private String dataEncryptionAlgorithm;
+        @Nullable private final String dataEncryptionAlgorithm;
         
         /** The candidate key transport credential. */
-        private Credential keyTransportCredential;
+        @Nullable private final Credential keyTransportCredential;
         
         /**
          * Constructor.

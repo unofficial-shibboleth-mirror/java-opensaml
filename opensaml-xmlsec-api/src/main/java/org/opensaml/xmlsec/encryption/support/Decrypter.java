@@ -30,6 +30,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Criterion;
@@ -62,13 +63,14 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
+import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -186,44 +188,44 @@ import com.google.common.base.Strings;
 public class Decrypter {
 
     /** ParserPool used in parsing decrypted data. */
-    private final ParserPool parserPool;
+    @Nonnull private final ParserPool parserPool;
 
     /** Unmarshaller factory, used in decryption of EncryptedData objects. */
-    private final UnmarshallerFactory unmarshallerFactory;
+    @Nonnull private final UnmarshallerFactory unmarshallerFactory;
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(Decrypter.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(Decrypter.class);
 
     /** Resolver for data encryption keys. */
-    private KeyInfoCredentialResolver resolver;
+    @Nullable private KeyInfoCredentialResolver resolver;
 
     /** Resolver for key encryption keys. */
-    private KeyInfoCredentialResolver kekResolver;
+    @Nullable private KeyInfoCredentialResolver kekResolver;
 
     /** Resolver for EncryptedKey instances which contain the encrypted data encryption key. */
-    private EncryptedKeyResolver encKeyResolver;
+    @Nullable private EncryptedKeyResolver encKeyResolver;
     
     /** The collection of algorithm URIs which are included. */
-    private Collection<String> includedAlgorithmURIs;
+    @Nullable private Collection<String> includedAlgorithmURIs;
     
     /** The collection of algorithm URIs which are excluded. */
-    private Collection<String> excludedAlgorithmURIs;
+    @Nullable private Collection<String> excludedAlgorithmURIs;
 
     /** Additional criteria to use when resolving credentials based on an EncryptedData's KeyInfo. */
-    private CriteriaSet resolverCriteria;
+    @Nullable private CriteriaSet resolverCriteria;
 
     /** Additional criteria to use when resolving credentials based on an EncryptedKey's KeyInfo. */
-    private CriteriaSet kekResolverCriteria;
+    @Nullable private CriteriaSet kekResolverCriteria;
 
     /** The name of the JCA security provider to use. */
-    private String jcaProviderName;
+    @Nullable private String jcaProviderName;
     
     /** Flag to determine whether by default the Element which backs the underlying decrypted SAMLObject will be the 
      * root of a new DOM document. */
     private boolean defaultRootInNewDocument;
     
     /** The pre-decryption validator instance. */
-    private PreDecryptionValidator preDecryptionValidator;
+    @Nullable private PreDecryptionValidator preDecryptionValidator;
     
     /**
      * Constructor.
@@ -286,9 +288,11 @@ public class Decrypter {
         
         // Note: Use of this internal JAXP ParserPool is hopefully only temporary, 
         // to be replaced when Xerces implements DOM 3 LSParser.parseWithContext(...).
-        parserPool = buildParserPool();
+        parserPool = Constraint.isNotNull(ConfigurationService.get(DecryptionParserPool.class), 
+                "DecryptionParserPool has not been registered with the global configuration").getParserPool();
 
-        unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
+        unmarshallerFactory = Constraint.isNotNull(XMLObjectProviderRegistrySupport.getUnmarshallerFactory(),
+                "UnmarshallerFactory not registered with the global configuration");
         
         defaultRootInNewDocument = false;
         
@@ -300,7 +304,7 @@ public class Decrypter {
      * 
      * @return the validator, may be null
      */
-    @Nullable PreDecryptionValidator getPreDecryptionValidator() {
+    @Nullable public PreDecryptionValidator getPreDecryptionValidator() {
         return preDecryptionValidator;
     }
 
@@ -544,13 +548,15 @@ public class Decrypter {
             log.debug("Failed to decrypt EncryptedData using standard KeyInfo resolver");
         }
 
-        final String algorithm = encryptedData.getEncryptionMethod().getAlgorithm();
+        final EncryptionMethod method = encryptedData.getEncryptionMethod();
+        final String algorithm = method != null ? method.getAlgorithm() : null;
         if (Strings.isNullOrEmpty(algorithm)) {
             final String msg = "EncryptedData's EncryptionMethod Algorithm attribute was empty, "
                 + "key decryption could not be attempted";
             log.error(msg);
             throw new DecryptionException(msg);
         } else if (encKeyResolver != null) {
+            assert algorithm != null;
             docFrag = decryptUsingResolvedEncryptedKey(encryptedData, algorithm);
             if (docFrag != null) {
                 return docFrag;
@@ -629,7 +635,9 @@ public class Decrypter {
             throw new DecryptionException("EncryptedData could not be decrypted");
         }
         final ByteArrayInputStream input = new ByteArrayInputStream(bytes);
-        final DocumentFragment docFragment = parseInputStream(input, encryptedData.getDOM().getOwnerDocument());
+        final Element domNode = encryptedData.getDOM();
+        assert domNode != null;
+        final DocumentFragment docFragment = parseInputStream(input, domNode.getOwnerDocument());
         return docFragment;
     }
 
@@ -655,9 +663,14 @@ public class Decrypter {
 
         final CriteriaSet criteriaSet = buildCredentialCriteria(encryptedKey, kekResolverCriteria);
         try {
+            assert kekResolver != null;
             for (final Credential cred : kekResolver.resolve(criteriaSet)) {
                 try {
-                    return decryptKey(encryptedKey, algorithm, CredentialSupport.extractDecryptionKey(cred));
+                    final Key decKey = CredentialSupport.extractDecryptionKey(cred);
+                    if (decKey == null) {
+                        throw new DecryptionException("Unable to extract key decryption key");
+                    }
+                    return decryptKey(encryptedKey, algorithm, decKey);
                 } catch (final DecryptionException e) {
                     final String msg =
                             "Attempt to decrypt EncryptedKey using credential from KEK KeyInfo resolver failed: ";
@@ -685,10 +698,7 @@ public class Decrypter {
      */
     @Nonnull public Key decryptKey(@Nonnull final EncryptedKey encryptedKey, @Nonnull final String algorithm,
             @Nonnull final Key kek) throws DecryptionException {
-        if (kek == null) {
-            log.error("Data encryption key was null");
-            throw new IllegalArgumentException("Data encryption key cannot be null");
-        } else if (Strings.isNullOrEmpty(algorithm)) {
+        if (Strings.isNullOrEmpty(algorithm)) {
             log.error("Algorithm of encrypted key not supplied, key decryption cannot proceed");
             throw new DecryptionException("Algorithm of encrypted key not supplied, key decryption cannot proceed");
         }
@@ -720,6 +730,7 @@ public class Decrypter {
         final org.apache.xml.security.encryption.EncryptedKey encKey;
         try {
             final Element targetElement = encryptedKey.getDOM();
+            assert targetElement != null;
             encKey = xmlCipher.loadEncryptedKey(targetElement.getOwnerDocument(), targetElement);
         } catch (final XMLEncryptionException e) {
             log.error("Error when loading library native encrypted key representation: {}", e.getMessage());
@@ -758,8 +769,8 @@ public class Decrypter {
     protected void preProcessEncryptedData(@Nonnull final EncryptedData encryptedData,
             @Nonnull final Key dataEncKey) throws DecryptionException {
         
-        if (getPreDecryptionValidator() != null) {
-            getPreDecryptionValidator().validate(encryptedData);
+        if (preDecryptionValidator != null) {
+            preDecryptionValidator.validate(encryptedData);
         }
     }
 
@@ -779,8 +790,8 @@ public class Decrypter {
     protected void preProcessEncryptedKey(@Nonnull final EncryptedKey encryptedKey, @Nonnull final String algorithm,
             @Nonnull final Key kek) throws DecryptionException {
         
-        if (getPreDecryptionValidator() != null) {
-            getPreDecryptionValidator().validate(encryptedKey);
+        if (preDecryptionValidator != null) {
+            preDecryptionValidator.validate(encryptedKey);
         }
     }
 
@@ -794,9 +805,14 @@ public class Decrypter {
         if (resolver != null) {
             final CriteriaSet criteriaSet = buildCredentialCriteria(encryptedData, resolverCriteria);
             try {
+                assert resolver != null;
                 for (final Credential cred : resolver.resolve(criteriaSet)) {
                     try {
-                        return decryptDataToDOM(encryptedData, CredentialSupport.extractDecryptionKey(cred));
+                        final Key decKey = CredentialSupport.extractDecryptionKey(cred);
+                        if (decKey == null) {
+                            throw new DecryptionException("Unable to extract key from resolved credential");
+                        }
+                        return decryptDataToDOM(encryptedData, decKey);
                     } catch (final DecryptionException e) {
                         final String msg =
                                 "Decryption attempt using credential from standard KeyInfo resolver failed: ";
@@ -824,6 +840,7 @@ public class Decrypter {
         if (encKeyResolver != null) {
             for (final EncryptedKey encryptedKey : encKeyResolver.resolve(encryptedData)) {
                 try {
+                    assert encryptedKey != null;
                     final Key decryptedKey = decryptKey(encryptedKey, algorithm);
                     return decryptDataToDOM(encryptedData, decryptedKey);
                 } catch (final DecryptionException e) {
@@ -936,11 +953,15 @@ public class Decrypter {
             log.debug("Added decryption key length criteria from EncryptionMethod algorithm URI: {}", lengthCrit
                     .getKeyLength());
         } else {
-            if (encMethod.getKeySize() != null && encMethod.getKeySize().getValue() != null) {
-                lengthCrit = new KeyLengthCriterion(encMethod.getKeySize().getValue());
-                critSet.add(lengthCrit);
-                log.debug("Added decryption key length criteria from EncryptionMethod/KeySize: {}", lengthCrit
-                        .getKeyLength());
+            final KeySize size = encMethod.getKeySize();
+            if (size != null) {
+                final Integer sizeInt = size.getValue();
+                if (sizeInt != null) {
+                    lengthCrit = new KeyLengthCriterion(sizeInt);
+                    critSet.add(lengthCrit);
+                    log.debug("Added decryption key length criteria from EncryptionMethod/KeySize: {}",
+                            lengthCrit.getKeyLength());
+                }
             }
         }
 
@@ -958,8 +979,10 @@ public class Decrypter {
             return null;
         }
 
+        assert encAlgorithmURI != null;
         final String jcaKeyAlgorithm = AlgorithmSupport.getKeyAlgorithm(encAlgorithmURI);
         if (!Strings.isNullOrEmpty(jcaKeyAlgorithm)) {
+            assert jcaKeyAlgorithm != null;
             return new KeyAlgorithmCriterion(jcaKeyAlgorithm);
         }
 
@@ -977,6 +1000,7 @@ public class Decrypter {
             return null;
         }
 
+        assert encAlgorithmURI != null;
         final Integer keyLength = AlgorithmSupport.getKeyLength(encAlgorithmURI);
         if (keyLength != null) {
             return new KeyLengthCriterion(keyLength);
@@ -1016,40 +1040,24 @@ public class Decrypter {
     }
     
     /**
-     * Build the internal parser pool instance used to parse decrypted XML.
-     * 
-     * <p>
-     * Note: When using a Xerces parser or derivative, the following feature must be set to false: 
-     * <code>http://apache.org/xml/features/dom/defer-node-expansion</code>
-     * </p>
-     * 
-     * @return a new parser pool instance
-     * 
-     * @deprecated
-     */
-    @Deprecated
-    protected ParserPool buildParserPool() {
-        // Note: we don't really build this here anymore, so the method name is semantically misleading.
-        // We should remove this method in next major release and just move this call to the ctor.
-        return Constraint.isNotNull(ConfigurationService.get(DecryptionParserPool.class), 
-                "DecryptionParserPool has not been registered with the global configuration").getParserPool();
-    }
-    
-    /**
      * Validate the algorithms contained within an {@link EncryptedKey}.
      * 
      * @param encryptedKey the encrypted key instance to validate
      * @throws DecryptionException if any algorithms do not satisfy include/exclude policy
      */
     protected void validateAlgorithms(@Nonnull final EncryptedKey encryptedKey) throws DecryptionException {
-        final String encryptionAlgorithm = encryptedKey.getEncryptionMethod().getAlgorithm();
+        final EncryptionMethod method = encryptedKey.getEncryptionMethod();
+        final String encryptionAlgorithm = method != null ? method.getAlgorithm() : null;
+        if (method == null || encryptionAlgorithm == null) {
+            throw new DecryptionException("EncryptionMethod or Algorithm was absent");
+        }
+        
         validateAlgorithmURI(encryptionAlgorithm);
         
         if (AlgorithmSupport.isRSAOAEP(encryptionAlgorithm)) {
             // ds:DigestMethod
             String digestAlgorithm = null;
-            final List<XMLObject> digestMethods = encryptedKey.getEncryptionMethod()
-                    .getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
+            final List<XMLObject> digestMethods = method.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
             if (digestMethods.size() > 0) {
                 final DigestMethod digestMethod = (DigestMethod) digestMethods.get(0);
                 digestAlgorithm = StringSupport.trimOrNull(digestMethod.getAlgorithm());
@@ -1063,7 +1071,7 @@ public class Decrypter {
             // xenc11:MGF
             String mgfAlgorithm = null;
             final List<XMLObject> mgfs =
-                    encryptedKey.getEncryptionMethod().getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
+                    method.getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
             if (mgfs.size() > 0) {
                 final MGF mgf = (MGF) mgfs.get(0);
                 mgfAlgorithm = StringSupport.trimOrNull(mgf.getAlgorithm());
@@ -1083,7 +1091,12 @@ public class Decrypter {
      * @throws DecryptionException if any algorithms do not satisfy include/exclude policy
      */
     protected void validateAlgorithms(@Nonnull final EncryptedData encryptedData) throws DecryptionException {
-        validateAlgorithmURI(encryptedData.getEncryptionMethod().getAlgorithm());
+        final EncryptionMethod method = encryptedData.getEncryptionMethod();
+        final String alg = method != null ? method.getAlgorithm() : null;
+        if (alg == null) {
+            throw new DecryptionException("EncryptionMethod or Algorithm was absent");
+        }
+        validateAlgorithmURI(alg);
     }
     
     /**

@@ -19,6 +19,8 @@ package org.opensaml.xmlsec.agreement;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.Credential;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -26,10 +28,11 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- *
+ * Unit test for {@link KeyAgreementProcessorRegistry}.
  */
 public class KeyAgreementProcessorRegistryTest {
     
+    /** Basic tests */
     @Test
     public void basic() {
         KeyAgreementProcessorRegistry registry = new KeyAgreementProcessorRegistry();
@@ -69,29 +72,39 @@ public class KeyAgreementProcessorRegistryTest {
         Assert.assertNull(registry.getProcessor("urn:test:KeyAgreementProcessor:Bar"));
     }
     
+    /**
+     * Mock processor.
+     */
     public static class MockProcessorFoo implements KeyAgreementProcessor {
 
         /** {@inheritDoc} */
-        public String getAlgorithm() {
+        @Nonnull public String getAlgorithm() {
             return "urn:test:KeyAgreementProcessor:Foo";
         }
 
         /** {@inheritDoc} */
-        public KeyAgreementCredential execute(Credential publicCredential, String keyAlgorithm, KeyAgreementParameters parameters) throws KeyAgreementException {
-            return null;
+        @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
+                @Nonnull final String keyAlgorithm, @Nonnull final KeyAgreementParameters parameters)
+                        throws KeyAgreementException {
+            throw new UnsupportedOperationException();
         }
     }
     
+    /**
+     * Mock processor.
+     */
     public static class MockProcessorBar implements KeyAgreementProcessor {
 
         /** {@inheritDoc} */
-        public String getAlgorithm() {
+        @Nonnull public String getAlgorithm() {
             return "urn:test:KeyAgreementProcessor:Bar";
         }
 
         /** {@inheritDoc} */
-        public KeyAgreementCredential execute(Credential publicCredential, String keyAlgorithm, KeyAgreementParameters parameters) throws KeyAgreementException {
-            return null;
+        @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
+                @Nonnull final String keyAlgorithm, @Nonnull final KeyAgreementParameters parameters)
+                        throws KeyAgreementException {
+            throw new UnsupportedOperationException();
         }
     }
 }

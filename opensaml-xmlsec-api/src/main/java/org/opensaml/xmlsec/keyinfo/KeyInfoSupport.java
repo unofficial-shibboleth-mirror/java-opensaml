@@ -88,7 +88,6 @@ import org.opensaml.xmlsec.signature.X509SerialNumber;
 import org.opensaml.xmlsec.signature.X509SubjectName;
 import org.opensaml.xmlsec.signature.Y;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -96,6 +95,7 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Utility class for working with data inside a KeyInfo object.
@@ -225,11 +225,12 @@ public class KeyInfoSupport {
     @Nullable public static X509Certificate getCertificate(
             @Nullable final org.opensaml.xmlsec.signature.X509Certificate xmlCert) throws CertificateException {
 
-        if (xmlCert == null || xmlCert.getValue() == null) {
+        final String certVal = xmlCert != null ? xmlCert.getValue() : null;
+        if (certVal == null) {
             return null;
         }
 
-        return X509Support.decodeCertificate(xmlCert.getValue());
+        return X509Support.decodeCertificate(certVal);
     }
 
     /**
@@ -296,12 +297,13 @@ public class KeyInfoSupport {
     @Nullable public static X509CRL getCRL(@Nullable final org.opensaml.xmlsec.signature.X509CRL xmlCRL)
             throws CRLException {
 
-        if (xmlCRL == null || xmlCRL.getValue() == null) {
+        final String crlVal = xmlCRL != null ? xmlCRL.getValue() : null;
+        if (crlVal == null) {
             return null;
         }
 
         try {
-            return X509Support.decodeCRL(xmlCRL.getValue());
+            return X509Support.decodeCRL(crlVal);
         } catch (final CertificateException e) {
             throw new CRLException("Certificate error attempting to decode CRL", e);
         }
@@ -558,7 +560,8 @@ public class KeyInfoSupport {
         } else if (pk instanceof DHPublicKey) {
             keyValue.setDHKeyValue(buildDHKeyValue((DHPublicKey) pk));
         } else {
-            throw new IllegalArgumentException("Saw unsupported public key type: " + pk.getClass().getName());
+            final String type = pk != null ? pk.getClass().getName() : "(null)";
+            throw new IllegalArgumentException("Saw unsupported public key type: " + type);
         }
 
         keyInfo.getKeyValues().add(keyValue);
@@ -790,6 +793,7 @@ public class KeyInfoSupport {
         }
 
         for (final KeyValue keyDescriptor : keyInfo.getKeyValues()) {
+            assert keyDescriptor != null;
             final PublicKey newKey = getKey(keyDescriptor);
             if (newKey != null) {
                 keys.add(newKey);
@@ -797,6 +801,7 @@ public class KeyInfoSupport {
         }
 
         for (final DEREncodedKeyValue keyDescriptor : keyInfo.getDEREncodedKeyValues()) {
+            assert keyDescriptor != null;
             final PublicKey newKey = getKey(keyDescriptor);
             if (newKey != null) {
                 keys.add(newKey);
@@ -817,17 +822,27 @@ public class KeyInfoSupport {
     @Nullable public static PublicKey getKey(@Nonnull final KeyValue keyValue) throws KeyException {
         Constraint.isNotNull(keyValue, "KeyValue cannot be null");
 
-        if (keyValue.getDSAKeyValue() != null) {
-            return getDSAKey(keyValue.getDSAKeyValue());
-        } else if (keyValue.getRSAKeyValue() != null) {
-            return getRSAKey(keyValue.getRSAKeyValue());
-        } else if (keyValue.getECKeyValue() != null) {
-            return getECKey(keyValue.getECKeyValue());
-        } else if (keyValue.getDHKeyValue() != null) {
-            return getDHKey(keyValue.getDHKeyValue());
-        } else {
-            return null;
+        final DSAKeyValue dsa = keyValue.getDSAKeyValue();
+        if (dsa != null) {
+            return getDSAKey(dsa);
         }
+        
+        final RSAKeyValue rsa = keyValue.getRSAKeyValue();
+        if (rsa != null) {
+            return getRSAKey(rsa);
+        }
+        
+        final ECKeyValue ec = keyValue.getECKeyValue();
+        if (ec != null) {
+            return getECKey(ec);
+        }
+        
+        final DHKeyValue dh = keyValue.getDHKeyValue();
+        if (dh != null) {
+            return getDHKey(dh);
+        }
+        
+        return null;
     }
 
     /**
@@ -842,21 +857,29 @@ public class KeyInfoSupport {
      */
     @Nonnull public static PublicKey getECKey(@Nonnull final ECKeyValue keyDescriptor) throws KeyException {
         
-        if (keyDescriptor.getNamedCurve() == null || keyDescriptor.getNamedCurve().getURI() == null) {
+        final NamedCurve namedCurve = keyDescriptor.getNamedCurve();
+        if (namedCurve == null || namedCurve.getURI() == null) {
             throw new KeyException("Only ECKeyValue NamedCurve representation is supported");
         }
         
-        final ECParameterSpec ecParams =
-                ECSupport.getParameterSpecForURI(keyDescriptor.getNamedCurve().getURI());
+        final String curveURI = namedCurve.getURI();
+        if (curveURI == null) {
+            throw new KeyException("Only ECKeyValue NamedCurve representation is supported");
+        }
+        
+        final ECParameterSpec ecParams = ECSupport.getParameterSpecForURI(curveURI);
         if (ecParams == null) {
-            throw new KeyException("Could not resolve ECParametersSpec for NamedCurve URI: "
-                    + keyDescriptor.getNamedCurve().getURI());
+            throw new KeyException("Could not resolve ECParametersSpec for NamedCurve URI: " + curveURI);
         }
 
+        final org.opensaml.xmlsec.signature.PublicKey pub = keyDescriptor.getPublicKey();
+        final String pubval = pub != null ? pub.getValue() : null;
+        if (pubval == null) {
+            throw new KeyException("Could not obtain public key value");
+        }
+        
         try {
-            final ECPoint ecPoint = ECSupport.decodeECPoint(
-                    Base64Support.decode(keyDescriptor.getPublicKey().getValue()),
-                    ecParams.getCurve());
+            final ECPoint ecPoint = ECSupport.decodeECPoint(Base64Support.decode(pubval), ecParams.getCurve());
             
             final ECPublicKeySpec keySpec = new ECPublicKeySpec(ecPoint, ecParams);
             
@@ -883,11 +906,18 @@ public class KeyInfoSupport {
             throw new KeyException("DHKeyValue element did not contain at least one of DH parameters P, Q or G");
         }
 
-        final BigInteger gComponent = keyDescriptor.getGenerator().getValueBigInt();
-        final BigInteger pComponent = keyDescriptor.getP().getValueBigInt();
+        final Generator gen = keyDescriptor.getGenerator();
+        final org.opensaml.xmlsec.encryption.P pComp = keyDescriptor.getP();
+        final Public pub = keyDescriptor.getPublic();
+        
+        assert gen != null;
+        assert pComp != null;
+        
+        final BigInteger gComponent = gen.getValueBigInt();
+        final BigInteger pComponent = pComp.getValueBigInt();
         // Note: Java doesn't need or even accept the prime Q component, so don't bother to parse it
 
-        final BigInteger publicComponent = keyDescriptor.getPublic().getValueBigInt();
+        final BigInteger publicComponent = pub != null ? pub.getValueBigInt() : null;
 
         final DHPublicKeySpec keySpec = new DHPublicKeySpec(publicComponent, pComponent, gComponent);
         return buildKey(keySpec, JCAConstants.KEY_ALGO_DIFFIE_HELLMAN);
@@ -901,15 +931,21 @@ public class KeyInfoSupport {
      * @return true if all parameters are present and non-empty, false otherwise
      */
     public static boolean hasCompleteDHParams(@Nullable final DHKeyValue keyDescriptor) {
-        if (keyDescriptor == null
-                || keyDescriptor.getGenerator() == null
-                || Strings.isNullOrEmpty(keyDescriptor.getGenerator().getValue())
-                || keyDescriptor.getP() == null || Strings.isNullOrEmpty(keyDescriptor.getP().getValue())
+        if (keyDescriptor == null) {
+            return false;
+        }
+        
+        final Generator gen = keyDescriptor.getGenerator();
+        final org.opensaml.xmlsec.encryption.P pComp = keyDescriptor.getP();
+        
+        if (gen == null || Strings.isNullOrEmpty(gen.getValue())
+                || pComp == null || Strings.isNullOrEmpty(pComp.getValue())
                 // Note: Java doesn't need or even accept the prime Q component.  So even though it's
                 // required per the schema, relax the check here and don't require.
                 ) {
             return false;
         }
+        
         return true;
     }
 
@@ -928,10 +964,18 @@ public class KeyInfoSupport {
         if (!hasCompleteDSAParams(keyDescriptor)) {
             throw new KeyException("DSAKeyValue element did not contain at least one of DSA parameters P, Q or G");
         }
+        
+        final G gComp = keyDescriptor.getG();
+        final P pComp = keyDescriptor.getP();
+        final Q qComp = keyDescriptor.getQ();
 
-        final BigInteger gComponent = keyDescriptor.getG().getValueBigInt();
-        final BigInteger pComponent = keyDescriptor.getP().getValueBigInt();
-        final BigInteger qComponent = keyDescriptor.getQ().getValueBigInt();
+        assert gComp != null;
+        assert pComp != null;
+        assert qComp != null;
+        
+        final BigInteger gComponent = gComp.getValueBigInt();
+        final BigInteger pComponent = pComp.getValueBigInt();
+        final BigInteger qComponent = qComp.getValueBigInt();
 
         final DSAParams dsaParams = new DSAParameterSpec(pComponent, qComponent, gComponent);
         return getDSAKey(keyDescriptor, dsaParams);
@@ -954,10 +998,11 @@ public class KeyInfoSupport {
         Constraint.isNotNull(keyDescriptor, "DSAKeyValue cannot be null");
         Constraint.isNotNull(dsaParams, "DSAParams cannot be null");
         
-        final BigInteger yComponent = keyDescriptor.getY().getValueBigInt();
+        final Y yComponent = keyDescriptor.getY();
 
         final DSAPublicKeySpec keySpec =
-                new DSAPublicKeySpec(yComponent, dsaParams.getP(), dsaParams.getQ(), dsaParams.getG());
+                new DSAPublicKeySpec(yComponent != null ? yComponent.getValueBigInt() : null,
+                        dsaParams.getP(), dsaParams.getQ(), dsaParams.getG());
         return buildKey(keySpec, JCAConstants.KEY_ALGO_DSA);
     }
 
@@ -969,12 +1014,21 @@ public class KeyInfoSupport {
      * @return true if all parameters are present and non-empty, false otherwise
      */
     public static boolean hasCompleteDSAParams(@Nullable final DSAKeyValue keyDescriptor) {
-        if (keyDescriptor == null
-                || keyDescriptor.getG() == null || Strings.isNullOrEmpty(keyDescriptor.getG().getValue())
-                || keyDescriptor.getP() == null || Strings.isNullOrEmpty(keyDescriptor.getP().getValue())
-                || keyDescriptor.getQ() == null || Strings.isNullOrEmpty(keyDescriptor.getQ().getValue())) {
+        
+        if (keyDescriptor == null) {
             return false;
         }
+        
+        final G gComp = keyDescriptor.getG();
+        final P pComp = keyDescriptor.getP();
+        final Q qComp = keyDescriptor.getQ();
+        
+        if (gComp == null || Strings.isNullOrEmpty(gComp.getValue())
+                || pComp == null || Strings.isNullOrEmpty(pComp.getValue())
+                || qComp == null || Strings.isNullOrEmpty(qComp.getValue())) {
+            return false;
+        }
+        
         return true;
     }
 
@@ -991,10 +1045,11 @@ public class KeyInfoSupport {
     @Nonnull public static PublicKey getRSAKey(@Nonnull final RSAKeyValue keyDescriptor) throws KeyException {
         Constraint.isNotNull(keyDescriptor, "RSAKeyValue cannot be null");
         
-        final BigInteger modulus = keyDescriptor.getModulus().getValueBigInt();
-        final BigInteger exponent = keyDescriptor.getExponent().getValueBigInt();
-
-        final RSAPublicKeySpec keySpec = new RSAPublicKeySpec(modulus, exponent);
+        final Modulus mod = keyDescriptor.getModulus();
+        final Exponent exp = keyDescriptor.getExponent();
+        
+        final RSAPublicKeySpec keySpec = new RSAPublicKeySpec(mod != null ? mod.getValueBigInt() : null,
+                exp != null ? exp.getValueBigInt() : null);
         return buildKey(keySpec, JCAConstants.KEY_ALGO_RSA);
     }
 
@@ -1074,12 +1129,13 @@ public class KeyInfoSupport {
                 JCAConstants.KEY_ALGO_DSA};
         
         Constraint.isNotNull(keyValue, "DEREncodedKeyValue cannot be null");
-        if (keyValue.getValue() == null) {
+        final String keyValueValue = keyValue.getValue();
+        if (keyValueValue == null) {
             throw new KeyException("No data found in key value element");
         }
         byte[] encodedKey = null;
         try {
-            encodedKey = Base64Support.decode(keyValue.getValue());
+            encodedKey = Base64Support.decode(keyValueValue);
         } catch (final DecodingException e) {
            throw new KeyException("DEREncodedKeyValue could not be base64 decoded",e);
         }
@@ -1168,6 +1224,7 @@ public class KeyInfoSupport {
             x509CertFactory = CertificateFactory.getInstance("X.509");
         }
 
+        assert x509CertFactory != null;
         return x509CertFactory;
     }
 

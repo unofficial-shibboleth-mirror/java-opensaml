@@ -60,7 +60,8 @@ public class PreDecryptionValidationException extends DecryptionException {
      * @param message exception message
      * @param wrappedException exception to be wrapped by this one
      */
-    public PreDecryptionValidationException(@Nullable final String message, @Nullable final Exception wrappedException) {
+    public PreDecryptionValidationException(@Nullable final String message,
+            @Nullable final Exception wrappedException) {
         super(message, wrappedException);
     }
 

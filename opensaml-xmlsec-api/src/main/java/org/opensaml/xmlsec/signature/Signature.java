@@ -28,23 +28,25 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.signature.support.ContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.
  */
 public interface Signature extends XMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Signature";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Signature";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SignatureConstants.XMLSIG_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SignatureConstants.XMLSIG_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SignatureType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SignatureType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME, 
+    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME, 
             SignatureConstants.XMLSIG_PREFIX);
 
     /**

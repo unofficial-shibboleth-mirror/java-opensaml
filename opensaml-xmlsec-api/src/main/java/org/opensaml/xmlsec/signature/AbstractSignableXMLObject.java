@@ -33,7 +33,7 @@ import net.shibboleth.shared.xml.ElementSupport;
 public abstract class AbstractSignableXMLObject extends AbstractXMLObject implements SignableXMLObject {
 
     /** Signature child. */
-    private Signature signature;
+    @Nullable private Signature signature;
 
     /**
      * Constructor.

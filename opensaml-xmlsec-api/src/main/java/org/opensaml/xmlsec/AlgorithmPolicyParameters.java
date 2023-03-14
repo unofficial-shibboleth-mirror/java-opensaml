@@ -18,8 +18,6 @@
 package org.opensaml.xmlsec;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,6 +25,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -42,8 +41,8 @@ public class AlgorithmPolicyParameters {
         
     /** Constructor. */
     public AlgorithmPolicyParameters() {
-        includedAlgorithmURIs = Collections.emptySet();
-        excludedAlgorithmURIs = Collections.emptySet();
+        includedAlgorithmURIs = CollectionSupport.emptySet();
+        excludedAlgorithmURIs = CollectionSupport.emptySet();
     }
     
     /**
@@ -60,12 +59,12 @@ public class AlgorithmPolicyParameters {
      * 
      * @param uris the included algorithms
      */
-    public void setIncludedAlgorithms(@Nullable final Collection<String> uris) {
+    public void setIncludedAlgorithms(@Nullable @NonnullElements final Collection<String> uris) {
         if (uris == null) {
-            includedAlgorithmURIs = Collections.emptySet();
+            includedAlgorithmURIs = CollectionSupport.emptySet();
             return;
         }
-        includedAlgorithmURIs = Set.copyOf(StringSupport.normalizeStringCollection(uris));
+        includedAlgorithmURIs = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(uris));
     }
     
     /**
@@ -82,12 +81,12 @@ public class AlgorithmPolicyParameters {
      * 
      * @param uris the excluded algorithms
      */
-    public void setExcludedAlgorithms(@Nonnull @NonnullElements final Collection<String> uris) {
+    public void setExcludedAlgorithms(@Nullable @NonnullElements final Collection<String> uris) {
         if (uris == null) {
-            excludedAlgorithmURIs = Collections.emptySet();
+            excludedAlgorithmURIs = CollectionSupport.emptySet();
             return;
         }
-        excludedAlgorithmURIs = Set.copyOf(StringSupport.normalizeStringCollection(uris));
+        excludedAlgorithmURIs = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(uris));
     }
     
 }

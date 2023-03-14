@@ -17,12 +17,14 @@
 
 package org.opensaml.xmlsec.agreement;
 
+import java.security.PublicKey;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.config.ConfigurationService;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
@@ -31,6 +33,7 @@ import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeySize;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
@@ -39,7 +42,8 @@ import net.shibboleth.shared.collection.CollectionSupport;
 public final class KeyAgreementSupport {
     
     /** JCA key algorithms that support key agreement. */
-    public static final Set<String> KEY_ALGORITHMS = CollectionSupport.setOf(JCAConstants.KEY_ALGO_EC, JCAConstants.KEY_ALGO_DH);
+    @Nonnull @NonnullElements public static final Set<String> KEY_ALGORITHMS =
+            CollectionSupport.setOf(JCAConstants.KEY_ALGO_EC, JCAConstants.KEY_ALGO_DH);
     
     /** Constructor. */
     private KeyAgreementSupport() {}
@@ -91,17 +95,19 @@ public final class KeyAgreementSupport {
      * @return the key size, or null if not present
      */
     @Nullable public static Integer getExplicitKeySize(@Nonnull final AgreementMethod agreementMethod) {
-        if (agreementMethod.getParent() == null || agreementMethod.getParent().getParent() == null
-                || ! EncryptedType.class.isInstance(agreementMethod.getParent().getParent())) {
+        final XMLObject parent = agreementMethod.getParent();
+        if (parent == null || parent.getParent() == null || ! EncryptedType.class.isInstance(parent.getParent())) {
             return null;
         }
         
-        final EncryptedType et = EncryptedType.class.cast(agreementMethod.getParent().getParent());
-        if (et.getEncryptionMethod() == null || et.getEncryptionMethod().getKeySize() == null) {
+        final EncryptedType et = EncryptedType.class.cast(parent.getParent());
+        final EncryptionMethod method = et.getEncryptionMethod();
+        if (method == null) {
             return null;
         }
         
-        return et.getEncryptionMethod().getKeySize().getValue();
+        final KeySize size = method.getKeySize();
+        return size != null ? size.getValue() : null;
     }
     
     /** 
@@ -147,6 +153,7 @@ public final class KeyAgreementSupport {
             return false;
         }
         
-        return credential.getPublicKey() != null && KEY_ALGORITHMS.contains(credential.getPublicKey().getAlgorithm());
+        final PublicKey pk = credential.getPublicKey();
+        return pk != null && KEY_ALGORITHMS.contains(pk.getAlgorithm());
     }
 }

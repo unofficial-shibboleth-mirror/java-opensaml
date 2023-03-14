@@ -388,6 +388,9 @@ public final class AlgorithmSupport {
     @Nonnull public static KeyPair generateKeyPair(@Nonnull final String algoURI, final int keyLength) 
             throws NoSuchAlgorithmException, NoSuchProviderException {
         final String jceAlgorithmName = getKeyAlgorithm(algoURI);
+        if (jceAlgorithmName == null) {
+            throw new NoSuchAlgorithmException("No JCE algorithm found for " + algoURI);
+        }
         return KeySupport.generateKeyPair(jceAlgorithmName, keyLength, null);
     }
 
@@ -405,6 +408,9 @@ public final class AlgorithmSupport {
             @Nonnull final AlgorithmParameterSpec paramSpec)
                     throws NoSuchAlgorithmException, NoSuchProviderException, InvalidAlgorithmParameterException {
         final String jceAlgorithmName = getKeyAlgorithm(algoURI);
+        if (jceAlgorithmName == null) {
+            throw new NoSuchAlgorithmException("No JCE algorithm found for " + algoURI);
+        }
         return KeySupport.generateKeyPair(jceAlgorithmName, paramSpec, null);
     }
 

@@ -19,12 +19,14 @@ package org.opensaml.xmlsec.signature;
 
 import java.math.BigInteger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.EncodingException;
 
 /**
@@ -33,10 +35,10 @@ import net.shibboleth.shared.codec.EncodingException;
 public interface CryptoBinary extends XSBase64Binary {
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "CryptoBinary";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "CryptoBinary";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**

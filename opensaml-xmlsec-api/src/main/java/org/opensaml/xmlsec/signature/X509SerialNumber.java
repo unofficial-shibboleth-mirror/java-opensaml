@@ -19,12 +19,14 @@ package org.opensaml.xmlsec.signature;
 
 import java.math.BigInteger;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.xml.XMLConstants;
 
 /**
@@ -33,17 +35,18 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface X509SerialNumber extends XMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509SerialNumber";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509SerialNumber";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "integer";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "integer";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
+    @Nonnull public static final QName TYPE_NAME =
+            new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
 
     /**
      * Gets the integer.

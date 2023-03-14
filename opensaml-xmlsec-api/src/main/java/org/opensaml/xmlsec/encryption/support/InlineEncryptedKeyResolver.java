@@ -27,6 +27,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 import net.shibboleth.shared.logic.Constraint;
 
@@ -65,11 +66,12 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         
         final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
         
-        if (encryptedData.getKeyInfo() == null) {
+        final KeyInfo keyInfo = encryptedData.getKeyInfo();
+        if (keyInfo == null) {
             return resolvedEncKeys;
         }
         
-        for (final EncryptedKey encKey : encryptedData.getKeyInfo().getEncryptedKeys()) {
+        for (final EncryptedKey encKey : keyInfo.getEncryptedKeys()) {
             if (matchRecipient(encKey.getRecipient())) {
                 resolvedEncKeys.add(encKey);
             }

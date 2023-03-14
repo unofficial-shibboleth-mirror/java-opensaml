@@ -29,13 +29,12 @@ import javax.annotation.Nullable;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Strings;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
@@ -50,7 +49,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SimpleRetrievalMethodEncryptedKeyResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SimpleRetrievalMethodEncryptedKeyResolver.class);
     
     /** Constructor. */
     public SimpleRetrievalMethodEncryptedKeyResolver() {
@@ -81,11 +80,12 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
         
         final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
 
-        if (encryptedData.getKeyInfo() == null) {
+        final KeyInfo keyInfo = encryptedData.getKeyInfo();
+        if (keyInfo == null) {
             return resolvedEncKeys;
         }
 
-        for (final RetrievalMethod rm : encryptedData.getKeyInfo().getRetrievalMethods()) {
+        for (final RetrievalMethod rm : keyInfo.getRetrievalMethods()) {
             if (!Objects.equals(rm.getType(), EncryptionConstants.TYPE_ENCRYPTED_KEY)) {
                 continue;
             } else if (rm.getTransforms() != null) {
@@ -112,7 +112,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
      */
     @Nullable protected EncryptedKey dereferenceURI(@Nonnull final RetrievalMethod rm) {
         final String uri = rm.getURI();
-        if (Strings.isNullOrEmpty(uri) || !uri.startsWith("#")) {
+        if (uri == null || !uri.startsWith("#")) {
             log.warn("EncryptedKey RetrievalMethod did not contain a same-document URI reference, cannot process");
             return null;
         }

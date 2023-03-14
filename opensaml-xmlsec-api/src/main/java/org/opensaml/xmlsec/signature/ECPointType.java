@@ -17,9 +17,12 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 
 /**
@@ -28,10 +31,10 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public interface ECPointType extends CryptoBinary {
     
     /** Element local name. */
-    public static final String TYPE_LOCAL_NAME = "ECPointType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ECPointType";
     
     /** Default element name. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
 }

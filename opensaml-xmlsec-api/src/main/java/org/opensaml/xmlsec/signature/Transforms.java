@@ -25,23 +25,25 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * XMLObject representing XML Digital Signature, version 20020212, Transforms element.
  */
 public interface Transforms extends XMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Transforms";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Transforms";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "TransformsType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "TransformsType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**

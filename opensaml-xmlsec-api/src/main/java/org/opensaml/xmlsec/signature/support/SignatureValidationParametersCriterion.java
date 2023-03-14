@@ -33,7 +33,7 @@ import org.opensaml.xmlsec.SignatureValidationParameters;
 public class SignatureValidationParametersCriterion implements Criterion {
     
     /** The SignatureValidationParameters instance. */
-    private SignatureValidationParameters params;
+    @Nonnull private SignatureValidationParameters params;
     
     /**
      * Constructor.

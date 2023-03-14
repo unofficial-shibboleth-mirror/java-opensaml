@@ -31,19 +31,19 @@ public interface SignableXMLObject extends XMLObject {
      * 
      * @return true iff this element is signed
      */
-    public boolean isSigned();
+    boolean isSigned();
     
     /**
      * Gets the Signature XMLObject.
      * 
      * @return the Signature XMLObject
      */
-    @Nullable public Signature getSignature();
+    @Nullable Signature getSignature();
     
     /**
      * Sets the Signature XMLObject.
      * 
      * @param newSignature the Signature XMLObject
      */
-    public void setSignature(@Nullable final Signature newSignature);
+    void setSignature(@Nullable final Signature newSignature);
 }

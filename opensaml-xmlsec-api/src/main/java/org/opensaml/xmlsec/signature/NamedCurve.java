@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 
 /**
@@ -30,21 +33,21 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public interface NamedCurve extends XMLObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NamedCurve";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NamedCurve";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "NamedCurveType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "NamedCurveType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** URI attribute name. */
-    public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
     
     /**
      * Get the URI attribute value.

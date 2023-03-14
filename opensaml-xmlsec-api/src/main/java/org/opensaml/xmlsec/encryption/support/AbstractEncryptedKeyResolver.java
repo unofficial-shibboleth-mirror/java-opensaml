@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -27,13 +26,17 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
+import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 import com.google.common.base.Strings;
 
@@ -43,11 +46,11 @@ import com.google.common.base.Strings;
 public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolver {
     
     /** Recipient attribute criteria against which to match.*/
-    private final Set<String> recipients;
+    @Nonnull private final Set<String> recipients;
     
     /** Constructor. */
     public AbstractEncryptedKeyResolver() {
-        recipients = Collections.emptySet();
+        recipients = CollectionSupport.emptySet();
     }
 
     /** 
@@ -56,7 +59,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * @param newRecipents set of recipients
      */
     public AbstractEncryptedKeyResolver(@Nullable final Set<String> newRecipents) {
-        recipients = Set.copyOf(StringSupport.normalizeStringCollection(newRecipents));
+        recipients = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(newRecipents));
     }
 
     /** 
@@ -67,9 +70,9 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
     public AbstractEncryptedKeyResolver(@Nullable final String recipient) {
         final String trimmed = StringSupport.trimOrNull(recipient);
         if (trimmed != null) {
-            recipients = Collections.singleton(trimmed);
+            recipients = CollectionSupport.singleton(trimmed);
         } else {
-            recipients = Collections.emptySet();
+            recipients = CollectionSupport.emptySet();
         }
     }
 
@@ -113,18 +116,17 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
         Constraint.isNotNull(encryptedKey, "EncryptedKey cannot be null");
         
-        if (encryptedKey.getCarriedKeyName() == null 
-                || Strings.isNullOrEmpty(encryptedKey.getCarriedKeyName().getValue()) ) {
+        final CarriedKeyName carried = encryptedKey.getCarriedKeyName();
+        if (carried == null || Strings.isNullOrEmpty(carried.getValue()) ) {
             return true;
-        } else if (encryptedData.getKeyInfo() == null 
-                || encryptedData.getKeyInfo().getKeyNames().isEmpty() ) {
+        }
+        
+        final KeyInfo keyInfo = encryptedData.getKeyInfo(); 
+        if (keyInfo == null || keyInfo.getKeyNames().isEmpty() ) {
             return false;
         }
         
-        final String keyCarriedKeyName = encryptedKey.getCarriedKeyName().getValue();
-        final List<String> dataKeyNames = KeyInfoSupport.getKeyNames(encryptedData.getKeyInfo());
-        
-        return dataKeyNames.contains(keyCarriedKeyName);
+        return KeyInfoSupport.getKeyNames(keyInfo).contains(carried.getValue());
     }
     
     /**
@@ -141,18 +143,19 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
         Constraint.isNotNull(encryptedKey, "EncryptedKey cannot be null");
 
-        if (encryptedKey.getReferenceList() == null 
-                || encryptedKey.getReferenceList().getDataReferences().isEmpty() ) {
+        final ReferenceList reflist = encryptedKey.getReferenceList();
+        if (reflist == null || reflist.getDataReferences().isEmpty() ) {
             return true;
         } else if (Strings.isNullOrEmpty(encryptedData.getID())) {
             return false;
         }
         
-        final List<DataReference> drlist = encryptedKey.getReferenceList().getDataReferences();
+        final List<DataReference> drlist = reflist.getDataReferences();
         for (final DataReference dr : drlist) {
-            if (Strings.isNullOrEmpty(dr.getURI()) || !dr.getURI().startsWith("#") ) {
+            final String druri = dr.getURI();
+            if (druri == null || !druri.startsWith("#") ) {
                 continue;
-            } else if (dr.resolveIDFromRoot(dr.getURI().substring(1)) == encryptedData) {
+            } else if (dr.resolveIDFromRoot(druri.substring(1)) == encryptedData) {
                 return true;
             }
         }

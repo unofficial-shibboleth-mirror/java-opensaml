@@ -25,7 +25,9 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A service class which is responsible for cryptographically computing and storing the 
@@ -56,10 +58,12 @@ public final class Signer {
      * @param signatures an ordered list of XMLObject to be signed
      * @throws SignatureException  thrown if there is an error computing the signature
      */
-    public static void signObjects(@Nonnull final List<Signature> signatures) throws SignatureException {
+    public static void signObjects(@Nonnull @NonnullElements final List<Signature> signatures)
+            throws SignatureException {
         final SignerProvider signer = getSignerProvider();
         LOG.debug("Using a signer of implementation: {}", signer.getClass().getName());
         for (final Signature signature : signatures) {
+            assert signature != null;
             signer.signObject(signature);
         }
     }
@@ -92,6 +96,7 @@ public final class Signer {
                 throw new SignatureException("Could not load a signer implementation via service API");
             }
         }
+        assert signerInstance != null;
         return signerInstance;
     }
 

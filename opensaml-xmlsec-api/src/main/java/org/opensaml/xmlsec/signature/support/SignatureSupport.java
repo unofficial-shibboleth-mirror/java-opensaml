@@ -28,6 +28,7 @@ import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
@@ -35,11 +36,11 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.SignableXMLObject;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -119,12 +120,13 @@ public final class SignatureSupport {
         if (signature.getSignatureAlgorithm() == null) {
             signature.setSignatureAlgorithm(parameters.getSignatureAlgorithm());
         }
-        if (signature.getSignatureAlgorithm() == null) {
+        final String alg = signature.getSignatureAlgorithm();
+        if (alg == null) {
             throw new SecurityException("No signature algorithm was available on the signing parameters or Signature");
         }
     
         // HMAC output length, if applicable
-        if (signature.getHMACOutputLength() == null &&  AlgorithmSupport.isHMAC(signature.getSignatureAlgorithm())) {
+        if (signature.getHMACOutputLength() == null &&  AlgorithmSupport.isHMAC(alg)) {
             signature.setHMACOutputLength(parameters.getSignatureHMACOutputLength());
         }
     
@@ -166,9 +168,10 @@ public final class SignatureSupport {
                     throw e;
                 }
             } else {
+                final Credential cred = signature.getSigningCredential();
                 LOG.info("No KeyInfoGenerator was supplied in parameters or resolveable " 
                         + "for credential type {}, No KeyInfo will be generated for Signature", 
-                        signature.getSigningCredential().getCredentialType().getName());
+                        cred != null ? cred.getCredentialType().getName() : "(null)");
             }
         }
     }
@@ -283,6 +286,9 @@ public final class SignatureSupport {
         SignatureSupport.prepareSignatureParams(signature, parameters);
 
         final Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signable);
+        if (marshaller == null) {
+            throw new MarshallingException("Unable to locate marshaller for " + signable.getClass());
+        }
         marshaller.marshall(signable);
 
         Signer.signObject(signature);

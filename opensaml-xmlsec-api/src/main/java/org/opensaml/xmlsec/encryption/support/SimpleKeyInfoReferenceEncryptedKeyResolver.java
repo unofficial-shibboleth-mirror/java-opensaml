@@ -31,9 +31,9 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Implementation of {@link EncryptedKeyResolver} which finds {@link EncryptedKey} elements by dereferencing
@@ -131,6 +131,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
             log.info("Reached depth limit for KeyInfoReferences");
         } else {
             for (final KeyInfoReference ref : keyInfo.getKeyInfoReferences()) {
+                assert ref != null;
                 for (final EncryptedKey encKey : resolveKeyInfo(dereferenceURI(ref), limit-1)) {
                     resolvedEncKeys.add(encKey);
                 }

@@ -17,9 +17,12 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Digital Signature, version 20020212, G element.
@@ -27,10 +30,10 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public interface G extends CryptoBinary {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "G";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "G";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
 }

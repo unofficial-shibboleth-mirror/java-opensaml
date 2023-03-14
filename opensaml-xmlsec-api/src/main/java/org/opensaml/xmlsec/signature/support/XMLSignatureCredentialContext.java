@@ -29,7 +29,7 @@ import org.opensaml.xmlsec.signature.Signature;
 public class XMLSignatureCredentialContext implements CredentialContext {
 
     /** The Signature element context. */ 
-    private final Signature sig;
+    @Nonnull private final Signature sig;
     
     /**
      * Constructor.

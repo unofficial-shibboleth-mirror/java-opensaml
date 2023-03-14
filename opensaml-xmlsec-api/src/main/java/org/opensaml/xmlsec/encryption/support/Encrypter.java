@@ -32,6 +32,7 @@ import javax.crypto.SecretKey;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.apache.xml.security.Init;
 import org.apache.xml.security.encryption.XMLCipher;
@@ -54,7 +55,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -93,19 +94,19 @@ import com.google.common.base.Strings;
 public class Encrypter {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(Encrypter.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(Encrypter.class);
 
     /** Unmarshaller used to create EncryptedData objects from DOM element. */
-    private final Unmarshaller encryptedDataUnmarshaller;
+    @Nonnull private final Unmarshaller encryptedDataUnmarshaller;
 
     /** Unmarshaller used to create EncryptedData objects from DOM element. */
-    private final Unmarshaller encryptedKeyUnmarshaller;
+    @Nonnull private final Unmarshaller encryptedKeyUnmarshaller;
 
     /** Builder instance for building KeyInfo objects. */
-    private final XMLSignatureBuilder<KeyInfo> keyInfoBuilder;
+    @Nonnull private final XMLSignatureBuilder<KeyInfo> keyInfoBuilder;
 
     /** The name of the JCA security provider to use. */
-    private String jcaProviderName;
+    @Nullable private String jcaProviderName;
 
     /**
      * Constructor.
@@ -113,15 +114,17 @@ public class Encrypter {
      */
     public Encrypter() {
         final UnmarshallerFactory unmarshallerFactory = XMLObjectProviderRegistrySupport.getUnmarshallerFactory();
-        encryptedDataUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedData.DEFAULT_ELEMENT_NAME);
-        encryptedKeyUnmarshaller = unmarshallerFactory.getUnmarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME);
-        Constraint.isNotNull(encryptedDataUnmarshaller, "EncryptedData unmarshaller not configured");
-        Constraint.isNotNull(encryptedKeyUnmarshaller, "EncryptedKey unmarshaller not configured");
+        encryptedDataUnmarshaller = Constraint.isNotNull(
+                unmarshallerFactory.getUnmarshaller(EncryptedData.DEFAULT_ELEMENT_NAME),
+                "EncryptedData unmarshaller not configured");
+        
+        encryptedKeyUnmarshaller = Constraint.isNotNull(
+                unmarshallerFactory.getUnmarshaller(EncryptedKey.DEFAULT_ELEMENT_NAME),
+                "EncryptedKey unmarshaller not configured");
 
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.<KeyInfo>getBuilderOrThrow(
                 KeyInfo.DEFAULT_ELEMENT_NAME);
-        Constraint.isNotNull(keyInfoBuilder, "KeyInfo builder not configured");
     }
 
     /**
@@ -273,6 +276,7 @@ public class Encrypter {
         final List<EncryptedKey> encKeys = new ArrayList<>();
 
         for (final KeyEncryptionParameters kekParam : kekParamsList) {
+            assert kekParam != null;
             encKeys.add(encryptKey(key, kekParam, containingDocument));
         }
         return encKeys;
@@ -295,16 +299,21 @@ public class Encrypter {
         checkParams(kekParams, false);
 
         final Key encryptionKey = CredentialSupport.extractEncryptionKey(kekParams.getEncryptionCredential());
+        if (encryptionKey == null) {
+            throw new EncryptionException("Unable to obtain encryption key from parameters");
+        }
 
-        final EncryptedKey encryptedKey = encryptKey(key, encryptionKey, kekParams.getAlgorithm(),
-                kekParams.getRSAOAEPParameters(), containingDocument);
+        final String alg = kekParams.getAlgorithm();
+        assert alg != null;
+        final EncryptedKey encryptedKey =
+                encryptKey(key, encryptionKey, alg, kekParams.getRSAOAEPParameters(), containingDocument);
 
-        if (kekParams.getKeyInfoGenerator() != null) {
-            final KeyInfoGenerator generator = kekParams.getKeyInfoGenerator();
-            log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: {}", generator
-                    .getClass().getName());
+        final KeyInfoGenerator keyInfoGenerator = kekParams.getKeyInfoGenerator();
+        if (keyInfoGenerator != null) {
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedKey using generator: {}",
+                    keyInfoGenerator.getClass().getName());
             try {
-                encryptedKey.setKeyInfo(generator.generate(kekParams.getEncryptionCredential()));
+                encryptedKey.setKeyInfo(keyInfoGenerator.generate(kekParams.getEncryptionCredential()));
             } catch (final SecurityException e) {
                 log.error("Error during EncryptedKey KeyInfo generation: {}", e.getMessage());
                 throw new EncryptionException("Error during EncryptedKey KeyInfo generation", e);
@@ -333,16 +342,10 @@ public class Encrypter {
             @Nonnull final String encryptionAlgorithmURI, @Nullable final RSAOAEPParameters rsaOAEPParams,
             @Nonnull final Document containingDocument) throws EncryptionException {
         
+        Constraint.isNotNull(targetKey, "Target key cannot be null");
+        Constraint.isNotNull(encryptionKey, "Encryption key cannot be null");
         Constraint.isNotNull(encryptionAlgorithmURI, "Encryption algorithm URI cannot be null");
         Constraint.isNotNull(containingDocument, "Containing document cannot be null");
-
-        if (targetKey == null) {
-            log.error("Target key for key encryption was null");
-            throw new EncryptionException("Target key was null");
-        } else if (encryptionKey == null) {
-            log.error("Encryption key for key encryption was null");
-            throw new EncryptionException("Encryption key was null");
-        }
 
         log.debug("Encrypting encryption key with algorithm: {}", encryptionAlgorithmURI);
         
@@ -363,6 +366,7 @@ public class Encrypter {
             } else {
                 apacheEncryptedKey = xmlCipher.encryptKey(containingDocument, targetKey);
             }
+            assert apacheEncryptedKey != null;
             postProcessApacheEncryptedKey(apacheEncryptedKey, targetKey, encryptionKey, encryptionAlgorithmURI,
                     containingDocument);
         } catch (final XMLEncryptionException e) {
@@ -372,6 +376,7 @@ public class Encrypter {
 
         try {
             final Element encKeyElement = xmlCipher.martial(containingDocument, apacheEncryptedKey);
+            assert encKeyElement != null;
             return (EncryptedKey) encryptedKeyUnmarshaller.unmarshall(encKeyElement);
         } catch (final UnmarshallingException e) {
             log.error("Error unmarshalling EncryptedKey element: {}", e.getMessage());
@@ -506,19 +511,13 @@ public class Encrypter {
             @Nonnull final Key encryptionKey, @Nonnull final String encryptionAlgorithmURI,
             final boolean encryptContentMode) throws EncryptionException {
 
-        if (xmlObject == null) {
-            log.error("XMLObject for encryption was null");
-            throw new EncryptionException("XMLObject cannot be null");
-        } else if (encryptionKey == null) {
-            log.error("Encryption key for key encryption was null");
-            throw new EncryptionException("Encryption key cannot be null");
-        }
         log.debug("Encrypting XMLObject using algorithm URI {} with content mode {}", encryptionAlgorithmURI,
                 encryptContentMode);
 
         checkAndMarshall(xmlObject);
 
         final Element targetElement = xmlObject.getDOM();
+        assert targetElement != null;
         final Document ownerDocument = targetElement.getOwnerDocument();
 
         final XMLCipher xmlCipher;
@@ -544,6 +543,7 @@ public class Encrypter {
 
         try {
             final Element encDataElement = xmlCipher.martial(ownerDocument, apacheEncryptedData);
+            assert encDataElement != null;
             return (EncryptedData) encryptedDataUnmarshaller.unmarshall(encDataElement);
         } catch (final UnmarshallingException e) {
             log.error("Error unmarshalling EncryptedData element: {}", e.getMessage());
@@ -571,6 +571,7 @@ public class Encrypter {
         checkParams(encParams, kekParamsList);
 
         final String encryptionAlgorithmURI = encParams.getAlgorithm();
+        assert encryptionAlgorithmURI != null;
         Key encryptionKey = CredentialSupport.extractEncryptionKey(encParams.getEncryptionCredential());
         if (encryptionKey == null) {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
@@ -578,14 +579,17 @@ public class Encrypter {
 
         final EncryptedData encryptedData =
                 encryptElement(xmlObject, encryptionKey, encryptionAlgorithmURI, encryptContentMode);
-        final Document ownerDocument = encryptedData.getDOM().getOwnerDocument();
+        final Element domNode = encryptedData.getDOM();
+        assert domNode != null;
+        final Document ownerDocument = domNode.getOwnerDocument();
+        assert ownerDocument != null;
 
-        if (encParams.getKeyInfoGenerator() != null) {
-            final KeyInfoGenerator generator = encParams.getKeyInfoGenerator();
-            log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}", generator
-                    .getClass().getName());
+        final KeyInfoGenerator keyInfoGenerator = encParams.getKeyInfoGenerator();
+        if (keyInfoGenerator != null) {
+            log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}",
+                    keyInfoGenerator.getClass().getName());
             try {
-                encryptedData.setKeyInfo(generator.generate(encParams.getEncryptionCredential()));
+                encryptedData.setKeyInfo(keyInfoGenerator.generate(encParams.getEncryptionCredential()));
             } catch (final SecurityException e) {
                 log.error("Error during EncryptedData KeyInfo generation: {}", e.getMessage());
                 throw new EncryptionException("Error during EncryptedData KeyInfo generation", e);
@@ -593,12 +597,14 @@ public class Encrypter {
         }
 
         for (final KeyEncryptionParameters kekParams : kekParamsList) {
+            assert kekParams != null;
             final EncryptedKey encryptedKey = encryptKey(encryptionKey, kekParams, ownerDocument);
-            if (encryptedData.getKeyInfo() == null) {
-                final KeyInfo keyInfo = keyInfoBuilder.buildObject();
+            KeyInfo keyInfo = encryptedData.getKeyInfo();
+            if (keyInfo == null) {
+                keyInfo = keyInfoBuilder.buildObject();
                 encryptedData.setKeyInfo(keyInfo);
             }
-            encryptedData.getKeyInfo().getEncryptedKeys().add(encryptedKey);
+            keyInfo.getEncryptedKeys().add(encryptedKey);
         }
 
         return encryptedData;
@@ -635,10 +641,7 @@ public class Encrypter {
      * @throws EncryptionException thrown if any parameters are missing or have invalid values
      */
     protected void checkParams(@Nonnull final DataEncryptionParameters encParams) throws EncryptionException {
-        if (encParams == null) {
-            log.error("Data encryption parameters are required");
-            throw new EncryptionException("Data encryption parameters are required");
-        } else if (Strings.isNullOrEmpty(encParams.getAlgorithm())) {
+        if (Strings.isNullOrEmpty(encParams.getAlgorithm())) {
             log.error("Data encryption algorithm URI is required");
             throw new EncryptionException("Data encryption algorithm URI is required");
         }

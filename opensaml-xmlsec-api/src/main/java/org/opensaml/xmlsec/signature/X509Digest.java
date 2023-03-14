@@ -18,11 +18,14 @@
 package org.opensaml.xmlsec.signature;
 
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Digital Signature 1.1 X509Digest element.
@@ -30,21 +33,21 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public interface X509Digest extends XSBase64Binary {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509Digest";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509Digest";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "X509DigestType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "X509DigestType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Algorithm attribute name. */
-    public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /**
      * Get the Algorithm URI attribute value.

@@ -29,13 +29,14 @@ import javax.annotation.Nullable;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An implementation of {@link EncryptedKeyResolver} which chains multiple other resolver implementations together,
@@ -57,7 +58,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     public ChainingEncryptedKeyResolver(
             @Nonnull @NonnullElements @ParameterName(name="encKeyResolvers")
             final List<EncryptedKeyResolver> encKeyResolvers) {
-        resolvers = List.copyOf(Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers cannot be null"));
+        resolvers = CollectionSupport.copyToList(
+                Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers cannot be null"));
     }
 
     /** 
@@ -71,7 +73,8 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
             final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable @ParameterName(name="recipients") final Set<String> recipients) {
         super(recipients);
-        resolvers = List.copyOf(Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers cannot be null"));
+        resolvers = CollectionSupport.copyToList(
+                Constraint.isNotNull(encKeyResolvers, "List of EncryptedKeyResolvers cannot be null"));
     }
     
     /** 
@@ -112,10 +115,10 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     public class ChainingIterable implements Iterable<EncryptedKey> {
 
         /** The chaining encrypted key resolver which owns this instance. */
-        private final ChainingEncryptedKeyResolver parent;
+        @Nonnull private final ChainingEncryptedKeyResolver parent;
 
         /** The EncryptedData context for resolution. */
-        private final EncryptedData encryptedData;
+        @Nonnull private final EncryptedData encryptedData;
 
         /**
          * Constructor.
@@ -130,7 +133,6 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         }
 
         /** {@inheritDoc} */
-        @Override
         @Nonnull public Iterator<EncryptedKey> iterator() {
             return new ChainingIterator(parent, encryptedData);
         }
@@ -144,16 +146,17 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
     public class ChainingIterator implements Iterator<EncryptedKey> {
 
         /** Class logger. */
-        private final Logger log = LoggerFactory.getLogger(ChainingEncryptedKeyResolver.ChainingIterator.class);
+        @Nonnull private final Logger log =
+                LoggerFactory.getLogger(ChainingEncryptedKeyResolver.ChainingIterator.class);
 
         /** The chaining encrypted key resolver which owns this instance. */
-        private final ChainingEncryptedKeyResolver parent;
+        @Nonnull private final ChainingEncryptedKeyResolver parent;
 
         /** The EncryptedData context for resolution. */
-        private final EncryptedData encryptedData;
+        @Nonnull private final EncryptedData encryptedData;
 
         /** The iterator over resolvers in the chain. */
-        private final Iterator<EncryptedKeyResolver> resolverIterator;
+        @Nonnull private final Iterator<EncryptedKeyResolver> resolverIterator;
 
         /** The iterator over EncryptedKey instances from the current resolver. */
         private Iterator<EncryptedKey> keyIterator;
@@ -162,7 +165,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         private EncryptedKeyResolver currentResolver;
 
         /** The next encrypted key that is safe to return. */
-        private EncryptedKey nextKey;
+        @Nullable private EncryptedKey nextKey;
 
         /**
          * Constructor.

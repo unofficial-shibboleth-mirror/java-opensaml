@@ -17,9 +17,12 @@
 
 package org.opensaml.xmlsec.signature;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 
 /**
@@ -28,10 +31,10 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public interface PublicKey extends ECPointType {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicKey";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicKey";
     
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
 
 }

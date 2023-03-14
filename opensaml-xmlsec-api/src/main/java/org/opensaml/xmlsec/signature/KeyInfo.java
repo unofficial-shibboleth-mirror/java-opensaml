@@ -28,25 +28,27 @@ import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /** XMLObject representing XML Digital Signature, version 20020212, KeyInfo element. */
 public interface KeyInfo extends XMLObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfo";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfo";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "KeyInfoType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyInfoType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /** Id attribute name. */
-    public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
 
     /**
      * Get the Id attribute value.

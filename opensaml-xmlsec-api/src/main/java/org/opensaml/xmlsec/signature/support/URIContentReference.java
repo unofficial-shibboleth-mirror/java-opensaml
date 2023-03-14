@@ -28,9 +28,8 @@ import org.apache.xml.security.signature.XMLSignatureException;
 import org.apache.xml.security.transforms.TransformationException;
 import org.apache.xml.security.transforms.Transforms;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -43,16 +42,16 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class URIContentReference implements ConfigurableContentReference, TransformsConfigurableContentReference {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(URIContentReference.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(URIContentReference.class);
 
     /** Element reference ID. */
-    private final String referenceID;
+    @Nullable private final String referenceID;
 
     /** Algorithm used to digest the content . */
-    private String digestAlgorithm;
+    @Nullable private String digestAlgorithm;
 
     /** Transforms applied to the content. */
-    private final List<String> transforms;
+    @Nonnull private final List<String> transforms;
 
     /**
      * Constructor. The anchor designator (#) must not be included in the ID.
@@ -82,9 +81,8 @@ public class URIContentReference implements ConfigurableContentReference, Transf
     }
 
     /** {@inheritDoc}. */
-    public void setDigestAlgorithm(@Nonnull final String newAlgorithm) {
-        digestAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(newAlgorithm),
-                "Digest algorithm cannot be empty or null");
+    public void setDigestAlgorithm(@Nullable final String newAlgorithm) {
+        digestAlgorithm = StringSupport.trimOrNull(newAlgorithm);
     }
 
     /** {@inheritDoc} */
@@ -101,4 +99,5 @@ public class URIContentReference implements ConfigurableContentReference, Transf
             log.error("Error while adding content reference", e);
         }
     }
+    
 }

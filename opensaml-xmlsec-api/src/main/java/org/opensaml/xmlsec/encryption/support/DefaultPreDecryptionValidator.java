@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.encryption.support;
 
 import javax.annotation.Nonnull;
 
+import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.EncryptedType;
@@ -30,13 +31,13 @@ public class DefaultPreDecryptionValidator implements PreDecryptionValidator {
 
     /** {@inheritDoc} */
     @Override
-    public void validate(EncryptedData encryptedData) throws PreDecryptionValidationException {
+    public void validate(@Nonnull final EncryptedData encryptedData) throws PreDecryptionValidationException {
         performCommonValidation(encryptedData);
     }
 
     /** {@inheritDoc} */
     @Override
-    public void validate(EncryptedKey encryptedKey) throws PreDecryptionValidationException {
+    public void validate(@Nonnull final EncryptedKey encryptedKey) throws PreDecryptionValidationException {
         performCommonValidation(encryptedKey);
     }
 
@@ -50,13 +51,14 @@ public class DefaultPreDecryptionValidator implements PreDecryptionValidator {
     protected void performCommonValidation(@Nonnull final EncryptedType encryptedType)
             throws PreDecryptionValidationException {
         
-        if (encryptedType.getCipherData() == null) {
+        final CipherData data = encryptedType.getCipherData();
+        if (data == null) {
             throw new PreDecryptionValidationException(
                     String.format("%s contains no CipherData child element, which is mandatory",
                             encryptedType.getClass().getSimpleName()));
         }
 
-        if (encryptedType.getCipherData().getCipherReference() != null) {
+        if (data.getCipherReference() != null) {
             throw new PreDecryptionValidationException(
                     String.format("%s contains a CipherReference, which is not allowed",
                             encryptedType.getClass().getSimpleName()));
