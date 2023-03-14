@@ -19,6 +19,8 @@ package org.opensaml.core.config;
 
 import java.util.Properties;
 
+import javax.annotation.Nullable;
+
 /**
  * An interface for a component which exposes a property set from a source.
  */
@@ -27,8 +29,8 @@ public interface ConfigurationPropertiesSource {
     /**
      * Get the property set exposed by the source.
      * 
-     * @return the properties set
+     * @return the properties set or null
      */
-    public Properties getProperties();
+    @Nullable Properties getProperties();
     
 }

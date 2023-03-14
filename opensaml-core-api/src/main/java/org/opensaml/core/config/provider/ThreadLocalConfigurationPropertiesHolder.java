@@ -20,6 +20,7 @@ package org.opensaml.core.config.provider;
 import java.util.Properties;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * A container class for holding a {link {@link ThreadLocal} copy of a {@link Properties} instance.
@@ -37,7 +38,7 @@ public final class ThreadLocalConfigurationPropertiesHolder {
      * 
      * @return the thread-local Properties
      */
-    public static Properties getProperties() {
+    @Nullable public static Properties getProperties() {
         return properties.get();
     }
     
@@ -46,7 +47,7 @@ public final class ThreadLocalConfigurationPropertiesHolder {
      * 
      * @param newProperties the new thread-local Properties instance
      */
-    public static void setProperties(final Properties newProperties) {
+    public static void setProperties(@Nullable final Properties newProperties) {
         properties.set(newProperties);
     }
     

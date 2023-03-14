@@ -23,7 +23,8 @@ import java.util.ServiceLoader;
 import javax.annotation.Nonnull;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Service which initializes OpenSAML library modules using the Java Services API.
@@ -67,7 +68,7 @@ public class InitializationService {
      * 
      * @return the service loader instance to use
      */
-    private static ServiceLoader<Initializer> getServiceLoader() {
+    @Nonnull private static ServiceLoader<Initializer> getServiceLoader() {
         // TODO ideally would store off loader and reuse on subsequent calls,
         // so inited state in providers would be persisted across calls,
         // avoiding re-initing problems

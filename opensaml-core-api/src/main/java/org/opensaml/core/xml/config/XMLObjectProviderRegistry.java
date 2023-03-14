@@ -33,9 +33,10 @@ import org.opensaml.core.xml.io.MarshallerFactory;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ParserPool;
 
 /** Configuration registry component for registering and retrieving implementation instances 
@@ -51,29 +52,29 @@ import net.shibboleth.shared.xml.ParserPool;
 public class XMLObjectProviderRegistry {
     
     /** Default object provider. */
-    private static QName defaultProvider = new QName(XMLConfigurator.XMLTOOLING_CONFIG_NS,
+    @Nonnull private static QName defaultProvider = new QName(XMLConfigurator.XMLTOOLING_CONFIG_NS,
             XMLConfigurator.XMLTOOLING_DEFAULT_OBJECT_PROVIDER);
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(XMLObjectProviderRegistry.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(XMLObjectProviderRegistry.class);
 
     /** Object provider configuration elements indexed by QName. */
     @Nonnull private final Map<QName, Element> configuredObjectProviders;
 
     /** Configured XMLObject builder factory. */
-    private XMLObjectBuilderFactory builderFactory;
+    @Nonnull private XMLObjectBuilderFactory builderFactory;
 
     /** Configured XMLObject marshaller factory. */
-    private MarshallerFactory marshallerFactory;
+    @Nonnull private MarshallerFactory marshallerFactory;
 
     /** Configured XMLObject unmarshaller factory. */
-    private UnmarshallerFactory unmarshallerFactory;
+    @Nonnull private UnmarshallerFactory unmarshallerFactory;
 
     /** Configured set of attribute QNames which have been globally registered as having an ID type. */
     @Nonnull private final Set<QName> idAttributeNames;
 
     /** Configured parser pool. */
-    private ParserPool parserPool;
+    @Nullable private ParserPool parserPool;
 
     /** Constructor. */
     public XMLObjectProviderRegistry() {
@@ -91,7 +92,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @return the currently ParserPool
      */
-    public ParserPool getParserPool() {
+    @Nullable public ParserPool getParserPool() {
         return parserPool;
     }
 
@@ -110,7 +111,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @return the QName for the default object provider
      */
-    public QName getDefaultProviderQName() {
+    @Nonnull public QName getDefaultProviderQName() {
         return defaultProvider;
     }
 
@@ -149,7 +150,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @return the XMLObject builder factory
      */
-    public XMLObjectBuilderFactory getBuilderFactory() {
+    @Nonnull public XMLObjectBuilderFactory getBuilderFactory() {
         return builderFactory;
     }
 
@@ -158,7 +159,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @return the XMLObject marshaller factory
      */
-    public MarshallerFactory getMarshallerFactory() {
+    @Nonnull public MarshallerFactory getMarshallerFactory() {
         return marshallerFactory;
     }
 
@@ -168,7 +169,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @return the XMLObject unmarshaller factory
      */
-    public UnmarshallerFactory getUnmarshallerFactory() {
+    @Nonnull public UnmarshallerFactory getUnmarshallerFactory() {
         return unmarshallerFactory;
     }
 
@@ -177,7 +178,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @param attributeName the QName of the ID attribute to be registered
      */
-    public void registerIDAttribute(final QName attributeName) {
+    public void registerIDAttribute(@Nonnull final QName attributeName) {
         if (!idAttributeNames.contains(attributeName)) {
             idAttributeNames.add(attributeName);
         }
@@ -188,7 +189,7 @@ public class XMLObjectProviderRegistry {
      * 
      * @param attributeName the QName of the ID attribute to be de-registered
      */
-    public void deregisterIDAttribute(final QName attributeName) {
+    public void deregisterIDAttribute(@Nonnull final QName attributeName) {
         if (idAttributeNames.contains(attributeName)) {
             idAttributeNames.remove(attributeName);
         }
@@ -200,7 +201,7 @@ public class XMLObjectProviderRegistry {
      * @param attributeName the QName of the attribute to be checked for ID type.
      * @return true if attribute is registered as having an ID type.
      */
-    public boolean isIDAttribute(final QName attributeName) {
+    public boolean isIDAttribute(@Nonnull final QName attributeName) {
         return idAttributeNames.contains(attributeName);
     }
     

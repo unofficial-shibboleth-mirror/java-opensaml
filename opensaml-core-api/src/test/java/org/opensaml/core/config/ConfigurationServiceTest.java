@@ -38,7 +38,7 @@ public class ConfigurationServiceTest {
         ConfigurationService.register(BasicTestConfig.class, config);
         
         Assert.assertNotNull(ConfigurationService.get(BasicTestConfig.class));
-        BasicTestConfig retrievedConfig = ConfigurationService.get(BasicTestConfig.class);
+        BasicTestConfig retrievedConfig = ConfigurationService.ensure(BasicTestConfig.class);
         Assert.assertEquals(retrievedConfig.getValue(), "test-value");
         
         ConfigurationService.deregister(BasicTestConfig.class);
@@ -58,7 +58,7 @@ public class ConfigurationServiceTest {
         ConfigurationService.register(TestConfig.class, config);
         
         Assert.assertNotNull(ConfigurationService.get(TestConfig.class));
-        TestConfig retrievedConfig = ConfigurationService.get(TestConfig.class);
+        TestConfig retrievedConfig = ConfigurationService.ensure(TestConfig.class);
         Assert.assertEquals(retrievedConfig.getValue(), "test-value");
         
         ConfigurationService.deregister(TestConfig.class);

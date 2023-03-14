@@ -26,11 +26,11 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.core.config.provider.MapBasedConfiguration;
 import org.opensaml.core.config.provider.SystemPropertyConfigurationPropertiesSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A service which provides for the registration, retrieval and deregistration of objects
@@ -59,10 +59,10 @@ import org.slf4j.LoggerFactory;
 public class ConfigurationService {
     
     /** The default storage partition name, if none is specified using configuration properties. */
-    @Nonnull public static final String DEFAULT_PARTITION_NAME = "default";
+    @Nonnull @NotEmpty public static final String DEFAULT_PARTITION_NAME = "default";
     
     /** The configuration property name for the storage partition name to use. */
-    @Nonnull public static final String PROPERTY_PARTITION_NAME = "opensaml.config.partitionName";
+    @Nonnull @NotEmpty public static final String PROPERTY_PARTITION_NAME = "opensaml.config.partitionName";
     
     /** Logger. */
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(ConfigurationService.class);
@@ -72,7 +72,7 @@ public class ConfigurationService {
         ServiceLoader.load(ConfigurationPropertiesSource.class) ;
     
     /** The configuration instance to use. */
-    private static Configuration configuration;
+    @Nullable private static Configuration configuration;
     
     /** Constructor. */
     protected ConfigurationService() { }
@@ -86,11 +86,28 @@ public class ConfigurationService {
      * 
      * @return the instance of the registered configuration object, or null
      */
-    public static <T extends Object> T get(@Nonnull final Class<T> configClass) {
+    @Nullable public static <T extends Object> T get(@Nonnull final Class<T> configClass) {
         final String partitionName = getPartitionName();
         return getConfiguration().get(configClass, partitionName);
     }
-    
+
+    /**
+     * Obtain the registered configuration instance, raising an exception if absent.
+     * 
+     * @param <T> the type of configuration being retrieved
+     * 
+     * @param configClass the configuration class identifier
+     * 
+     * @return the instance of the registered configuration object
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static <T extends Object> T ensure(@Nonnull final Class<T> configClass) {
+        final String partitionName = getPartitionName();
+        return Constraint.isNotNull(getConfiguration().get(configClass, partitionName),
+                "Configuration instance of type " + configClass.getName() + " was unavailable");
+    }
+
     /**
      * Register a configuration instance.
      * 
@@ -115,7 +132,7 @@ public class ConfigurationService {
      * 
      * @return the configuration object instance which was deregistered, or null
      */
-    public static <T extends Object> T deregister(@Nonnull final Class<T> configClass) {
+    @Nullable public static <T extends Object> T deregister(@Nonnull final Class<T> configClass) {
         final String partitionName = getPartitionName();
         return getConfiguration().deregister(configClass, partitionName);
     }
@@ -197,6 +214,7 @@ public class ConfigurationService {
             partitionName = DEFAULT_PARTITION_NAME;
         }
         LOG.trace("Resolved effective configuration partition name '{}'", partitionName);
+        assert partitionName != null;
         return partitionName;
     }
 
@@ -224,6 +242,8 @@ public class ConfigurationService {
                 }
             }
         }
+        
+        assert configuration != null;
         return configuration;
     }
     

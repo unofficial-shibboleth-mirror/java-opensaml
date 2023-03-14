@@ -20,10 +20,13 @@ package org.opensaml.core.xml.config;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Reads in an XML configuration and configures the XMLTooling library accordingly.
@@ -31,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractXMLObjectProviderInitializer implements Initializer {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectProviderInitializer.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractXMLObjectProviderInitializer.class);
     
     /** {@inheritDoc} */
     public void init() throws InitializationException {
@@ -72,6 +75,6 @@ public abstract class AbstractXMLObjectProviderInitializer implements Initialize
      * 
      * @return the list of configuration file resources
      */
-    protected abstract String[] getConfigResources();
+    @Nonnull protected abstract String[] getConfigResources();
 
 }

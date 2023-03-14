@@ -18,13 +18,15 @@
 package org.opensaml.core.xml.config;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.impl.BasicParserPool;
+
+import javax.annotation.Nonnull;
 
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An initializer for the global parser pool held by the {@link XMLObjectProviderRegistry}.
@@ -47,7 +49,7 @@ import org.slf4j.LoggerFactory;
 public class GlobalParserPoolInitializer implements Initializer {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(GlobalParserPoolInitializer.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(GlobalParserPoolInitializer.class);
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {

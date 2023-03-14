@@ -45,7 +45,7 @@ public class XMLObjectProviderRegistrySupport {
      * @return the currently ParserPool
      */
     @Nullable public static ParserPool getParserPool() {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class).getParserPool();
+        return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getParserPool();
     }
 
     /**
@@ -54,7 +54,7 @@ public class XMLObjectProviderRegistrySupport {
      * @param newParserPool the new ParserPool instance to configure
      */
     public static void setParserPool(@Nullable final ParserPool newParserPool) {
-        ConfigurationService.get(XMLObjectProviderRegistry.class).setParserPool(newParserPool);
+        ConfigurationService.ensure(XMLObjectProviderRegistry.class).setParserPool(newParserPool);
     }
     
     /**
@@ -64,7 +64,7 @@ public class XMLObjectProviderRegistrySupport {
      * @return the QName for the default object provider
      */
     public static QName getDefaultProviderQName() {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class).getDefaultProviderQName();
+        return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getDefaultProviderQName();
     }
 
     /**
@@ -79,7 +79,7 @@ public class XMLObjectProviderRegistrySupport {
     public static void registerObjectProvider(@Nonnull final QName providerName,
             @Nonnull final XMLObjectBuilder<?> builder, @Nonnull final Marshaller marshaller,
             @Nonnull final Unmarshaller unmarshaller) {
-        final XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        final XMLObjectProviderRegistry registry = ConfigurationService.ensure(XMLObjectProviderRegistry.class);
         
         registry.getBuilderFactory().registerBuilder(providerName, builder);
         registry.getMarshallerFactory().registerMarshaller(providerName, marshaller);
@@ -92,7 +92,7 @@ public class XMLObjectProviderRegistrySupport {
      * @param key the key of the builder, marshaller, and unmarshaller to be removed
      */
     public static void deregisterObjectProvider(@Nonnull final QName key) {
-        final XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        final XMLObjectProviderRegistry registry = ConfigurationService.ensure(XMLObjectProviderRegistry.class);
         registry.getBuilderFactory().deregisterBuilder(key);
         registry.getMarshallerFactory().deregisterMarshaller(key);
         registry.getUnmarshallerFactory().deregisterUnmarshaller(key);
@@ -104,7 +104,7 @@ public class XMLObjectProviderRegistrySupport {
      * @return the XMLObject builder factory
      */
     public static XMLObjectBuilderFactory getBuilderFactory() {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class).getBuilderFactory();
+        return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getBuilderFactory();
     }
 
     /**
@@ -113,7 +113,7 @@ public class XMLObjectProviderRegistrySupport {
      * @return the XMLObject marshaller factory
      */
     public static MarshallerFactory getMarshallerFactory() {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class).getMarshallerFactory();
+        return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getMarshallerFactory();
     }
 
     /**
@@ -123,7 +123,7 @@ public class XMLObjectProviderRegistrySupport {
      * @return the XMLObject unmarshaller factory
      */
     public static UnmarshallerFactory getUnmarshallerFactory() {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class).getUnmarshallerFactory();
+        return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getUnmarshallerFactory();
     }
 
     /**
@@ -131,8 +131,8 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @param attributeName the QName of the ID attribute to be registered
      */
-    public static void registerIDAttribute(final QName attributeName) {
-        ConfigurationService.get(XMLObjectProviderRegistry.class).registerIDAttribute(attributeName);
+    public static void registerIDAttribute(@Nonnull final QName attributeName) {
+        ConfigurationService.ensure(XMLObjectProviderRegistry.class).registerIDAttribute(attributeName);
     }
 
     /**
@@ -140,8 +140,8 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @param attributeName the QName of the ID attribute to be de-registered
      */
-    public static void deregisterIDAttribute(final QName attributeName) {
-        ConfigurationService.get(XMLObjectProviderRegistry.class).deregisterIDAttribute(attributeName);
+    public static void deregisterIDAttribute(@Nonnull final QName attributeName) {
+        ConfigurationService.ensure(XMLObjectProviderRegistry.class).deregisterIDAttribute(attributeName);
     }
 
     /**
@@ -150,8 +150,8 @@ public class XMLObjectProviderRegistrySupport {
      * @param attributeName the QName of the attribute to be checked for ID type.
      * @return true if attribute is registered as having an ID type.
      */
-    public static boolean isIDAttribute(final QName attributeName) {
-        return ConfigurationService.get(XMLObjectProviderRegistry.class).isIDAttribute(attributeName);
+    public static boolean isIDAttribute(@Nonnull final QName attributeName) {
+        return ConfigurationService.ensure(XMLObjectProviderRegistry.class).isIDAttribute(attributeName);
     }
 
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.core.config;
 
+import javax.annotation.Nullable;
+
 /**
  * A component which provides for the registration, retrieval and deregistration of objects
  * related to library module configuration.
@@ -38,7 +40,7 @@ public interface Configuration {
      * 
      * @return the instance of the registered configuration interface, or null
      */
-    public <T extends Object> T get(Class<T> configClass, String partitionName);
+    @Nullable public <T extends Object> T get(Class<T> configClass, String partitionName);
     
     /**
      * Register a configuration instance.
@@ -62,6 +64,6 @@ public interface Configuration {
      * 
      * @return the configuration implementation instance which was deregistered, or null
      */
-    public <T extends Object> T deregister(Class<T> configClass, String partitionName);
+    @Nullable public <T extends Object> T deregister(Class<T> configClass, String partitionName);
 
 }

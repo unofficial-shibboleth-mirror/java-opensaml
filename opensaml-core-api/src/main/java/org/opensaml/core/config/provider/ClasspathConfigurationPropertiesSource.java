@@ -22,10 +22,13 @@ import java.io.InputStream;
 import java.util.Properties;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A configuration properties source implementation which obtains the properties set
@@ -34,19 +37,19 @@ import org.slf4j.LoggerFactory;
 public class ClasspathConfigurationPropertiesSource implements ConfigurationPropertiesSource {
     
     /** Configuration properties resource name. */
-    @Nonnull private static final String RESOURCE_NAME = "opensaml-config.properties";
+    @Nonnull @NotEmpty private static final String RESOURCE_NAME = "opensaml-config.properties";
     
     /** Logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(ClasspathConfigurationPropertiesSource.class);
 
     /** Cache of properties. */
-    private Properties cachedProperties;
+    @Nullable private Properties cachedProperties;
     
     /** {@inheritDoc} */
-    public Properties getProperties() {
+    @Nullable public Properties getProperties() {
         synchronized (this) {
             if (cachedProperties == null) {
-                try (InputStream is =
+                try (final InputStream is =
                         Thread.currentThread().getContextClassLoader().getResourceAsStream(RESOURCE_NAME)) {
                     // NOTE: in this invocation style via class loader, resource should NOT have a leading slash
                     // because all names are absolute. This is unlike Class.getResourceAsStream 

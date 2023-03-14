@@ -20,6 +20,9 @@ package org.opensaml.core.config.provider;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.config.Configuration;
 
 /**
@@ -29,7 +32,7 @@ import org.opensaml.core.config.Configuration;
 public class MapBasedConfiguration implements Configuration {
     
     /** Storage for registered configuration objects. */
-    private Map<String, Map<String, Object>> storage;
+    @Nonnull private final Map<String, Map<String, Object>> storage;
     
     /** Constructor. */
     public MapBasedConfiguration() {
@@ -46,7 +49,7 @@ public class MapBasedConfiguration implements Configuration {
      * 
      * @return the instance of the registered configuration interface, or null
      */
-    public <T extends Object> T get(final Class<T> configClass, final String partitionName) {
+    @Nullable public <T extends Object> T get(final Class<T> configClass, final String partitionName) {
         final Map<String, Object> partition = getPartition(partitionName);
         return configClass.cast(partition.get(configClass.getName()));
     }
@@ -77,7 +80,7 @@ public class MapBasedConfiguration implements Configuration {
      * 
      * @return the configuration implementation instance which was deregistered, or null
      */
-    public <T extends Object> T deregister(final Class<T> configClass, final String partitionName) {
+    @Nullable public <T extends Object> T deregister(final Class<T> configClass, final String partitionName) {
         final Map<String, Object> partition = getPartition(partitionName);
         synchronized (partition) {
             final T old = configClass.cast(partition.get(configClass.getName()));
@@ -93,7 +96,7 @@ public class MapBasedConfiguration implements Configuration {
      * 
      * @return the Map corresponding to the partition name.  A new empty Map will be created if necessary
      */
-    private synchronized Map<String, Object> getPartition(final String partitionName) {
+    @Nonnull private synchronized Map<String, Object> getPartition(final String partitionName) {
         Map<String, Object> partition = storage.get(partitionName);
         if (partition == null) {
             partition = new ConcurrentHashMap<>();

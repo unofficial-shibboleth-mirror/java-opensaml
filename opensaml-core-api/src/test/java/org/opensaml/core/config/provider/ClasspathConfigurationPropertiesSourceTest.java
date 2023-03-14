@@ -51,8 +51,8 @@ public class ClasspathConfigurationPropertiesSourceTest {
     @Test
     public void testSource() {
         source = new ClasspathConfigurationPropertiesSource();
-        Properties props = source.getProperties();
-        Assert.assertNotNull(props, "Properties was null");
+        final Properties props = source.getProperties();
+        assert props != null;
         
         Assert.assertEquals(props.getProperty("opensaml.config.partitionName"), "myapp", "Incorrect property value");
         Assert.assertEquals(props.getProperty("opensaml.initializer.foo.flag"), "true", "Incorrect property value");

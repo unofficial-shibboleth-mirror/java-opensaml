@@ -24,10 +24,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -44,10 +47,10 @@ public abstract class AbstractFilesystemConfigurationPropertiesSource implements
     private Properties cachedProperties;
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AbstractFilesystemConfigurationPropertiesSource.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AbstractFilesystemConfigurationPropertiesSource.class);
     
     /** {@inheritDoc} */
-    public Properties getProperties() {
+    @Nullable public Properties getProperties() {
         final String fileName = StringSupport.trimOrNull(getFilename());
         if (fileName == null) {
             log.warn("No filename was supplied, unable to load properties");
@@ -82,5 +85,5 @@ public abstract class AbstractFilesystemConfigurationPropertiesSource implements
      * 
      * @return the absolute filename
      */
-    protected abstract String getFilename();
+    @Nullable protected abstract String getFilename();
 }

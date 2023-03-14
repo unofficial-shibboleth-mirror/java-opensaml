@@ -18,6 +18,7 @@
 package org.opensaml.core.config.provider;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
@@ -33,7 +34,7 @@ public class SystemPropertyFilesystemConfigurationPropertiesSource extends
 
     /** {@inheritDoc} */
     @Override
-    protected String getFilename() {
+    @Nullable protected String getFilename() {
         return System.getProperty(PROPERTY_FILE_NAME);
     }
     

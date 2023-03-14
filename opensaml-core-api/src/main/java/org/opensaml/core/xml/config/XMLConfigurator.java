@@ -35,6 +35,7 @@ import javax.xml.validation.SchemaFactory;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.AttributeSupport;
 import net.shibboleth.shared.xml.ElementSupport;
@@ -47,7 +48,7 @@ import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -75,10 +76,10 @@ public class XMLConfigurator {
     @Nonnull private final Logger log = LoggerFactory.getLogger(XMLConfigurator.class);
 
     /** Pool of parsers used to read and validate configurations. */
-    private BasicParserPool parserPool;
+    @Nonnull private BasicParserPool parserPool;
 
     /** Schema used to validate configuration files. */
-    private Schema configurationSchema;
+    @Nonnull private Schema configurationSchema;
 
     /** The provider registry instance to use. */
     @Nonnull private final XMLObjectProviderRegistry registry;
@@ -225,7 +226,7 @@ public class XMLConfigurator {
      * 
      * @throws XMLConfigurationException thrown if the configuration elements are invalid
      */
-    protected void initializeObjectProviders(final Element objectProviders) throws XMLConfigurationException {
+    protected void initializeObjectProviders(@Nonnull final Element objectProviders) throws XMLConfigurationException {
 
         final NodeList providerList = objectProviders.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "ObjectProvider");
         for (int i = 0; i < providerList.getLength(); i++) {
@@ -245,14 +246,17 @@ public class XMLConfigurator {
                 
                 Element configuration =
                         (Element) objectProvider.getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "BuilderClass").item(0);
+                assert configuration != null;
                 final XMLObjectBuilder<?> builder = (XMLObjectBuilder<?>) createClassInstance(configuration);
 
                 configuration = (Element) objectProvider
                         .getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "MarshallingClass").item(0);
+                assert configuration != null;
                 final Marshaller marshaller = (Marshaller) createClassInstance(configuration);
 
                 configuration = (Element) objectProvider
                         .getElementsByTagNameNS(XMLTOOLING_CONFIG_NS, "UnmarshallingClass").item(0);
+                assert configuration != null;
                 final Unmarshaller unmarshaller = (Unmarshaller) createClassInstance(configuration);
 
                 getRegistry().registerObjectProvider(objectProviderName, builder, marshaller, unmarshaller);
@@ -276,7 +280,7 @@ public class XMLConfigurator {
      * 
      * @throws XMLConfigurationException thrown if there is a problem with a parsing or registering the ID attribute
      */
-    protected void initializeIDAttributes(final Element idAttributesElement) throws XMLConfigurationException {
+    protected void initializeIDAttributes(@Nonnull final Element idAttributesElement) throws XMLConfigurationException {
         Element idAttributeElement;
         QName attributeQName;
 
@@ -285,6 +289,7 @@ public class XMLConfigurator {
 
         for (int i = 0; i < idAttributeList.getLength(); i++) {
             idAttributeElement = (Element) idAttributeList.item(i);
+            assert idAttributeElement != null;
             attributeQName = ElementSupport.getElementContentAsQName(idAttributeElement);
             if (attributeQName == null) {
                 log.debug("IDAttribute element was empty, no registration performed");
@@ -304,11 +309,12 @@ public class XMLConfigurator {
      * 
      * @throws XMLConfigurationException thrown if the class can not be instantiated
      */
-    protected Object createClassInstance(final Element configuration) throws XMLConfigurationException {
+    @Nonnull protected Object createClassInstance(@Nonnull final Element configuration)
+            throws XMLConfigurationException {
         final String className = StringSupport.trimOrNull(configuration.getAttributeNS(null, "className"));
 
         if (className == null) {
-            return null;
+            throw new XMLConfigurationException("No className attribute in configuration element");
         }
 
         try {
@@ -336,7 +342,7 @@ public class XMLConfigurator {
      * 
      * @throws XMLConfigurationException thrown if the configuration is not schema-valid
      */
-    protected void validateConfiguration(final Document configuration) throws XMLConfigurationException {
+    protected void validateConfiguration(@Nonnull final Document configuration) throws XMLConfigurationException {
         try {
             final javax.xml.validation.Validator schemaValidator = configurationSchema.newValidator();
             schemaValidator.validate(new DOMSource(configuration));
@@ -357,7 +363,8 @@ public class XMLConfigurator {
      * 
      * @return the registry instance
      */
-    protected XMLObjectProviderRegistry getRegistry() {
+    @Nonnull protected XMLObjectProviderRegistry getRegistry() {
         return registry;
     }
+    
 }

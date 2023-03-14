@@ -35,7 +35,7 @@ public class ThreadLocalConfigurationPropertiesSourceTest {
     
     @BeforeMethod
     protected void setUp() throws Exception {
-        Properties props = new Properties();
+        final Properties props = new Properties();
         
         props.setProperty("opensaml.config.partitionName", "myapp-threadlocal");
         props.setProperty("opensaml.initializer.foo.flag", "false");
@@ -54,8 +54,8 @@ public class ThreadLocalConfigurationPropertiesSourceTest {
     @Test
     public void testSource() {
         source = new ThreadLocalConfigurationPropertiesSource();
-        Properties props = source.getProperties();
-        Assert.assertNotNull(props, "Properties was null");
+        final Properties props = source.getProperties();
+        assert props != null;
         
         Assert.assertEquals(props.getProperty("opensaml.config.partitionName"), "myapp-threadlocal", "Incorrect property value");
         Assert.assertEquals(props.getProperty("opensaml.initializer.foo.flag"), "false", "Incorrect property value");

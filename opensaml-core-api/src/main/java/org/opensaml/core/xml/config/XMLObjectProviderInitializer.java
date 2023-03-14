@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml.config;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.config.ConfigurationService;
@@ -28,14 +29,14 @@ import org.opensaml.core.config.InitializationException;
 public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
-    private static String[] configs = {
+    @Nonnull private static String[] configs = {
         "/default-config.xml",
         "/schema-config.xml",
         };
 
     /** {@inheritDoc} */
     @Override
-    protected String[] getConfigResources() {
+    @Nonnull protected String[] getConfigResources() {
         return configs;
     }
 
@@ -45,6 +46,9 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
         super.init();
         
         final XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
+        if (registry == null) {
+            throw new InitializationException("XMLObjectProviderRegistry was not available");
+        }
         
         registry.registerIDAttribute(new QName(javax.xml.XMLConstants.XML_NS_URI, "id"));
     }

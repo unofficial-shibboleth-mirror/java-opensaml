@@ -19,6 +19,8 @@ package org.opensaml.core.config.provider;
 
 import java.util.Properties;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.core.config.ConfigurationPropertiesSource;
 
 /**
@@ -48,7 +50,7 @@ import org.opensaml.core.config.ConfigurationPropertiesSource;
 public class ThreadLocalConfigurationPropertiesSource implements ConfigurationPropertiesSource {
 
     /** {@inheritDoc} */
-    public Properties getProperties() {
+    @Nullable public Properties getProperties() {
         return ThreadLocalConfigurationPropertiesHolder.getProperties();
     }
 

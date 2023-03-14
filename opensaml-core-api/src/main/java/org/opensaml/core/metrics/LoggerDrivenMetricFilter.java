@@ -17,7 +17,6 @@
 
 package org.opensaml.core.metrics;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -75,7 +75,7 @@ public class LoggerDrivenMetricFilter implements MetricFilter {
      * @param prefix prefix to attach to metric name before evaluating
      */
     public LoggerDrivenMetricFilter(@Nonnull @NotEmpty @ParameterName(name="prefix") final String prefix) {
-        this(prefix, Collections.<String,Level>emptyMap());
+        this(prefix, CollectionSupport.emptyMap());
     }
     
     /**
@@ -89,7 +89,7 @@ public class LoggerDrivenMetricFilter implements MetricFilter {
         loggerPrefix = Constraint.isNotNull(StringSupport.trimOrNull(prefix), "Prefix cannot be null or empty.");
         
         if (map == null || map.isEmpty()) {
-            levelMap = Collections.emptyMap();
+            levelMap = CollectionSupport.emptyMap();
         } else {
             levelMap = new HashMap<>(map.size());
             for (final Map.Entry<String,Level> entry : map.entrySet()) {
