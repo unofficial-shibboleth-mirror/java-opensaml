@@ -57,7 +57,7 @@ public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final SAMLObjectBuilder<GeneratedKey> builder = (SAMLObjectBuilder<GeneratedKey>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<GeneratedKey>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<GeneratedKey>ensureBuilder(
                         GeneratedKey.DEFAULT_ELEMENT_NAME);
         try {
             final GeneratedKey header = builder.buildObject();

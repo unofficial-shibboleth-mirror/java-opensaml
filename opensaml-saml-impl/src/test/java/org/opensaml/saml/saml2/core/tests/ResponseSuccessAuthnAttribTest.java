@@ -160,7 +160,7 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
         classRef.setURI(AuthnContext.PPT_AUTHN_CTX);
         
         AttributeStatement attribStatement = (AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME);
-        XMLObjectBuilder<XSString> stringBuilder = builderFactory.getBuilderOrThrow(XSString.TYPE_NAME);
+        XMLObjectBuilder<XSString> stringBuilder = builderFactory.ensureBuilder(XSString.TYPE_NAME);
         
         Attribute fooAttrib = (Attribute) buildXMLObject(Attribute.DEFAULT_ELEMENT_NAME);
         fooAttrib.setFriendlyName("fooAttrib");

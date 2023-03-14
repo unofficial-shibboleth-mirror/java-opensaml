@@ -74,10 +74,10 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     public void setUp() throws NoSuchAlgorithmException, KeyException {
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
         nameIdBuilder = (SAMLObjectBuilder<NameID>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>ensureBuilder(
                         NameID.DEFAULT_ELEMENT_NAME);
         subjectBuilder = (SAMLObjectBuilder<Subject>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>ensureBuilder(
                         Subject.DEFAULT_ELEMENT_NAME);
 
         final Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);

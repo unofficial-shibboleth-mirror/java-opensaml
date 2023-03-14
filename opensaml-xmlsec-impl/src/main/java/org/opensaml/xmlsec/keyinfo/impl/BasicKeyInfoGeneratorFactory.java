@@ -252,7 +252,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
                         + keyInfoType.getClass().getName());
             }
             
-            final XMLObject xmlObject = builderFactory.getBuilderOrThrow(elementName).buildObject(elementName);
+            final XMLObject xmlObject = builderFactory.ensureBuilder(elementName).buildObject(elementName);
             return KeyInfo.class.cast(xmlObject);
         }
         

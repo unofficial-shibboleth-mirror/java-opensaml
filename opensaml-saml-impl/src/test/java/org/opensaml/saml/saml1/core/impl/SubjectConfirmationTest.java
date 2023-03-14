@@ -114,7 +114,7 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
         subjectConfirmation.getConfirmationMethods().add((ConfirmationMethod) buildXMLObject(oqname));
         subjectConfirmation.getConfirmationMethods().add((ConfirmationMethod) buildXMLObject(oqname));
         
-        final XMLObjectBuilder<XSAny> proxyBuilder = builderFactory.getBuilderOrThrow(XSAny.TYPE_NAME);
+        final XMLObjectBuilder<XSAny> proxyBuilder = builderFactory.ensureBuilder(XSAny.TYPE_NAME);
         oqname = new QName(SAMLConstants.SAML1_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
         subjectConfirmation.setSubjectConfirmationData(proxyBuilder.buildObject(oqname));
 

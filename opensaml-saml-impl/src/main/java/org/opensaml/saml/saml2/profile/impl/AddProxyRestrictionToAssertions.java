@@ -174,7 +174,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
         
         if (audiences != null && !audiences.isEmpty()) {
             final SAMLObjectBuilder<Audience> audienceBuilder = (SAMLObjectBuilder<Audience>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>ensureBuilder(
                             Audience.DEFAULT_ELEMENT_NAME);
             for (final String audienceId : audiences) {
                 log.debug("{} Adding {} as an Audience of the ProxyRestriction", getLogPrefix(), audienceId);
@@ -198,7 +198,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
 
         if (conditions.getProxyRestriction() == null) {
             final SAMLObjectBuilder<ProxyRestriction> conditionBuilder = (SAMLObjectBuilder<ProxyRestriction>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<ProxyRestriction>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<ProxyRestriction>ensureBuilder(
                             ProxyRestriction.DEFAULT_ELEMENT_NAME);
             log.debug("{} Adding new ProxyRestriction", getLogPrefix());
             condition = conditionBuilder.buildObject();

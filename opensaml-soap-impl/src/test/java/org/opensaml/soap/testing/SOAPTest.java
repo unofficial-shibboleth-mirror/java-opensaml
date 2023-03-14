@@ -199,22 +199,22 @@ public class SOAPTest extends XMLObjectBaseTestCase {
     @Test
     public void testSOAPFaultBuilders() {
        
-       XMLObjectBuilder<Detail> detailBuilder = builderFactory.getBuilderOrThrow(Detail.DEFAULT_ELEMENT_NAME); 
+       XMLObjectBuilder<Detail> detailBuilder = builderFactory.ensureBuilder(Detail.DEFAULT_ELEMENT_NAME); 
        Detail detail = detailBuilder.buildObject(Detail.DEFAULT_ELEMENT_NAME);
        Assert.assertTrue(Strings.isNullOrEmpty(detail.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
        Assert.assertTrue(Strings.isNullOrEmpty(detail.getElementQName().getPrefix()), "Namespace prefix was not empty");
         
-       XMLObjectBuilder<FaultActor> faultActorBuilder = builderFactory.getBuilderOrThrow(FaultActor.DEFAULT_ELEMENT_NAME); 
+       XMLObjectBuilder<FaultActor> faultActorBuilder = builderFactory.ensureBuilder(FaultActor.DEFAULT_ELEMENT_NAME); 
        FaultActor faultActor = faultActorBuilder.buildObject(FaultActor.DEFAULT_ELEMENT_NAME);
        Assert.assertTrue(Strings.isNullOrEmpty(faultActor.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
        Assert.assertTrue(Strings.isNullOrEmpty(faultActor.getElementQName().getPrefix()), "Namespace prefix was not empty");
        
-       XMLObjectBuilder<FaultCode> faultCodeBuilder = builderFactory.getBuilderOrThrow(FaultCode.DEFAULT_ELEMENT_NAME); 
+       XMLObjectBuilder<FaultCode> faultCodeBuilder = builderFactory.ensureBuilder(FaultCode.DEFAULT_ELEMENT_NAME); 
        FaultCode faultCode = faultCodeBuilder.buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
        Assert.assertTrue(Strings.isNullOrEmpty(faultCode.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
        Assert.assertTrue(Strings.isNullOrEmpty(faultCode.getElementQName().getPrefix()), "Namespace prefix was not empty");
        
-       XMLObjectBuilder<FaultString> faultStringBuilder = builderFactory.getBuilderOrThrow(FaultString.DEFAULT_ELEMENT_NAME); 
+       XMLObjectBuilder<FaultString> faultStringBuilder = builderFactory.ensureBuilder(FaultString.DEFAULT_ELEMENT_NAME); 
        FaultString faultString = faultStringBuilder.buildObject(FaultString.DEFAULT_ELEMENT_NAME);
        Assert.assertTrue(Strings.isNullOrEmpty(faultString.getElementQName().getNamespaceURI()), "Namespace URI was not empty");
        Assert.assertTrue(Strings.isNullOrEmpty(faultString.getElementQName().getPrefix()), "Namespace prefix was not empty");

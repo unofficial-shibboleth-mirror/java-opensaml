@@ -61,7 +61,7 @@ public final class SAML2ActionSupport {
             @Nonnull final IdentifierGenerationStrategy idGenerator, @Nullable final String issuer) {
    
         final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>ensureBuilder(
                         Assertion.DEFAULT_ELEMENT_NAME);
 
         final Assertion assertion = assertionBuilder.buildObject();
@@ -71,7 +71,7 @@ public final class SAML2ActionSupport {
 
         if (issuer != null) {
             final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>ensureBuilder(
                             Issuer.DEFAULT_ELEMENT_NAME);
             final Issuer issuerObject = issuerBuilder.buildObject();
             issuerObject.setValue(issuer);
@@ -123,7 +123,7 @@ public final class SAML2ActionSupport {
         Conditions conditions = assertion.getConditions();
         if (conditions == null) {
             final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>ensureBuilder(
                             Conditions.DEFAULT_ELEMENT_NAME);
             conditions = conditionsBuilder.buildObject();
             assertion.setConditions(conditions);
@@ -151,7 +151,7 @@ public final class SAML2ActionSupport {
         Advice advice = assertion.getAdvice();
         if (advice == null) {
             final SAMLObjectBuilder<Advice> adviceBuilder = (SAMLObjectBuilder<Advice>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Advice>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Advice>ensureBuilder(
                             Advice.DEFAULT_ELEMENT_NAME);
             advice = adviceBuilder.buildObject();
             assertion.setAdvice(advice);

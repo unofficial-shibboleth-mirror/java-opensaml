@@ -97,7 +97,7 @@ public class AddDoNotCacheConditionToAssertions extends AbstractConditionalProfi
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         final SAMLObjectBuilder<DoNotCacheCondition> dncConditionBuilder = (SAMLObjectBuilder<DoNotCacheCondition>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<DoNotCacheCondition>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<DoNotCacheCondition>ensureBuilder(
                         DoNotCacheCondition.DEFAULT_ELEMENT_NAME);
 
         for (final Assertion assertion : response.getAssertions()) {

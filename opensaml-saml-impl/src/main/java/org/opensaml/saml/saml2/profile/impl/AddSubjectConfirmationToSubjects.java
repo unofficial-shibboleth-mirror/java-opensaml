@@ -105,13 +105,13 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     /** Constructor. */
     public AddSubjectConfirmationToSubjects() {
         subjectBuilder = (SAMLObjectBuilder<Subject>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>ensureBuilder(
                         Subject.DEFAULT_ELEMENT_NAME);
         confirmationBuilder = (SAMLObjectBuilder<SubjectConfirmation>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmation>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmation>ensureBuilder(
                         SubjectConfirmation.DEFAULT_ELEMENT_NAME);
         confirmationDataBuilder = (SAMLObjectBuilder<SubjectConfirmationData>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmationData>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<SubjectConfirmationData>ensureBuilder(
                         SubjectConfirmationData.DEFAULT_ELEMENT_NAME);
         overwriteExisting = true;
         responseLookupStrategy = new MessageLookup<>(Response.class).compose(new OutboundMessageContextLookup());

@@ -75,7 +75,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
     /** Constructor. */
     public NameIDFormatFilter() {
         formatBuilder = (SAMLObjectBuilder<NameIDFormat>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDFormat>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDFormat>ensureBuilder(
                         NameIDFormat.DEFAULT_ELEMENT_NAME);
     }
     

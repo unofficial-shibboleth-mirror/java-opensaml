@@ -57,7 +57,7 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
     
     @Test public void testMatch() throws MessageHandlerException {
         
-        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setType("foo");
         cb.setValue("foo");
@@ -79,12 +79,12 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
 
     @Test public void testNoMatch() throws MessageHandlerException {
         
-        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setType("foo");
         cb.setValue("foo");
 
-        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setType("bar");
         cb.setValue("foo");
@@ -100,7 +100,7 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
     
     @Test public void testNoMatch2() throws MessageHandlerException {
         
-        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setType("foo");
         cb.setValue("foo");

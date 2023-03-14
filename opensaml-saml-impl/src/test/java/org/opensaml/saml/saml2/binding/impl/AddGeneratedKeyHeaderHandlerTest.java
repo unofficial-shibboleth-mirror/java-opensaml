@@ -102,7 +102,7 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         SecureRandom.getInstance("SHA1prng").nextBytes(key);
         messageCtx.getSubcontext(ECPContext.class, true).setSessionKey(key);
 
-        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
         messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
         

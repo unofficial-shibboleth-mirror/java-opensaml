@@ -87,18 +87,18 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
     @Test
     public void testResponseEncoding() throws Exception {
         SAMLObjectBuilder<StatusCode> statusCodeBuilder =
-                (SAMLObjectBuilder<StatusCode>) builderFactory.<StatusCode>getBuilderOrThrow(
+                (SAMLObjectBuilder<StatusCode>) builderFactory.<StatusCode>ensureBuilder(
                         StatusCode.DEFAULT_ELEMENT_NAME);
         StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
 
         SAMLObjectBuilder<Status> statusBuilder =
-                (SAMLObjectBuilder<Status>) builderFactory.<Status>getBuilderOrThrow(Status.DEFAULT_ELEMENT_NAME);
+                (SAMLObjectBuilder<Status>) builderFactory.<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
         Status responseStatus = statusBuilder.buildObject();
         responseStatus.setStatusCode(statusCode);
 
         SAMLObjectBuilder<Response> responseBuilder =
-                (SAMLObjectBuilder<Response>) builderFactory.<Response>getBuilderOrThrow(Response.DEFAULT_ELEMENT_NAME);
+                (SAMLObjectBuilder<Response>) builderFactory.<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
         Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
@@ -106,7 +106,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         samlMessage.setStatus(responseStatus);
 
         SAMLObjectBuilder<AssertionConsumerService> endpointBuilder =
-                (SAMLObjectBuilder<AssertionConsumerService>) builderFactory.<AssertionConsumerService>getBuilderOrThrow(
+                (SAMLObjectBuilder<AssertionConsumerService>) builderFactory.<AssertionConsumerService>ensureBuilder(
                         AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");

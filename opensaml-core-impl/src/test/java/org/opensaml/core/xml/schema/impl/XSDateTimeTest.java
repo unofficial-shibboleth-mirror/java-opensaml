@@ -61,7 +61,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
     public void testMarshall() throws MarshallingException, XMLParserException{
         String testDocumentLocation = "/org/opensaml/core/xml/schema/impl/xsDateTime-basic.xml";
         
-        XMLObjectBuilder<XSDateTime> xsdtBuilder = builderFactory.getBuilderOrThrow(XSDateTime.TYPE_NAME);
+        XMLObjectBuilder<XSDateTime> xsdtBuilder = builderFactory.ensureBuilder(XSDateTime.TYPE_NAME);
         XSDateTime xsDateTime = xsdtBuilder.buildObject(expectedXMLObjectQName, XSDateTime.TYPE_NAME);
         xsDateTime.setValue(expectedValue);
         

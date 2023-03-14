@@ -182,7 +182,7 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
             super(newOptions, type);
             options = newOptions;
             
-            agreementMethodBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+            agreementMethodBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                     AgreementMethod.DEFAULT_ELEMENT_NAME);
         }
 

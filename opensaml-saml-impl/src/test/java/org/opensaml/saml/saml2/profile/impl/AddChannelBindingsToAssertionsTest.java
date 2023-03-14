@@ -47,7 +47,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
     public void setUp() throws ComponentInitializationException {
         
         final SAMLObjectBuilder<ChannelBindings> cbBuilder = (SAMLObjectBuilder<ChannelBindings>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                         ChannelBindings.DEFAULT_ELEMENT_NAME);
         final ChannelBindings cb = cbBuilder.buildObject();
         cb.setType("foo");

@@ -163,11 +163,11 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
 
         final XMLObjectBuilderFactory bf = XMLObjectProviderRegistrySupport.getBuilderFactory();
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder =
-                (SAMLObjectBuilder<StatusCode>) bf.<StatusCode>getBuilderOrThrow(StatusCode.TYPE_NAME);
+                (SAMLObjectBuilder<StatusCode>) bf.<StatusCode>ensureBuilder(StatusCode.TYPE_NAME);
         final SAMLObjectBuilder<Status> statusBuilder =
-                (SAMLObjectBuilder<Status>) bf.<Status>getBuilderOrThrow(Status.TYPE_NAME);
+                (SAMLObjectBuilder<Status>) bf.<Status>ensureBuilder(Status.TYPE_NAME);
         final SAMLObjectBuilder<MessageType> responseBuilder =
-                (SAMLObjectBuilder<MessageType>) bf.<MessageType>getBuilderOrThrow(getMessageType());
+                (SAMLObjectBuilder<MessageType>) bf.<MessageType>ensureBuilder(getMessageType());
 
         final StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
@@ -185,7 +185,7 @@ public abstract class AbstractResponseShellAction<MessageType extends StatusResp
         if (issuerId != null) {
             log.debug("{} Setting Issuer to {}", getLogPrefix(), issuerId);
             final SAMLObjectBuilder<Issuer> issuerBuilder =
-                    (SAMLObjectBuilder<Issuer>) bf.<Issuer>getBuilderOrThrow(Issuer.DEFAULT_ELEMENT_NAME);
+                    (SAMLObjectBuilder<Issuer>) bf.<Issuer>ensureBuilder(Issuer.DEFAULT_ELEMENT_NAME);
             final Issuer issuer = issuerBuilder.buildObject();
             issuer.setValue(issuerId);
             response.setIssuer(issuer);

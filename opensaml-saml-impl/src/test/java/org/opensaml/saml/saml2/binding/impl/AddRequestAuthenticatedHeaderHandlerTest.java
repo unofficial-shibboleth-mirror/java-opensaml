@@ -90,7 +90,7 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
         final MessageContext messageCtx = new MessageContext();
         messageCtx.getSubcontext(ECPContext.class, true).setRequestAuthenticated(true);
 
-        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
         messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
         

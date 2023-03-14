@@ -308,7 +308,7 @@ public class SAML2HTTPRedirectDeflateSignatureSecurityHandlerTest extends XMLObj
         // Encode the "outbound" message context, with simple signature
         //
         SAMLObjectBuilder<AssertionConsumerService> endpointBuilder =
-                (SAMLObjectBuilder<AssertionConsumerService>) builderFactory.<AssertionConsumerService>getBuilderOrThrow(
+                (SAMLObjectBuilder<AssertionConsumerService>) builderFactory.<AssertionConsumerService>ensureBuilder(
                         AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         AssertionConsumerService samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");

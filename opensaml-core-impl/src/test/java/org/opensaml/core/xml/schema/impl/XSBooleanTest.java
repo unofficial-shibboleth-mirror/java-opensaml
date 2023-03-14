@@ -57,7 +57,7 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
-        XMLObjectBuilder<XSBoolean> xsbBuilder = builderFactory.getBuilderOrThrow(XSBoolean.TYPE_NAME);
+        XMLObjectBuilder<XSBoolean> xsbBuilder = builderFactory.ensureBuilder(XSBoolean.TYPE_NAME);
         XSBoolean xsBoolean = xsbBuilder.buildObject(expectedXMLObjectQName, XSBoolean.TYPE_NAME);
         xsBoolean.setValue(XSBooleanValue.valueOf(expectedValue));
         

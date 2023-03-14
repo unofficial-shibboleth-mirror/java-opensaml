@@ -157,7 +157,7 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     
     public KeyInfoConfirmationDataType buildXMLObject() {
         SAMLObjectBuilder<KeyInfoConfirmationDataType> builder = (SAMLObjectBuilder<KeyInfoConfirmationDataType>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<KeyInfoConfirmationDataType>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<KeyInfoConfirmationDataType>ensureBuilder(
                         KeyInfoConfirmationDataType.TYPE_NAME);
         
         if(builder == null){

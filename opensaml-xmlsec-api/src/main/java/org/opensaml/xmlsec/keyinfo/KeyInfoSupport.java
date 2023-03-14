@@ -152,7 +152,7 @@ public class KeyInfoSupport {
         Constraint.isNotNull(keyInfo, "KeyInfo cannot be null");
 
         final XMLObjectBuilder<KeyName> keyNameBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(KeyName.DEFAULT_ELEMENT_NAME);
+                XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(KeyName.DEFAULT_ELEMENT_NAME);
         final KeyName keyName = keyNameBuilder.buildObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(keyNameValue);
         keyInfo.getKeyNames().add(keyName);
@@ -325,7 +325,7 @@ public class KeyInfoSupport {
         final X509Data x509Data;
         if (keyInfo.getX509Datas().size() == 0) {
             final XMLObjectBuilder<X509Data> x509DataBuilder =
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                             X509Data.DEFAULT_ELEMENT_NAME);
             x509Data = x509DataBuilder.buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
@@ -350,7 +350,7 @@ public class KeyInfoSupport {
         final X509Data x509Data;
         if (keyInfo.getX509Datas().size() == 0) {
             final XMLObjectBuilder<X509Data> x509DataBuilder =
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<X509Data>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<X509Data>ensureBuilder(
                             X509Data.DEFAULT_ELEMENT_NAME);
             x509Data = x509DataBuilder.buildObject(X509Data.DEFAULT_ELEMENT_NAME);
             keyInfo.getX509Datas().add(x509Data);
@@ -376,7 +376,7 @@ public class KeyInfoSupport {
         
        
         final XMLObjectBuilder<org.opensaml.xmlsec.signature.X509Certificate> xmlCertBuilder =
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                             org.opensaml.xmlsec.signature.X509Certificate.DEFAULT_ELEMENT_NAME);
         final org.opensaml.xmlsec.signature.X509Certificate xmlCert =
                 xmlCertBuilder.buildObject(org.opensaml.xmlsec.signature.X509Certificate.DEFAULT_ELEMENT_NAME);
@@ -403,7 +403,7 @@ public class KeyInfoSupport {
         Constraint.isNotNull(crl, "X.509 CRL cannot be null");
         
         final XMLObjectBuilder<org.opensaml.xmlsec.signature.X509CRL> xmlCRLBuilder =
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                             org.opensaml.xmlsec.signature.X509CRL.DEFAULT_ELEMENT_NAME);
         final org.opensaml.xmlsec.signature.X509CRL xmlCRL =
                 xmlCRLBuilder.buildObject(org.opensaml.xmlsec.signature.X509CRL.DEFAULT_ELEMENT_NAME);
@@ -424,7 +424,7 @@ public class KeyInfoSupport {
      */
     @Nonnull public static X509SubjectName buildX509SubjectName(@Nullable final String subjectName) {
         final XMLObjectBuilder<X509SubjectName> xmlSubjectNameBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                         X509SubjectName.DEFAULT_ELEMENT_NAME);
         final X509SubjectName xmlSubjectName = xmlSubjectNameBuilder.buildObject(X509SubjectName.DEFAULT_ELEMENT_NAME);
         xmlSubjectName.setValue(subjectName);
@@ -443,18 +443,18 @@ public class KeyInfoSupport {
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         
         final XMLObjectBuilder<X509IssuerName> xmlIssuerNameBuilder =
-                builderFactory.getBuilderOrThrow(X509IssuerName.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(X509IssuerName.DEFAULT_ELEMENT_NAME);
         final X509IssuerName xmlIssuerName = xmlIssuerNameBuilder.buildObject(X509IssuerName.DEFAULT_ELEMENT_NAME);
         xmlIssuerName.setValue(issuerName);
 
         final XMLObjectBuilder<X509SerialNumber> xmlSerialNumberBuilder =
-                builderFactory.getBuilderOrThrow(X509SerialNumber.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(X509SerialNumber.DEFAULT_ELEMENT_NAME);
         final X509SerialNumber xmlSerialNumber =
                 xmlSerialNumberBuilder.buildObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
         xmlSerialNumber.setValue(serialNumber);
 
         final XMLObjectBuilder<X509IssuerSerial> xmlIssuerSerialBuilder =
-                builderFactory.getBuilderOrThrow(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         final X509IssuerSerial xmlIssuerSerial =
                 xmlIssuerSerialBuilder.buildObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         xmlIssuerSerial.setX509IssuerName(xmlIssuerName);
@@ -479,7 +479,7 @@ public class KeyInfoSupport {
         }
 
         final XMLObjectBuilder<X509SKI> xmlSKIBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(X509SKI.DEFAULT_ELEMENT_NAME);
+                XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(X509SKI.DEFAULT_ELEMENT_NAME);
         final X509SKI xmlSKI = xmlSKIBuilder.buildObject(X509SKI.DEFAULT_ELEMENT_NAME);
         
         
@@ -513,7 +513,7 @@ public class KeyInfoSupport {
         final byte[] hash = md.digest(javaCert.getEncoded());
         
         final XMLObjectBuilder<X509Digest> builder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(X509Digest.DEFAULT_ELEMENT_NAME);
+                XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(X509Digest.DEFAULT_ELEMENT_NAME);
         final X509Digest xmlDigest = builder.buildObject(X509Digest.DEFAULT_ELEMENT_NAME);
         xmlDigest.setAlgorithm(algorithmURI);
         
@@ -548,7 +548,7 @@ public class KeyInfoSupport {
         Constraint.isNotNull(keyInfo, "KeyInfo cannot be null");
         
         final XMLObjectBuilder<KeyValue> keyValueBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(KeyValue.DEFAULT_ELEMENT_NAME);
+                XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(KeyValue.DEFAULT_ELEMENT_NAME);
         final KeyValue keyValue = keyValueBuilder.buildObject(KeyValue.DEFAULT_ELEMENT_NAME);
 
         if (pk instanceof RSAPublicKey) {
@@ -581,16 +581,16 @@ public class KeyInfoSupport {
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
 
         final XMLObjectBuilder<DHKeyValue> dhKeyValueBuilder =
-                builderFactory.getBuilderOrThrow(DHKeyValue.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(DHKeyValue.DEFAULT_ELEMENT_NAME);
         final DHKeyValue dhKeyValue = dhKeyValueBuilder.buildObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
 
         final XMLObjectBuilder<Generator> generatorBuilder =
-                builderFactory.getBuilderOrThrow(Generator.DEFAULT_ELEMENT_NAME);
-        final XMLObjectBuilder<Public> publicBuilder = builderFactory.getBuilderOrThrow(Public.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(Generator.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<Public> publicBuilder = builderFactory.ensureBuilder(Public.DEFAULT_ELEMENT_NAME);
         final XMLObjectBuilder<org.opensaml.xmlsec.encryption.P> pBuilder =
-                builderFactory.getBuilderOrThrow(org.opensaml.xmlsec.encryption.P.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(org.opensaml.xmlsec.encryption.P.DEFAULT_ELEMENT_NAME);
         final XMLObjectBuilder<org.opensaml.xmlsec.encryption.Q> qBuilder =
-                builderFactory.getBuilderOrThrow(org.opensaml.xmlsec.encryption.Q.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(org.opensaml.xmlsec.encryption.Q.DEFAULT_ELEMENT_NAME);
         
         final Public pub = publicBuilder.buildObject(Public.DEFAULT_ELEMENT_NAME);
         final Generator gen = generatorBuilder.buildObject(Generator.DEFAULT_ELEMENT_NAME);
@@ -639,14 +639,14 @@ public class KeyInfoSupport {
         
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         
-        final ECKeyValue ecKeyValue = (ECKeyValue) builderFactory.getBuilderOrThrow(ECKeyValue.DEFAULT_ELEMENT_NAME)
+        final ECKeyValue ecKeyValue = (ECKeyValue) builderFactory.ensureBuilder(ECKeyValue.DEFAULT_ELEMENT_NAME)
                 .buildObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
         
-        final NamedCurve namedCurve = (NamedCurve) builderFactory.getBuilderOrThrow(NamedCurve.DEFAULT_ELEMENT_NAME)
+        final NamedCurve namedCurve = (NamedCurve) builderFactory.ensureBuilder(NamedCurve.DEFAULT_ELEMENT_NAME)
                 .buildObject(NamedCurve.DEFAULT_ELEMENT_NAME);
         
         final org.opensaml.xmlsec.signature.PublicKey publicKey =
-                (org.opensaml.xmlsec.signature.PublicKey) builderFactory.getBuilderOrThrow(
+                (org.opensaml.xmlsec.signature.PublicKey) builderFactory.ensureBuilder(
                         org.opensaml.xmlsec.signature.PublicKey.DEFAULT_ELEMENT_NAME)
                 .buildObject(org.opensaml.xmlsec.signature.PublicKey.DEFAULT_ELEMENT_NAME);
         
@@ -682,14 +682,14 @@ public class KeyInfoSupport {
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         
         final XMLObjectBuilder<RSAKeyValue> rsaKeyValueBuilder =
-                builderFactory.getBuilderOrThrow(RSAKeyValue.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         final RSAKeyValue rsaKeyValue = rsaKeyValueBuilder.buildObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         
-        final XMLObjectBuilder<Modulus> modulusBuilder = builderFactory.getBuilderOrThrow(Modulus.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<Modulus> modulusBuilder = builderFactory.ensureBuilder(Modulus.DEFAULT_ELEMENT_NAME);
         final Modulus modulus = modulusBuilder.buildObject(Modulus.DEFAULT_ELEMENT_NAME);
         
         final XMLObjectBuilder<Exponent> exponentBuilder =
-                builderFactory.getBuilderOrThrow(Exponent.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(Exponent.DEFAULT_ELEMENT_NAME);
         final Exponent exponent = exponentBuilder.buildObject(Exponent.DEFAULT_ELEMENT_NAME);
 
         modulus.setValueBigInt(rsaPubKey.getModulus());
@@ -715,13 +715,13 @@ public class KeyInfoSupport {
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
 
         final XMLObjectBuilder<DSAKeyValue> dsaKeyValueBuilder =
-                builderFactory.getBuilderOrThrow(DSAKeyValue.DEFAULT_ELEMENT_NAME);
+                builderFactory.ensureBuilder(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         final DSAKeyValue dsaKeyValue = dsaKeyValueBuilder.buildObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
 
-        final XMLObjectBuilder<Y> yBuilder = builderFactory.getBuilderOrThrow(Y.DEFAULT_ELEMENT_NAME);
-        final XMLObjectBuilder<G> gBuilder = builderFactory.getBuilderOrThrow(G.DEFAULT_ELEMENT_NAME);
-        final XMLObjectBuilder<P> pBuilder = builderFactory.getBuilderOrThrow(P.DEFAULT_ELEMENT_NAME);
-        final XMLObjectBuilder<Q> qBuilder = builderFactory.getBuilderOrThrow(Q.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<Y> yBuilder = builderFactory.ensureBuilder(Y.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<G> gBuilder = builderFactory.ensureBuilder(G.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<P> pBuilder = builderFactory.ensureBuilder(P.DEFAULT_ELEMENT_NAME);
+        final XMLObjectBuilder<Q> qBuilder = builderFactory.ensureBuilder(Q.DEFAULT_ELEMENT_NAME);
         
         final Y y = yBuilder.buildObject(Y.DEFAULT_ELEMENT_NAME);
         final G g = gBuilder.buildObject(G.DEFAULT_ELEMENT_NAME);
@@ -758,7 +758,7 @@ public class KeyInfoSupport {
         Constraint.isNotNull(pk, "Public key cannot be null");
         
         final XMLObjectBuilder<DEREncodedKeyValue> builder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                         DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
         final DEREncodedKeyValue keyValue = builder.buildObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
         

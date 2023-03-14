@@ -242,7 +242,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @return the XMLObjectBuilder
      */
     protected <T extends XMLObject> XMLObjectBuilder<T> getBuilder(@Nonnull final QName qname) {
-        return builderFactory.getBuilderOrThrow(qname);
+        return builderFactory.ensureBuilder(qname);
     }
 
     /**

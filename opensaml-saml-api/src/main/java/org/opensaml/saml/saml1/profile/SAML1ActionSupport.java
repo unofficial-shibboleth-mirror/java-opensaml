@@ -59,7 +59,7 @@ public final class SAML1ActionSupport {
             @Nonnull final IdentifierGenerationStrategy idGenerator, @Nonnull @NotEmpty final String issuer) {
         
         final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>ensureBuilder(
                         Assertion.DEFAULT_ELEMENT_NAME);
 
         final Assertion assertion = assertionBuilder.buildObject();
@@ -113,7 +113,7 @@ public final class SAML1ActionSupport {
         Conditions conditions = assertion.getConditions();
         if (conditions == null) {
             final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>ensureBuilder(
                             Conditions.DEFAULT_ELEMENT_NAME);
             conditions = conditionsBuilder.buildObject();
             assertion.setConditions(conditions);

@@ -136,7 +136,7 @@ public class AddChannelBindingsToAssertions extends AbstractConditionalProfileAc
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final SAMLObjectBuilder<ChannelBindings> cbBuilder = (SAMLObjectBuilder<ChannelBindings>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                         ChannelBindings.DEFAULT_ELEMENT_NAME);
 
         for (final Assertion assertion : response.getAssertions()) {

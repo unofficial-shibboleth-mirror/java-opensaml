@@ -57,7 +57,7 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
-        XMLObjectBuilder<XSInteger> xsintBuilder = builderFactory.getBuilderOrThrow(XSInteger.TYPE_NAME);
+        XMLObjectBuilder<XSInteger> xsintBuilder = builderFactory.ensureBuilder(XSInteger.TYPE_NAME);
         XSInteger xsInteger = xsintBuilder.buildObject(expectedXMLObjectQName, XSInteger.TYPE_NAME);
         xsInteger.setValue(expectedValue);
         

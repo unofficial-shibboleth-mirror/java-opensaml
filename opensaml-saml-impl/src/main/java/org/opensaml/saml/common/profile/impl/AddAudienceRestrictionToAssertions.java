@@ -200,7 +200,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
         final SAMLObjectBuilder<org.opensaml.saml.saml1.core.Audience> audienceBuilder =
                 (SAMLObjectBuilder<org.opensaml.saml.saml1.core.Audience>) 
                 XMLObjectProviderRegistrySupport.getBuilderFactory(
-                        ).<org.opensaml.saml.saml1.core.Audience>getBuilderOrThrow(
+                        ).<org.opensaml.saml.saml1.core.Audience>ensureBuilder(
                                 org.opensaml.saml.saml1.core.Audience.DEFAULT_ELEMENT_NAME);
         for (final String audienceId : audiences) {
             log.debug("{} Adding {} as an Audience of the AudienceRestrictionCondition", getLogPrefix(), audienceId);
@@ -224,7 +224,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
         final SAMLObjectBuilder<org.opensaml.saml.saml2.core.Audience> audienceBuilder =
                 (SAMLObjectBuilder<org.opensaml.saml.saml2.core.Audience>) 
                 XMLObjectProviderRegistrySupport.getBuilderFactory(
-                        ).<org.opensaml.saml.saml2.core.Audience>getBuilderOrThrow(
+                        ).<org.opensaml.saml.saml2.core.Audience>ensureBuilder(
                                 org.opensaml.saml.saml2.core.Audience.DEFAULT_ELEMENT_NAME);
         for (final String audienceId : audiences) {
             log.debug("{} Adding {} as an Audience of the AudienceRestriction", getLogPrefix(), audienceId);
@@ -249,7 +249,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
         if (!addingAudiencesToExistingRestriction || conditions.getAudienceRestrictionConditions().isEmpty()) {
             final SAMLObjectBuilder<AudienceRestrictionCondition> conditionBuilder =
                     (SAMLObjectBuilder<AudienceRestrictionCondition>) XMLObjectProviderRegistrySupport
-                            .getBuilderFactory().<AudienceRestrictionCondition>getBuilderOrThrow(
+                            .getBuilderFactory().<AudienceRestrictionCondition>ensureBuilder(
                                     AudienceRestrictionCondition.DEFAULT_ELEMENT_NAME);
             log.debug("{} Adding new AudienceRestrictionCondition", getLogPrefix());
             condition = conditionBuilder.buildObject();
@@ -277,7 +277,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
         if (!addingAudiencesToExistingRestriction || conditions.getAudienceRestrictions().isEmpty()) {
             final SAMLObjectBuilder<AudienceRestriction> conditionBuilder =
                     (SAMLObjectBuilder<AudienceRestriction>) XMLObjectProviderRegistrySupport
-                            .getBuilderFactory().<AudienceRestriction>getBuilderOrThrow(
+                            .getBuilderFactory().<AudienceRestriction>ensureBuilder(
                                     AudienceRestriction.DEFAULT_ELEMENT_NAME);
             log.debug("{} Adding new AudienceRestriction", getLogPrefix());
             condition = conditionBuilder.buildObject();

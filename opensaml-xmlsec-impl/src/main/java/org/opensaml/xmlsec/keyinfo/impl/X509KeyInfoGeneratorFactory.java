@@ -412,7 +412,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
             super(newOptions, type);
             options = newOptions;
             
-            x509DataBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+            x509DataBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                     X509Data.DEFAULT_ELEMENT_NAME);
         }
 

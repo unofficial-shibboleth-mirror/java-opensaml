@@ -118,7 +118,7 @@ public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
         action.setNameIDGenerator(generator);
         
         policyBuilder = (SAMLObjectBuilder<NameIDPolicy>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDPolicy>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDPolicy>ensureBuilder(
                         NameIDPolicy.DEFAULT_ELEMENT_NAME);
     }
     

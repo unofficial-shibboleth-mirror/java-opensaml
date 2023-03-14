@@ -52,12 +52,12 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
     @BeforeMethod
     protected void setUp() throws Exception {
         SAMLObjectBuilder<Organization> orgBuilder = (SAMLObjectBuilder<Organization>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Organization>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Organization>ensureBuilder(
                         Organization.DEFAULT_ELEMENT_NAME);
         organization = orgBuilder.buildObject();            
 
         SAMLObjectBuilder<OrganizationName> orgNameBuilder = (SAMLObjectBuilder<OrganizationName>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<OrganizationName>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<OrganizationName>ensureBuilder(
                         OrganizationName.DEFAULT_ELEMENT_NAME);
         OrganizationName newOrgName = orgNameBuilder.buildObject();
         newOrgName.setValue("OrgFullName");
@@ -65,7 +65,7 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
         organization.getOrganizationNames().add(newOrgName);
 
         SAMLObjectBuilder<OrganizationDisplayName> orgDisplayNameBuilder = (SAMLObjectBuilder<OrganizationDisplayName>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<OrganizationDisplayName>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<OrganizationDisplayName>ensureBuilder(
                         OrganizationDisplayName.DEFAULT_ELEMENT_NAME);
         OrganizationDisplayName newOrgDisplayName = orgDisplayNameBuilder.buildObject();
         newOrgDisplayName.setValue("OrgDisplayName");
@@ -73,7 +73,7 @@ public class RoundTripTest extends XMLObjectBaseTestCase {
         organization.getDisplayNames().add(newOrgDisplayName);
 
         SAMLObjectBuilder<OrganizationURL> orgURLBuilder = (SAMLObjectBuilder<OrganizationURL>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<OrganizationURL>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<OrganizationURL>ensureBuilder(
                         OrganizationURL.DEFAULT_ELEMENT_NAME);
         OrganizationURL newOrgURL = orgURLBuilder.buildObject();    
         newOrgURL.setURI("http://org.url.edu");

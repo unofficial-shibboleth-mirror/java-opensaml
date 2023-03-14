@@ -141,7 +141,7 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
         service.setLocation(expectedLocation);
 
 
-        XMLObject obj = builderFactory.getBuilderOrThrow(XSAny.TYPE_NAME).buildObject(new QName("http://example.org/", "bar", "foo"));
+        XMLObject obj = builderFactory.ensureBuilder(XSAny.TYPE_NAME).buildObject(new QName("http://example.org/", "bar", "foo"));
         
         service.getUnknownXMLObjects().add(obj);
 

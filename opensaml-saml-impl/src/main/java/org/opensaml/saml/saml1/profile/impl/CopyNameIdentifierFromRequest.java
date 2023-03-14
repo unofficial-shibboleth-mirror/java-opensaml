@@ -88,10 +88,10 @@ public class CopyNameIdentifierFromRequest extends AbstractProfileAction {
     /** Constructor. */
     public CopyNameIdentifierFromRequest() {
         subjectBuilder = (SAMLObjectBuilder<Subject>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>ensureBuilder(
                         Subject.DEFAULT_ELEMENT_NAME);
         nameIdentifierBuilder = (SAMLObjectBuilder<NameIdentifier>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIdentifier>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIdentifier>ensureBuilder(
                         NameIdentifier.DEFAULT_ELEMENT_NAME);
         
         overwriteExisting = true;

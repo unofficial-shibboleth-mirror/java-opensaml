@@ -85,11 +85,11 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
         keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
         CredentialSupport.getSimpleCredential(keyPair.getPublic(), null);
         
-        assertionBuilder = (SAMLObjectBuilder<Assertion>) builderFactory.<Assertion>getBuilderOrThrow(Assertion.DEFAULT_ELEMENT_NAME);
-        issuerBuilder = (SAMLObjectBuilder<Issuer>) builderFactory.<Issuer>getBuilderOrThrow(Issuer.DEFAULT_ELEMENT_NAME);
-        authnStatementBuilder = (SAMLObjectBuilder<AuthnStatement>) builderFactory.<AuthnStatement>getBuilderOrThrow(
+        assertionBuilder = (SAMLObjectBuilder<Assertion>) builderFactory.<Assertion>ensureBuilder(Assertion.DEFAULT_ELEMENT_NAME);
+        issuerBuilder = (SAMLObjectBuilder<Issuer>) builderFactory.<Issuer>ensureBuilder(Issuer.DEFAULT_ELEMENT_NAME);
+        authnStatementBuilder = (SAMLObjectBuilder<AuthnStatement>) builderFactory.<AuthnStatement>ensureBuilder(
                 AuthnStatement.DEFAULT_ELEMENT_NAME);
-        signatureBuilder = builderFactory.getBuilderOrThrow(Signature.DEFAULT_ELEMENT_NAME);
+        signatureBuilder = builderFactory.ensureBuilder(Signature.DEFAULT_ELEMENT_NAME);
         
         idGenerator = IdentifierGenerationStrategy.getInstance(ProviderType.RANDOM);
     }

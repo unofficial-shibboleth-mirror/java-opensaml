@@ -277,7 +277,7 @@ public final class SignatureSupport {
         Constraint.isNotNull(parameters, "Signature signing parameters cannot be null");
 
         final XMLObjectBuilder<Signature> signatureBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                         Signature.DEFAULT_ELEMENT_NAME);
         final Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
 

@@ -72,7 +72,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     
     @BeforeMethod
     public void setUp() {
-        final AssertionConsumerService ep = (AssertionConsumerService) builderFactory.getBuilderOrThrow(
+        final AssertionConsumerService ep = (AssertionConsumerService) builderFactory.ensureBuilder(
                 AssertionConsumerService.DEFAULT_ELEMENT_NAME).buildObject(
                         AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         ep.setBinding(SAMLConstants.SAML2_POST_BINDING_URI);

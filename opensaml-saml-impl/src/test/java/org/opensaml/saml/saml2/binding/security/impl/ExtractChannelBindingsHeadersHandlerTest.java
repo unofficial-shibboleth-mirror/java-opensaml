@@ -61,7 +61,7 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
      * @throws ComponentInitializationException ...
      */
     @Test public void testNoHeaders() throws MessageHandlerException, ComponentInitializationException {
-        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
 
         final MessageContext messageCtx = new MessageContext();
@@ -84,20 +84,20 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
      * @throws ComponentInitializationException ...
      */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
-        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
 
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
         
-        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setValue("foo");
         SOAPSupport.addSOAP11ActorAttribute(cb, ActorBearing.SOAP11_ACTOR_NEXT);
         SOAPMessagingSupport.addHeaderBlock(messageCtx, cb);
 
-        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb2.setValue("bar");
         SOAPSupport.addSOAP11ActorAttribute(cb2, ActorBearing.SOAP11_ACTOR_NEXT);
@@ -124,20 +124,20 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
      * @throws ComponentInitializationException ...
      */
     @Test public void testActor() throws MessageHandlerException, ComponentInitializationException {
-        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
 
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
         
-        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setValue("foo");
         SOAPSupport.addSOAP11ActorAttribute(cb, ActorBearing.SOAP11_ACTOR_NEXT);
         SOAPMessagingSupport.addHeaderBlock(messageCtx, cb);
 
-        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb2.setValue("bar");
         SOAPMessagingSupport.addHeaderBlock(messageCtx, cb2);

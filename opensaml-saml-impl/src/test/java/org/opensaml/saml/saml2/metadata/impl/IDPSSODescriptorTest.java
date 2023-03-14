@@ -273,7 +273,7 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         }
 
         final SAMLObjectBuilder<Attribute> builder = (SAMLObjectBuilder<Attribute>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>ensureBuilder(
                         Attribute.DEFAULT_ELEMENT_NAME);
         descriptor.getAttributes().add(builder.buildObject());
         assertXMLEquals(expectedChildElementsDOM, descriptor);

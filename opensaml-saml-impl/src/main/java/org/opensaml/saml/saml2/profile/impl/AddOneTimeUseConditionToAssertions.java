@@ -97,7 +97,7 @@ public class AddOneTimeUseConditionToAssertions extends AbstractConditionalProfi
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         final SAMLObjectBuilder<OneTimeUse> conditionBuilder = (SAMLObjectBuilder<OneTimeUse>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<OneTimeUse>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<OneTimeUse>ensureBuilder(
                         OneTimeUse.DEFAULT_ELEMENT_NAME);
 
         for (final Assertion assertion : response.getAssertions()) {

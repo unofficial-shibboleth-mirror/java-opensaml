@@ -88,7 +88,7 @@ public class MGFTest extends XMLObjectProviderBaseTestCase {
         
         mgf.setAlgorithm(expectedAlgorithm);
         
-        XMLObjectBuilder<XSAny> xsAnyBuilder = builderFactory.getBuilderOrThrow(XSAny.TYPE_NAME);
+        XMLObjectBuilder<XSAny> xsAnyBuilder = builderFactory.ensureBuilder(XSAny.TYPE_NAME);
         XSAny parameters = xsAnyBuilder.buildObject(Parameters.DEFAULT_ELEMENT_NAME);
         parameters.setTextContent(expectedParametersContent);
         mgf.setParameters(parameters);

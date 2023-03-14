@@ -104,9 +104,9 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         badCredential = CredentialSupport.getSimpleCredential(key);
 
         sxoBuilder = new SignableSimpleXMLObjectBuilder();
-        sigBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<Signature>getBuilderOrThrow(
+        sigBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<Signature>ensureBuilder(
                 Signature.DEFAULT_ELEMENT_NAME);
-        keyInfoBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<KeyInfo>getBuilderOrThrow(
+        keyInfoBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<KeyInfo>ensureBuilder(
                 KeyInfo.DEFAULT_ELEMENT_NAME);
     }
 

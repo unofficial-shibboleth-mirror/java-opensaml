@@ -138,7 +138,7 @@ public class AddGeneratedKeyToAssertions extends AbstractConditionalProfileActio
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final SAMLObjectBuilder<GeneratedKey> keyBuilder = (SAMLObjectBuilder<GeneratedKey>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<GeneratedKey>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<GeneratedKey>ensureBuilder(
                         GeneratedKey.DEFAULT_ELEMENT_NAME);
 
         try {

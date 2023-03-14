@@ -99,7 +99,8 @@ public class XMLObjectBuilderFactory {
      * @return the builder
      * @throws XMLRuntimeException  if the builder can't be obtained
      */
-    @Nonnull public <XMLObjectType extends XMLObject> XMLObjectBuilder<XMLObjectType> getBuilderOrThrow(
+    @SuppressWarnings("unchecked")
+    @Nonnull public <XMLObjectType extends XMLObject> XMLObjectBuilder<XMLObjectType> ensureBuilder(
             @Nonnull final QName key) {
 
         final XMLObjectBuilder<?> builder = getBuilder(key);
@@ -121,7 +122,8 @@ public class XMLObjectBuilderFactory {
      * @return the builder for the XMLObject the given element can be unmarshalled into
      * @throws XMLRuntimeException  if the builder can't be obtained
      */
-    @Nonnull public <XMLObjectType extends XMLObject> XMLObjectBuilder<XMLObjectType> getBuilderOrThrow(
+    @SuppressWarnings("unchecked")
+    @Nonnull public <XMLObjectType extends XMLObject> XMLObjectBuilder<XMLObjectType> ensureBuilder(
             @Nonnull final Element domElement) {
         
         final XMLObjectBuilder<?> builder = getBuilder(domElement);

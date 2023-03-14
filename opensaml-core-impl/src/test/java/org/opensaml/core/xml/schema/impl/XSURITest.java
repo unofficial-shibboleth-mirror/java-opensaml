@@ -57,7 +57,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
-        XMLObjectBuilder<XSURI> uriBuilder = builderFactory.getBuilderOrThrow(XSURI.TYPE_NAME);
+        XMLObjectBuilder<XSURI> uriBuilder = builderFactory.ensureBuilder(XSURI.TYPE_NAME);
         XSURI xsURI = uriBuilder.buildObject(expectedXMLObjectQName, XSURI.TYPE_NAME);
         xsURI.setURI(expectedValue);
         

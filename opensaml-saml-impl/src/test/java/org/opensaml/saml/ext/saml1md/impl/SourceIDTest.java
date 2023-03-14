@@ -46,7 +46,7 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementMarshall() {
         SAMLObjectBuilder<SourceID> builder = (SAMLObjectBuilder<SourceID>)
-                builderFactory.<SourceID>getBuilderOrThrow(SourceID.DEFAULT_ELEMENT_NAME);
+                builderFactory.<SourceID>ensureBuilder(SourceID.DEFAULT_ELEMENT_NAME);
 
         SourceID sourceID = builder.buildObject();
         sourceID.setValue(expectedValue);

@@ -61,9 +61,9 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
     /** Constructor. */
     public HTTPSOAP11Encoder() {
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
-        envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.<Envelope>getBuilderOrThrow(
+        envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME);
-        bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.<Body>getBuilderOrThrow(Body.DEFAULT_ELEMENT_NAME);
+        bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.<Body>ensureBuilder(Body.DEFAULT_ELEMENT_NAME);
     }
     
     /** {@inheritDoc} */

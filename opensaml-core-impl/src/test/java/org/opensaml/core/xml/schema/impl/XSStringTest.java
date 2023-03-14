@@ -57,7 +57,7 @@ public class XSStringTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
-        XMLObjectBuilder<XSString> xssBuilder = builderFactory.getBuilderOrThrow(XSString.TYPE_NAME);
+        XMLObjectBuilder<XSString> xssBuilder = builderFactory.ensureBuilder(XSString.TYPE_NAME);
         XSString xsString = xssBuilder.buildObject(expectedXMLObjectQName, XSString.TYPE_NAME);
         xsString.setValue(expectedValue);
         

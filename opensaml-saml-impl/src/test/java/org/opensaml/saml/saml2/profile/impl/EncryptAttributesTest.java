@@ -62,7 +62,7 @@ public class EncryptAttributesTest extends OpenSAMLInitBaseTestCase {
     @BeforeClass
     public void setUpClass() {
         builder = (SAMLObjectBuilder<Attribute>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>ensureBuilder(
                         Attribute.DEFAULT_ELEMENT_NAME);
     }
     

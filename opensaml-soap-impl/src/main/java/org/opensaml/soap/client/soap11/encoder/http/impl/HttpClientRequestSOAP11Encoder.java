@@ -65,9 +65,9 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
     /** Constructor. */
     public HttpClientRequestSOAP11Encoder() {
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
-        envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.<Envelope>getBuilderOrThrow(
+        envBuilder = (SOAPObjectBuilder<Envelope>) builderFactory.<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME);
-        bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.<Body>getBuilderOrThrow(Body.DEFAULT_ELEMENT_NAME);
+        bodyBuilder = (SOAPObjectBuilder<Body>) builderFactory.<Body>ensureBuilder(Body.DEFAULT_ELEMENT_NAME);
     }
     
     /** {@inheritDoc}

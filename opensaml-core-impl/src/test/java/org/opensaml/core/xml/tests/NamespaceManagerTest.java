@@ -68,7 +68,7 @@ public class NamespaceManagerTest extends XMLObjectBaseTestCase {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        xsAnyBuilder = builderFactory.<XSAny>getBuilderOrThrow(XSAny.TYPE_NAME);
+        xsAnyBuilder = builderFactory.<XSAny>ensureBuilder(XSAny.TYPE_NAME);
         xsAny = xsAnyBuilder.buildObject(elementName);
         nsManager = xsAny.getNamespaceManager();
     }

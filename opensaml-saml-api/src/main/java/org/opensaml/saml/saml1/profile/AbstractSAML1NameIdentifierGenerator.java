@@ -50,7 +50,7 @@ public abstract class AbstractSAML1NameIdentifierGenerator extends AbstractNameI
     /** Constructor. */
     protected AbstractSAML1NameIdentifierGenerator() {
         nameBuilder = (SAMLObjectBuilder<NameIdentifier>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIdentifier>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIdentifier>ensureBuilder(
                         NameIdentifier.DEFAULT_ELEMENT_NAME);
     }
 

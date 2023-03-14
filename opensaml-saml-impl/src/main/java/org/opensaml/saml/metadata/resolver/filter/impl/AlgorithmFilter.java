@@ -85,7 +85,7 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
     /** Constructor. */
     public AlgorithmFilter() {
         extBuilder = (SAMLObjectBuilder<Extensions>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>ensureBuilder(
                         Extensions.DEFAULT_ELEMENT_NAME);
         applyMap = ArrayListMultimap.create();
     }

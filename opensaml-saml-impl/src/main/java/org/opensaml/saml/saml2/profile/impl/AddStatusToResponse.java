@@ -196,7 +196,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
         final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Status>getBuilderOrThrow(Status.TYPE_NAME);
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Status>ensureBuilder(Status.TYPE_NAME);
 
         final Status status = statusBuilder.buildObject();
         response.setStatus(status);
@@ -240,7 +240,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      */
     private void buildStatusCode(@Nonnull final Status status, @Nonnull @NonnullElements final List<String> codes) {
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusCode>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusCode>ensureBuilder(
                         StatusCode.TYPE_NAME);
 
         // Build nested StatusCodes.
@@ -269,7 +269,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
      */
     private void buildStatusMessage(@Nonnull final Status status, @Nonnull @NotEmpty final String message) {
         final SAMLObjectBuilder<StatusMessage> statusMessageBuilder = (SAMLObjectBuilder<StatusMessage>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusMessage>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<StatusMessage>ensureBuilder(
                         StatusMessage.DEFAULT_ELEMENT_NAME);
         final StatusMessage sm = statusMessageBuilder.buildObject();
         sm.setValue(message);

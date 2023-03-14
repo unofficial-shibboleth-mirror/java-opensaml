@@ -64,7 +64,7 @@ public class AttributeMapTest extends XMLObjectBaseTestCase {
 
     @BeforeMethod
     protected void setUp() throws Exception {
-        xsAnyBuilder = builderFactory.<XSAny>getBuilderOrThrow(XSAny.TYPE_NAME);
+        xsAnyBuilder = builderFactory.<XSAny>ensureBuilder(XSAny.TYPE_NAME);
         owner = xsAnyBuilder.buildObject(elementName);
         attributeMap = owner.getUnknownAttributes();
     }

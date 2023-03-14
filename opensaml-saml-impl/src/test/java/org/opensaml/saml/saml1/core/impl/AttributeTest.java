@@ -108,7 +108,7 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsMarshall(){
         Attribute attribute = (Attribute) buildXMLObject(qname);
 
-        final XMLObjectBuilder<XSString> attributeValueBuilder = builderFactory.getBuilderOrThrow(XSString.TYPE_NAME);
+        final XMLObjectBuilder<XSString> attributeValueBuilder = builderFactory.ensureBuilder(XSString.TYPE_NAME);
         
         attribute.getAttributeValues().add(attributeValueBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME)); 
         attribute.getAttributeValues().add(attributeValueBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME)); 

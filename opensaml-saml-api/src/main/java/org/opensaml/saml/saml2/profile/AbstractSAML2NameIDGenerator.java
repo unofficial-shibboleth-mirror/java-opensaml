@@ -62,7 +62,7 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
     /** Constructor. */
     protected AbstractSAML2NameIDGenerator() {
         nameBuilder = (SAMLObjectBuilder<NameID>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>ensureBuilder(
                         NameID.DEFAULT_ELEMENT_NAME);
         requestLookupStrategy = new MessageLookup<>(AuthnRequest.class).compose(new InboundMessageContextLookup());
     }

@@ -46,7 +46,7 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
     
     private XMLObject makeObject() {
         final SAMLObjectBuilder<EntityDescriptor> builder = (SAMLObjectBuilder<EntityDescriptor>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<EntityDescriptor>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<EntityDescriptor>ensureBuilder(
                         EntityDescriptor.DEFAULT_ELEMENT_NAME);
         return builder.buildObject();
     }

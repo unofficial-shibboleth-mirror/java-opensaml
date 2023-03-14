@@ -208,20 +208,20 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
     private void init() {
         builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
         keyInfoBuilder =
-                (XMLSignatureBuilder<KeyInfo>) builderFactory.<KeyInfo>getBuilderOrThrow(KeyInfo.DEFAULT_ELEMENT_NAME);
+                (XMLSignatureBuilder<KeyInfo>) builderFactory.<KeyInfo>ensureBuilder(KeyInfo.DEFAULT_ELEMENT_NAME);
         dataReferenceBuilder =
-                (XMLEncryptionBuilder<DataReference>) builderFactory.<DataReference>getBuilderOrThrow(
+                (XMLEncryptionBuilder<DataReference>) builderFactory.<DataReference>ensureBuilder(
                         DataReference.DEFAULT_ELEMENT_NAME);
         referenceListBuilder =
-                (XMLEncryptionBuilder<ReferenceList>) builderFactory.<ReferenceList>getBuilderOrThrow(
+                (XMLEncryptionBuilder<ReferenceList>) builderFactory.<ReferenceList>ensureBuilder(
                         ReferenceList.DEFAULT_ELEMENT_NAME);
         retrievalMethodBuilder =
-                (XMLSignatureBuilder<RetrievalMethod>) builderFactory.<RetrievalMethod>getBuilderOrThrow(
+                (XMLSignatureBuilder<RetrievalMethod>) builderFactory.<RetrievalMethod>ensureBuilder(
                         RetrievalMethod.DEFAULT_ELEMENT_NAME);
         keyNameBuilder =
-                (XMLSignatureBuilder<KeyName>) builderFactory.<KeyName>getBuilderOrThrow(KeyName.DEFAULT_ELEMENT_NAME);
+                (XMLSignatureBuilder<KeyName>) builderFactory.<KeyName>ensureBuilder(KeyName.DEFAULT_ELEMENT_NAME);
         carriedKeyNameBuilder =
-                (XMLEncryptionBuilder<CarriedKeyName>) builderFactory.<CarriedKeyName>getBuilderOrThrow(
+                (XMLEncryptionBuilder<CarriedKeyName>) builderFactory.<CarriedKeyName>ensureBuilder(
                         CarriedKeyName.DEFAULT_ELEMENT_NAME);
 
         idGenerator = IdentifierGenerationStrategy.getInstance(ProviderType.RANDOM);

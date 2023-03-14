@@ -230,7 +230,7 @@ public class AddSOAPFault extends AbstractProfileAction {
             if (fault.getCode() == null) {
                 log.debug("{} Resolved Fault contained no FaultCode, using configured default", getLogPrefix());
                 final XMLObjectBuilder<FaultCode> faultCodeBuilder =
-                        XMLObjectProviderRegistrySupport.getBuilderFactory().<FaultCode>getBuilderOrThrow(
+                        XMLObjectProviderRegistrySupport.getBuilderFactory().<FaultCode>ensureBuilder(
                                 FaultCode.DEFAULT_ELEMENT_NAME);
                 final FaultCode code = faultCodeBuilder.buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
                 code.setValue(defaultFaultCode);
@@ -261,10 +261,10 @@ public class AddSOAPFault extends AbstractProfileAction {
      */
     @Nonnull private Fault buildNewMappedFault(final ProfileRequestContext profileRequestContext) {
         final XMLObjectBuilder<Fault> faultBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Fault>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Fault>ensureBuilder(
                         Fault.DEFAULT_ELEMENT_NAME);
         final XMLObjectBuilder<FaultCode> faultCodeBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<FaultCode>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<FaultCode>ensureBuilder(
                         FaultCode.DEFAULT_ELEMENT_NAME);
         
         final Fault fault = faultBuilder.buildObject(Fault.DEFAULT_ELEMENT_NAME);
@@ -312,7 +312,7 @@ public class AddSOAPFault extends AbstractProfileAction {
      */
     private void buildFaultString(@Nonnull final Fault fault, @Nonnull @NotEmpty final String message) {
         final XMLObjectBuilder<FaultString> faultStringBuilder =
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<FaultString>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<FaultString>ensureBuilder(
                         FaultString.DEFAULT_ELEMENT_NAME);
 
         final FaultString fs = faultStringBuilder.buildObject(FaultString.DEFAULT_ELEMENT_NAME);

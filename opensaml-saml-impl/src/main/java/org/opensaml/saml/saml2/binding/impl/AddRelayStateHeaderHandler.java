@@ -59,7 +59,7 @@ public class AddRelayStateHeaderHandler extends AbstractMessageHandler {
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final SAMLObjectBuilder<RelayState> builder = (SAMLObjectBuilder<RelayState>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<RelayState>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<RelayState>ensureBuilder(
                         RelayState.DEFAULT_ELEMENT_NAME);
         
         final RelayState header = builder.buildObject();

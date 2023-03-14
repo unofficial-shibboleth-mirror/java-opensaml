@@ -88,7 +88,7 @@ public class OtherSourceTest extends XMLObjectProviderBaseTestCase {
         
         otherSource.setAlgorithm(expectedAlgorithm);
         
-        XMLObjectBuilder<XSAny> xsAnyBuilder = builderFactory.getBuilderOrThrow(XSAny.TYPE_NAME);
+        XMLObjectBuilder<XSAny> xsAnyBuilder = builderFactory.ensureBuilder(XSAny.TYPE_NAME);
         XSAny parameters = xsAnyBuilder.buildObject(Parameters.DEFAULT_ELEMENT_NAME);
         parameters.setTextContent(expectedParametersContent);
         otherSource.setParameters(parameters);

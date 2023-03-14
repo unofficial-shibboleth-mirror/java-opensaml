@@ -71,7 +71,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static Response buildResponse() {
         final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Response>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Response>ensureBuilder(
                         Response.DEFAULT_ELEMENT_NAME);
 
         final Response response = responseBuilder.buildObject();
@@ -90,7 +90,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static ArtifactResponse buildArtifactResponse() {
         final SAMLObjectBuilder<ArtifactResponse> responseBuilder = (SAMLObjectBuilder<ArtifactResponse>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<ArtifactResponse>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ArtifactResponse>ensureBuilder(
                         ArtifactResponse.DEFAULT_ELEMENT_NAME);
 
         final ArtifactResponse response = responseBuilder.buildObject();
@@ -111,11 +111,11 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static LogoutRequest buildLogoutRequest(final @Nullable NameID name) {
         final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>ensureBuilder(
                         Issuer.DEFAULT_ELEMENT_NAME);
 
         final SAMLObjectBuilder<LogoutRequest> reqBuilder = (SAMLObjectBuilder<LogoutRequest>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<LogoutRequest>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<LogoutRequest>ensureBuilder(
                         LogoutRequest.DEFAULT_ELEMENT_NAME);
 
         final Issuer issuer = issuerBuilder.buildObject();
@@ -142,7 +142,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static LogoutResponse buildLogoutResponse() {
         final SAMLObjectBuilder<LogoutResponse> responseBuilder = (SAMLObjectBuilder<LogoutResponse>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<LogoutResponse>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<LogoutResponse>ensureBuilder(
                         LogoutResponse.DEFAULT_ELEMENT_NAME);
 
         final LogoutResponse response = responseBuilder.buildObject();
@@ -161,7 +161,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static Assertion buildAssertion() {
         final SAMLObjectBuilder<Assertion> assertionBuilder = (SAMLObjectBuilder<Assertion>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Assertion>ensureBuilder(
                         Assertion.DEFAULT_ELEMENT_NAME);
 
         final Assertion assertion = assertionBuilder.buildObject();
@@ -179,7 +179,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static AuthnStatement buildAuthnStatement() {
         final SAMLObjectBuilder<AuthnStatement> statementBuilder = (SAMLObjectBuilder<AuthnStatement>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnStatement>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnStatement>ensureBuilder(
                         AuthnStatement.DEFAULT_ELEMENT_NAME);
 
         final AuthnStatement statement = statementBuilder.buildObject();
@@ -195,7 +195,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static AttributeStatement buildAttributeStatement() {
         final SAMLObjectBuilder<AttributeStatement> statementBuilder = (SAMLObjectBuilder<AttributeStatement>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeStatement>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeStatement>ensureBuilder(
                         AttributeStatement.DEFAULT_ELEMENT_NAME);
 
         final AttributeStatement statement = statementBuilder.buildObject();
@@ -213,7 +213,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static Subject buildSubject(final @Nullable String principalName) {
         final SAMLObjectBuilder<Subject> subjectBuilder = (SAMLObjectBuilder<Subject>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Subject>ensureBuilder(
                         Subject.DEFAULT_ELEMENT_NAME);
         final Subject subject = subjectBuilder.buildObject();
 
@@ -233,7 +233,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static NameID buildNameID(final @Nonnull @NotEmpty String principalName) {
         final SAMLObjectBuilder<NameID> nameIdBuilder = (SAMLObjectBuilder<NameID>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<NameID>ensureBuilder(
                         NameID.DEFAULT_ELEMENT_NAME);
         final NameID nameId = nameIdBuilder.buildObject();
         nameId.setValue(principalName);
@@ -249,7 +249,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static Issuer buildIssuer(final @Nonnull @NotEmpty String entityID) {
         final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>ensureBuilder(
                         Issuer.DEFAULT_ELEMENT_NAME);
         final Issuer issuer = issuerBuilder.buildObject();
         issuer.setValue(entityID);
@@ -266,11 +266,11 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static AttributeQuery buildAttributeQueryRequest(final @Nullable Subject subject) {
         final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>ensureBuilder(
                         Issuer.DEFAULT_ELEMENT_NAME);
 
         final SAMLObjectBuilder<AttributeQuery> queryBuilder = (SAMLObjectBuilder<AttributeQuery>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeQuery>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AttributeQuery>ensureBuilder(
                         AttributeQuery.DEFAULT_ELEMENT_NAME);
 
         final Issuer issuer = issuerBuilder.buildObject();
@@ -296,11 +296,11 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static AuthnRequest buildAuthnRequest() {
         final SAMLObjectBuilder<Issuer> issuerBuilder = (SAMLObjectBuilder<Issuer>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Issuer>ensureBuilder(
                         Issuer.DEFAULT_ELEMENT_NAME);
 
         final SAMLObjectBuilder<AuthnRequest> requestBuilder = (SAMLObjectBuilder<AuthnRequest>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnRequest>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<AuthnRequest>ensureBuilder(
                         AuthnRequest.DEFAULT_ELEMENT_NAME);
 
         final Issuer issuer = issuerBuilder.buildObject();
@@ -328,13 +328,13 @@ public class SAML2ActionTestingSupport {
     @Nonnull public static Scoping buildScoping(@Nullable final Integer count,
             @Nullable @NonnullElements Set<String> idplist) {
         final SAMLObjectBuilder<Scoping> scopingBuilder = (SAMLObjectBuilder<Scoping>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>ensureBuilder(
                         Scoping.DEFAULT_ELEMENT_NAME);
         final SAMLObjectBuilder<IDPList> idpListBuilder = (SAMLObjectBuilder<IDPList>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<IDPList>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<IDPList>ensureBuilder(
                         IDPList.DEFAULT_ELEMENT_NAME);
         final SAMLObjectBuilder<IDPEntry> idpBuilder = (SAMLObjectBuilder<IDPEntry>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<IDPEntry>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<IDPEntry>ensureBuilder(
                         IDPEntry.DEFAULT_ELEMENT_NAME);
         
         final Scoping scoping = scopingBuilder.buildObject();
@@ -362,7 +362,7 @@ public class SAML2ActionTestingSupport {
      */
     @Nonnull public static ArtifactResolve buildArtifactResolve(final @Nullable String artifact) {
         final SAMLObjectBuilder<ArtifactResolve> requestBuilder = (SAMLObjectBuilder<ArtifactResolve>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<ArtifactResolve>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ArtifactResolve>ensureBuilder(
                         ArtifactResolve.DEFAULT_ELEMENT_NAME);
         final ArtifactResolve request = requestBuilder.buildObject();
         request.setID(REQUEST_ID);
@@ -371,7 +371,7 @@ public class SAML2ActionTestingSupport {
         
         if (artifact != null) {
             final SAMLObjectBuilder<Artifact> artifactBuilder = (SAMLObjectBuilder<Artifact>)
-                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Artifact>getBuilderOrThrow(
+                    XMLObjectProviderRegistrySupport.getBuilderFactory().<Artifact>ensureBuilder(
                             Artifact.DEFAULT_ELEMENT_NAME);
             final Artifact art = artifactBuilder.buildObject();
             art.setValue(artifact);

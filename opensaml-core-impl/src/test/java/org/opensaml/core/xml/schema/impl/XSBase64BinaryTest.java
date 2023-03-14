@@ -56,7 +56,7 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
-        XMLObjectBuilder<XSBase64Binary> xsb64bBuilder = builderFactory.getBuilderOrThrow(XSBase64Binary.TYPE_NAME);
+        XMLObjectBuilder<XSBase64Binary> xsb64bBuilder = builderFactory.ensureBuilder(XSBase64Binary.TYPE_NAME);
         XSBase64Binary xsb64b = xsb64bBuilder.buildObject(expectedXMLObjectQName, XSBase64Binary.TYPE_NAME);
         xsb64b.setValue(expectedValue);
         

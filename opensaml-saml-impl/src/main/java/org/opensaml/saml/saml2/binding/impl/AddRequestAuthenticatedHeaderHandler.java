@@ -56,7 +56,7 @@ public class AddRequestAuthenticatedHeaderHandler extends AbstractMessageHandler
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
         final SAMLObjectBuilder<RequestAuthenticated> builder = (SAMLObjectBuilder<RequestAuthenticated>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<RequestAuthenticated>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<RequestAuthenticated>ensureBuilder(
                         RequestAuthenticated.DEFAULT_ELEMENT_NAME);
         
         final RequestAuthenticated header = builder.buildObject();

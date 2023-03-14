@@ -83,7 +83,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         badCredential = CredentialSupport.getSimpleCredential(keyPair.getPublic(), null);
 
         sxoBuilder = new SignableSimpleXMLObjectBuilder();
-        sigBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<Signature>getBuilderOrThrow(
+        sigBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<Signature>ensureBuilder(
                 Signature.DEFAULT_ELEMENT_NAME);
 
         parserPool = new BasicParserPool();

@@ -82,18 +82,18 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
      * @throws MessageHandlerException ...
      */
     @Test public void testUnsigned() throws MessageHandlerException {
-        final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
+        final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>ensureBuilder(
                 Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);
 
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);
         
-        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setValue("foo");
         ext.getUnknownXMLObjects().add(cb);
 
-        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb2.setValue("bar");
         ext.getUnknownXMLObjects().add(cb2);
@@ -111,18 +111,18 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
      * @throws MessageHandlerException ...
      */
     @Test public void testSuccess() throws MessageHandlerException {
-        final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
+        final Extensions ext = XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>ensureBuilder(
                 Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);
 
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
         ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);
         
-        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb.setValue("foo");
         ext.getUnknownXMLObjects().add(cb);
 
-        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+        final ChannelBindings cb2 = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         cb2.setValue("bar");
         ext.getUnknownXMLObjects().add(cb2);

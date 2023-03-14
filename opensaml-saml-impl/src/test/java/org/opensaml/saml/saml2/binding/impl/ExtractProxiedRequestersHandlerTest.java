@@ -44,10 +44,10 @@ public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCas
     
     @BeforeClass public void setUp() {
         scopingBuilder = (SAMLObjectBuilder<Scoping>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>ensureBuilder(
                         Scoping.DEFAULT_ELEMENT_NAME);
         requesterIDBuilder = (SAMLObjectBuilder<RequesterID>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<RequesterID>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<RequesterID>ensureBuilder(
                         RequesterID.DEFAULT_ELEMENT_NAME);
     }
     

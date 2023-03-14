@@ -104,7 +104,7 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
     @Test
     public void testSingleAssertionWithExistingConditions() throws ComponentInitializationException {
         SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>ensureBuilder(
                         Conditions.DEFAULT_ELEMENT_NAME);
         final Conditions conditions = conditionsBuilder.buildObject();
 

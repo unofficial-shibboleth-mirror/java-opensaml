@@ -60,9 +60,9 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
     protected void setUp() throws Exception {
 
         tagBuilder = (SAMLObjectBuilder<Attribute>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Attribute>ensureBuilder(
                         Attribute.DEFAULT_ELEMENT_NAME);
-        valueBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<XSString>getBuilderOrThrow(
+        valueBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<XSString>ensureBuilder(
                 XSString.TYPE_NAME);
 
         URL mdURL = FilesystemMetadataResolverTest.class

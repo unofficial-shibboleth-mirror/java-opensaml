@@ -83,7 +83,7 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
      */
     @Test public void testSuccess() throws MessageHandlerException {
 
-        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
         messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
         

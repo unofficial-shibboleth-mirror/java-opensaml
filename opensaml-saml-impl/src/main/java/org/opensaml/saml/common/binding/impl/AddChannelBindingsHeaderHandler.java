@@ -92,7 +92,7 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
         final SAMLObjectBuilder<ChannelBindings> cbBuilder = (SAMLObjectBuilder<ChannelBindings>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                         ChannelBindings.DEFAULT_ELEMENT_NAME);
         
         for (final ChannelBindings cb : channelBindingsContext.getChannelBindings()) {

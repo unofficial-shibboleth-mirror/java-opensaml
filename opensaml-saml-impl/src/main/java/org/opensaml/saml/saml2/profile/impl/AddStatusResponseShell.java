@@ -185,10 +185,10 @@ public class AddStatusResponseShell extends AbstractProfileAction {
 
         final XMLObjectBuilderFactory bf = XMLObjectProviderRegistrySupport.getBuilderFactory();
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder =
-                (SAMLObjectBuilder<StatusCode>) bf.<StatusCode>getBuilderOrThrow(StatusCode.TYPE_NAME);
+                (SAMLObjectBuilder<StatusCode>) bf.<StatusCode>ensureBuilder(StatusCode.TYPE_NAME);
         final SAMLObjectBuilder<Status> statusBuilder =
-                (SAMLObjectBuilder<Status>) bf.<Status>getBuilderOrThrow(Status.TYPE_NAME);
-        final SAMLObjectBuilder<?> responseBuilder = (SAMLObjectBuilder<?>) bf.getBuilderOrThrow(messageType);
+                (SAMLObjectBuilder<Status>) bf.<Status>ensureBuilder(Status.TYPE_NAME);
+        final SAMLObjectBuilder<?> responseBuilder = (SAMLObjectBuilder<?>) bf.ensureBuilder(messageType);
 
         final StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
@@ -214,7 +214,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
         if (issuerId != null) {
             log.debug("{} Setting Issuer to {}", getLogPrefix(), issuerId);
             final SAMLObjectBuilder<Issuer> issuerBuilder =
-                    (SAMLObjectBuilder<Issuer>) bf.<Issuer>getBuilderOrThrow(Issuer.DEFAULT_ELEMENT_NAME);
+                    (SAMLObjectBuilder<Issuer>) bf.<Issuer>ensureBuilder(Issuer.DEFAULT_ELEMENT_NAME);
             final Issuer issuer = issuerBuilder.buildObject();
             issuer.setValue(issuerId);
             response.setIssuer(issuer);

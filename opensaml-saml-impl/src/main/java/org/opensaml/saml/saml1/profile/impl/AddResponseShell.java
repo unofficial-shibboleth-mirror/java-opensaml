@@ -134,11 +134,11 @@ public class AddResponseShell extends AbstractProfileAction {
 
         final XMLObjectBuilderFactory bf = XMLObjectProviderRegistrySupport.getBuilderFactory();
         final SAMLObjectBuilder<StatusCode> statusCodeBuilder =
-                (SAMLObjectBuilder<StatusCode>) bf.<StatusCode>getBuilderOrThrow(StatusCode.DEFAULT_ELEMENT_NAME);
+                (SAMLObjectBuilder<StatusCode>) bf.<StatusCode>ensureBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
         final SAMLObjectBuilder<Status> statusBuilder =
-                (SAMLObjectBuilder<Status>) bf.<Status>getBuilderOrThrow(Status.DEFAULT_ELEMENT_NAME);
+                (SAMLObjectBuilder<Status>) bf.<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
         final SAMLObjectBuilder<Response> responseBuilder =
-                (SAMLObjectBuilder<Response>) bf.<Response>getBuilderOrThrow(Response.DEFAULT_ELEMENT_NAME);
+                (SAMLObjectBuilder<Response>) bf.<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
 
         final StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);

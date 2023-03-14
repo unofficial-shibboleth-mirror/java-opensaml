@@ -101,7 +101,7 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
      */
     @Test public void testSingleAssertionWithExistingCondition() throws Exception {
         final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>ensureBuilder(
                         Conditions.DEFAULT_ELEMENT_NAME);
         final Conditions conditions = conditionsBuilder.buildObject();
 
@@ -131,12 +131,12 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
      */
     @Test public void testSingleAssertionWithExistingDoNotCacheCondition() throws Exception {
         final SAMLObjectBuilder<DoNotCacheCondition> dncConditionBuilder = (SAMLObjectBuilder<DoNotCacheCondition>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<DoNotCacheCondition>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<DoNotCacheCondition>ensureBuilder(
                         DoNotCacheCondition.DEFAULT_ELEMENT_NAME);
         final DoNotCacheCondition dncCondition = dncConditionBuilder.buildObject();
 
         final SAMLObjectBuilder<Conditions> conditionsBuilder = (SAMLObjectBuilder<Conditions>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Conditions>ensureBuilder(
                         Conditions.DEFAULT_ELEMENT_NAME);
         final Conditions conditions = conditionsBuilder.buildObject();
         conditions.getDoNotCacheConditions().add(dncCondition);

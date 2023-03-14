@@ -57,7 +57,7 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshall() throws MarshallingException, XMLParserException{
-        XMLObjectBuilder<XSQName> xsQNameBuilder = builderFactory.getBuilderOrThrow(XSQName.TYPE_NAME);
+        XMLObjectBuilder<XSQName> xsQNameBuilder = builderFactory.ensureBuilder(XSQName.TYPE_NAME);
         XSQName xsQName = xsQNameBuilder.buildObject(expectedXMLObjectQName, XSQName.TYPE_NAME);
         xsQName.setValue(expectedValue);
         

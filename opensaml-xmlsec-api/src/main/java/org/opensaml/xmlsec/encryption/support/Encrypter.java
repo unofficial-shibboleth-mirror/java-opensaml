@@ -123,7 +123,7 @@ public class Encrypter {
                 "EncryptedKey unmarshaller not configured");
 
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory();
-        keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.<KeyInfo>getBuilderOrThrow(
+        keyInfoBuilder = (XMLSignatureBuilder<KeyInfo>) builderFactory.<KeyInfo>ensureBuilder(
                 KeyInfo.DEFAULT_ELEMENT_NAME);
     }
 

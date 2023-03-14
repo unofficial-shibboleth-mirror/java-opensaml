@@ -63,7 +63,7 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @return the QName for the default object provider
      */
-    public static QName getDefaultProviderQName() {
+    @Nonnull public static QName getDefaultProviderQName() {
         return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getDefaultProviderQName();
     }
 
@@ -103,7 +103,7 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @return the XMLObject builder factory
      */
-    public static XMLObjectBuilderFactory getBuilderFactory() {
+    @Nonnull public static XMLObjectBuilderFactory getBuilderFactory() {
         return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getBuilderFactory();
     }
 
@@ -112,7 +112,7 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @return the XMLObject marshaller factory
      */
-    public static MarshallerFactory getMarshallerFactory() {
+    @Nonnull public static MarshallerFactory getMarshallerFactory() {
         return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getMarshallerFactory();
     }
 
@@ -122,7 +122,7 @@ public class XMLObjectProviderRegistrySupport {
      * 
      * @return the XMLObject unmarshaller factory
      */
-    public static UnmarshallerFactory getUnmarshallerFactory() {
+    @Nonnull public static UnmarshallerFactory getUnmarshallerFactory() {
         return ConfigurationService.ensure(XMLObjectProviderRegistry.class).getUnmarshallerFactory();
     }
 

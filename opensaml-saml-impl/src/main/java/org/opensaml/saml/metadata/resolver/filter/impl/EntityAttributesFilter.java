@@ -83,10 +83,10 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
     /** Constructor. */
     public EntityAttributesFilter() {
         extBuilder = (SAMLObjectBuilder<Extensions>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Extensions>ensureBuilder(
                         Extensions.DEFAULT_ELEMENT_NAME);
         entityAttributesBuilder = (SAMLObjectBuilder<EntityAttributes>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<EntityAttributes>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<EntityAttributes>ensureBuilder(
                         EntityAttributes.DEFAULT_ELEMENT_NAME);
         applyMap = ArrayListMultimap.create();
     }

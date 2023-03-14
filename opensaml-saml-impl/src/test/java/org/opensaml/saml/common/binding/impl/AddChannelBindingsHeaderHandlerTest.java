@@ -49,7 +49,7 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
         messageCtx = new MessageContext();
         
         final ChannelBindings cb = ((SAMLObjectBuilder<ChannelBindings>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                         ChannelBindings.DEFAULT_ELEMENT_NAME)).buildObject();
         cb.setType("foo");
         cbc = new ChannelBindingsContext();
@@ -96,7 +96,7 @@ public class AddChannelBindingsHeaderHandlerTest extends OpenSAMLInitBaseTestCas
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         messageCtx.addSubcontext(cbc);
 
-        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>getBuilderOrThrow(
+        final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
         messageCtx.getOrCreateSubcontext(SOAP11Context.class).setEnvelope(env);
         

@@ -485,7 +485,7 @@ public final class XMLObjectSupport {
      * @throws XMLRuntimeException if the required builder can not be obtained
      */
     @Nonnull public static XMLObject buildXMLObject(@Nonnull final QName elementName) {
-        final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
+        final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().ensureBuilder(elementName);
         return builder.buildObject(elementName);
     }
     
@@ -498,7 +498,7 @@ public final class XMLObjectSupport {
      * @throws XMLRuntimeException if the required builder can not be obtained
      */
     @Nonnull public static XMLObject buildXMLObject(@Nonnull final QName elementName, @Nullable final QName typeName) {
-        final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().getBuilderOrThrow(elementName);
+        final XMLObjectBuilder<?> builder = getProviderRegistry().getBuilderFactory().ensureBuilder(elementName);
         return builder.buildObject(elementName, typeName);
     }
     

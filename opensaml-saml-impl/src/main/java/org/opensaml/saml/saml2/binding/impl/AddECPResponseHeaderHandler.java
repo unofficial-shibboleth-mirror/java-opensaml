@@ -69,7 +69,7 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>)
-                XMLObjectProviderRegistrySupport.getBuilderFactory().<Response>getBuilderOrThrow(
+                XMLObjectProviderRegistrySupport.getBuilderFactory().<Response>ensureBuilder(
                         Response.DEFAULT_ELEMENT_NAME);
         
         final Response header = responseBuilder.buildObject();
