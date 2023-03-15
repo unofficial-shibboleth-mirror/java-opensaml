@@ -94,7 +94,7 @@ public class MarshallerFactory {
      * 
      * @return the registered marshaller
      * 
-     * @throw XMLRuntimeException if no marshaller is registered
+     * @throws XMLRuntimeException if no marshaller is registered
      * 
      * @since 5.0.0
      */
@@ -113,7 +113,7 @@ public class MarshallerFactory {
      * 
      * @return the registered marshaller
      * 
-     * @throw XMLRuntimeException if no marshaller is registered
+     * @throws XMLRuntimeException if no marshaller is registered
      * 
      * @since 5.0.0
      */

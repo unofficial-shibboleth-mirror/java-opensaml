@@ -96,7 +96,7 @@ public class UnmarshallerFactory {
      * 
      * @return the registered unmarshaller
      * 
-     * @throw XMLRuntimeException if no unmarshaller is registered
+     * @throws XMLRuntimeException if no unmarshaller is registered
      * 
      * @since 5.0.0
      */
@@ -115,7 +115,7 @@ public class UnmarshallerFactory {
      * 
      * @return the registered unmarshaller
      * 
-     * @throw XMLRuntimeException if no unmarshaller is registered
+     * @throws XMLRuntimeException if no unmarshaller is registered
      * 
      * @since 5.0.0
      */
