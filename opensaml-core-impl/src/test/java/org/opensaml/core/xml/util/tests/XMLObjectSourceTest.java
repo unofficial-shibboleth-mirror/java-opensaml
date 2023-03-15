@@ -53,13 +53,6 @@ public class XMLObjectSourceTest {
     @Test
     public void testBadCtorParams() {
         try {
-            new XMLObjectSource(null);
-            Assert.fail("Should have failed ctor with null arg");
-        } catch (Exception e){
-            // expected, do nothing
-        }
-        
-        try {
             new XMLObjectSource(new byte[] { } );
             Assert.fail("Should have failed ctor with 0 lenght array");
         } catch (Exception e){

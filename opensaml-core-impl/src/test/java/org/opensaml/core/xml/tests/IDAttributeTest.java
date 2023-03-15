@@ -53,8 +53,9 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSimpleUnmarshall() {
-        SimpleXMLObject sxObject =  (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttribute.xml");
-
+        final SimpleXMLObject sxObject =  (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttribute.xml");
+        assert sxObject != null;
+        
         Assert.assertEquals(sxObject.resolveID("IDLevel1"), sxObject, "ID lookup failed");
         Assert.assertEquals(sxObject.resolveIDFromRoot("IDLevel1"), sxObject, "ID lookup failed");
         Assert.assertNull(sxObject.resolveID("NonExistent"), "Lookup of non-existent ID didn't return null");
@@ -70,9 +71,9 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testComplexUnmarshallInList() {
-        SimpleXMLObject sxObject = 
+        final SimpleXMLObject sxObject = 
             (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
-        
+        assert sxObject != null;
         Assert.assertNull(sxObject.resolveID("NonExistent"), "Lookup of non-existent ID didn't return null");
         Assert.assertNull(sxObject.resolveIDFromRoot("NonExistent"), "Lookup of non-existent ID didn't return null");
         
@@ -111,9 +112,9 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
                 "Lookup of non-existent ID didn't return null");
         
         // Resolving from lower-level child to a non-ancestor object using resolveIDFromRoot.
-        SimpleXMLObject sxoIDLevel4A = sxObject.getSimpleXMLObjects().get(0)
+        final SimpleXMLObject sxoIDLevel4A = sxObject.getSimpleXMLObjects().get(0)
             .getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(0); 
-        SimpleXMLObject sxoIDLevel2C = sxObject.getSimpleXMLObjects().get(3);
+        final SimpleXMLObject sxoIDLevel2C = sxObject.getSimpleXMLObjects().get(3);
         Assert.assertEquals(sxoIDLevel4A.resolveIDFromRoot("IDLevel2C"), sxoIDLevel2C, "ID lookup failed");
     }
         
@@ -124,8 +125,9 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testChangePropagationInList() {
-        SimpleXMLObject sxObject =  
+        final SimpleXMLObject sxObject =
             (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
+        assert sxObject != null;
         
         // Test propagation of attribute value change up the tree 
         sxObject.getSimpleXMLObjects().get(1).setId("NewIDLevel2B");
@@ -161,10 +163,11 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     @Test
     public void testListOpChangePropagation() {
         
-        SimpleXMLObject sxObject =  
+        final SimpleXMLObject sxObject =  
             (SimpleXMLObject) unmarshallElement("/org/opensaml/core/xml/IDAttributeWithChildrenList.xml");
+        assert sxObject != null;
         
-        SimpleXMLObject targetIDLevel3B = sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2);
+        final SimpleXMLObject targetIDLevel3B = sxObject.getSimpleXMLObjects().get(0).getSimpleXMLObjects().get(2);
         Assert.assertEquals(sxObject.resolveID("IDLevel3B"), targetIDLevel3B, "ID lookup failed");
         
         // remove(int)
@@ -183,7 +186,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         Assert.assertNull(sxObject.resolveID("IDLevel3B"), "Lookup of non-existent ID didn't return null");
         
         // Ops using new object
-        SimpleXMLObject newSimpleObject = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        final SimpleXMLObject newSimpleObject = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         newSimpleObject.setId("NewSimpleElement");
         
         sxObject.getSimpleXMLObjects().get(3).getSimpleXMLObjects().add(newSimpleObject);
@@ -212,19 +215,19 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAttributeMap() throws XMLParserException, UnmarshallingException{
-        String documentLocation = "/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
-        Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
+        final String documentLocation = "/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
+        final Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
-        XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
+        final Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+        final XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
-        XSAny epParent = (XSAny) xmlobject;
+        final XSAny epParent = (XSAny) xmlobject;
         Assert.assertNotNull(epParent, "Cast of parent to XSAny failed");
         
-        XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
+        final XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
         Assert.assertNotNull(epChild0, "Cast of child 0 to XSAny failed");
         
-        XSAny epChild1 = (XSAny) epParent.getUnknownXMLObjects().get(1);
+        final XSAny epChild1 = (XSAny) epParent.getUnknownXMLObjects().get(1);
         Assert.assertNotNull(epChild1, "Cast of child 1 to XSAny failed");
         
         // Since not doing schema validation, etc, the parser won't register the ID type in the DOM
@@ -235,7 +238,7 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
-        QName idName = QNameSupport.constructQName(null, "id", null);
+        final QName idName = QNameSupport.constructQName(null, "id", null);
         epChild0.getUnknownAttributes().registerID(idName);
         Assert.assertEquals(epParent.resolveID("1144"), epChild0, "Lookup of ID mapping failed");
         
@@ -257,21 +260,21 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAttributeMapOps() throws XMLParserException, UnmarshallingException{
-        String documentLocation = "/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
-        Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
+        final String documentLocation = "/org/opensaml/core/xml/IDAttributeWithAttributeMap.xml";
+        final Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+        final Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
-        XSAny epParent = (XSAny) xmlobject;
+        final XSAny epParent = (XSAny) xmlobject;
         Assert.assertNotNull(epParent, "Cast of parent to XSAny failed");
         
-        XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
+        final XSAny epChild0 = (XSAny) epParent.getUnknownXMLObjects().get(0);
         Assert.assertNotNull(epChild0, "Cast of child 0 to XSAny failed");
         
         // Now manually register the "id" attribute in the AttributeMap of child 0 as being an ID type.
         // This should cause the expected ID-to-XMLObject mapping behaviour to take place.
-        QName idName = QNameSupport.constructQName(null, "id", null);
+        final QName idName = QNameSupport.constructQName(null, "id", null);
         epChild0.getUnknownAttributes().registerID(idName);
         Assert.assertEquals(epParent.resolveID("1144"), epChild0, "Lookup of ID mapping failed");
         
@@ -307,11 +310,11 @@ public class IDAttributeTest extends XMLObjectBaseTestCase {
     @Test
     public void testGlobalIDRegistration() throws XMLParserException, UnmarshallingException {
         XMLObject xmlObject;
-        QName attribQName = new QName("http://www.example.org", "id", "test");
+        final QName attribQName = new QName("http://www.example.org", "id", "test");
         
-        String documentLocation = "/org/opensaml/core/xml/IDAttributeGlobal.xml";
+        final String documentLocation = "/org/opensaml/core/xml/IDAttributeGlobal.xml";
         Document document = parserPool.parse(IDAttributeTest.class.getResourceAsStream(documentLocation));
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+        final Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         
         // With no registration
         xmlObject = unmarshaller.unmarshall(document.getDocumentElement());

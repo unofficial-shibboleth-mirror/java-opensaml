@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.schema.XSString;
@@ -27,7 +29,7 @@ import org.opensaml.core.xml.schema.XSString;
 public class XSStringUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         final XSString xsiString = (XSString) xmlObject;
 
         xsiString.setValue(elementContent);

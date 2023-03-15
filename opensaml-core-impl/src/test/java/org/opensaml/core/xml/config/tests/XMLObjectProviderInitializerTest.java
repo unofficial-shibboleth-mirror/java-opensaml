@@ -39,7 +39,7 @@ public class XMLObjectProviderInitializerTest extends XMLObjectProviderInitializ
     /** {@inheritDoc} */
     protected QName[] getTestedProviders() {
         return new QName[] { 
-                ConfigurationService.get(XMLObjectProviderRegistry.class).getDefaultProviderQName(), 
+                ConfigurationService.ensure(XMLObjectProviderRegistry.class).getDefaultProviderQName(), 
                 XSString.TYPE_NAME, 
         };
     }

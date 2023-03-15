@@ -20,12 +20,11 @@ package org.opensaml.core.xml.util.tests;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.XMLRuntimeException;
-import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.core.xml.util.XMLObjectSupport.CloneOutputOption;
@@ -42,13 +41,13 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
     /** Tests cloning an XMLObject. */
     @Test
     public void testXMLObjectCloneWithDropDOM() {
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
-            .getBuilder(SimpleXMLObject.ELEMENT_NAME);
-        
-        SimpleXMLObject origChildObj = sxoBuilder.buildObject();
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
+        final SimpleXMLObject origChildObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
+
         origChildObj.setValue("FooBarBaz");
         
-        SimpleXMLObject origParentObj = sxoBuilder.buildObject();
+        final SimpleXMLObject origParentObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         origParentObj.getSimpleXMLObjects().add(origChildObj);
         
         SimpleXMLObject clonedParentObj = null;
@@ -61,6 +60,7 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
         }
         
         Assert.assertFalse(origParentObj == clonedParentObj, "Parent XMLObjects were the same reference");
+        assert clonedParentObj != null;
         Assert.assertNull(clonedParentObj.getDOM(), "Cloned parent DOM node was not null");
         
         Assert.assertFalse(clonedParentObj.getSimpleXMLObjects().isEmpty(), "Cloned parent had no children");
@@ -75,13 +75,13 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
     /** Tests cloning an XMLObject. */
     @Test
     public void testXMLObjectCloneWithUnrootedDOM() {
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
-            .getBuilder(SimpleXMLObject.ELEMENT_NAME);
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
         
-        SimpleXMLObject origChildObj = sxoBuilder.buildObject();
+        final SimpleXMLObject origChildObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         origChildObj.setValue("FooBarBaz");
         
-        SimpleXMLObject origParentObj = sxoBuilder.buildObject();
+        final SimpleXMLObject origParentObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         origParentObj.getSimpleXMLObjects().add(origChildObj);
         
         SimpleXMLObject clonedParentObj = null;
@@ -93,9 +93,13 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
             Assert.fail("Object cloning failed on unmarshalling: " + e.getMessage());
         }
         
+        final Element preCloneElement = origParentObj.getDOM();
+        assert preCloneElement != null;
+        assert clonedParentObj != null;
+        
         Assert.assertFalse(origParentObj == clonedParentObj, "Parent XMLObjects were the same reference");
         Assert.assertNotNull(clonedParentObj.getDOM(), "Cloned parent DOM node was null");
-        Assert.assertFalse(origParentObj.getDOM().isSameNode(clonedParentObj.getDOM()),
+        Assert.assertFalse(preCloneElement.isSameNode(clonedParentObj.getDOM()),
                 "Parent DOM node was not cloned properly");
         
         Assert.assertFalse(clonedParentObj.getSimpleXMLObjects().isEmpty(), "Cloned parent had no children");
@@ -103,7 +107,7 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
         
         Assert.assertFalse(origChildObj == clonedChildObj, "Child XMLObjects were the same reference");
         Assert.assertNotNull(clonedChildObj.getDOM(), "Cloned child DOM node was null");
-        Assert.assertFalse(origChildObj.getDOM().isSameNode(clonedChildObj.getDOM()),
+        Assert.assertFalse(preCloneElement.isSameNode(clonedChildObj.getDOM()),
                 "Child DOM node was not cloned properly");
         
         Assert.assertEquals(clonedChildObj.getValue(), "FooBarBaz", "Text content of child was not the expected value");
@@ -112,13 +116,13 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
     /** Tests cloning an XMLObject. */
     @Test
     public void testXMLObjectCloneWithRootInNewDocument() {
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
-            .getBuilder(SimpleXMLObject.ELEMENT_NAME);
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
         
-        SimpleXMLObject origChildObj = sxoBuilder.buildObject();
+        final SimpleXMLObject origChildObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         origChildObj.setValue("FooBarBaz");
         
-        SimpleXMLObject origParentObj = sxoBuilder.buildObject();
+        final SimpleXMLObject origParentObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         origParentObj.getSimpleXMLObjects().add(origChildObj);
         
         SimpleXMLObject clonedParentObj = null;
@@ -130,9 +134,16 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
             Assert.fail("Object cloning failed on unmarshalling: " + e.getMessage());
         }
         
+        final Element preCloneElement = origParentObj.getDOM();
+        assert preCloneElement != null;
+        
+        assert clonedParentObj != null;
+        final Element clonedElement = clonedParentObj.getDOM();
+        assert clonedElement != null;
+        
         Assert.assertFalse(origParentObj == clonedParentObj, "Parent XMLObjects were the same reference");
         Assert.assertNotNull(clonedParentObj.getDOM(), "Cloned parent DOM node was null");
-        Assert.assertFalse(origParentObj.getDOM().isSameNode(clonedParentObj.getDOM()),
+        Assert.assertFalse(preCloneElement.isSameNode(clonedParentObj.getDOM()),
                 "Parent DOM node was not cloned properly");
         
         Assert.assertFalse(clonedParentObj.getSimpleXMLObjects().isEmpty(), "Cloned parent had no children");
@@ -140,27 +151,27 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
         
         Assert.assertFalse(origChildObj == clonedChildObj, "Child XMLObjects were the same reference");
         Assert.assertNotNull(clonedChildObj.getDOM(), "Cloned child DOM node was null");
-        Assert.assertFalse(origChildObj.getDOM().isSameNode(clonedChildObj.getDOM()),
+        Assert.assertFalse(preCloneElement.isSameNode(clonedChildObj.getDOM()),
                 "Child DOM node was not cloned properly");
         
         Assert.assertEquals(clonedChildObj.getValue(), "FooBarBaz", "Text content of child was not the expected value");
         
         // Test rootInNewDocument requirements
-        Assert.assertFalse(origParentObj.getDOM().getOwnerDocument().isSameNode(clonedParentObj.getDOM().getOwnerDocument()), 
+        Assert.assertFalse(preCloneElement.getOwnerDocument().isSameNode(clonedElement.getOwnerDocument()), 
                 "Cloned objects DOM's were owned by the same Document");
-        Assert.assertTrue(clonedParentObj.getDOM().getOwnerDocument().getDocumentElement().isSameNode(clonedParentObj.getDOM()), 
+        Assert.assertTrue(clonedElement.getOwnerDocument().getDocumentElement().isSameNode(clonedParentObj.getDOM()), 
                 "Cloned object was not the new Document root");
     }
     
     @Test
     public void testXMLObjectCloneInputMarshalling() throws MarshallingException, UnmarshallingException {
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) XMLObjectProviderRegistrySupport.getBuilderFactory()
-                .getBuilder(SimpleXMLObject.ELEMENT_NAME);
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
             
-            SimpleXMLObject origChildObj = sxoBuilder.buildObject();
+            final SimpleXMLObject origChildObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
             origChildObj.setValue("FooBarBaz");
             
-            SimpleXMLObject origParentObj = sxoBuilder.buildObject();
+            final SimpleXMLObject origParentObj = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
             origParentObj.getSimpleXMLObjects().add(origChildObj);
             
             Assert.assertNull(origParentObj.getDOM());
@@ -168,16 +179,16 @@ public class XMLObjectSupportTest extends XMLObjectBaseTestCase {
             SimpleXMLObject clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj, CloneOutputOption.DropDOM);
             Assert.assertNotNull(clonedParentObj);
             
-            Assert.assertNotNull(origParentObj.getDOM());
-            Element preCloneElement = origParentObj.getDOM();
-            Document preCloneDocument = origParentObj.getDOM().getOwnerDocument();
+            final Element preCloneElement = origParentObj.getDOM();
+            assert preCloneElement != null;
+            final Document preCloneDocument = preCloneElement.getOwnerDocument();
             
             clonedParentObj = XMLObjectSupport.cloneXMLObject(origParentObj, CloneOutputOption.DropDOM);
             Assert.assertNotNull(clonedParentObj);
             
             Assert.assertNotNull(origParentObj.getDOM());
             Assert.assertTrue(preCloneElement.isSameNode(origParentObj.getDOM()));
-            Assert.assertTrue(preCloneDocument.isSameNode(origParentObj.getDOM().getOwnerDocument()));
+            Assert.assertTrue(preCloneDocument.isSameNode(preCloneElement.getOwnerDocument()));
     }
     
     @Test

@@ -17,6 +17,10 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -32,11 +36,13 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class XSDateTimeMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final XSDateTime xsDateTime = (XSDateTime) xmlObject;
         
-        ElementSupport.appendTextContent(domElement, DOMTypeSupport.instantToString(xsDateTime.getValue()));
+        final Instant i = ((XSDateTime) xmlObject).getValue();
+        if (i != null) {
+            ElementSupport.appendTextContent(domElement, DOMTypeSupport.instantToString(i));
+        }
     }
 
 }

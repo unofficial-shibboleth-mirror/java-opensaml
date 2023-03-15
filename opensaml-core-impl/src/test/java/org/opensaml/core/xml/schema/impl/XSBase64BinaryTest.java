@@ -60,7 +60,7 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
         XSBase64Binary xsb64b = xsb64bBuilder.buildObject(expectedXMLObjectQName, XSBase64Binary.TYPE_NAME);
         xsb64b.setValue(expectedValue);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(xsb64b);
+        Marshaller marshaller = marshallerFactory.ensureMarshaller(xsb64b);
         marshaller.marshall(xsb64b);
         
         Document document = parserPool.parse(XSBase64BinaryTest.class.getResourceAsStream(testDocumentLocation));
@@ -77,7 +77,7 @@ public class XSBase64BinaryTest extends XMLObjectBaseTestCase {
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSBase64BinaryTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSBase64Binary xsb64b = (XSBase64Binary) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsb64b.getElementQName(), expectedXMLObjectQName, "Unexpected XSBase64Binary QName");

@@ -47,23 +47,23 @@ public class IndexedXMLObjectChildrenListTest {
      */
     @Test
     public void testAdd() {
-        SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
+        final SimpleXMLObject parentObject = sxoBuilder.buildObject();
+        final IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
                 parentObject);
 
-        SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
+        final SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
         Assert.assertEquals(indexedList.get(
                 child1.getElementQName()).size(), 1, "List gotten by element QName index should have had 1 element");
-        Assert.assertEquals(indexedList.get(
-                child1.getSchemaType()).size(), 1, "List gotten by type QName index should have had 1 element");
+        final QName type = child1.getSchemaType();
+        assert type != null;
+        Assert.assertEquals(indexedList.get(type).size(), 1, "List gotten by type QName index should have had 1 element");
 
-        SimpleXMLObject child2 = sxoBuilder.buildObject();
+        final SimpleXMLObject child2 = sxoBuilder.buildObject();
         indexedList.add(child2);
         Assert.assertEquals(indexedList.get(
                 child1.getElementQName()).size(), 2, "List gotten by element QName index should have had 1 element");
-        Assert.assertEquals(indexedList.get(
-                child1.getSchemaType()).size(), 1, "List gotten by type QName index should have had 1 element");
+        Assert.assertEquals(indexedList.get(type).size(), 1, "List gotten by type QName index should have had 1 element");
     }
 
     /**
@@ -71,20 +71,22 @@ public class IndexedXMLObjectChildrenListTest {
      */
     @Test
     public void testSet() {
-        SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
+        final SimpleXMLObject parentObject = sxoBuilder.buildObject();
+        final IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
                 parentObject);
 
-        SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
+        final SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
 
-        SimpleXMLObject child2 = sxoBuilder.buildObject();
+        final SimpleXMLObject child2 = sxoBuilder.buildObject();
         indexedList.set(0, child2);
+
+        final QName type = child1.getSchemaType();
+        assert type != null;
 
         Assert.assertEquals(indexedList.get(
                 child1.getElementQName()).size(), 1, "List gotten by element QName index should have had 1 element");
-        Assert.assertTrue(indexedList.get(
-                child1.getSchemaType()).isEmpty(), "List gotten by type QName index should have been empty");
+        Assert.assertTrue(indexedList.get(type).isEmpty(), "List gotten by type QName index should have been empty");
     }
 
     /**
@@ -92,21 +94,23 @@ public class IndexedXMLObjectChildrenListTest {
      */
     @Test
     public void testRemove() {
-        SimpleXMLObject parentObject = sxoBuilder.buildObject();
-        IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
+        final SimpleXMLObject parentObject = sxoBuilder.buildObject();
+        final IndexedXMLObjectChildrenList<SimpleXMLObject> indexedList = new IndexedXMLObjectChildrenList<>(
                 parentObject);
 
-        SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
+        final SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME, type1);
         indexedList.add(child1);
 
-        SimpleXMLObject child2 = sxoBuilder.buildObject();
+        final SimpleXMLObject child2 = sxoBuilder.buildObject();
         indexedList.add(child2);
+
+        final QName type = child1.getSchemaType();
+        assert type != null;
 
         indexedList.remove(child1);
         Assert.assertEquals(indexedList.get(
                 child1.getElementQName()).size(), 1, "List gotten by element QName index should have had 1 element");
-        Assert.assertTrue(indexedList.get(
-                child1.getSchemaType()).isEmpty(), "List gotten by type QName index should have been empty");
+        Assert.assertTrue(indexedList.get(type).isEmpty(), "List gotten by type QName index should have been empty");
     }
 
     /**

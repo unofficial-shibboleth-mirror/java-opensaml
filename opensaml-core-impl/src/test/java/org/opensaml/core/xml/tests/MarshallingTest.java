@@ -22,10 +22,10 @@ import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xmlunit.builder.DiffBuilder;
@@ -55,13 +55,14 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshallingWithAttributes() throws XMLParserException {
-        String expectedId = "Firefly";
-        String expectedDocumentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
-        Document expectedDocument = parserPool.parse(MarshallingTest.class
+        final String expectedId = "Firefly";
+        final String expectedDocumentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
+        final Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
-        SimpleXMLObject sxObject = sxoBuilder.buildObject();
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
+        final SimpleXMLObject sxObject = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         sxObject.setId(expectedId);
 
         assertXMLEquals(expectedDocument, sxObject);
@@ -75,26 +76,26 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshallingWithElementContent() throws XMLParserException {
-        String expectedDocumentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithContent.xml";
-        Document expectedDocument = parserPool.parse(MarshallingTest.class
+        final String expectedDocumentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithContent.xml";
+        final Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
+        final SimpleXMLObject sxObject = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
 
-        SimpleXMLObject sxObject = sxoBuilder.buildObject();
-
-        SimpleXMLObject child1 = sxoBuilder.buildObject();
+        final SimpleXMLObject child1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         child1.setValue("Content1");
         sxObject.getSimpleXMLObjects().add(child1);
 
-        SimpleXMLObject child2 = sxoBuilder.buildObject();
+        final SimpleXMLObject child2 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         child2.setValue("Content2");
         sxObject.getSimpleXMLObjects().add(child2);
 
-        SimpleXMLObject child3 = sxoBuilder.buildObject();
+        final SimpleXMLObject child3 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         sxObject.getSimpleXMLObjects().add(child3);
 
-        SimpleXMLObject grandchild1 = sxoBuilder.buildObject();
+        final SimpleXMLObject grandchild1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         grandchild1.setValue("Content3");
         child3.getSimpleXMLObjects().add(grandchild1);
 
@@ -110,14 +111,15 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshallingWithChildElements() throws XMLParserException, MarshallingException {
-        String expectedDocumentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithChildren.xml";
-        Document expectedDocument = parserPool.parse(MarshallingTest.class
+        final String expectedDocumentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithChildren.xml";
+        final Document expectedDocument = parserPool.parse(MarshallingTest.class
                 .getResourceAsStream(expectedDocumentLocation));
 
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
-        SimpleXMLObject sxObject = sxoBuilder.buildObject();
-        SimpleXMLObject sxObjectChild1 = sxoBuilder.buildObject();
-        SimpleXMLObject sxObjectChild2 = sxoBuilder.buildObject();
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
+        final SimpleXMLObject sxObject = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
+        final SimpleXMLObject sxObjectChild1 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
+        final SimpleXMLObject sxObjectChild2 = sxoBuilder.buildObject(SimpleXMLObject.ELEMENT_NAME);
         sxObject.getSimpleXMLObjects().add(sxObjectChild1);
         sxObject.getSimpleXMLObjects().add(sxObjectChild2);
 
@@ -133,26 +135,27 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshallingXMLFragment() throws XMLParserException, MarshallingException {
-        String expectedDocumentLocation = "/org/opensaml/core/xml/SOAPMessageWithContent.xml";
-        String soapDocLocation = "/org/opensaml/core/xml/SOAPMessage.xml";
+        final String expectedDocumentLocation = "/org/opensaml/core/xml/SOAPMessageWithContent.xml";
+        final String soapDocLocation = "/org/opensaml/core/xml/SOAPMessage.xml";
         Document soapDoc = parserPool.parse(MarshallingTest.class.getResourceAsStream(soapDocLocation));
         Element soapBody = (Element) soapDoc.getDocumentElement().getElementsByTagNameNS(
                 "http://schemas.xmlsoap.org/soap/envelope/", "Body").item(0);
         
-        SimpleXMLObjectBuilder sxoBuilder = (SimpleXMLObjectBuilder) builderFactory.getBuilder(simpleXMLObjectQName);
+        final XMLObjectBuilder<SimpleXMLObject> sxoBuilder =
+                (XMLObjectBuilder<SimpleXMLObject>) builderFactory.<SimpleXMLObject>ensureBuilder(simpleXMLObjectQName);
         
-        SimpleXMLObject response = sxoBuilder.buildObject(SimpleXMLObject.NAMESPACE, "Response", SimpleXMLObject.NAMESPACE_PREFIX);
-        SimpleXMLObject statement = sxoBuilder.buildObject(SimpleXMLObject.NAMESPACE, "Statement", SimpleXMLObject.NAMESPACE_PREFIX);
+        final SimpleXMLObject response = sxoBuilder.buildObject(SimpleXMLObject.NAMESPACE, "Response", SimpleXMLObject.NAMESPACE_PREFIX);
+        final SimpleXMLObject statement = sxoBuilder.buildObject(SimpleXMLObject.NAMESPACE, "Statement", SimpleXMLObject.NAMESPACE_PREFIX);
         response.getSimpleXMLObjects().add(statement);
         
         // Marshall it once so the DOM is cached
-        Marshaller marshaller = marshallerFactory.getMarshaller(simpleXMLObjectQName);
+        final Marshaller marshaller = marshallerFactory.ensureMarshaller(simpleXMLObjectQName);
         marshaller.marshall(response);
         Assert.assertNotNull(response.getDOM(), "DOM was not cached after marshalling");
         
         // Marshall statement (with cached DOM) into SOAP Body element child
-        Document expectedDocument = parserPool.parse(MarshallingTest.class.getResourceAsStream(expectedDocumentLocation));
-        Element statementElem = marshaller.marshall(statement, soapBody);
+        final Document expectedDocument = parserPool.parse(MarshallingTest.class.getResourceAsStream(expectedDocumentLocation));
+        final Element statementElem = marshaller.marshall(statement, soapBody);
         final Diff diff = DiffBuilder.compare(statementElem.getOwnerDocument()).withTest(expectedDocument)
                 .checkForIdentical().build();
         Assert.assertFalse(diff.hasDifferences(), diff.toString());
@@ -169,13 +172,13 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshallingExistingEmptyDocument() throws XMLParserException, MarshallingException {
-        Document document = parserPool.newDocument();
+        final Document document = parserPool.newDocument();
         Assert.assertNull(document.getDocumentElement(), "Incorrect document root");
         
-        SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        final SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         sxo.setId("idValue");
         
-        marshallerFactory.getMarshaller(sxo).marshall(sxo, document);
+        marshallerFactory.ensureMarshaller(sxo).marshall(sxo, document);
         Assert.assertNotNull(document.getDocumentElement(), "Incorrect document root");
         Assert.assertTrue(document.getDocumentElement().isSameNode(sxo.getDOM()), "Incorrect document root");
     }
@@ -189,15 +192,15 @@ public class MarshallingTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testMarshallingReplaceDocumentRoot() throws XMLParserException, MarshallingException {
-        Document document = parserPool.newDocument();
-        Element element = document.createElementNS(null, "Foo");
+        final Document document = parserPool.newDocument();
+        final Element element = document.createElementNS(null, "Foo");
         document.appendChild(element);
         Assert.assertTrue(document.getDocumentElement().isSameNode(element), "Incorrect document root");
         
-        SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        final SimpleXMLObject sxo = (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         sxo.setId("idValue");
         
-        marshallerFactory.getMarshaller(sxo).marshall(sxo, document);
+        marshallerFactory.ensureMarshaller(sxo).marshall(sxo, document);
         Assert.assertFalse(document.getDocumentElement().isSameNode(element), "Document root should have been replaced");
         Assert.assertTrue(document.getDocumentElement().isSameNode(sxo.getDOM()), "Incorrect document root");
     }

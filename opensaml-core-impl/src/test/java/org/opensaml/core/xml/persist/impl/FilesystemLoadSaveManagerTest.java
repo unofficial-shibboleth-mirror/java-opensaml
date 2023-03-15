@@ -56,6 +56,7 @@ import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
+@SuppressWarnings("javadoc")
 public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     
     private Logger log = LoggerFactory.getLogger(FilesystemLoadSaveManagerTest.class);
@@ -334,11 +335,6 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     @Test(expectedExceptions=ConstraintViolationException.class)
     public void ctorEmptyPathString() {
         new FilesystemLoadSaveManager<>("  ");
-    }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void ctorNullFile() {
-        new FilesystemLoadSaveManager<>((File)null);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

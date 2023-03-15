@@ -27,6 +27,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSQName;
+import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
 /**
@@ -44,10 +45,16 @@ public class XSQNameUnmarshaller extends AbstractXMLObjectUnmarshaller {
     /** {@inheritDoc} */
     protected void unmarshallTextContent(@Nonnull final XMLObject xmlObject, @Nonnull final Text content)
             throws UnmarshallingException {
+
+        final Element parent = ElementSupport.getElementAncestor(content);
+        if (parent == null) {
+            throw new UnmarshallingException("No parent element from which to reconstitute QName");
+        }
+
         final String textContent = StringSupport.trimOrNull(content.getData());
         if (textContent != null) {
             final XSQName qname = (XSQName) xmlObject;
-            qname.setValue(QNameSupport.constructQName(ElementSupport.getElementAncestor(content), textContent));
+            qname.setValue(QNameSupport.constructQName(parent, textContent));
         }
     }
 }

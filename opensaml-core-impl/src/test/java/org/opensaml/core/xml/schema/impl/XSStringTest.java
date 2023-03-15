@@ -61,7 +61,7 @@ public class XSStringTest extends XMLObjectBaseTestCase {
         XSString xsString = xssBuilder.buildObject(expectedXMLObjectQName, XSString.TYPE_NAME);
         xsString.setValue(expectedValue);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(xsString);
+        Marshaller marshaller = marshallerFactory.ensureMarshaller(xsString);
         marshaller.marshall(xsString);
         
         Document document = parserPool.parse(XSStringTest.class.getResourceAsStream(testDocumentLocation));
@@ -78,7 +78,7 @@ public class XSStringTest extends XMLObjectBaseTestCase {
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSStringTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSString xsString = (XSString) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsString.getElementQName(), expectedXMLObjectQName, "Unexpected XSString QName");

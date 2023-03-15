@@ -61,7 +61,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
         XSURI xsURI = uriBuilder.buildObject(expectedXMLObjectQName, XSURI.TYPE_NAME);
         xsURI.setURI(expectedValue);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(xsURI);
+        Marshaller marshaller = marshallerFactory.ensureMarshaller(xsURI);
         marshaller.marshall(xsURI);
         
         Document document = parserPool.parse(XSURITest.class.getResourceAsStream(testDocumentLocation));
@@ -78,7 +78,7 @@ public class XSURITest extends XMLObjectBaseTestCase {
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSURITest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSURI xsURI = (XSURI) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsURI.getElementQName(), expectedXMLObjectQName, "Unexpected XSURI QName");

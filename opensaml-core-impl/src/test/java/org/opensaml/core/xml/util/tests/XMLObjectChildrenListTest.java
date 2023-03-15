@@ -93,6 +93,7 @@ public class XMLObjectChildrenListTest {
 
         SimpleXMLObject child2 = sxoBuilder.buildObject();
         SimpleXMLObject replacedChild = objectList.set(0, child2);
+        assert replacedChild != null;
         Assert.assertEquals(objectList.size(), 1,
                 "XMLObject list was supposed to have 1 element but instead had " + objectList.size());
 

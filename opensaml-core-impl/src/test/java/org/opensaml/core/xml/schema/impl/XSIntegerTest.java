@@ -61,7 +61,7 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
         XSInteger xsInteger = xsintBuilder.buildObject(expectedXMLObjectQName, XSInteger.TYPE_NAME);
         xsInteger.setValue(expectedValue);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(xsInteger);
+        Marshaller marshaller = marshallerFactory.ensureMarshaller(xsInteger);
         marshaller.marshall(xsInteger);
         
         Document document = parserPool.parse(XSIntegerTest.class.getResourceAsStream(testDocumentLocation));
@@ -78,7 +78,7 @@ public class XSIntegerTest extends XMLObjectBaseTestCase {
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSIntegerTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSInteger xsInteger = (XSInteger) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsInteger.getElementQName(), expectedXMLObjectQName, "Unexpected XSInteger QName");

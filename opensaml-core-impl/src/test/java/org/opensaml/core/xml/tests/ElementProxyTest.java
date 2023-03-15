@@ -19,6 +19,9 @@ package org.opensaml.core.xml.tests;
 
 import org.testng.annotations.Test;
 import org.testng.Assert;
+
+import java.util.List;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -43,12 +46,18 @@ public class ElementProxyTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/UnknownContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(XMLObjectProviderRegistrySupport.getDefaultProviderQName());
         XMLObject xmlobject = unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xmlobject.getElementQName().getLocalPart(), "products", "Unexpted root element name");
-        Assert.assertEquals(xmlobject.getOrderedChildren().size(), 2, "Unexpected number of children");
-        Assert.assertEquals(((XSAny) xmlobject.getOrderedChildren().get(1).getOrderedChildren().get(0)).getTextContent(),
+        
+        final List<XMLObject> children = xmlobject.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2, "Unexpected number of children");
+        
+        final List<XMLObject> nestedChildren = children.get(1).getOrderedChildren();
+        assert nestedChildren != null;
+        Assert.assertEquals(((XSAny) nestedChildren.get(0)).getTextContent(),
                 "<strong>XSLT Perfect IDE</strong>", "Unexpected CDATA content");
     }
 }

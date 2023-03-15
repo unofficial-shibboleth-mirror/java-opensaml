@@ -53,7 +53,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithAttribute.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
         Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after unmarshalling");
@@ -71,7 +71,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithContent.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after unmarshalling");
@@ -106,7 +106,7 @@ public class UnmarshallingTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithChildren.xml";
         Document document = parserPool.parse(UnmarshallingTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
         Assert.assertNotNull(sxObject.getDOM(), "DOM was not cached after unmarshalling");

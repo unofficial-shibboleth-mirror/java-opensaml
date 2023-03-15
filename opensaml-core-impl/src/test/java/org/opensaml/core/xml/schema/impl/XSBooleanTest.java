@@ -41,13 +41,13 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
     
     private String testDocumentLocation;
     private QName expectedXMLObjectQName;
-    private String expectedValue;
+    private XSBooleanValue expectedValue;
     
     @BeforeMethod
     protected void setUp() throws Exception{
         testDocumentLocation = "/org/opensaml/core/xml/schema/impl/xsBoolean.xml";
         expectedXMLObjectQName = new QName("urn:example.org:foo", "bar", "foo");
-        expectedValue = "true";
+        expectedValue = XSBooleanValue.valueOf("true");
     }
 
     /**
@@ -59,9 +59,9 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
     public void testMarshall() throws MarshallingException, XMLParserException{
         XMLObjectBuilder<XSBoolean> xsbBuilder = builderFactory.ensureBuilder(XSBoolean.TYPE_NAME);
         XSBoolean xsBoolean = xsbBuilder.buildObject(expectedXMLObjectQName, XSBoolean.TYPE_NAME);
-        xsBoolean.setValue(XSBooleanValue.valueOf(expectedValue));
+        xsBoolean.setValue(expectedValue);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(xsBoolean);
+        Marshaller marshaller = marshallerFactory.ensureMarshaller(xsBoolean);
         marshaller.marshall(xsBoolean);
         
         Document document = parserPool.parse(XSBooleanTest.class.getResourceAsStream(testDocumentLocation));
@@ -78,11 +78,11 @@ public class XSBooleanTest extends XMLObjectBaseTestCase {
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSBooleanTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSBoolean xsBoolean = (XSBoolean) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsBoolean.getElementQName(), expectedXMLObjectQName, "Unexpected XSBoolean QName");
         Assert.assertEquals(xsBoolean.getSchemaType(), XSBoolean.TYPE_NAME, "Unexpected XSBoolean schema type");
-        Assert.assertEquals(expectedValue, xsBoolean.getValue().toString(), "Unexpected value of XSBoolean");
+        Assert.assertEquals(expectedValue, xsBoolean.getValue(), "Unexpected value of XSBoolean");
     }
 }

@@ -23,9 +23,10 @@ import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.codahale.metrics.MetricRegistry;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An initializer for the {@link MetricRegistry} held by the {@link ConfigurationService}.

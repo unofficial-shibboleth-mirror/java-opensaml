@@ -26,10 +26,10 @@ import javax.annotation.Nonnull;
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.persist.FilesystemLoadSaveManager;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Strategy function for producing intermediate directories from an input key.
@@ -41,10 +41,10 @@ import net.shibboleth.shared.logic.Constraint;
 public class SegmentingIntermediateDirectoryStrategy implements Function<String, List<String>> {
 
     /** Logger. **/
-    private Logger log = LoggerFactory.getLogger(SegmentingIntermediateDirectoryStrategy.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SegmentingIntermediateDirectoryStrategy.class);
 
     /** Strategy function for generating the source data from the input key.*/
-    private Function<String,String> sourceStrategy;
+    @Nonnull private Function<String,String> sourceStrategy;
 
     /** The number of segments to produce. **/
     private int segmentNumber;

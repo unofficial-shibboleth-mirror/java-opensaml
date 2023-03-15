@@ -75,6 +75,7 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
     }
     
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }

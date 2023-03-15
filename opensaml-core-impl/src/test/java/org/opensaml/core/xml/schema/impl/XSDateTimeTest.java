@@ -65,7 +65,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         XSDateTime xsDateTime = xsdtBuilder.buildObject(expectedXMLObjectQName, XSDateTime.TYPE_NAME);
         xsDateTime.setValue(expectedValue);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(xsDateTime);
+        Marshaller marshaller = marshallerFactory.ensureMarshaller(xsDateTime);
         marshaller.marshall(xsDateTime);
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));
@@ -84,7 +84,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsDateTime.getElementQName(), expectedXMLObjectQName, "Unexpected XSDate QName");
@@ -105,7 +105,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsDateTime.getElementQName(), expectedXMLObjectQName, "Unexpected XSDate QName");
@@ -127,7 +127,7 @@ public class XSDateTimeTest extends XMLObjectBaseTestCase {
         
         Document document = parserPool.parse(XSDateTimeTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSDateTime xsDateTime = (XSDateTime) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsDateTime.getElementQName(), expectedXMLObjectQName, "Unexpected XSDate QName");

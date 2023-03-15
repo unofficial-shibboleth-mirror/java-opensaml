@@ -48,6 +48,11 @@ public class InitializationServiceTest {
         ThreadLocalConfigurationPropertiesHolder.clear();
     }
 
+    /**
+     * Unit test.
+     * 
+     * @throws InitializationException
+     */
     @Test
     public void testProviderInit() throws InitializationException {
         XMLObjectProviderRegistry registry = ConfigurationService.get(XMLObjectProviderRegistry.class);

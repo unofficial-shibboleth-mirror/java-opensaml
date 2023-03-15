@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.schema.XSDateTime;
@@ -29,7 +31,7 @@ import net.shibboleth.shared.xml.DOMTypeSupport;
 public class XSDateTimeUnmarshaller extends AbstractXMLObjectUnmarshaller{
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         final XSDateTime xsDateTime = (XSDateTime) xmlObject;
         
         xsDateTime.setValue(DOMTypeSupport.stringToInstant(elementContent));

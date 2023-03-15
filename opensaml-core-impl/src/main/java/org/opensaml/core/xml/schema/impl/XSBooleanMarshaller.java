@@ -23,6 +23,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSBoolean;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.xml.ElementSupport;
@@ -36,8 +37,15 @@ public class XSBooleanMarshaller extends AbstractXMLObjectMarshaller {
             throws MarshallingException {
         final XSBoolean xsiBoolean = (XSBoolean) xmlObject;
 
-        if (xsiBoolean.getValue() != null && xsiBoolean.getValue().getValue() != null) {
-            ElementSupport.appendTextContent(domElement, xsiBoolean.getValue().getValue().toString());
+        if (xsiBoolean.getValue() != null) {
+            final XSBooleanValue xbool = xsiBoolean.getValue();
+            if (xbool != null) {
+                final Boolean bval = xbool.getValue();
+                if (bval != null) {
+                    ElementSupport.appendTextContent(domElement, bval.toString());
+                }
+            }
         }
     }
+    
 }

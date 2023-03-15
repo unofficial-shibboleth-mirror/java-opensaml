@@ -17,6 +17,9 @@
 
 package org.opensaml.core.xml.schema.impl;
 
+import javax.annotation.Nonnull;
+import javax.xml.namespace.QName;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -32,9 +35,13 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class XSQNameMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final XSQName qname = (XSQName) xmlObject;
-        ElementSupport.appendTextContent(domElement, QNameSupport.qnameToContentString(qname.getValue()));
+        
+        final QName qname = ((XSQName) xmlObject).getValue();
+        if (qname != null) {
+            ElementSupport.appendTextContent(domElement, QNameSupport.qnameToContentString(qname));
+        }
     }
+
 }

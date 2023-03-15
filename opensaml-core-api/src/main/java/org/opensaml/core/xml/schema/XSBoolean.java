@@ -29,7 +29,7 @@ import net.shibboleth.shared.xml.XMLConstants;
 /**
  * XSBoolean is the <code>xs:boolean</code> schema type.
  */
-public abstract interface XSBoolean extends XMLObject {
+public interface XSBoolean extends XMLObject {
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "boolean"; 
@@ -50,5 +50,4 @@ public abstract interface XSBoolean extends XMLObject {
      * @param value The {@link XSBooleanValue} value
      */
     void setValue(@Nullable final XSBooleanValue value);
-
 }

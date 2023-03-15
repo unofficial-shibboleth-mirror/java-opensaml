@@ -61,7 +61,7 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
         XSQName xsQName = xsQNameBuilder.buildObject(expectedXMLObjectQName, XSQName.TYPE_NAME);
         xsQName.setValue(expectedValue);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(xsQName);
+        Marshaller marshaller = marshallerFactory.ensureMarshaller(xsQName);
         marshaller.marshall(xsQName);
         
         Document document = parserPool.parse(XSQNameTest.class.getResourceAsStream(testDocumentLocation));
@@ -78,7 +78,7 @@ public class XSQNameTest extends XMLObjectBaseTestCase {
     public void testUnmarshall() throws XMLParserException, UnmarshallingException{
         Document document = parserPool.parse(XSQNameTest.class.getResourceAsStream(testDocumentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         XSQName xsQName = (XSQName) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(xsQName.getElementQName(), expectedXMLObjectQName, "Unexpected XSQName QName");

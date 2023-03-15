@@ -52,7 +52,31 @@ public class ConfigurationTest {
 
     /** SimpleElement QName */
     private QName simpleXMLObjectQName;
+
+    @BeforeClass
+    protected void initClass() throws ComponentInitializationException {
+        parserPool = new BasicParserPool();
+        parserPool.setNamespaceAware(true);
+        parserPool.initialize();
+        
+        simpleXMLObjectQName = new QName("http://www.example.org/testObjects", "SimpleElement");
+    }
     
+    @BeforeMethod
+    protected void setUp() throws Exception {
+        final Properties props = new Properties();
+        props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
+        ThreadLocalConfigurationPropertiesHolder.setProperties(props);
+        
+        ConfigurationService.register(XMLObjectProviderRegistry.class, new XMLObjectProviderRegistry());
+    }
+
+    @AfterMethod
+    protected void tearDown() throws Exception {
+        ConfigurationService.deregister(XMLObjectProviderRegistry.class);
+        ThreadLocalConfigurationPropertiesHolder.clear();
+    }
+
     /**
      * Tests that a schema invalid configuration file is properly identified as such.
      * 
@@ -62,7 +86,7 @@ public class ConfigurationTest {
     public void testInvalidConfiguration() throws Exception {
         XMLConfigurator configurator = new XMLConfigurator();
         try {
-            InputStream sxConfig = XMLObjectProviderRegistrySupport.class
+            final InputStream sxConfig = XMLObjectProviderRegistrySupport.class
                     .getResourceAsStream("/org/opensaml/core/xml/config/InvalidConfiguration.xml");
             configurator.load(sxConfig);
         } catch (XMLConfigurationException e) {
@@ -82,7 +106,7 @@ public class ConfigurationTest {
         XMLConfigurator configurator = new XMLConfigurator();
 
         // Test loading the SimpleXMLObject configuration where builder contains additional children
-        InputStream sxConfig = ConfigurationTest.class
+        final InputStream sxConfig = ConfigurationTest.class
                 .getResourceAsStream("/org/opensaml/core/xml/config/SimpleXMLObjectConfiguration.xml");
         configurator.load(sxConfig);
 
@@ -96,7 +120,7 @@ public class ConfigurationTest {
         Assert.assertNotNull(sxUnmarshaller, "SimpleXMLObject did not have a registered unmarshaller");
 
         // Test loading a configuration with bogus classes
-        InputStream nonConfig = XMLObjectProviderRegistrySupport.class
+        final InputStream nonConfig = XMLObjectProviderRegistrySupport.class
                 .getResourceAsStream("/org/opensaml/core/xml/config/NonexistantClassConfiguration.xml");
         try {
             configurator.load(nonConfig);
@@ -111,7 +135,7 @@ public class ConfigurationTest {
      */
     @Test
     public void testIDAttributeRegistration() {
-        QName attribQname = new QName("http://example.org", "someIDAttribName", "test");
+        final QName attribQname = new QName("http://example.org", "someIDAttribName", "test");
 
         Assert.assertFalse(XMLObjectProviderRegistrySupport.isIDAttribute(attribQname), "Non-registered ID attribute check returned true");
 
@@ -122,7 +146,7 @@ public class ConfigurationTest {
         Assert.assertFalse(XMLObjectProviderRegistrySupport.isIDAttribute(attribQname), "Non-registered ID attribute check returned true");
 
         // Check xml:id, which is hardcoded in the Configuration static initializer
-        QName xmlIDQName = new QName(XMLConstants.XML_NS_URI, "id");
+        final QName xmlIDQName = new QName(XMLConstants.XML_NS_URI, "id");
         Assert.assertTrue(XMLObjectProviderRegistrySupport.isIDAttribute(xmlIDQName), "Registered ID attribute check returned false");
     }
 
@@ -137,11 +161,11 @@ public class ConfigurationTest {
     public void testIDAttributeConfiguration() throws XMLParserException, XMLConfigurationException {
         XMLConfigurator configurator = new XMLConfigurator();
         
-        QName fooQName = new QName("http://www.example.org/testObjects", "foo", "test");
-        QName barQName = new QName("http://www.example.org/testObjects", "bar", "test");
-        QName bazQName = new QName("http://www.example.org/testObjects", "baz", "test");
+        final QName fooQName = new QName("http://www.example.org/testObjects", "foo", "test");
+        final QName barQName = new QName("http://www.example.org/testObjects", "bar", "test");
+        final QName bazQName = new QName("http://www.example.org/testObjects", "baz", "test");
 
-        InputStream idAttributeConfig = XMLObjectProviderRegistrySupport.class
+        final InputStream idAttributeConfig = XMLObjectProviderRegistrySupport.class
                 .getResourceAsStream("/org/opensaml/core/xml/config/IDAttributeConfiguration.xml");
         configurator.load(idAttributeConfig);
 
@@ -153,29 +177,5 @@ public class ConfigurationTest {
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(barQName);
         XMLObjectProviderRegistrySupport.deregisterIDAttribute(bazQName);
     }
-    
-    @BeforeClass
-    protected void initClass() throws ComponentInitializationException {
-        parserPool = new BasicParserPool();
-        parserPool.setNamespaceAware(true);
-        parserPool.initialize();
         
-        simpleXMLObjectQName = new QName("http://www.example.org/testObjects", "SimpleElement");
-    }
-    
-    @BeforeMethod
-    protected void setUp() throws Exception {
-        Properties props = new Properties();
-        props.setProperty(ConfigurationService.PROPERTY_PARTITION_NAME, this.getClass().getName());
-        ThreadLocalConfigurationPropertiesHolder.setProperties(props);
-        
-        ConfigurationService.register(XMLObjectProviderRegistry.class, new XMLObjectProviderRegistry());
-    }
-
-    @AfterMethod
-    protected void tearDown() throws Exception {
-        ConfigurationService.deregister(XMLObjectProviderRegistry.class);
-        ThreadLocalConfigurationPropertiesHolder.clear();
-    }
-    
 }

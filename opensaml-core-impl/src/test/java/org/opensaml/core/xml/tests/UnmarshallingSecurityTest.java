@@ -38,6 +38,7 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
     private BasicParserPool parserPoolDefaults, parserPoolInsecure;
 
     @BeforeClass
+    /** Test setup. */
     public void setup() throws ComponentInitializationException {
         parserPoolDefaults = new BasicParserPool();
         parserPoolDefaults.initialize();
@@ -59,7 +60,7 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithCommentInContent.xml";
         Document document = parserPoolDefaults.parse(UnmarshallingSecurityTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(sxObject.getValue(), "Content1");
@@ -76,7 +77,7 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithCommentInContent.xml";
         Document document = parserPoolInsecure.parse(UnmarshallingSecurityTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         unmarshaller.unmarshall(document.getDocumentElement());
     }
 
@@ -91,7 +92,7 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithCDATAInContent.xml";
         Document document = parserPoolDefaults.parse(UnmarshallingSecurityTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(sxObject.getValue(), "Content1");
@@ -108,7 +109,7 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithCDATAInContent.xml";
         Document document = parserPoolInsecure.parse(UnmarshallingSecurityTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         unmarshaller.unmarshall(document.getDocumentElement());
     }
 
@@ -123,7 +124,7 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithCommentBetweenChildren.xml";
         Document document = parserPoolDefaults.parse(UnmarshallingSecurityTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
         
         Assert.assertEquals(sxObject.getSimpleXMLObjects().size(), 2, "Number of children elements was not expected value");
@@ -140,7 +141,7 @@ public class UnmarshallingSecurityTest extends XMLObjectBaseTestCase {
         String documentLocation = "/org/opensaml/core/xml/SimpleXMLObjectWithCommentBetweenChildren.xml";
         Document document = parserPoolInsecure.parse(UnmarshallingSecurityTest.class.getResourceAsStream(documentLocation));
 
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(document.getDocumentElement());
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(document.getDocumentElement());
         unmarshaller.unmarshall(document.getDocumentElement());
     }
     

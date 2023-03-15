@@ -39,6 +39,7 @@ import org.opensaml.core.xml.schema.XSAny;
 /**
  * Test the NamespaceManger used by XMLObjects.
  */
+@SuppressWarnings("javadoc")
 public class NamespaceManagerTest extends XMLObjectBaseTestCase {
     
     private XSAny xsAny;

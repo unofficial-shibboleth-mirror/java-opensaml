@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -34,40 +36,42 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Simple XMLObject that can be used for testing
  */
 public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
     
     /** Default namespace */
-    public final static String NAMESPACE = "http://www.example.org/testObjects";
+    @Nonnull @NotEmpty public final static String NAMESPACE = "http://www.example.org/testObjects";
     
     /** Default namespace prefix */
-    public final static String NAMESPACE_PREFIX = "test";
+    @Nonnull @NotEmpty public final static String NAMESPACE_PREFIX = "test";
     
     /** Element local name */
-    public final static String LOCAL_NAME = "SimpleElement";
+    @Nonnull @NotEmpty public final static String LOCAL_NAME = "SimpleElement";
     
     /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
+    @Nonnull public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
     
     /** Name attribute name */
-    public final static String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty public final static String ID_ATTRIB_NAME = "Id";
     
     /** Name attribute */
-    private String id;
+    @Nullable private String id;
     
     /** Value of the object stored as text content in the element */
-    private String value;
+    @Nullable private String value;
     
     /** Child SimpleXMLObjects */
-    private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
+    @Nonnull private XMLObjectChildrenList<SimpleXMLObject> simpleXMLObjects;
     
     /** Other children */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
+    @Nonnull private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
     
     /** anyAttribute wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private AttributeMap unknownAttributes;
     
     /**
      * Constructor
@@ -76,7 +80,8 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
      * @param localName local name for the node
      * @param namespacePrefix namespace prefix for the node 
      */
-    public SimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
+    public SimpleXMLObject(@Nullable final String namspaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         super(namspaceURI, localName, namespacePrefix);
         
         simpleXMLObjects = new XMLObjectChildrenList<>(this);
@@ -89,7 +94,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
      * 
      * @return the name attribute
      */
-    public String getId() {
+    @Nullable public String getId() {
         return id;
     }
     
@@ -98,7 +103,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
      * 
      * @param newId the name attribute
      */
-    public void setId(String newId) {
+    public void setId(@Nullable final String newId) {
         registerOwnID(id, newId);
         id = newId;
     }
@@ -108,7 +113,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
      * 
      * @return the value of this object
      */
-    public String getValue(){
+    @Nullable public String getValue() {
         return value;
     }
     
@@ -117,7 +122,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
      * 
      * @param newValue the value of this object
      */
-    public void setValue(String newValue){
+    public void setValue(@Nullable final String newValue) {
         value = prepareForAssignment(value, newValue);
     }
     
@@ -126,22 +131,23 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
      * 
      * @return the list of child SimpleXMLObjects
      */
-    public List<SimpleXMLObject> getSimpleXMLObjects(){
+    @Nonnull public List<SimpleXMLObject> getSimpleXMLObjects(){
         return simpleXMLObjects;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObjects;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new LinkedList<>();
         
         children.addAll(simpleXMLObjects);
@@ -151,7 +157,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 }

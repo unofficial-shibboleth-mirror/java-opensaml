@@ -17,10 +17,10 @@
 
 package org.opensaml.core.xml.schema.impl;
 
-import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -42,22 +42,23 @@ public class XSQNameImpl extends AbstractXMLObject implements XSQName {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XSQNameImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected XSQNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
     /** {@inheritDoc} */
-    public QName getValue() {
+    @Nullable public QName getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final QName newValue) {
+    public void setValue(@Nullable final QName newValue) {
         value = prepareElementContentForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(new LinkedList<XMLObject>());
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 }

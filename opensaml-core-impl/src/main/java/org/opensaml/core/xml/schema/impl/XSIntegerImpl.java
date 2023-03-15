@@ -19,6 +19,9 @@ package org.opensaml.core.xml.schema.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSInteger;
@@ -38,28 +41,29 @@ public class XSIntegerImpl extends AbstractXMLObject implements XSInteger {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XSIntegerImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected XSIntegerImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
     /**
      * {@inheritDoc}
      */
-    public Integer getValue() {
+    @Nullable public Integer getValue() {
         return value;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setValue(final Integer newValue) {
+    public void setValue(@Nullable final Integer newValue) {
         value = prepareForAssignment(value, newValue);
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
