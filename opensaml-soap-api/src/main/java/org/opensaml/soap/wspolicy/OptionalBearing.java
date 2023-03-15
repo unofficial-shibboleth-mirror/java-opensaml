@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wspolicy;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -27,10 +28,10 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 public interface OptionalBearing {
     
     /** The wsp:@Optional attribute local name. */
-    public static final String WSP_OPTIONAL_ATTR_LOCAL_NAME = "Optional";
+    @Nonnull public static final String WSP_OPTIONAL_ATTR_LOCAL_NAME = "Optional";
 
     /** The wsp:@Optional qualified attribute name. */
-    public static final QName WSP_OPTIONAL_ATTR_NAME =
+    @Nonnull public static final QName WSP_OPTIONAL_ATTR_NAME =
         new QName(WSPolicyConstants.WSP_NS, WSP_OPTIONAL_ATTR_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
     
     /**

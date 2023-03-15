@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.resolver.index.impl;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -127,7 +128,7 @@ public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
     
     public static class MyCustomRoleType extends RoleDescriptorImpl {
         
-        public static final QName TYPE_NAME = new QName("urn:test:metadata", "MyCustomRoleType", "custom");
+        @Nonnull public static final QName TYPE_NAME = new QName("urn:test:metadata", "MyCustomRoleType", "custom");
 
         protected MyCustomRoleType(String namespaceURI, String elementLocalName, String namespacePrefix) {
             super(namespaceURI, elementLocalName, namespacePrefix);

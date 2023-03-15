@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wspolicy;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -30,23 +31,23 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 public interface PolicyReference extends AttributeExtensibleXMLObject, WSPolicyObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "PolicyReference";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "PolicyReference";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
     /** The wsp:PolicyReference/@URI attribute local name. */
-    public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull public static final String URI_ATTRIB_NAME = "URI";
 
     /** The wsp:PolicyReference/@Digest attribute local name. */
-    public static final String DIGEST_ATTRIB_NAME = "Digest";
+    @Nonnull public static final String DIGEST_ATTRIB_NAME = "Digest";
 
     /** The wsp:PolicyReference/@Digest attribute local name. */
-    public static final String DIGEST_ALGORITHM_ATTRIB_NAME = "DigestAlgorithm";
+    @Nonnull public static final String DIGEST_ALGORITHM_ATTRIB_NAME = "DigestAlgorithm";
 
     /** The default wsp:PolicyReference/@DigestAlgorithm attribute value. */
-    public static final String DIGEST_ALGORITHM_SHA1EXC = WSPolicyConstants.WSP_NS + "/Sha1Exc";
+    @Nonnull public static final String DIGEST_ALGORITHM_SHA1EXC = WSPolicyConstants.WSP_NS + "/Sha1Exc";
 
     /**
      * Returns the wsp:PolicyReference/@URI attribute value.

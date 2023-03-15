@@ -19,6 +19,7 @@ package org.opensaml.soap.wspolicy;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 /**
@@ -27,10 +28,10 @@ import javax.xml.namespace.QName;
 public interface PolicyURIsBearing {
     
     /** The wsp:@PolicyURIs attribute local name. */
-    public static final String WSP_POLICY_URIS_ATTR_LOCAL_NAME = "PolicyURIs";
+    @Nonnull public static final String WSP_POLICY_URIS_ATTR_LOCAL_NAME = "PolicyURIs";
 
     /** The wsp:@PolicyURIs qualified attribute name. */
-    public static final QName WSP_POLICY_URIS_ATTR_NAME =
+    @Nonnull public static final QName WSP_POLICY_URIS_ATTR_NAME =
         new QName(WSPolicyConstants.WSP_NS, WSP_POLICY_URIS_ATTR_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
     
     /**

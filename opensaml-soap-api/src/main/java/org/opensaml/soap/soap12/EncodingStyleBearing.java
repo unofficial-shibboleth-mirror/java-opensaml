@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap12;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -28,10 +29,10 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface EncodingStyleBearing {
     
     /** The soap12:@encodingStyle attribute local name. */
-    public static final String SOAP12_ENCODING_STYLE_ATTR_LOCAL_NAME = "encodingStyle";
+    @Nonnull public static final String SOAP12_ENCODING_STYLE_ATTR_LOCAL_NAME = "encodingStyle";
 
     /** The soap12:@encodingStyle qualified attribute name. */
-    public static final QName SOAP12_ENCODING_STYLE_ATTR_NAME =
+    @Nonnull public static final QName SOAP12_ENCODING_STYLE_ATTR_NAME =
         new QName(SOAPConstants.SOAP12_NS, SOAP12_ENCODING_STYLE_ATTR_LOCAL_NAME, SOAPConstants.SOAP12_PREFIX);
     
     /**

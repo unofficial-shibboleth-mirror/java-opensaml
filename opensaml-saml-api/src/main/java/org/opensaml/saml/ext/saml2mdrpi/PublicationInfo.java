@@ -60,8 +60,8 @@ public interface PublicationInfo extends SAMLObject {
     @Nonnull public static final QName CREATION_INSTANT_ATTRIB_QNAME =
             new QName(null, CREATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
-    @Nonnull /** publication id attribute name. */
-    public static String PUBLICATION_ID_ATTRIB_NAME = "publicationId";
+    /** publication id attribute name. */
+    @Nonnull public static String PUBLICATION_ID_ATTRIB_NAME = "publicationId";
 
     /**
      * Get the publisher.

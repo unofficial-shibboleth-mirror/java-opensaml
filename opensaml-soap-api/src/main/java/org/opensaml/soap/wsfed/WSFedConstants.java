@@ -17,26 +17,28 @@
 
 package org.opensaml.soap.wsfed;
 
+import javax.annotation.Nonnull;
+
 /** WS-Federation Constants. */
 public final class WSFedConstants {
 
     /** WSFED 1.1 protocol XML namespace. */
-    public static final String WSFED11P_NS = "http://schemas.xmlsoap.org/ws/2005/02/trust";
+    @Nonnull public static final String WSFED11P_NS = "http://schemas.xmlsoap.org/ws/2005/02/trust";
 
     /** WSFED 1.X Protocol QName prefix. */
-    public static final String WSFED1P_PREFIX = "wst";
+    @Nonnull public static final String WSFED1P_PREFIX = "wst";
 
     /** WSFED 1.X Policy XML namespace. */
-    public static final String WSPOLICY_NS = "http://schemas.xmlsoap.org/ws/2004/09/policy";
+    @Nonnull public static final String WSPOLICY_NS = "http://schemas.xmlsoap.org/ws/2004/09/policy";
 
     /** WSFED 1.X Policy QName prefix. */
-    public static final String WSPOLICY_PREFIX = "wsp";
+    @Nonnull public static final String WSPOLICY_PREFIX = "wsp";
 
     /** WSFED 1.X Address XML namespace. */
-    public static final String WSADDRESS_NS = "http://schemas.xmlsoap.org/ws/2004/08/addressing";
+    @Nonnull public static final String WSADDRESS_NS = "http://schemas.xmlsoap.org/ws/2004/08/addressing";
 
     /** WSFED 1.X Address QName prefix. */
-    public static final String WSADDRESS_PREFIX = "wsa";
+    @Nonnull public static final String WSADDRESS_PREFIX = "wsa";
     
     /** Constructor. */
     private WSFedConstants() {

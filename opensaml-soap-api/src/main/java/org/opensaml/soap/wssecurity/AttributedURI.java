@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -28,10 +29,10 @@ import org.opensaml.core.xml.schema.XSURI;
 public interface AttributedURI extends XSURI, IdBearing, AttributeExtensibleXMLObject, WSSecurityObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AttributedURI"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributedURI"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSU_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
 
 }

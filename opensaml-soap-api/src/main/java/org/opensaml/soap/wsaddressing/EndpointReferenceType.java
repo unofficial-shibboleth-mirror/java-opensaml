@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wsaddressing;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -32,10 +33,10 @@ public interface EndpointReferenceType
         extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EndpointReferenceType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "EndpointReferenceType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSAddressingConstants.WSA_NS, TYPE_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
     /**

@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wsaddressing;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -32,17 +33,17 @@ public interface ReferenceParameters
         extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "ReferenceParameters";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "ReferenceParameters";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ReferenceParametersType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "ReferenceParametersType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull  public static final QName TYPE_NAME = 
         new QName(WSAddressingConstants.WSA_NS, TYPE_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
 }

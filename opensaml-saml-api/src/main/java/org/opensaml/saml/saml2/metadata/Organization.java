@@ -19,6 +19,7 @@ package org.opensaml.saml.saml2.metadata;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -31,17 +32,17 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Organization extends SAMLObject, AttributeExtensibleXMLObject {
 
     /** Local name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Organization";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Organization";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "OrganizationType";
+    @Nonnull  public static final String TYPE_LOCAL_NAME = "OrganizationType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**

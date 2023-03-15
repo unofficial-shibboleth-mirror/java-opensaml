@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wsaddressing;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
@@ -30,10 +31,10 @@ import org.opensaml.core.xml.schema.XSURI;
 public interface SoapAction extends XSURI, WSAddressingObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "SoapAction";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "SoapAction";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
  
 

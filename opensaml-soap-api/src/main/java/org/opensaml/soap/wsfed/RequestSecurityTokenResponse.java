@@ -19,6 +19,7 @@ package org.opensaml.soap.wsfed;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 /**
@@ -28,17 +29,17 @@ import javax.xml.namespace.QName;
 public interface RequestSecurityTokenResponse extends WSFedObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestSecurityTokenResponse";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestSecurityTokenResponse";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSFED11P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSFED11P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             WSFedConstants.WSFED1P_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenResponseType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenResponseType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(WSFedConstants.WSFED11P_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(WSFedConstants.WSFED11P_NS, TYPE_LOCAL_NAME,
             WSFedConstants.WSFED1P_PREFIX);
 
     /**

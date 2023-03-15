@@ -35,7 +35,7 @@ import org.opensaml.saml.saml2.metadata.LocalizedName;
 public interface DisplayName extends LocalizedName {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DisplayName";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DisplayName";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =

@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -61,10 +62,10 @@ public interface SpaceBearing {
     }
 
     /** The <code>space</code> attribute local name. */
-    public static final String XML_SPACE_ATTR_LOCAL_NAME = "space";
+    @Nonnull public static final String XML_SPACE_ATTR_LOCAL_NAME = "space";
 
     /** The <code>xml:space</code> qualified attribute name. */
-    public static final QName XML_SPACE_ATTR_NAME =
+    @Nonnull public static final QName XML_SPACE_ATTR_NAME =
         new QName(XMLConstants.XML_NS, XML_SPACE_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**

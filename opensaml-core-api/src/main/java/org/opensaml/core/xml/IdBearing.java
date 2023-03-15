@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -29,10 +30,10 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface IdBearing {
 
     /** The <code>id</code> attribute local name. */
-    public static final String XML_ID_ATTR_LOCAL_NAME = "id";
+    @Nonnull public static final String XML_ID_ATTR_LOCAL_NAME = "id";
 
     /** The <code>xml:id</code> qualified attribute name. */
-    public static final QName XML_ID_ATTR_NAME =
+    @Nonnull public static final QName XML_ID_ATTR_NAME =
         new QName(XMLConstants.XML_NS, XML_ID_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**

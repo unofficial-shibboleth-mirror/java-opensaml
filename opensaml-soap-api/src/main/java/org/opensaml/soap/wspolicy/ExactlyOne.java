@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wspolicy;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 /**
@@ -27,10 +28,10 @@ import javax.xml.namespace.QName;
 public interface ExactlyOne extends OperatorContentType {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "ExactlyOne";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "ExactlyOne";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
 }

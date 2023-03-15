@@ -717,7 +717,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     public static class MockCondition extends AbstractXMLObject implements Condition {
         
-        public static final QName ELEMENT_NAME = new QName("urn:test:conditions", "MockCondition", "mock");
+        @Nonnull public static final QName ELEMENT_NAME = new QName("urn:test:conditions", "MockCondition", "mock");
         
         public MockCondition() {
             this(ELEMENT_NAME.getNamespaceURI(), ELEMENT_NAME.getLocalPart(), ELEMENT_NAME.getPrefix());
@@ -736,7 +736,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     public static class MockCondition2 extends AbstractXMLObject implements Condition {
         
-        public static final QName ELEMENT_NAME = new QName("urn:test:conditions", "MockCondition2", "mock");
+        @Nonnull public static final QName ELEMENT_NAME = new QName("urn:test:conditions", "MockCondition2", "mock");
         
         public MockCondition2() {
             this(ELEMENT_NAME.getNamespaceURI(), ELEMENT_NAME.getLocalPart(), ELEMENT_NAME.getPrefix());

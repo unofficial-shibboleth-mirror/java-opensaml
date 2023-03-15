@@ -17,6 +17,7 @@
 
 package org.opensaml.core.xml;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -29,10 +30,10 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface LangBearing {
 
     /** The <code>lang</code> attribute local name. */
-    public static final String XML_LANG_ATTR_LOCAL_NAME = "lang";
+    @Nonnull public static final String XML_LANG_ATTR_LOCAL_NAME = "lang";
 
     /** The <code>xml:lang</code> qualified attribute name. */
-    public static final QName XML_LANG_ATTR_NAME =
+    @Nonnull public static final QName XML_LANG_ATTR_NAME =
         new QName(XMLConstants.XML_NS, XML_LANG_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**

@@ -20,6 +20,8 @@ package org.opensaml.saml.saml2.profile.impl;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.FunctionSupport;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
@@ -31,9 +33,9 @@ import org.testng.annotations.Test;
 /** Test for {@link AbstractSAML2NameIDGenerator}. */
 public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
 
-    private static final String NAME_QUALIFIER = "https://idp.example.org";
+    @Nonnull private static final String NAME_QUALIFIER = "https://idp.example.org";
 
-    private static final String SP_NAME_QUALIFIER = "https://sp.example.org";
+    @Nonnull private static final String SP_NAME_QUALIFIER = "https://sp.example.org";
     
     @Test(expectedExceptions = ComponentInitializationException.class)
     public void testNoFormat() throws ComponentInitializationException {

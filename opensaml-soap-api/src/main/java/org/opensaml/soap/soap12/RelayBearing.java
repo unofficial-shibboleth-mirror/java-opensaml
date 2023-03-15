@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap12;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -29,10 +30,10 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface RelayBearing {
     
     /** The soap12:@relay attribute local name. */
-    public static final String SOAP12_RELAY_ATTR_LOCAL_NAME = "relay";
+    @Nonnull public static final String SOAP12_RELAY_ATTR_LOCAL_NAME = "relay";
 
     /** The soap12:@relay qualified attribute name. */
-    public static final QName SOAP12_RELAY_ATTR_NAME =
+    @Nonnull public static final QName SOAP12_RELAY_ATTR_NAME =
         new QName(SOAPConstants.SOAP12_NS, SOAP12_RELAY_ATTR_LOCAL_NAME, SOAPConstants.SOAP12_PREFIX);
     
     /**

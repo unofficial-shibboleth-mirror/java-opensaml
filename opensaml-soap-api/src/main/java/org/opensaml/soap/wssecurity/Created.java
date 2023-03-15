@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 /**
@@ -26,10 +27,10 @@ import javax.xml.namespace.QName;
 public interface Created extends AttributedDateTime {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Created";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "Created";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSU_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
 
 }

@@ -34,6 +34,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -65,19 +66,19 @@ import org.testng.annotations.BeforeMethod;
 
 public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     
-    public static final Duration CLOCK_SKEW = Duration.ofMinutes(5);
+    @Nonnull public static final Duration CLOCK_SKEW = Duration.ofMinutes(5);
     
-    public static final String PRINCIPAL_NAME = "gollum";
+    @Nonnull public static final String PRINCIPAL_NAME = "gollum";
     
-    public static final String ISSUER = "https://idp.example.org";
+    @Nonnull public static final String ISSUER = "https://idp.example.org";
     
-    public static final String SUBJECT_CONFIRMATION_RECIPIENT = "https://sp.example.com";
+    @Nonnull public static final String SUBJECT_CONFIRMATION_RECIPIENT = "https://sp.example.com";
     
-    public static final String SUBJECT_CONFIRMATION_ADDRESS = "10.1.2.3";
+    @Nonnull public static final String SUBJECT_CONFIRMATION_ADDRESS = "10.1.2.3";
     
-    public static final String SUBJECT_CONFIRMATION_IN_RESPONSE_TO = "id-123";
+    @Nonnull public static final String SUBJECT_CONFIRMATION_IN_RESPONSE_TO = "id-123";
     
-    public static final String AUTHN_STATEMENT_ADDRESS = "10.1.2.3";
+    @Nonnull public static final String AUTHN_STATEMENT_ADDRESS = "10.1.2.3";
     
     
     private Assertion assertion;

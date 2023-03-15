@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wsaddressing;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -28,10 +29,10 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 public interface IsReferenceParameterBearing {
 
     /** the <code>IsReferenceParameter</code> attribute local name. */
-    public static final String WSA_IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME = "IsReferenceParameter";
+    @Nonnull public static final String WSA_IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME = "IsReferenceParameter";
 
     /** the <code>wsa:IsReferenceParameter</code> qualified attribute name. */
-    public static final QName WSA_IS_REFERENCE_PARAMETER_ATTR_NAME =
+    @Nonnull public static final QName WSA_IS_REFERENCE_PARAMETER_ATTR_NAME =
         new QName(WSAddressingConstants.WSA_NS, WSA_IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME,
                 WSAddressingConstants.WSA_PREFIX);
 

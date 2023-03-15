@@ -19,6 +19,7 @@ package org.opensaml.soap.wspolicy;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,10 +30,10 @@ import org.opensaml.core.xml.XMLObject;
 public interface OperatorContentType extends WSPolicyObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "OperatorContentType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "OperatorContentType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSPolicyConstants.WSP_NS, TYPE_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
     
     /**

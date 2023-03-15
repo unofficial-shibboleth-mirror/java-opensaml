@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wspolicy;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -31,14 +32,14 @@ import org.opensaml.soap.wssecurity.IdBearing;
 public interface Policy extends OperatorContentType, AttributeExtensibleXMLObject, IdBearing {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Policy";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "Policy";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
     /** The wsp:Policy/@Name attribute local name. */
-    public static final String NAME_ATTRIB_NAME = "Name";
+    @Nonnull public static final String NAME_ATTRIB_NAME = "Name";
 
     /**
      * Returns the wsp:Policy/@Name attribute value.

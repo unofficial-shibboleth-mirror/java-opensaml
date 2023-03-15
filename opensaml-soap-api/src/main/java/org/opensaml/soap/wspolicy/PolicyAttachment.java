@@ -19,6 +19,7 @@ package org.opensaml.soap.wspolicy;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -32,10 +33,10 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface PolicyAttachment extends WSPolicyObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "PolicyAttachment";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "PolicyAttachment";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
     
     /**

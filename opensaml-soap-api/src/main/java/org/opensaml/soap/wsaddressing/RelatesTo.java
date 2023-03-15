@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wsaddressing;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -31,24 +32,24 @@ import org.opensaml.core.xml.schema.XSURI;
 public interface RelatesTo extends XSURI, AttributeExtensibleXMLObject, WSAddressingObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "RelatesTo";
+    @Nonnull public static final String ELEMENT_LOCAL_NAME = "RelatesTo";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RelatesToType"; 
+    @Nonnull public static final String TYPE_LOCAL_NAME = "RelatesToType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSAddressingConstants.WSA_NS, TYPE_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
     
     /** The RelationshipType attribute name. */
-    public static final String RELATIONSHIP_TYPE_ATTRIB_NAME = "RelationshipType";
+    @Nonnull public static final String RELATIONSHIP_TYPE_ATTRIB_NAME = "RelationshipType";
     
     /** RelationshipType attribute - Reply URI. */
-    public static final String RELATIONSHIP_TYPE_REPLY = WSAddressingConstants.WSA_NS + "/reply";
+    @Nonnull public static final String RELATIONSHIP_TYPE_REPLY = WSAddressingConstants.WSA_NS + "/reply";
     
     /**
      * Returns the RelationshipType attribute URI value.

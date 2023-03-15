@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.soap12;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -29,10 +30,10 @@ import org.opensaml.soap.util.SOAPConstants;
 public interface MustUnderstandBearing {
     
     /** The soap12:@mustUnderstand attribute local name. */
-    public static final String SOAP12_MUST_UNDERSTAND_ATTR_LOCAL_NAME = "mustUnderstand";
+    @Nonnull public static final String SOAP12_MUST_UNDERSTAND_ATTR_LOCAL_NAME = "mustUnderstand";
 
     /** The soap12:@mustUnderstand qualified attribute name. */
-    public static final QName SOAP12_MUST_UNDERSTAND_ATTR_NAME =
+    @Nonnull public static final QName SOAP12_MUST_UNDERSTAND_ATTR_NAME =
         new QName(SOAPConstants.SOAP12_NS, SOAP12_MUST_UNDERSTAND_ATTR_LOCAL_NAME, SOAPConstants.SOAP12_PREFIX);
     
     /**

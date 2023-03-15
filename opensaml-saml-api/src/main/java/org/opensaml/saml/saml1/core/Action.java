@@ -40,14 +40,14 @@ public interface Action extends SAMLObject, XSString {
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Action";
 
     /** Default element name. */
-    @Nullable static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ActionType";
 
     /** QName of the XSI type. */
-    @Nullable static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the Namespace attribute. */

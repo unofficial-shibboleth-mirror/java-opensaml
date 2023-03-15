@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wsfed;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 /**
@@ -25,17 +26,17 @@ import javax.xml.namespace.QName;
 public interface AppliesTo extends WSFedObject {
 
     /** Element name, no namespace. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AppliesTo";
+    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AppliesTo";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSPOLICY_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSPOLICY_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             WSFedConstants.WSPOLICY_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AppliesToType";
+    @Nonnull public static final String TYPE_LOCAL_NAME = "AppliesToType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(WSFedConstants.WSPOLICY_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(WSFedConstants.WSPOLICY_NS, TYPE_LOCAL_NAME,
             WSFedConstants.WSPOLICY_PREFIX);
 
     /**
