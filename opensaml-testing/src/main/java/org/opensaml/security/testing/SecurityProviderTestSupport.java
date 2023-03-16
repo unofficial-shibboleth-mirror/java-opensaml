@@ -19,7 +19,11 @@ package org.opensaml.security.testing;
 
 import java.security.Security;
 
+import javax.annotation.Nonnull;
+
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Testing utility class which providers various support functionality related to security providers and Java version, 
@@ -35,9 +39,9 @@ import org.bouncycastle.jce.provider.BouncyCastleProvider;
  */
 public class SecurityProviderTestSupport {
     
-    public static final String BC_PROVIDER_NAME = "BC";
+    @Nonnull @NotEmpty public static final String BC_PROVIDER_NAME = "BC";
     
-    public static final String SUNEC_PROVIDER_NAME = "SunEC";
+    @Nonnull @NotEmpty public static final String SUNEC_PROVIDER_NAME = "SunEC";
     
     private boolean hadBCOriginally;
     

@@ -33,11 +33,13 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 
-import jakarta.servlet.ServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
+
+import jakarta.servlet.ServletRequest;
 
 /**
  * An adapter that exposes the X.509 certificates contained in the servlet request attribute.
@@ -45,10 +47,10 @@ import net.shibboleth.shared.collection.CollectionSupport;
 public class ServletRequestX509CredentialAdapter extends AbstractCredential implements X509Credential {
 
     /** Servlet request attribute to pull certificate info from. */
-    public static final String X509_CERT_REQUEST_ATTRIBUTE = "javax.servlet.request.X509Certificate";
+    @Nonnull @NotEmpty public static final String X509_CERT_REQUEST_ATTRIBUTE = "javax.servlet.request.X509Certificate";
     
     /** Servlet request attribute to pull certificate info from. */
-    public static final String JAKARTA_X509_CERT_REQUEST_ATTRIBUTE = "jakarta.servlet.request.X509Certificate";
+    @Nonnull @NotEmpty public static final String JAKARTA_X509_CERT_REQUEST_ATTRIBUTE = "jakarta.servlet.request.X509Certificate";
     
     /** The entity certificate. */
     @Nonnull private X509Certificate cert;

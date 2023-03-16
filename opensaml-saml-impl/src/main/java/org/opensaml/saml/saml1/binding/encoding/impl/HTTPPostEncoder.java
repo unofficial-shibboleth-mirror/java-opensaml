@@ -21,6 +21,8 @@ import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
+import javax.annotation.Nonnull;
+
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.core.xml.XMLObject;
@@ -32,7 +34,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.codec.HTMLEncoder;
@@ -40,13 +42,15 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 /**
  * SAML 1.X HTTP POST message encoder.
  */
 public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
     
     /** Default template ID. */
-    public static final String DEFAULT_TEMPLATE_ID = "/templates/saml1-post-binding.vm";
+    @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml1-post-binding.vm";
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostEncoder.class);

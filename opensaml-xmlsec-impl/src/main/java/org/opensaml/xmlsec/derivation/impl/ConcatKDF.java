@@ -55,6 +55,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import com.google.common.primitives.Bytes;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
@@ -91,7 +92,7 @@ public class ConcatKDF extends AbstractInitializableComponent
         implements KeyDerivation, XMLExpressableKeyAgreementParameter, CloneableKeyAgreementParameter {
     
     /** Default digest method. */
-    public static final String DEFAULT_DIGEST_METHOD = EncryptionConstants.ALGO_ID_DIGEST_SHA256;
+    @Nonnull @NotEmpty public static final String DEFAULT_DIGEST_METHOD = EncryptionConstants.ALGO_ID_DIGEST_SHA256;
     
     /** Digest method. */
     @NonnullAfterInit private String digestMethod;

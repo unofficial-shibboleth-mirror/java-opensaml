@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -24,30 +25,32 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptionProperty element.
  */
 public interface EncryptionProperty extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionProperty";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionProperty";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncryptionPropertyType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptionPropertyType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** Target attribute name. */
-    public static final String TARGET_ATTRIB_NAME = "Target";
+    @Nonnull @NotEmpty public static final String TARGET_ATTRIB_NAME = "Target";
 
     /** Id attribute name. */
-    public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
 
     /**
      * Get the target URI attribute which specifies to which element this. property applies

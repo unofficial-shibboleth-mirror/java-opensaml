@@ -17,20 +17,24 @@
 
 package org.opensaml.soap.util;
 
+import javax.annotation.Nonnull;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /** SOAP Related Constants. */
 public final class SOAPConstants {
     
     /** SOAP 1.1 namespace. */
-    public static final String SOAP11_NS = "http://schemas.xmlsoap.org/soap/envelope/";
+    @Nonnull @NotEmpty public static final String SOAP11_NS = "http://schemas.xmlsoap.org/soap/envelope/";
 
     /** SOAP 1.1 prefix. */
-    public static final String SOAP11_PREFIX = "soap11";
+    @Nonnull @NotEmpty public static final String SOAP11_PREFIX = "soap11";
 
     /** SOAP 1.2 namespace. */
-    public static final String SOAP12_NS = "http://www.w3.org/2003/05/soap-envelope";
+    @Nonnull @NotEmpty public static final String SOAP12_NS = "http://www.w3.org/2003/05/soap-envelope";
 
     /** SOAP 1.2 prefix. */
-    public static final String SOAP12_PREFIX = "soap12";
+    @Nonnull @NotEmpty public static final String SOAP12_PREFIX = "soap12";
 
     /** Constructor. */
     private SOAPConstants() {

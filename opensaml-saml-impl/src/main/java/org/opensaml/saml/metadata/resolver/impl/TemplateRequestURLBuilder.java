@@ -69,7 +69,7 @@ public class TemplateRequestURLBuilder implements Function<CriteriaSet, String> 
     };
 
     /** The Velocity context variable name for the entity ID. */
-    public static final String CONTEXT_KEY_ENTITY_ID = "entityID";
+    @Nonnull @NotEmpty public static final String CONTEXT_KEY_ENTITY_ID = "entityID";
     
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(TemplateRequestURLBuilder.class);

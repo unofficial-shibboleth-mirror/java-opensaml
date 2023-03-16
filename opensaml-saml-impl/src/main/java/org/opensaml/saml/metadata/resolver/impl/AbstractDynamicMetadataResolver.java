@@ -70,6 +70,7 @@ import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Positive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -90,19 +91,19 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         implements DynamicMetadataResolver, ClearableMetadataResolver {
     
     /** Metric name for the timer for {@link #fetchFromOriginSource(CriteriaSet)}. */
-    public static final String METRIC_TIMER_FETCH_FROM_ORIGIN_SOURCE = "timer.fetchFromOriginSource";
+    @Nonnull @NotEmpty public static final String METRIC_TIMER_FETCH_FROM_ORIGIN_SOURCE = "timer.fetchFromOriginSource";
     
     /** Metric name for the timer for {@link #resolve(CriteriaSet)}. */
-    public static final String METRIC_TIMER_RESOLVE = "timer.resolve";
+    @Nonnull @NotEmpty public static final String METRIC_TIMER_RESOLVE = "timer.resolve";
     
     /** Metric name for the ratio gauge of fetches to resolve requests. */
-    public static final String METRIC_RATIOGAUGE_FETCH_TO_RESOLVE = "ratioGauge.fetchToResolve";
+    @Nonnull @NotEmpty public static final String METRIC_RATIOGAUGE_FETCH_TO_RESOLVE = "ratioGauge.fetchToResolve";
     
     /** Metric name for the gauge of the number of live entityIDs. */
-    public static final String METRIC_GAUGE_NUM_LIVE_ENTITYIDS = "gauge.numLiveEntityIDs";
+    @Nonnull @NotEmpty public static final String METRIC_GAUGE_NUM_LIVE_ENTITYIDS = "gauge.numLiveEntityIDs";
     
     /** Metric name for the gauge of the persistent cache initialization metrics. */
-    public static final String METRIC_GAUGE_PERSISTENT_CACHE_INIT = "gauge.persistentCacheInitialization";
+    @Nonnull @NotEmpty public static final String METRIC_GAUGE_PERSISTENT_CACHE_INIT = "gauge.persistentCacheInitialization";
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(AbstractDynamicMetadataResolver.class);

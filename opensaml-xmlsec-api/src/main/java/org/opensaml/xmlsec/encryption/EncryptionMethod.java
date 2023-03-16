@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptionMethod element.
@@ -29,21 +32,21 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 public interface EncryptionMethod extends ElementExtensibleXMLObject {
 
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncryptionMethodType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptionMethodType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** Algorithm attribute name. */
-    public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
 
     /**
      * Gets the algorithm URI attribute used in this EncryptionMethod.

@@ -51,6 +51,7 @@ import com.google.common.io.ByteStreams;
 import com.google.common.net.MediaType;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LazySet;
@@ -67,12 +68,12 @@ import net.shibboleth.shared.resolver.ResolverException;
 public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynamicMetadataResolver {
     
     /** Default list of supported content MIME types. */
-    public static final String[] DEFAULT_CONTENT_TYPES = 
+    @Nonnull @NotEmpty public static final String[] DEFAULT_CONTENT_TYPES = 
             new String[] {"application/samlmetadata+xml", "application/xml", "text/xml"};
     
     /** MDC attribute representing the current request URI. Will be available during the execution of the 
      * configured {@link HttpClientResponseHandler}. */
-    public static final String MDC_ATTRIB_CURRENT_REQUEST_URI = 
+    @Nonnull @NotEmpty public static final String MDC_ATTRIB_CURRENT_REQUEST_URI = 
             AbstractDynamicHTTPMetadataResolver.class.getName() + ".currentRequestURI";
     
     /** Class logger. */

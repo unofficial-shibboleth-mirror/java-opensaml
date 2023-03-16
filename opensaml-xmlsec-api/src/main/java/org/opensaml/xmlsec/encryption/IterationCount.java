@@ -17,10 +17,13 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSInteger;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Encryption 1.1 IterationCount element.
@@ -28,10 +31,10 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 public interface IterationCount extends XSInteger {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IterationCount";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IterationCount";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC11_NS,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC11_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
 }

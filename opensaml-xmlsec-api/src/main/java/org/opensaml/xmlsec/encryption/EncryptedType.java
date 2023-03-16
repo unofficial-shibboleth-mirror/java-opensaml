@@ -17,12 +17,15 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.KeyInfo;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, EncryptedType type. This is the base type for
@@ -31,23 +34,23 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 public interface EncryptedType extends XMLObject {
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncryptedType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptedType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** Id attribute name. */
-    public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
 
     /** Type attribute name. */
-    public static final String TYPE_ATTRIB_NAME = "Type";
+    @Nonnull @NotEmpty public static final String TYPE_ATTRIB_NAME = "Type";
 
     /** MimeType attribute name. */
-    public static final String MIMETYPE_ATTRIB_NAME = "MimeType";
+    @Nonnull @NotEmpty public static final String MIMETYPE_ATTRIB_NAME = "MimeType";
 
     /** Encoding attribute name. */
-    public static final String ENCODING_ATTRIB_NAME = "Encoding";
+    @Nonnull @NotEmpty public static final String ENCODING_ATTRIB_NAME = "Encoding";
 
     /**
      * Gets the unique ID for the XML element.

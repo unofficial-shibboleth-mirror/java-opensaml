@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Encryption, version 20021210, ReferenceType type. This is the base type for
@@ -30,14 +33,14 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 public interface ReferenceType extends ElementExtensibleXMLObject {
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ReferenceType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ReferenceType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** URI attribute name. */
-    public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
 
     /**
      * Get the URI attribute which indicates the referent of this reference.

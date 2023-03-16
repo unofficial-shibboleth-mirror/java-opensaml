@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -24,39 +25,41 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.DigestMethod;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * XMLObject representing XML Encryption 1.1 ConcatKDFParams element.
  */
 public interface ConcatKDFParams extends XMLObject {
     
     /** Element local name. */
-    static final String DEFAULT_ELEMENT_LOCAL_NAME = "ConcatKDFParams";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ConcatKDFParams";
 
     /** Default element name. */
-    static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC11_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC11_NS, DEFAULT_ELEMENT_LOCAL_NAME,
       EncryptionConstants.XMLENC11_PREFIX);
 
     /** Local name of the XSI type. */
-    static final String TYPE_LOCAL_NAME = "ConcatKDFParamsType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ConcatKDFParamsType";
 
     /** QName of the XSI type. */
-    static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** AlgorithmID attribute name. */
-    static final String ALGORITHM_ID_ATTRIBUTE_NAME = "AlgorithmID";
+    @Nonnull @NotEmpty public static final String ALGORITHM_ID_ATTRIBUTE_NAME = "AlgorithmID";
 
     /** PartyUInfo attribute name. */
-    static final String PARTY_U_INFO_ATTRIBUTE_NAME = "PartyUInfo";
+    @Nonnull @NotEmpty public static final String PARTY_U_INFO_ATTRIBUTE_NAME = "PartyUInfo";
 
     /** PartyVInfo attribute name. */
-    static final String PARTY_V_INFO_ATTRIBUTE_NAME = "PartyVInfo";
+    @Nonnull @NotEmpty public static final String PARTY_V_INFO_ATTRIBUTE_NAME = "PartyVInfo";
 
     /** SuppPubInfo attribute name. */
-    static final String SUPP_PUB_INFO_ATTRIBUTE_NAME = "SuppPubInfo";
+    @Nonnull @NotEmpty public static final String SUPP_PUB_INFO_ATTRIBUTE_NAME = "SuppPubInfo";
 
     /** SuppPrivInfo attribute name. */
-    static final String SUPP_PRIV_INFO_ATTRIBUTE_NAME = "SuppPrivInfo";
+    @Nonnull @NotEmpty public static final String SUPP_PRIV_INFO_ATTRIBUTE_NAME = "SuppPrivInfo";
 
     /**
      * Gets the digest method.

@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
@@ -24,27 +25,29 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * XMLObject representing XML Encryption 1.1 KeyDerivationMethod element.
  */
 public interface KeyDerivationMethod extends XMLObject, ElementExtensibleXMLObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyDerivationMethod";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyDerivationMethod";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "KeyDerivationMethodType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyDerivationMethodType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** Algorithm attribute name. */
-    public static final String ALGORITHM_ATTRIBUTE_NAME = "Algorithm";
+    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIBUTE_NAME = "Algorithm";
 
     /**
      * Gets the algorithm URI attribute.

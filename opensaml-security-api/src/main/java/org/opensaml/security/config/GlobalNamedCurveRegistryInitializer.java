@@ -23,6 +23,8 @@ import java.util.ServiceLoader;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
@@ -32,6 +34,7 @@ import org.opensaml.security.crypto.ec.NamedCurveRegistry;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.InitializableComponent;
 
@@ -41,7 +44,7 @@ import net.shibboleth.shared.component.InitializableComponent;
 public class GlobalNamedCurveRegistryInitializer implements Initializer {
     
     /** Configuration property name for registering curves from Bouncy Castle. */
-    public static final String CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES =
+    @Nonnull @NotEmpty public static final String CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES =
             "opensaml.config.ec.registerBouncyCastleCurves";
     
     /** Logger. */

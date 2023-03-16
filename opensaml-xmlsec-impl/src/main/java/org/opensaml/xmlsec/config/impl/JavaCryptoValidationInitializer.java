@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.config.impl;
 import java.security.NoSuchAlgorithmException;
 import java.util.Properties;
 
+import javax.annotation.Nonnull;
 import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 
@@ -28,6 +29,8 @@ import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * An initializer which validates the Java Cryptographic Architecture environment is usable.
@@ -48,7 +51,7 @@ import org.slf4j.LoggerFactory;
 public class JavaCryptoValidationInitializer implements Initializer {
     
     /** Configuration property determining whether invalid result is fatal or not. */
-    public static final String CONFIG_PROPERTY_FAIL_IS_FATAL = "opensaml.config.xmlsec.cryptoValidationIsFatal";
+    @Nonnull @NotEmpty public static final String CONFIG_PROPERTY_FAIL_IS_FATAL = "opensaml.config.xmlsec.cryptoValidationIsFatal";
     
     /** Logger. */
     private Logger log = LoggerFactory.getLogger(JavaCryptoValidationInitializer.class);

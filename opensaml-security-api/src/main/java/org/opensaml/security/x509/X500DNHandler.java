@@ -20,6 +20,8 @@ package org.opensaml.security.x509;
 import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for implementations which handle parsing and serialization of X.500 names
  * represented by {@link X500Principal}.
@@ -27,10 +29,10 @@ import javax.security.auth.x500.X500Principal;
 public interface X500DNHandler {
     
     /** Specifies the string format specified in RFC 1779. */
-    public static final String FORMAT_RFC1779 = X500Principal.RFC1779;
+    @Nonnull @NotEmpty public static final String FORMAT_RFC1779 = X500Principal.RFC1779;
     
     /** Specifies the string format specified in RFC 2253. */
-    public static final String FORMAT_RFC2253 = X500Principal.RFC2253;
+    @Nonnull @NotEmpty public static final String FORMAT_RFC2253 = X500Principal.RFC2253;
     
     /**
      * Parse the string representation of a name and build a new principal instance.

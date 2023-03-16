@@ -54,6 +54,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import com.google.common.base.Charsets;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
@@ -69,16 +70,16 @@ public class PBKDF2 extends AbstractInitializableComponent
         implements KeyDerivation, XMLExpressableKeyAgreementParameter, CloneableKeyAgreementParameter {
     
     /** Default PRF. */
-    public static final String DEFAULT_PRF = SignatureConstants.ALGO_ID_MAC_HMAC_SHA256;
+    @Nonnull @NotEmpty public static final String DEFAULT_PRF = SignatureConstants.ALGO_ID_MAC_HMAC_SHA256;
     
     /** Default iteration count. */
-    public static final Integer DEFAULT_ITERATION_COUNT = 2000;
+    @Nonnull public static final Integer DEFAULT_ITERATION_COUNT = 2000;
     
     /** Default length for generated salt, in bytes. */
-    public static final Integer DEFAULT_GENERATED_SALT_LENGTH = 8;
+    @Nonnull public static final Integer DEFAULT_GENERATED_SALT_LENGTH = 8;
     
     /** Base algorithm ID for PBKDF2 SecretKeyFactory. */
-    private static final String PBKDF2_JCA_ALGORITHM_BASE = "PBKDF2With";
+    @Nonnull private static final String PBKDF2_JCA_ALGORITHM_BASE = "PBKDF2With";
     
     /** Base64-encoded salt value. */
     @Nullable private String salt;

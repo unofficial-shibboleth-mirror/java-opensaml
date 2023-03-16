@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * XMLObject representing XML Encryption 1.1 DerivedKey element.
@@ -29,27 +32,27 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 public interface DerivedKey extends XMLObject {
     
     /** Element local name. */
-    public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DerivedKey";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DerivedKey";
 
     /** Default element name. */
-    public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "DerivedKeyType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DerivedKeyType";
 
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME =
+    @Nonnull public static final QName TYPE_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** Recipient attribute name. */
-    public static final String RECIPIENT_ATTRIBUTE_NAME = "Recipient";
+    @Nonnull @NotEmpty public static final String RECIPIENT_ATTRIBUTE_NAME = "Recipient";
 
     /** Algorithm attribute name. */
-    public static final String ID_ATTRIBUTE_NAME = "Id";
+    @Nonnull @NotEmpty public static final String ID_ATTRIBUTE_NAME = "Id";
 
     /** Algorithm attribute name. */
-    public static final String TYPE_ATTRIBUTE_NAME = "Type";
+    @Nonnull @NotEmpty public static final String TYPE_ATTRIBUTE_NAME = "Type";
     
     /**
      * Get the KeyDerivationMethod child element.

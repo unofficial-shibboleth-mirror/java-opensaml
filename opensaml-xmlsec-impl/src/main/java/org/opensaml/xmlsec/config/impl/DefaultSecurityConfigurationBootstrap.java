@@ -62,6 +62,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
@@ -73,13 +74,13 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 public class DefaultSecurityConfigurationBootstrap {
     
     /** Config property name for ECDH default Key Derivation Function (KDF). */
-    public static final String CONFIG_PROPERTY_ECDH_DEFAULT_KDF = "opensaml.config.ecdh.defaultKDF";
+    @Nonnull @NotEmpty public static final String CONFIG_PROPERTY_ECDH_DEFAULT_KDF = "opensaml.config.ecdh.defaultKDF";
     
     /** Config property value for default KDF: ConcatKDF. */
-    public static final String CONCATKDF = "ConcatKDF";
+    @Nonnull @NotEmpty public static final String CONCATKDF = "ConcatKDF";
     
     /** Config property value for default KDF: PBKDF2. */
-    public static final String PBKDF2 = "PBKDF2";
+    @Nonnull @NotEmpty public static final String PBKDF2 = "PBKDF2";
     
     /** Logger. */
     private static final Logger LOG = LoggerFactory.getLogger(DefaultSecurityConfigurationBootstrap.class);

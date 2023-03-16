@@ -19,10 +19,7 @@ package org.opensaml.saml.saml2.binding.encoding.impl;
 
 import java.io.UnsupportedEncodingException;
 
-import net.shibboleth.shared.codec.Base64Support;
-import net.shibboleth.shared.codec.DecodingException;
-import net.shibboleth.shared.codec.EncodingException;
-import net.shibboleth.shared.xml.SerializeSupport;
+import javax.annotation.Nonnull;
 
 import org.apache.velocity.VelocityContext;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -45,13 +42,19 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.xml.SerializeSupport;
+
 /**
  * SAML 2.0 HTTP-POST-SimpleSign binding message encoder.
  */
 public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     
     /** Default template ID. */
-    public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-simplesign-binding.vm";
+    @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-simplesign-binding.vm";
 
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPPostSimpleSignEncoder.class);

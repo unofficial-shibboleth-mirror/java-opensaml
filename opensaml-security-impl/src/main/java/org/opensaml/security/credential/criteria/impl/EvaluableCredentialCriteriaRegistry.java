@@ -28,13 +28,14 @@ import java.util.Properties;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.resolver.Criterion;
-
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.security.SecurityException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.resolver.Criterion;
 
 /**
  * A registry which manages mappings from types of {@link Criterion} to the class type which can evaluate that
@@ -49,7 +50,7 @@ public final class EvaluableCredentialCriteriaRegistry {
      * Properties file storing default mappings from criteria to evaluable credential criteria. Will be loaded as a
      * resource stream relative to this class.
      */
-    public static final String DEFAULT_MAPPINGS_FILE = "/credential-criteria-registry.properties";
+    @Nonnull @NotEmpty public static final String DEFAULT_MAPPINGS_FILE = "/credential-criteria-registry.properties";
 
     /** Storage for the registry mappings. */
     private static Map<Class<? extends Criterion>, Class<? extends EvaluableCredentialCriterion>> registry;

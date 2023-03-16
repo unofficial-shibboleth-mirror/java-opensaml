@@ -17,11 +17,13 @@
 
 package org.opensaml.soap.client.http;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 
 import org.opensaml.soap.client.SOAPClient.SOAPRequestParameters;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /** HTTP transported SOAP request parameters. */
@@ -29,7 +31,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class HttpSOAPRequestParameters implements SOAPRequestParameters {
 
     /** Name of the HTTP SOAPAction header. */
-    public static final String SOAP_ACTION_HEADER = "SOAPAction";
+    @Nonnull @NotEmpty public static final String SOAP_ACTION_HEADER = "SOAPAction";
 
     /** HTTP SOAPAction header. */
     private String soapAction;

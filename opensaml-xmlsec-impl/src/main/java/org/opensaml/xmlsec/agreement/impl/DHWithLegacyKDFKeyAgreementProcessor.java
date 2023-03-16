@@ -41,6 +41,8 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Implementation of {@link KeyAgreementProcessor} which performs Diffie-Hellman
  * Ephemeral-Static Mode key agreement with Legacy Key Derivation Function as defined in XML Encryption 1.1.
@@ -48,7 +50,7 @@ import org.slf4j.LoggerFactory;
 public class DHWithLegacyKDFKeyAgreementProcessor extends AbstractKeyAgreementProcessor {
     
     /** Default digest method. */
-    public static final String DEFAULT_DIGEST_METHOD = EncryptionConstants.ALGO_ID_DIGEST_SHA256;
+    @Nonnull @NotEmpty public static final String DEFAULT_DIGEST_METHOD = EncryptionConstants.ALGO_ID_DIGEST_SHA256;
     
     /** Logger. */
     private final Logger log = LoggerFactory.getLogger(DHWithLegacyKDFKeyAgreementProcessor.class);
