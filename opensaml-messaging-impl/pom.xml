@@ -38,20 +38,19 @@
         </dependency>		
 
 		<!-- Provided Dependencies -->
-		<dependency>
-			<groupId>jakarta.servlet</groupId>
-			<artifactId>jakarta.servlet-api</artifactId>
-		</dependency>
 
 		<!-- Runtime Dependencies -->
 
 		<!-- Test Dependencies -->
+		
+		<!-- Needed for XMLObject providers -->
         <dependency>
             <groupId>${project.groupId}</groupId>
             <artifactId>opensaml-core-impl</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
+
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>opensaml-testing</artifactId>
@@ -61,18 +60,6 @@
         <dependency>
             <groupId>${spring.groupId}</groupId>
             <artifactId>spring-core</artifactId>
-            <scope>test</scope>
-        </dependency>
-
-		<dependency>
-			<groupId>${spring.groupId}</groupId>
-			<artifactId>spring-test</artifactId>
-			<scope>test</scope>
-		</dependency>
-		<!-- Needed regardless of dependency:analyze. -->
-        <dependency>
-            <groupId>${spring.groupId}</groupId>
-            <artifactId>spring-web</artifactId>
             <scope>test</scope>
         </dependency>
 
