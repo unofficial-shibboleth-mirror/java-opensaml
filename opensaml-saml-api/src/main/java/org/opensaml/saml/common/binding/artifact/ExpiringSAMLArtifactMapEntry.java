@@ -75,7 +75,7 @@ public class ExpiringSAMLArtifactMapEntry extends BasicSAMLArtifactMapEntry {
      * @return true iff the entry is valid as of now
      */
     public boolean isValid() {
-        return expiration == null || expiration.isAfter(Instant.now());
+        return isValid(Instant.now());
     }
 
     /**
@@ -85,7 +85,10 @@ public class ExpiringSAMLArtifactMapEntry extends BasicSAMLArtifactMapEntry {
      * @return true iff the entry is valid as of a specified time
      */
     public boolean isValid(@Nonnull final Instant effectiveTime) {
-        return expiration == null || expiration.isBefore(effectiveTime);
+        if (expiration != null) {
+            return expiration.isAfter(effectiveTime);
+        }
+        return true;
     }
     
 }
