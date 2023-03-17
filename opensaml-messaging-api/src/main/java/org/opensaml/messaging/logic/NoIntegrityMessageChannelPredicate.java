@@ -34,7 +34,7 @@ public class NoIntegrityMessageChannelPredicate implements Predicate<MessageCont
 
     /** {@inheritDoc} */
     public boolean test(@Nullable final MessageContext input) {
-        return input == null || !input.getOrCreateSubcontext(MessageChannelSecurityContext.class).isIntegrityActive();
+        return input == null || !input.ensureSubcontext(MessageChannelSecurityContext.class).isIntegrityActive();
     }
     
 }

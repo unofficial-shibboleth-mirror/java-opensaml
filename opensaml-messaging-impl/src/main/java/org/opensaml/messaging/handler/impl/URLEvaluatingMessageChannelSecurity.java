@@ -120,7 +120,7 @@ public class URLEvaluatingMessageChannelSecurity extends AbstractMessageChannelS
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) {
         final MessageChannelSecurityContext channelContext =
-                getParentContext().getOrCreateSubcontext(MessageChannelSecurityContext.class);
+                getParentContext().ensureSubcontext(MessageChannelSecurityContext.class);
         
         final String scheme = urlBuilder.getScheme();
         // Note that below we don't care about port if scheme != https,

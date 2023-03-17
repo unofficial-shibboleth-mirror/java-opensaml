@@ -57,7 +57,7 @@ public class LoadClientStorageServicesTest extends AbstractBaseClientStorageServ
 
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        loadCtx = prc.getOrCreateSubcontext(ClientStorageLoadContext.class);
+        loadCtx = prc.ensureSubcontext(ClientStorageLoadContext.class);
         loadCtx.getStorageKeys().add(STORAGE_NAME);
         
         action = new LoadClientStorageServices();

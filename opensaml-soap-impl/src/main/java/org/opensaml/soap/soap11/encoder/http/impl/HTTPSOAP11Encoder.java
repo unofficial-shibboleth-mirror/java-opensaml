@@ -112,7 +112,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      * @param envelope the SOAP envelope
      */
     protected void storeSOAPEnvelope(final Envelope envelope) {
-        getMessageContext().getOrCreateSubcontext(SOAP11Context.class).setEnvelope(envelope);
+        getMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(envelope);
     }
 
     /**
@@ -121,7 +121,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      * @return the previously stored SOAP envelope
      */
     protected Envelope getSOAPEnvelope() {
-        return getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getEnvelope();
+        return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
 
     /**
@@ -216,7 +216,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      */
     protected int getHTTPResponseStatusCode() {
         final Integer contextStatus =
-                getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getHTTPResponseStatus();
+                getMessageContext().ensureSubcontext(SOAP11Context.class).getHTTPResponseStatus();
         if (contextStatus != null) {
             return contextStatus;
         }
@@ -235,7 +235,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
     
     /** {@inheritDoc} */
     protected XMLObject getMessageToLog() {
-        return getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getEnvelope();
+        return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
     
 }

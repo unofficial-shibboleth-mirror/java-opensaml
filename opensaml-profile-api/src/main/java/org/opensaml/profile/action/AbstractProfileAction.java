@@ -123,7 +123,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         // because it may be from an earlier error of interest to other actions.
         final EventContext previousEvent = profileRequestContext.getSubcontext(EventContext.class);
         if (previousEvent != null) {
-            profileRequestContext.getOrCreateSubcontext(PreviousEventContext.class).setEvent(previousEvent.getEvent());
+            profileRequestContext.ensureSubcontext(PreviousEventContext.class).setEvent(previousEvent.getEvent());
             profileRequestContext.removeSubcontext(EventContext.class);
         }
 

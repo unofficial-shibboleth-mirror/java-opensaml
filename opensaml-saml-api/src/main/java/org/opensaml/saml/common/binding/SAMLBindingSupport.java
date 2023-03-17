@@ -78,7 +78,7 @@ public final class SAMLBindingSupport {
      */
     public static void setRelayState(@Nonnull final MessageContext messageContext, 
             @Nullable final String relayState) {
-        messageContext.getOrCreateSubcontext(SAMLBindingContext.class).setRelayState(relayState);
+        messageContext.ensureSubcontext(SAMLBindingContext.class).setRelayState(relayState);
     }
     
     /**

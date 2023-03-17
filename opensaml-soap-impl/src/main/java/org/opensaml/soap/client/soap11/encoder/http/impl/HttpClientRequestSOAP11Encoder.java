@@ -143,7 +143,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * @param envelope the SOAP envelope
      */
     protected void storeSOAPEnvelope(final Envelope envelope) {
-        getMessageContext().getOrCreateSubcontext(SOAP11Context.class).setEnvelope(envelope);
+        getMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(envelope);
     }
 
     /**
@@ -152,7 +152,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * @return the previously stored SOAP envelope
      */
     protected Envelope getSOAPEnvelope() {
-        return getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getEnvelope();
+        return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
 
     /**
@@ -231,7 +231,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
     
     /** {@inheritDoc} */
     protected XMLObject getMessageToLog() {
-        return getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getEnvelope();
+        return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
 
 }

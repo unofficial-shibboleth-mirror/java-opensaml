@@ -131,7 +131,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * @param messageContext the current message context
      */
     protected void populateBindingContext(final MessageContext messageContext) {
-        final SAMLBindingContext bindingContext = messageContext.getOrCreateSubcontext(SAMLBindingContext.class);
+        final SAMLBindingContext bindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setBindingDescriptor(bindingDescriptor);
         bindingContext.setHasBindingSignature(false);

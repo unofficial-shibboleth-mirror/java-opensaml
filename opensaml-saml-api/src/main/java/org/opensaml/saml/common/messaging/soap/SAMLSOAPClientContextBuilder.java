@@ -342,7 +342,7 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
         
         final Function<MessageContext,CriteriaSet> tlsStrategy = getTLSCriteriaSetStrategy();
         if (tlsStrategy != null) {
-            outboundContext.getOrCreateSubcontext(HttpClientSecurityContext.class)
+            outboundContext.ensureSubcontext(HttpClientSecurityContext.class)
                 .setTLSCriteriaSetStrategy(tlsStrategy);
         }
         
@@ -352,22 +352,22 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
         final BaseContext parent = opContext;
         
         if (getProtocol() != null) {
-            parent.getOrCreateSubcontext(SAMLProtocolContext.class).setProtocol(getProtocol());
+            parent.ensureSubcontext(SAMLProtocolContext.class).setProtocol(getProtocol());
         }
         
         if (getPipelineName() != null) {
-            parent.getOrCreateSubcontext(SOAPClientContext.class).setPipelineName(getPipelineName());
+            parent.ensureSubcontext(SOAPClientContext.class).setPipelineName(getPipelineName());
         }
         
         if (getSecurityConfigurationProfileId() != null) {
-            parent.getOrCreateSubcontext(SOAPClientSecurityContext.class).setSecurityConfigurationProfileId(
+            parent.ensureSubcontext(SOAPClientSecurityContext.class).setSecurityConfigurationProfileId(
                     getSecurityConfigurationProfileId());
         }
         
         //TODO is this required always?
         final String selfID = getSelfEntityID();
         if (selfID != null) {
-            final SAMLSelfEntityContext selfContext = parent.getOrCreateSubcontext(SAMLSelfEntityContext.class);
+            final SAMLSelfEntityContext selfContext = parent.ensureSubcontext(SAMLSelfEntityContext.class);
             selfContext.setEntityId(selfID);
         }
         
@@ -380,12 +380,12 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
         if (peerRoleName == null) {
             errorMissingData("Peer role");
         }
-        final SAMLPeerEntityContext peerContext = parent.getOrCreateSubcontext(SAMLPeerEntityContext.class);
+        final SAMLPeerEntityContext peerContext = parent.ensureSubcontext(SAMLPeerEntityContext.class);
         peerContext.setEntityId(peerID);
         peerContext.setRole(peerRoleName);
         
         //  Both optional, could be resolved in SOAP handling pipeline by handler(s)
-        final SAMLMetadataContext metadataContext = peerContext.getOrCreateSubcontext(SAMLMetadataContext.class);
+        final SAMLMetadataContext metadataContext = peerContext.ensureSubcontext(SAMLMetadataContext.class);
         metadataContext.setEntityDescriptor(getPeerEntityDescriptor());
         metadataContext.setRoleDescriptor(getPeerRoleDescriptor());
         

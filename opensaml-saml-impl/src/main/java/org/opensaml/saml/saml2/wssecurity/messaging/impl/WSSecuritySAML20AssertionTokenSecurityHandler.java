@@ -251,7 +251,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
             return;
         }
         
-        final WSSecurityContext wsContext = messageContext.getOrCreateSubcontext(WSSecurityContext.class);
+        final WSSecurityContext wsContext = messageContext.ensureSubcontext(WSSecurityContext.class);
         
         for (final Assertion assertion : assertions) {
             final SAML20AssertionValidator validator = resolveValidator(messageContext, assertion);

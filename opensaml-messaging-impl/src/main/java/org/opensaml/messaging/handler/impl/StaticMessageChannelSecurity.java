@@ -73,7 +73,7 @@ public class StaticMessageChannelSecurity extends AbstractMessageChannelSecurity
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) {
         final MessageChannelSecurityContext channelContext =
-                getParentContext().getOrCreateSubcontext(MessageChannelSecurityContext.class);
+                getParentContext().ensureSubcontext(MessageChannelSecurityContext.class);
         channelContext.setConfidentialityActive(isConfidentialityActive());
         channelContext.setIntegrityActive(isIntegrityActive());
     }

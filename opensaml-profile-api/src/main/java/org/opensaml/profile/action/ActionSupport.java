@@ -56,7 +56,7 @@ public final class ActionSupport {
         final String trimmedEventId =
                 Constraint.isNotNull(StringSupport.trimOrNull(eventId), "ID of event cannot be null or empty");
         
-        profileRequestContext.getOrCreateSubcontext(EventContext.class).setEvent(trimmedEventId);
+        profileRequestContext.ensureSubcontext(EventContext.class).setEvent(trimmedEventId);
     }
     
     /**
@@ -71,7 +71,7 @@ public final class ActionSupport {
         Constraint.isNotNull(profileRequestContext, "Profile request context cannot be null");
         Constraint.isNotNull(event, "Event cannot be null");
         
-        profileRequestContext.getOrCreateSubcontext(EventContext.class).setEvent(event);
+        profileRequestContext.ensureSubcontext(EventContext.class).setEvent(event);
     }
 
 }

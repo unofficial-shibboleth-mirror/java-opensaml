@@ -96,7 +96,7 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
         final Envelope soapMessage;
         try {
             soapMessage = (Envelope) unmarshallMessage(request.getInputStream());
-            messageContext.getOrCreateSubcontext(SOAP11Context.class).setEnvelope(soapMessage);
+            messageContext.ensureSubcontext(SOAP11Context.class).setEnvelope(soapMessage);
         } catch (final IOException e) {
             log.error("Unable to obtain input stream from HttpServletRequest: {}", e.getMessage());
             throw new MessageDecodingException("Unable to obtain input stream from HttpServletRequest", e);
@@ -131,7 +131,7 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
     /** {@inheritDoc} */
     @Override
     protected XMLObject getMessageToLog() {
-        return getMessageContext().getOrCreateSubcontext(SOAP11Context.class).getEnvelope();
+        return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
 
     /** {@inheritDoc} */

@@ -34,7 +34,7 @@ public class NoIntegrityMessageChannelPredicate implements Predicate<ProfileRequ
 
     /** {@inheritDoc} */
     public boolean test(@Nullable final ProfileRequestContext input) {
-        return input == null || !input.getOrCreateSubcontext(MessageChannelSecurityContext.class).isIntegrityActive();
+        return input == null || !input.ensureSubcontext(MessageChannelSecurityContext.class).isIntegrityActive();
     }
     
 }

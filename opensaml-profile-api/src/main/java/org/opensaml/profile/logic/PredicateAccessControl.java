@@ -71,7 +71,7 @@ public class PredicateAccessControl extends AbstractIdentifiableInitializableCom
         final Object attribute = request.getAttribute(ProfileRequestContext.BINDING_KEY);
         if (attribute != null && attribute instanceof ProfileRequestContext) {
             final ProfileRequestContext prc = (ProfileRequestContext) attribute;
-            final AccessControlContext acc = prc.getOrCreateSubcontext(AccessControlContext.class);
+            final AccessControlContext acc = prc.ensureSubcontext(AccessControlContext.class);
             acc.setOperation(operation);
             acc.setResource(resource);
             if (predicate.test(prc)) {

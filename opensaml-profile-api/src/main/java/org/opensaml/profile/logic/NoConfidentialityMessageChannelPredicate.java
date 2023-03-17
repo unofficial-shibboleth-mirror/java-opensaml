@@ -35,7 +35,7 @@ public class NoConfidentialityMessageChannelPredicate implements Predicate<Profi
     /** {@inheritDoc} */
     public boolean test(@Nullable final ProfileRequestContext input) {
         return input == null
-                || !input.getOrCreateSubcontext(MessageChannelSecurityContext.class).isConfidentialityActive();
+                || !input.ensureSubcontext(MessageChannelSecurityContext.class).isConfidentialityActive();
     }
     
 }

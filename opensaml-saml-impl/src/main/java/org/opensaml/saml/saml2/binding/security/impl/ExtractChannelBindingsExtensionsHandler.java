@@ -82,7 +82,7 @@ public class ExtractChannelBindingsExtensionsHandler extends AbstractMessageHand
         }
 
         final Collection<ChannelBindings> channelBindings =
-                messageContext.getOrCreateSubcontext(ChannelBindingsContext.class).getChannelBindings();
+                messageContext.ensureSubcontext(ChannelBindingsContext.class).getChannelBindings();
         for (final XMLObject cb : bindings) {
             if (cb instanceof ChannelBindings) {
                 channelBindings.add((ChannelBindings) cb);

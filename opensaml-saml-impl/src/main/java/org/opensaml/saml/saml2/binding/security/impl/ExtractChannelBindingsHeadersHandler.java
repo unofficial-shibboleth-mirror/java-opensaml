@@ -98,7 +98,7 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
             log.debug("{} No ChannelBindings header blocks found", getLogPrefix());
         } else {
             log.debug("{} {} ChannelBindings header block(s) found", getLogPrefix(), channelBindings.size());
-            messageContext.getSubcontext(SOAP11Context.class).getOrCreateSubcontext(ChannelBindingsContext.class).
+            messageContext.getSubcontext(SOAP11Context.class).ensureSubcontext(ChannelBindingsContext.class).
                 getChannelBindings().addAll(channelBindings);
         }
     }

@@ -144,7 +144,7 @@ public class AbstractMessageHandlerTest {
         handler.invoke(messageContext);
         
         Assert.assertTrue(messageContext.containsSubcontext(MockContext.class));
-        Assert.assertEquals(messageContext.getOrCreateSubcontext(MockContext.class).value, "hello");
+        Assert.assertEquals(messageContext.ensureSubcontext(MockContext.class).value, "hello");
     }
 
     /**
@@ -222,7 +222,7 @@ public class AbstractMessageHandlerTest {
     private class MockMutatingHandler extends AbstractMessageHandler {
 
         protected void doInvoke(@Nonnull MessageContext messageContext) throws MessageHandlerException {
-            messageContext.getOrCreateSubcontext(MockContext.class).value = "hello";
+            messageContext.ensureSubcontext(MockContext.class).value = "hello";
         }
     }
     

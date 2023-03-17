@@ -239,7 +239,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
      */
     private void storeSAMLArtifactType(@Nonnull final MessageContext messageContext,
             @Nonnull @NotEmpty final byte[] artifactType) {
-        messageContext.getOrCreateSubcontext(SAMLArtifactContext.class).setArtifactType(artifactType);
+        messageContext.ensureSubcontext(SAMLArtifactContext.class).setArtifactType(artifactType);
     }
 
     /**
@@ -250,7 +250,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
      * @return the artifact type
      */
     @Nullable private byte[] getSAMLArtifactType(@Nonnull final MessageContext messageContext) {
-        return messageContext.getOrCreateSubcontext(SAMLArtifactContext.class).getArtifactType();
+        return messageContext.ensureSubcontext(SAMLArtifactContext.class).getArtifactType();
     }
     
 }

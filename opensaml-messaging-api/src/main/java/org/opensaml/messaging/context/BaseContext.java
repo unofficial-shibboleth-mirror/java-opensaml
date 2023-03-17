@@ -114,7 +114,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @return the held instance of the class, or null
      */ 
-    @Nonnull public <T extends BaseContext> T getOrCreateSubcontext(@Nonnull final Class<T> clazz) {
+    @Nonnull public <T extends BaseContext> T ensureSubcontext(@Nonnull final Class<T> clazz) {
         return Constraint.isNotNull(getSubcontext(clazz, true), "Auto-creation of subcontext failed");
     }
     
@@ -126,7 +126,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * 
      * @return the held instance of the class, or null
-     * @deprecated use {@link #getOrCreateSubcontext(Class)} or {#link {@link #getSubcontext(Class)}.
+     * @deprecated use {@link #ensureSubcontext(Class)} or {#link {@link #getSubcontext(Class)}.
      */ 
     @Deprecated(since = "5.0.0", forRemoval = false)
     @Nullable public <T extends BaseContext> T getSubcontext(@Nonnull final Class<T> clazz, final boolean autocreate) {
@@ -169,7 +169,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * 
      * @return the held instance of the class, or null
      */ 
-    @Nullable public BaseContext getOrCreateSubcontext(@Nonnull @NotEmpty final String className) {
+    @Nullable public BaseContext ensureSubcontext(@Nonnull @NotEmpty final String className) {
         return Constraint.isNotNull(getSubcontext(className, true), "Auto-creation of subcontext failed");
     }
     
@@ -184,7 +184,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @param autocreate flag indicating whether the subcontext instance should be auto-created
      * 
      * @return the held instance of the class, or null
-     * @deprecated use {@link #getOrCreateSubcontext(String)} or {#link {@link #getSubcontext(String)}.
+     * @deprecated use {@link #ensureSubcontext(String)} or {#link {@link #getSubcontext(String)}.
      */ 
     @Deprecated(since = "5.0.0", forRemoval = false)
     @Nullable public BaseContext getSubcontext(@Nonnull @NotEmpty final String className, final boolean autocreate) {

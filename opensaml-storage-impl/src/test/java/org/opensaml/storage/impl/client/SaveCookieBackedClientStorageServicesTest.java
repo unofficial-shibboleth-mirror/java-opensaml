@@ -51,7 +51,7 @@ public class SaveCookieBackedClientStorageServicesTest extends AbstractBaseClien
 
     @BeforeMethod public void setUp() {
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        saveCtx = prc.getOrCreateSubcontext(ClientStorageSaveContext.class);
+        saveCtx = prc.ensureSubcontext(ClientStorageSaveContext.class);
         action = new SaveCookieBackedClientStorageServices();
     }
         

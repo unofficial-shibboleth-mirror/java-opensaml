@@ -168,7 +168,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         
         if (null != acs) {
             log.debug("{} Selected AttributeConsumingService with index {}", getLogPrefix(), acs.getIndex());
-            metadataContext.getOrCreateSubcontext(
+            metadataContext.ensureSubcontext(
                     AttributeConsumingServiceContext.class).setAttributeConsumingService(acs);
         } else {
             log.debug("{} No AttributeConsumingService selected", getLogPrefix());

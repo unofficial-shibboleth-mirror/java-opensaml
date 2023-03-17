@@ -313,7 +313,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
             }
             final Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
             context.setInboundMessageContext(new MessageContext());
-            context.getInboundMessageContext().getOrCreateSubcontext(SOAP11Context.class).setEnvelope(response);
+            context.getInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
             //TODO: goes away?
             //evaluateSecurityPolicy(messageContext);
         } catch (final IOException e) {
@@ -338,7 +338,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
             }
             final Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
             context.setInboundMessageContext(new MessageContext());
-            context.getInboundMessageContext().getOrCreateSubcontext(SOAP11Context.class).setEnvelope(response);
+            context.getInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
 
             if (response.getBody() != null) {
                 final List<XMLObject> faults = response.getBody().getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);

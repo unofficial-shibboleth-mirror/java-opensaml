@@ -96,7 +96,7 @@ public class PopulateSignatureSigningParametersHandlerTest extends OpenSAMLInitB
                 new ChildContextLookup<MessageContext,SecurityParametersContext>(SecurityParametersContext.class, true));
         handler.initialize();
         
-        prc.getOrCreateSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(new SignatureSigningParameters());
+        prc.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(new SignatureSigningParameters());
         
         handler.invoke(prc.getOutboundMessageContext());
         Assert.assertSame(prc.getSubcontext(SecurityParametersContext.class).getSignatureSigningParameters(),

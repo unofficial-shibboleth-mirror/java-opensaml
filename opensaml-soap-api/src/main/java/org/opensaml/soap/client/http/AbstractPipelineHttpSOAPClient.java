@@ -184,7 +184,7 @@ public abstract class AbstractPipelineHttpSOAPClient
         HttpClientMessagePipeline pipeline = null;
         try {
             // Store the endpoint URI
-            operationContext.getOrCreateSubcontext(SOAPClientContext.class).setDestinationURI(endpoint);
+            operationContext.ensureSubcontext(SOAPClientContext.class).setDestinationURI(endpoint);
             
             // Pipeline resolution
             pipeline = resolvePipeline(operationContext);
@@ -394,7 +394,7 @@ public abstract class AbstractPipelineHttpSOAPClient
      */
     @Nonnull protected HttpClientContext resolveClientContext(@Nonnull final InOutOperationContext operationContext) {
         final HttpClientRequestContext requestContext = 
-                operationContext.getOutboundMessageContext().getOrCreateSubcontext(HttpClientRequestContext.class);
+                operationContext.getOutboundMessageContext().ensureSubcontext(HttpClientRequestContext.class);
         if (requestContext.getHttpClientContext() == null) {
             requestContext.setHttpClientContext(HttpClientContext.create());
         }
