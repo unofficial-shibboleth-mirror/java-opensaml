@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -34,7 +35,7 @@ import org.w3c.dom.Attr;
 public class ECKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
     /** ECParameters element name. */
-    public static final QName ECPARAMETERS_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG11_NS, "ECParameters");
+    @Nonnull public static final QName ECPARAMETERS_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG11_NS, "ECParameters");
 
     /** {@inheritDoc} */
     protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
