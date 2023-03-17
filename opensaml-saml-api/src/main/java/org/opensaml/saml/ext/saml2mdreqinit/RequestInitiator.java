@@ -23,19 +23,21 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interfaces for SAML 2 Metadata Extension for SSO Service Provider Request Initiation - RequestInitiator element.
  */
 public interface RequestInitiator extends Endpoint {
     
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestInitiator";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestInitiator";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20MDRI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRI_PREFIX);
     
     /** Per the extension specification, the value of the 'Binding' attribute MUST be set to this fixed value. */
-    @Nonnull public static final String REQUIRED_BINDING_VALUE = "urn:oasis:names:tc:SAML:profiles:SSO:request-init";
+    @Nonnull @NotEmpty public static final String REQUIRED_BINDING_VALUE = "urn:oasis:names:tc:SAML:profiles:SSO:request-init";
 
 }

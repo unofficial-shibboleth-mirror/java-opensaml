@@ -26,20 +26,22 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.soap.common.SOAPObject;
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SOAP 1.1 Envelope.
  */
 public interface Envelope extends SOAPObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Envelope";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Envelope";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "Envelope"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "Envelope"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

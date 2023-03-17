@@ -25,20 +25,22 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata AuthnAuthorityDescriptor.
  */
 public interface AuthnAuthorityDescriptor extends SAMLObject, RoleDescriptor {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnAuthorityDescriptor";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnAuthorityDescriptor";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthnAuthorityDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthnAuthorityDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,

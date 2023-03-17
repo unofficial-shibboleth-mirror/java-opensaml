@@ -24,13 +24,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for element having a <code>@soap12:mustUnderstand</code> attribute.
  */
 public interface MustUnderstandBearing {
     
     /** The soap12:@mustUnderstand attribute local name. */
-    @Nonnull public static final String SOAP12_MUST_UNDERSTAND_ATTR_LOCAL_NAME = "mustUnderstand";
+    @Nonnull @NotEmpty public static final String SOAP12_MUST_UNDERSTAND_ATTR_LOCAL_NAME = "mustUnderstand";
 
     /** The soap12:@mustUnderstand qualified attribute name. */
     @Nonnull public static final QName SOAP12_MUST_UNDERSTAND_ATTR_NAME =

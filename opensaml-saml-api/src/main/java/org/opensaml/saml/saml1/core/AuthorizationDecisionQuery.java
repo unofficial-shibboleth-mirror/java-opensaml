@@ -27,27 +27,29 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Description of the behaviour of the <code> AuthorizationDecisionQuery </code> element.
  */
 public interface AuthorizationDecisionQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionQuery";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionQuery";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthorizationDecisionQueryType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthorizationDecisionQueryType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** AuthenticationMethod attribute name. */
-    @Nonnull public static final String RESOURCE_ATTRIB_NAME = "Resource"; 
+    @Nonnull @NotEmpty public static final String RESOURCE_ATTRIB_NAME = "Resource"; 
 
     /** 
      * Get Resource attribute.

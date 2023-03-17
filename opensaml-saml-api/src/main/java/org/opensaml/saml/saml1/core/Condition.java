@@ -27,20 +27,22 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * This interface describes how a object representing a SAML1 <code> Condition </code> element will behave.
  */
 public interface Condition extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Condition";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Condition";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "ConditionAbstractType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ConditionAbstractType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =

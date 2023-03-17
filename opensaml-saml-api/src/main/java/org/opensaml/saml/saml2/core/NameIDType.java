@@ -21,50 +21,52 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.schema.XSString;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Assertion NameID schema type.
  */
 public interface NameIDType extends XSString {
 
     /** NameQualifier attribute name. */
-    @Nonnull public static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
+    @Nonnull @NotEmpty public static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
 
     /** SPNameQualifier attribute name. */
-    @Nonnull public static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
+    @Nonnull @NotEmpty public static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
 
     /** Format attribute name. */
-    @Nonnull public static final String FORMAT_ATTRIB_NAME = "Format";
+    @Nonnull @NotEmpty public static final String FORMAT_ATTRIB_NAME = "Format";
 
     /** SPProviderID attribute name. */
-    @Nonnull public static final String SPPROVIDED_ID_ATTRIB_NAME = "SPProvidedID";
+    @Nonnull @NotEmpty public static final String SPPROVIDED_ID_ATTRIB_NAME = "SPProvidedID";
 
     /** URI for unspecified name format. */
-    @Nonnull public static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+    @Nonnull @NotEmpty public static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
     /** URI for email name format. */
-    @Nonnull public static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
+    @Nonnull @NotEmpty public static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
 
     /** URI for X509 subject name format. */
-    @Nonnull public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
+    @Nonnull @NotEmpty public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
 
     /** URI for windows domain qualified name name format. */
-    @Nonnull public static final String WIN_DOMAIN_QUALIFIED =
+    @Nonnull @NotEmpty public static final String WIN_DOMAIN_QUALIFIED =
             "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
 
     /** URI for kerberos name format. */
-    @Nonnull public static final String KERBEROS = "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos";
+    @Nonnull @NotEmpty public static final String KERBEROS = "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos";
 
     /** URI for SAML entity name format. */
-    @Nonnull public static final String ENTITY = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity";
+    @Nonnull @NotEmpty public static final String ENTITY = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity";
 
     /** URI for persistent name format. */
-    @Nonnull public static final String PERSISTENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
+    @Nonnull @NotEmpty public static final String PERSISTENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
 
     /** URI for transient name format. */
-    @Nonnull public static final String TRANSIENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient";
+    @Nonnull @NotEmpty public static final String TRANSIENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient";
 
     /** Special URI used by NameIDPolicy to indicate a NameID should be encrypted. */
-    @Nonnull public static final String ENCRYPTED = "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted";
+    @Nonnull @NotEmpty public static final String ENCRYPTED = "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted";
 
     /**
      * Gets the NameQualifier value.

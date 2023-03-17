@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.CookieManager;
 import net.shibboleth.shared.resource.Resource;
@@ -35,7 +36,7 @@ import net.shibboleth.shared.spring.resource.ResourceHelper;
 public class AbstractBaseClientStorageServiceTest {
 
     /** Storage name. */
-    @Nonnull public static final String STORAGE_NAME = "foo";
+    @Nonnull @NotEmpty public static final String STORAGE_NAME = "foo";
     
     private Resource keystoreResource;
     private Resource versionResource;

@@ -23,13 +23,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for element having a <code>@soap12:role</code> attribute.
  */
 public interface RoleBearing {
     
     /** The soap12:@role attribute local name. */
-    @Nonnull public static final String SOAP12_ROLE_ATTR_LOCAL_NAME = "role";
+    @Nonnull @NotEmpty public static final String SOAP12_ROLE_ATTR_LOCAL_NAME = "role";
 
     /** The soap12:@role qualified attribute name. */
     @Nonnull public static final QName SOAP12_ROLE_ATTR_NAME =

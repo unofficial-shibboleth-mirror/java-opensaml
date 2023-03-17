@@ -91,6 +91,7 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
@@ -1072,7 +1073,7 @@ public class KeyInfoSupport {
      * @return the encoded CryptoBinary value
      * @throws EncodingException if the BigInteger as bytes can not be base64 encoded.
      */
-    @Nonnull public static final String encodeCryptoBinaryFromBigInteger(@Nonnull final BigInteger bigInt) 
+    @Nonnull @NotEmpty public static final String encodeCryptoBinaryFromBigInteger(@Nonnull final BigInteger bigInt) 
             throws EncodingException {
         Constraint.isNotNull(bigInt, "BigInteger cannot be null");
         

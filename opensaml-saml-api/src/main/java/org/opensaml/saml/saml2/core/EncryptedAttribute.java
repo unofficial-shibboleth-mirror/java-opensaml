@@ -22,13 +22,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core EncryptedAttribute.
  */
 public interface EncryptedAttribute extends EncryptedElementType {
     
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedAttribute";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedAttribute";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =  

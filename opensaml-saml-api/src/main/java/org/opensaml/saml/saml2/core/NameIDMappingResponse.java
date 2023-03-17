@@ -22,13 +22,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core NameIDMappingResponse .
  */
 public interface NameIDMappingResponse extends StatusResponseType {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDMappingResponse";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDMappingResponse";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,

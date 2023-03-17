@@ -23,33 +23,35 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core IDPEntry.
  */
 public interface IDPEntry extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPEntry";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPEntry";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "IDPEntryType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "IDPEntryType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** ProviderID attribute name. */
-    @Nonnull public static final String PROVIDER_ID_ATTRIB_NAME = "ProviderID";
+    @Nonnull @NotEmpty public static final String PROVIDER_ID_ATTRIB_NAME = "ProviderID";
 
     /** Name attribute name. */
-    @Nonnull public static final String NAME_ATTRIB_NAME = "Name";
+    @Nonnull @NotEmpty public static final String NAME_ATTRIB_NAME = "Name";
 
     /** Loc attribute name. */
-    @Nonnull public static final String LOC_ATTRIB_NAME = "Loc";
+    @Nonnull @NotEmpty public static final String LOC_ATTRIB_NAME = "Loc";
 
     /**
      * Gets ProviderID URI.

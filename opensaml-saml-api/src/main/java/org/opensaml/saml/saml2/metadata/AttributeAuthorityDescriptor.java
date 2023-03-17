@@ -26,20 +26,22 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Attribute;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata AttributeAuthorityDescriptor.
  */
 public interface AttributeAuthorityDescriptor extends SAMLObject, RoleDescriptor {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeAuthorityDescriptor";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeAuthorityDescriptor";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributeAuthorityDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributeAuthorityDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,

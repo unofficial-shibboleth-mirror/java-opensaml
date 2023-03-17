@@ -24,13 +24,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata extension AuthzDecisionQueryDescriptorType.
  */
 public interface AuthzDecisionQueryDescriptorType extends QueryDescriptorType {
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthzDecisionQueryDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthzDecisionQueryDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,

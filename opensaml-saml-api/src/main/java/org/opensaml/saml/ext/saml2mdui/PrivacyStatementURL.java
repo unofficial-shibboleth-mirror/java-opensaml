@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.LocalizedURI;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * PrivacyStatementURL.
  *
@@ -36,7 +38,7 @@ import org.opensaml.saml.saml2.metadata.LocalizedURI;
 public interface PrivacyStatementURL extends LocalizedURI {
     
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PrivacyStatementURL";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PrivacyStatementURL";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =

@@ -30,6 +30,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 
 /**
  * SAML-EC GSS-API GeneratedKey element.
@@ -37,14 +39,14 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public interface GeneratedKey extends XSBase64Binary, SAMLObject, MustUnderstandBearing, ActorBearing {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "GeneratedKey";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "GeneratedKey";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "GeneratedKeyType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "GeneratedKeyType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, TYPE_LOCAL_NAME,

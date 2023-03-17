@@ -25,13 +25,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata extension AttributeQueryDescriptorType.
  */
 public interface AttributeQueryDescriptorType extends QueryDescriptorType {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributeQueryDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributeQueryDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,

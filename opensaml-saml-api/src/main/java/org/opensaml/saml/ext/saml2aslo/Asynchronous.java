@@ -27,20 +27,22 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Protocol extension Asynchronous.
  */
 public interface Asynchronous extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Asynchronous";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Asynchronous";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PASLO_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20PASLO_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AsynchronousType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AsynchronousType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20PASLO_NS, TYPE_LOCAL_NAME,

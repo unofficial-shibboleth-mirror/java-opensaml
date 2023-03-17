@@ -23,13 +23,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.schema.XSString;
 import org.opensaml.soap.common.SOAPObject;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SOAP 1.1 faultstring.
  */
 public interface FaultString extends SOAPObject, XSString {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultstring";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "faultstring";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);

@@ -29,34 +29,36 @@ import org.opensaml.saml.saml2.core.BaseID;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NameID;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Condition for Delegation Restriction - Delegate element.
  */
 public interface Delegate extends SAMLObject {
     
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Delegate";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Delegate";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "DelegateType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DelegateType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /** DelegationInstant attribute name. */
-    @Nonnull public static final String DELEGATION_INSTANT_ATTRIB_NAME = "DelegationInstant";
+    @Nonnull @NotEmpty public static final String DELEGATION_INSTANT_ATTRIB_NAME = "DelegationInstant";
 
     /** DelegationInstant attribute QName. */
     @Nonnull public static final QName DELEGATION_INSTANT_ATTRIB_QNAME =
             new QName(null, DELEGATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
     /** ConfirmationMethod attribute name. */
-    @Nonnull public static final String CONFIRMATION_METHOD_ATTRIB_NAME = "ConfirmationMethod";    
+    @Nonnull @NotEmpty public static final String CONFIRMATION_METHOD_ATTRIB_NAME = "ConfirmationMethod";    
 
     /**
      * Gets the BaseID child element of the delegate.

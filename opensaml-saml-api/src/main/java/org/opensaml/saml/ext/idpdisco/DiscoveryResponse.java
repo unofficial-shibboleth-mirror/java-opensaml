@@ -23,11 +23,13 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /** SAML Identity Provider Discovery Protocol DiscoveryResponse. */
 public interface DiscoveryResponse extends IndexedEndpoint {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoveryResponse";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoveryResponse";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =

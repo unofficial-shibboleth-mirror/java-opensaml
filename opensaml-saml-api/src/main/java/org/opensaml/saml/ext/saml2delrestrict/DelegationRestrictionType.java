@@ -25,13 +25,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Condition;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Condition for Delegation Restriction - DelegationRestrictionType complex type.
  */
 public interface DelegationRestrictionType extends Condition {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =

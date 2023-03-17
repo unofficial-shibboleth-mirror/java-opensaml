@@ -25,6 +25,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 
 /**
  * SAML 2.0 ECP RequestAuthenticated SOAP header.
@@ -32,14 +34,14 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public interface RequestAuthenticated extends SAMLObject, MustUnderstandBearing, ActorBearing {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestAuthenticated";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestAuthenticated";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "RequestAuthenticatedType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestAuthenticatedType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME,

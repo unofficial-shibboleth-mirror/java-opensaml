@@ -24,20 +24,22 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * This interface defines how the SAML1 <code> Request </code> objects behave.
  */
 public interface Request extends RequestAbstractType {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "RequestType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =

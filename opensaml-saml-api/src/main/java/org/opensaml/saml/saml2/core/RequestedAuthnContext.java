@@ -29,27 +29,29 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core RequestedAuthnContext.
  */
 public interface RequestedAuthnContext extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAuthnContext";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAuthnContext";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "RequestedAuthnContextType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestedAuthnContextType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** SessionIndex attribute name. */
-    @Nonnull public static final String COMPARISON_ATTRIB_NAME = "Comparison";
+    @Nonnull @NotEmpty public static final String COMPARISON_ATTRIB_NAME = "Comparison";
 
     /**
      * Gets the Comparison attribute value of the requested authn context.

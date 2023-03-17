@@ -24,13 +24,15 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameIDType;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Protocol Third-party extension RespondTo.
  */
 public interface RespondTo extends NameIDType, SAMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RespondTo";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RespondTo";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =

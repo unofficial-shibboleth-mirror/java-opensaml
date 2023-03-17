@@ -24,13 +24,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for element having a <code>@soap12:relay</code> attribute.
  */
 public interface RelayBearing {
     
     /** The soap12:@relay attribute local name. */
-    @Nonnull public static final String SOAP12_RELAY_ATTR_LOCAL_NAME = "relay";
+    @Nonnull @NotEmpty public static final String SOAP12_RELAY_ATTR_LOCAL_NAME = "relay";
 
     /** The soap12:@relay qualified attribute name. */
     @Nonnull public static final QName SOAP12_RELAY_ATTR_NAME =

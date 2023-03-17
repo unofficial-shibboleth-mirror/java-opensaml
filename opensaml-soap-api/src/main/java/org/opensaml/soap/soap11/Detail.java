@@ -25,19 +25,21 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.soap.common.SOAPObject;
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SOAP 1.1 Detail.
  */
 public interface Detail extends SOAPObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "detail";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "detail";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(DEFAULT_ELEMENT_LOCAL_NAME);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "detail"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "detail"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

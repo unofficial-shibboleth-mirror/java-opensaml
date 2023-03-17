@@ -37,7 +37,7 @@ public interface X509IssuerSerial extends XMLObject {
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "X509IssuerSerialType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "X509IssuerSerialType";
 
     /** QName of the XSI type. */
     @Nonnull @NotEmpty public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,

@@ -23,20 +23,22 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * This interface defines how the object representing a SAML1 <code> Statement </code> element behaves. 
  */
 public interface Statement extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Statement";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Statement";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "StatementAbstractType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "StatementAbstractType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =

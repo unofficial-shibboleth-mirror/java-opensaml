@@ -24,6 +24,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.LocalizedName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * DisplayName.
  *
@@ -37,7 +39,7 @@ import org.opensaml.saml.saml2.metadata.LocalizedName;
 public interface Description extends LocalizedName, SAMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Description";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Description";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDUI_NS, 

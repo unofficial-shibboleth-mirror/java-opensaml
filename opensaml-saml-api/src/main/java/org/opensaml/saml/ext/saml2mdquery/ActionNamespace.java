@@ -24,13 +24,15 @@ import org.opensaml.core.xml.schema.XSURI;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata extension ActionNamespace.
  */
 public interface ActionNamespace extends XSURI, SAMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ActionNamespace";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ActionNamespace";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =

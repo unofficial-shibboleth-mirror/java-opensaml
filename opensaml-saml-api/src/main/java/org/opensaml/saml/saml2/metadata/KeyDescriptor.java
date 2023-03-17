@@ -27,27 +27,29 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata KeyDescriptor.
  */
 public interface KeyDescriptor extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyDescriptor";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyDescriptor";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "KeyDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "use" attribute's local name. */
-    @Nonnull public static final String USE_ATTRIB_NAME = "use";
+    @Nonnull @NotEmpty public static final String USE_ATTRIB_NAME = "use";
 
     /**
      * Gets the use of this key.

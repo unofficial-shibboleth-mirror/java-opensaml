@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for element having a <code>@soap11:actor</code> attribute.
  */
@@ -36,7 +38,7 @@ public interface ActorBearing {
         new QName(SOAPConstants.SOAP11_NS, SOAP11_ACTOR_ATTR_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
     /** The specification-defined value 'http://schemas.xmlsoap.org/soap/actor/next'. */
-    @Nonnull public static final String SOAP11_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
+    @Nonnull @NotEmpty public static final String SOAP11_ACTOR_NEXT = "http://schemas.xmlsoap.org/soap/actor/next";
     
     /**
      * Get the attribute value.

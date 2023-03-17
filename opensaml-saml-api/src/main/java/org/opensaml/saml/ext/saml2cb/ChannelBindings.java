@@ -30,6 +30,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 
 /**
  * SAML 2.0 Channel Bindings Extensions ChannelBinding element.
@@ -37,21 +39,21 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public interface ChannelBindings extends XSBase64Binary, MustUnderstandBearing, ActorBearing, SAMLObject {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ChannelBindings";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ChannelBindings";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20CB_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20CB_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "ChannelBindingsType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ChannelBindingsType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20CB_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20CB_PREFIX);
 
     /** Type attribute name. */
-    @Nonnull public static final String TYPE_ATTRIB_NAME = "Type";
+    @Nonnull @NotEmpty public static final String TYPE_ATTRIB_NAME = "Type";
 
     /**
      * Get the Type attribute value.

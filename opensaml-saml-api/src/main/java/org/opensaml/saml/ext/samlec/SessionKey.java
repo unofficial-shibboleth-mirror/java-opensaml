@@ -28,6 +28,8 @@ import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 
 /**
  * SAML-EC GSS-API SessionKey element.
@@ -35,21 +37,21 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 public interface SessionKey extends SAMLObject, MustUnderstandBearing, ActorBearing {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SessionKey";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SessionKey";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "SessionKeyType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SessionKeyType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Algorithm attribute name. */
-    @Nonnull public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /**
      * Get the session key derivation algorithm.

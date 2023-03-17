@@ -28,6 +28,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata EntityDescriptor.
  */
@@ -35,14 +37,14 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
         AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityDescriptor";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityDescriptor";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "EntityDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EntityDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
@@ -52,10 +54,10 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
     @Nonnull public static final QName ELEMENT_QNAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME);
 
     /** "ID" attribute name. */
-    @Nonnull public static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "ID";
 
     /** "Name" attribute name. */
-    @Nonnull public static final String ENTITY_ID_ATTRIB_NAME = "entityID";
+    @Nonnull @NotEmpty public static final String ENTITY_ID_ATTRIB_NAME = "entityID";
 
     /**
      * Gets the entity ID for this entity descriptor.

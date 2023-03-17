@@ -29,6 +29,8 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata RoleDescriptor.
  */
@@ -36,27 +38,27 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
         AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RoleDescriptor";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RoleDescriptor";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "RoleDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RoleDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "ID" attribute's local name. */
-    @Nonnull public static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "ID";
 
     /** "protocolEnumeration" attribute's local name. */
-    @Nonnull public static final String PROTOCOL_ENUMERATION_ATTRIB_NAME = "protocolSupportEnumeration";
+    @Nonnull @NotEmpty public static final String PROTOCOL_ENUMERATION_ATTRIB_NAME = "protocolSupportEnumeration";
 
     /** "errorURL" attribute's local name. */
-    @Nonnull public static final String ERROR_URL_ATTRIB_NAME = "errorURL";
+    @Nonnull @NotEmpty public static final String ERROR_URL_ATTRIB_NAME = "errorURL";
 
     /**
      * Gets the ID of this role descriptor.

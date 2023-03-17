@@ -27,6 +27,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Representation of the <code>&lt;mdrpi:PublicationInfo&gt;</code> element.
  * 
@@ -37,14 +39,14 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface PublicationInfo extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicationInfo";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicationInfo";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "PublicationInfoType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PublicationInfoType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =

@@ -25,6 +25,8 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.soap.common.SOAPObject;
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SOAP 1.1 Header.
  */
@@ -38,7 +40,7 @@ public interface Header extends SOAPObject, ElementExtensibleXMLObject, Attribut
         new QName(SOAPConstants.SOAP11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "Header"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "Header"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

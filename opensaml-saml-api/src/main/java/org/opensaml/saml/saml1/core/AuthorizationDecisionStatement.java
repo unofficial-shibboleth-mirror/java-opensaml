@@ -25,6 +25,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * This interface defines how the object representing a SAML1 <code> AuthorizationDecisionStatement </code> element
  * behaves.
@@ -32,24 +34,24 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthorizationDecisionStatement extends SAMLObject, SubjectStatement {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionStatement";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionStatement";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthorizationDecisionStatementType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthorizationDecisionStatementType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for Resource attribute. */
-    @Nonnull public static final String RESOURCE_ATTRIB_NAME = "Resource";
+    @Nonnull @NotEmpty public static final String RESOURCE_ATTRIB_NAME = "Resource";
     
     /** Name for Decision attribute. */
-    @Nonnull public static final String DECISION_ATTRIB_NAME = "Decision";
+    @Nonnull @NotEmpty public static final String DECISION_ATTRIB_NAME = "Decision";
     
     /**
      * Get the resource.

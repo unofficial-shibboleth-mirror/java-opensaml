@@ -24,13 +24,15 @@ import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core AuthnContextDecl.
  */
 public interface AuthnContextDecl extends SAMLObject, XSAny {
 
     /** Local Name of AuthnContextDecl. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextDecl";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextDecl";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 

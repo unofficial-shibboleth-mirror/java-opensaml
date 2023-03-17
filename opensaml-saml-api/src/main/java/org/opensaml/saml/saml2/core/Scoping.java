@@ -29,27 +29,29 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core Scoping.
  */
 public interface Scoping extends SAMLObject {
 
     /** Element Local Name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Scoping";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Scoping";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "ScopingType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ScopingType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** ProxyCount attribute name. */
-    @Nonnull public static final String PROXY_COUNT_ATTRIB_NAME = "ProxyCount";
+    @Nonnull @NotEmpty public static final String PROXY_COUNT_ATTRIB_NAME = "ProxyCount";
 
     /**
      * Gets the ProxyCount attrib value.

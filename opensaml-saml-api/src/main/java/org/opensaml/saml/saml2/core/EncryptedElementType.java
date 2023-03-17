@@ -27,13 +27,15 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core EncryptedElementType.
  */
 public interface EncryptedElementType extends SAMLObject {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "EncryptedElementType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptedElementType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

@@ -64,21 +64,23 @@ import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     
     @Nonnull public static final Duration CLOCK_SKEW = Duration.ofMinutes(5);
     
-    @Nonnull public static final String PRINCIPAL_NAME = "gollum";
+    @Nonnull @NotEmpty public static final String PRINCIPAL_NAME = "gollum";
     
-    @Nonnull public static final String ISSUER = "https://idp.example.org";
+    @Nonnull @NotEmpty public static final String ISSUER = "https://idp.example.org";
     
-    @Nonnull public static final String SUBJECT_CONFIRMATION_RECIPIENT = "https://sp.example.com";
+    @Nonnull @NotEmpty public static final String SUBJECT_CONFIRMATION_RECIPIENT = "https://sp.example.com";
     
-    @Nonnull public static final String SUBJECT_CONFIRMATION_ADDRESS = "10.1.2.3";
+    @Nonnull @NotEmpty public static final String SUBJECT_CONFIRMATION_ADDRESS = "10.1.2.3";
     
-    @Nonnull public static final String SUBJECT_CONFIRMATION_IN_RESPONSE_TO = "id-123";
+    @Nonnull @NotEmpty public static final String SUBJECT_CONFIRMATION_IN_RESPONSE_TO = "id-123";
     
-    @Nonnull public static final String AUTHN_STATEMENT_ADDRESS = "10.1.2.3";
+    @Nonnull @NotEmpty public static final String AUTHN_STATEMENT_ADDRESS = "10.1.2.3";
     
     
     private Assertion assertion;

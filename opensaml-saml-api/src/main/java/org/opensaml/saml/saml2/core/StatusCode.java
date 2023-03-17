@@ -27,97 +27,99 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core StatusCode.
  */
 public interface StatusCode extends SAMLObject {
 
     /** Local Name of StatusCode. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusCode";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusCode";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "StatusCodeType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "StatusCodeType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local Name of the Value attribute. */
-    @Nonnull public static final String VALUE_ATTRIB_NAME = "Value";
+    @Nonnull @NotEmpty public static final String VALUE_ATTRIB_NAME = "Value";
 
     /** URI for Success status code. */
-    @Nonnull public static final String SUCCESS = "urn:oasis:names:tc:SAML:2.0:status:Success";
+    @Nonnull @NotEmpty public static final String SUCCESS = "urn:oasis:names:tc:SAML:2.0:status:Success";
 
     /** URI for Requester status code. */
-    @Nonnull public static final String REQUESTER = "urn:oasis:names:tc:SAML:2.0:status:Requester";
+    @Nonnull @NotEmpty public static final String REQUESTER = "urn:oasis:names:tc:SAML:2.0:status:Requester";
 
     /** URI for Responder status code. */
-    @Nonnull public static final String RESPONDER = "urn:oasis:names:tc:SAML:2.0:status:Responder";
+    @Nonnull @NotEmpty public static final String RESPONDER = "urn:oasis:names:tc:SAML:2.0:status:Responder";
 
     /** URI for VersionMismatch status code. */
-    @Nonnull public static final String VERSION_MISMATCH = "urn:oasis:names:tc:SAML:2.0:status:VersionMismatch";
+    @Nonnull @NotEmpty public static final String VERSION_MISMATCH = "urn:oasis:names:tc:SAML:2.0:status:VersionMismatch";
 
     /** URI for AuthnFailed status code. */
-    @Nonnull public static final String AUTHN_FAILED = "urn:oasis:names:tc:SAML:2.0:status:AuthnFailed";
+    @Nonnull @NotEmpty public static final String AUTHN_FAILED = "urn:oasis:names:tc:SAML:2.0:status:AuthnFailed";
 
     /** URI for InvalidAttrNameOrValue status code. */
-    @Nonnull public static final String INVALID_ATTR_NAME_OR_VALUE = "urn:oasis:names:tc:SAML:2.0:status:InvalidAttrNameOrValue";
+    @Nonnull @NotEmpty public static final String INVALID_ATTR_NAME_OR_VALUE = "urn:oasis:names:tc:SAML:2.0:status:InvalidAttrNameOrValue";
 
     /** URI for InvalidNameIDPolicy status code. */
-    @Nonnull public static final String INVALID_NAMEID_POLICY = "urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy";
+    @Nonnull @NotEmpty public static final String INVALID_NAMEID_POLICY = "urn:oasis:names:tc:SAML:2.0:status:InvalidNameIDPolicy";
 
     /** URI for NoAuthnContext status code. */
-    @Nonnull public static final String NO_AUTHN_CONTEXT = "urn:oasis:names:tc:SAML:2.0:status:NoAuthnContext";
+    @Nonnull @NotEmpty public static final String NO_AUTHN_CONTEXT = "urn:oasis:names:tc:SAML:2.0:status:NoAuthnContext";
 
     /** URI for NoAvailableIDP status code. */
-    @Nonnull public static final String NO_AVAILABLE_IDP = "urn:oasis:names:tc:SAML:2.0:status:NoAvailableIDP";
+    @Nonnull @NotEmpty public static final String NO_AVAILABLE_IDP = "urn:oasis:names:tc:SAML:2.0:status:NoAvailableIDP";
 
     /** URI for NoPassive status code. */
-    @Nonnull public static final String NO_PASSIVE = "urn:oasis:names:tc:SAML:2.0:status:NoPassive";
+    @Nonnull @NotEmpty public static final String NO_PASSIVE = "urn:oasis:names:tc:SAML:2.0:status:NoPassive";
 
     /** URI for NoSupportedIDP status code. */
-    @Nonnull public static final String NO_SUPPORTED_IDP = "urn:oasis:names:tc:SAML:2.0:status:NoSupportedIDP";
+    @Nonnull @NotEmpty public static final String NO_SUPPORTED_IDP = "urn:oasis:names:tc:SAML:2.0:status:NoSupportedIDP";
 
     /** URI for PartialLogout status code. */
-    @Nonnull public static final String PARTIAL_LOGOUT = "urn:oasis:names:tc:SAML:2.0:status:PartialLogout";
+    @Nonnull @NotEmpty public static final String PARTIAL_LOGOUT = "urn:oasis:names:tc:SAML:2.0:status:PartialLogout";
 
     /** URI for ProxyCountExceeded status code. */
-    @Nonnull public static final String PROXY_COUNT_EXCEEDED = "urn:oasis:names:tc:SAML:2.0:status:ProxyCountExceeded";
+    @Nonnull @NotEmpty public static final String PROXY_COUNT_EXCEEDED = "urn:oasis:names:tc:SAML:2.0:status:ProxyCountExceeded";
 
     /** URI for RequestDenied status code. */
-    @Nonnull public static final String REQUEST_DENIED = "urn:oasis:names:tc:SAML:2.0:status:RequestDenied";
+    @Nonnull @NotEmpty public static final String REQUEST_DENIED = "urn:oasis:names:tc:SAML:2.0:status:RequestDenied";
 
     /** URI for RequestUnsupported status code. */
-    @Nonnull public static final String REQUEST_UNSUPPORTED = "urn:oasis:names:tc:SAML:2.0:status:RequestUnsupported";
+    @Nonnull @NotEmpty public static final String REQUEST_UNSUPPORTED = "urn:oasis:names:tc:SAML:2.0:status:RequestUnsupported";
 
     /** URI for RequestVersionDeprecated status code. */
-    @Nonnull public static final String REQUEST_VERSION_DEPRECATED =
+    @Nonnull @NotEmpty public static final String REQUEST_VERSION_DEPRECATED =
             "urn:oasis:names:tc:SAML:2.0:status:RequestVersionDeprecated";
 
     /** URI for RequestVersionTooHigh status code. */
-    @Nonnull public static final String REQUEST_VERSION_TOO_HIGH = "urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooHigh";
+    @Nonnull @NotEmpty public static final String REQUEST_VERSION_TOO_HIGH = "urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooHigh";
     
     /** URI for RequestVersionTooLow status code. */
-    @Nonnull public static final String REQUEST_VERSION_TOO_LOW = "urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooLow";
+    @Nonnull @NotEmpty public static final String REQUEST_VERSION_TOO_LOW = "urn:oasis:names:tc:SAML:2.0:status:RequestVersionTooLow";
 
     /** URI for ResourceNotRecognized status code. */
-    @Nonnull public static final String RESOURCE_NOT_RECOGNIZED = "urn:oasis:names:tc:SAML:2.0:status:ResourceNotRecognized";
+    @Nonnull @NotEmpty public static final String RESOURCE_NOT_RECOGNIZED = "urn:oasis:names:tc:SAML:2.0:status:ResourceNotRecognized";
 
     /** URI for TooManyResponses status code. */
-    @Nonnull public static final String TOO_MANY_RESPONSES = "urn:oasis:names:tc:SAML:2.0:status:TooManyResponses";
+    @Nonnull @NotEmpty public static final String TOO_MANY_RESPONSES = "urn:oasis:names:tc:SAML:2.0:status:TooManyResponses";
 
     /** URI for UnknownAttrProfile status code. */
-    @Nonnull public static final String UNKNOWN_ATTR_PROFILE = "urn:oasis:names:tc:SAML:2.0:status:UnknownAttrProfile";
+    @Nonnull @NotEmpty public static final String UNKNOWN_ATTR_PROFILE = "urn:oasis:names:tc:SAML:2.0:status:UnknownAttrProfile";
 
     /** URI for UnknownPrincipal status code. */
-    @Nonnull public static final String UNKNOWN_PRINCIPAL = "urn:oasis:names:tc:SAML:2.0:status:UnknownPrincipal";
+    @Nonnull @NotEmpty public static final String UNKNOWN_PRINCIPAL = "urn:oasis:names:tc:SAML:2.0:status:UnknownPrincipal";
 
     /** URI for UnsupportedBinding status code. */
-    @Nonnull public static final String UNSUPPORTED_BINDING = "urn:oasis:names:tc:SAML:2.0:status:UnsupportedBinding";
+    @Nonnull @NotEmpty public static final String UNSUPPORTED_BINDING = "urn:oasis:names:tc:SAML:2.0:status:UnsupportedBinding";
 
     /**
      * Gets the Status Code of this Status Code.

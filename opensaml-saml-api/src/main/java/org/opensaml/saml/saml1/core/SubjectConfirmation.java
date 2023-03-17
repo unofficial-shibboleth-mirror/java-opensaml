@@ -31,20 +31,22 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface to define how a SubjectConfirmation element behaves.
  */
 public interface SubjectConfirmation extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =

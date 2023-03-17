@@ -26,6 +26,8 @@ import org.opensaml.core.xml.LangBearing;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * DisplayName.
  *
@@ -39,14 +41,14 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Keywords extends SAMLObject, LangBearing  {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Keywords";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Keywords";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "KeywordsType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeywordsType";
            
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =

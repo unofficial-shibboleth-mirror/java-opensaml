@@ -23,13 +23,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata EncryptionMethod.
  */
 public interface EncryptionMethod extends org.opensaml.xmlsec.encryption.EncryptionMethod, SAMLObject {
     
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 

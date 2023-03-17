@@ -26,6 +26,8 @@ import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 
 /**
  * SAML 2.0 ECP SubjectConfirmation SOAP header.
@@ -33,21 +35,21 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public interface SubjectConfirmation extends SAMLObject, MustUnderstandBearing, ActorBearing {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20ECP_PREFIX);
 
     /** Method attribute name. */
-    @Nonnull public static final String METHOD_ATTRIB_NAME = "Method";
+    @Nonnull @NotEmpty public static final String METHOD_ATTRIB_NAME = "Method";
     
     /**
      * Get the method used to confirm this subject.

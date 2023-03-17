@@ -22,27 +22,29 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 AuthnQuery.
  */
 public interface AuthnQuery extends SubjectQuery {
     
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnQuery";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnQuery";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthnQueryType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthnQueryType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** SessionIndex attribute name. */
-    @Nonnull public static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
+    @Nonnull @NotEmpty public static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
     
     /**
      * Gets the SessionIndex of this request.

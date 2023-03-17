@@ -28,30 +28,32 @@ import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 ECP Request SOAP header.
  */
 public interface Request extends SAMLObject, MustUnderstandBearing, ActorBearing {
     
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "RequestType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** ProviderName attribute name. */
-    @Nonnull public static final String PROVIDER_NAME_ATTRIB_NAME = "ProviderName";
+    @Nonnull @NotEmpty public static final String PROVIDER_NAME_ATTRIB_NAME = "ProviderName";
 
     /** IsPassive attribute name. */
-    @Nonnull public static final String IS_PASSIVE_NAME_ATTRIB_NAME = "IsPassive";
+    @Nonnull @NotEmpty public static final String IS_PASSIVE_NAME_ATTRIB_NAME = "IsPassive";
     
     /**
      * Get the Issuer child elemet.

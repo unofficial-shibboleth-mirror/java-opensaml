@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.xml.XMLConstants;
 
 /**
@@ -30,7 +31,7 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface IdBearing {
 
     /** The <code>id</code> attribute local name. */
-    @Nonnull public static final String XML_ID_ATTR_LOCAL_NAME = "id";
+    @Nonnull @NotEmpty public static final String XML_ID_ATTR_LOCAL_NAME = "id";
 
     /** The <code>xml:id</code> qualified attribute name. */
     @Nonnull public static final QName XML_ID_ATTR_NAME =

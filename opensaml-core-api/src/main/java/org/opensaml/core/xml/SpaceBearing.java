@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.xml.XMLConstants;
 
 /**
@@ -62,7 +63,7 @@ public interface SpaceBearing {
     }
 
     /** The <code>space</code> attribute local name. */
-    @Nonnull public static final String XML_SPACE_ATTR_LOCAL_NAME = "space";
+    @Nonnull @NotEmpty public static final String XML_SPACE_ATTR_LOCAL_NAME = "space";
 
     /** The <code>xml:space</code> qualified attribute name. */
     @Nonnull public static final QName XML_SPACE_ATTR_NAME =

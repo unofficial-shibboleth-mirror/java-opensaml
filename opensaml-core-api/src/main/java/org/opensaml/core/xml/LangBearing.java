@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.xml.XMLConstants;
 
 /**
@@ -30,7 +31,7 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface LangBearing {
 
     /** The <code>lang</code> attribute local name. */
-    @Nonnull public static final String XML_LANG_ATTR_LOCAL_NAME = "lang";
+    @Nonnull @NotEmpty public static final String XML_LANG_ATTR_LOCAL_NAME = "lang";
 
     /** The <code>xml:lang</code> qualified attribute name. */
     @Nonnull public static final QName XML_LANG_ATTR_NAME =

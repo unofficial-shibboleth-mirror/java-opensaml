@@ -27,20 +27,22 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Metadata extension QueryDescriptorType.
  */
 public interface QueryDescriptorType extends RoleDescriptor {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "QueryDescriptorType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "QueryDescriptorType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MDQUERY_PREFIX);
     
     /** "WantAssertionSigned" attribute's local name. */
-    @Nonnull public static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
+    @Nonnull @NotEmpty public static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
     
     /**
      * Gets whether assertions to this endpoint should be signed.

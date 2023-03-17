@@ -23,13 +23,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.soap.util.SOAPConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for element having a <code>@soap12:encodingStyle</code> attribute.
  */
 public interface EncodingStyleBearing {
     
     /** The soap12:@encodingStyle attribute local name. */
-    @Nonnull public static final String SOAP12_ENCODING_STYLE_ATTR_LOCAL_NAME = "encodingStyle";
+    @Nonnull @NotEmpty public static final String SOAP12_ENCODING_STYLE_ATTR_LOCAL_NAME = "encodingStyle";
 
     /** The soap12:@encodingStyle qualified attribute name. */
     @Nonnull public static final QName SOAP12_ENCODING_STYLE_ATTR_NAME =

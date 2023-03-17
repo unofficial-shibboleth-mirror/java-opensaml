@@ -23,45 +23,47 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core AuthnRequest.
  */
 public interface AuthnRequest extends RequestAbstractType {
 
     /** Element local name. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnRequest";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnRequest";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthnRequestType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthnRequestType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** ForceAuthn attribute name. */
-    @Nonnull public static final String FORCE_AUTHN_ATTRIB_NAME = "ForceAuthn";
+    @Nonnull @NotEmpty public static final String FORCE_AUTHN_ATTRIB_NAME = "ForceAuthn";
 
     /** IsPassive attribute name. */
-    @Nonnull public static final String IS_PASSIVE_ATTRIB_NAME = "IsPassive";
+    @Nonnull @NotEmpty public static final String IS_PASSIVE_ATTRIB_NAME = "IsPassive";
 
     /** ProtocolBinding attribute name. */
-    @Nonnull public static final String PROTOCOL_BINDING_ATTRIB_NAME = "ProtocolBinding";
+    @Nonnull @NotEmpty public static final String PROTOCOL_BINDING_ATTRIB_NAME = "ProtocolBinding";
 
     /** AssertionConsumerServiceIndex attribute name. */
-    @Nonnull public static final String ASSERTION_CONSUMER_SERVICE_INDEX_ATTRIB_NAME = "AssertionConsumerServiceIndex";
+    @Nonnull @NotEmpty public static final String ASSERTION_CONSUMER_SERVICE_INDEX_ATTRIB_NAME = "AssertionConsumerServiceIndex";
 
     /** AssertionConsumerServiceURL attribute name. */
-    @Nonnull public static final String ASSERTION_CONSUMER_SERVICE_URL_ATTRIB_NAME = "AssertionConsumerServiceURL";
+    @Nonnull @NotEmpty public static final String ASSERTION_CONSUMER_SERVICE_URL_ATTRIB_NAME = "AssertionConsumerServiceURL";
 
     /** AttributeConsumingServiceIndex attribute name. */
-    @Nonnull public static final String ATTRIBUTE_CONSUMING_SERVICE_INDEX_ATTRIB_NAME = "AttributeConsumingServiceIndex";
+    @Nonnull @NotEmpty public static final String ATTRIBUTE_CONSUMING_SERVICE_INDEX_ATTRIB_NAME = "AttributeConsumingServiceIndex";
 
     /** ProviderName attribute name. */
-    @Nonnull public static final String PROVIDER_NAME_ATTRIB_NAME = "ProviderName";
+    @Nonnull @NotEmpty public static final String PROVIDER_NAME_ATTRIB_NAME = "ProviderName";
 
     /**
      * Gets whether the IdP should force the user to reauthenticate.

@@ -25,13 +25,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * SAML 2.0 Core KeyInfoConfirmationDataType.
  */
 public interface KeyInfoConfirmationDataType extends SubjectConfirmationData {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "KeyInfoConfirmationDataType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyInfoConfirmationDataType";
 
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,

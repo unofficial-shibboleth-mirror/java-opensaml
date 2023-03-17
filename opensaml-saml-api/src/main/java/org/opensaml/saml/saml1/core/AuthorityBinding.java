@@ -27,33 +27,35 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface to define how a <code>AuthorityBinding</code> element behaves.
  */
 public interface AuthorityBinding extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorityBinding";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorityBinding";
     
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AuthorityBindingType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthorityBindingType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Name for the AuthorityKind attribute.  */
-    @Nonnull public static final String AUTHORITYKIND_ATTRIB_NAME = "AuthorityKind";
+    @Nonnull @NotEmpty public static final String AUTHORITYKIND_ATTRIB_NAME = "AuthorityKind";
     
     /** Name for the Location attribute.  */
-    @Nonnull public static final String LOCATION_ATTRIB_NAME = "Location";
+    @Nonnull @NotEmpty public static final String LOCATION_ATTRIB_NAME = "Location";
 
     /** Name for the Binding attribute.  */
-    @Nonnull public static final String BINDING_ATTRIB_NAME = "Binding";
+    @Nonnull @NotEmpty public static final String BINDING_ATTRIB_NAME = "Binding";
 
     /**
      * Get the type of authority described.

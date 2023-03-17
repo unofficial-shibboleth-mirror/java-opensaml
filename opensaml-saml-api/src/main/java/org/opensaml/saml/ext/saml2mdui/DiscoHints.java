@@ -26,6 +26,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * See IdP Discovery and Login UI Metadata Extension Profile.
  * 
@@ -36,14 +38,14 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface DiscoHints extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoHints";
+    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoHints";
 
     /** Default element name. */
     @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "DiscoHintsType";
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DiscoHintsType";
            
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME =
