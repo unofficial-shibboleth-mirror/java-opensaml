@@ -26,10 +26,10 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A filter that allows the composition of {@link MetadataFilter}s. Filters will be executed on the given metadata

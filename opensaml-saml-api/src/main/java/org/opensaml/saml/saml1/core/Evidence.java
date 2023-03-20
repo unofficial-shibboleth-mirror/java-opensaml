@@ -1,5 +1,5 @@
 /*
-O * Licensed to the University Corporation for Advanced Internet Development,
+ * Licensed to the University Corporation for Advanced Internet Development,
  * Inc. (UCAID) under one or more contributor license agreements.  See the
  * NOTICE file distributed with this work for additional information regarding
  * copyright ownership. The UCAID licenses this file to You under the Apache
@@ -15,9 +15,6 @@ O * Licensed to the University Corporation for Advanced Internet Development,
  * limitations under the License.
  */
 
-/**
- * 
- */
 package org.opensaml.saml.saml1.core;
 
 import java.util.List;
@@ -54,20 +51,20 @@ public interface Evidence extends SAMLObject {
      * 
      * @return list of all {@link Evidentiary} elements
      */
-    public List<Evidentiary> getEvidence();
+    @Nonnull public List<Evidentiary> getEvidence();
 
     /**
      * Get the list of assertion ID references.
      * 
      * @return list of assertion ID references
      */
-    public List<AssertionIDReference> getAssertionIDReferences();
+    @Nonnull public List<AssertionIDReference> getAssertionIDReferences();
     
     /**
      * Get the list of Assertions.
      * 
      * @return list of assertions
      */
-    public List<Assertion> getAssertions();
+    @Nonnull public List<Assertion> getAssertions();
     
 }

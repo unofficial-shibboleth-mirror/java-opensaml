@@ -24,9 +24,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Lists;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class SAMLConfigurationTest {
     
     @Test

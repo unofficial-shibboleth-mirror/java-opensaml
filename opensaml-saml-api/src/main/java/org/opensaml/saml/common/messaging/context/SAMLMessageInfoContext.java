@@ -100,25 +100,17 @@ public final class SAMLMessageInfoContext extends BaseContext {
     @Nullable protected String resolveMessageId() {
         final SAMLObject samlMessage = resolveSAMLMessage();
         //SAML 2 Request
-        if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
-            final org.opensaml.saml.saml2.core.RequestAbstractType request =  
-                    (org.opensaml.saml.saml2.core.RequestAbstractType) samlMessage;
-            return request.getID();
+        if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType msg) {
+            return msg.getID();
         //SAML 2 Response
-        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
-            final org.opensaml.saml.saml2.core.StatusResponseType response = 
-                    (org.opensaml.saml.saml2.core.StatusResponseType) samlMessage;
-            return response.getID();
+        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType msg) {
+            return msg.getID();
         //SAML 1 Response
-        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType) {
-            final org.opensaml.saml.saml1.core.ResponseAbstractType response = 
-                    (org.opensaml.saml.saml1.core.ResponseAbstractType) samlMessage;
-            return response.getID();
+        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType msg) {
+            return msg.getID();
         //SAML 1 Request
-        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.RequestAbstractType) {
-            final org.opensaml.saml.saml1.core.RequestAbstractType request = 
-                    (org.opensaml.saml.saml1.core.RequestAbstractType) samlMessage;
-            return request.getID();
+        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.RequestAbstractType msg) {
+            return msg.getID();
         }
         return null;
     }
@@ -132,25 +124,17 @@ public final class SAMLMessageInfoContext extends BaseContext {
     @Nullable protected Instant resolveIssueInstant() {
         final SAMLObject samlMessage = resolveSAMLMessage();
         //SAML 2 Request
-        if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
-            final org.opensaml.saml.saml2.core.RequestAbstractType request =  
-                    (org.opensaml.saml.saml2.core.RequestAbstractType) samlMessage;
-            return request.getIssueInstant();
+        if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType msg) {
+            return msg.getIssueInstant();
         //SAML 2 Response
-        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
-            final org.opensaml.saml.saml2.core.StatusResponseType response = 
-                    (org.opensaml.saml.saml2.core.StatusResponseType) samlMessage;
-            return response.getIssueInstant();
+        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType msg) {
+            return msg.getIssueInstant();
         //SAML 1 Response
-        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType) {
-            final org.opensaml.saml.saml1.core.ResponseAbstractType response = 
-                    (org.opensaml.saml.saml1.core.ResponseAbstractType) samlMessage;
-            return response.getIssueInstant();
+        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType msg) {
+            return msg.getIssueInstant();
         //SAML 1 Request
-        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.RequestAbstractType) {
-            final org.opensaml.saml.saml1.core.RequestAbstractType request = 
-                    (org.opensaml.saml.saml1.core.RequestAbstractType) samlMessage;
-            return request.getIssueInstant();
+        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.RequestAbstractType msg) {
+            return msg.getIssueInstant();
         }
         
         return null;
@@ -162,10 +146,9 @@ public final class SAMLMessageInfoContext extends BaseContext {
      * @return the SAML message, or null if it can not be resolved
      */
     @Nullable protected SAMLObject resolveSAMLMessage() {
-        if (getParent() instanceof MessageContext) {
-            final MessageContext parent = (MessageContext) getParent();
-            if (parent.getMessage() instanceof SAMLObject) {
-                return (SAMLObject) parent.getMessage();
+        if (getParent() instanceof MessageContext p) {
+            if (p.getMessage() instanceof SAMLObject msg) {
+                return msg;
             } 
         }
         return null;

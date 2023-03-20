@@ -22,6 +22,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -52,13 +53,13 @@ public interface SubjectQuery extends RequestAbstractType {
      * 
      * @return the Subject of this request
      */
-    public Subject getSubject();
+    @Nullable public Subject getSubject();
 
     /**
      * Sets the Subject of this request.
      * 
      * @param newSubject the Subject of this request
      */
-    public void setSubject(Subject newSubject);
+    public void setSubject(@Nullable Subject newSubject);
 
 }

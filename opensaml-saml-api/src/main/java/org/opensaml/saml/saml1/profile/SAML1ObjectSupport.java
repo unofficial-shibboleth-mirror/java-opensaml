@@ -23,16 +23,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.saml.saml1.core.NameIdentifier;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A helper class for working with SAMLObjects.
  */
 public final class SAML1ObjectSupport {
-    
-    /** Logger. */
-    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(SAML1ObjectSupport.class);
     
     /** Constructor. */
     private SAML1ObjectSupport() {

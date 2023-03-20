@@ -20,6 +20,7 @@ package org.opensaml.saml.ext.samlec;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -40,8 +41,8 @@ public interface SessionKey extends SAMLObject, MustUnderstandBearing, ActorBear
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SessionKey";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAMLEC_GSS_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SessionKeyType";
@@ -58,33 +59,33 @@ public interface SessionKey extends SAMLObject, MustUnderstandBearing, ActorBear
      * 
      * @return the algorithm used to derive the session key
      */
-    public String getAlgorithm();
+    @Nullable public String getAlgorithm();
 
     /**
      * Set the session key derivation algorithm.
      * 
      * @param newAlgorithm the algorithm used to derive the session key
      */
-    public void setAlgorithm(String newAlgorithm);
+    public void setAlgorithm(@Nullable final String newAlgorithm);
     
     /**
      * Get the session key encryption typed.
      * 
      * @return the encryption types of the session key
      */
-    public List<EncType> getEncTypes();
+    @Nonnull public List<EncType> getEncTypes();
 
     /**
      * Get the KeyInfo object that describes the session key.
      * 
      * @return the KeyInfo object that describes the session key
      */
-    public KeyInfo getKeyInfo();
+    @Nullable public KeyInfo getKeyInfo();
 
     /**
      * Set the KeyInfo object that describes the session key.
      * 
      * @param newKeyInfo the KeyInfo object that describes the session key
      */
-    public void setKeyInfo(KeyInfo newKeyInfo);
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
 }

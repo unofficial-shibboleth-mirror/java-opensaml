@@ -31,17 +31,12 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /** Test for {@link AbstractSAML2NameIDGenerator}. */
+@SuppressWarnings("javadoc")
 public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
 
     @Nonnull private static final String NAME_QUALIFIER = "https://idp.example.org";
 
     @Nonnull private static final String SP_NAME_QUALIFIER = "https://sp.example.org";
-    
-    @Test(expectedExceptions = ComponentInitializationException.class)
-    public void testNoFormat() throws ComponentInitializationException {
-        final MockSAML2NameIDGenerator mock = new MockSAML2NameIDGenerator();
-        mock.initialize();
-    }
     
     @Test
     public void testFull() throws ComponentInitializationException, SAMLException {

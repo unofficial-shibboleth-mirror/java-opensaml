@@ -61,34 +61,34 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
         OutboundMessageType extends SAMLObject> {
     
     /** The outbound message. **/
-    private OutboundMessageType outboundMessage;
+    @Nullable private OutboundMessageType outboundMessage;
     
     /** The SAML protocol in use. */
-    private String protocol;
+    @Nullable private String protocol;
     
     /** The SAML self entityID. **/
-    private String selfEntityID;
+    @Nullable private String selfEntityID;
     
     /** The SAML peer entityID. **/
-    private String peerEntityID;
+    @Nullable private String peerEntityID;
     
     /** The SAML peer entity role. **/
-    private QName peerEntityRole;
+    @Nullable private QName peerEntityRole;
     
     /** The SAML peer EntityDescriptor. **/
-    private EntityDescriptor peerEntityDescriptor;
+    @Nullable private EntityDescriptor peerEntityDescriptor;
     
     /** The SAML peer RoleDescriptor. **/
-    private RoleDescriptor peerRoleDescriptor;
+    @Nullable private RoleDescriptor peerRoleDescriptor;
     
     /** TLS CriteriaSet strategy. */
-    private Function<MessageContext,CriteriaSet> tlsCriteriaSetStrategy;
+    @Nullable private Function<MessageContext,CriteriaSet> tlsCriteriaSetStrategy;
     
     /** SOAP client message pipeline name. */
-    private String pipelineName;
+    @Nullable private String pipelineName;
     
     /** SOAP client security configuration profile ID. */
-    private String securityConfigurationProfileId;
+    @Nullable private String securityConfigurationProfileId;
     
     /**
      * Get the outbound message.
@@ -161,8 +161,8 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
     @Nullable public String getPeerEntityID() {
         if (peerEntityID != null) {
             return peerEntityID;
-        } else if (getPeerEntityDescriptor() != null) {
-            return getPeerEntityDescriptor().getEntityID();
+        } else if (getPeerEntityDescriptor() instanceof EntityDescriptor ed) {
+            return ed.getEntityID();
         } else {
             return null;
         }
@@ -188,11 +188,11 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
     @Nullable public QName getPeerEntityRole() {
         if (peerEntityRole != null) {
             return peerEntityRole;
-        } else if (getPeerRoleDescriptor() != null) {
-            if (getPeerRoleDescriptor().getSchemaType() != null) {
-                return getPeerRoleDescriptor().getSchemaType();
+        } else if (getPeerRoleDescriptor() instanceof RoleDescriptor rd) {
+            if (rd.getSchemaType() != null) {
+                return rd.getSchemaType();
             }
-            return getPeerRoleDescriptor().getElementQName();
+            return rd.getElementQName();
         } else {
              return null;
         }
@@ -218,10 +218,10 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
     @Nullable public EntityDescriptor getPeerEntityDescriptor() {
         if (peerEntityDescriptor != null) {
             return peerEntityDescriptor;
-        } else if (getPeerRoleDescriptor() != null) {
-            final XMLObject roleParent = getPeerRoleDescriptor().getParent();
-            if (roleParent instanceof EntityDescriptor) {
-                return (EntityDescriptor) roleParent;
+        } else if (getPeerRoleDescriptor() instanceof RoleDescriptor rd) {
+            final XMLObject roleParent = rd.getParent();
+            if (roleParent instanceof EntityDescriptor ed) {
+                return ed;
             }
         } 
         return null;
@@ -423,21 +423,24 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
             
             final SAMLProtocolContext protocolContext = parent.getSubcontext(SAMLProtocolContext.class);
             if (protocolContext != null && protocolContext.getProtocol() != null) {
-                criteria.add(new ProtocolCriterion(protocolContext.getProtocol()));
+                final String protocol = protocolContext.getProtocol();
+                if (protocol != null) {
+                    criteria.add(new ProtocolCriterion(protocol));
+                }
             }
             
             final SAMLPeerEntityContext peerContext = parent.getSubcontext(SAMLPeerEntityContext.class);
             if (peerContext != null) {
-                if (peerContext.getEntityId() != null) {
-                    criteria.add(new EntityIdCriterion(peerContext.getEntityId()));
+                if (peerContext.getEntityId() instanceof String s) {
+                    criteria.add(new EntityIdCriterion(s));
                 }
-                if (peerContext.getRole() != null) {
-                    criteria.add(new EntityRoleCriterion(peerContext.getRole()));
+                if (peerContext.getRole() instanceof QName role) {
+                    criteria.add(new EntityRoleCriterion(role));
                 }
                 
                 final SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class);
-                if (metadataContext != null && metadataContext.getRoleDescriptor() != null) {
-                    criteria.add(new RoleDescriptorCriterion(metadataContext.getRoleDescriptor()));
+                if (metadataContext != null && metadataContext.getRoleDescriptor() instanceof RoleDescriptor role) {
+                    criteria.add(new RoleDescriptorCriterion(role));
                 }
             }
             

@@ -27,9 +27,9 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * SAML 2, type 0x0004, artifact builder.

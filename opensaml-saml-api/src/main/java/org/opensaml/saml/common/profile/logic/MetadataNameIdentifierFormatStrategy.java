@@ -18,13 +18,13 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
@@ -32,10 +32,11 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.SSODescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Function to return a set of candidate NameIdentifier/NameID Format values derived from an entity's
@@ -72,7 +73,7 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
                 if (nif.getURI() != null) {
                     if (NameID.UNSPECIFIED.equals(nif.getURI())) {
                         log.warn("Ignoring NameIDFormat metadata that includes the 'unspecified' format");
-                        return Collections.emptyList();
+                        return CollectionSupport.emptyList();
                     }
                     strings.add(nif.getURI());
                 }
@@ -82,7 +83,7 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
             return strings;
         }
         
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
 
     /**
@@ -93,9 +94,8 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
         /** {@inheritDoc} */
         @Override
         @Nullable public SSODescriptor apply(@Nullable final ProfileRequestContext input) {
-            if (input != null && input.getInboundMessageContext() != null) {
-                final SAMLPeerEntityContext peerCtx =
-                        input.getInboundMessageContext().getSubcontext(SAMLPeerEntityContext.class);
+            if (input != null && input.getInboundMessageContext() instanceof MessageContext mc) {
+                final SAMLPeerEntityContext peerCtx = mc.getSubcontext(SAMLPeerEntityContext.class);
                 if (peerCtx != null) {
                     final SAMLMetadataContext mdCtx = peerCtx.getSubcontext(SAMLMetadataContext.class);
                     if (mdCtx != null && mdCtx.getRoleDescriptor() != null

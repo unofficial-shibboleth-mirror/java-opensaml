@@ -65,7 +65,7 @@ public final class SAMLVersion {
      * 
      * @return the SAMLVersion
      */
-    public static final SAMLVersion valueOf(final int majorVersion, final int minorVersion) {
+    @Nonnull public static final SAMLVersion valueOf(final int majorVersion, final int minorVersion) {
         if (majorVersion == 1) {
             if (minorVersion == 0) {
                 return SAMLVersion.VERSION_10;
@@ -88,7 +88,7 @@ public final class SAMLVersion {
      * 
      * @return SAMLVersion for the given string
      */
-    public static final SAMLVersion valueOf(@Nonnull final String version) {
+    @Nonnull public static final SAMLVersion valueOf(@Nonnull final String version) {
         final String[] components = version.split("\\.");
         return valueOf(Integer.valueOf(components[0]), Integer.valueOf(components[1]));
     }

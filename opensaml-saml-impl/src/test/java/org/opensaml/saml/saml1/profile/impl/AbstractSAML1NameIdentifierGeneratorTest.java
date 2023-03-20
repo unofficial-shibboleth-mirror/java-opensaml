@@ -29,15 +29,10 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /** Test for {@link AbstractSAML1NameIdentifierGenerator}. */
+@SuppressWarnings("javadoc")
 public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";
-    
-    @Test(expectedExceptions = ComponentInitializationException.class)
-    public void testNoFormat() throws ComponentInitializationException {
-        final MockSAML1NameIdentifierGenerator mock = new MockSAML1NameIdentifierGenerator();
-        mock.initialize();
-    }
     
     @Test
     public void testFull() throws ComponentInitializationException, SAMLException {

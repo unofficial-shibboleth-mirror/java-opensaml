@@ -18,7 +18,6 @@
 package org.opensaml.saml.common.profile.logic;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -35,9 +34,12 @@ import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.messaging.context.SAMLEndpointContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.metadata.Endpoint;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import java.util.function.Predicate;
@@ -45,7 +47,6 @@ import java.util.function.Predicate;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Predicate that decides whether to handle an error by returning a SAML response to a requester
@@ -87,7 +88,7 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
         
         eventContextLookupStrategy = new CurrentOrPreviousEventLookup();
         
-        localEvents = Collections.emptySet();
+        localEvents = CollectionSupport.emptySet();
     }
     
     /**
@@ -145,9 +146,8 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
         }
         
         final SAMLEndpointContext endpointCtx = endpointContextLookupStrategy.apply(input);
-        if (endpointCtx == null || endpointCtx.getEndpoint() == null ||
-                (endpointCtx.getEndpoint().getLocation() == null
-                    && endpointCtx.getEndpoint().getResponseLocation() == null)) {
+        final Endpoint endpoint = endpointCtx != null ? endpointCtx.getEndpoint() : null;
+        if (endpoint == null || (endpoint.getLocation() == null && endpoint.getResponseLocation() == null)) {
             log.debug("No SAMLEndpointContext or endpoint location available, error must be handled locally");
             return true;
         }
@@ -160,12 +160,13 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
         }
         
         final EventContext eventCtx = eventContextLookupStrategy.apply(input);
-        if (eventCtx == null || eventCtx.getEvent() == null) {
+        final Object eObject = eventCtx != null ? eventCtx.getEvent() : null;
+        if (eObject == null) {
             log.debug("No event found, assuming error handled with response");
             return false;
         }
         
-        final String event = eventCtx.getEvent().toString();
+        final String event = eObject.toString();
         if (localEvents.contains(event)) {
             log.debug("Error event {} will be handled locally", event);
             return true;

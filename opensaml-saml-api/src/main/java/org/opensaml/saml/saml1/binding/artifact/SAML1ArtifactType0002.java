@@ -35,14 +35,14 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
     @Nonnull public static final byte[] TYPE_CODE = { 0, 2 };
 
     /** 20 byte assertion handle. */
-    private byte[] assertionHandle;
+    @Nonnull private byte[] assertionHandle;
 
     /** Artifact source location component. */
-    private String sourceLocation;
+    @Nonnull private String sourceLocation;
 
     /** Constructor. */
     public SAML1ArtifactType0002() {
-        super(TYPE_CODE);
+        this(new byte[20], "unset");
     }
 
     /**
@@ -54,11 +54,20 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
      * @throws IllegalArgumentException thrown if the given assertion handle is not 20 bytes or the source location is
      *             null or empty
      */
-    public SAML1ArtifactType0002(final byte[] handle, final String location) {
+    public SAML1ArtifactType0002(@Nonnull final byte[] handle, @Nonnull final String location) {
         super(TYPE_CODE);
 
-        setAssertionHandle(handle);
-        setSourceLocation(location);
+        if (handle.length != 20) {
+            throw new IllegalArgumentException("Artifact assertion handle must be 20 bytes long");
+        }
+        assertionHandle = handle;
+        
+        final String loc = StringSupport.trimOrNull(location);
+        if (loc == null) {
+            throw new IllegalArgumentException("Artifact source location may not be a null or empty string");
+        }
+
+        sourceLocation = loc;
     }
 
     /**
@@ -90,7 +99,7 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
      * 
      * @return artifiact's 20 byte assertion handle
      */
-    public byte[] getAssertionHandle() {
+    @Nonnull public byte[] getAssertionHandle() {
         return assertionHandle;
     }
 
@@ -99,7 +108,7 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
      * 
      * @param handle artifiact's 20 byte assertion handle
      */
-    public void setAssertionHandle(final byte[] handle) {
+    public void setAssertionHandle(@Nonnull final byte[] handle) {
         if (handle.length != 20) {
             throw new IllegalArgumentException("Artifact assertion handle must be 20 bytes long");
         }
@@ -111,7 +120,7 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
      * 
      * @return source location component of this artifact
      */
-    public String getSourceLocation() {
+    @Nonnull public String getSourceLocation() {
         return sourceLocation;
     }
 
@@ -122,7 +131,7 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
      * 
      * @throws IllegalArgumentException thrown if the given location is empty or null
      */
-    protected void setSourceLocation(final String newLocation) {
+    protected void setSourceLocation(@Nonnull final String newLocation) {
         final String location = StringSupport.trimOrNull(newLocation);
         if (location == null) {
             throw new IllegalArgumentException("Artifact source location may not be a null or empty string");
@@ -132,7 +141,7 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
     }
 
     /** {@inheritDoc} */
-    public byte[] getRemainingArtifact() {
+    @Nonnull public byte[] getRemainingArtifact() {
         final byte[] location = getSourceLocation().getBytes();
         final byte[] remainingArtifact = new byte[20 + location.length];
 
@@ -141,4 +150,5 @@ public class SAML1ArtifactType0002 extends AbstractSAML1Artifact implements SAML
 
         return remainingArtifact;
     }
+    
 }

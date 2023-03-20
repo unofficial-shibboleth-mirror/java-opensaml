@@ -22,9 +22,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class SimpleStringMetadataIndexKeyTest {
     
     @Test
@@ -43,13 +41,6 @@ public class SimpleStringMetadataIndexKeyTest {
         try {
             key = new SimpleStringMetadataIndexKey("  ");
             Assert.fail("Constructor should have failed on empty input");
-        } catch (ConstraintViolationException e) {
-            // expected
-        }
-                
-        try {
-            key = new SimpleStringMetadataIndexKey(null);
-            Assert.fail("Constructor should have failed on null input");
         } catch (ConstraintViolationException e) {
             // expected
         }

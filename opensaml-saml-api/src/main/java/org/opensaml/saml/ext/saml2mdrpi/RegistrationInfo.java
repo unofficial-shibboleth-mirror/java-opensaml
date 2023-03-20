@@ -21,6 +21,7 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -42,8 +43,8 @@ public interface RegistrationInfo extends SAMLObject {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationInfo";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MDRPI_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RegistrationInfoType";
@@ -67,34 +68,34 @@ public interface RegistrationInfo extends SAMLObject {
      * 
      * @return the registration authority
      */
-    public String getRegistrationAuthority();
+    @Nullable public String getRegistrationAuthority();
 
     /**
      * Set the registration authority.
      * 
      * @param authority the registration authority
      */
-    public void setRegistrationAuthority(String authority);
+    public void setRegistrationAuthority(@Nullable final String authority);
 
     /**
      * Get the registration instant.
      * 
      * @return the registration instant
      */
-    public Instant getRegistrationInstant();
+    @Nullable public Instant getRegistrationInstant();
 
     /**
      * Set the registration instant.
      * 
      * @param dateTime the instant
      */
-    public void setRegistrationInstant(Instant dateTime);
+    public void setRegistrationInstant(@Nullable final Instant dateTime);
 
     /**
      * Get the {@link RegistrationPolicy}s.
      * 
      * @return the list of policies
      */
-    public List<RegistrationPolicy> getRegistrationPolicies();
+    @Nonnull public List<RegistrationPolicy> getRegistrationPolicies();
 
 }

@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -36,13 +35,13 @@ import org.opensaml.saml.metadata.criteria.entity.DetectDuplicateEntityIDsCriter
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -69,7 +68,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     
     /** Constructor. */
     public ChainingMetadataResolver() {
-        resolvers = Collections.emptyList();
+        resolvers = CollectionSupport.emptyList();
         detectDuplicateEntityIDs = DetectDuplicateEntityIDs.Off;
     }
 
@@ -94,11 +93,11 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         checkSetterPreconditions();
 
         if (newResolvers == null || newResolvers.isEmpty()) {
-            resolvers = Collections.emptyList();
+            resolvers = CollectionSupport.emptyList();
             return;
         }
 
-        resolvers = List.copyOf(newResolvers);
+        resolvers = CollectionSupport.copyToList(newResolvers);
     }
 
     /**
@@ -132,13 +131,13 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     }
 
     /** {@inheritDoc} */
-    @Override public MetadataFilter getMetadataFilter() {
+    @Nullable public MetadataFilter getMetadataFilter() {
         log.warn("Attempt to access unsupported MetadataFilter property on ChainingMetadataResolver");
         return null;
     }
 
     /** {@inheritDoc} */
-    @Override public void setMetadataFilter(final MetadataFilter newFilter) {
+    public void setMetadataFilter(@Nullable final MetadataFilter newFilter) {
         throw new UnsupportedOperationException("Metadata filters are not supported on ChainingMetadataResolver");
     }
 
@@ -162,7 +161,6 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     }
     
     /** {@inheritDoc} */
-    @Override
     @Nullable public EntityDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
 
@@ -176,22 +174,25 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         return null;
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
-    @Override
     @Nonnull public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
 
-        if (activationCondition != null) {
+        if (activationCondition != null && criteria != null) {
             final ProfileRequestContextCriterion prc = criteria.get(ProfileRequestContextCriterion.class);
+            assert activationCondition != null;
             if (!activationCondition.test(prc != null ? prc.getProfileRequestContext() : null)) {
                 log.info("Metadata Resolver {}: Bypassed due to failed activation condition", getId());
-                return null;
+                return CollectionSupport.emptyList();
             }
         }
         
         DetectDuplicateEntityIDs detectDuplicates = getDetectDuplicateEntityIDs();
-        if (criteria.contains(DetectDuplicateEntityIDsCriterion.class)) {
-            detectDuplicates = criteria.get(DetectDuplicateEntityIDsCriterion.class).getValue();
+        final DetectDuplicateEntityIDsCriterion dup =
+                criteria != null ? criteria.get(DetectDuplicateEntityIDsCriterion.class) : null;
+        if (dup != null) {
+            detectDuplicates = dup.getValue();
         }
         log.trace("Effective DetectDuplicateEntityIDs value is: {}", detectDuplicates);
 
@@ -200,6 +201,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         for (final MetadataResolver resolver : resolvers) {
             try {
                 if (result != null) {
+                    assert resolver != null;
                     detectDuplicateEntityIDs(resolver, criteria, resultEntityIDs, detectDuplicates);
                     continue;
                 }
@@ -227,8 +229,9 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         if (result != null) {
             return result;
         }
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
+// Checkstyle: CyclomaticComplexity ON
     
     /**
      * Perform duplicate entityID detection.
@@ -238,9 +241,9 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * @param resultEntityIDs the set of entityIDs contained in the effective results to be returned
      * @param detectDuplicates the effective strategy for duplicate detection
      */
-    // Checkstyle: CyclomaticComplexity OFF
+// Checkstyle: CyclomaticComplexity OFF
     private void detectDuplicateEntityIDs(final @Nonnull MetadataResolver resolver,
-            final @Nonnull CriteriaSet criteria,
+            final @Nullable CriteriaSet criteria,
             final @Nullable Set<String> resultEntityIDs,
             final @Nonnull DetectDuplicateEntityIDs detectDuplicates) {
         
@@ -291,7 +294,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         }
         
     }
-    // Checkstyle: CyclomaticComplexity ON
+// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Collect the unique entityIDs from the supplied iterable of entity descriptors.
@@ -316,7 +319,7 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     }
 
     /** {@inheritDoc} */
-    public void clear(final String entityID) throws ResolverException {
+    public void clear(@Nonnull final String entityID) throws ResolverException {
         for (final MetadataResolver resolver : resolvers) {
             if (resolver instanceof ClearableMetadataResolver) {
                 ((ClearableMetadataResolver) resolver).clear(entityID);
@@ -335,7 +338,6 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
 
     /** {@inheritDoc}
      * We iterate over all the children and return the earliest instant or null if one of them hasn't ever updated. */
-    @Override
     @Nullable public Instant getLastUpdate() {
         Instant ret = null;
         for (final MetadataResolver resolver : resolvers) {
@@ -355,7 +357,6 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
 
     /** {@inheritDoc}
     * We iterate over all the children and return the earliest instant or null if one of them hasn't ever refreshed. */
-    @Override
     @Nullable public Instant getLastRefresh() {
         Instant ret = null;
         for (final MetadataResolver resolver : resolvers) {
@@ -397,9 +398,9 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
      * We iterate over all children - a failure of any is a failure. */
     public Boolean wasLastRefreshSuccess() {
         for (final MetadataResolver resolver : resolvers) {
-            if (resolver instanceof RefreshableMetadataResolver) {
-                final RefreshableMetadataResolver refreshable = (RefreshableMetadataResolver) resolver;
-                if (refreshable.wasLastRefreshSuccess() != null && !refreshable.wasLastRefreshSuccess()) {
+            if (resolver instanceof RefreshableMetadataResolver downcast) {
+                final Boolean flag = downcast.wasLastRefreshSuccess();
+                if (flag != null && !flag) {
                     return false;
                 }
             }
@@ -421,21 +422,6 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
         }
 
         return null;
-    }
-
-    /** {@inheritDoc} */
-    @Override protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        if (resolvers == null) {
-            log.warn("ChainingMetadataResolver was not configured with any member MetadataResolvers");
-            resolvers = Collections.emptyList();
-        }
-    }
-
-    /** {@inheritDoc} */
-    @Override protected void doDestroy() {
-        super.doDestroy();
-        resolvers = Collections.emptyList();
     }
 
 }

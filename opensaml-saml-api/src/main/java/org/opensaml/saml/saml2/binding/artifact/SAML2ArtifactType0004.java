@@ -33,14 +33,14 @@ public class SAML2ArtifactType0004 extends AbstractSAML2Artifact implements SAML
     @Nonnull  public static final byte[] TYPE_CODE = { 0, 4 };
 
     /** 20 byte artifact source ID. */
-    private byte[] sourceID;
+    @Nonnull private byte[] sourceID;
 
     /** 20 byte message handle. */
-    private byte[] messageHandle;
+    @Nonnull private byte[] messageHandle;
 
     /** Constructor. */
     public SAML2ArtifactType0004() {
-        super(TYPE_CODE);
+        this(TYPE_CODE, new byte[20], new byte[20]);
     }
 
     /**
@@ -53,10 +53,19 @@ public class SAML2ArtifactType0004 extends AbstractSAML2Artifact implements SAML
      * @throws IllegalArgumentException thrown if the endpoint index, source ID, or message handle arrays are not of the
      *             right size
      */
-    public SAML2ArtifactType0004(final byte[] endpointIndex, final byte[] source, final byte[] handle) {
+    public SAML2ArtifactType0004(@Nonnull final byte[] endpointIndex, @Nonnull final byte[] source,
+            @Nonnull final byte[] handle) {
         super(TYPE_CODE, endpointIndex);
-        setSourceID(source);
-        setMessageHandle(handle);
+
+        if (source.length != 20) {
+            throw new IllegalArgumentException("Artifact source ID must be 20 bytes long");
+        }
+        sourceID = source;
+
+        if (handle.length != 20) {
+            throw new IllegalArgumentException("Artifact message handle must be 20 bytes long");
+        }
+        messageHandle = handle;
     }
 
     /**
@@ -94,7 +103,7 @@ public class SAML2ArtifactType0004 extends AbstractSAML2Artifact implements SAML
      * 
      * @return the source ID of the artifact
      */
-    public byte[] getSourceID() {
+    @Nonnull public byte[] getSourceID() {
         return sourceID;
     }
 
@@ -117,7 +126,7 @@ public class SAML2ArtifactType0004 extends AbstractSAML2Artifact implements SAML
      * 
      * @return 20 byte message handle of the artifact
      */
-    public byte[] getMessageHandle() {
+    @Nonnull public byte[] getMessageHandle() {
         return messageHandle;
     }
 
@@ -134,7 +143,7 @@ public class SAML2ArtifactType0004 extends AbstractSAML2Artifact implements SAML
     }
 
     /** {@inheritDoc} */
-    public byte[] getRemainingArtifact() {
+    @Nonnull public byte[] getRemainingArtifact() {
         final byte[] remainingArtifact = new byte[40];
 
         System.arraycopy(getSourceID(), 0, remainingArtifact, 0, 20);

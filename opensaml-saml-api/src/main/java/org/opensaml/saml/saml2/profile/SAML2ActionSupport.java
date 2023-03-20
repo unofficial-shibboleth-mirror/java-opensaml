@@ -32,8 +32,8 @@ import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.Response;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 
 /** Helper methods for SAML 2 IdP actions. */

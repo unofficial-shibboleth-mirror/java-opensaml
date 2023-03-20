@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.common.messaging.context;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.BaseContext;
@@ -27,7 +28,8 @@ import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A context implementation which represents a SAML 1 {@link NameIdentifier} or a SAML 2 {@link NameID}.
@@ -48,7 +50,7 @@ import org.slf4j.LoggerFactory;
 public final class SAMLSubjectNameIdentifierContext extends BaseContext {
     
     /** Logger. */
-    @Nullable private Logger log = LoggerFactory.getLogger(SAMLSubjectNameIdentifierContext.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SAMLSubjectNameIdentifierContext.class);
 
     /** The SAML name identifier represented by this context. */
     @Nullable private SAMLObject nameID;
@@ -132,24 +134,20 @@ public final class SAMLSubjectNameIdentifierContext extends BaseContext {
             log.debug("SAML message could not be dynamically resolved from parent context");
             return null;
         }
-        if (samlMessage instanceof org.opensaml.saml.saml2.core.SubjectQuery) {
-            final org.opensaml.saml.saml2.core.SubjectQuery query =  
-                    (org.opensaml.saml.saml2.core.SubjectQuery) samlMessage;
-            if (query.getSubject() != null) {
-                return query.getSubject().getNameID();
+        if (samlMessage instanceof org.opensaml.saml.saml2.core.SubjectQuery msg) {
+            if (msg.getSubject() instanceof org.opensaml.saml.saml2.core.Subject s) {
+                return s.getNameID();
             }
             return null;
-        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.AuthnRequest) {
-            final org.opensaml.saml.saml2.core.AuthnRequest request = 
-                    (org.opensaml.saml.saml2.core.AuthnRequest) samlMessage;
-            if (request.getSubject() != null) {
-                return request.getSubject().getNameID();
+        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.AuthnRequest msg) {
+            if (msg.getSubject() instanceof org.opensaml.saml.saml2.core.Subject s) {
+                return s.getNameID();
             }
             return null;
-        } else if (samlMessage instanceof Request && ((Request) samlMessage).getSubjectQuery() != null) {
-            final org.opensaml.saml.saml1.core.SubjectQuery query = ((Request) samlMessage).getSubjectQuery();
-            if (query.getSubject() != null) {
-                return query.getSubject().getNameIdentifier();
+        } else if (samlMessage instanceof Request msg) {
+            final org.opensaml.saml.saml1.core.SubjectQuery query = msg.getSubjectQuery();
+            if (query != null && query.getSubject() instanceof org.opensaml.saml.saml1.core.Subject s) {
+                return s.getNameIdentifier();
             }
             return null;
         } else if (samlMessage instanceof LogoutRequest) {
@@ -167,10 +165,9 @@ public final class SAMLSubjectNameIdentifierContext extends BaseContext {
      * @return the SAML message, or null if it can not be resolved
      */
     @Nullable protected SAMLObject resolveSAMLMessage() {
-        if (getParent() instanceof MessageContext) {
-            final MessageContext parent = (MessageContext) getParent();
-            if (parent.getMessage() instanceof SAMLObject) {
-                return (SAMLObject) parent.getMessage();
+        if (getParent() instanceof MessageContext mc) {
+            if (mc.getMessage() instanceof SAMLObject msg) {
+                return msg;
             } 
         }
         return null;

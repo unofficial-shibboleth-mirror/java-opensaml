@@ -24,6 +24,7 @@ package org.opensaml.saml.saml2.core;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -91,21 +92,21 @@ public interface StatusResponseType extends SignableSAMLObject {
      * 
      * @return the SAML Version of this response.
      */
-    SAMLVersion getVersion();
+    @Nullable SAMLVersion getVersion();
 
     /**
      * Sets the SAML Version of this response.
      * 
      * @param newVersion the SAML Version of this response
      */
-    void setVersion(SAMLVersion newVersion);
+    void setVersion(@Nullable SAMLVersion newVersion);
 
     /**
      * Gets the unique identifier of the response.
      * 
      * @return the unique identifier of the response
      */
-    String getID();
+    @Nullable String getID();
 
     /**
      * Sets the unique identifier of the response.
@@ -113,14 +114,14 @@ public interface StatusResponseType extends SignableSAMLObject {
      * @param newID the unique identifier of the response
      */
 
-    void setID(String newID);
+    void setID(@Nullable String newID);
 
     /**
      * Gets the unique request identifier for which this is a response.
      * 
      * @return the unique identifier of the originating request
      */
-    String getInResponseTo();
+    @Nullable String getInResponseTo();
 
     /**
      * Sets the unique request identifier for which this is a response.
@@ -128,90 +129,90 @@ public interface StatusResponseType extends SignableSAMLObject {
      * @param newInResponseTo the unique identifier of the originating request
      */
 
-    void setInResponseTo(String newInResponseTo);
+    void setInResponseTo(@Nullable String newInResponseTo);
 
     /**
      * Gets the date/time the response was issued.
      * 
      * @return the date/time the response was issued
      */
-    Instant getIssueInstant();
+    @Nullable Instant getIssueInstant();
 
     /**
      * Sets the date/time the response was issued.
      * 
      * @param newIssueInstant the date/time the response was issued
      */
-    void setIssueInstant(Instant newIssueInstant);
+    void setIssueInstant(@Nullable Instant newIssueInstant);
 
     /**
      * Gets the URI of the destination of the response.
      * 
      * @return the URI of the destination of the response
      */
-    String getDestination();
+    @Nullable String getDestination();
 
     /**
      * Sets the URI of the destination of the response.
      * 
      * @param newDestination the URI of the destination of the response
      */
-    void setDestination(String newDestination);
+    void setDestination(@Nullable String newDestination);
 
     /**
      * Gets the consent obtained from the principal for sending this response.
      * 
      * @return the consent obtained from the principal for sending this response
      */
-    String getConsent();
+    @Nullable String getConsent();
 
     /**
      * Sets the consent obtained from the principal for sending this response.
      * 
      * @param newConsent the consent obtained from the principal for sending this response
      */
-    void setConsent(String newConsent);
+    void setConsent(@Nullable String newConsent);
 
     /**
      * Gets the issuer of this response.
      * 
      * @return the issuer of this response
      */
-    Issuer getIssuer();
+    @Nullable Issuer getIssuer();
 
     /**
      * Sets the issuer of this response.
      * 
      * @param newIssuer the issuer of this response
      */
-    void setIssuer(Issuer newIssuer);
+    void setIssuer(@Nullable Issuer newIssuer);
 
     /**
      * Gets the Status of this response.
      * 
      * @return the Status of this response
      */
-    Status getStatus();
+    @Nullable Status getStatus();
 
     /**
      * Sets the Status of this response.
      * 
      * @param newStatus the Status of this response
      */
-    void setStatus(Status newStatus);
+    void setStatus(@Nullable Status newStatus);
 
     /**
      * Gets the Extensions of this response.
      * 
      * @return the Status of this response
      */
-    Extensions getExtensions();
+    @Nullable Extensions getExtensions();
 
     /**
      * Sets the Extensions of this response.
      * 
      * @param newExtensions the Extensions of this response
      */
-    void setExtensions(Extensions newExtensions);
+    void setExtensions(@Nullable Extensions newExtensions);
 
 }

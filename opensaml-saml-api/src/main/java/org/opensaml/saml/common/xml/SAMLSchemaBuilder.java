@@ -31,12 +31,12 @@ import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ClasspathResolver;
 import net.shibboleth.shared.xml.SchemaBuilder;
 
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import com.google.common.io.ByteStreams;
@@ -167,7 +167,7 @@ public class SAMLSchemaBuilder {
     @Nonnull @NonnullElements @NotEmpty private String[] saml2Schemas;
 
     /** The builder to use. */
-    @Nonnull private SchemaBuilder schemaBuilder;
+    private SchemaBuilder schemaBuilder;
     
     /** Identifies which SAML 1.x version is in use. */
     public enum SAML1Version {
@@ -260,6 +260,7 @@ public class SAMLSchemaBuilder {
             }
             cachedSchema = schemaBuilder.buildSchema();
         }
+        assert cachedSchema != null;
         return cachedSchema;
     }
 
@@ -268,26 +269,32 @@ public class SAMLSchemaBuilder {
      */
     private void configureBuilder() {
         for (final String source : baseXMLSchemas) {
+            assert source != null;
             addSchemaToBuilder(source);
         }
 
         for (final String source : soapSchemas) {
+            assert source != null;
             addSchemaToBuilder(source);
         }
 
         for (final String source : saml1xSchemas) {
+            assert source != null;
             addSchemaToBuilder(source);
         }
 
         for (final String source : saml2Schemas) {
+            assert source != null;
             addSchemaToBuilder(source);
         }
 
         for (final String source : saml20CommonSchemas) {
+            assert source != null;
             addSchemaToBuilder(source);
         }
         
         for (final String source : baseExtSchemas) {
+            assert source != null;
             addSchemaToBuilder(source);
         }
     }

@@ -22,9 +22,7 @@ import org.opensaml.saml.config.SAMLConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class SAMLMessageSecuritySupportTest {
     
     @Test
@@ -44,7 +42,6 @@ public class SAMLMessageSecuritySupportTest {
         // check normalization
         Assert.assertTrue(SAMLMessageSecuritySupport.checkURLScheme("  HTTPS  "));
         Assert.assertFalse(SAMLMessageSecuritySupport.checkURLScheme("  "));
-        Assert.assertFalse(SAMLMessageSecuritySupport.checkURLScheme(null));
     }
 
 }

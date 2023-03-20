@@ -38,6 +38,7 @@ public interface RequestInitiator extends Endpoint {
         new QName(SAMLConstants.SAML20MDRI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRI_PREFIX);
     
     /** Per the extension specification, the value of the 'Binding' attribute MUST be set to this fixed value. */
-    @Nonnull @NotEmpty public static final String REQUIRED_BINDING_VALUE = "urn:oasis:names:tc:SAML:profiles:SSO:request-init";
+    @Nonnull @NotEmpty
+    public static final String REQUIRED_BINDING_VALUE = "urn:oasis:names:tc:SAML:profiles:SSO:request-init";
 
 }

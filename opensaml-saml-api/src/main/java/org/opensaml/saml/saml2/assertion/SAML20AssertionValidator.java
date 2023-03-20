@@ -29,6 +29,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.collection.LazyMap;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -55,7 +56,6 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /** 
@@ -242,10 +242,10 @@ public class SAML20AssertionValidator {
      * 
      * @return the clock skew
      */
-    private static Duration getDurationParam(@Nonnull final ValidationContext context, @Nonnull final String paramName,
-            @Nonnull final Duration defaultDuration) {
+    @Nonnull private static Duration getDurationParam(@Nonnull final ValidationContext context,
+            @Nonnull final String paramName, @Nonnull final Duration defaultDuration) {
         
-        Duration duration = defaultDuration;
+        @Nonnull Duration duration = defaultDuration;
 
         if (context.getStaticParameters().containsKey(paramName)) {
             try {
@@ -396,7 +396,7 @@ public class SAML20AssertionValidator {
      * 
      * @throws AssertionValidationException if there is a problem validating the IssueInstant
      */
-    protected ValidationResult validateIssueInstant(@Nonnull final Assertion assertion,
+    @Nonnull protected ValidationResult validateIssueInstant(@Nonnull final Assertion assertion,
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
         if (assertion.getIssueInstant() == null) {
@@ -443,7 +443,7 @@ public class SAML20AssertionValidator {
      * 
      * @throws AssertionValidationException if there is a problem validating the Issuer
      */
-    protected ValidationResult validateIssuer(@Nonnull final Assertion assertion,
+    @Nonnull protected ValidationResult validateIssuer(@Nonnull final Assertion assertion,
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
         String issuer = null;
@@ -460,8 +460,8 @@ public class SAML20AssertionValidator {
 
         final Set<String> validIssuers;
         try {
-            validIssuers = (Set<String>) context.getStaticParameters()
-                    .get(SAML2AssertionValidationParameters.VALID_ISSUERS);
+            validIssuers = (Set<String>) context.getStaticParameters().get(
+                    SAML2AssertionValidationParameters.VALID_ISSUERS);
         } catch (final ClassCastException e) {
             log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
                     SAML2AssertionValidationParameters.VALID_ISSUERS);
@@ -545,6 +545,7 @@ public class SAML20AssertionValidator {
         }
 
         final Signature signature = token.getSignature();
+        assert signature != null;
         
         String tokenIssuer = null;
         if (token.getIssuer() != null) {
@@ -599,7 +600,7 @@ public class SAML20AssertionValidator {
      * @param context current validation context
      * @return the criteria set to use
      */
-    @Nonnull protected SignatureTrustEngine getSignatureValidationTrustEngine(@Nonnull final Assertion token,
+    @Nullable protected SignatureTrustEngine getSignatureValidationTrustEngine(@Nonnull final Assertion token,
             @Nonnull final ValidationContext context) {
 
         final SignatureTrustEngine contextEngine = (SignatureTrustEngine) context.getStaticParameters()
@@ -619,7 +620,7 @@ public class SAML20AssertionValidator {
      * @param context current validation context
      * @return the criteria set to use
      */
-    @Nonnull protected SignaturePrevalidator getSignatureValidationPrevalidator(@Nonnull final Assertion token,
+    @Nullable protected SignaturePrevalidator getSignatureValidationPrevalidator(@Nonnull final Assertion token,
             @Nonnull final ValidationContext context) {
 
         final SignaturePrevalidator contextPrevalidator = (SignaturePrevalidator) context.getStaticParameters()
@@ -735,7 +736,7 @@ public class SAML20AssertionValidator {
      * 
      * @return the result of the validation evaluation
      */
-    protected ValidationResult validateRequiredConditions(@Nonnull final Assertion assertion,
+    @Nonnull protected ValidationResult validateRequiredConditions(@Nonnull final Assertion assertion,
             @Nonnull final ValidationContext context) {
         
         @SuppressWarnings("unchecked")
@@ -756,6 +757,7 @@ public class SAML20AssertionValidator {
         }
         
         for (final QName requiredCondition : requiredConditions) {
+            assert requiredCondition != null;
             final List<Condition> found = conditions.getConditions(requiredCondition);
             if (found == null || found.isEmpty()) {
                 String msg = String.format("Condition '%s' was required, but was not found in assertion '%s'",

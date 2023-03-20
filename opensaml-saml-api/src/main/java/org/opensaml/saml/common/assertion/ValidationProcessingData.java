@@ -32,10 +32,10 @@ import net.shibboleth.shared.logic.Constraint;
 public class ValidationProcessingData {
 
     /** The validation context. */
-    private ValidationContext context;
+    @Nonnull private ValidationContext context;
 
     /** The validation result. */
-    private ValidationResult result;
+    @Nonnull private ValidationResult result;
 
     /**
      * Constructor.

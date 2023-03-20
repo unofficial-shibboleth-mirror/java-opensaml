@@ -20,6 +20,7 @@ package org.opensaml.saml.ext.saml2mdrpi;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -41,8 +42,8 @@ public interface Publication extends SAMLObject {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Publication";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MDRPI_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PublicationType";
@@ -69,41 +70,41 @@ public interface Publication extends SAMLObject {
      * 
      * @return the publisher
      */
-    public String getPublisher();
+    @Nullable public String getPublisher();
 
     /**
      * Set the publisher.
      * 
      * @param publisher the publisher
      */
-    public void setPublisher(String publisher);
+    public void setPublisher(@Nullable final String publisher);
 
     /**
      * Get the creation instant.
      * 
      * @return the creation instant
      */
-    public Instant getCreationInstant();
+    @Nullable public Instant getCreationInstant();
 
     /**
      * Set the creation instant.
      * 
      * @param dateTime the instant
      */
-    public void setCreationInstant(Instant dateTime);
+    public void setCreationInstant(@Nullable final Instant dateTime);
 
     /**
      * Get the publicationId.
      * 
      * @return the publicationId
      */
-    public String getPublicationId();
+    @Nullable public String getPublicationId();
 
     /**
      * Set the publicationId.
      * 
      * @param publicationId the publicationIdr
      */
-    public void setPublicationId(String publicationId);
+    public void setPublicationId(@Nullable final String publicationId);
 
 }

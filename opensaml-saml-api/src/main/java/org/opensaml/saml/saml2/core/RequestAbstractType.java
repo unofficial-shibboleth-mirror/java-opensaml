@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.core;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -84,21 +85,21 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @return the SAML Version of this request.
      */
-    SAMLVersion getVersion();
+    @Nullable SAMLVersion getVersion();
 
     /**
      * Sets the SAML Version of this request.
      * 
      * @param newVersion the SAML Version of this request
      */
-    void setVersion(SAMLVersion newVersion);
+    void setVersion(@Nullable SAMLVersion newVersion);
 
     /**
      * Gets the unique identifier of the request.
      * 
      * @return the unique identifier of the request
      */
-    String getID();
+    @Nullable String getID();
 
     /**
      * Sets the unique identifier of the request.
@@ -106,7 +107,7 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * @param newID the unique identifier of the request
      */
 
-    void setID(String newID);
+    void setID(@Nullable String newID);
 
     /**
      * Gets the date/time the request was issued.
@@ -114,69 +115,69 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * @return the date/time the request was issued
      */
 
-    Instant getIssueInstant();
+    @Nullable Instant getIssueInstant();
 
     /**
      * Sets the date/time the request was issued.
      * 
      * @param newIssueInstant the date/time the request was issued
      */
-    void setIssueInstant(Instant newIssueInstant);
+    void setIssueInstant(@Nullable Instant newIssueInstant);
 
     /**
      * Gets the URI of the destination of the request.
      * 
      * @return the URI of the destination of the request
      */
-    String getDestination();
+    @Nullable String getDestination();
 
     /**
      * Sets the URI of the destination of the request.
      * 
      * @param newDestination the URI of the destination of the request
      */
-    void setDestination(String newDestination);
+    void setDestination(@Nullable String newDestination);
 
     /**
      * Gets the consent obtained from the principal for sending this request.
      * 
      * @return the consent obtained from the principal for sending this request
      */
-    String getConsent();
+    @Nullable String getConsent();
 
     /**
      * Sets the consent obtained from the principal for sending this request.
      * 
      * @param newConsent the new consent obtained from the principal for sending this request
      */
-    void setConsent(String newConsent);
+    void setConsent(@Nullable String newConsent);
 
     /**
      * Gets the issuer of this request.
      * 
      * @return the issuer of this request
      */
-    Issuer getIssuer();
+    @Nullable Issuer getIssuer();
 
     /**
      * Sets the issuer of this request.
      * 
      * @param newIssuer the issuer of this request
      */
-    void setIssuer(Issuer newIssuer);
+    void setIssuer(@Nullable Issuer newIssuer);
 
     /**
      * Gets the Extensions of this request.
      * 
      * @return the Status of this request
      */
-    Extensions getExtensions();
+    @Nullable Extensions getExtensions();
 
     /**
      * Sets the Extensions of this request.
      * 
      * @param newExtensions the Extensions of this request
      */
-    void setExtensions(Extensions newExtensions);
+    void setExtensions(@Nullable Extensions newExtensions);
 
 }

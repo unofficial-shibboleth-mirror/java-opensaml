@@ -20,10 +20,12 @@ package org.opensaml.saml.saml1.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -54,54 +56,54 @@ public interface Request extends RequestAbstractType {
      * 
      * @return request Query, SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery
      */
-    public Query getQuery();
+    @Nullable public Query getQuery();
     
     /**
      * Get the request SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery.
      *
      * @return request SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery
      */
-    public SubjectQuery getSubjectQuery();
+    @Nullable public SubjectQuery getSubjectQuery();
     
     /**
      * Get the request AuthenticationQuery.
      * 
      * @return request AuthenticationQuery
      */ 
-    public AuthenticationQuery getAuthenticationQuery();
+    @Nullable public AuthenticationQuery getAuthenticationQuery();
     
     /**
      * Get the request AttributeQuery.
      * 
      * @return request AttributeQuery
      */
-    public AttributeQuery getAttributeQuery();
+    @Nullable public AttributeQuery getAttributeQuery();
     
     /**
      * Get the request AuthorizationDecisionQuery.
      * 
      * @return request AuthorizationDecisionQuery
      */ 
-    public AuthorizationDecisionQuery getAuthorizationDecisionQuery();
+    @Nullable public AuthorizationDecisionQuery getAuthorizationDecisionQuery();
     
     /**
      * Set the request query (Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisioonQuery).
      * 
      * @param query Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisioonQuery
      */ 
-    public void setQuery(Query query);
+    public void setQuery(@Nullable Query query);
     
     /**
      * Get the list of AssertionIDReferences.
      * 
      * @return list of AssertionIDReferences
      */
-    public List <AssertionIDReference> getAssertionIDReferences();
+    @Nonnull @NonnullElements public List <AssertionIDReference> getAssertionIDReferences();
     
     /**
      * Get the list of artifacts.
      * 
      * @return list of artifacts
      */
-    public List <AssertionArtifact> getAssertionArtifacts();
+    @Nonnull @NonnullElements public List <AssertionArtifact> getAssertionArtifacts();
 }

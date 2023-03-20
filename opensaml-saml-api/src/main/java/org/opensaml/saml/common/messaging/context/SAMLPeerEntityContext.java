@@ -23,6 +23,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -32,7 +33,6 @@ import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.NameIDType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -99,25 +99,17 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
     @Nullable protected String resolveEntityId() {
         final SAMLObject samlMessage = resolveSAMLMessage();
         //SAML 2 Request
-        if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
-            final org.opensaml.saml.saml2.core.RequestAbstractType request =  
-                    (org.opensaml.saml.saml2.core.RequestAbstractType) samlMessage;
-            return processSaml2Request(request);
+        if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType msg) {
+            return processSaml2Request(msg);
         //SAML 2 Response
-        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
-            final org.opensaml.saml.saml2.core.StatusResponseType response = 
-                    (org.opensaml.saml.saml2.core.StatusResponseType) samlMessage;
-            return processSaml2Response(response);
+        } else if (samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType msg) {
+            return processSaml2Response(msg);
         //SAML 1 Response
-        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.Response) {
-            final org.opensaml.saml.saml1.core.Response response = 
-                    (org.opensaml.saml.saml1.core.Response) samlMessage;
-            return processSaml1Response(response);
+        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.Response msg) {
+            return processSaml1Response(msg);
         //SAML 1 Request
-        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.Request) {
-            final org.opensaml.saml.saml1.core.Request request = 
-                    (org.opensaml.saml.saml1.core.Request) samlMessage;
-            return processSaml1Request(request);
+        } else if (samlMessage instanceof org.opensaml.saml.saml1.core.Request msg) {
+            return processSaml1Request(msg);
         }
         
         return null;
@@ -149,8 +141,8 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
             return processSaml2Issuer(statusResponse.getIssuer());
         }
 
-        if (statusResponse instanceof org.opensaml.saml.saml2.core.Response) {
-            processSaml2ResponseAssertions((org.opensaml.saml.saml2.core.Response)statusResponse);
+        if (statusResponse instanceof org.opensaml.saml.saml2.core.Response msg) {
+            processSaml2ResponseAssertions(msg);
 
         }
 
@@ -259,15 +251,15 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
      */
     @Nullable protected String processSaml1Request(@Nonnull final org.opensaml.saml.saml1.core.Request request) {
         String entityId = null;
-        if (request.getAttributeQuery() != null) {
-            entityId = processSaml1AttributeQuery(request.getAttributeQuery());
+        if (request.getAttributeQuery() instanceof AttributeQuery q) {
+            entityId = processSaml1AttributeQuery(q);
             if (entityId != null) {
                 return entityId;
             }
         }
 
-        if (request.getAuthorizationDecisionQuery() != null) {
-            entityId = processSaml1AuthorizationDecisionQuery(request.getAuthorizationDecisionQuery());
+        if (request.getAuthorizationDecisionQuery() instanceof AuthorizationDecisionQuery q) {
+            entityId = processSaml1AuthorizationDecisionQuery(q);
             if (entityId != null) {
                 return entityId;
             }
@@ -322,10 +314,9 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
      * @return the SAML message, or null if it can not be resolved
      */
     @Nullable protected SAMLObject resolveSAMLMessage() {
-        if (getParent() instanceof MessageContext) {
-            final MessageContext parent = (MessageContext) getParent();
-            if (parent.getMessage() instanceof SAMLObject) {
-                return (SAMLObject) parent.getMessage();
+        if (getParent() instanceof MessageContext mc) {
+            if (mc.getMessage() instanceof SAMLObject msg) {
+                return msg;
             } 
         }
         return null;

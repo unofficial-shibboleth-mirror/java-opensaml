@@ -33,14 +33,14 @@ public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAML
     @Nonnull public static final byte[] TYPE_CODE = { 0, 1 };
 
     /** 20 byte artifact source ID. */
-    private byte[] sourceID;
+    @Nonnull private byte[] sourceID;
 
     /** 20 byte assertion handle. */
-    private byte[] assertionHandle;
+    @Nonnull private byte[] assertionHandle;
 
     /** Constructor. */
     public SAML1ArtifactType0001() {
-        super(TYPE_CODE);
+        this(new byte[20], new byte[20]);
     }
 
     /**
@@ -52,11 +52,18 @@ public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAML
      * @throws IllegalArgumentException thrown if the given source ID or message handle are not of the current length
      *             (20 bytes)
      */
-    public SAML1ArtifactType0001(final byte[] source, final byte[] handle) {
+    public SAML1ArtifactType0001(@Nonnull final byte[] source, @Nonnull final byte[] handle) {
         super(TYPE_CODE);
 
-        setSourceID(source);
-        setAssertionHandle(handle);
+        if (source.length != 20) {
+            throw new IllegalArgumentException("Artifact source ID must be 20 bytes long");
+        }
+        sourceID = source;
+
+        if (handle.length != 20) {
+            throw new IllegalArgumentException("Artifact assertion handle must be 20 bytes long");
+        }
+        assertionHandle = handle;
     }
 
     /**
@@ -93,7 +100,7 @@ public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAML
      * 
      * @return the source ID of the artifact
      */
-    public byte[] getSourceID() {
+    @Nonnull public byte[] getSourceID() {
         return sourceID;
     }
 
@@ -104,7 +111,7 @@ public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAML
      * 
      * @throws IllegalArgumentException thrown if the given source ID is not 20 bytes
      */
-    protected void setSourceID(final byte[] newSourceID) {
+    protected void setSourceID(@Nonnull final byte[] newSourceID) {
         if (newSourceID.length != 20) {
             throw new IllegalArgumentException("Artifact source ID must be 20 bytes long");
         }
@@ -116,7 +123,7 @@ public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAML
      * 
      * @return artifiact's 20 byte assertion handle
      */
-    public byte[] getAssertionHandle() {
+    @Nonnull public byte[] getAssertionHandle() {
         return assertionHandle;
     }
 
@@ -125,7 +132,7 @@ public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAML
      * 
      * @param handle artifiact's 20 byte assertion handle
      */
-    public void setAssertionHandle(final byte[] handle) {
+    public void setAssertionHandle(@Nonnull final byte[] handle) {
         if (handle.length != 20) {
             throw new IllegalArgumentException("Artifact assertion handle must be 20 bytes long");
         }
@@ -133,7 +140,7 @@ public class SAML1ArtifactType0001 extends AbstractSAML1Artifact implements SAML
     }
 
     /** {@inheritDoc} */
-    public byte[] getRemainingArtifact() {
+    @Nonnull public byte[] getRemainingArtifact() {
         final byte[] remainingArtifact = new byte[40];
 
         System.arraycopy(getSourceID(), 0, remainingArtifact, 0, 20);

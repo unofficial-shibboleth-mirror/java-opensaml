@@ -46,7 +46,7 @@ public final class SAMLConfigurationSupport {
      * @return artifact factory for the library
      */
     @Nullable public static SAML1ArtifactBuilderFactory getSAML1ArtifactBuilderFactory() {
-        return ConfigurationService.get(SAMLConfiguration.class).getSAML1ArtifactBuilderFactory();
+        return ConfigurationService.ensure(SAMLConfiguration.class).getSAML1ArtifactBuilderFactory();
     }
 
     /**
@@ -55,7 +55,7 @@ public final class SAMLConfigurationSupport {
      * @param factory artifact factory for the library
      */
     public static void setSAML1ArtifactBuilderFactory(@Nullable final SAML1ArtifactBuilderFactory factory) {
-        ConfigurationService.get(SAMLConfiguration.class).setSAML1ArtifactBuilderFactory(factory);
+        ConfigurationService.ensure(SAMLConfiguration.class).setSAML1ArtifactBuilderFactory(factory);
     }
 
     /**
@@ -64,7 +64,7 @@ public final class SAMLConfigurationSupport {
      * @return artifact factory for the library
      */
     @Nullable public static SAML2ArtifactBuilderFactory getSAML2ArtifactBuilderFactory() {
-        return ConfigurationService.get(SAMLConfiguration.class).getSAML2ArtifactBuilderFactory();
+        return ConfigurationService.ensure(SAMLConfiguration.class).getSAML2ArtifactBuilderFactory();
     }
 
     /**
@@ -73,7 +73,7 @@ public final class SAMLConfigurationSupport {
      * @param factory artifact factory for the library
      */
     public static void setSAML2ArtifactBuilderFactory(@Nullable final SAML2ArtifactBuilderFactory factory) {
-        ConfigurationService.get(SAMLConfiguration.class).setSAML2ArtifactBuilderFactory(factory);
+        ConfigurationService.ensure(SAMLConfiguration.class).setSAML2ArtifactBuilderFactory(factory);
     }
     
     /**
@@ -82,7 +82,7 @@ public final class SAMLConfigurationSupport {
      * @return the list of allowed URL schemes
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public static List<String> getAllowedBindingURLSchemes() {
-        return ConfigurationService.get(SAMLConfiguration.class).getAllowedBindingURLSchemes();
+        return ConfigurationService.ensure(SAMLConfiguration.class).getAllowedBindingURLSchemes();
     }
     
     /**
@@ -91,6 +91,6 @@ public final class SAMLConfigurationSupport {
      * @param schemes the new list of allowed URL schemes
      */
     public static void setAllowedBindingURLSchemes(@Nullable final List<String>schemes) {
-        ConfigurationService.get(SAMLConfiguration.class).setAllowedBindingURLSchemes(schemes);
+        ConfigurationService.ensure(SAMLConfiguration.class).setAllowedBindingURLSchemes(schemes);
     }
 }

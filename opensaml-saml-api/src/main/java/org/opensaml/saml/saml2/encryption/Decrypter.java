@@ -198,7 +198,7 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      * 
      * @param xmlObject the decrypted XMLObject
      */
-    private void logPostDecryption(final XMLObject xmlObject) {
+    private void logPostDecryption(@Nonnull final XMLObject xmlObject) {
         if (log.isDebugEnabled()) {
             try {
                 final Element dom = XMLObjectSupport.marshall(xmlObject);

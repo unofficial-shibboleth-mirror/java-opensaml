@@ -18,7 +18,6 @@
 package org.opensaml.saml.common.binding;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,10 +34,11 @@ import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractIdentifiedInitializableComponent;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -124,15 +124,16 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
     /** {@inheritDoc} */
     @Nonnull @NonnullElements public Iterable<EndpointType> resolve(@Nullable final CriteriaSet criteria)
             throws ResolverException {
-        validateCriteria(criteria);
+        final EndpointCriterion<EndpointType> endpointCriterion = validateCriteria(criteria);
+        assert criteria != null;
         
-        if (canUseRequestedEndpoint(criteria)) {
-            final EndpointType endpoint = (EndpointType) criteria.get(EndpointCriterion.class).getEndpoint();
+        if (canUseRequestedEndpoint(endpointCriterion)) {
+            final EndpointType endpoint = endpointCriterion.getEndpoint();
             if (doCheckEndpoint(criteria, endpoint)) {
-                return Collections.singletonList(endpoint);
+                return CollectionSupport.singletonList(endpoint);
             }
             log.debug("{} Requested endpoint was rejected by extended validation process", getLogPrefix());
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         
         final List<EndpointType> candidates = getCandidatesFromMetadata(criteria);
@@ -150,10 +151,11 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Nullable public EndpointType resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
-        validateCriteria(criteria);
+        final EndpointCriterion<EndpointType> endpointCriterion = validateCriteria(criteria);
+        assert criteria != null;
 
-        if (canUseRequestedEndpoint(criteria)) {
-            final EndpointType endpoint = (EndpointType) criteria.get(EndpointCriterion.class).getEndpoint();
+        if (canUseRequestedEndpoint(endpointCriterion)) {
+            final EndpointType endpoint = endpointCriterion.getEndpoint();
             if (doCheckEndpoint(criteria, endpoint)) {
                 return endpoint;
             }
@@ -168,6 +170,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
         final BestMatchLocationCriterion startsWith = criteria.get(BestMatchLocationCriterion.class);
         
         for (final EndpointType candidate : getCandidatesFromMetadata(criteria)) {
+            assert candidate != null;
             if (doCheckEndpoint(criteria, candidate)) {
                 if (startsWith != null) {
                     // Evaluate how good a match it is.
@@ -218,17 +221,22 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      * 
      * @param criteria  input criteria set
      * 
+     * @return the {@link EndpointCriterion} 
+     * 
      * @throws ResolverException if the input set is null or no {@link EndpointCriterion} is present
      */
-    private void validateCriteria(@Nullable final CriteriaSet criteria) throws ResolverException {
+    @Nonnull private EndpointCriterion<EndpointType> validateCriteria(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
         if (criteria == null) {
             throw new ResolverException("CriteriaSet cannot be null");
         }
 
+        @SuppressWarnings("unchecked")
         final EndpointCriterion<EndpointType> epCriterion = criteria.get(EndpointCriterion.class);
         if (epCriterion == null) {
             throw new ResolverException("EndpointCriterion not supplied");
         }
+        return epCriterion;
     }
     
     /**
@@ -237,14 +245,13 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      * turn out to be unusable by the caller, but that's immaterial because the requester must have
      * dictated the binding and location, so we're not allowed to ignore that.
      * 
-     * @param criteria  input criteria set
+     * @param criterion  the input {@link EndpointCriterion}
      * 
      * @return true iff the supplied endpoint via {@link EndpointCriterion} should be returned
      */
-    private boolean canUseRequestedEndpoint(@Nonnull final CriteriaSet criteria) {
-        final EndpointCriterion<EndpointType> epc = criteria.get(EndpointCriterion.class);
-        if (epc.isTrusted()) {
-            final EndpointType requestedEndpoint = epc.getEndpoint();
+    private boolean canUseRequestedEndpoint(@Nonnull final EndpointCriterion<EndpointType> criterion) {
+        if (criterion.isTrusted()) {
+            final EndpointType requestedEndpoint = criterion.getEndpoint();
             if (requestedEndpoint.getBinding() != null && (requestedEndpoint.getLocation() != null
                     || requestedEndpoint.getResponseLocation() != null)) {
                 return true;
@@ -276,7 +283,9 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
         }
         
         // Determine the QName type of endpoints to extract based on candidate type.
+        @SuppressWarnings("unchecked")
         final EndpointCriterion<EndpointType> epCriterion = criteria.get(EndpointCriterion.class);
+        assert epCriterion != null;
         QName endpointType = epCriterion.getEndpoint().getSchemaType();
         if (endpointType == null) {
             endpointType = epCriterion.getEndpoint().getElementQName();
@@ -308,7 +317,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
                     sortCandidates(
                             endpoints.stream()
                                 .filter(ep -> binding.equals(ep.getBinding()))
-                                .collect(Collectors.toUnmodifiableList())));
+                                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get()));
         }
         log.debug("{} Returning {} candidate endpoints of type {}", getLogPrefix(), sortedResults.size(),
                 endpointType);
@@ -322,6 +331,7 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      * 
      * @return a new list containing the endpoints such that the default is first
      */
+    @SuppressWarnings("unchecked")
     // Checkstyle: CyclomaticComplexity OFF
     @Nonnull @NonnullElements private List<EndpointType> sortCandidates(
             @Nonnull @NonnullElements final List<Endpoint> candidates) {

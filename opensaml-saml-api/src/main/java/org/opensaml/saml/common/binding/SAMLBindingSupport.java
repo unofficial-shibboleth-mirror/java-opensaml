@@ -36,13 +36,13 @@ import org.opensaml.saml.common.messaging.context.SAMLMessageReceivedEndpointCon
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /** A support class for SAML binding operations. */
@@ -90,6 +90,7 @@ public final class SAMLBindingSupport {
      */
     public static boolean checkRelayState(@Nullable final String relayState) {
         if (!Strings.isNullOrEmpty(relayState)) {
+            assert relayState != null;
             if (relayState.getBytes().length > 80) {
                 LOG.warn("Relay state exceeds 80 bytes: {}", relayState);
             }
@@ -251,8 +252,11 @@ public final class SAMLBindingSupport {
      */
     public static boolean isSigningCapableBinding(@Nonnull final MessageContext messageContext) {
         final SAMLBindingContext bindingContext = messageContext.getSubcontext(SAMLBindingContext.class);
-        if (bindingContext != null && bindingContext.getBindingDescriptor() != null) {
-            return bindingContext.getBindingDescriptor().isSignatureCapable();
+        if (bindingContext != null) {
+            final BindingDescriptor bd = bindingContext.getBindingDescriptor();
+            if (bd != null) {
+                return bd.isSignatureCapable();
+            }
         }
         return false;
     }
@@ -335,7 +339,10 @@ public final class SAMLBindingSupport {
         final SAMLMessageReceivedEndpointContext receivedEnpointContext =
                 messageContext.getSubcontext(SAMLMessageReceivedEndpointContext.class);
         if (receivedEnpointContext != null) {
-            return receivedEnpointContext.getRequestURL();
+            final String url = receivedEnpointContext.getRequestURL();
+            if (url != null) {
+                return url;
+            }
         }
 
         return request.getRequestURL().toString();

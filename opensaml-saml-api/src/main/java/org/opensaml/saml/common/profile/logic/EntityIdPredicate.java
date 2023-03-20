@@ -29,6 +29,7 @@ import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 import java.util.function.Predicate;
 
@@ -46,7 +47,7 @@ public class EntityIdPredicate implements Predicate<EntityDescriptor> {
      * @param ids the entityIDs to check for
      */
     public EntityIdPredicate(@Nullable @ParameterName(name="ids") final Collection<String> ids) {
-        entityIds = Set.copyOf(StringSupport.normalizeStringCollection(ids));
+        entityIds = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(ids));
     }
     
     /**

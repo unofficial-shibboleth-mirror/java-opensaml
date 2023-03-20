@@ -22,10 +22,12 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.Namespace;
+import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.ContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A helper class for working with SAMLObjects.
@@ -54,24 +56,28 @@ public final class SAMLObjectSupport {
      * @param signableObject the signable SAML object to evaluate
      */
     public static void declareNonVisibleNamespaces(@Nonnull final SignableSAMLObject signableObject) {
-        if (signableObject.getDOM() == null && signableObject.getSignature() != null) {
-            LOG.debug("Examining signed object for content references with exclusive canonicalization transform");
-            boolean sawExclusive = false;
-            for (final ContentReference cr : signableObject.getSignature().getContentReferences()) {
-                if (cr instanceof SAMLObjectContentReference) {
-                    final List<String> transforms = ((SAMLObjectContentReference)cr).getTransforms();
-                    if (transforms.contains(SignatureConstants.TRANSFORM_C14N_EXCL_WITH_COMMENTS) 
-                            || transforms.contains(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS)) {
-                        sawExclusive = true;
-                        break;
+        if (signableObject.getDOM() == null) {
+            final Signature sig = signableObject.getSignature();
+            if (sig != null) {
+                LOG.debug("Examining signed object for content references with exclusive canonicalization transform");
+                boolean sawExclusive = false;
+                for (final ContentReference cr : sig.getContentReferences()) {
+                    if (cr instanceof SAMLObjectContentReference) {
+                        final List<String> transforms = ((SAMLObjectContentReference)cr).getTransforms();
+                        if (transforms.contains(SignatureConstants.TRANSFORM_C14N_EXCL_WITH_COMMENTS) 
+                                || transforms.contains(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS)) {
+                            sawExclusive = true;
+                            break;
+                        }
                     }
                 }
-            }
-            
-            if (sawExclusive) {
-                LOG.debug("Saw exclusive transform, declaring non-visible namespaces on signed object");
-                for (final Namespace ns : signableObject.getNamespaceManager().getNonVisibleNamespaces()) {
-                    signableObject.getNamespaceManager().registerNamespaceDeclaration(ns);
+                
+                if (sawExclusive) {
+                    LOG.debug("Saw exclusive transform, declaring non-visible namespaces on signed object");
+                    for (final Namespace ns : signableObject.getNamespaceManager().getNonVisibleNamespaces()) {
+                        assert ns != null;
+                        signableObject.getNamespaceManager().registerNamespaceDeclaration(ns);
+                    }
                 }
             }
         }

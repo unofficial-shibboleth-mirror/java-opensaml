@@ -28,7 +28,8 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Builder of SAML 1, type 0x001, artifacts.
@@ -40,7 +41,7 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
 
     /** {@inheritDoc} */
     @Override
-    @Nullable public SAML1ArtifactType0001 buildArtifact(final byte[] artifact) {
+    @Nullable public SAML1ArtifactType0001 buildArtifact(@Nonnull final byte[] artifact) {
         try {
             return SAML1ArtifactType0001.parseArtifact(artifact);
         } catch (final IllegalArgumentException e) {
@@ -66,6 +67,7 @@ public class SAML1ArtifactType0001Builder implements SAML1ArtifactBuilder<SAML1A
             final byte[] assertionHandle = new byte[20];
             handleGenerator.nextBytes(assertionHandle);
 
+            assert source != null;
             return new SAML1ArtifactType0001(source, assertionHandle);
         } catch (final NoSuchAlgorithmException e) {
             log.warn("JVM does not support required cryptography algorithms.", e);

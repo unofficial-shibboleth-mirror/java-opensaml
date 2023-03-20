@@ -22,6 +22,7 @@ import java.time.Instant;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -32,7 +33,6 @@ import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.Response;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /** Helper methods for SAML 1 profile actions. */
 public final class SAML1ActionSupport {

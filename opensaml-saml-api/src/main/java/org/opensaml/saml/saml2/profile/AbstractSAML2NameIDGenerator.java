@@ -32,11 +32,11 @@ import org.opensaml.saml.common.profile.AbstractNameIdentifierGenerator;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Abstract base class for simple implementations of {@link SAML2NameIDGenerator}.

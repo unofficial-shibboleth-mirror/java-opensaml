@@ -66,8 +66,9 @@ public final class SAMLArtifactContext extends BaseContext {
      */
     @Nullable @NotEmpty public String getSourceEntityId() {
         if (sourceEntityId == null) {
-            if (getParent() != null) {
-                final SAMLSelfEntityContext self = getParent().getSubcontext(SAMLSelfEntityContext.class);
+            final BaseContext parent = getParent();
+            if (parent != null) {
+                final SAMLSelfEntityContext self = parent.getSubcontext(SAMLSelfEntityContext.class);
                 if (self != null) {
                     sourceEntityId = self.getEntityId();
                 }

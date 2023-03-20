@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.config;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -46,7 +45,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class SAMLConfiguration {
     
     /** Lowercase string function. */
-    @Nonnull private static final Function<String, String> lowercaseFunction = new LowercaseFunction();
+    @Nonnull private static final Function<String, String> LOWER = new LowercaseFunction();
 
     /** SAML 1 Artifact factory. */
     @Nullable private SAML1ArtifactBuilderFactory saml1ArtifactBuilderFactory;
@@ -64,7 +63,7 @@ public class SAMLConfiguration {
      *
      */
     public SAMLConfiguration() {
-        setAllowedBindingURLSchemes(CollectionSupport.listOf("http", "https"));
+        allowedBindingURLSchemes = CollectionSupport.listOf("http", "https");
     }
 
     /**
@@ -136,12 +135,12 @@ public class SAMLConfiguration {
      */
     public void setAllowedBindingURLSchemes(@Nullable final List<String> schemes) {
         if (schemes == null || schemes.isEmpty()) {
-            allowedBindingURLSchemes = Collections.emptyList();
+            allowedBindingURLSchemes = CollectionSupport.emptyList();
         } else {
             allowedBindingURLSchemes = StringSupport.normalizeStringCollection(schemes)
                     .stream()
-                    .map(lowercaseFunction::apply)
-                    .collect(Collectors.toUnmodifiableList());
+                    .map(LOWER::apply)
+                    .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
         }
     }
     

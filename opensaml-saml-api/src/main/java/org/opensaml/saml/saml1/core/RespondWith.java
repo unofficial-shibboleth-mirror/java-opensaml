@@ -39,6 +39,6 @@ public interface RespondWith extends SAMLObject, XSQName {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RespondWith";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 }

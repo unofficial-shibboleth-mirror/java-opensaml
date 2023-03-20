@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.common;
 
+import java.time.Duration;
 import java.time.Instant;
 import java.util.List;
 
@@ -103,7 +104,7 @@ public final class SAML2Support {
         if (xmlObject != null) {
             final List<XMLObject> children = xmlObject.getOrderedChildren();
             if (children != null) {
-                for (final XMLObject child : xmlObject.getOrderedChildren()) {
+                for (final XMLObject child : children) {
                     if (child != null) {
                         earliestExpiration = getEarliestExpiration(child, earliestExpiration, now);
                     }
@@ -131,8 +132,8 @@ public final class SAML2Support {
         
         Instant earliestExpiration = candidateTime;
 
-        if (cacheableObject.getCacheDuration() != null && !cacheableObject.getCacheDuration().isNegative()) {
-            final Instant elementExpirationTime = now.plus(cacheableObject.getCacheDuration());
+        if (cacheableObject.getCacheDuration() instanceof Duration dur && !dur.isNegative()) {
+            final Instant elementExpirationTime = now.plus(dur);
             if (earliestExpiration == null) {
                 earliestExpiration = elementExpirationTime;
             } else {

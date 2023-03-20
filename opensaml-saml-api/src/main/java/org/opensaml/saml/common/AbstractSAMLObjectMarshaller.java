@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.common;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -35,8 +37,8 @@ public abstract class AbstractSAMLObjectMarshaller extends AbstractXMLObjectMars
      * 
      * {@inheritDoc}
      */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
-
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
     }
 
     /**
@@ -45,13 +47,14 @@ public abstract class AbstractSAMLObjectMarshaller extends AbstractXMLObjectMars
      * 
      * {@inheritDoc}
      */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
     }
 
     /** {@inheritDoc} */
-    public Element marshall(final XMLObject xmlObject, final Document document) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Document document)
+            throws MarshallingException {
         if (xmlObject instanceof SignableSAMLObject) {
             SAMLObjectSupport.declareNonVisibleNamespaces((SignableSAMLObject) xmlObject);
         }
@@ -59,7 +62,8 @@ public abstract class AbstractSAMLObjectMarshaller extends AbstractXMLObjectMars
     }
 
     /** {@inheritDoc} */
-    public Element marshall(final XMLObject xmlObject, final Element parentElement) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Element parentElement)
+            throws MarshallingException {
         if (xmlObject instanceof SignableSAMLObject) {
             SAMLObjectSupport.declareNonVisibleNamespaces((SignableSAMLObject) xmlObject);
         }

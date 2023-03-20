@@ -27,14 +27,12 @@ import javax.annotation.Nullable;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
 import org.opensaml.saml.common.SAMLObject;
+import org.opensaml.saml.saml2.core.NameIDType;
 
-import com.google.common.base.Predicates;
-
-import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
-import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -69,7 +67,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     private boolean omitQualifiers;
 
     /** The identifier Format supported. */
-    @NonnullAfterInit @NotEmpty private String format;
+    @Nonnull @NotEmpty private String format;
 
     /** Explicit NameQualifier, if any. */
     @Nullable private String idpNameQualifier;
@@ -82,7 +80,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
 
     /** Constructor. */
     protected AbstractNameIdentifierGenerator() {
-        activationCondition = Predicates.alwaysTrue();
+        activationCondition = PredicateSupport.alwaysTrue();
+        format = NameIDType.UNSPECIFIED;
     }
 
     /**
@@ -161,7 +160,7 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     }
 
     /** {@inheritDoc} */
-    @Override @NonnullAfterInit @NotEmpty public String getFormat() {
+    @Nonnull @NotEmpty public String getFormat() {
         return format;
     }
 
@@ -246,16 +245,6 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     }
 
     /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-
-        if (format == null) {
-            throw new ComponentInitializationException("Format value cannot be null or empty");
-        }
-    }
-
-    /** {@inheritDoc} */
     public boolean test(@Nullable final ProfileRequestContext input) {
         return activationCondition.test(input);
     }
@@ -309,9 +298,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
             @Nonnull final ProfileRequestContext profileRequestContext) {
         if (idpNameQualifier != null) {
             if (omitQualifiers) {
-                if (defaultIdPNameQualifierLookupStrategy == null
-                        || !Objects.equals(idpNameQualifier,
-                                defaultIdPNameQualifierLookupStrategy.apply(profileRequestContext))) {
+                final Function<ProfileRequestContext,String> strategy = defaultIdPNameQualifierLookupStrategy;
+                if (strategy == null || !Objects.equals(idpNameQualifier, strategy.apply(profileRequestContext))) {
                     return idpNameQualifier;
                 }
                 return null;
@@ -334,9 +322,8 @@ public abstract class AbstractNameIdentifierGenerator<NameIdType extends SAMLObj
     @Nullable protected String getEffectiveSPNameQualifier(@Nonnull final ProfileRequestContext profileRequestContext) {
         if (spNameQualifier != null) {
             if (omitQualifiers) {
-                if (defaultSPNameQualifierLookupStrategy == null
-                        || !Objects.equals(spNameQualifier,
-                                defaultSPNameQualifierLookupStrategy.apply(profileRequestContext))) {
+                final Function<ProfileRequestContext,String> strategy = defaultSPNameQualifierLookupStrategy;
+                if (strategy == null || !Objects.equals(spNameQualifier, strategy.apply(profileRequestContext))) {
                     return spNameQualifier;
                 }
                 return null;

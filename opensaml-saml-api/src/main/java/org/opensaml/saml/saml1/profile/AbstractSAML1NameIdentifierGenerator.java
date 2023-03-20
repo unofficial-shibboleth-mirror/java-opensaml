@@ -27,7 +27,8 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.AbstractNameIdentifierGenerator;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Abstract base class for simple implementations of {@link SAML1NameIdentifierGenerator}.

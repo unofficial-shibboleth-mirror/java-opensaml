@@ -38,8 +38,8 @@ public interface Asynchronous extends SAMLObject {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Asynchronous";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20PASLO_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20PASLO_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20PASLO_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20PASLO_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AsynchronousType";

@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -33,8 +34,8 @@ public interface NameIdentifier extends SAMLObject, XSString {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIdentifier";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML1_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "NameIdentifierType";
@@ -56,7 +57,8 @@ public interface NameIdentifier extends SAMLObject, XSString {
     @Nonnull @NotEmpty public static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
 
     /** URI for X509 subject name format. */
-    @Nonnull @NotEmpty public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
+    @Nonnull @NotEmpty
+    public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
 
     /** URI for windows domain qualified name name format. */
     @Nonnull @NotEmpty public static final String WIN_DOMAIN_QUALIFIED =
@@ -67,27 +69,27 @@ public interface NameIdentifier extends SAMLObject, XSString {
      * 
      * @return name qualifier for this identifier
      */
-    public String getNameQualifier();
+    @Nullable public String getNameQualifier();
 
     /**
      * Sets the name qualifier for this identifier.
      * 
      * @param nameQualifier name qualifier for this identifier
      */
-    public void setNameQualifier(String nameQualifier);
+    public void setNameQualifier(@Nullable final String nameQualifier);
 
     /**
      * Gets the format of this identifier.
      * 
      * @return format of this identifier
      */
-    public String getFormat();
+    @Nullable public String getFormat();
 
     /**
      * Sets the format of this identifier.
      * 
      * @param format format of this identifier
      */
-    public void setFormat(String format);
+    public void setFormat(@Nullable final String format);
 
 }

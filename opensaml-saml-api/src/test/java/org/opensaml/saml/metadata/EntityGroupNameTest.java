@@ -17,13 +17,12 @@
 
 package org.opensaml.saml.metadata;
 
-
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
+@SuppressWarnings("javadoc")
 public class EntityGroupNameTest {
     
     @Test
@@ -33,11 +32,6 @@ public class EntityGroupNameTest {
         
         groupName = new EntityGroupName("    foo    ");
         Assert.assertEquals(groupName.getName(), "foo");
-    }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testConstructorOnNull() {
-        new EntityGroupName(null);
     }
     
     @Test(expectedExceptions=ConstraintViolationException.class)

@@ -22,6 +22,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.saml.saml2.core.EncryptedElementType;
@@ -60,7 +61,7 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
     }
 
     /** {@inheritDoc} */
-    public Iterable<EncryptedKey> resolve(final EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
         final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
         
         if (!(encryptedData.getParent() instanceof EncryptedElementType) ) {
@@ -68,7 +69,7 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
         }
         
         final EncryptedElementType encElementType = (EncryptedElementType) encryptedData.getParent();
-        
+        assert encElementType != null;
         for (final EncryptedKey encKey : encElementType.getEncryptedKeys()) {
             if (matchRecipient(encKey.getRecipient())) {
                 resolvedEncKeys.add(encKey);

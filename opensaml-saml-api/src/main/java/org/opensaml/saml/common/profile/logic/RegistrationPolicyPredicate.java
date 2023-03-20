@@ -30,6 +30,7 @@ import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -47,7 +48,7 @@ public class RegistrationPolicyPredicate extends AbstractRegistrationInfoPredica
      * @param policies the policies to test for
      */
     public RegistrationPolicyPredicate(@Nullable @ParameterName(name="policies") final Collection<String> policies) {
-        policySet = Set.copyOf(StringSupport.normalizeStringCollection(policies));
+        policySet = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(policies));
     }
 
     /**

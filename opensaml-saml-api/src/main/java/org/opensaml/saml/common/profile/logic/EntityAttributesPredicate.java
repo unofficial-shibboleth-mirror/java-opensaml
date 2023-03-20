@@ -31,6 +31,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.schema.XSBase64Binary;
 import org.opensaml.core.xml.schema.XSBoolean;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.XSDateTime;
 import org.opensaml.core.xml.schema.XSInteger;
 import org.opensaml.core.xml.schema.XSString;
@@ -41,7 +42,6 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.Extensions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Iterables;
 
@@ -50,7 +50,9 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
@@ -81,11 +83,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
      */
     public EntityAttributesPredicate(
             @Nonnull @NonnullElements @ParameterName(name="candidates") final Collection<Candidate> candidates) {
-        
-        candidateSet = List.copyOf(Constraint.isNotNull(candidates, "Candidate collection cannot be null"));
-        
-        trimTags = true;
-        matchAll = false;
+        this(candidates, true, false);
     }
 
     /**
@@ -97,11 +95,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
     public EntityAttributesPredicate(
             @Nonnull @NonnullElements @ParameterName(name="candidates") final Collection<Candidate> candidates,
             @ParameterName(name="trim") final boolean trim) {
-        
-        candidateSet = List.copyOf(Constraint.isNotNull(candidates, "Candidate collection cannot be null"));
-        
-        trimTags = trim;
-        matchAll = false;
+        this(candidates, trim, false);
     }
     
     /**
@@ -116,7 +110,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             @ParameterName(name="trim") final boolean trim,
             @ParameterName(name="all") final boolean all) {
         
-        candidateSet = List.copyOf(Constraint.isNotNull(candidates, "Candidate collection cannot be null"));
+        candidateSet = CollectionSupport.copyToList(Constraint.isNotNull(candidates, "Candidate collection cannot be null"));
         
         trimTags = trim;
         matchAll = all;
@@ -234,8 +228,8 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             nam = Constraint.isNotNull(StringSupport.trimOrNull(name), "Attribute Name cannot be null or empty");
             nameFormat = null;
             
-            values = Collections.emptyList();
-            regexps = Collections.emptyList(); 
+            values = CollectionSupport.emptyList();
+            regexps = CollectionSupport.emptyList(); 
         }
 
         /**
@@ -253,8 +247,8 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
                 nameFormat = StringSupport.trimOrNull(format);
             }
             
-            values = Collections.emptyList();
-            regexps = Collections.emptyList(); 
+            values = CollectionSupport.emptyList();
+            regexps = CollectionSupport.emptyList(); 
         }
 
         /**
@@ -290,7 +284,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @param vals the exact values to match
          */
         public void setValues(@Nonnull @NonnullElements final Collection<String> vals) {
-            values = List.copyOf(Constraint.isNotNull(vals, "Values collection cannot be null"));
+            values = CollectionSupport.copyToList(Constraint.isNotNull(vals, "Values collection cannot be null"));
         }
 
         /**
@@ -308,7 +302,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @param exps the regular expressions to match
          */
         public void setRegexps(@Nonnull @NonnullElements final Collection<Pattern> exps) {
-            regexps = List.copyOf(Constraint.isNotNull(exps, "Regular expressions collection cannot be null"));
+            regexps = CollectionSupport.copyToList(Constraint.isNotNull(exps, "Regular expressions collection cannot be null"));
         }
     }
     
@@ -332,7 +326,11 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
 
 // Checkstyle: MethodLength OFF
         /** {@inheritDoc} */
-        public boolean test(@Nonnull final Candidate input) {
+        public boolean test(@Nullable final Candidate input) {
+            if (input == null) {
+                return false;
+            }
+            
             final List<String> tagvals = input.values;
             final List<Pattern> tagexps = input.regexps;
 
@@ -344,7 +342,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             for (final Attribute a : attributes) {
                 // Compare Name and NameFormat for a matching tag.
                 if (a.getName() != null && a.getName().equals(input.getName())
-                        && (input.getNameFormat() == null || input.getNameFormat().equals(a.getNameFormat()))) {
+                        && (input.getNameFormat() == null || a.getNameFormat().equals(input.getNameFormat()))) {
 
                     final List<String> attributeValues = getPossibleAttributeValuesAsStrings(a);
                     // Check each tag value's simple content for a value match.
@@ -412,6 +410,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             final List<XMLObject> cvals = attribute.getAttributeValues();
             final List<String> result = new ArrayList<>(cvals.size()*2);
             for (final XMLObject cval : cvals) {
+                assert cval != null;
                 result.addAll(xmlObjectToStrings(cval));
             }
             return result;
@@ -426,15 +425,15 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
         @Nullable private List<String> xmlObjectToStrings(@Nonnull final XMLObject object) {
             String toMatch = null;
             String toMatchAlt = null;
-            if (object instanceof XSString) {
-                toMatch = ((XSString) object).getValue();
-            } else if (object instanceof XSURI) {
-                toMatch = ((XSURI) object).getURI();
-            } else if (object instanceof XSBoolean) {
-                toMatch = ((XSBoolean) object).getValue().getValue() ? "1" : "0";
-                toMatchAlt = ((XSBoolean) object).getValue().getValue() ? "true" : "false";
-            } else if (object instanceof XSInteger) {
-                toMatch = ((XSInteger) object).getValue().toString();
+            if (object instanceof XSString xs) {
+                toMatch = xs.getValue();
+            } else if (object instanceof XSURI xs) {
+                toMatch = xs.getURI();
+            } else if (object instanceof XSBoolean xs && xs.getValue() instanceof XSBooleanValue val) {
+                toMatch = val.getValue() ? "1" : "0";
+                toMatchAlt = val.getValue() ? "true" : "false";
+            } else if (object instanceof XSInteger xs && xs.getValue() instanceof Integer val) {
+                toMatch = val.toString();
             } else if (object instanceof XSDateTime) {
                 final Instant dt = ((XSDateTime) object).getValue();
                 if (dt != null) {

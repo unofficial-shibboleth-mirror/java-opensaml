@@ -29,6 +29,7 @@ import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -45,8 +46,8 @@ public class RegistrationAuthorityPredicate  extends AbstractRegistrationInfoPre
      * 
      * @param names the authority names to test for
      */
-    public RegistrationAuthorityPredicate(@Nullable@ParameterName(name="names") final Collection<String> names) {
-        authorities = Set.copyOf(StringSupport.normalizeStringCollection(names));
+    public RegistrationAuthorityPredicate(@Nullable @ParameterName(name="names") final Collection<String> names) {
+        authorities = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(names));
     }
 
     /**

@@ -22,6 +22,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -38,8 +39,8 @@ public interface SubjectLocality extends SAMLObject {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectLocality";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML1_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
@@ -59,26 +60,26 @@ public interface SubjectLocality extends SAMLObject {
      * 
      * @return IP address of the locality
      */
-    public String getIPAddress();
+    @Nullable public String getIPAddress();
 
     /**
      * Sets the IP address of the locality.
      * 
      * @param address IP address of the locality
      */
-    public void setIPAddress(String address);
+    public void setIPAddress(@Nullable final String address);
 
     /**
      * Gets the DNS name of the locality.
      * 
      * @return DNS name of the locality
      */
-    public String getDNSAddress();
+    @Nullable public String getDNSAddress();
 
     /**
      * Sets the DNS name of the locality.
      * 
      * @param address DNS name of the locality
      */
-    public void setDNSAddress(String address);
+    public void setDNSAddress(@Nullable final String address);
 }

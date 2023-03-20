@@ -22,6 +22,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
+@SuppressWarnings("javadoc")
 public class SAMLBindingSupportTest {
     
     @Test
@@ -41,13 +42,6 @@ public class SAMLBindingSupportTest {
         try {
             SAMLBindingSupport.convertSAML2ArtifactEndpointIndex(new byte[] {(byte) 0x80, (byte) 0x00});
             Assert.fail("Should have failed on input resulting in negative int");
-        } catch (ConstraintViolationException e) {
-            // expected
-        }
-        
-        try {
-            SAMLBindingSupport.convertSAML2ArtifactEndpointIndex(null);
-            Assert.fail("Should have failed on null input");
         } catch (ConstraintViolationException e) {
             // expected
         }

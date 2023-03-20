@@ -21,7 +21,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /** Policy that requires that qualifiers, if set, match the requester and responder. */
 public class DefaultNameIDPolicyPredicate extends AbstractNameIDPolicyPredicate {

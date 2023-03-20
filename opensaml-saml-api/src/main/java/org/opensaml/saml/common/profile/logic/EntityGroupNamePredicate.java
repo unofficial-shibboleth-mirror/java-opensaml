@@ -32,12 +32,13 @@ import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -80,12 +81,14 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
     public EntityGroupNamePredicate(@Nullable @ParameterName(name="names") final Collection<String> names,
             @Nullable @ParameterName(name="resolver") final MetadataResolver resolver) {
         
-        groupNames = Set.copyOf(StringSupport.normalizeStringCollection(names));
+        groupNames = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(names));
         
         metadataResolver = resolver;
         if (resolver != null) {
             criteriaSets = new ArrayList<>(groupNames.size());
             for (final String name : groupNames) {
+                assert name != null;
+                assert criteriaSets != null;
                 criteriaSets.add(new CriteriaSet(new EntityIdCriterion(name)));
             }
         }
@@ -117,12 +120,15 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
         }
         
         if (metadataResolver != null) {
+            assert criteriaSets != null;
             for (final CriteriaSet criteria : criteriaSets) {
                 try {
+                    assert metadataResolver != null;
                     final EntityDescriptor affiliation = metadataResolver.resolveSingle(criteria);
                     if (affiliation != null && affiliation.getAffiliationDescriptor() != null) {
                         for (final AffiliateMember member : affiliation.getAffiliationDescriptor().getMembers()) {
-                            if (member.getURI().equals(input.getEntityID())) {
+                            final String uri = member.getURI();
+                            if (uri != null && uri.equals(input.getEntityID())) {
                                 log.debug("Found AffiliationDescriptor '{}' membership for entity '{}'",
                                         affiliation.getEntityID(), input.getEntityID());
                                 return true;

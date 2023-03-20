@@ -21,6 +21,7 @@ import java.util.function.Predicate;
 
 import javax.annotation.Nullable;
 
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 
@@ -44,11 +45,13 @@ public class InboundMessageSignedPredicate implements Predicate<ProfileRequestCo
     }
 
     /** {@inheritDoc} */
-    public boolean test(@Nullable final ProfileRequestContext prc) {
-        if (prc == null || prc.getInboundMessageContext() == null) {
-            return false;
+    public boolean test(@Nullable final ProfileRequestContext input) {
+
+        if (input != null && input.getInboundMessageContext() instanceof MessageContext mc) {
+            return SAMLBindingSupport.isMessageSigned(mc, presenceSatisfies);
         }
-        return SAMLBindingSupport.isMessageSigned(prc.getInboundMessageContext(), presenceSatisfies);
+        
+        return false;
     }
 
 }

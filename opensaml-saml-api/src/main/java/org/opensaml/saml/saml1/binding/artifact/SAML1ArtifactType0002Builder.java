@@ -27,9 +27,9 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.saml.common.messaging.context.SAMLArtifactContext;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * SAML 1, type 0x0002, artifact builder.
@@ -40,7 +40,6 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
     @Nonnull private final Logger log = LoggerFactory.getLogger(SAML1ArtifactType0002Builder.class);
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public SAML1ArtifactType0002 buildArtifact(@Nonnull @NotEmpty final byte[] artifact) {
         try {
             return SAML1ArtifactType0002.parseArtifact(artifact);
@@ -51,7 +50,6 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public SAML1ArtifactType0002 buildArtifact(@Nonnull final MessageContext requestContext,
             @Nonnull final Assertion assertion) {
         try {
@@ -76,8 +74,7 @@ public class SAML1ArtifactType0002Builder implements SAML1ArtifactBuilder<SAML1A
      * @param requestContext the current message context
      * @return the SAML artifact context, or null
      */
-    @Nullable protected SAMLArtifactContext getArtifactContext(
-            @Nonnull final MessageContext requestContext) {
+    @Nullable protected SAMLArtifactContext getArtifactContext(@Nonnull final MessageContext requestContext) {
         return requestContext.getSubcontext(SAMLArtifactContext.class);
     }
     

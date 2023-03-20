@@ -23,7 +23,8 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Utility helper class for SAML 2 metadata objects.

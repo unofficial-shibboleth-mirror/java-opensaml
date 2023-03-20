@@ -30,7 +30,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class SimpleStringMetadataIndexKey implements MetadataIndexKey {
     
     /** The indexed value. */
-    private String value;
+    @Nonnull private String value;
     
     /**
      * Constructor.

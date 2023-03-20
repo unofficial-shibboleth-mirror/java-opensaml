@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.Criterion;
 
@@ -39,7 +40,7 @@ public final class BindingCriterion implements Criterion {
      * @param bindingURIs list of SAML binding URIs
      */
     public BindingCriterion(@Nonnull @NonnullElements final List<String> bindingURIs) {
-        bindings = List.copyOf(StringSupport.normalizeStringCollection(bindingURIs));
+        bindings = CollectionSupport.copyToList(StringSupport.normalizeStringCollection(bindingURIs));
     }
 
     /**

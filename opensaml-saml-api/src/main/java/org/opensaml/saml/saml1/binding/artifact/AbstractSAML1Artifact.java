@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.binding.artifact;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.saml.common.binding.artifact.AbstractSAMLArtifact;
 
 /**
@@ -29,7 +31,7 @@ public abstract class AbstractSAML1Artifact extends AbstractSAMLArtifact impleme
      * 
      * @param typeCode artifact type code
      */
-    protected AbstractSAML1Artifact(final byte[] typeCode) {
+    protected AbstractSAML1Artifact(@Nonnull final byte[] typeCode) {
         super(typeCode);
     }
 }

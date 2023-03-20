@@ -25,10 +25,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.apache.commons.codec.binary.Hex;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Base class for SAML artifacts.
@@ -39,7 +39,7 @@ public abstract class AbstractSAMLArtifact implements SAMLArtifact {
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractSAMLArtifact.class);
 
     /** 2 byte artifact type code. */
-    private byte[] typeCode;
+    @Nonnull private byte[] typeCode;
 
     /**
      * Constructor.

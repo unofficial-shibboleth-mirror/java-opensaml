@@ -21,13 +21,13 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.LazySet;
-import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.apache.xml.security.signature.XMLSignature;
@@ -42,7 +42,6 @@ import org.opensaml.xmlsec.signature.support.ConfigurableContentReference;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.TransformsConfigurableContentReference;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -83,7 +82,7 @@ public class SAMLObjectContentReference implements ConfigurableContentReference,
     @Nonnull private final SignableSAMLObject signableObject;
     
     /** Algorithm used to digest the content. */
-    @Nonnull @NotEmpty private String digestAlgorithm;
+    @Nullable private String digestAlgorithm;
 
     /** Transforms applied to the content. */
     @Nonnull @NonnullElements private List<String> transforms;
@@ -114,14 +113,13 @@ public class SAMLObjectContentReference implements ConfigurableContentReference,
     }
 
     /** {@inheritDoc}. */
-    @Nonnull @NotEmpty public String getDigestAlgorithm() {
+    @Nullable public String getDigestAlgorithm() {
         return digestAlgorithm;
     }
 
     /** {@inheritDoc}. */
-    public void setDigestAlgorithm(@Nonnull @NotEmpty final String newAlgorithm) {
-        digestAlgorithm = Constraint.isNotNull(StringSupport.trimOrNull(newAlgorithm),
-                "Digest algorithm cannot be empty or null");
+    public void setDigestAlgorithm(@Nullable final String newAlgorithm) {
+        digestAlgorithm = StringSupport.trimOrNull(newAlgorithm);
     }
 
     /** {@inheritDoc} */

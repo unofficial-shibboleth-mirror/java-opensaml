@@ -34,8 +34,8 @@ public interface StatusCode extends SAMLObject {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusCode";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "StatusCodeType";
@@ -45,25 +45,28 @@ public interface StatusCode extends SAMLObject {
             SAMLConstants.SAML1P_PREFIX);
 
     /** Success status value. */
-    @Nonnull public static final QName SUCCESS = new QName(SAMLConstants.SAML10P_NS, "Success", SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName SUCCESS =
+            new QName(SAMLConstants.SAML10P_NS, "Success", SAMLConstants.SAML1P_PREFIX);
 
     /** VersionMismatch status value. */
     @Nonnull public static final QName VERSION_MISMATCH = new QName(SAMLConstants.SAML10P_NS, "VersionMismatch",
             SAMLConstants.SAML1P_PREFIX);
 
     /** Requester status value. */
-    @Nonnull public static final QName REQUESTER = new QName(SAMLConstants.SAML10P_NS, "Requester", SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName REQUESTER =
+            new QName(SAMLConstants.SAML10P_NS, "Requester", SAMLConstants.SAML1P_PREFIX);
 
     /** Responder status value. */
-    @Nonnull public static final QName RESPONDER = new QName(SAMLConstants.SAML10P_NS, "Responder", SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName RESPONDER =
+            new QName(SAMLConstants.SAML10P_NS, "Responder", SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionTooHigh status value. */
-    @Nonnull public static final QName REQUEST_VERSION_TOO_HIGH = new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooHigh",
-            SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName REQUEST_VERSION_TOO_HIGH =
+            new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooHigh", SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionTooLow status value. */
-    @Nonnull public static final QName REQUEST_VERSION_TOO_LOW = new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooLow",
-            SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName REQUEST_VERSION_TOO_LOW =
+            new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooLow", SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionDepricated status value. */
     @Nonnull public static final QName REQUEST_VERSION_DEPRECATED = new QName(SAMLConstants.SAML10P_NS,
@@ -78,8 +81,8 @@ public interface StatusCode extends SAMLObject {
             SAMLConstants.SAML1P_PREFIX);
 
     /** ResourceNotRecognized status value. */
-    @Nonnull public static final QName RESOURCE_NOT_RECOGNIZED = new QName(SAMLConstants.SAML10P_NS, "ResourceNotRecognized",
-            SAMLConstants.SAML1P_PREFIX);
+    @Nonnull public static final QName RESOURCE_NOT_RECOGNIZED =
+            new QName(SAMLConstants.SAML10P_NS, "ResourceNotRecognized", SAMLConstants.SAML1P_PREFIX);
 
     /** Name for the attribute which defines the Value. */
     @Nonnull @NotEmpty public static final String VALUE_ATTRIB_NAME = "Value";

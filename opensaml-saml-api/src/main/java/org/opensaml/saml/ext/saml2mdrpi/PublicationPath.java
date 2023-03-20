@@ -40,8 +40,8 @@ public interface PublicationPath extends SAMLObject {
     @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicationPath";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MDRPI_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PublicationPathType";
@@ -55,6 +55,6 @@ public interface PublicationPath extends SAMLObject {
      * 
      * @return the list of publications
      */
-    public List<Publication> getPublications();
+    @Nonnull public List<Publication> getPublications();
 
 }
