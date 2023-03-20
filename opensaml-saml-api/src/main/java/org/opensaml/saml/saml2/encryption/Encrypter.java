@@ -373,7 +373,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
         }
 
         final EncryptedData encryptedData = encryptElement(xmlObject, encryptionKey, encryptionAlgorithmURI, false);
-        if (encParams.getKeyInfoGenerator() instanceof KeyInfoGenerator generator) {
+        final KeyInfoGenerator generator = encParams.getKeyInfoGenerator();
+        if (generator != null) {
             log.debug("Dynamically generating KeyInfo from Credential for EncryptedData using generator: {}", generator
                     .getClass().getName());
             try {
@@ -451,7 +452,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
 
         log.debug("Placing EncryptedKey elements inline inside EncryptedData");
 
-        if (encData.getKeyInfo() instanceof KeyInfo keyInfo) {
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        if (keyInfo != null) {
             keyInfo.getEncryptedKeys().addAll(encKeys);
         }
         encElement.setEncryptedData(encData);
@@ -503,7 +505,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
     protected void linkSinglePeerKey(final EncryptedData encData, final EncryptedKey encKey) {
         log.debug("Linking single peer EncryptedKey with RetrievalMethod and DataReference");
         
-        if (encData.getKeyInfo() instanceof KeyInfo keyInfo) {
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        if (keyInfo != null) {
             // Forward reference from EncryptedData to the EncryptedKey
             final RetrievalMethod rm = retrievalMethodBuilder.buildObject();
             rm.setURI("#" + encKey.getID());
@@ -512,7 +515,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
         }
 
         // Back reference from the EncryptedKey to the EncryptedData
-        if (encKey.getReferenceList() instanceof ReferenceList refList) {
+        final ReferenceList refList = encKey.getReferenceList();
+        if (refList != null) {
             final DataReference dr = dataReferenceBuilder.buildObject();
             dr.setURI("#" + encData.getID());
             refList.getDataReferences().add(dr);
@@ -529,7 +533,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
         log.debug("Linking multiple peer EncryptedKeys with CarriedKeyName and DataReference");
         // Get the name of the data encryption key
         final List<KeyName> dataEncKeyNames;
-        if (encData.getKeyInfo() instanceof KeyInfo keyInfo) {
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        if (keyInfo != null) {
             dataEncKeyNames = keyInfo.getKeyNames();
         } else {
             dataEncKeyNames = CollectionSupport.emptyList();
@@ -563,7 +568,8 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
             carriedName.setValue(carriedKeyNameValue);
 
             // Back reference from the EncryptedKeys to the EncryptedData
-            if (encKey.getReferenceList() instanceof ReferenceList refList) {
+            final ReferenceList refList = encKey.getReferenceList();
+            if (refList != null) {
                 final DataReference dr = dataReferenceBuilder.buildObject();
                 dr.setURI("#" + encData.getID());
                 refList.getDataReferences().add(dr);

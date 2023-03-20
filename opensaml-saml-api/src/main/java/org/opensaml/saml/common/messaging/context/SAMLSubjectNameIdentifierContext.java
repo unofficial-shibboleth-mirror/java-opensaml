@@ -135,19 +135,24 @@ public final class SAMLSubjectNameIdentifierContext extends BaseContext {
             return null;
         }
         if (samlMessage instanceof org.opensaml.saml.saml2.core.SubjectQuery msg) {
-            if (msg.getSubject() instanceof org.opensaml.saml.saml2.core.Subject s) {
+            final org.opensaml.saml.saml2.core.Subject s = msg.getSubject();
+            if (s != null) {
                 return s.getNameID();
             }
             return null;
         } else if (samlMessage instanceof org.opensaml.saml.saml2.core.AuthnRequest msg) {
-            if (msg.getSubject() instanceof org.opensaml.saml.saml2.core.Subject s) {
+            final org.opensaml.saml.saml2.core.Subject s = msg.getSubject();
+            if (s != null) {
                 return s.getNameID();
             }
             return null;
         } else if (samlMessage instanceof Request msg) {
             final org.opensaml.saml.saml1.core.SubjectQuery query = msg.getSubjectQuery();
-            if (query != null && query.getSubject() instanceof org.opensaml.saml.saml1.core.Subject s) {
-                return s.getNameIdentifier();
+            if (query != null) {
+                final org.opensaml.saml.saml1.core.Subject s = query.getSubject();
+                if (s != null) {
+                    return s.getNameIdentifier();
+                }
             }
             return null;
         } else if (samlMessage instanceof LogoutRequest) {

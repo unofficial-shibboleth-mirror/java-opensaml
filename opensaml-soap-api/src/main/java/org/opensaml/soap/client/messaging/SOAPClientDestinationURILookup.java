@@ -34,20 +34,14 @@ public class SOAPClientDestinationURILookup implements Function<MessageContext, 
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nullable final MessageContext messageContext) {
-        if (messageContext == null) {
-            return null;
+        if (messageContext != null && messageContext.getParent() instanceof InOutOperationContext inout) {
+            final SOAPClientContext soap = inout.getSubcontext(SOAPClientContext.class);
+            if (soap != null) {
+                return soap.getDestinationURI();
+            }
         }
         
-        if (!(messageContext.getParent() instanceof InOutOperationContext)) {
-            return null;
-        }
-        
-        final InOutOperationContext opContext = (InOutOperationContext) messageContext.getParent();
-        
-        if (opContext.getSubcontext(SOAPClientContext.class) == null) {
-            return null;
-        }
-        return opContext.getSubcontext(SOAPClientContext.class).getDestinationURI();
+        return null;
     }
 
 }

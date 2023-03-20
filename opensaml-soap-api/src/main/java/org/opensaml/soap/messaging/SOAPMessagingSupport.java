@@ -19,7 +19,6 @@ package org.opensaml.soap.messaging;
 
 import static org.opensaml.soap.util.SOAPVersion.SOAP_1_1;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -28,6 +27,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.logic.Constraint;
 
@@ -70,11 +70,41 @@ public final class SOAPMessagingSupport {
      * @param autoCreate whether to auto-create the context if it does not exist
      * 
      * @return the current SOAP 1.1 context. May be null if autoCreate=false, otherwise will be non-null
+     * 
+     * @deprecated
      */
+    @Deprecated(since="5.0.0", forRemoval=true)
     @Nullable public static SOAP11Context getSOAP11Context(@Nonnull final MessageContext messageContext,
             final boolean autoCreate) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         return messageContext.getSubcontext(SOAP11Context.class, autoCreate);
+    }
+    
+    /**
+     * Get the current {@link SOAP11Context} for the given {@link MessageContext}. 
+     * 
+     * @param messageContext the current message context
+     * 
+     * @return the current SOAP 1.1 context or null
+     */
+    @Nullable public static SOAP11Context getSOAP11Context(@Nonnull final MessageContext messageContext) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        return messageContext.getSubcontext(SOAP11Context.class);
+    }
+
+    /**
+     * Get the current {@link SOAP11Context} for the given {@link MessageContext}, or create one if
+     * necessary. 
+     * 
+     * @param messageContext the current message context
+     * 
+     * @return the current SOAP 1.1 context.
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static SOAP11Context ensureSOAP11Context(@Nonnull final MessageContext messageContext) {
+        Constraint.isNotNull(messageContext, "Message context cannot be null");
+        return messageContext.ensureSubcontext(SOAP11Context.class);
     }
 
     /**
@@ -297,15 +327,15 @@ public final class SOAPMessagingSupport {
             @Nullable final Set<String> targetNodes, final boolean isFinalDestination) {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
-        final SOAP11Context soap11 = getSOAP11Context(messageContext, false);
+        final SOAP11Context soap11 = getSOAP11Context(messageContext);
         
         // SOAP 1.1 Envelope
-        if (soap11 != null && soap11.getEnvelope() != null) {
-            return getSOAP11HeaderBlock(soap11.getEnvelope(), headerName, targetNodes, isFinalDestination);
+        if (soap11 != null && soap11.getEnvelope() instanceof Envelope env) {
+            return getSOAP11HeaderBlock(env, headerName, targetNodes, isFinalDestination);
         }
         
         //TODO SOAP 1.2 support when object providers are implemented
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
     
     /**
@@ -326,7 +356,7 @@ public final class SOAPMessagingSupport {
         
         final Header envelopeHeader = envelope.getHeader();
         if (envelopeHeader == null) {
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         
         final LazyList<XMLObject> headers = new LazyList<>();
@@ -398,7 +428,7 @@ public final class SOAPMessagingSupport {
         
         Header envelopeHeader = envelope.getHeader();
         if (envelopeHeader == null) {
-            envelopeHeader = (Header) XMLObjectProviderRegistrySupport.getBuilderFactory().getBuilder(
+            envelopeHeader = (Header) XMLObjectProviderRegistrySupport.getBuilderFactory().ensureBuilder(
                     Header.DEFAULT_ELEMENT_NAME).buildObject(Header.DEFAULT_ELEMENT_NAME);
             envelope.setHeader(envelopeHeader);
         }

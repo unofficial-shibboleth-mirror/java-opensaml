@@ -110,7 +110,8 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             @ParameterName(name="trim") final boolean trim,
             @ParameterName(name="all") final boolean all) {
         
-        candidateSet = CollectionSupport.copyToList(Constraint.isNotNull(candidates, "Candidate collection cannot be null"));
+        candidateSet = CollectionSupport.copyToList(
+                Constraint.isNotNull(candidates, "Candidate collection cannot be null"));
         
         trimTags = trim;
         matchAll = all;
@@ -302,7 +303,8 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @param exps the regular expressions to match
          */
         public void setRegexps(@Nonnull @NonnullElements final Collection<Pattern> exps) {
-            regexps = CollectionSupport.copyToList(Constraint.isNotNull(exps, "Regular expressions collection cannot be null"));
+            regexps = CollectionSupport.copyToList(
+                    Constraint.isNotNull(exps, "Regular expressions collection cannot be null"));
         }
     }
     
@@ -429,11 +431,17 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
                 toMatch = xs.getValue();
             } else if (object instanceof XSURI xs) {
                 toMatch = xs.getURI();
-            } else if (object instanceof XSBoolean xs && xs.getValue() instanceof XSBooleanValue val) {
-                toMatch = val.getValue() ? "1" : "0";
-                toMatchAlt = val.getValue() ? "true" : "false";
-            } else if (object instanceof XSInteger xs && xs.getValue() instanceof Integer val) {
-                toMatch = val.toString();
+            } else if (object instanceof XSBoolean xs) {
+                final XSBooleanValue val = xs.getValue();
+                if (val != null) {
+                    toMatch = val.getValue() ? "1" : "0";
+                    toMatchAlt = val.getValue() ? "true" : "false";
+                }
+            } else if (object instanceof XSInteger xs) {
+                final Integer val = xs.getValue();
+                if (val != null) {
+                    toMatch = val.toString();
+                }
             } else if (object instanceof XSDateTime) {
                 final Instant dt = ((XSDateTime) object).getValue();
                 if (dt != null) {

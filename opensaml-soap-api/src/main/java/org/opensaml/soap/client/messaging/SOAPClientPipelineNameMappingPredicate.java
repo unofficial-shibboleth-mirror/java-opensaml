@@ -31,10 +31,11 @@ import org.opensaml.messaging.context.navigate.ContextDataLookupFunction;
 import org.opensaml.messaging.context.navigate.RecursiveTypedParentContextLookup;
 import org.opensaml.soap.client.SOAPClientContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Predicate implementation which resolves a delegate predicate based on the 
@@ -44,7 +45,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class SOAPClientPipelineNameMappingPredicate implements Predicate<MessageContext> {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(SOAPClientPipelineNameMappingPredicate.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(SOAPClientPipelineNameMappingPredicate.class);
     
     /** Lookup strategy for the SOAP client context. */
     @Nonnull private Function<MessageContext, SOAPClientContext> soapClientContextLookup;
@@ -73,7 +74,7 @@ public class SOAPClientPipelineNameMappingPredicate implements Predicate<Message
             @Nullable @ParameterName(name="lookupStrategy") 
                 final ContextDataLookupFunction<MessageContext, SOAPClientContext> lookupStrategy) {
         
-        delegateMap = Map.copyOf(Constraint.isNotNull(mappings, "Delegate mappings may not be null"));
+        delegateMap = CollectionSupport.copyToMap(Constraint.isNotNull(mappings, "Delegate mappings may not be null"));
         
         if (lookupStrategy != null) {
             soapClientContextLookup = lookupStrategy;

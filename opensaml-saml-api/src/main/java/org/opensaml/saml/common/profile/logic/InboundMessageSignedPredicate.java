@@ -47,8 +47,11 @@ public class InboundMessageSignedPredicate implements Predicate<ProfileRequestCo
     /** {@inheritDoc} */
     public boolean test(@Nullable final ProfileRequestContext input) {
 
-        if (input != null && input.getInboundMessageContext() instanceof MessageContext mc) {
-            return SAMLBindingSupport.isMessageSigned(mc, presenceSatisfies);
+        if (input != null) {
+            final MessageContext mc = input.getInboundMessageContext();
+            if (mc != null) {
+                return SAMLBindingSupport.isMessageSigned(mc, presenceSatisfies);
+            }
         }
         
         return false;

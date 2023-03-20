@@ -39,10 +39,10 @@ public abstract class AbstractExtensibleSOAPObject extends AbstractXMLObject imp
         AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** "Any" type children. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
 
     /** Attributes of the proxied Element. */
-    private AttributeMap attributes;
+    @Nonnull private final AttributeMap attributes;
 
     /**
      * Constructor.
@@ -73,7 +73,7 @@ public abstract class AbstractExtensibleSOAPObject extends AbstractXMLObject imp
     }
     
     /** {@inheritDoc} */
-    @Nonnull public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
@@ -81,4 +81,5 @@ public abstract class AbstractExtensibleSOAPObject extends AbstractXMLObject imp
     @Nonnull public AttributeMap getUnknownAttributes() {
         return attributes;
     }
+
 }

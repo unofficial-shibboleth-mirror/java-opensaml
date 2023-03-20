@@ -161,7 +161,10 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
     @Nullable public String getPeerEntityID() {
         if (peerEntityID != null) {
             return peerEntityID;
-        } else if (getPeerEntityDescriptor() instanceof EntityDescriptor ed) {
+        }
+
+        final EntityDescriptor ed = getPeerEntityDescriptor();
+        if (ed != null) {
             return ed.getEntityID();
         } else {
             return null;
@@ -188,14 +191,17 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
     @Nullable public QName getPeerEntityRole() {
         if (peerEntityRole != null) {
             return peerEntityRole;
-        } else if (getPeerRoleDescriptor() instanceof RoleDescriptor rd) {
+        }
+        
+        final RoleDescriptor rd = getPeerRoleDescriptor();
+        if (rd != null) {
             if (rd.getSchemaType() != null) {
                 return rd.getSchemaType();
             }
             return rd.getElementQName();
-        } else {
-             return null;
         }
+        
+        return null;
     }
 
     /**
@@ -218,12 +224,16 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
     @Nullable public EntityDescriptor getPeerEntityDescriptor() {
         if (peerEntityDescriptor != null) {
             return peerEntityDescriptor;
-        } else if (getPeerRoleDescriptor() instanceof RoleDescriptor rd) {
+        }
+        
+        final RoleDescriptor rd = getPeerRoleDescriptor();
+        if (rd != null) {
             final XMLObject roleParent = rd.getParent();
             if (roleParent instanceof EntityDescriptor ed) {
                 return ed;
             }
-        } 
+        }
+        
         return null;
     }
 
@@ -431,16 +441,22 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
             
             final SAMLPeerEntityContext peerContext = parent.getSubcontext(SAMLPeerEntityContext.class);
             if (peerContext != null) {
-                if (peerContext.getEntityId() instanceof String s) {
-                    criteria.add(new EntityIdCriterion(s));
+                final String entityID = peerContext.getEntityId();
+                if (entityID != null) {
+                    criteria.add(new EntityIdCriterion(entityID));
                 }
-                if (peerContext.getRole() instanceof QName role) {
+                
+                final QName role = peerContext.getRole();
+                if (role != null) {
                     criteria.add(new EntityRoleCriterion(role));
                 }
                 
                 final SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class);
-                if (metadataContext != null && metadataContext.getRoleDescriptor() instanceof RoleDescriptor role) {
-                    criteria.add(new RoleDescriptorCriterion(role));
+                if (metadataContext != null) {
+                    final RoleDescriptor rd = metadataContext.getRoleDescriptor();
+                    if (rd != null) {
+                        criteria.add(new RoleDescriptorCriterion(rd));
+                    }
                 }
             }
             

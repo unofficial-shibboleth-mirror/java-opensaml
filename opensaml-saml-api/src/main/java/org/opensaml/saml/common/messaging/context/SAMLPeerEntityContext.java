@@ -251,15 +251,17 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
      */
     @Nullable protected String processSaml1Request(@Nonnull final org.opensaml.saml.saml1.core.Request request) {
         String entityId = null;
-        if (request.getAttributeQuery() instanceof AttributeQuery q) {
+        final AttributeQuery q = request.getAttributeQuery();
+        if (q != null) {
             entityId = processSaml1AttributeQuery(q);
             if (entityId != null) {
                 return entityId;
             }
         }
 
-        if (request.getAuthorizationDecisionQuery() instanceof AuthorizationDecisionQuery q) {
-            entityId = processSaml1AuthorizationDecisionQuery(q);
+        final AuthorizationDecisionQuery aq = request.getAuthorizationDecisionQuery();
+        if (aq != null) {
+            entityId = processSaml1AuthorizationDecisionQuery(aq);
             if (entityId != null) {
                 return entityId;
             }

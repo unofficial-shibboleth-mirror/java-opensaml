@@ -94,8 +94,9 @@ public class MetadataNameIdentifierFormatStrategy implements Function<ProfileReq
         /** {@inheritDoc} */
         @Override
         @Nullable public SSODescriptor apply(@Nullable final ProfileRequestContext input) {
-            if (input != null && input.getInboundMessageContext() instanceof MessageContext mc) {
-                final SAMLPeerEntityContext peerCtx = mc.getSubcontext(SAMLPeerEntityContext.class);
+            if (input != null) {
+                final MessageContext mc = input.getInboundMessageContext();
+                final SAMLPeerEntityContext peerCtx = mc != null ? mc.getSubcontext(SAMLPeerEntityContext.class) : null;
                 if (peerCtx != null) {
                     final SAMLMetadataContext mdCtx = peerCtx.getSubcontext(SAMLMetadataContext.class);
                     if (mdCtx != null && mdCtx.getRoleDescriptor() != null
