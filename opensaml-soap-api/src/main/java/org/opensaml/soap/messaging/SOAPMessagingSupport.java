@@ -330,8 +330,11 @@ public final class SOAPMessagingSupport {
         final SOAP11Context soap11 = getSOAP11Context(messageContext);
         
         // SOAP 1.1 Envelope
-        if (soap11 != null && soap11.getEnvelope() instanceof Envelope env) {
-            return getSOAP11HeaderBlock(env, headerName, targetNodes, isFinalDestination);
+        if (soap11 != null) {
+            final Envelope env = soap11.getEnvelope();
+            if (env != null) {
+                return getSOAP11HeaderBlock(env, headerName, targetNodes, isFinalDestination);
+            }
         }
         
         //TODO SOAP 1.2 support when object providers are implemented
