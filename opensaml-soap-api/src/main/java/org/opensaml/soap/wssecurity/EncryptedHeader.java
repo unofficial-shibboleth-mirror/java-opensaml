@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.soap11.ActorBearing;
@@ -24,6 +26,8 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 import org.opensaml.soap.soap12.RelayBearing;
 import org.opensaml.soap.soap12.RoleBearing;
 import org.opensaml.xmlsec.encryption.EncryptedData;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The &lt;wsse:EncryptedHeader&gt; element.
@@ -36,17 +40,17 @@ public interface EncryptedHeader extends IdBearing, MustUnderstandBearing, Actor
         org.opensaml.soap.soap12.MustUnderstandBearing, RoleBearing, RelayBearing, WSSecurityObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "EncryptedHeader";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "EncryptedHeader";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE11_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncryptedHeaderType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptedHeaderType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSSE11_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
     
     /**
@@ -54,13 +58,13 @@ public interface EncryptedHeader extends IdBearing, MustUnderstandBearing, Actor
      * 
      * @return the EncryptedData child element
      */
-    public EncryptedData getEncryptedData();
+    @Nullable public EncryptedData getEncryptedData();
     
     /**
      * Sets the EncryptedData child element.
      * 
      * @param newEncryptedData the new EncryptedData child element
      */
-    public void setEncryptedData(EncryptedData newEncryptedData);
+    public void setEncryptedData(@Nullable final EncryptedData newEncryptedData);
 
 }

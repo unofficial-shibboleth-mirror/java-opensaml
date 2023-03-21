@@ -62,6 +62,6 @@ public interface UsernameToken extends IdBearing, AttributeExtensibleXMLObject,
      * @param username
      *            the {@link Username} child element to set.
      */
-    public void setUsername(@Nullable Username username);
+    public void setUsername(@Nullable final Username username);
 
 }

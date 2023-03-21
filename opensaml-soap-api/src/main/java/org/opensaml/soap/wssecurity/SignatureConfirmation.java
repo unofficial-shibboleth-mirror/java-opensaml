@@ -17,7 +17,11 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The &lt;wsse11:SignatureConfirmation&gt; element.
@@ -25,34 +29,34 @@ import javax.xml.namespace.QName;
 public interface SignatureConfirmation extends IdBearing, WSSecurityObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "SignatureConfirmation";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "SignatureConfirmation";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE11_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SignatureConfirmationType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SignatureConfirmationType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSSE11_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
     
     /** The Value attribute name. */
-    public static final String VALUE_ATTRIB_NAME = "Value";
+    @Nonnull @NotEmpty public static final String VALUE_ATTRIB_NAME = "Value";
     
     /**
      * Returns the Value attribute value.
      * 
      * @return the Value attribute value or <code>null</code>.
      */
-    public String getValue();
+    @Nullable public String getValue();
 
     /**
      * Sets the Value attribute value.
      * 
      * @param newValue the Value attribute value.
      */
-    public void setValue(String newValue);
+    public void setValue(@Nullable final String newValue);
 
 }

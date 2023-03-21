@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.common;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
@@ -31,5 +33,5 @@ public interface SOAPObjectBuilder<SOAPObjectType extends SOAPObject> extends XM
      * 
      * @return built SAMLObject
      */
-    public SOAPObjectType buildObject();
+    @Nonnull public SOAPObjectType buildObject();
 }

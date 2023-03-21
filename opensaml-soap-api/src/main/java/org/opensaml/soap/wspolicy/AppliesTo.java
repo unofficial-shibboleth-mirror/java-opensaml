@@ -17,10 +17,13 @@
 
 package org.opensaml.soap.wspolicy;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wsp:AppliesTo element.
@@ -31,10 +34,10 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface AppliesTo extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSPolicyObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "AppliesTo";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME= "AppliesTo";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
 }

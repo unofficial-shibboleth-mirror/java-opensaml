@@ -18,9 +18,12 @@
 package org.opensaml.soap.wsaddressing;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for type &lt;wsa:AttributedUnsignedLongType&gt;.
@@ -31,7 +34,7 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 public interface AttributedUnsignedLong extends AttributeExtensibleXMLObject, WSAddressingObject {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributedUnsignedLongType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributedUnsignedLongType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 
@@ -42,13 +45,13 @@ public interface AttributedUnsignedLong extends AttributeExtensibleXMLObject, WS
      * 
      * @return the element's value
      */
-    public Long getValue();
+    @Nullable public Long getValue();
 
     /**
      * Sets the element's value.
      * 
      * @param newValue the new element value
      */
-    public void setValue(Long newValue);
+    public void setValue(@Nullable final Long newValue);
 
 }

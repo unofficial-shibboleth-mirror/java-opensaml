@@ -48,7 +48,8 @@ public interface Password extends AttributedString {
     /**
      * The <code>wsse:Password/@Type</code> attribute URI value <code>#PasswordDigest</code>.
      */
-    @Nonnull @NotEmpty public static final String TYPE_PASSWORD_DIGEST = WSSecurityConstants.WSSE_NS + "#PasswordDigest";
+    @Nonnull @NotEmpty
+    public static final String TYPE_PASSWORD_DIGEST = WSSecurityConstants.WSSE_NS + "#PasswordDigest";
 
     /**
      * Returns the <code>wsse:Password/@Type</code> attribute URI value.
@@ -62,6 +63,6 @@ public interface Password extends AttributedString {
      * 
      * @param type the <code>Type</code> attribute URI value to set.
      */
-    public void setType(@Nullable String type);
+    public void setType(@Nullable final String type);
 
 }

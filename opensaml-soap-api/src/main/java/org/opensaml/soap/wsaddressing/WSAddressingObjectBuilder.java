@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
@@ -33,5 +35,5 @@ public interface WSAddressingObjectBuilder<WSAddressingObjectType extends WSAddr
      * 
      * @return the built object
      */
-    public WSAddressingObjectType buildObject();
+    @Nonnull public WSAddressingObjectType buildObject();
 }

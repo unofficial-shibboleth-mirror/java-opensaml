@@ -20,6 +20,8 @@ package org.opensaml.soap.wssecurity;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The &lt;wsu:Created&gt; element.
  * 
@@ -27,7 +29,7 @@ import javax.xml.namespace.QName;
 public interface Created extends AttributedDateTime {
 
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "Created";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Created";
 
     /** Qualified element name. */
     @Nonnull public static final QName ELEMENT_NAME =

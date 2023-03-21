@@ -68,7 +68,10 @@ public final class WSAddressingSupport {
         if (soapObject instanceof IsReferenceParameterBearing) {
             final XSBooleanValue value = ((IsReferenceParameterBearing)soapObject).isWSAIsReferenceParameterXSBoolean();
             if (value != null) {
-                return value.getValue();
+                final Boolean flag = value.getValue();
+                if (flag != null) {
+                    return flag;
+                }
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {

@@ -18,9 +18,12 @@
 package org.opensaml.soap.wspolicy;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wsp:PolicyReference element.
@@ -31,64 +34,64 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 public interface PolicyReference extends AttributeExtensibleXMLObject, WSPolicyObject {
 
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "PolicyReference";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "PolicyReference";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSPolicyConstants.WSP_NS, ELEMENT_LOCAL_NAME, WSPolicyConstants.WSP_PREFIX);
 
     /** The wsp:PolicyReference/@URI attribute local name. */
-    @Nonnull public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
 
     /** The wsp:PolicyReference/@Digest attribute local name. */
-    @Nonnull public static final String DIGEST_ATTRIB_NAME = "Digest";
+    @Nonnull @NotEmpty public static final String DIGEST_ATTRIB_NAME = "Digest";
 
     /** The wsp:PolicyReference/@Digest attribute local name. */
-    @Nonnull public static final String DIGEST_ALGORITHM_ATTRIB_NAME = "DigestAlgorithm";
+    @Nonnull @NotEmpty public static final String DIGEST_ALGORITHM_ATTRIB_NAME = "DigestAlgorithm";
 
     /** The default wsp:PolicyReference/@DigestAlgorithm attribute value. */
-    @Nonnull public static final String DIGEST_ALGORITHM_SHA1EXC = WSPolicyConstants.WSP_NS + "/Sha1Exc";
+    @Nonnull @NotEmpty public static final String DIGEST_ALGORITHM_SHA1EXC = WSPolicyConstants.WSP_NS + "/Sha1Exc";
 
     /**
      * Returns the wsp:PolicyReference/@URI attribute value.
      * 
      * @return the URI attribute value.
      */
-    public String getURI();
+    @Nullable public String getURI();
 
     /**
      * Sets the wsp:PolicyReference/@URI attribute value.
      * 
      * @param uri the URI attribute value to set.
      */
-    public void setURI(String uri);
+    public void setURI(@Nullable final String uri);
 
     /**
      * Returns the wsp:PolicyReference/@Digest attribute URI value.
      * 
      * @return the Digest attribute URI value.
      */
-    public String getDigest();
+    @Nullable public String getDigest();
 
     /**
      * Sets the wsp:PolicyReference/@Digest attribute URI value.
      * 
      * @param digest the Digest attribute URI value to set.
      */
-    public void setDigest(String digest);
+    public void setDigest(@Nullable final String digest);
 
     /**
      * Returns the wsp:PolicyReference/@DigestAlgoritm attribute Base64 binary value.
      * 
      * @return the DigestAlgoritm attribute Base64 binary value.
      */
-    public String getDigestAlgorithm();
+    @Nullable public String getDigestAlgorithm();
 
     /**
      * Sets the wsp:PolicyReference/@DigestAlgoritm attribute Base64 binary value.
      * 
      * @param digestAlgorithm the DigestAlgoritm attribute Base64 binary value to set.
      */
-    public void setDigestAlgorithm(String digestAlgorithm);
+    public void setDigestAlgorithm(@Nullable final String digestAlgorithm);
 
 }

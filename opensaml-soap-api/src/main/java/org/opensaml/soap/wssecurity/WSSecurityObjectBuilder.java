@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
@@ -32,6 +34,6 @@ public interface WSSecurityObjectBuilder<WSSecurityObjectType extends WSSecurity
      * 
      * @return the built object
      */
-    public WSSecurityObjectType buildObject();
+    @Nonnull public WSSecurityObjectType buildObject();
 
 }

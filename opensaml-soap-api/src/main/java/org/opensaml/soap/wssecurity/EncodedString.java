@@ -17,7 +17,11 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for elements of complex type EncodedString.
@@ -25,16 +29,17 @@ import javax.xml.namespace.QName;
 public interface EncodedString extends AttributedString {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EncodedString"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncodedString"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
     
     /** The EncodingType attribute name. */
-    public static final String ENCODING_TYPE_ATTRIB_NAME = "EncodingType";
+    @Nonnull @NotEmpty public static final String ENCODING_TYPE_ATTRIB_NAME = "EncodingType";
     
     /** The EncodingType attribute value <code>#Base64Binary</code>. */
+    @Nonnull @NotEmpty
     public static final String ENCODING_TYPE_BASE64_BINARY = WSSecurityConstants.WS_SECURITY_NS + "#Base64Binary";
     
     /**
@@ -42,13 +47,13 @@ public interface EncodedString extends AttributedString {
      * 
      * @return the EncodingType attribute value.
      */
-    public String getEncodingType();
+    @Nullable public String getEncodingType();
 
     /**
      * Sets the EncodingType attribute value.
      * 
      * @param newEncodingType the EncodingType attribute value.
      */
-    public void setEncodingType(String newEncodingType);
+    public void setEncodingType(@Nullable final String newEncodingType);
 
 }

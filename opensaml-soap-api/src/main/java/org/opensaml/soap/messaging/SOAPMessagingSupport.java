@@ -364,6 +364,7 @@ public final class SOAPMessagingSupport {
         
         final LazyList<XMLObject> headers = new LazyList<>();
         for (final XMLObject header : envelopeHeader.getUnknownXMLObjects(headerName)) {
+            assert header != null;
             if (isSOAP11HeaderTargetedToNode(header, targetNodes, isFinalDestination)) {
                 headers.add(header);
             }
@@ -409,10 +410,13 @@ public final class SOAPMessagingSupport {
         Constraint.isNotNull(messageContext, "Message context cannot be null");
         
         // SOAP 1.1 Envelope
-        final SOAP11Context soap11 = getSOAP11Context(messageContext, false);
+        final SOAP11Context soap11 = getSOAP11Context(messageContext);
         
-        if (soap11 != null && soap11.getEnvelope() != null) {
-            addSOAP11HeaderBlock(soap11.getEnvelope(), headerBlock);
+        if (soap11 != null) {
+            final Envelope env = soap11.getEnvelope();
+            if (env != null) {
+                addSOAP11HeaderBlock(env, headerBlock);
+            }
         } else {
             //TODO SOAP 1.2 support when object providers are implemented
             throw new IllegalArgumentException("Message context did not contain a SOAP Envelope");
@@ -466,7 +470,7 @@ public final class SOAPMessagingSupport {
      * @param fault the fault to register
      */
     public static void registerSOAP11Fault(@Nonnull final MessageContext messageContext, @Nullable final Fault fault) {
-        final SOAP11Context soap11Context = getSOAP11Context(messageContext, true);
+        final SOAP11Context soap11Context = ensureSOAP11Context(messageContext);
         
         soap11Context.setFault(fault);
     }
@@ -478,7 +482,7 @@ public final class SOAPMessagingSupport {
      * @return the registered fault, or null
      */
     public static Fault getSOAP11Fault(@Nonnull final MessageContext messageContext) {
-        final SOAP11Context soap11Context = getSOAP11Context(messageContext, false);
+        final SOAP11Context soap11Context = getSOAP11Context(messageContext);
         if (soap11Context != null) {
             return soap11Context.getFault();
         }
@@ -491,7 +495,7 @@ public final class SOAPMessagingSupport {
      * @param messageContext the current message context
      */
     public static void clearFault(@Nonnull final MessageContext messageContext) {
-        final SOAP11Context soap11Context = getSOAP11Context(messageContext, false);
+        final SOAP11Context soap11Context = getSOAP11Context(messageContext);
         if (soap11Context != null) {
             soap11Context.setFault(null);
         }

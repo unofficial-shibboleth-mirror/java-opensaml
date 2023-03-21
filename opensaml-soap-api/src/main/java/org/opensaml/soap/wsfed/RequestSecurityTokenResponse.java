@@ -20,6 +20,7 @@ package org.opensaml.soap.wsfed;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 /**
@@ -32,8 +33,8 @@ public interface RequestSecurityTokenResponse extends WSFedObject {
     @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestSecurityTokenResponse";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSFED11P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            WSFedConstants.WSFED1P_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(WSFedConstants.WSFED11P_NS, DEFAULT_ELEMENT_LOCAL_NAME, WSFedConstants.WSFED1P_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenResponseType";
@@ -47,19 +48,19 @@ public interface RequestSecurityTokenResponse extends WSFedObject {
      * 
      * @return the entity to which the token applies
      */
-    public AppliesTo getAppliesTo();
+    @Nullable public AppliesTo getAppliesTo();
 
     /**
      * Set the entity to which the token applies.
      * 
      * @param appliesTo the entity to which the token applies
      */
-    public void setAppliesTo(AppliesTo appliesTo);
+    public void setAppliesTo(@Nullable final AppliesTo appliesTo);
 
     /**
      * Return the list of Security Token child elements.
      * 
      * @return the list of RequestedSecurityToken child elements.
      */
-    public List<RequestedSecurityToken> getRequestedSecurityToken();
+    @Nonnull public List<RequestedSecurityToken> getRequestedSecurityToken();
 }

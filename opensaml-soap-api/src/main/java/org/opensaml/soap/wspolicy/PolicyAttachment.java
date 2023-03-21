@@ -20,10 +20,13 @@ package org.opensaml.soap.wspolicy;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wsp:PolicyAttachment element.
@@ -33,7 +36,7 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface PolicyAttachment extends WSPolicyObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
     
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "PolicyAttachment";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "PolicyAttachment";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =
@@ -44,27 +47,27 @@ public interface PolicyAttachment extends WSPolicyObject, ElementExtensibleXMLOb
      * 
      * @return the child element
      */
-    public AppliesTo getAppliesTo();
+    @Nullable public AppliesTo getAppliesTo();
     
     /**
      * Set the AppliesTo child element.
      * 
      * @param newAppliesTo the new child element
      */
-    public void setAppliesTo(AppliesTo newAppliesTo);
+    public void setAppliesTo(@Nullable final AppliesTo newAppliesTo);
     
     /**
      * Get the list of Policy child elements.
      * 
      * @return the list of child elements
      */
-    public List<Policy> getPolicies();
+    @Nonnull public List<Policy> getPolicies();
     
     /**
      * Get the list of PolicyReference child elements.
      * 
      * @return the list of child elements
      */
-    public List<PolicyReference> getPolicyReferences();
+    @Nonnull public List<PolicyReference> getPolicyReferences();
 
 }

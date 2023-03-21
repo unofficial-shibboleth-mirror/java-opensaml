@@ -20,6 +20,8 @@ package org.opensaml.soap.wspolicy;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The wsp:All element.
  * 
@@ -28,7 +30,7 @@ import javax.xml.namespace.QName;
 public interface All extends OperatorContentType {
     
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "All";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "All";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =

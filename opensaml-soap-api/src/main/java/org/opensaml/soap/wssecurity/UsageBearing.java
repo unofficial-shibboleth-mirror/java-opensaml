@@ -19,7 +19,11 @@ package org.opensaml.soap.wssecurity;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for element having a <code>@wsse:Usage</code> attribute.
@@ -27,10 +31,10 @@ import javax.xml.namespace.QName;
 public interface UsageBearing {
     
     /** The wsse:@Usage attribute local name. */
-    public static final String WSSE_USAGE_ATTR_LOCAL_NAME = "Usage";
+    @Nonnull @NotEmpty public static final String WSSE_USAGE_ATTR_LOCAL_NAME = "Usage";
 
     /** The wsse:@Usage qualified attribute name. */
-    public static final QName WSSE_USAGE_ATTR_NAME =
+    @Nonnull public static final QName WSSE_USAGE_ATTR_NAME =
         new QName(WSSecurityConstants.WSSE_NS, WSSE_USAGE_ATTR_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
     /**
@@ -38,13 +42,13 @@ public interface UsageBearing {
      * 
      * @return the list of attribute values
      */
-    public List<String> getWSSEUsages();
+    @Nullable public List<String> getWSSEUsages();
 
     /**
      * Sets the list of <code>wsse:@Usage</code> attributes value.
      * 
      * @param usages the list of attribute values
      */
-    public void setWSSEUsages(List<String> usages);
+    public void setWSSEUsages(@Nullable final List<String> usages);
     
 }

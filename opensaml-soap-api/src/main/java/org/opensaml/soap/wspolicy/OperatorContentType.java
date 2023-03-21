@@ -24,13 +24,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The OperatorContentType complex type.
  */
 public interface OperatorContentType extends WSPolicyObject {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "OperatorContentType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "OperatorContentType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 
@@ -41,36 +43,35 @@ public interface OperatorContentType extends WSPolicyObject {
      * 
      * @return the list of {@link Policy} elements
      */
-    public List<Policy> getPolicies();
+    @Nonnull public List<Policy> getPolicies();
     
     /**
      * Get the list of {@link All} elements.
      * 
      * @return the list of {@link All} elements
      */
-    public List<All> getAlls();
+    @Nonnull public List<All> getAlls();
     
     /**
      * Get the list of {@link ExactlyOne} elements.
      * 
      * @return the list of {@link ExactlyOne} elements
      */
-    public List<ExactlyOne> getExactlyOnes();
+    @Nonnull public List<ExactlyOne> getExactlyOnes();
     
     /**
      * Get the list of {@link PolicyReference} elements.
      * 
      * @return the list of {@link PolicyReference} elements
      */
-    public List<PolicyReference> getPolicyReferences();
-    
+    @Nonnull public List<PolicyReference> getPolicyReferences();
     
     /**
      * Get the complete modifiable list of XMLObject children.
      * 
      * @return the list of {@link XMLObject} instances
      */
-    public List<XMLObject> getXMLObjects();
+    @Nonnull public List<XMLObject> getXMLObjects();
     
     /**
      * Get the modifiable sublist of XMLObject children which match the specified
@@ -80,6 +81,6 @@ public interface OperatorContentType extends WSPolicyObject {
      * 
      * @return the list of {@link XMLObject} instances
      */
-    public List<XMLObject> getXMLObjects(QName typeOrName);
+    @Nonnull public List<XMLObject> getXMLObjects(QName typeOrName);
 
 }

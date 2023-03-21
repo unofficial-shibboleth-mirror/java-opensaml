@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.messaging;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.messaging.context.BaseContext;
 
 import net.shibboleth.shared.primitive.StringSupport;
@@ -29,26 +31,26 @@ public class WSAddressingContext extends BaseContext {
     //TODO implement support for remaining items of WS-Addressing data model
     
     /** The Action URI value. */
-    private String actionURI;
+    @Nullable private String actionURI;
     
     /** The Fault Action URI value. */
-    private String faultActionURI;
+    @Nullable private String faultActionURI;
     
     /** The MessageID URI value. */
-    private String messageIDURI;
+    @Nullable private String messageIDURI;
     
     /** The RelatesTo URI value. */
-    private String relatesToURI;
+    @Nullable private String relatesToURI;
     
     /** The RelatesTo RelationshipType attribute value. */
-    private String relatesToRelationshipType;
+    @Nullable private String relatesToRelationshipType;
     
     /**
      * Get the Action URI value.
      * 
      * @return the action URI.
      */
-    public String getActionURI() {
+    @Nullable public String getActionURI() {
         return actionURI;
     }
 
@@ -57,7 +59,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @param uri the new Action URI value
      */
-    public void setActionURI(final String uri) {
+    public void setActionURI(@Nullable final String uri) {
         actionURI = StringSupport.trimOrNull(uri);
     }
     
@@ -66,7 +68,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @return the fault action URI.
      */
-    public String getFaultActionURI() {
+    @Nullable public String getFaultActionURI() {
         return faultActionURI;
     }
 
@@ -75,7 +77,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @param uri the new Fault Action URI value
      */
-    public void setFaultActionURI(final String uri) {
+    public void setFaultActionURI(@Nullable final String uri) {
         faultActionURI = StringSupport.trimOrNull(uri);
     }
     
@@ -84,7 +86,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @return the MessageID URI
      */
-    public String getMessageIDURI() {
+    @Nullable public String getMessageIDURI() {
         return messageIDURI;
     }
 
@@ -93,7 +95,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @param uri the new MessageID URI value
      */
-    public void setMessageIDURI(final String uri) {
+    public void setMessageIDURI(@Nullable final String uri) {
         messageIDURI = StringSupport.trimOrNull(uri);
     }
 
@@ -102,7 +104,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @return the RelatesTo URI
      */
-    public String getRelatesToURI() {
+    @Nullable public String getRelatesToURI() {
         return relatesToURI;
     }
 
@@ -111,7 +113,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @param uri the RelatesTo URI value
      */
-    public void setRelatesToURI(final String uri) {
+    public void setRelatesToURI(@Nullable final String uri) {
         relatesToURI = StringSupport.trimOrNull(uri);
     }
 
@@ -120,7 +122,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @return the RelatesTo RelationshipType attribute value
      */
-    public String getRelatesToRelationshipType() {
+    @Nullable public String getRelatesToRelationshipType() {
         return relatesToRelationshipType;
     }
 
@@ -129,7 +131,7 @@ public class WSAddressingContext extends BaseContext {
      * 
      * @param value the RelatesTo RelationshipType attribute value
      */
-    public void setRelatesToRelationshipType(final String value) {
+    public void setRelatesToRelationshipType(@Nullable final String value) {
         relatesToRelationshipType = StringSupport.trimOrNull(value);
     }
 

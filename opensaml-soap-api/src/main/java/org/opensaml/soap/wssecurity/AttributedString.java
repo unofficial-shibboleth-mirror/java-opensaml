@@ -23,13 +23,15 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.schema.XSString;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for elements of complex type AttributedString.
  */
 public interface AttributedString extends XSString, IdBearing, AttributeExtensibleXMLObject, WSSecurityObject {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributedString"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributedString"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

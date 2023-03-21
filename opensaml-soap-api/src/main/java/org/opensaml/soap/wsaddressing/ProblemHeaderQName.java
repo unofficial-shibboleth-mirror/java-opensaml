@@ -20,6 +20,8 @@ package org.opensaml.soap.wsaddressing;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for element &lt;wsa:ProblemHeaderQName&gt;.
  * 
@@ -29,7 +31,7 @@ import javax.xml.namespace.QName;
 public interface ProblemHeaderQName extends AttributedQName {
     
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "ProblemHeaderQName";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "ProblemHeaderQName";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =

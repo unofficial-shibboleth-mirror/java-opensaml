@@ -18,9 +18,12 @@
 package org.opensaml.soap.wsaddressing;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for element &lt;wsa:ProblemAction&gt;.
@@ -31,14 +34,14 @@ import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 public interface ProblemAction extends AttributeExtensibleXMLObject, WSAddressingObject {
     
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "ProblemAction";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "ProblemAction";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "ProblemActionType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ProblemActionType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 
@@ -49,26 +52,26 @@ public interface ProblemAction extends AttributeExtensibleXMLObject, WSAddressin
      * 
      * @return the Action child element
      */
-    public Action getAction();
+    @Nullable public Action getAction();
     
     /**
      * Set the Action child element.
      * 
      * @param newAction the new Action child element
      */
-    public void setAction(Action newAction);
+    public void setAction(@Nullable final Action newAction);
 
     /**
      * Get the SoapAction child element.
      * 
      * @return the SoapAction child element
      */
-    public SoapAction getSoapAction();
+    @Nullable public SoapAction getSoapAction();
     
     /**
      * Set the SoapAction child element.
      * 
      * @param newSoapAction the new SoapAction child element
      */
-    public void setSoapAction(SoapAction newSoapAction);
+    public void setSoapAction(@Nullable final SoapAction newSoapAction);
 }

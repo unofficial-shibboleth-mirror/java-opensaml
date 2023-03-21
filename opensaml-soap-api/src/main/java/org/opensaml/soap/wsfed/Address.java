@@ -18,6 +18,7 @@
 package org.opensaml.soap.wsfed;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 /**
@@ -29,8 +30,8 @@ public interface Address extends WSFedObject {
     @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Address";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSADDRESS_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            WSFedConstants.WSADDRESS_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(WSFedConstants.WSADDRESS_NS, DEFAULT_ELEMENT_LOCAL_NAME, WSFedConstants.WSADDRESS_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull public static final String TYPE_LOCAL_NAME = "AddressType";
@@ -44,12 +45,12 @@ public interface Address extends WSFedObject {
      * 
      * @return the end point address
      */
-    public String getValue();
+    @Nullable public String getValue();
 
     /**
      * Sets the end point reference address.
      * 
      * @param value the end point address
      */
-    public void setValue(String value);
+    public void setValue(@Nullable final String value);
 }

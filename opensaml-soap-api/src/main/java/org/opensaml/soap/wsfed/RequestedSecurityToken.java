@@ -34,8 +34,8 @@ public interface RequestedSecurityToken extends WSFedObject {
     @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedSecurityToken";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSFED11P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            WSFedConstants.WSFED1P_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(WSFedConstants.WSFED11P_NS, DEFAULT_ELEMENT_LOCAL_NAME, WSFedConstants.WSFED1P_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull public static final String TYPE_LOCAL_NAME = "RequestedSecurityTokenType";
@@ -49,5 +49,5 @@ public interface RequestedSecurityToken extends WSFedObject {
      * 
      * @return the list security tokens
      */
-    public List<XMLObject> getSecurityTokens();
+    @Nonnull public List<XMLObject> getSecurityTokens();
 }

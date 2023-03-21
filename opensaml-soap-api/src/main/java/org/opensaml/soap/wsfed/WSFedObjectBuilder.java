@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsfed;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
@@ -31,5 +33,5 @@ public interface WSFedObjectBuilder<WSFedObjectType extends WSFedObject> extends
      * 
      * @return the constructed object
      */
-    public WSFedObjectType buildObject();
+    @Nonnull public WSFedObjectType buildObject();
 }

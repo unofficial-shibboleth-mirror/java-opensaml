@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The optional &lt;wsa:Metadata&gt; element.
  * 
@@ -32,14 +34,14 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface Metadata extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
     
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "Metadata";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Metadata";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "MetadataType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "MetadataType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

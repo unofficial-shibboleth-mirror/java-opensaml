@@ -18,6 +18,7 @@
 package org.opensaml.soap.wsfed;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 /**
@@ -29,8 +30,8 @@ public interface AppliesTo extends WSFedObject {
     @Nonnull public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AppliesTo";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(WSFedConstants.WSPOLICY_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            WSFedConstants.WSPOLICY_PREFIX);
+    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+            new QName(WSFedConstants.WSPOLICY_NS, DEFAULT_ELEMENT_LOCAL_NAME, WSFedConstants.WSPOLICY_PREFIX);
 
     /** Local name of the XSI type. */
     @Nonnull public static final String TYPE_LOCAL_NAME = "AppliesToType";
@@ -44,12 +45,12 @@ public interface AppliesTo extends WSFedObject {
      * 
      * @return the endpoint reference of the entity applicable entity
      */
-    public EndPointReference getEndPointReference();
+    @Nullable public EndPointReference getEndPointReference();
 
     /**
      * Sets the endpoint reference of the entity applicable entity.
      * 
      * @param newEndPointReference the endpoint reference of the entity applicable entity
      */
-    public void setEndPointReference(EndPointReference newEndPointReference);
+    public void setEndPointReference(@Nullable final EndPointReference newEndPointReference);
 }

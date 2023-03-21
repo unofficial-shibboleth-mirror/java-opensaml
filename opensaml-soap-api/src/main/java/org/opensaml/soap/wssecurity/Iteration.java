@@ -17,10 +17,12 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSInteger;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.xml.XMLConstants;
 
 /**
@@ -33,16 +35,17 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface Iteration extends XSInteger, WSSecurityObject {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Iteration";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Iteration";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE11_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE11_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "unsignedInt"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "unsignedInt"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
+    @Nonnull public static final QName TYPE_NAME =
+            new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
 
 }

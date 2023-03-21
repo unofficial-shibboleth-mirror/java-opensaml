@@ -17,10 +17,13 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The &lt;wsse:SecurityTokenReference&gt; element.
@@ -33,17 +36,17 @@ public interface SecurityTokenReference extends IdBearing, UsageBearing, Attribu
         ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "SecurityTokenReference";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "SecurityTokenReference";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SecurityTokenReferenceType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SecurityTokenReferenceType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
 }

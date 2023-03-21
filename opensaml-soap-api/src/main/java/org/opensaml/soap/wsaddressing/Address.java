@@ -20,6 +20,8 @@ package org.opensaml.soap.wsaddressing;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The &lt;wsa:Address&gt; element.
  * 
@@ -29,15 +31,15 @@ import javax.xml.namespace.QName;
 public interface Address extends AttributedURI {
 
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "Address";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Address";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
 
     /** Anonymous address URI. */
-    @Nonnull public static final String ANONYMOUS = WSAddressingConstants.WSA_NS + "/anonymous";
+    @Nonnull @NotEmpty public static final String ANONYMOUS = WSAddressingConstants.WSA_NS + "/anonymous";
 
     /** None address URI. */
-    @Nonnull public static final String NONE = WSAddressingConstants.WSA_NS + "/none";
+    @Nonnull @NotEmpty public static final String NONE = WSAddressingConstants.WSA_NS + "/none";
 }

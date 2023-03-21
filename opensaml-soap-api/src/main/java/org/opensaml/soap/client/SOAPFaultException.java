@@ -28,8 +28,10 @@ public class SOAPFaultException extends SOAPException {
     /** Serial version UID. */
     private static final long serialVersionUID = 4770411452264097320L;
 
+// Checkstyle: MutableException OFF
     /** The fault that caused this exception. */
     @Nullable private Fault soapFault;
+// Checkstyle: MutableException ON
 
     /** Constructor. */
     public SOAPFaultException() {

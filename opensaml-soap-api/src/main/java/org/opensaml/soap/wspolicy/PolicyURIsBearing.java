@@ -20,7 +20,10 @@ package org.opensaml.soap.wspolicy;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for element having a <code>@wsp:PolicyURIs</code> attribute.
@@ -28,7 +31,7 @@ import javax.xml.namespace.QName;
 public interface PolicyURIsBearing {
     
     /** The wsp:@PolicyURIs attribute local name. */
-    @Nonnull public static final String WSP_POLICY_URIS_ATTR_LOCAL_NAME = "PolicyURIs";
+    @Nonnull @NotEmpty public static final String WSP_POLICY_URIS_ATTR_LOCAL_NAME = "PolicyURIs";
 
     /** The wsp:@PolicyURIs qualified attribute name. */
     @Nonnull public static final QName WSP_POLICY_URIS_ATTR_NAME =
@@ -39,13 +42,13 @@ public interface PolicyURIsBearing {
      * 
      * @return return the list of attribute values
      */
-    public List<String> getWSP12PolicyURIs();
+    @Nullable public List<String> getWSP12PolicyURIs();
     
     /**
      * Set the attribute value.
      * 
      * @param newPolicyURIs the new list of attribute values
      */
-    public void setWSP12PolicyURIs(List<String> newPolicyURIs);
+    public void setWSP12PolicyURIs(@Nullable final List<String> newPolicyURIs);
 
 }

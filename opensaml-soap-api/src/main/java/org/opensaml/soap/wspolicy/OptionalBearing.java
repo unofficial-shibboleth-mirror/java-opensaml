@@ -18,9 +18,12 @@
 package org.opensaml.soap.wspolicy;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for element having a <code>@wsp:Optional</code> attribute.
@@ -28,7 +31,7 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 public interface OptionalBearing {
     
     /** The wsp:@Optional attribute local name. */
-    @Nonnull public static final String WSP_OPTIONAL_ATTR_LOCAL_NAME = "Optional";
+    @Nonnull @NotEmpty public static final String WSP_OPTIONAL_ATTR_LOCAL_NAME = "Optional";
 
     /** The wsp:@Optional qualified attribute name. */
     @Nonnull public static final QName WSP_OPTIONAL_ATTR_NAME =
@@ -39,27 +42,27 @@ public interface OptionalBearing {
      * 
      * @return return the attribute value
      */
-    public Boolean isWSP12Optional();
+    @Nullable public Boolean isWSP12Optional();
     
     /**
      * Get the attribute value.
      * 
      * @return return the attribute value
      */
-    public XSBooleanValue isWSP12OptionalXSBoolean();
+    @Nullable public XSBooleanValue isWSP12OptionalXSBoolean();
     
     /**
      * Set the attribute value.
      * 
      * @param newOptional the new attribute value
      */
-    public void setWSP12Optional(Boolean newOptional);
+    public void setWSP12Optional(@Nullable final Boolean newOptional);
     
     /**
      * Set the attribute value.
      * 
      * @param newOptional the new attribute value
      */
-    public void setWSP12Optional(XSBooleanValue newOptional);
+    public void setWSP12Optional(@Nullable final XSBooleanValue newOptional);
 
 }

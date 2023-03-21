@@ -29,10 +29,11 @@ import org.opensaml.messaging.pipeline.httpclient.HttpClientMessagePipelineFacto
 import org.opensaml.soap.client.SOAPClientContext;
 import org.opensaml.soap.common.SOAPException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * SOAP client that is based on {@link HttpClientMessagePipeline}, produced at runtime from an instance of
@@ -42,13 +43,13 @@ import net.shibboleth.shared.logic.Constraint;
 public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClient {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(PipelineFactoryHttpSOAPClient.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(PipelineFactoryHttpSOAPClient.class);
     
     /** Factory for the client message pipeline. */
-    private HttpClientMessagePipelineFactory pipelineFactory;
+    @NonnullAfterInit private HttpClientMessagePipelineFactory pipelineFactory;
     
     /** Strategy function used to resolve the pipeline name to execute. */
-    private Function<InOutOperationContext,String> pipelineNameStrategy;
+    @NonnullAfterInit private Function<InOutOperationContext,String> pipelineNameStrategy;
     
     /**
      * Set the message pipeline factory.
@@ -86,14 +87,6 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
         }
     }
 
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        pipelineFactory = null;
-        pipelineNameStrategy = null;
-        
-        super.doDestroy();
-    }
-
     /**
      * Resolve and return a new instance of the {@link HttpClientMessagePipeline} to be processed.
      * 
@@ -114,7 +107,7 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
      * 
      * @throws SOAPException if there is an error obtaining a new pipeline instance
      */
-    @Nonnull protected HttpClientMessagePipeline resolvePipeline(final InOutOperationContext operationContext)
+    @Nonnull protected HttpClientMessagePipeline resolvePipeline(@Nonnull final InOutOperationContext operationContext)
             throws SOAPException {
         
         String resolvedPipelineName = null;
@@ -166,7 +159,7 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
      * 
      * @throws SOAPException if there is an error obtaining a new pipeline instance
      */
-    @Nullable protected HttpClientMessagePipeline newPipeline(@Nullable final String name) throws SOAPException {
+    @Nonnull protected HttpClientMessagePipeline newPipeline(@Nullable final String name) throws SOAPException {
         // Note: in a Spring environment, the actual factory impl might be a proxy via ServiceLocatorFactoryBean
         return pipelineFactory.newInstance(name);
     }
@@ -192,7 +185,7 @@ public class PipelineFactoryHttpSOAPClient extends AbstractPipelineHttpSOAPClien
     public static class DefaultPipelineNameStrategy implements Function<InOutOperationContext,String> {
 
         /** {@inheritDoc} */
-        public String apply(@Nullable final InOutOperationContext opContext) {
+        @Nullable public String apply(@Nullable final InOutOperationContext opContext) {
             if (opContext == null) {
                 return null;
             }

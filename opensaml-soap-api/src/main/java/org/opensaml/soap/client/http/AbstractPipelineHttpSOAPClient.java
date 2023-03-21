@@ -41,6 +41,7 @@ import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.decoder.httpclient.HttpClientResponseMessageDecoder;
 import org.opensaml.messaging.encoder.MessageEncodingException;
 import org.opensaml.messaging.encoder.httpclient.HttpClientRequestMessageEncoder;
+import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.messaging.pipeline.httpclient.HttpClientMessagePipeline;
 import org.opensaml.security.SecurityException;
@@ -55,13 +56,13 @@ import org.opensaml.soap.client.SOAPFaultException;
 import org.opensaml.soap.common.SOAP11FaultDecodingException;
 import org.opensaml.soap.common.SOAPException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -82,11 +83,6 @@ public abstract class AbstractPipelineHttpSOAPClient
     
     /** Strategy for building the criteria set which is input to the TLS trust engine. */
     @Nullable private Function<InOutOperationContext,CriteriaSet> tlsCriteriaSetStrategy;
-    
-    /** Constructor. */
-    public AbstractPipelineHttpSOAPClient() {
-        super();
-    }
 
     /** {@inheritDoc} */
     @Override
@@ -98,22 +94,12 @@ public abstract class AbstractPipelineHttpSOAPClient
         } 
     }
     
-    /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
-        httpClient = null;
-        httpClientSecurityParameters = null;
-        tlsCriteriaSetStrategy = null;
-        
-        super.doDestroy();
-    }
-    
     /**
      * Get the client used to make outbound HTTP requests.
      * 
      * @return the client instance
      */
-    @Nonnull public HttpClient getHttpClient() {
+    @NonnullAfterInit public HttpClient getHttpClient() {
         return httpClient;
     }
 
@@ -190,8 +176,9 @@ public abstract class AbstractPipelineHttpSOAPClient
             pipeline = resolvePipeline(operationContext);
             
             // Outbound payload handling
-            if (pipeline.getOutboundPayloadMessageHandler() != null) {
-                pipeline.getOutboundPayloadMessageHandler().invoke(operationContext.getOutboundMessageContext());
+            MessageHandler handler = pipeline.getOutboundPayloadMessageHandler();
+            if (handler != null) {
+                handler.invoke(operationContext.ensureOutboundMessageContext());
             }
             
             final ClassicHttpRequest httpRequest = buildHttpRequest(endpoint, operationContext);
@@ -201,11 +188,14 @@ public abstract class AbstractPipelineHttpSOAPClient
             encoder.setMessageContext(operationContext.getOutboundMessageContext());
             encoder.initialize();
             encoder.prepareContext();
-            if (pipeline.getOutboundTransportMessageHandler() != null) {
-                pipeline.getOutboundTransportMessageHandler().invoke(operationContext.getOutboundMessageContext());
-            }
-            encoder.encode();
             
+            // Outbound transport handling.
+            handler = pipeline.getOutboundTransportMessageHandler();
+            if (handler != null) {
+                handler.invoke(operationContext.ensureOutboundMessageContext());
+            }
+            
+            encoder.encode();
             
             // HttpClient execution
             final HttpClientContext httpContext = buildHttpContext(httpRequest, operationContext);
@@ -220,8 +210,10 @@ public abstract class AbstractPipelineHttpSOAPClient
             operationContext.setInboundMessageContext(decoder.getMessageContext());
             
             // Inbound message handling
-            if (pipeline.getInboundMessageHandler() != null) {
-                pipeline.getInboundMessageHandler().invoke(operationContext.getInboundMessageContext());
+            
+            handler = pipeline.getInboundMessageHandler();
+            if (handler != null) {
+                handler.invoke(operationContext.ensureInboundMessageContext());
             }
             
         } catch (final SOAP11FaultDecodingException e) {
@@ -367,7 +359,7 @@ public abstract class AbstractPipelineHttpSOAPClient
     protected HttpClientSecurityParameters resolveContextSecurityParameters(
             @Nonnull final InOutOperationContext operationContext) {
         final HttpClientSecurityContext securityContext = 
-                operationContext.getOutboundMessageContext().getSubcontext(HttpClientSecurityContext.class);
+                operationContext.ensureOutboundMessageContext().getSubcontext(HttpClientSecurityContext.class);
         if (securityContext != null) {
             return securityContext.getSecurityParameters();
         }
@@ -394,11 +386,16 @@ public abstract class AbstractPipelineHttpSOAPClient
      */
     @Nonnull protected HttpClientContext resolveClientContext(@Nonnull final InOutOperationContext operationContext) {
         final HttpClientRequestContext requestContext = 
-                operationContext.getOutboundMessageContext().ensureSubcontext(HttpClientRequestContext.class);
-        if (requestContext.getHttpClientContext() == null) {
-            requestContext.setHttpClientContext(HttpClientContext.create());
+                operationContext.ensureOutboundMessageContext().ensureSubcontext(HttpClientRequestContext.class);
+        
+        HttpClientContext clientCtx = requestContext.getHttpClientContext();
+        if (clientCtx == null) {
+            clientCtx = HttpClientContext.create();
+            requestContext.setHttpClientContext(clientCtx);
         }
-        return requestContext.getHttpClientContext();
+        
+        assert clientCtx != null;
+        return clientCtx;
     }
 
     /**
@@ -412,8 +409,9 @@ public abstract class AbstractPipelineHttpSOAPClient
             @Nonnull final InOutOperationContext operationContext) {
         
         final CriteriaSet criteriaSet = new CriteriaSet();
-        if (getTLSCriteriaSetStrategy() != null) {
-            final CriteriaSet resolved = getTLSCriteriaSetStrategy().apply(operationContext);
+        final Function<InOutOperationContext,CriteriaSet> strategy = getTLSCriteriaSetStrategy();
+        if (strategy != null) {
+            final CriteriaSet resolved = strategy.apply(operationContext);
             if (resolved != null) {
                 criteriaSet.addAll(resolved);
             }

@@ -46,8 +46,10 @@ public interface FaultCode extends SOAPObject, XSQName {
             SOAPConstants.SOAP11_PREFIX);
 
     /** FaultCode value <code>Server</code>. */
-    @Nonnull public static final QName SERVER = new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
+    @Nonnull public static final QName SERVER =
+            new QName(SOAPConstants.SOAP11_NS, "Server", SOAPConstants.SOAP11_PREFIX);
 
     /** FaultCode value <code>Client</code>. */
-    @Nonnull public static final QName CLIENT = new QName(SOAPConstants.SOAP11_NS, "Client", SOAPConstants.SOAP11_PREFIX);
+    @Nonnull public static final QName CLIENT =
+            new QName(SOAPConstants.SOAP11_NS, "Client", SOAPConstants.SOAP11_PREFIX);
 }

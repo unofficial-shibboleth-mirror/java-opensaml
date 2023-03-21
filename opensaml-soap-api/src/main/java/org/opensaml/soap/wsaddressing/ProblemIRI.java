@@ -20,6 +20,8 @@ package org.opensaml.soap.wsaddressing;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The &lt;wsa:ProblemIRI&gt; element.
  * 
@@ -29,7 +31,7 @@ import javax.xml.namespace.QName;
 public interface ProblemIRI extends AttributedURI {
 
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "ProblemIRI";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "ProblemIRI";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =

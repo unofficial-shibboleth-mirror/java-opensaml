@@ -17,10 +17,14 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The &lt;wsu:Timestamp&gt; element.
@@ -33,10 +37,10 @@ public interface Timestamp extends IdBearing, AttributeExtensibleXMLObject,
         ElementExtensibleXMLObject, WSSecurityObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Timestamp";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Timestamp";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSU_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
 
     /**
@@ -44,7 +48,7 @@ public interface Timestamp extends IdBearing, AttributeExtensibleXMLObject,
      * 
      * @return the {@link Created} child element or <code>null</code>.
      */
-    public Created getCreated();
+    @Nullable public Created getCreated();
 
     /**
      * Sets the &lt;wsu:Created&gt; child element.
@@ -52,14 +56,14 @@ public interface Timestamp extends IdBearing, AttributeExtensibleXMLObject,
      * @param created
      *            the {@link Created} child element to set.
      */
-    public void setCreated(Created created);
+    public void setCreated(@Nullable final Created created);
 
     /**
      * Returns the &lt;wsu:Expires&gt; child element.
      * 
      * @return the {@link Expires} child element or <code>null</code>.
      */
-    public Expires getExpires();
+    @Nullable public Expires getExpires();
 
     /**
      * Sets the &lt;wsu:Expires&gt; child element.
@@ -67,6 +71,6 @@ public interface Timestamp extends IdBearing, AttributeExtensibleXMLObject,
      * @param expires
      *            the {@link Expires} child element or <code>null</code>.
      */
-    public void setExpires(Expires expires);
+    public void setExpires(@Nullable final Expires expires);
 
 }

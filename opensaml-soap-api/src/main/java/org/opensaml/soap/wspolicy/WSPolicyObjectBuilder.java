@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wspolicy;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
@@ -32,5 +34,5 @@ public interface WSPolicyObjectBuilder<WSPolicyObjectType extends WSPolicyObject
      * 
      * @return the built object
      */
-    public WSPolicyObjectType buildObject();
+    @Nonnull public WSPolicyObjectType buildObject();
 }

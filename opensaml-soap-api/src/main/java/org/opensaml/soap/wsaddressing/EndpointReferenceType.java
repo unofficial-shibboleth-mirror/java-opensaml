@@ -18,10 +18,13 @@
 package org.opensaml.soap.wsaddressing;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for element of type {@link EndpointReferenceType}.
@@ -33,7 +36,7 @@ public interface EndpointReferenceType
         extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "EndpointReferenceType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EndpointReferenceType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 
@@ -44,41 +47,41 @@ public interface EndpointReferenceType
      * 
      * @return the {@link Address} child element or <code>null</code>
      */
-    public Address getAddress();
+    @Nullable public Address getAddress();
 
     /**
      * Sets the &lt;wsa:Address&gt; child element.
      * 
      * @param address the {@link Address} child element to set.
      */
-    public void setAddress(Address address);
+    public void setAddress(@Nullable final Address address);
 
     /**
      * Returns the optional &lt;wsa:Metadata&gt; child element.
      * 
      * @return the {@link Metadata} child element or <code>null</code>.
      */
-    public Metadata getMetadata();
+    @Nullable public Metadata getMetadata();
 
     /**
      * Sets the &lt;wsa:Metadata&gt; child element.
      * 
      * @param metadata the {@link Metadata} child element to set.
      */
-    public void setMetadata(Metadata metadata);
+    public void setMetadata(@Nullable final Metadata metadata);
 
     /**
      * Returns the optional &lt;wsa:ReferenceParameters&gt; child element.
      * 
      * @return the {@link ReferenceParameters} child element or <code>null</code>.
      */
-    public ReferenceParameters getReferenceParameters();
+    @Nullable public ReferenceParameters getReferenceParameters();
 
     /**
      * Sets the &lt;wsa:ReferenceParameters&gt; child element.
      * 
      * @param referenceParameters the {@link ReferenceParameters} child element to set.
      */
-    public void setReferenceParameters(ReferenceParameters referenceParameters);
+    public void setReferenceParameters(@Nullable final ReferenceParameters referenceParameters);
 
 }

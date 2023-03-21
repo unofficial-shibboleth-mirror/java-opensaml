@@ -20,6 +20,8 @@ package org.opensaml.soap.wsaddressing;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The &lt;wsa:From&gt; element.
  * 
@@ -29,7 +31,7 @@ import javax.xml.namespace.QName;
 public interface From extends EndpointReferenceType {
 
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "From";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "From";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =

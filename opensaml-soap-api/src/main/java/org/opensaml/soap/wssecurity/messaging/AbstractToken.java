@@ -29,10 +29,10 @@ import net.shibboleth.shared.logic.Constraint;
 public abstract class AbstractToken<TokenType> implements Token<TokenType> {
     
     /** The wrapped token object instance. */
-    private TokenType wrappedToken;
+    @Nonnull private final TokenType wrappedToken;
     
     /** Token validation status. */
-    private ValidationStatus validationStatus;
+    @Nonnull private ValidationStatus validationStatus;
     
     /**
      * Constructor.

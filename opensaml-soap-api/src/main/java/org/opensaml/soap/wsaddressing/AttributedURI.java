@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.schema.XSURI;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for element of type &lt;wsa:AttributedURIType&gt;.
  * 
@@ -32,7 +34,7 @@ import org.opensaml.core.xml.schema.XSURI;
 public interface AttributedURI extends XSURI, AttributeExtensibleXMLObject, WSAddressingObject {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributedURIType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributedURIType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

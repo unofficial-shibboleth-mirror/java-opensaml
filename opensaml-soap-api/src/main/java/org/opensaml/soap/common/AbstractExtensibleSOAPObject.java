@@ -73,6 +73,7 @@ public abstract class AbstractExtensibleSOAPObject extends AbstractXMLObject imp
     }
     
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }

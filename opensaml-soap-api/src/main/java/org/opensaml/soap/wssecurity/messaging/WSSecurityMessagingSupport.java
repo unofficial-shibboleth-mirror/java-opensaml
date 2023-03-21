@@ -82,6 +82,7 @@ public final class WSSecurityMessagingSupport {
         Security security = null;
         for (final XMLObject header : securityHeaders) {
             final Security candidate = (Security) header;
+            assert candidate != null;
             final boolean candidateMustUnderstand = SOAPMessagingSupport.isMustUnderstand(messageContext, candidate);
             if (mustUnderstand == candidateMustUnderstand) {
                 security = candidate;

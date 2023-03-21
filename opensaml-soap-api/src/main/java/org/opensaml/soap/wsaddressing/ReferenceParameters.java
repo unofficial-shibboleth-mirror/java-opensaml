@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * The optional &lt;wsa:ReferenceParameters&gt; element.
  * 
@@ -33,14 +35,14 @@ public interface ReferenceParameters
         extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSAddressingObject {
     
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "ReferenceParameters";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "ReferenceParameters";
 
     /** Default element name. */
     @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSAddressingConstants.WSA_NS, ELEMENT_LOCAL_NAME, WSAddressingConstants.WSA_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "ReferenceParametersType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ReferenceParametersType"; 
         
     /** QName of the XSI type. */
     @Nonnull  public static final QName TYPE_NAME = 

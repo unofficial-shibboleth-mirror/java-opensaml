@@ -19,6 +19,10 @@ package org.opensaml.soap.wssecurity.util;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.XMLConstants;
@@ -47,7 +51,7 @@ public final class WSSecuritySupport {
      * @param soapObject the SOAP object to add the attribute to
      * @param id the Id value
      */
-    public static void addWSUId(final XMLObject soapObject, final String id) {
+    public static void addWSUId(@Nonnull final XMLObject soapObject, @Nonnull @NotEmpty final String id) {
         if (soapObject instanceof IdBearing) {
             ((IdBearing)soapObject).setWSUId(id);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -65,7 +69,7 @@ public final class WSSecuritySupport {
      * 
      * @return the value of the Id attribute, or null if not present
      */
-    public static String getWSUId(final XMLObject soapObject) {
+    @Nullable public static String getWSUId(@Nonnull final XMLObject soapObject) {
         String value = null;
         if (soapObject instanceof IdBearing) {
             value = StringSupport.trimOrNull(((IdBearing)soapObject).getWSUId());
@@ -87,7 +91,7 @@ public final class WSSecuritySupport {
      * @param soapObject the SOAP object to add the attribute to
      * @param tokenType the tokenType value
      */
-    public static void addWSSE11TokenType(final XMLObject soapObject, final String tokenType) {
+    public static void addWSSE11TokenType(@Nonnull final XMLObject soapObject, @Nullable final String tokenType) {
         if (soapObject instanceof TokenTypeBearing) {
             ((TokenTypeBearing)soapObject).setWSSE11TokenType(tokenType);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -105,7 +109,7 @@ public final class WSSecuritySupport {
      * 
      * @return the value of the tokenType attribute, or null if not present
      */
-    public static String getWSSE11TokenType(final XMLObject soapObject) {
+    @Nullable public static String getWSSE11TokenType(@Nonnull final XMLObject soapObject) {
         String value = null;
         if (soapObject instanceof TokenTypeBearing) {
             value = StringSupport.trimOrNull(((TokenTypeBearing)soapObject).getWSSE11TokenType());
@@ -128,7 +132,7 @@ public final class WSSecuritySupport {
      * @param soapObject the SOAP object to add the attribute to
      * @param usage the usage to add
      */
-    public static void addWSSEUsage(final XMLObject soapObject, final String usage) {
+    public static void addWSSEUsage(@Nonnull final XMLObject soapObject, @Nonnull @NotEmpty final String usage) {
         if (soapObject instanceof UsageBearing) {
             final UsageBearing usageBearing = (UsageBearing) soapObject;
             List<String> list = usageBearing.getWSSEUsages();
@@ -157,7 +161,7 @@ public final class WSSecuritySupport {
      * @param soapObject the SOAP object to add the attribute to
      * @param usages the list of usages to add
      */
-    public static void addWSSEUsages(final XMLObject soapObject, final List<String> usages) {
+    public static void addWSSEUsages(@Nonnull final XMLObject soapObject, @Nonnull final List<String> usages) {
         if (soapObject instanceof UsageBearing) {
             ((UsageBearing)soapObject).setWSSEUsages(usages);
         } else if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -176,7 +180,7 @@ public final class WSSecuritySupport {
      * 
      * @return the list of usages, or null if not present
      */
-    public static List<String> getWSSEUsages(final XMLObject soapObject) {
+    @Nullable public static List<String> getWSSEUsages(@Nonnull final XMLObject soapObject) {
         if (soapObject instanceof UsageBearing) {
             final List<String> value = ((UsageBearing)soapObject).getWSSEUsages();
             if (value != null) {

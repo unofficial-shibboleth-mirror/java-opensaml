@@ -32,18 +32,17 @@ import net.shibboleth.shared.collection.LazySet;
 public final class InboundSOAPContext extends BaseContext {
     
     /** The set of actor URI's under which this SOAP node is operating. */
-    private LazySet<String> nodeActors;
+    @Nonnull private LazySet<String> nodeActors;
     
     /** Flag indicating whether the node is the final destination for the current 
      * message processing context. Defaults to: true*/
     private boolean finalDestination;
     
     /** The set of headers that have been understood. */
-    private LazySet<XMLObject> understoodHeaders;
+    @Nonnull private LazySet<XMLObject> understoodHeaders;
     
     /** Constructor. */
     public InboundSOAPContext() {
-        super();
         nodeActors = new LazySet<>();
         understoodHeaders = new LazySet<>();
         finalDestination = true;

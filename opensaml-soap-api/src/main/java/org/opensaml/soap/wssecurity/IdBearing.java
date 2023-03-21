@@ -17,7 +17,11 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for element having a <code>@wsu:Id</code> attribute.
@@ -26,10 +30,10 @@ import javax.xml.namespace.QName;
 public interface IdBearing {
 
     /** the <code>Id</code> attribute local name. */
-    public static final String WSU_ID_ATTR_LOCAL_NAME = "Id";
+    @Nonnull @NotEmpty public static final String WSU_ID_ATTR_LOCAL_NAME = "Id";
 
     /** the <code>wsu:Id</code> qualified attribute name. */
-    public static final QName WSU_ID_ATTR_NAME =
+    @Nonnull public static final QName WSU_ID_ATTR_NAME =
         new QName(WSSecurityConstants.WSU_NS, WSU_ID_ATTR_LOCAL_NAME, WSSecurityConstants.WSU_PREFIX);
 
     /**
@@ -37,13 +41,13 @@ public interface IdBearing {
      * 
      * @return The <code>@wsu:Id</code> attribute value or <code>null</code>.
      */
-    public String getWSUId();
+    @Nullable public String getWSUId();
 
     /**
      * Sets the <code>@wsu:Id</code> attribute value.
      * 
      * @param newId The <code>@wsu:Id</code> attribute value
      */
-    public void setWSUId(String newId);
+    public void setWSUId(@Nullable final String newId);
 
 }

@@ -89,7 +89,10 @@ public final class SOAPSupport {
         if (soapObject instanceof MustUnderstandBearing) {
             final XSBooleanValue value = ((MustUnderstandBearing) soapObject).isSOAP11MustUnderstandXSBoolean();
             if (value != null) {
-                return value.getValue();
+                final Boolean flag = value.getValue();
+                if (flag != null) {
+                    return flag;
+                }
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -299,7 +302,10 @@ public final class SOAPSupport {
             final XSBooleanValue value = ((org.opensaml.soap.soap12.MustUnderstandBearing) soapObject)
                     .isSOAP12MustUnderstandXSBoolean();
             if (value != null) {
-                return value.getValue();
+                final Boolean flag = value.getValue();
+                if (flag != null) {
+                    return flag;
+                }
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -340,7 +346,10 @@ public final class SOAPSupport {
         if (soapObject instanceof org.opensaml.soap.soap12.RelayBearing) {
             final XSBooleanValue value = ((org.opensaml.soap.soap12.RelayBearing) soapObject).isSOAP12RelayXSBoolean();
             if (value != null) {
-                return value.getValue();
+                final Boolean flag = value.getValue();
+                if (flag != null) {
+                    return flag;
+                }
             }
         }
         if (soapObject instanceof AttributeExtensibleXMLObject) {
@@ -411,11 +420,11 @@ public final class SOAPSupport {
         
         final XMLObjectBuilderFactory builderFactory = XMLObjectProviderRegistrySupport.getBuilderFactory(); 
         
-        final Fault faultObj =  (Fault) builderFactory.getBuilder(Fault.DEFAULT_ELEMENT_NAME)
+        final Fault faultObj =  (Fault) builderFactory.ensureBuilder(Fault.DEFAULT_ELEMENT_NAME)
             .buildObject(Fault.DEFAULT_ELEMENT_NAME);
-        final FaultCode faultCodeObj =  (FaultCode) builderFactory.getBuilder(FaultCode.DEFAULT_ELEMENT_NAME)
+        final FaultCode faultCodeObj =  (FaultCode) builderFactory.ensureBuilder(FaultCode.DEFAULT_ELEMENT_NAME)
             .buildObject(FaultCode.DEFAULT_ELEMENT_NAME);
-        final FaultString faultStringObj =  (FaultString) builderFactory.getBuilder(FaultString.DEFAULT_ELEMENT_NAME)
+        final FaultString faultStringObj =  (FaultString) builderFactory.ensureBuilder(FaultString.DEFAULT_ELEMENT_NAME)
             .buildObject(FaultString.DEFAULT_ELEMENT_NAME);
         
         faultCodeObj.setValue(faultCode);
@@ -425,7 +434,7 @@ public final class SOAPSupport {
         faultObj.setMessage(faultStringObj);
         
         if (faultActor != null) {
-            final FaultActor faultActorObj =  (FaultActor) builderFactory.getBuilder(FaultActor.DEFAULT_ELEMENT_NAME)
+            final FaultActor faultActorObj =  (FaultActor) builderFactory.ensureBuilder(FaultActor.DEFAULT_ELEMENT_NAME)
                 .buildObject(FaultActor.DEFAULT_ELEMENT_NAME);
             faultActorObj.setURI(faultActor);
             faultObj.setActor(faultActorObj);
@@ -433,14 +442,14 @@ public final class SOAPSupport {
             
         Detail detailObj = null;
         if (detailChildren != null && !detailChildren.isEmpty()) {
-            detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)
+            detailObj = (Detail) builderFactory.ensureBuilder(Detail.DEFAULT_ELEMENT_NAME)
                 .buildObject(Detail.DEFAULT_ELEMENT_NAME);
             detailObj.getUnknownXMLObjects().addAll(detailChildren);
         }
         
         if (detailAttributes != null && !detailAttributes.isEmpty()) {
             if (detailObj == null) {
-                detailObj = (Detail) builderFactory.getBuilder(Detail.DEFAULT_ELEMENT_NAME)
+                detailObj = (Detail) builderFactory.ensureBuilder(Detail.DEFAULT_ELEMENT_NAME)
                     .buildObject(Detail.DEFAULT_ELEMENT_NAME);
             }
             for (final Entry<QName,String> entry : detailAttributes.entrySet()) {

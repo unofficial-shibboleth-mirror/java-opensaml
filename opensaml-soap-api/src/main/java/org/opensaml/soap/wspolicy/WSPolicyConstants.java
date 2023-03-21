@@ -19,6 +19,8 @@ package org.opensaml.soap.wspolicy;
 
 import javax.annotation.Nonnull;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * WS-Policy 1.2 constants.
  * 
@@ -28,10 +30,10 @@ import javax.annotation.Nonnull;
 public final class WSPolicyConstants {
 
     /** WS-Policy namespace. */
-    @Nonnull public static final String WSP_NS= "http://schemas.xmlsoap.org/ws/2004/09/policy";
+    @Nonnull @NotEmpty public static final String WSP_NS= "http://schemas.xmlsoap.org/ws/2004/09/policy";
 
     /** WS-Policy namespace prefix. */
-    @Nonnull public static final String WSP_PREFIX= "wsp";
+    @Nonnull @NotEmpty public static final String WSP_PREFIX= "wsp";
     
     /** Constructor. Private to prevent instantiation. */
     private WSPolicyConstants() { }

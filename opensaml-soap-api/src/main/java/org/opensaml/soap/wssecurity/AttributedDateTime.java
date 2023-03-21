@@ -20,10 +20,13 @@ package org.opensaml.soap.wssecurity;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.schema.XSString;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for elements of complex type AttributedDateTime.
@@ -32,7 +35,7 @@ import org.opensaml.core.xml.schema.XSString;
 public interface AttributedDateTime extends XSString, IdBearing, AttributeExtensibleXMLObject, WSSecurityObject  {
 
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributedDateTime"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributedDateTime"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 
@@ -43,7 +46,7 @@ public interface AttributedDateTime extends XSString, IdBearing, AttributeExtens
      * 
      * @return the {@link Instant} object.
      */
-    public Instant getDateTime();
+    @Nullable public Instant getDateTime();
 
     /**
      * Sets the Instant content or attribute value.
@@ -51,6 +54,6 @@ public interface AttributedDateTime extends XSString, IdBearing, AttributeExtens
      * @param dateTime
      *            the {@link Instant} object to set.
      */
-    public void setDateTime(Instant dateTime);
+    public void setDateTime(@Nullable final Instant dateTime);
     
 }

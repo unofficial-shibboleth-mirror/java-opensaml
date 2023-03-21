@@ -27,6 +27,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
+import javax.xml.namespace.QName;
 
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.classic.methods.HttpPost;
@@ -52,10 +53,12 @@ import org.opensaml.soap.client.SOAPClientException;
 import org.opensaml.soap.client.SOAPFaultException;
 import org.opensaml.soap.common.SOAPException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
+import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
@@ -63,6 +66,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.XMLParserException;
@@ -189,8 +193,8 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
                 Constraint.isNotNull(strategy, "SOAP 1.1 context lookup strategy cannot be null");
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
-    @Override
     public void send(@Nonnull @NotEmpty final String endpoint, @Nonnull final InOutOperationContext context)
             throws SOAPException, SecurityException {
         Constraint.isNotNull(endpoint, "Endpoint cannot be null");
@@ -201,7 +205,8 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
 
         HttpSOAPRequestParameters soapRequestParams = null;
         
-        if (soapCtx == null || soapCtx.getEnvelope() == null) {
+        final Envelope env = soapCtx != null ? soapCtx.getEnvelope() : null;
+        if (env == null) {
             throw new SOAPClientException("Operation context did not contain an outbound SOAP Envelope");
         } else if (clientCtx != null) {
             soapRequestParams = (HttpSOAPRequestParameters) clientCtx.getSOAPRequestParameters();
@@ -209,7 +214,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
         
         HttpPost post = null;
         try {
-            post = createPostMethod(endpoint, soapRequestParams, soapCtx.getEnvelope());
+            post = createPostMethod(endpoint, soapRequestParams, env);
 
             ClassicHttpResponse response = null;
             try {
@@ -242,6 +247,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
             }
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /**
      * Create the post method used to send the SOAP request.
@@ -281,9 +287,8 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
     protected HttpEntity createRequestEntity(@Nonnull final Envelope message, @Nullable final Charset charset)
             throws SOAPClientException {
         try {
-            final Marshaller marshaller = Constraint.isNotNull(
-                    XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(message),
-                    "SOAP Envelope marshaller not available");
+            final Marshaller marshaller =
+                    XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(message);
             final ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
 
             if (log.isDebugEnabled()) {
@@ -313,7 +318,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
             }
             final Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
             context.setInboundMessageContext(new MessageContext());
-            context.getInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
+            context.ensureInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
             //TODO: goes away?
             //evaluateSecurityPolicy(messageContext);
         } catch (final IOException e) {
@@ -338,10 +343,11 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
             }
             final Envelope response = unmarshallResponse(httpResponse.getEntity().getContent());
             context.setInboundMessageContext(new MessageContext());
-            context.getInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
+            context.ensureInboundMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(response);
 
-            if (response.getBody() != null) {
-                final List<XMLObject> faults = response.getBody().getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
+            final Body body = response.getBody();
+            if (body != null) {
+                final List<XMLObject> faults = body.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
                 if (faults.size() < 1) {
                     throw new SOAPClientException("HTTP status code was 500 but SOAP response did not contain a Fault");
                 }
@@ -349,11 +355,17 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
                 String code = "(not set)";
                 String msg = "(not set)";
                 final Fault fault = (Fault) faults.get(0);
-                if (fault.getCode() != null) {
-                    code = fault.getCode().getValue().toString();
+                final FaultCode fcode = fault.getCode();
+                if (fcode != null) {
+                    final QName fcodeval = fcode.getValue();
+                    if (fcodeval != null) {
+                        code = fcodeval.toString();
+                    }
                 }
-                if (fault.getMessage() != null) {
-                    msg = fault.getMessage().getValue();
+                
+                final FaultString fstring = fault.getMessage();
+                if (fstring != null && fstring.getValue() != null) {
+                    msg = fstring.getValue();
                 }
                 
                 log.debug("SOAP fault code {} with message {}", code, msg);
@@ -380,6 +392,7 @@ public class HttpSOAPClient extends AbstractInitializableComponent implements SO
     protected Envelope unmarshallResponse(@Nonnull final InputStream responseStream) throws SOAPClientException {
         try {
             final Element responseElem = parserPool.parse(responseStream).getDocumentElement();
+            assert responseElem != null;
             if (log.isDebugEnabled()) {
                 log.debug("Inbound SOAP message was:\n" + SerializeSupport.prettyPrintXML(responseElem));
             }

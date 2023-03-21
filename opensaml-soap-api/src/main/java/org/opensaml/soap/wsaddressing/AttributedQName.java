@@ -23,6 +23,8 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.schema.XSQName;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * Interface for type &lt;wsa:AttributedQName&gt;.
  * 
@@ -32,7 +34,7 @@ import org.opensaml.core.xml.schema.XSQName;
 public interface AttributedQName extends XSQName, AttributeExtensibleXMLObject, WSAddressingObject {
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "AttributedQNameType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributedQNameType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 

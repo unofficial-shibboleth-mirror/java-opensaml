@@ -18,9 +18,12 @@
 package org.opensaml.soap.wsaddressing;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for element having a <code>@wsa:IsReferenceParameter</code> attribute.
@@ -29,7 +32,7 @@ import org.opensaml.core.xml.schema.XSBooleanValue;
 public interface IsReferenceParameterBearing {
 
     /** the <code>IsReferenceParameter</code> attribute local name. */
-    @Nonnull public static final String WSA_IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME = "IsReferenceParameter";
+    @Nonnull @NotEmpty public static final String WSA_IS_REFERENCE_PARAMETER_ATTR_LOCAL_NAME = "IsReferenceParameter";
 
     /** the <code>wsa:IsReferenceParameter</code> qualified attribute name. */
     @Nonnull public static final QName WSA_IS_REFERENCE_PARAMETER_ATTR_NAME =
@@ -41,27 +44,27 @@ public interface IsReferenceParameterBearing {
      * 
      * @return The <code>@wsa:IsReferenceParameter</code> attribute value or <code>null</code>.
      */
-    public Boolean isWSAIsReferenceParameter();
+    @Nullable public Boolean isWSAIsReferenceParameter();
 
     /**
      * Returns the <code>@wsa:IsReferenceParameter</code> attribute value.
      * 
      * @return The <code>@wsa:IsReferenceParameter</code> attribute value or <code>null</code>.
      */
-    public XSBooleanValue isWSAIsReferenceParameterXSBoolean();
+    @Nullable public XSBooleanValue isWSAIsReferenceParameterXSBoolean();
 
     /**
      * Sets the <code>@wsa:IsReferenceParameter</code> attribute value.
      * 
      * @param newIsReferenceParameter The <code>@wsa:IsReferenceParameter</code> attribute value
      */
-    public void setWSAIsReferenceParameter(Boolean newIsReferenceParameter);
+    public void setWSAIsReferenceParameter(@Nullable final Boolean newIsReferenceParameter);
     
     /**
      * Sets the <code>@wsa:IsReferenceParameter</code> attribute value.
      * 
      * @param newIsReferenceParameter The <code>@wsa:IsReferenceParameter</code> attribute value
      */
-    public void setWSAIsReferenceParameter(XSBooleanValue newIsReferenceParameter);
+    public void setWSAIsReferenceParameter(@Nullable final XSBooleanValue newIsReferenceParameter);
 
 }

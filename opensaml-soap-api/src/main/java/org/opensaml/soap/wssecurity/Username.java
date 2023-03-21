@@ -17,7 +17,10 @@
 
 package org.opensaml.soap.wssecurity;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The &lt;wsse:Username&gt; element within the &lt;wsse:UsernameToken&gt;
@@ -29,10 +32,10 @@ import javax.xml.namespace.QName;
 public interface Username extends AttributedString {
     
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Username";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Username";
 
     /** Qualified element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
 
 }

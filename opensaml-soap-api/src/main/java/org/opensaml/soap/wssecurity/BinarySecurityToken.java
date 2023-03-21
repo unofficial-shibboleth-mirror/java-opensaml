@@ -18,7 +18,10 @@
 package org.opensaml.soap.wssecurity;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The &lt;wsse:BinarySecurityToken&gt; element.
@@ -26,35 +29,35 @@ import javax.xml.namespace.QName;
 public interface BinarySecurityToken extends EncodedString {
 
     /** Element local name. */
-    @Nonnull public static final String ELEMENT_LOCAL_NAME = "BinarySecurityToken";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "BinarySecurityToken";
 
     /** Qualified element name. */
     @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSSecurityConstants.WSSE_NS, ELEMENT_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull public static final String TYPE_LOCAL_NAME = "BinarySecurityTokenType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "BinarySecurityTokenType"; 
         
     /** QName of the XSI type. */
     @Nonnull public static final QName TYPE_NAME = 
         new QName(WSSecurityConstants.WSSE_NS, TYPE_LOCAL_NAME, WSSecurityConstants.WSSE_PREFIX);
     
     /** The ValueType attribute name. */
-    @Nonnull public static final String VALUE_TYPE_ATTRIB_NAME = "ValueType";
+    @Nonnull @NotEmpty public static final String VALUE_TYPE_ATTRIB_NAME = "ValueType";
     
     /**
      * Returns the ValueType attribute URI value.
      * 
      * @return the ValueType attribute value or <code>null</code>.
      */
-    public String getValueType();
+    @Nullable public String getValueType();
 
     /**
      * Sets the ValueType attribute URI value.
      * 
      * @param newValueType the ValueType attribute value.
      */
-    public void setValueType(String newValueType);
+    public void setValueType(@Nullable final String newValueType);
 
 
 }
