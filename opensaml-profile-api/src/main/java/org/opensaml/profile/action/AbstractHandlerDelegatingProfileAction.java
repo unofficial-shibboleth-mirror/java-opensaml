@@ -142,8 +142,30 @@ public abstract class AbstractHandlerDelegatingProfileAction<DelegateType extend
      * 
      * @param <T> the output type of the functions
      */
-    @Nonnull protected <T> Function<MessageContext, T> adapt(
+    @Nullable protected <T> Function<MessageContext, T> adapt(
+            @Nullable final Function<ProfileRequestContext, T> function) {
+        
+        if (function != null) {
+            return function.compose(PRC_LOOKUP);
+        } else {
+            return null;
+        }
+    }
+    
+    /**
+     * Adapt a {@link ProfileRequestContext} function to a {@link MessageContext} function via composing
+     * with a lookup function, disallowing nulls.
+     * 
+     * @param function the profile request context function
+     * @return the message context function
+     * 
+     * @param <T> the output type of the functions
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull protected <T> Function<MessageContext, T> adaptRequired(
             @Nonnull final Function<ProfileRequestContext, T> function) {
+        
         return function.compose(PRC_LOOKUP);
     }
 

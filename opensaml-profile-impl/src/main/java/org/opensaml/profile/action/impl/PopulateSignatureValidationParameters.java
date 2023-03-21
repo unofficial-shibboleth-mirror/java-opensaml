@@ -130,8 +130,8 @@ public class PopulateSignatureValidationParameters
         assert resolver != null;
         delegate.setSignatureValidationParametersResolver(resolver);
         assert configurationLookupStrategy != null;
-        delegate.setConfigurationLookupStrategy(adapt(configurationLookupStrategy));
-        delegate.setSecurityParametersContextLookupStrategy(adapt(securityParametersContextLookupStrategy));
+        delegate.setConfigurationLookupStrategy(adaptRequired(configurationLookupStrategy));
+        delegate.setSecurityParametersContextLookupStrategy(adaptRequired(securityParametersContextLookupStrategy));
         delegate.initialize();
     }
     

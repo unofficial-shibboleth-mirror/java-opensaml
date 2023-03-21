@@ -40,6 +40,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** Unit test for {@link PopulateSignatureSigningParameters}. */
+@SuppressWarnings("javadoc")
 public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;
@@ -93,7 +94,7 @@ public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTest
                         new OutboundMessageContextLookup()));
         action.initialize();
         
-        prc.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(new SignatureSigningParameters());
+        prc.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(new SignatureSigningParameters());
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
