@@ -17,7 +17,12 @@
 
 package org.opensaml.profile.action.impl;
 
+import javax.annotation.Nonnull;
+
+import org.opensaml.messaging.context.BaseContext;
 import org.opensaml.messaging.context.MessageChannelSecurityContext;
+import org.opensaml.profile.action.ActionSupport;
+import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -26,6 +31,9 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 /**
  * Profile action which populates a {@link MessageChannelSecurityContext} based on a
  * {@link jakarta.servlet.http.HttpServletRequest}.
+ * 
+ * @event {@link EventIds#PROCEED_EVENT_ID}
+ * @event {@link EventIds#INVALID_PROFILE_CTX}
  */
 public class HttpServletRequestMessageChannelSecurity extends AbstractMessageChannelSecurity {
 
@@ -66,11 +74,18 @@ public class HttpServletRequestMessageChannelSecurity extends AbstractMessageCha
 
     /** {@inheritDoc} */
     @Override
-    protected void doExecute(final ProfileRequestContext profileRequestContext) {
-        final MessageChannelSecurityContext channelContext =
-                getParentContext().ensureSubcontext(MessageChannelSecurityContext.class);
+    protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        final BaseContext parent = getParentContext();
         final HttpServletRequest request = getHttpServletRequest();
+        if (parent == null || request == null) {
+            ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_PROFILE_CTX);
+            return;
+        }
+        
+        final MessageChannelSecurityContext channelContext =
+                parent.ensureSubcontext(MessageChannelSecurityContext.class);
+        
         if (request.isSecure() && (!defaultPortInsecure || request.getLocalPort() != 443)) {
             channelContext.setConfidentialityActive(true);
             channelContext.setIntegrityActive(true);

@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.encoder.MessageEncoder;
@@ -36,7 +37,6 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Action that encodes an outbound response from the outbound {@link MessageContext}. 
@@ -104,6 +104,10 @@ public class EncodeMessage extends AbstractProfileAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         msgContext = profileRequestContext.getOutboundMessageContext();
         if (msgContext == null) {
             log.debug("{} Outbound message context was null", getLogPrefix());
@@ -111,7 +115,7 @@ public class EncodeMessage extends AbstractProfileAction {
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -140,19 +144,24 @@ public class EncodeMessage extends AbstractProfileAction {
             
             encoder.prepareContext();
             
-            if (messageHandler != null) {
+            final MessageHandler handlerCopy = messageHandler;
+            if (handlerCopy != null) {
                 log.debug("{} Invoking message handler of type {} for this response", getLogPrefix(), 
-                        messageHandler.getClass().getName());
-                messageHandler.invoke(msgContext);
+                        handlerCopy.getClass().getName());
+                assert msgContext != null;
+                handlerCopy.invoke(msgContext);
             }
             
             encoder.encode();
             
-            if (msgContext.getMessage() != null) {
-                log.debug("{} Outbound message encoded from a message of type {}", getLogPrefix(),
-                        msgContext.getMessage().getClass().getName());
+            assert msgContext != null;
+            final Object msg = msgContext.getMessage();
+            
+            if (msg != null) {
+                log.debug("{} Outbound message encoded to a message of type {}", getLogPrefix(),
+                        msg.getClass().getName());
             } else {
-                log.debug("{} Outbound message was encoded from protocol-specific data " 
+                log.debug("{} Outbound message was encoded via protocol-specific data " 
                         + "rather than MessageContext#getMessage()", getLogPrefix());
             }
             

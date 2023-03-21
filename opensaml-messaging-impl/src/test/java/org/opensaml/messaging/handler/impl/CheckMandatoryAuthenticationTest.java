@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.logic.FunctionSupport;
 
 /** Unit test for {@link CheckMandatoryAuthentication}. */
+@SuppressWarnings("javadoc")
 public class CheckMandatoryAuthenticationTest {
 
     @Test public void testAuthenticated() throws Exception {

@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.FunctionSupport;
 
+@SuppressWarnings("javadoc")
 public class URLEvaluatingMessageChannelSecurityTest {
     
     private URLEvaluatingMessageChannelSecurity handler;
@@ -46,8 +47,8 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
-        Assert.assertNotNull(channelSecurityContext);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        assert channelSecurityContext != null;
         Assert.assertFalse(channelSecurityContext.isIntegrityActive());
         Assert.assertFalse(channelSecurityContext.isConfidentialityActive());
     }
@@ -59,8 +60,8 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
-        Assert.assertNotNull(channelSecurityContext);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        assert channelSecurityContext != null;
         Assert.assertFalse(channelSecurityContext.isIntegrityActive());
         Assert.assertFalse(channelSecurityContext.isConfidentialityActive());
     }
@@ -73,8 +74,8 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
-        Assert.assertNotNull(channelSecurityContext);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        assert channelSecurityContext != null;
         Assert.assertTrue(channelSecurityContext.isIntegrityActive());
         Assert.assertTrue(channelSecurityContext.isConfidentialityActive());
     }
@@ -87,8 +88,8 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
-        Assert.assertNotNull(channelSecurityContext);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        assert channelSecurityContext != null;
         Assert.assertTrue(channelSecurityContext.isIntegrityActive());
         Assert.assertTrue(channelSecurityContext.isConfidentialityActive());
     }
@@ -100,8 +101,8 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
-        Assert.assertNotNull(channelSecurityContext);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        assert channelSecurityContext != null;
         Assert.assertTrue(channelSecurityContext.isIntegrityActive());
         Assert.assertTrue(channelSecurityContext.isConfidentialityActive());
     }
@@ -113,8 +114,8 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
-        Assert.assertNotNull(channelSecurityContext);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        assert channelSecurityContext != null;
         Assert.assertFalse(channelSecurityContext.isIntegrityActive());
         Assert.assertFalse(channelSecurityContext.isConfidentialityActive());
     }
@@ -126,8 +127,8 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
-        Assert.assertNotNull(channelSecurityContext);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        assert channelSecurityContext != null;
         Assert.assertFalse(channelSecurityContext.isIntegrityActive());
         Assert.assertFalse(channelSecurityContext.isConfidentialityActive());
     }
@@ -139,7 +140,7 @@ public class URLEvaluatingMessageChannelSecurityTest {
         
         handler.invoke(messageContext);
         
-        MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
+        final MessageChannelSecurityContext channelSecurityContext = messageContext.getSubcontext(MessageChannelSecurityContext.class);
         Assert.assertNull(channelSecurityContext);
     }
     

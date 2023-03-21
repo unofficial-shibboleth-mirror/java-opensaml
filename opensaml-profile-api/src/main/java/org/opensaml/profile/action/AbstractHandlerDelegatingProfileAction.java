@@ -142,11 +142,8 @@ public abstract class AbstractHandlerDelegatingProfileAction<DelegateType extend
      * 
      * @param <T> the output type of the functions
      */
-    @Nullable protected <T> Function<MessageContext, T> adapt(
-            @Nullable final Function<ProfileRequestContext, T> function) {
-        if (function == null) {
-            return null;
-        }
+    @Nonnull protected <T> Function<MessageContext, T> adapt(
+            @Nonnull final Function<ProfileRequestContext, T> function) {
         return function.compose(PRC_LOOKUP);
     }
 

@@ -20,7 +20,6 @@ package org.opensaml.messaging.handler.impl;
 import java.io.IOException;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.validation.Schema;
 import javax.xml.validation.Validator;
@@ -30,10 +29,10 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A handler that schema validates an XML-based message.
@@ -47,9 +46,6 @@ public class SchemaValidateXMLMessage extends AbstractMessageHandler {
 
     /** Schema used to validate incoming messages. */
     @Nonnull private final Schema validationSchema;
-    
-    /** The message to validate. */
-    @Nullable private XMLObject message;
 
     /**
      * Constructor.
@@ -85,13 +81,6 @@ public class SchemaValidateXMLMessage extends AbstractMessageHandler {
             throw new MessageHandlerException("Message context did not contain an XMLObject, unable to proceed.");
         }
         
-        message = (XMLObject) messageContext.getMessage();
-
-        if (message.getDOM() == null) {
-            log.debug("{} Message doesn't contain a DOM, unable to proceed", getLogPrefix());
-            throw new MessageHandlerException("Message doesn't contain a DOM, unable to proceed.");
-        }
-        
         return true;
     }
     
@@ -100,7 +89,15 @@ public class SchemaValidateXMLMessage extends AbstractMessageHandler {
             throws MessageHandlerException {
 
         log.debug("{} Attempting to schema validate incoming message", getLogPrefix());
-
+        
+        final XMLObject message = (XMLObject) messageContext.getMessage();
+        assert message != null;
+        if (message.getDOM() == null) {
+            log.debug("{} Message doesn't contain a DOM, unable to proceed", getLogPrefix());
+            throw new MessageHandlerException("Message doesn't contain a DOM, unable to proceed.");
+        }
+        
+        
         try {
             final Validator schemaValidator = validationSchema.newValidator();
             schemaValidator.validate(new DOMSource(message.getDOM()));

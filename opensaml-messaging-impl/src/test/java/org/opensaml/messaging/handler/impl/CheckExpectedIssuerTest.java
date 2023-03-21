@@ -25,6 +25,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.FunctionSupport;
 
 /** Unit test for {@link CheckMandatoryIssuer}. */
+@SuppressWarnings("javadoc")
 public class CheckExpectedIssuerTest {
 
     @Test

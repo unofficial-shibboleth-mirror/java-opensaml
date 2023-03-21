@@ -34,8 +34,6 @@ import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.SignatureValidationParametersResolver;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.messaging.impl.PopulateSignatureValidationParametersHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
@@ -51,9 +49,6 @@ import net.shibboleth.shared.logic.Constraint;
  */
 public class PopulateSignatureValidationParameters 
         extends AbstractHandlerDelegatingProfileAction<PopulateSignatureValidationParametersHandler> {
-
-    /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(PopulateSignatureValidationParameters.class);
     
     /** Strategy used to look up the {@link SecurityParametersContext} to set the parameters for. */
     @Nonnull private Function<ProfileRequestContext,SecurityParametersContext> securityParametersContextLookupStrategy;
@@ -132,7 +127,9 @@ public class PopulateSignatureValidationParameters
         }
         
         final PopulateSignatureValidationParametersHandler delegate = getDelegate();
+        assert resolver != null;
         delegate.setSignatureValidationParametersResolver(resolver);
+        assert configurationLookupStrategy != null;
         delegate.setConfigurationLookupStrategy(adapt(configurationLookupStrategy));
         delegate.setSecurityParametersContextLookupStrategy(adapt(securityParametersContextLookupStrategy));
         delegate.initialize();

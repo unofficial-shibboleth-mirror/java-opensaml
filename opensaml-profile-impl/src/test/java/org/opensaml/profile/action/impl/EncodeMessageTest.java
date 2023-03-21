@@ -19,7 +19,6 @@ package org.opensaml.profile.action.impl;
 
 import java.util.function.Function;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
@@ -37,6 +36,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link EncodeMessage}. */
+@SuppressWarnings("javadoc")
 public class EncodeMessageTest {
     
     private MockMessage message; 
@@ -143,14 +143,19 @@ public class EncodeMessageTest {
             if (throwException) {
                 throw new MessageEncodingException();
             }
-            message = ((MockMessage) getMessageContext().getMessage()).getEncoded();
+            final MessageContext mc = getMessageContext();
+            assert mc != null;
+            
+            final MockMessage msg = (MockMessage) mc.getMessage();
+            assert msg != null;
+            message = msg.getEncoded();
         }
     }
  
     private class MockEncoderFactory implements Function<ProfileRequestContext,MessageEncoder> {
 
         /** {@inheritDoc} */
-        @Nullable public MessageEncoder apply(@Nonnull final ProfileRequestContext profileRequestContext) {
+        @Nullable public MessageEncoder apply(@Nullable final ProfileRequestContext profileRequestContext) {
             return encoder;
         }
         

@@ -27,9 +27,9 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that decodes an incoming request into a {@link MessageContext}.
@@ -65,8 +65,14 @@ public class DecodeMessage extends AbstractProfileAction {
                     decoder.getClass().getName());
             decoder.decode();
             final MessageContext msgContext = decoder.getMessageContext();
-            log.debug("{} Incoming request decoded into a message of type {}", getLogPrefix(), 
-                    msgContext.getMessage().getClass().getName());
+            final Object msg = msgContext != null ? msgContext.getMessage() : null;
+
+            if (msg != null) {
+                log.debug("{} Incoming request decoded into a message of type {}", getLogPrefix(), 
+                        msg.getClass().getName());
+            } else {
+                log.warn("{} Decoder did not produce an incoming message?", getLogPrefix());
+            }
 
             profileRequestContext.setInboundMessageContext(msgContext);
         } catch (final MessageDecodingException e) {

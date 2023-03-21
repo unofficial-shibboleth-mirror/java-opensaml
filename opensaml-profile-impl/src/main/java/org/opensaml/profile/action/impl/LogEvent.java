@@ -18,7 +18,6 @@
 package org.opensaml.profile.action.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -31,10 +30,11 @@ import org.opensaml.profile.context.EventContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.context.navigate.CurrentOrPreviousEventLookup;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 
@@ -57,7 +57,7 @@ public class LogEvent extends AbstractProfileAction {
     /** Constructor. */
     public LogEvent() {
         eventContextLookupStrategy = new CurrentOrPreviousEventLookup();
-        suppressedEvents = Collections.emptySet();
+        suppressedEvents = CollectionSupport.emptySet();
     }
 
     /**
@@ -82,7 +82,7 @@ public class LogEvent extends AbstractProfileAction {
         if (events != null) {
             suppressedEvents = new HashSet<>(StringSupport.normalizeStringCollection(events));
         } else {
-            suppressedEvents = Collections.emptySet();
+            suppressedEvents = CollectionSupport.emptySet();
         }
     }
     
@@ -91,13 +91,12 @@ public class LogEvent extends AbstractProfileAction {
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         final EventContext eventCtx = eventContextLookupStrategy.apply(profileRequestContext);
-        if (eventCtx == null || eventCtx.getEvent() == null) {
-            return;
-        }
-        
-        final String eventString = eventCtx.getEvent().toString();
-        if (!suppressedEvents.contains(eventString)) {
-            log.warn("A non-proceed event occurred while processing the request: {}", eventString);
+        final Object event = eventCtx != null ? eventCtx.getEvent() : null;
+        if (event != null) {
+            final String eventString = event.toString();
+            if (!suppressedEvents.contains(eventString)) {
+                log.warn("A non-proceed event occurred while processing the request: {}", eventString);
+            }
         }
     }
     

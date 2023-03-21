@@ -39,6 +39,10 @@ public class DecodeMessageTest {
     
     private ProfileRequestContext profileCtx;
     
+    /**
+     * Test setup. 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod
     public void setUp() throws ComponentInitializationException {
         message = new MockMessage();
@@ -62,8 +66,9 @@ public class DecodeMessageTest {
 
         ActionTestingSupport.assertProceedEvent(profileCtx);
 
-        Assert.assertNotNull(profileCtx.getInboundMessageContext());
-        Assert.assertEquals(profileCtx.getInboundMessageContext().getMessage(), message);
+        final MessageContext mc = profileCtx.getInboundMessageContext(); 
+        assert mc != null;
+        Assert.assertEquals(mc.getMessage(), message);
     }
 
     /**

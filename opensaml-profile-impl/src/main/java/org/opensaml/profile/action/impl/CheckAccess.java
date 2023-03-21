@@ -27,13 +27,14 @@ import org.opensaml.profile.action.ActionSupport;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.security.AccessControlService;
 
@@ -164,29 +165,21 @@ public class CheckAccess extends AbstractProfileAction {
     
     /** {@inheritDoc} */
     @Override
-    public boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        
-        if (!super.doPreExecute(profileRequestContext)) {
-            return false;
-        } else if (getHttpServletRequest() == null) {
-            log.warn("{} HttpServletRequest was null, disallowing access", getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, EventIds.ACCESS_DENIED);
-            return false;
-        }
-        
-        return true;
-    }
-    
-    /** {@inheritDoc} */
-    @Override
     public void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
+        final HttpServletRequest httpRequest = getHttpServletRequest(); 
+        if (httpRequest == null) {
+            log.warn("{} HttpServletRequest was null, disallowing access", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, EventIds.ACCESS_DENIED);
+            return;
+        }
+        
         final String policyName = policyNameLookupStrategy.apply(profileRequestContext);
         if (policyName == null) {
             log.warn("{} No policy name returned by lookup strategy, disallowing access", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.ACCESS_DENIED);
-        } else if (!service.getInstance(policyName).checkAccess(
-                getHttpServletRequest(), operationLookupStrategy.apply(profileRequestContext),
+        } else if (!service.getInstance(policyName).checkAccess(httpRequest,
+                operationLookupStrategy.apply(profileRequestContext),
                 resourceLookupStrategy.apply(profileRequestContext))) {
             ActionSupport.buildEvent(profileRequestContext, EventIds.ACCESS_DENIED);
         }

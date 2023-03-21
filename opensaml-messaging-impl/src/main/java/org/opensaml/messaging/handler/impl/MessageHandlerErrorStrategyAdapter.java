@@ -22,7 +22,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.error.TypedMessageErrorHandler;
@@ -30,7 +32,6 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A {@link MessageHandler} which wraps and invokes another handler, catches any {@link Throwable} which is 
@@ -83,8 +84,7 @@ public class MessageHandlerErrorStrategyAdapter extends AbstractMessageHandler {
     public MessageHandlerErrorStrategyAdapter(@Nonnull final MessageHandler messageHandler, 
             @Nonnull @NonnullElements final List<TypedMessageErrorHandler> typedErrorHandlers) {
         wrappedHandler = Constraint.isNotNull(messageHandler, "Wrapped MessageHandler cannot be null");
-        errorHandlers = List.copyOf(
-                Constraint.isNotNull(typedErrorHandlers, "List of TypedMessageErroHandlers cannot be null"));
+        errorHandlers = CollectionSupport.copyToList(typedErrorHandlers);
         
         rethrowIfHandled = false;
         rethrowIfNotHandled = true;
@@ -116,7 +116,7 @@ public class MessageHandlerErrorStrategyAdapter extends AbstractMessageHandler {
 
 
     /** {@inheritDoc} */
-    protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         try {
             wrappedHandler.invoke(messageContext);
         } catch (final Throwable t) {

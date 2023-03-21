@@ -26,10 +26,10 @@ import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.context.MetricContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 
 /**

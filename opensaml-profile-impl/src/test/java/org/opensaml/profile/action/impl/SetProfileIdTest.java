@@ -24,21 +24,12 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class SetProfileIdTest {
 
     @Test
     public void testInstantiation() {
         new SetProfileId("foo");
-
-        try {
-            new SetProfileId(null);
-            Assert.fail();
-        } catch (ConstraintViolationException e) {
-            // expected this
-        }
 
         try {
             new SetProfileId("  ");

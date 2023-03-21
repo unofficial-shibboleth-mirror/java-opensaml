@@ -24,6 +24,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.logic.FunctionSupport;
 
 /** Unit test for {@link CheckMandatoryIssuer}. */
+@SuppressWarnings("javadoc")
 public class CheckMandatoryIssuerTest {
 
     @Test public void testWithIssuer() throws Exception {

@@ -17,14 +17,17 @@
 
 package org.opensaml.profile.action.impl;
 
-import java.util.Collections;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
@@ -38,6 +41,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** Unit test for {@link PopulateClientTLSValidationParameters}. */
+@SuppressWarnings("javadoc")
 public class PopulateClientTLSValidationParametersTest extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;
@@ -78,8 +82,12 @@ public class PopulateClientTLSValidationParametersTest extends OpenSAMLInitBaseT
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertNotNull(prc.getInboundMessageContext().getSubcontext(
-                ClientTLSSecurityParametersContext.class).getValidationParameters());
+        
+        final MessageContext mc = prc.getInboundMessageContext();
+        assert mc != null;
+        final ClientTLSSecurityParametersContext ctx = mc.getSubcontext(ClientTLSSecurityParametersContext.class);
+        assert ctx != null;
+        Assert.assertNotNull(ctx.getValidationParameters());
     }    
     
     private class MockResolver implements ClientTLSValidationParametersResolver {
@@ -91,20 +99,22 @@ public class PopulateClientTLSValidationParametersTest extends OpenSAMLInitBaseT
         }
         
         /** {@inheritDoc} */
-        @Override
-        public Iterable<ClientTLSValidationParameters> resolve(CriteriaSet criteria) throws ResolverException {
-            return Collections.singletonList(resolveSingle(criteria));
+        @Nonnull public Iterable<ClientTLSValidationParameters> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+            return CollectionSupport.singletonList(Constraint.isNotNull(resolveSingle(criteria), "Parameters were null"));
         }
 
         /** {@inheritDoc} */
-        @Override
-        public ClientTLSValidationParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
+        @Nullable public ClientTLSValidationParameters resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
             if (throwException) {
                 throw new ResolverException();
             }
             
-            Constraint.isNotNull(criteria.get(ClientTLSValidationConfigurationCriterion.class), "Criterion was null");
-            return new ClientTLSValidationParameters();
+            if (criteria != null) {
+                Constraint.isNotNull(criteria.get(ClientTLSValidationConfigurationCriterion.class), "Criterion was null");
+                return new ClientTLSValidationParameters();
+            }
+            
+            return null;
         }
         
     }

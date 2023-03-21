@@ -27,11 +27,11 @@ import org.opensaml.messaging.context.MessageChannelSecurityContext;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Message handler which populates a {@link MessageChannelSecurityContext} based on evaluating a
@@ -121,18 +121,22 @@ public class URLEvaluatingMessageChannelSecurity extends AbstractMessageChannelS
     protected void doInvoke(@Nonnull final MessageContext messageContext) {
         final MessageChannelSecurityContext channelContext =
                 getParentContext().ensureSubcontext(MessageChannelSecurityContext.class);
-        
+     
+        assert urlBuilder != null;
         final String scheme = urlBuilder.getScheme();
         // Note that below we don't care about port if scheme != https,
         // so only need to worry about default port for https, not all possible schemes.
-        final Integer port = urlBuilder.getPort() != null 
-                ? urlBuilder.getPort() 
-                        : "https".equalsIgnoreCase(scheme) ? 443 : null;
-                
+        assert urlBuilder != null;
+        Integer port = urlBuilder.getPort();
+        if (port == null) {
+            port = "https".equalsIgnoreCase(scheme) ? 443 : null;
+        }
+
         log.debug("Evaluating message channel security for scheme '{}' and port '{}' for URL: {}",
                 scheme, port, url);
         
-        if ("https".equalsIgnoreCase(scheme) && (!defaultPortInsecure || port != 443)) {
+        // Port can't actually be null in this expression....
+        if ("https".equalsIgnoreCase(scheme) && (!defaultPortInsecure || port == null || port != 443)) {
             channelContext.setConfidentialityActive(true);
             channelContext.setIntegrityActive(true);
         } else {
