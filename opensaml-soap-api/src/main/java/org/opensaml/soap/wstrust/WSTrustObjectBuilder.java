@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObjectBuilder;
 
 /**
@@ -32,5 +34,5 @@ public interface WSTrustObjectBuilder<WSTrustObjectType extends WSTrustObject>
      * 
      * @return the built object
      */
-    public WSTrustObjectType buildObject();
+    @Nonnull public WSTrustObjectType buildObject();
 }

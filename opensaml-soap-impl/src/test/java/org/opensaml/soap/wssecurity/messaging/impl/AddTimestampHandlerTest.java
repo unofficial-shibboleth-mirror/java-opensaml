@@ -27,6 +27,8 @@ import net.shibboleth.shared.logic.FunctionSupport;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.testing.SOAPMessagingBaseTestCase;
+import org.opensaml.soap.wssecurity.Created;
+import org.opensaml.soap.wssecurity.Expires;
 import org.opensaml.soap.wssecurity.Security;
 import org.opensaml.soap.wssecurity.Timestamp;
 import org.opensaml.soap.wssecurity.messaging.WSSecurityContext;
@@ -34,9 +36,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class AddTimestampHandlerTest extends SOAPMessagingBaseTestCase {
     
     private AddTimestampHandler handler;
@@ -63,41 +63,51 @@ public class AddTimestampHandlerTest extends SOAPMessagingBaseTestCase {
         handler.invoke(getMessageContext());
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).isEmpty());
-        Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
+        final Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
         
         Assert.assertFalse(security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).isEmpty());
-        Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
-        Assert.assertNotNull(timestamp.getCreated());
-        Assert.assertNotNull(timestamp.getCreated().getDateTime());
-        Assert.assertNotNull(timestamp.getExpires());
-        Assert.assertEquals(timestamp.getExpires().getDateTime(), timestamp.getCreated().getDateTime().plusMillis(5*60*1000));
+        final Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
+        
+        final Created created = timestamp.getCreated();
+        assert created != null;
+        final Instant ts = created.getDateTime();
+        assert ts != null;
+        
+        final Expires expires = timestamp.getExpires();
+        assert expires != null;
+        
+        Assert.assertEquals(expires.getDateTime(), ts.plusMillis(5*60*1000));
     }
     
     @Test
     public void testContextBothValues() throws ComponentInitializationException, MessageHandlerException {
-        Instant created = Instant.now();
-        Instant expires = created.plus(5, ChronoUnit.MINUTES);
-        getMessageContext().getSubcontext(WSSecurityContext.class, true).setTimestampCreated(created);
-        getMessageContext().getSubcontext(WSSecurityContext.class, true).setTimestampExpires(expires);
+        final Instant created = Instant.now();
+        final Instant expires = created.plus(5, ChronoUnit.MINUTES);
+        getMessageContext().ensureSubcontext(WSSecurityContext.class).setTimestampCreated(created);
+        getMessageContext().ensureSubcontext(WSSecurityContext.class).setTimestampExpires(expires);
         
         handler.initialize();
         handler.invoke(getMessageContext());
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).isEmpty());
-        Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
+        final Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
         
         Assert.assertFalse(security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).isEmpty());
-        Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
-        Assert.assertNotNull(timestamp.getCreated());
-        Assert.assertEquals(timestamp.getCreated().getDateTime(), created);
-        Assert.assertNotNull(timestamp.getExpires());
-        Assert.assertEquals(timestamp.getExpires().getDateTime(), expires);
+        final Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
+
+        final Created c2 = timestamp.getCreated();
+        assert c2 != null;
+        Assert.assertEquals(c2.getDateTime(), created);
+
+        final Expires e2 = timestamp.getExpires();
+        assert e2 != null;
+        Assert.assertEquals(e2.getDateTime(), expires);
     }
     
     @Test
     public void testContextCreated() throws ComponentInitializationException, MessageHandlerException {
-        Instant created = Instant.now();
-        getMessageContext().getSubcontext(WSSecurityContext.class, true).setTimestampCreated(created);
+        final Instant created = Instant.now();
+        getMessageContext().ensureSubcontext(WSSecurityContext.class).setTimestampCreated(created);
         
         handler.initialize();
         handler.invoke(getMessageContext());
@@ -106,56 +116,63 @@ public class AddTimestampHandlerTest extends SOAPMessagingBaseTestCase {
         Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
         
         Assert.assertFalse(security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).isEmpty());
-        Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
-        Assert.assertNotNull(timestamp.getCreated());
-        Assert.assertEquals(timestamp.getCreated().getDateTime(), created);
+        final Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
+        final Created c2 = timestamp.getCreated();
+        assert c2 != null;
+        Assert.assertEquals(c2.getDateTime(), created);
         Assert.assertNull(timestamp.getExpires());
     }
     
     @Test
     public void testContextExpires() throws ComponentInitializationException, MessageHandlerException {
-        Instant created = Instant.now();
-        Instant expires = created.plus(5, ChronoUnit.MINUTES);
-        getMessageContext().getSubcontext(WSSecurityContext.class, true).setTimestampExpires(expires);
+        final Instant created = Instant.now();
+        final Instant expires = created.plus(5, ChronoUnit.MINUTES);
+        getMessageContext().ensureSubcontext(WSSecurityContext.class).setTimestampExpires(expires);
         
         handler.initialize();
         handler.invoke(getMessageContext());
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).isEmpty());
-        Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
+        final Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
         
         Assert.assertFalse(security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).isEmpty());
-        Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
+        final Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
         Assert.assertNull(timestamp.getCreated());
-        Assert.assertNotNull(timestamp.getExpires());
-        Assert.assertEquals(timestamp.getExpires().getDateTime(), expires);
+
+        final Expires e2 = timestamp.getExpires();
+        assert e2 != null;
+        Assert.assertEquals(e2.getDateTime(), expires);
     }
     
     @Test
     public void testContextCreatedWithOffset() throws ComponentInitializationException, MessageHandlerException {
-        Instant created = Instant.now();
-        Instant expires = created.plus(5, ChronoUnit.MINUTES);
-        getMessageContext().getSubcontext(WSSecurityContext.class, true).setTimestampCreated(created);
+        final Instant created = Instant.now();
+        final Instant expires = created.plus(5, ChronoUnit.MINUTES);
+        getMessageContext().ensureSubcontext(WSSecurityContext.class).setTimestampCreated(created);
         handler.setExpiresOffsetFromCreated(Duration.ofMinutes(5));
         
         handler.initialize();
         handler.invoke(getMessageContext());
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).isEmpty());
-        Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
+        final Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
         
         Assert.assertFalse(security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).isEmpty());
-        Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
-        Assert.assertNotNull(timestamp.getCreated());
-        Assert.assertEquals(timestamp.getCreated().getDateTime(), created);
-        Assert.assertNotNull(timestamp.getExpires());
-        Assert.assertEquals(timestamp.getExpires().getDateTime(), expires);
+        final Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
+
+        final Created c2 = timestamp.getCreated();
+        assert c2 != null;
+        Assert.assertEquals(c2.getDateTime(), created);
+
+        final Expires e2 = timestamp.getExpires();
+        assert e2 != null;
+        Assert.assertEquals(e2.getDateTime(), expires);
     }
     
     @Test
     public void testLookupBothValues() throws ComponentInitializationException, MessageHandlerException {
-        Instant created = Instant.now();
-        Instant expires = created.plus(5, ChronoUnit.MINUTES);
+        final Instant created = Instant.now();
+        final Instant expires = created.plus(5, ChronoUnit.MINUTES);
         handler.setCreatedLookup(FunctionSupport.constant(created));
         handler.setExpiresLookup(FunctionSupport.constant(expires));
         
@@ -163,20 +180,24 @@ public class AddTimestampHandlerTest extends SOAPMessagingBaseTestCase {
         handler.invoke(getMessageContext());
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).isEmpty());
-        Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
+        final Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
         
         Assert.assertFalse(security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).isEmpty());
-        Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
-        Assert.assertNotNull(timestamp.getCreated());
-        Assert.assertEquals(timestamp.getCreated().getDateTime(), created);
-        Assert.assertNotNull(timestamp.getExpires());
-        Assert.assertEquals(timestamp.getExpires().getDateTime(), expires);
+        final Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
+        
+        final Created c2 = timestamp.getCreated();
+        assert c2 != null;
+        Assert.assertEquals(c2.getDateTime(), created);
+
+        final Expires e2 = timestamp.getExpires();
+        assert e2 != null;
+        Assert.assertEquals(e2.getDateTime(), expires);
     }
     
     @Test
     public void testLookupCreatedWithOffset() throws ComponentInitializationException, MessageHandlerException {
-        Instant created = Instant.now();
-        Instant expires = created.plus(5, ChronoUnit.MINUTES);
+        final Instant created = Instant.now();
+        final Instant expires = created.plus(5, ChronoUnit.MINUTES);
         handler.setCreatedLookup(FunctionSupport.constant(created));
         handler.setExpiresOffsetFromCreated(Duration.ofMinutes(5));
         
@@ -185,14 +206,18 @@ public class AddTimestampHandlerTest extends SOAPMessagingBaseTestCase {
         handler.invoke(getMessageContext());
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).isEmpty());
-        Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
+        final Security security = (Security) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), Security.ELEMENT_NAME).get(0);
         
         Assert.assertFalse(security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).isEmpty());
-        Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
-        Assert.assertNotNull(timestamp.getCreated());
-        Assert.assertEquals(timestamp.getCreated().getDateTime(), created);
-        Assert.assertNotNull(timestamp.getExpires());
-        Assert.assertEquals(timestamp.getExpires().getDateTime(), expires);
+        final Timestamp timestamp = (Timestamp) security.getUnknownXMLObjects(Timestamp.ELEMENT_NAME).get(0);
+        
+        final Created c2 = timestamp.getCreated();
+        assert c2 != null;
+        Assert.assertEquals(c2.getDateTime(), created);
+
+        final Expires e2 = timestamp.getExpires();
+        assert e2 != null;
+        Assert.assertEquals(e2.getDateTime(), expires);
     }
     
 }

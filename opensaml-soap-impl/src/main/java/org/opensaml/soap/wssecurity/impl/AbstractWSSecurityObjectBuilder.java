@@ -18,6 +18,8 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wssecurity.WSSecurityObject;
 import org.opensaml.soap.wssecurity.WSSecurityObjectBuilder;
@@ -32,6 +34,5 @@ public abstract class AbstractWSSecurityObjectBuilder<WSSecurityObjectType exten
         WSSecurityObjectBuilder<WSSecurityObjectType> {
 
     /** {@inheritDoc} */
-    @Override
-    public abstract WSSecurityObjectType buildObject();
+    @Nonnull public abstract WSSecurityObjectType buildObject();
 }

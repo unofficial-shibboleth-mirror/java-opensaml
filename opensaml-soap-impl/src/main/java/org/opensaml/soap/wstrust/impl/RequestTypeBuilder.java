@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.RequestType;
 
 /**
@@ -28,12 +31,13 @@ import org.opensaml.soap.wstrust.RequestType;
 public class RequestTypeBuilder extends AbstractWSTrustObjectBuilder<RequestType> {
 
     /** {@inheritDoc} */
-    public RequestType buildObject() {
+    @Nonnull public RequestType buildObject() {
         return buildObject(RequestType.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public RequestType buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public RequestType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RequestTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 

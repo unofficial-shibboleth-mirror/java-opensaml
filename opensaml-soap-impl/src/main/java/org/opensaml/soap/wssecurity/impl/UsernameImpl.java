@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Username;
 
 /**
@@ -31,7 +34,8 @@ public class UsernameImpl extends AttributedStringImpl implements Username {
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the elements
      */
-    public UsernameImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public UsernameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

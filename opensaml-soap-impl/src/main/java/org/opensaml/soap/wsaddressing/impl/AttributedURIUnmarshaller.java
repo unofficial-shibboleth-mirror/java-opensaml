@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -30,7 +32,7 @@ import org.w3c.dom.Attr;
 public class AttributedURIUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         if (elementContent != null) {
             final AttributedURI attributedURI = (AttributedURI) xmlObject;
             attributedURI.setURI(elementContent);
@@ -38,7 +40,8 @@ public class AttributedURIUnmarshaller extends AbstractWSAddressingObjectUnmarsh
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AttributedURI attributedURI = (AttributedURI) xmlObject;
         XMLObjectSupport.unmarshallToAttributeMap(attributedURI.getUnknownAttributes(), attribute);
     }

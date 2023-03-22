@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSQNameUnmarshaller;
@@ -30,7 +32,8 @@ import org.w3c.dom.Attr;
 public class AttributedQNameUnmarshaller extends XSQNameUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AttributedQName attributedQName = (AttributedQName) xmlObject;
         XMLObjectSupport.unmarshallToAttributeMap(attributedQName.getUnknownAttributes(), attribute);
     }

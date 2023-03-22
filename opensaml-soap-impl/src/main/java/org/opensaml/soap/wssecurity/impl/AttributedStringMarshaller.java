@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -33,7 +35,8 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final AttributedString attributedString = (AttributedString) xmlObject;
         
         if (!Strings.isNullOrEmpty(attributedString.getWSUId())) {
@@ -46,15 +49,15 @@ public class AttributedStringMarshaller extends AbstractWSSecurityObjectMarshall
     }
     
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject,
-            final Element domElement) throws MarshallingException {
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         XMLObjectSupport.marshallAttributeIDness(AttributedString.WSU_ID_ATTR_NAME, domElement, true);
         
         super.marshallAttributeIDness(xmlObject, domElement);
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final AttributedString attributedString = (AttributedString) xmlObject;
         ElementSupport.appendTextContent(domElement, attributedString.getValue());

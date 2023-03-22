@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wspolicy.PolicyAttachment;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wspolicy.PolicyAttachment;
 public class PolicyAttachmentBuilder extends AbstractWSPolicyObjectBuilder<PolicyAttachment> {
 
     /** {@inheritDoc} */
-    public PolicyAttachment buildObject() {
+    @Nonnull public PolicyAttachment buildObject() {
         return buildObject(PolicyAttachment.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public PolicyAttachment buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public PolicyAttachment buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PolicyAttachmentImpl(namespaceURI, localName, namespacePrefix);
     }
 

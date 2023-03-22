@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.RelatesTo;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.RelatesTo;
 public class RelatesToBuilder extends AbstractWSAddressingObjectBuilder<RelatesTo> {
 
     /** {@inheritDoc} */
-    public RelatesTo buildObject() {
+    @Nonnull public RelatesTo buildObject() {
         return buildObject(RelatesTo.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public RelatesTo buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public RelatesTo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RelatesToImpl(namespaceURI, localName, namespacePrefix);
     }
 

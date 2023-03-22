@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.soap.wstrust.WSTrustObject;
 
@@ -32,8 +35,8 @@ public abstract class AbstractWSTrustObject extends AbstractXMLObject implements
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractWSTrustObject(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public AbstractWSTrustObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

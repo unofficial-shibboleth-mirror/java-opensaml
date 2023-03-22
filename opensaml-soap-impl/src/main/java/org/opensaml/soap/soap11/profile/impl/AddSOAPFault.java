@@ -38,13 +38,12 @@ import org.opensaml.soap.soap11.Fault;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -95,7 +94,7 @@ public class AddSOAPFault extends AbstractProfileAction {
     
     /** Constructor. */
     public AddSOAPFault() {
-        detailedErrorsCondition = Predicates.alwaysFalse();
+        detailedErrorsCondition = PredicateSupport.alwaysFalse();
         defaultFaultCode = FaultCode.SERVER;
         detailedErrors = false;
         contextFaultStrategy = new MessageContextFaultStrategy();
@@ -186,17 +185,23 @@ public class AddSOAPFault extends AbstractProfileAction {
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         checkComponentActive();
 
+        if (!super.doPreExecute(profileRequestContext) ) {
+            return false;
+        }
+        
         detailedErrors = detailedErrorsCondition.test(profileRequestContext);
         
         log.debug("{} Detailed errors are {}", getLogPrefix(), detailedErrors ? "enabled" : "disabled");
 
-        if (profileRequestContext.getOutboundMessageContext() != null && nullifyOutboundMessage) {
-            profileRequestContext.getOutboundMessageContext().setMessage(null);
+        final MessageContext mc = profileRequestContext.getOutboundMessageContext();
+        
+        if (mc != null && nullifyOutboundMessage) {
+            mc.setMessage(null);
         } else {
             profileRequestContext.setOutboundMessageContext(new MessageContext());
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -208,7 +213,7 @@ public class AddSOAPFault extends AbstractProfileAction {
             fault = buildNewMappedFault(profileRequestContext);
         }
         
-        SOAPMessagingSupport.registerSOAP11Fault(profileRequestContext.getOutboundMessageContext(), fault);
+        SOAPMessagingSupport.registerSOAP11Fault(profileRequestContext.ensureOutboundMessageContext(), fault);
     }
 
     /**
@@ -223,6 +228,7 @@ public class AddSOAPFault extends AbstractProfileAction {
             return null;
         }
         
+        assert contextFaultStrategy != null;
         final Fault fault = contextFaultStrategy.apply(profileRequestContext);
         
         if (fault != null) {
@@ -285,8 +291,8 @@ public class AddSOAPFault extends AbstractProfileAction {
         // faultstring processing.
         if (!detailedErrors || faultStringLookupStrategy == null) {
             if (faultString != null) {
-                log.debug("{} Setting faultstring to defaulted value", getLogPrefix());
                 buildFaultString(fault, faultString);
+                log.debug("{} Setting faultstring to defaulted value", getLogPrefix());
             }
         } else if (faultStringLookupStrategy != null) {
             final String message = faultStringLookupStrategy.apply(profileRequestContext);
@@ -295,9 +301,9 @@ public class AddSOAPFault extends AbstractProfileAction {
                         getLogPrefix());
                 buildFaultString(fault, message);
             } else if (faultString != null) {
+                buildFaultString(fault, faultString);
                 log.debug("{} Current state of request was not mappable, setting faultstring to defaulted value",
                         getLogPrefix());
-                buildFaultString(fault, faultString);
             }
         }
         
@@ -359,11 +365,11 @@ public class AddSOAPFault extends AbstractProfileAction {
         }
         
         /** {@inheritDoc} */
-        @Override
         @Nullable public QName apply(@Nullable final ProfileRequestContext input) {
             final EventContext eventCtx = eventContextLookupStrategy.apply(input);
-            if (eventCtx != null && eventCtx.getEvent() != null) {
-                return codeMappings.get(eventCtx.getEvent().toString());
+            final Object event = eventCtx != null ? eventCtx.getEvent() : null;
+            if (event != null) {
+                return codeMappings.get(event.toString());
             }
             return null;
         }
@@ -380,24 +386,26 @@ public class AddSOAPFault extends AbstractProfileAction {
     public static class MessageContextFaultStrategy implements Function<ProfileRequestContext, Fault> {
         
         /** Logger. */
-        private Logger log = LoggerFactory.getLogger(MessageContextFaultStrategy.class);
+        @Nonnull private Logger log = LoggerFactory.getLogger(MessageContextFaultStrategy.class);
 
         /** {@inheritDoc} */
-        @Nullable
-        public Fault apply(@Nullable final ProfileRequestContext input) {
+        @Nullable public Fault apply(@Nullable final ProfileRequestContext input) {
             if (input == null) {
                 return null;
             }
             Fault fault = null;
-            if (input.getOutboundMessageContext() != null) {
-                fault = SOAPMessagingSupport.getSOAP11Fault(input.getOutboundMessageContext());
+            final MessageContext outbound = input.getOutboundMessageContext();
+            if (outbound != null) {
+                fault = SOAPMessagingSupport.getSOAP11Fault(outbound);
                 if (fault != null) {
                     log.debug("Found registered SOAP fault in outbound message context");
                     return fault;
                 }
             }
-            if (input.getInboundMessageContext() != null) {
-                fault = SOAPMessagingSupport.getSOAP11Fault(input.getInboundMessageContext());
+            
+            final MessageContext inbound = input.getInboundMessageContext();
+            if (inbound != null) {
+                fault = SOAPMessagingSupport.getSOAP11Fault(inbound);
                 if (fault != null) {
                     log.debug("Found registered SOAP fault in inbound message context");
                     return fault;

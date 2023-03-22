@@ -19,6 +19,9 @@ package org.opensaml.soap.wssecurity.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wssecurity.WSSecurityObject;
@@ -35,8 +38,8 @@ public abstract class AbstractWSSecurityObject extends AbstractXMLObject impleme
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AbstractWSSecurityObject(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public AbstractWSSecurityObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

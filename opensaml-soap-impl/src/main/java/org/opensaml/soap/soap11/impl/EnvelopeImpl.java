@@ -18,8 +18,10 @@
 package org.opensaml.soap.soap11.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.common.AbstractExtensibleSOAPObject;
@@ -27,16 +29,18 @@ import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.soap.soap11.Envelope}.
  */
 public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelope {
 
     /** SOAP header. */
-    private Header header;
+    @Nullable private Header header;
 
     /** SOAP body. */
-    private Body body;
+    @Nullable private Body body;
 
     /**
      * Constructor.
@@ -45,38 +49,49 @@ public class EnvelopeImpl extends AbstractExtensibleSOAPObject implements Envelo
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    protected EnvelopeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected EnvelopeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Header getHeader() {
+    @Nullable public Header getHeader() {
         return header;
     }
 
     /** {@inheritDoc} */
-    public void setHeader(final Header newHeader) {
+    public void setHeader(@Nullable final Header newHeader) {
         header = prepareForAssignment(header, newHeader);
     }
 
     /** {@inheritDoc} */
-    public Body getBody() {
+    @Nullable public Body getBody() {
         return body;
     }
 
     /** {@inheritDoc} */
-    public void setBody(final Body newBody) {
+    public void setBody(@Nullable final Body newBody) {
         body = prepareForAssignment(body, newBody);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(header);
-        children.add(body);
-        children.addAll(super.getOrderedChildren());
+        if (header != null) {
+            children.add(header);
+        }
+        
+        if (body != null) {
+            children.add(body);
+        }
+        
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
+        }
 
-        return Collections.unmodifiableList(children);
+        return children.isEmpty() ? null : CollectionSupport.copyToList(children);
     }
+
 }

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Embedded;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wssecurity.Embedded;
 public class EmbeddedBuilder extends AbstractWSSecurityObjectBuilder<Embedded> {
 
     /** {@inheritDoc} */
-    public Embedded buildObject() {
+    @Nonnull public Embedded buildObject() {
         return buildObject(Embedded.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Embedded buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Embedded buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EmbeddedImpl(namespaceURI, localName, namespacePrefix);
     }
 

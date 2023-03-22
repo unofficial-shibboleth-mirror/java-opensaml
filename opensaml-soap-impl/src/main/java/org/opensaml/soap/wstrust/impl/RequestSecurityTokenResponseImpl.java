@@ -17,16 +17,18 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.soap.wstrust.RequestSecurityTokenResponse;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * RequestSecurityTokenResponseImpl.
@@ -38,10 +40,10 @@ public class RequestSecurityTokenResponseImpl extends AbstractWSTrustObject impl
     private String context;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -50,43 +52,42 @@ public class RequestSecurityTokenResponseImpl extends AbstractWSTrustObject impl
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public RequestSecurityTokenResponseImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public RequestSecurityTokenResponseImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public String getContext() {
+    @Nullable public String getContext() {
         return context;
     }
 
     /** {@inheritDoc} */
-    public void setContext(final String newContext) {
+    public void setContext(@Nullable final String newContext) {
         context = prepareForAssignment(context, newContext);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(unknownChildren);
-        return Collections.unmodifiableList(children);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
     
 }

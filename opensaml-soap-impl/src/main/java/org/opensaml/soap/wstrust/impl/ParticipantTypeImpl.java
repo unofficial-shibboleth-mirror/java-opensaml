@@ -17,12 +17,15 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wstrust.ParticipantType;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * ParticipantTypeImpl.
@@ -31,7 +34,7 @@ import org.opensaml.soap.wstrust.ParticipantType;
 public class ParticipantTypeImpl extends AbstractWSTrustObject implements ParticipantType {
     
     /** Unknown child elements. */
-    private XMLObject unknownChild;
+    @Nullable private XMLObject unknownChild;
 
     /**
      * Constructor.
@@ -40,27 +43,28 @@ public class ParticipantTypeImpl extends AbstractWSTrustObject implements Partic
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public ParticipantTypeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public ParticipantTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public XMLObject getUnknownXMLObject() {
+    @Nullable public XMLObject getUnknownXMLObject() {
         return unknownChild;
     }
 
     /** {@inheritDoc} */
-    public void setUnknownXMLObject(final XMLObject unknownObject) {
+    public void setUnknownXMLObject(@Nullable final XMLObject unknownObject) {
         unknownChild = prepareForAssignment(unknownChild, unknownObject);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
+    @Nullable public List<XMLObject> getOrderedChildren() {
         if (unknownChild != null) {
-            children.add(unknownChild);
+            return CollectionSupport.singletonList(unknownChild);
         }
-        return Collections.unmodifiableList(children);
+        
+        return null;
     }
 
 }

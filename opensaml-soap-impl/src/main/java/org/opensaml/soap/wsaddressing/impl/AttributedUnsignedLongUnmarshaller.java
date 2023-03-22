@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -29,13 +31,14 @@ import org.w3c.dom.Attr;
 public class AttributedUnsignedLongUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AttributedUnsignedLong aul = (AttributedUnsignedLong) xmlObject;
         XMLObjectSupport.unmarshallToAttributeMap(aul.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         final AttributedUnsignedLong aul = (AttributedUnsignedLong) xmlObject;
         if (elementContent != null) {
             aul.setValue(Long.valueOf(elementContent.trim()));

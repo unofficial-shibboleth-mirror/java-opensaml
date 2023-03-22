@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Renewing;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Renewing;
 public class RenewingBuilder extends AbstractWSTrustObjectBuilder<Renewing> {
 
     /** {@inheritDoc} */
-    public Renewing buildObject() {
+    @Nonnull public Renewing buildObject() {
         return buildObject(Renewing.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Renewing buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Renewing buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RenewingImpl(namespaceURI, localName, namespacePrefix);
     }
 

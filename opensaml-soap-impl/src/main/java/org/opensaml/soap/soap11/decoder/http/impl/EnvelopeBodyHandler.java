@@ -33,7 +33,7 @@ public class EnvelopeBodyHandler extends AbstractMessageHandler {
 
     /** {@inheritDoc} */
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        final Envelope env = messageContext.getSubcontext(SOAP11Context.class).getEnvelope();
+        final Envelope env = messageContext.ensureSubcontext(SOAP11Context.class).getEnvelope();
         if (env == null) {
             throw new MessageHandlerException("MessageContext did not contain a SOAP Envelope");
         }

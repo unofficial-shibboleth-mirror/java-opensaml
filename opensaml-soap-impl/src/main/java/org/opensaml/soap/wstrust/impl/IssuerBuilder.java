@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Issuer;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Issuer;
 public class IssuerBuilder extends AbstractWSTrustObjectBuilder<Issuer> {
 
     /** {@inheritDoc} */
-    public Issuer buildObject() {
+    @Nonnull public Issuer buildObject() {
         return buildObject(Issuer.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Issuer buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Issuer buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new IssuerImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wsfed.EndPointReference;
 import org.opensaml.soap.wsfed.WSFedConstants;
@@ -26,20 +29,15 @@ import org.opensaml.soap.wsfed.WSFedObjectBuilder;
 public class EndPointReferenceBuilder extends AbstractXMLObjectBuilder<EndPointReference> implements
         WSFedObjectBuilder<EndPointReference> {
 
-    /** Constructor. */
-    public EndPointReferenceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public EndPointReference buildObject() {
+    @Nonnull public EndPointReference buildObject() {
         return buildObject(WSFedConstants.WSADDRESS_NS, EndPointReference.DEFAULT_ELEMENT_LOCAL_NAME,
                 WSFedConstants.WSADDRESS_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public EndPointReference buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public EndPointReference buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EndPointReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 }

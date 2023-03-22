@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.ProblemHeaderQName;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wsaddressing.ProblemHeaderQName;
 public class ProblemHeaderQNameBuilder extends AbstractWSAddressingObjectBuilder<ProblemHeaderQName> {
 
     /** {@inheritDoc} */
-    public ProblemHeaderQName buildObject() {
+    @Nonnull public ProblemHeaderQName buildObject() {
         return buildObject(ProblemHeaderQName.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ProblemHeaderQName buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public ProblemHeaderQName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ProblemHeaderQNameImpl(namespaceURI, localName, namespacePrefix);
     }
 

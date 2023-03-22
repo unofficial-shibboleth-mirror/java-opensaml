@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.MessageID;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.MessageID;
 public class MessageIDBuilder extends AbstractWSAddressingObjectBuilder<MessageID> {
 
     /** {@inheritDoc} */
-    public MessageID buildObject() {
+    @Nonnull public MessageID buildObject() {
         return buildObject(MessageID.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public MessageID buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public MessageID buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new MessageIDImpl(namespaceURI, localName, namespacePrefix);
     }
 

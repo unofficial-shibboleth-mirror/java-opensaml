@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Reason;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Reason;
 public class ReasonBuilder extends AbstractWSTrustObjectBuilder<Reason> {
 
     /** {@inheritDoc} */
-    public Reason buildObject() {
+    @Nonnull public Reason buildObject() {
         return buildObject(Reason.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Reason buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Reason buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ReasonImpl(namespaceURI, localName, namespacePrefix);
     }
 

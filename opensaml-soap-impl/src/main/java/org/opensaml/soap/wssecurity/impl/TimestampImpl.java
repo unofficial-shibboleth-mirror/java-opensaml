@@ -18,9 +18,10 @@
 package org.opensaml.soap.wssecurity.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -31,6 +32,8 @@ import org.opensaml.soap.wssecurity.Expires;
 import org.opensaml.soap.wssecurity.IdBearing;
 import org.opensaml.soap.wssecurity.Timestamp;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.soap.wssecurity.Timestamp}.
  * 
@@ -38,19 +41,19 @@ import org.opensaml.soap.wssecurity.Timestamp;
 public class TimestampImpl extends AbstractWSSecurityObject implements Timestamp {
 
     /** wsu:Timestamp/@wsu:Id attribute. */
-    private String id;
+    @Nullable private String id;
 
     /** wsu:Timestamp/wsu:Created element. */
-    private Created created;
+    @Nullable private Created created;
 
     /** wsu:Timestamp/wsu:Expires element. */
-    private Expires expires;
+    @Nullable private Expires expires;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -59,39 +62,40 @@ public class TimestampImpl extends AbstractWSSecurityObject implements Timestamp
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public TimestampImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public TimestampImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public Created getCreated() {
+    @Nullable public Created getCreated() {
         return created;
     }
 
     /** {@inheritDoc} */
-    public Expires getExpires() {
+    @Nullable public Expires getExpires() {
         return expires;
     }
 
     /** {@inheritDoc} */
-    public void setCreated(final Created newCreated) {
+    public void setCreated(@Nullable final Created newCreated) {
         created = prepareForAssignment(created, newCreated);
     }
 
     /** {@inheritDoc} */
-    public void setExpires(final Expires newExpires) {
+    public void setExpires(@Nullable final Expires newExpires) {
         expires = prepareForAssignment(expires, newExpires);
     }
  
     /** {@inheritDoc} */
-    public String getWSUId() {
+    @Nullable public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setWSUId(final String newId) {
+    public void setWSUId(@Nullable final String newId) {
         final String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
@@ -99,22 +103,23 @@ public class TimestampImpl extends AbstractWSSecurityObject implements Timestamp
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (created != null) {
             children.add(created);
@@ -122,11 +127,10 @@ public class TimestampImpl extends AbstractWSSecurityObject implements Timestamp
         if (expires != null) {
             children.add(expires);
         }
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
+        
+        children.addAll(getUnknownXMLObjects());
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
@@ -32,7 +34,8 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class RelatesToUnmarshaller extends XSURIUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final RelatesTo relatesTo = (RelatesTo) xmlObject;
         
         if (RelatesTo.RELATIONSHIP_TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {

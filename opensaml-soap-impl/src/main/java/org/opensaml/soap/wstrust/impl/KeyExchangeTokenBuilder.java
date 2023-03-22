@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.KeyExchangeToken;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.KeyExchangeToken;
 public class KeyExchangeTokenBuilder extends AbstractWSTrustObjectBuilder<KeyExchangeToken> {
 
     /** {@inheritDoc} */
-    public KeyExchangeToken buildObject() {
+    @Nonnull public KeyExchangeToken buildObject() {
         return buildObject(KeyExchangeToken.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public KeyExchangeToken buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public KeyExchangeToken buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyExchangeTokenImpl(namespaceURI, localName, namespacePrefix);
     }
 

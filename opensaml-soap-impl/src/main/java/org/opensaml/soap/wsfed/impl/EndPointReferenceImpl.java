@@ -17,20 +17,23 @@
 
 package org.opensaml.soap.wsfed.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wsfed.Address;
 import org.opensaml.soap.wsfed.EndPointReference;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /** Implementation of the {@link EndPointReference} object. */
 public class EndPointReferenceImpl extends AbstractXMLObject implements EndPointReference {
 
     /** Address of the endpoint. */
-    private Address address;
+    @Nullable private Address address;
 
     /**
      * Constructor.
@@ -39,28 +42,28 @@ public class EndPointReferenceImpl extends AbstractXMLObject implements EndPoint
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EndPointReferenceImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EndPointReferenceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
     }
 
     /** {@inheritDoc} */
-    public Address getAddress() {
+    @Nullable public Address getAddress() {
         return address;
     }
 
     /** {@inheritDoc} */
-    public void setAddress(final Address newAddress) {
+    public void setAddress(@Nullable final Address newAddress) {
         address = prepareForAssignment(address, newAddress);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.add(address);
-
-        return Collections.unmodifiableList(children);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        if (address != null) {
+            return CollectionSupport.singletonList(address);
+        }
+        
+        return null;
     }
 }

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Username;
 
 /**
@@ -25,12 +28,13 @@ import org.opensaml.soap.wssecurity.Username;
 public class UsernameBuilder extends AbstractWSSecurityObjectBuilder<Username> {
 
     /** {@inheritDoc} */
-    public Username buildObject() {
+    @Nonnull public Username buildObject() {
         return buildObject(Username.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Username buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Username buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new UsernameImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -19,6 +19,9 @@ package org.opensaml.soap.wstrust.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.core.xml.util.AttributeMap;
@@ -31,10 +34,10 @@ import org.opensaml.soap.wstrust.BinarySecret;
 public class BinarySecretImpl extends XSBase64BinaryImpl implements BinarySecret {
 
     /** The Type attribute value. */
-    private String type;
+    @Nullable private String type;
 
     /** Wildcard attributes. */
-    private AttributeMap unknownChildren;
+    @Nonnull private final AttributeMap unknownChildren;
 
     /**
      * Constructor.
@@ -43,28 +46,29 @@ public class BinarySecretImpl extends XSBase64BinaryImpl implements BinarySecret
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public BinarySecretImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public BinarySecretImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public String getType() {
+    @Nullable public String getType() {
         return type;
     }
 
     /** {@inheritDoc} */
-    public void setType(final String newType) {
+    public void setType(@Nullable final String newType) {
         type = prepareForAssignment(type, newType);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return null;
     }
     

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.SignChallengeResponse;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.SignChallengeResponse;
 public class SignChallengeResponseBuilder extends AbstractWSTrustObjectBuilder<SignChallengeResponse> {
 
     /** {@inheritDoc} */
-    public SignChallengeResponse buildObject() {
+    @Nonnull public SignChallengeResponse buildObject() {
         return buildObject(SignChallengeResponse.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public SignChallengeResponse buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public SignChallengeResponse buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new SignChallengeResponseImpl(namespaceURI, localName, namespacePrefix); }
 
 }

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Nonce;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wssecurity.Nonce;
 public class NonceBuilder extends AbstractWSSecurityObjectBuilder<Nonce> {
 
     /** {@inheritDoc} */
-    public Nonce buildObject() {
+    @Nonnull public Nonce buildObject() {
         return buildObject(Nonce.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Nonce buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Nonce buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new NonceImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,9 +17,12 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:RequestType element.
@@ -28,51 +31,51 @@ import org.opensaml.core.xml.schema.XSURI;
 public interface RequestType extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "RequestType";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "RequestType";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RequestTypeOpenEnum"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestTypeOpenEnum"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     // Single action request types
     
     /** RequestType Issue URI. */
-    public static final String ISSUE = WSTrustConstants.WST_NS + "/Issue";
+    @Nonnull @NotEmpty public static final String ISSUE = WSTrustConstants.WST_NS + "/Issue";
 
     /** RequestType Renew URI. */
-    public static final String RENEW = WSTrustConstants.WST_NS + "/Renew";
+    @Nonnull @NotEmpty public static final String RENEW = WSTrustConstants.WST_NS + "/Renew";
 
     /** RequestType Cancel URI. */
-    public static final String CANCEL = WSTrustConstants.WST_NS + "/Cancel";
+    @Nonnull @NotEmpty public static final String CANCEL = WSTrustConstants.WST_NS + "/Cancel";
 
     /** RequestType STSCancel URI. */
-    public static final String STSCANCEL = WSTrustConstants.WST_NS + "/STSCancel";
+    @Nonnull @NotEmpty public static final String STSCANCEL = WSTrustConstants.WST_NS + "/STSCancel";
 
     /** RequestType Validate URI. */
-    public static final String VALIDATE = WSTrustConstants.WST_NS + "/Validate";
+    @Nonnull @NotEmpty public static final String VALIDATE = WSTrustConstants.WST_NS + "/Validate";
     
     /** RequestType Key Exchange Token (KET) URI. */
-    public static final String KET = WSTrustConstants.WST_NS + "/KET";
+    @Nonnull @NotEmpty public static final String KET = WSTrustConstants.WST_NS + "/KET";
     
     // Batch action request types
     
     /** RequestType BatchIssue URI. */
-    public static final String BATCH_ISSUE = WSTrustConstants.WST_NS + "/BatchIssue";
+    @Nonnull @NotEmpty public static final String BATCH_ISSUE = WSTrustConstants.WST_NS + "/BatchIssue";
 
     /** RequestType BatchRenew URI. */
-    public static final String BATCH_RENEW = WSTrustConstants.WST_NS + "/BatchRenew";
+    @Nonnull @NotEmpty public static final String BATCH_RENEW = WSTrustConstants.WST_NS + "/BatchRenew";
 
     /** RequestType BatchCancel URI. */
-    public static final String BATCH_CANCEL = WSTrustConstants.WST_NS + "/BatchCancel";
+    @Nonnull @NotEmpty public static final String BATCH_CANCEL = WSTrustConstants.WST_NS + "/BatchCancel";
 
     /** RequestType BatchValidate URI. */
-    public static final String BATCH_VALIDATE = WSTrustConstants.WST_NS + "/BatchValidate";
+    @Nonnull @NotEmpty public static final String BATCH_VALIDATE = WSTrustConstants.WST_NS + "/BatchValidate";
 
 }

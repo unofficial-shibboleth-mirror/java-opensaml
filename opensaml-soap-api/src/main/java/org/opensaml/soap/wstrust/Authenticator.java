@@ -17,9 +17,13 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Authenticator element.
@@ -30,17 +34,17 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface Authenticator extends ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Authenticator";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Authenticator";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AuthenticatorType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthenticatorType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
@@ -48,13 +52,13 @@ public interface Authenticator extends ElementExtensibleXMLObject, WSTrustObject
      * 
      * @return the {@link CombinedHash} element.
      */
-    public CombinedHash getCombinedHash();
+    @Nullable public CombinedHash getCombinedHash();
 
     /**
      * Sets the wst:CombinedHash child element.
      * 
      * @param combinedHash the {@link CombinedHash} to set.
      */
-    public void setCombinedHash(CombinedHash combinedHash);
+    public void setCombinedHash(@Nullable final CombinedHash combinedHash);
 
 }

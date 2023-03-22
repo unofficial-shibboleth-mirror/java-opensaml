@@ -19,6 +19,9 @@ package org.opensaml.soap.wstrust.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.wstrust.Renewing;
@@ -30,10 +33,10 @@ import org.opensaml.soap.wstrust.Renewing;
 public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
     
     /** The Allow attribute value. */
-    private XSBooleanValue allow;
+    @Nullable private XSBooleanValue allow;
     
     /** The OK attribute value. */
-    private XSBooleanValue ok;
+    @Nullable private XSBooleanValue ok;
 
     /**
      * Constructor.
@@ -42,12 +45,13 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public RenewingImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public RenewingImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Boolean isAllow() {
+    @Nullable public Boolean isAllow() {
         if (allow != null) {
             return allow.getValue();
         }
@@ -57,12 +61,12 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isAllowXSBoolean() {
+    @Nullable public XSBooleanValue isAllowXSBoolean() {
         return allow;
     }
 
     /** {@inheritDoc} */
-    public void setAllow(final Boolean newAllow) {
+    public void setAllow(@Nullable final Boolean newAllow) {
         if (newAllow != null) {
             allow = prepareForAssignment(allow, new XSBooleanValue(newAllow, false));
         } else {
@@ -71,12 +75,12 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
     }
 
     /** {@inheritDoc} */
-    public void setAllow(final XSBooleanValue newAllow) {
+    public void setAllow(@Nullable final XSBooleanValue newAllow) {
         allow = prepareForAssignment(allow, newAllow);
     }
 
     /** {@inheritDoc} */
-    public Boolean isOK() {
+    @Nullable public Boolean isOK() {
         if (ok != null) {
             return ok.getValue();
         }
@@ -86,12 +90,12 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isOKXSBoolean() {
+    @Nullable public XSBooleanValue isOKXSBoolean() {
         return ok;
     }
 
     /** {@inheritDoc} */
-    public void setOK(final Boolean newOK) {
+    public void setOK(@Nullable final Boolean newOK) {
         if (newOK != null) {
             ok = prepareForAssignment(ok, new XSBooleanValue(newOK, false));
         } else {
@@ -100,7 +104,7 @@ public class RenewingImpl extends AbstractWSTrustObject implements Renewing {
     }
 
     /** {@inheritDoc} */
-    public void setOK(final XSBooleanValue newOK) {
+    public void setOK(@Nullable final XSBooleanValue newOK) {
         ok = prepareForAssignment(ok, newOK);
     }
 

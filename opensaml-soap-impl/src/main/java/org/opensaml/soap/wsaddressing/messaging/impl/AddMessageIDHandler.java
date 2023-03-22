@@ -30,8 +30,8 @@ import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wsaddressing.MessageID;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 
 /**
@@ -47,10 +47,10 @@ import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 public class AddMessageIDHandler extends AbstractHeaderGeneratingMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AddMessageIDHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AddMessageIDHandler.class);
     
     /** Strategy for generating identifiers. */
-    private IdentifierGenerationStrategy identifierGenerationStrategy;
+    @Nullable private IdentifierGenerationStrategy identifierGenerationStrategy;
     
     /**
      * Get the identifier generation strategy.
@@ -90,10 +90,11 @@ public class AddMessageIDHandler extends AbstractHeaderGeneratingMessageHandler 
      */
     @Nonnull protected String getMessageID(final MessageContext messageContext) {
         final WSAddressingContext addressing = messageContext.getSubcontext(WSAddressingContext.class);
-        if (addressing != null && addressing.getMessageIDURI() != null) {
-            return addressing.getMessageIDURI();
-        } else if (getIdentifierGenerationStrategy() != null) {
-            return getIdentifierGenerationStrategy().generateIdentifier(false);
+        final String id = addressing != null ? addressing.getMessageIDURI() : null;
+        if (id != null) {
+            return id;
+        } else if (identifierGenerationStrategy != null) {
+            return identifierGenerationStrategy.generateIdentifier(false);
         } else {
             return "urn:uuid:" + UUID.randomUUID().toString();
         }

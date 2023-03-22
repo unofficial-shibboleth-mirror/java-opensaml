@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.ProofEncryption;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.ProofEncryption;
 public class ProofEncryptionBuilder extends AbstractWSTrustObjectBuilder<ProofEncryption> {
 
     /** {@inheritDoc} */
-    public ProofEncryption buildObject() {
+    @Nonnull public ProofEncryption buildObject() {
         return buildObject(ProofEncryption.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ProofEncryption buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public ProofEncryption buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ProofEncryptionImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,8 +17,11 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.soap.wsfed.Address;
 import org.w3c.dom.Element;
 
@@ -28,13 +31,15 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class AddressMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject fedObject, final Element domElement) {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
 
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject fedObject, final Element domElement) {
-        final Address address = (Address) fedObject;
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        final Address address = (Address) xmlObject;
 
         if (address.getValue() != null) {
             ElementSupport.appendTextContent(domElement, address.getValue());

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.UsernameToken;
 
 /**
@@ -26,12 +29,13 @@ public class UsernameTokenBuilder extends
         AbstractWSSecurityObjectBuilder<UsernameToken> {
 
     /** {@inheritDoc} */
-    public UsernameToken buildObject() {
+    @Nonnull public UsernameToken buildObject() {
         return buildObject(UsernameToken.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public UsernameToken buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public UsernameToken buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new UsernameTokenImpl(namespaceURI, localName, namespacePrefix);
     }
 

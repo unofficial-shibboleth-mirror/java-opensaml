@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.CancelTarget;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.CancelTarget;
 public class CancelTargetBuilder extends AbstractWSTrustObjectBuilder<CancelTarget> {
 
     /** {@inheritDoc} */
-    public CancelTarget buildObject() {
+    @Nonnull public CancelTarget buildObject() {
         return buildObject(CancelTarget.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public CancelTarget buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public CancelTarget buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new CancelTargetImpl(namespaceURI, localName, namespacePrefix);
     }
 

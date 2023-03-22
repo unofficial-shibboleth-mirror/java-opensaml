@@ -18,6 +18,8 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -33,7 +35,8 @@ import com.google.common.base.Strings;
 public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final Reference reference = (Reference) xmlObject;
         
         if (!Strings.isNullOrEmpty(reference.getURI())) {
@@ -45,7 +48,6 @@ public class ReferenceMarshaller extends AbstractWSSecurityObjectMarshaller {
         }
         
         XMLObjectSupport.marshallAttributeMap(reference.getUnknownAttributes(), domElement);
-        
     }
 
 }

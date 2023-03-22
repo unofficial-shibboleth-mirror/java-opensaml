@@ -19,6 +19,9 @@ package org.opensaml.soap.wstrust.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wstrust.RequestedTokenCancelled;
 
@@ -35,13 +38,13 @@ public class RequestedTokenCancelledImpl extends AbstractWSTrustObject implement
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public RequestedTokenCancelledImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public RequestedTokenCancelledImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return null;
     }
 

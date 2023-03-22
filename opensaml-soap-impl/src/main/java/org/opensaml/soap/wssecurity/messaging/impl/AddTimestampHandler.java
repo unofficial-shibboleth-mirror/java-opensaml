@@ -34,7 +34,8 @@ import org.opensaml.soap.wssecurity.Timestamp;
 import org.opensaml.soap.wssecurity.messaging.WSSecurityContext;
 import org.opensaml.soap.wssecurity.messaging.WSSecurityMessagingSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Handler implementation that adds a wsse:Timestamp header to the wsse:Security header
@@ -198,8 +199,8 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
             value = security.getTimestampCreated();
         }
         
-        if (value == null && getCreatedLookup() != null) {
-            value = getCreatedLookup().apply(messageContext);
+        if (value == null && createdLookup != null) {
+            value = createdLookup.apply(messageContext);
         }
         
         if (value == null) {
@@ -226,8 +227,8 @@ public class AddTimestampHandler extends AbstractHeaderGeneratingMessageHandler 
             value = security.getTimestampExpires();
         }
         
-        if (value == null && getExpiresLookup() != null) {
-            value = getExpiresLookup().apply(messageContext);
+        if (value == null && expiresLookup != null) {
+            value = expiresLookup.apply(messageContext);
         }
         
         if (value == null) {

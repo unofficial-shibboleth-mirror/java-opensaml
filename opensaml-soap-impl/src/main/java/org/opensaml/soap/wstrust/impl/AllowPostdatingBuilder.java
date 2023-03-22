@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.AllowPostdating;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.AllowPostdating;
 public class AllowPostdatingBuilder extends AbstractWSTrustObjectBuilder<AllowPostdating> {
 
     /** {@inheritDoc} */
-    public AllowPostdating buildObject() {
+    @Nonnull public AllowPostdating buildObject() {
         return buildObject(AllowPostdating.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public AllowPostdating buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public AllowPostdating buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AllowPostdatingImpl(namespaceURI, localName, namespacePrefix);
     }
 

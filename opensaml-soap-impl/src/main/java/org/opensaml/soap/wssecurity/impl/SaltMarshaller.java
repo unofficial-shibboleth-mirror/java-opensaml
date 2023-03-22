@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.soap.wssecurity.Salt;
@@ -31,7 +33,7 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class SaltMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final Salt salt = (Salt) xmlObject;
         ElementSupport.appendTextContent(domElement, salt.getValue());

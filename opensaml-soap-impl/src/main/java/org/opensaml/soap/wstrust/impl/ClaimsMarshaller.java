@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -31,7 +33,8 @@ import org.w3c.dom.Element;
 public class ClaimsMarshaller extends AbstractWSTrustObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final Claims claims = (Claims) xmlObject;
         if (claims.getDialect() != null) {
             domElement.setAttributeNS(null, Claims.DIALECT_ATTRIB_NAME, claims.getDialect());

@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wstrust.Authenticator;
@@ -30,8 +32,8 @@ import org.opensaml.soap.wstrust.CombinedHash;
 public class AuthenticatorUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject) 
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final Authenticator authenticator = (Authenticator) parentXMLObject;
         
         if (childXMLObject instanceof CombinedHash) {

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.FaultCode;
@@ -27,12 +30,14 @@ import org.opensaml.soap.soap11.FaultCode;
 public class FaultCodeBuilder extends AbstractXMLObjectBuilder<FaultCode> implements SOAPObjectBuilder<FaultCode> {
 
     /** {@inheritDoc} */
-    public FaultCode buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
-        return new FaultCodeImpl(namespaceURI, localName, namespacePrefix);
+    @Nonnull public FaultCode buildObject() {
+        return buildObject(null, FaultCode.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
 
     /** {@inheritDoc} */
-    public FaultCode buildObject() {
-        return buildObject(null, FaultCode.DEFAULT_ELEMENT_LOCAL_NAME, null);
+    @Nonnull public FaultCode buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
+        return new FaultCodeImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

@@ -18,6 +18,8 @@
 package org.opensaml.soap.wspolicy.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wspolicy.WSPolicyObject;
 import org.opensaml.soap.wspolicy.WSPolicyObjectBuilder;
@@ -31,5 +33,5 @@ public abstract class AbstractWSPolicyObjectBuilder<T extends WSPolicyObject>
         extends AbstractXMLObjectBuilder<T> implements WSPolicyObjectBuilder<T> {
 
     /** {@inheritDoc} */
-    public abstract T buildObject();
+    @Nonnull public abstract T buildObject();
 }

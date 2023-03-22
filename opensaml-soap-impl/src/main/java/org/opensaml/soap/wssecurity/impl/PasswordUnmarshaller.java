@@ -18,6 +18,8 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wssecurity.Password;
@@ -30,7 +32,8 @@ import org.w3c.dom.Attr;
 public class PasswordUnmarshaller extends AttributedStringUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final Password password= (Password) xmlObject;
         if (Password.TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             password.setType(attribute.getValue());

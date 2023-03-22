@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.KeySize;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.KeySize;
 public class KeySizeBuilder extends AbstractWSTrustObjectBuilder<KeySize> {
 
     /** {@inheritDoc} */
-    public KeySize buildObject() {
+    @Nonnull public KeySize buildObject() {
         return buildObject(KeySize.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public KeySize buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public KeySize buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeySizeImpl(namespaceURI, localName, namespacePrefix);
     }
 

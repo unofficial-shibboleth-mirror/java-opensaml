@@ -18,6 +18,8 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wssecurity.Iteration;
 
@@ -28,7 +30,7 @@ import org.opensaml.soap.wssecurity.Iteration;
 public class IterationUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         final Iteration iteration = (Iteration) xmlObject;
         if (elementContent != null) {
             iteration.setValue(Integer.valueOf(elementContent));

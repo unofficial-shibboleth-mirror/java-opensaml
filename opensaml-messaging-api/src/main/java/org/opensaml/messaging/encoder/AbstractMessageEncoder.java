@@ -21,6 +21,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.UnmodifiableComponent;
@@ -32,7 +33,7 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
         implements MessageEncoder, UnmodifiableComponent {
 
     /** The message context. */
-    @Nullable private MessageContext messageContext;
+    @NonnullAfterInit private MessageContext messageContext;
 
     /** {@inheritDoc} */
     public synchronized void setMessageContext(@Nullable final MessageContext context) {
@@ -60,7 +61,7 @@ public abstract class AbstractMessageEncoder extends AbstractInitializableCompon
      * 
      * @return the message context.
      */
-    @Nullable protected MessageContext getMessageContext() {
+    @NonnullAfterInit protected MessageContext getMessageContext() {
         return messageContext;
     }
 

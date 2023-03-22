@@ -44,8 +44,9 @@ import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.wsaddressing.Action;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -54,13 +55,13 @@ import net.shibboleth.shared.xml.SerializeSupport;
 public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMessageEncoder {
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HttpClientRequestSOAP11Encoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HttpClientRequestSOAP11Encoder.class);
     
     /** SOAP Envelope builder. */
-    private SOAPObjectBuilder<Envelope> envBuilder;
+    @Nonnull private SOAPObjectBuilder<Envelope> envBuilder;
     
     /** SOAP Body builder. */
-    private SOAPObjectBuilder<Body> bodyBuilder;
+    @Nonnull private SOAPObjectBuilder<Body> bodyBuilder;
     
     /** Constructor. */
     public HttpClientRequestSOAP11Encoder() {
@@ -75,7 +76,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * <p>This encoder implementation only operates on instances of {@link HttpPost}.</p>
      * 
      */
-    @Nullable public HttpPost getHttpRequest() {
+    @NonnullAfterInit public HttpPost getHttpRequest() {
         return (HttpPost) super.getHttpRequest();
     }
 
@@ -83,7 +84,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * 
      * <p>This encoder implementation only operates on instances of {@link HttpPost}.</p>
      */
-    public synchronized void setHttpRequest(final ClassicHttpRequest httpRequest) {
+    public synchronized void setHttpRequest(@Nullable final ClassicHttpRequest httpRequest) {
         if (!(httpRequest instanceof HttpPost)) {
             throw new IllegalArgumentException("HttpClient SOAP message encoder only operates on HttpPost");
         }
@@ -109,6 +110,9 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
     /** {@inheritDoc} */
     protected void doEncode() throws MessageEncodingException {
         final Envelope envelope = getSOAPEnvelope();
+        if (envelope == null) {
+            throw new MessageEncodingException("SOAP envelope was null");
+        }
         
         prepareHttpRequest();
 
@@ -125,7 +129,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * 
      * @throws MessageEncodingException thrown if the message could not be marshalled
      */
-    protected HttpEntity createRequestEntity(@Nonnull final Envelope message, @Nullable final Charset charset)
+    protected HttpEntity createRequestEntity(@Nonnull final Envelope message, @Nonnull final Charset charset)
             throws MessageEncodingException {
         try {
             final ByteArrayOutputStream arrayOut = new ByteArrayOutputStream();
@@ -142,7 +146,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * 
      * @param envelope the SOAP envelope
      */
-    protected void storeSOAPEnvelope(final Envelope envelope) {
+    protected void storeSOAPEnvelope(@Nullable final Envelope envelope) {
         getMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(envelope);
     }
 
@@ -151,7 +155,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * 
      * @return the previously stored SOAP envelope
      */
-    protected Envelope getSOAPEnvelope() {
+    @Nullable protected Envelope getSOAPEnvelope() {
         return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
 
@@ -218,6 +222,9 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      */
     protected String getSOAPAction() {
         final Envelope env = getSOAPEnvelope();
+        if (env == null) {
+            return null;
+        }
         final Header header = env.getHeader();
         if (header == null) {
             return null;

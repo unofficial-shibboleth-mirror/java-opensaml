@@ -17,7 +17,10 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:AllowPostdating element.
@@ -28,17 +31,17 @@ import javax.xml.namespace.QName;
 public interface AllowPostdating extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "AllowPostdating";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "AllowPostdating";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "AllowPostdatingType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AllowPostdatingType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
 }

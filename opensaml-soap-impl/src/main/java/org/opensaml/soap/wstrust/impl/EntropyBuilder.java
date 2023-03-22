@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Entropy;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Entropy;
 public class EntropyBuilder extends AbstractWSTrustObjectBuilder<Entropy> {
 
     /** {@inheritDoc} */
-    public Entropy buildObject() {
+    @Nonnull public Entropy buildObject() {
         return buildObject(Entropy.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Entropy buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Entropy buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EntropyImpl(namespaceURI, localName, namespacePrefix);
     }
 

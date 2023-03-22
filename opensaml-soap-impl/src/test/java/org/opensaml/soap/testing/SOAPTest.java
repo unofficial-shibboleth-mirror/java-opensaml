@@ -82,25 +82,25 @@ public class SOAPTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSOAPMessage() throws XMLParserException, UnmarshallingException{
-        Document soapDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapMessage));
-        Element envelopeElem = soapDoc.getDocumentElement();
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(envelopeElem);
+        final Document soapDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapMessage));
+        final Element envelopeElem = soapDoc.getDocumentElement();
+        final Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(envelopeElem);
         
-        Envelope envelope = (Envelope) unmarshaller.unmarshall(envelopeElem);
+        final Envelope envelope = (Envelope) unmarshaller.unmarshall(envelopeElem);
         
         // Check to make sure everything unmarshalled okay
-        QName encodingStyleName = new QName("http://schemas.xmlsoap.org/soap/envelope/", "encodingStyle");
+        final QName encodingStyleName = new QName("http://schemas.xmlsoap.org/soap/envelope/", "encodingStyle");
         String encodingStyleValue = envelope.getUnknownAttributes().get(encodingStyleName);
         Assert.assertNotNull(encodingStyleValue, "Encoding style was null");
         Assert.assertEquals(encodingStyleValue, 
                 "http://schemas.xmlsoap.org/soap/encoding/", "Encoding style had unexpected value");
         
-        Header header = envelope.getHeader();
-        Assert.assertNotNull(header, "Header was null");
+        final Header header = envelope.getHeader();
+        assert header != null;
         Assert.assertEquals(header.getUnknownXMLObjects().size(), 1, "Unexpected number of Header children");
         
-        Body body = envelope.getBody();
-        Assert.assertNotNull(body, "Body was null");
+        final Body body = envelope.getBody();
+        assert body != null;
         Assert.assertEquals(body.getUnknownXMLObjects().size(), 1, "Unexpected number of Body children");
         
         // Drop the DOM and remarshall, hopefully we get the same document back
@@ -116,37 +116,37 @@ public class SOAPTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSOAPFault() throws XMLParserException, UnmarshallingException{
-        Document soapFaultDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapFault));
-        Element envelopeElem = soapFaultDoc.getDocumentElement();
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(envelopeElem);
+        final Document soapFaultDoc = parserPool.parse(SOAPTest.class.getResourceAsStream(soapFault));
+        final Element envelopeElem = soapFaultDoc.getDocumentElement();
+        final Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(envelopeElem);
         
-        Envelope envelope = (Envelope) unmarshaller.unmarshall(envelopeElem);
+        final Envelope envelope = (Envelope) unmarshaller.unmarshall(envelopeElem);
         
         // Check to make sure everything unmarshalled okay
-        Header header = envelope.getHeader();
+        final Header header = envelope.getHeader();
         Assert.assertNull(header, "Header was not null");
         
-        Body body = envelope.getBody();
-        Assert.assertNotNull(body, "Body was null");
+        final Body body = envelope.getBody();
+        assert body != null;
         Assert.assertEquals(body.getUnknownXMLObjects().size(), 1, "Unexpected number of Body children");
         
-        Fault fault = (Fault) body.getUnknownXMLObjects().get(0);
-        Assert.assertNotNull(fault, "Fault was null");
+        final Fault fault = (Fault) body.getUnknownXMLObjects().get(0);
+        assert fault != null;
         
-        FaultActor actor = fault.getActor();
-        Assert.assertNotNull(actor, "FaultActor was null");
+        final FaultActor actor = fault.getActor();
+        assert actor != null;
         Assert.assertEquals(actor.getURI(), expectedFaultActor, "FaultActor had unexpected value");
         
-        FaultCode code = fault.getCode();
-        Assert.assertNotNull(code, "FaultCode was null");
+        final FaultCode code = fault.getCode();
+        assert code != null;
         Assert.assertEquals(code.getValue(), expectedFaultCode, "FaultCode had unexpected value");
         
-        FaultString message = fault.getMessage();
-        Assert.assertNotNull(message, "FaultString was null");
+        final FaultString message = fault.getMessage();
+        assert message != null;
         Assert.assertEquals(message.getValue(), expectedFaultString, "FaultString had unexpected value");
         
-        Detail detail = fault.getDetail();
-        Assert.assertNotNull(detail, "Detail was null");
+        final Detail detail = fault.getDetail();
+        assert detail != null;
         Assert.assertEquals(detail.getUnknownXMLObjects().size(), 1, "Unexpected number of Body children");
         
         // Drop the DOM and remarshall, hopefully we get the same document back
@@ -188,7 +188,7 @@ public class SOAPTest extends XMLObjectBaseTestCase {
         Detail detail = (Detail) buildXMLObject(Detail.DEFAULT_ELEMENT_NAME);
         fault.setDetail(detail);
         
-        marshallerFactory.getMarshaller(envelope).marshall(envelope);
+        marshallerFactory.ensureMarshaller(envelope).marshall(envelope);
         assertXMLEquals("Marshalled DOM was not the same as control DOM", soapDoc, envelope);
         
     }

@@ -17,10 +17,14 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SignChallengeType complex type. 
@@ -29,10 +33,10 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface SignChallengeType extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSTrustObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "SignChallengeType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SignChallengeType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
@@ -40,13 +44,13 @@ public interface SignChallengeType extends AttributeExtensibleXMLObject, Element
      * 
      * @return the {@link Challenge} child element or <code>null</code>.
      */
-    public Challenge getChallenge();
+    @Nullable public Challenge getChallenge();
 
     /**
      * Sets the wst:Challenge child element.
      * 
      * @param challenge the {@link Challenge} child element to set.
      */
-    public void setChallenge(Challenge challenge);
+    public void setChallenge(@Nullable final Challenge challenge);
 
 }

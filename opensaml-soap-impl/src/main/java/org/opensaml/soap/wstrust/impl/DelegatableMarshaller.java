@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -33,11 +35,13 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class DelegatableMarshaller extends AbstractWSTrustObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final Delegatable delegatable = (Delegatable) xmlObject;
         final XSBooleanValue value= delegatable.getValue();
-        ElementSupport.appendTextContent(domElement, value.toString());
+        if (value != null) {
+            ElementSupport.appendTextContent(domElement, value.toString());
+        }
     }
 
 }

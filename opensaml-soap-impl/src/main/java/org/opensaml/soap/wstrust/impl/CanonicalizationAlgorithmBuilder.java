@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.CanonicalizationAlgorithm;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.CanonicalizationAlgorithm;
 public class CanonicalizationAlgorithmBuilder extends AbstractWSTrustObjectBuilder<CanonicalizationAlgorithm> {
 
     /** {@inheritDoc} */
-    public CanonicalizationAlgorithm buildObject() {
+    @Nonnull public CanonicalizationAlgorithm buildObject() {
         return buildObject(CanonicalizationAlgorithm.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public CanonicalizationAlgorithm buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public CanonicalizationAlgorithm buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new CanonicalizationAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.KeyIdentifier;
 
 /**
@@ -25,12 +28,13 @@ import org.opensaml.soap.wssecurity.KeyIdentifier;
 public class KeyIdentifierBuilder extends AbstractWSSecurityObjectBuilder<KeyIdentifier> {
 
     /** {@inheritDoc} */
-    public KeyIdentifier buildObject() {
+    @Nonnull public KeyIdentifier buildObject() {
         return buildObject(KeyIdentifier.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public KeyIdentifier buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public KeyIdentifier buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyIdentifierImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSQNameImpl;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wsaddressing.AttributedQName;
@@ -27,7 +30,7 @@ import org.opensaml.soap.wsaddressing.AttributedQName;
 public class AttributedQNameImpl extends XSQNameImpl implements AttributedQName {
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -36,13 +39,14 @@ public class AttributedQNameImpl extends XSQNameImpl implements AttributedQName 
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public AttributedQNameImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public AttributedQNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 

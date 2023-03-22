@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.soap.wstrust.SignatureAlgorithm;
 
@@ -33,8 +36,8 @@ public class SignatureAlgorithmImpl extends XSURIImpl implements SignatureAlgori
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public SignatureAlgorithmImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public SignatureAlgorithmImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

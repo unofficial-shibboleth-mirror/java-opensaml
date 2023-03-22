@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wstrust.BinaryExchange;
@@ -28,13 +31,13 @@ import org.opensaml.soap.wstrust.BinaryExchange;
 public class BinaryExchangeImpl extends XSStringImpl implements BinaryExchange {
 
     /** The wst:BinaryExchange/@ValueType attribute value. */
-    private String valueType;
+    @Nullable private String valueType;
 
     /** The wst:BinaryExchange/@EncodingType attribute value. */
-    private String encodingType;
+    @Nullable private String encodingType;
 
     /** xs:anyAttribute for this element. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -43,33 +46,34 @@ public class BinaryExchangeImpl extends XSStringImpl implements BinaryExchange {
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public BinaryExchangeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public BinaryExchangeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public String getEncodingType() {
+    @Nullable public String getEncodingType() {
         return encodingType;
     }
 
     /** {@inheritDoc} */
-    public void setEncodingType(final String newEncodingType) {
+    public void setEncodingType(@Nullable final String newEncodingType) {
         encodingType = prepareForAssignment(encodingType, newEncodingType);
     }
 
     /** {@inheritDoc} */
-    public String getValueType() {
+    @Nullable public String getValueType() {
         return valueType;
     }
 
     /** {@inheritDoc} */
-    public void setValueType(final String newValueType) {
+    public void setValueType(@Nullable final String newValueType) {
         valueType = prepareForAssignment(valueType, newValueType);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 

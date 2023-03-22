@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
@@ -35,7 +37,8 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class BinaryExchangeMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final BinaryExchange binaryExchange = (BinaryExchange) xmlObject;
         
         final String valueType = StringSupport.trimOrNull(binaryExchange.getValueType());

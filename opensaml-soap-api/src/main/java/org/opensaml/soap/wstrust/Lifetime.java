@@ -17,10 +17,14 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.wssecurity.Created;
 import org.opensaml.soap.wssecurity.Expires;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Lifetime element.
@@ -29,17 +33,17 @@ import org.opensaml.soap.wssecurity.Expires;
 public interface Lifetime extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Lifetime";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Lifetime";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "LifetimeType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "LifetimeType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
@@ -47,27 +51,27 @@ public interface Lifetime extends WSTrustObject {
      * 
      * @return the {@link Created} child element or <code>null</code>.
      */
-    public Created getCreated();
+    @Nullable public Created getCreated();
 
     /**
      * Sets the wsu:Created child element.
      * 
      * @param created the {@link Created} child element to set.
      */
-    public void setCreated(Created created);
+    public void setCreated(@Nullable final Created created);
 
     /**
      * Returns the wsu:Expires child element.
      * 
      * @return the {@link Expires} child element or <code>null</code>.
      */
-    public Expires getExpires();
+    @Nullable public Expires getExpires();
 
     /**
      * Sets the wsu:Expires child element.
      * 
      * @param expires the {@link Expires} child element.
      */
-    public void setExpires(Expires expires);
+    public void setExpires(@Nullable final Expires expires);
 
 }

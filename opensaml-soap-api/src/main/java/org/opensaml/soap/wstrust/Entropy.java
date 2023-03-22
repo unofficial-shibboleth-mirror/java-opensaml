@@ -17,10 +17,13 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Entropy element.
@@ -31,20 +34,20 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface Entropy extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "Entropy";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME= "Entropy";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME=
+    @Nonnull public static final QName ELEMENT_NAME=
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "EntropyType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EntropyType"; 
     
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /** The wst:Claims/@Dialect attribute local name. */
-    public static final String DIALECT_ATTRIB_NAME = "EntropyType";
+    @Nonnull @NotEmpty public static final String DIALECT_ATTRIB_NAME = "EntropyType";
     
 }

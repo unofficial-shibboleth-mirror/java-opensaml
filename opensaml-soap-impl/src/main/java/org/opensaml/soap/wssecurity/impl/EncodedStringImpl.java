@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.EncodedString;
 
 /**
@@ -25,7 +28,7 @@ import org.opensaml.soap.wssecurity.EncodedString;
 public class EncodedStringImpl extends AttributedStringImpl implements EncodedString {
     
     /** The encodingType attribute value. */
-    private String encodingType;
+    @Nullable private String encodingType;
 
     /**
      * Constructor.
@@ -34,17 +37,18 @@ public class EncodedStringImpl extends AttributedStringImpl implements EncodedSt
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public EncodedStringImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public EncodedStringImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getEncodingType() {
+    @Nullable public String getEncodingType() {
         return encodingType;
     }
 
     /** {@inheritDoc} */
-    public void setEncodingType(final String newEncodingType) {
+    public void setEncodingType(@Nullable final String newEncodingType) {
         encodingType = prepareForAssignment(encodingType, newEncodingType);
     }
 

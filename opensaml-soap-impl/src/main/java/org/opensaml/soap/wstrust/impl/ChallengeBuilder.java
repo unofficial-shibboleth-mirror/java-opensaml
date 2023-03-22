@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Challenge;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Challenge;
 public class ChallengeBuilder extends AbstractWSTrustObjectBuilder<Challenge> {
 
     /** {@inheritDoc} */
-    public Challenge buildObject() {
+    @Nonnull public Challenge buildObject() {
         return buildObject(Challenge.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Challenge buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Challenge buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ChallengeImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -18,9 +18,10 @@
 package org.opensaml.soap.wsaddressing.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -31,6 +32,8 @@ import org.opensaml.soap.wsaddressing.EndpointReferenceType;
 import org.opensaml.soap.wsaddressing.Metadata;
 import org.opensaml.soap.wsaddressing.ReferenceParameters;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Abstract implementation of the element of type {@link EndpointReferenceType }.
  * 
@@ -38,19 +41,19 @@ import org.opensaml.soap.wsaddressing.ReferenceParameters;
 public class EndpointReferenceTypeImpl extends AbstractWSAddressingObject implements EndpointReferenceType {
 
     /** {@link Address} child element. */
-    private Address address;
+    @Nullable private Address address;
 
     /** Optional {@link Metadata} child element. */
-    private Metadata metadata;
+    @Nullable private Metadata metadata;
 
     /** Optional {@link ReferenceParameters} child element. */
-    private ReferenceParameters referenceParameters;
+    @Nullable private ReferenceParameters referenceParameters;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject>  unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject>  unknownChildren;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -59,60 +62,61 @@ public class EndpointReferenceTypeImpl extends AbstractWSAddressingObject implem
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public EndpointReferenceTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public EndpointReferenceTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public Address getAddress() {
+    @Nullable public Address getAddress() {
         return address;
     }
 
     /** {@inheritDoc} */
-    public void setAddress(final Address newAddress) {
+    public void setAddress(@Nullable final Address newAddress) {
         address = prepareForAssignment(address, newAddress);
     }
 
     /** {@inheritDoc} */
-    public Metadata getMetadata() {
+    @Nullable public Metadata getMetadata() {
         return metadata;
     }
 
     /** {@inheritDoc} */
-    public void setMetadata(final Metadata newMetadata) {
+    public void setMetadata(@Nullable final Metadata newMetadata) {
         metadata = prepareForAssignment(metadata, newMetadata);
     }
 
     /** {@inheritDoc} */
-    public ReferenceParameters getReferenceParameters() {
+    @Nullable public ReferenceParameters getReferenceParameters() {
         return referenceParameters;
     }
 
     /** {@inheritDoc} */
-    public void setReferenceParameters(final ReferenceParameters newReferenceParameters) {
+    public void setReferenceParameters(@Nullable final ReferenceParameters newReferenceParameters) {
         referenceParameters = prepareForAssignment(referenceParameters, newReferenceParameters);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (address != null) {
             children.add(address);
@@ -125,11 +129,9 @@ public class EndpointReferenceTypeImpl extends AbstractWSAddressingObject implem
         }
 
         // xs:any element
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
+        children.addAll(getUnknownXMLObjects());
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
  
 }

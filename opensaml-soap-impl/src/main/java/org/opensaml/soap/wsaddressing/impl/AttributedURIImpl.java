@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wsaddressing.AttributedURI;
@@ -28,7 +31,7 @@ import org.opensaml.soap.wsaddressing.AttributedURI;
 public class AttributedURIImpl extends XSURIImpl implements AttributedURI {
 
     /** xs:anyAttribute for this element. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -37,14 +40,15 @@ public class AttributedURIImpl extends XSURIImpl implements AttributedURI {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public AttributedURIImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public AttributedURIImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
 
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 

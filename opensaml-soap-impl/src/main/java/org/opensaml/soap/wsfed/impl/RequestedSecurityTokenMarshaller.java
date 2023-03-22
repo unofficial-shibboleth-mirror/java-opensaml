@@ -17,20 +17,25 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.w3c.dom.Element;
 
 /** A thread safe marshaller for {@link org.opensaml.soap.wsfed.RequestedSecurityToken} objects. */
 public class RequestedSecurityTokenMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject fedObject, final Element domElement) {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
 
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject fedObject, final Element domElement) {
-
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
     }
+
 }

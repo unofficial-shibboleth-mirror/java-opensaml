@@ -17,9 +17,12 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBase64Binary;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:CombinedHash element.
@@ -30,12 +33,12 @@ import org.opensaml.core.xml.schema.XSBase64Binary;
 public interface CombinedHash extends XSBase64Binary, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "CombinedHash";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "CombinedHash";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /** The fixed string "AUTH-HASH" used in computing the value of the combined hash. */
-    public static final String AUTH_HASH = "AUTH-HASH";
+    @Nonnull @NotEmpty public static final String AUTH_HASH = "AUTH-HASH";
 }

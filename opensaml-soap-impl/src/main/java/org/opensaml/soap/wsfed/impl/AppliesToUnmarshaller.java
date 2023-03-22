@@ -17,8 +17,11 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.AppliesTo;
 import org.opensaml.soap.wsfed.EndPointReference;
 import org.w3c.dom.Attr;
@@ -27,22 +30,23 @@ import org.w3c.dom.Attr;
 public class AppliesToUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentFedObject, final XMLObject childFedObject) {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
 
-        final AppliesTo appliesTo = (AppliesTo) parentFedObject;
+        final AppliesTo appliesTo = (AppliesTo) parentXMLObject;
 
-        if (childFedObject instanceof EndPointReference) {
-            appliesTo.setEndPointReference((EndPointReference) childFedObject);
+        if (childXMLObject instanceof EndPointReference) {
+            appliesTo.setEndPointReference((EndPointReference) childXMLObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject fedObject, final Attr attribute) {
-
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject fedObject, final String content) {
+    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
 
     }
 }

@@ -23,6 +23,7 @@ import org.apache.hc.core5.http.ClassicHttpRequest;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 import org.opensaml.messaging.encoder.servlet.HttpServletResponseMessageEncoder;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
@@ -32,10 +33,10 @@ public abstract class AbstractHttpClientRequestMessageEncoder extends AbstractMe
         implements HttpClientRequestMessageEncoder {
 
     /** The HTTP client request. */
-    @Nullable private ClassicHttpRequest request;
+    @NonnullAfterInit private ClassicHttpRequest request;
 
     /** {@inheritDoc} */
-    @Nullable public ClassicHttpRequest getHttpRequest() {
+    @NonnullAfterInit public ClassicHttpRequest getHttpRequest() {
         return request;
     }
 

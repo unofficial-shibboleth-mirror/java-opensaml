@@ -18,6 +18,8 @@
 package org.opensaml.soap.wsaddressing.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wsaddressing.WSAddressingObject;
 import org.opensaml.soap.wsaddressing.WSAddressingObjectBuilder;
@@ -32,5 +34,5 @@ public abstract class AbstractWSAddressingObjectBuilder<WSAddressingObjectType e
         WSAddressingObjectBuilder<WSAddressingObjectType> {
 
     /** {@inheritDoc} */
-    public abstract WSAddressingObjectType buildObject();
+    @Nonnull public abstract WSAddressingObjectType buildObject();
 }

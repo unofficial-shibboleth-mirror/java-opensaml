@@ -24,16 +24,13 @@ import org.opensaml.soap.wsaddressing.Address;
 import org.opensaml.soap.wsaddressing.EndpointReference;
 import org.opensaml.soap.wsaddressing.Metadata;
 import org.opensaml.soap.wsaddressing.ReferenceParameters;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * WSAddressingObjectTestCase is the test case for the WS-Addressing objects.
  * 
  */
+@SuppressWarnings("javadoc")
 public class WSAddressingObjectsTestCase extends WSBaseTestCase {
-
-    public Logger log= LoggerFactory.getLogger(WSAddressingObjectsTestCase.class);
 
     @Test
     public void testAction() throws Exception {

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.BinarySecurityToken;
 
 /**
@@ -25,13 +28,13 @@ import org.opensaml.soap.wssecurity.BinarySecurityToken;
 public class BinarySecurityTokenBuilder extends AbstractWSSecurityObjectBuilder<BinarySecurityToken> {
 
     /** {@inheritDoc} */
-    public BinarySecurityToken buildObject() {
+    @Nonnull public BinarySecurityToken buildObject() {
         return buildObject(BinarySecurityToken.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public BinarySecurityToken buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public BinarySecurityToken buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new BinarySecurityTokenImpl(namespaceURI, localName, namespacePrefix);
     }
 

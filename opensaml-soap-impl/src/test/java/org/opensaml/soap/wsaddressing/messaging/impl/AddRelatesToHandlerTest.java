@@ -32,9 +32,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class AddRelatesToHandlerTest extends SOAPMessagingBaseTestCase {
     
     private AddRelatesToHandler handler;
@@ -54,8 +52,8 @@ public class AddRelatesToHandlerTest extends SOAPMessagingBaseTestCase {
 
     @Test
     public void testContext() throws ComponentInitializationException, MessageHandlerException {
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setRelatesToURI("urn:test:abc123");
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setRelatesToRelationshipType(RelatesTo.RELATIONSHIP_TYPE_REPLY);
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setRelatesToURI("urn:test:abc123");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setRelatesToRelationshipType(RelatesTo.RELATIONSHIP_TYPE_REPLY);
         
         handler.initialize();
         handler.invoke(getMessageContext());

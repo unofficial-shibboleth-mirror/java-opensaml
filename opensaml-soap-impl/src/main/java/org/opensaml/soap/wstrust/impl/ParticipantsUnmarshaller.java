@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wstrust.Participant;
@@ -31,8 +33,8 @@ import org.opensaml.soap.wstrust.Primary;
 public class ParticipantsUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject) 
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final Participants participants = (Participants) parentXMLObject;
         
         if (childXMLObject instanceof Primary) {

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wsfed.RequestSecurityTokenResponse;
 import org.opensaml.soap.wsfed.WSFedConstants;
@@ -32,14 +35,14 @@ public class RequestSecurityTokenResponseBuilder extends AbstractXMLObjectBuilde
     }
 
     /** {@inheritDoc} */
-    public RequestSecurityTokenResponse buildObject() {
+    @Nonnull public RequestSecurityTokenResponse buildObject() {
         return buildObject(WSFedConstants.WSFED11P_NS, RequestSecurityTokenResponse.DEFAULT_ELEMENT_LOCAL_NAME,
                 WSFedConstants.WSFED1P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public RequestSecurityTokenResponse buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public RequestSecurityTokenResponse buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new RequestSecurityTokenResponseImpl(namespaceURI, localName, namespacePrefix);
     }
 }

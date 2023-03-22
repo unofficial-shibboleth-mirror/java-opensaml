@@ -17,14 +17,17 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.soap.wstrust.KeyExchangeToken;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * KeyExchangeTokenImpl.
@@ -33,7 +36,7 @@ import org.opensaml.soap.wstrust.KeyExchangeToken;
 public class KeyExchangeTokenImpl extends AbstractWSTrustObject implements KeyExchangeToken {
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -42,25 +45,26 @@ public class KeyExchangeTokenImpl extends AbstractWSTrustObject implements KeyEx
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public KeyExchangeTokenImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public KeyExchangeTokenImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownChildren);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
 
 }

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wsfed.AppliesTo;
 import org.opensaml.soap.wsfed.WSFedConstants;
@@ -25,19 +28,15 @@ import org.opensaml.soap.wsfed.WSFedObjectBuilder;
 /** Builder of {@link AppliesToImpl} objects. */
 public class AppliesToBuilder extends AbstractXMLObjectBuilder<AppliesTo> implements WSFedObjectBuilder<AppliesTo> {
 
-    /** Constructor. */
-    public AppliesToBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AppliesTo buildObject() {
+    @Nonnull public AppliesTo buildObject() {
         return buildObject(WSFedConstants.WSPOLICY_NS, AppliesTo.DEFAULT_ELEMENT_LOCAL_NAME,
                 WSFedConstants.WSPOLICY_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AppliesTo buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public AppliesTo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AppliesToImpl(namespaceURI, localName, namespacePrefix);
     }
 }

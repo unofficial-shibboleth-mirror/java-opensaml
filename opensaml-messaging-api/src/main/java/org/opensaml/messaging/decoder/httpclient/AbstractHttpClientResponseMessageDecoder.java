@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
@@ -31,10 +32,10 @@ public abstract class AbstractHttpClientResponseMessageDecoder extends AbstractM
         implements HttpClientResponseMessageDecoder {
 
     /** The HTTP client response. */
-    @Nullable private ClassicHttpResponse response;
+    @NonnullAfterInit private ClassicHttpResponse response;
 
     /** {@inheritDoc} */
-    @Nullable public ClassicHttpResponse getHttpResponse() {
+    @NonnullAfterInit public ClassicHttpResponse getHttpResponse() {
         return response;
     }
 

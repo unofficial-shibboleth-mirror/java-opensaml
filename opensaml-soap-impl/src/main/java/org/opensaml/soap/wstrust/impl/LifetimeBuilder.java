@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Lifetime;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Lifetime;
 public class LifetimeBuilder extends AbstractWSTrustObjectBuilder<Lifetime> {
 
     /** {@inheritDoc} */
-    public Lifetime buildObject() {
+    @Nonnull public Lifetime buildObject() {
         return buildObject(Lifetime.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Lifetime buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Lifetime buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new LifetimeImpl(namespaceURI, localName, namespacePrefix);
     }
 

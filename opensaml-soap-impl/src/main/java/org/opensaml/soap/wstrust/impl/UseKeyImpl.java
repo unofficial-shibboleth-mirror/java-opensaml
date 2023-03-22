@@ -17,12 +17,15 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wstrust.UseKey;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * UseKeyImpl.
@@ -31,10 +34,10 @@ import org.opensaml.soap.wstrust.UseKey;
 public class UseKeyImpl extends AbstractWSTrustObject implements UseKey {
     
     /** Wildcard child element. */
-    private XMLObject unknownChild;
+    @Nullable private XMLObject unknownChild;
 
     /** wst:UseKey/@Sig attribute value. */
-    private String sig;
+    @Nullable private String sig;
 
     /**
      * Constructor.
@@ -43,37 +46,38 @@ public class UseKeyImpl extends AbstractWSTrustObject implements UseKey {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public UseKeyImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public UseKeyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getSig() {
+    @Nullable public String getSig() {
         return sig;
     }
 
     /** {@inheritDoc} */
-    public void setSig(final String newSig) {
+    public void setSig(@Nullable final String newSig) {
         sig = prepareForAssignment(sig, newSig);
     }
     
     /** {@inheritDoc} */
-    public XMLObject getUnknownXMLObject() {
+    @Nullable public XMLObject getUnknownXMLObject() {
         return unknownChild;
     }
 
     /** {@inheritDoc} */
-    public void setUnknownXMLObject(final XMLObject unknownObject) {
+    public void setUnknownXMLObject(@Nullable final XMLObject unknownObject) {
         unknownChild = prepareForAssignment(unknownChild, unknownObject);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
+    @Nullable public List<XMLObject> getOrderedChildren() {
         if (unknownChild != null) {
-            children.add(unknownChild);
+            return CollectionSupport.singletonList(unknownChild);
         }
-        return Collections.unmodifiableList(children);
+        
+        return null;
     }
 
 }

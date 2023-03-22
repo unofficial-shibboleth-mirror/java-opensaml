@@ -18,9 +18,10 @@
 package org.opensaml.soap.wssecurity.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -30,22 +31,24 @@ import org.opensaml.soap.wssecurity.IdBearing;
 import org.opensaml.soap.wssecurity.Username;
 import org.opensaml.soap.wssecurity.UsernameToken;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Implementation of {@link UsernameToken}.
  */
 public class UsernameTokenImpl extends AbstractWSSecurityObject implements UsernameToken {
 
     /** The &lt;wsu:Id&gt; attribute value. */
-    private String id;
+    @Nullable private String id;
 
     /** The &lt;wsse:Username&gt; child element. */
-    private Username username;
+    @Nullable private Username username;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -54,29 +57,30 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public UsernameTokenImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public UsernameTokenImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
  
     /** {@inheritDoc} */
-    public Username getUsername() {
+    @Nullable public Username getUsername() {
         return username;
     }
 
     /** {@inheritDoc} */
-    public void setUsername(final Username newUsername) {
+    public void setUsername(@Nullable final Username newUsername) {
         username = prepareForAssignment(username, newUsername);
     }
 
     /** {@inheritDoc} */
-    public String getWSUId() {
+    @Nullable public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setWSUId(final String newId) {
+    public void setWSUId(@Nullable final String newId) {
         final String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
@@ -84,31 +88,31 @@ public class UsernameTokenImpl extends AbstractWSSecurityObject implements Usern
     }
     
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (username != null) {
             children.add(username);
         }
         
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
-        return Collections.unmodifiableList(children);
+        children.addAll(getUnknownXMLObjects());
+        
+        return CollectionSupport.copyToList(children);
     }
 
 }

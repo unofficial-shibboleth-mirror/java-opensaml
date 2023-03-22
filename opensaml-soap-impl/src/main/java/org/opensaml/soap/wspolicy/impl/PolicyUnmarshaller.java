@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -36,7 +37,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class PolicyUnmarshaller extends OperatorContentTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final Policy policy = (Policy) xmlObject;
         
         final QName nameQName = new QName(Policy.NAME_ATTRIB_NAME);

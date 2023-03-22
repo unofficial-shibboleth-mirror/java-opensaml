@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.soap.wssecurity.EncodedString;
@@ -30,7 +32,8 @@ import com.google.common.base.Strings;
 public class EncodedStringMarshaller extends AttributedStringMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final EncodedString encodedString = (EncodedString) xmlObject;
         if (!Strings.isNullOrEmpty(encodedString.getEncodingType())){
             domElement.setAttributeNS(null, EncodedString.ENCODING_TYPE_ATTRIB_NAME, encodedString.getEncodingType());

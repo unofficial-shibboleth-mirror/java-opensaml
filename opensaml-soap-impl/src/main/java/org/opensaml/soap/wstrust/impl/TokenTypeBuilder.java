@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.TokenType;
 
 /**
@@ -28,12 +31,13 @@ import org.opensaml.soap.wstrust.TokenType;
 public class TokenTypeBuilder extends AbstractWSTrustObjectBuilder<TokenType> {
 
     /** {@inheritDoc} */
-    public TokenType buildObject() {
+    @Nonnull public TokenType buildObject() {
         return buildObject(TokenType.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public TokenType buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public TokenType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new TokenTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 

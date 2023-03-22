@@ -18,6 +18,9 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.KeyIdentifier;
 
 /**
@@ -26,7 +29,7 @@ import org.opensaml.soap.wssecurity.KeyIdentifier;
 public class KeyIdentifierImpl extends EncodedStringImpl implements KeyIdentifier {
 
     /** wsse:KeyIdentifier/@ValueType attribute. */
-    private String valueType;
+    @Nullable private String valueType;
 
     /**
      * Constructor.
@@ -35,17 +38,18 @@ public class KeyIdentifierImpl extends EncodedStringImpl implements KeyIdentifie
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public KeyIdentifierImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public KeyIdentifierImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getValueType() {
+    @Nullable public String getValueType() {
         return valueType;
     }
 
     /** {@inheritDoc} */
-    public void setValueType(final String newValueType) {
+    public void setValueType(@Nullable final String newValueType) {
         valueType = prepareForAssignment(valueType, newValueType);
     }
 

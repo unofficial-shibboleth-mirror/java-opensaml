@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.RequestSecurityTokenResponse;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.RequestSecurityTokenResponse;
 public class RequestSecurityTokenResponseBuilder extends AbstractWSTrustObjectBuilder<RequestSecurityTokenResponse> {
 
     /** {@inheritDoc} */
-    public RequestSecurityTokenResponse buildObject() {
+    @Nonnull public RequestSecurityTokenResponse buildObject() {
         return buildObject(RequestSecurityTokenResponse.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public RequestSecurityTokenResponse buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public RequestSecurityTokenResponse buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new RequestSecurityTokenResponseImpl(namespaceURI, localName, namespacePrefix);
     }
 

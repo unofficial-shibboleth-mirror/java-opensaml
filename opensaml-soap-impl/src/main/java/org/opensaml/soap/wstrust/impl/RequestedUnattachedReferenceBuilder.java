@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.RequestedUnattachedReference;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.RequestedUnattachedReference;
 public class RequestedUnattachedReferenceBuilder extends AbstractWSTrustObjectBuilder<RequestedUnattachedReference> {
 
     /** {@inheritDoc} */
-    public RequestedUnattachedReference buildObject() {
+    @Nonnull public RequestedUnattachedReference buildObject() {
         return buildObject(RequestedUnattachedReference.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public RequestedUnattachedReference buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public RequestedUnattachedReference buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new RequestedUnattachedReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 

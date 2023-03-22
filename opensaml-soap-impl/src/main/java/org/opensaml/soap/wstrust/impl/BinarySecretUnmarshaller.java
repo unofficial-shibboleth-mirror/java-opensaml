@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller;
@@ -31,7 +33,8 @@ import org.w3c.dom.Attr;
 public class BinarySecretUnmarshaller extends XSBase64BinaryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final BinarySecret bs = (BinarySecret) xmlObject;
         if (BinarySecret.TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             bs.setType(attribute.getValue());

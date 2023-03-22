@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Claims;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Claims;
 public class ClaimsBuilder extends AbstractWSTrustObjectBuilder<Claims> {
 
     /** {@inheritDoc} */
-    public Claims buildObject() {
+    @Nonnull public Claims buildObject() {
         return buildObject(Claims.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Claims buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Claims buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ClaimsImpl(namespaceURI, localName, namespacePrefix);
     }
 

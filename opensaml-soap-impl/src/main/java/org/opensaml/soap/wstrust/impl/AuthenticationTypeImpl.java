@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.soap.wstrust.AuthenticationType;
 
@@ -33,8 +36,8 @@ public class AuthenticationTypeImpl extends XSURIImpl implements AuthenticationT
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AuthenticationTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public AuthenticationTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

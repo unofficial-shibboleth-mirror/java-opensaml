@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Reference;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wssecurity.Reference;
 public class ReferenceBuilder extends AbstractWSSecurityObjectBuilder<Reference> {
 
     /** {@inheritDoc} */
-    public Reference buildObject() {
+    @Nonnull public Reference buildObject() {
         return buildObject(Reference.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Reference buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Reference buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 

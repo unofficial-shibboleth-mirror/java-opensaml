@@ -17,9 +17,13 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.wssecurity.SecurityTokenReference;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface for RequestedReferenceType complex type.
@@ -28,10 +32,10 @@ import org.opensaml.soap.wssecurity.SecurityTokenReference;
 public interface RequestedReferenceType extends WSTrustObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RequestedReferenceType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestedReferenceType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /**
@@ -40,7 +44,7 @@ public interface RequestedReferenceType extends WSTrustObject {
      * @return the {@link SecurityTokenReference} child element or
      *         <code>null</code>.
      */
-    public SecurityTokenReference getSecurityTokenReference();
+    @Nullable public SecurityTokenReference getSecurityTokenReference();
 
     /**
      * Sets the wsse:SecurityTokenReference child element.
@@ -48,6 +52,6 @@ public interface RequestedReferenceType extends WSTrustObject {
      * @param securityTokenReference
      *            The {@link SecurityTokenReference} child element to be set.
      */
-    public void setSecurityTokenReference(SecurityTokenReference securityTokenReference);
+    public void setSecurityTokenReference(@Nullable final SecurityTokenReference securityTokenReference);
 
 }

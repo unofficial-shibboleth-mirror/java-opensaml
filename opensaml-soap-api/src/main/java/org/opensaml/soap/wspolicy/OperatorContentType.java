@@ -81,6 +81,6 @@ public interface OperatorContentType extends WSPolicyObject {
      * 
      * @return the list of {@link XMLObject} instances
      */
-    @Nonnull public List<XMLObject> getXMLObjects(QName typeOrName);
+    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull QName typeOrName);
 
 }

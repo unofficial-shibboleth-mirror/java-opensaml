@@ -17,8 +17,11 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.Address;
 import org.opensaml.soap.wsfed.EndPointReference;
 import org.w3c.dom.Attr;
@@ -27,21 +30,22 @@ import org.w3c.dom.Attr;
 public class EndPointReferenceUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject) {
-        final EndPointReference endPointReference = (EndPointReference) parentSAMLObject;
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
+        final EndPointReference endPointReference = (EndPointReference) parentXMLObject;
 
-        if (childSAMLObject instanceof Address) {
-            endPointReference.setAddress((Address) childSAMLObject);
+        if (childXMLObject instanceof Address) {
+            endPointReference.setAddress((Address) childXMLObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject fedObject, final Attr attribute) {
-
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject fedObject, final String content) {
+    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
 
     }
 }

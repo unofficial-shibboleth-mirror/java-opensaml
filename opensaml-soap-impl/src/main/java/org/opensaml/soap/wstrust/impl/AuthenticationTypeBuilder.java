@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.AuthenticationType;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.AuthenticationType;
 public class AuthenticationTypeBuilder extends AbstractWSTrustObjectBuilder<AuthenticationType> {
 
     /** {@inheritDoc} */
-    public AuthenticationType buildObject() {
+    @Nonnull public AuthenticationType buildObject() {
         return buildObject(AuthenticationType.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public AuthenticationType buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public AuthenticationType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AuthenticationTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 

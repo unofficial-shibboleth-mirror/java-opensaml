@@ -23,6 +23,7 @@ import org.testng.annotations.BeforeMethod;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -60,12 +61,13 @@ import org.opensaml.soap.wstrust.TokenType;
  * WSTrustObjectsTestCase is the base test case for the WS-Trust objects.
  * 
  */
+@SuppressWarnings("javadoc")
 public class WSTrustObjectsTestCase extends WSBaseTestCase {
     
     /**
      * QName for test Claims element.
      */
-    private static final QName TEST_CLAIMS_QNAME = new QName("urn:test:claims:ns", "TestClaim", "tc");
+    @Nonnull private static final QName TEST_CLAIMS_QNAME = new QName("urn:test:claims:ns", "TestClaim", "tc");
 
     @BeforeMethod
     protected void setUp() throws Exception {
@@ -171,13 +173,19 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
     public void testDelegatable() throws Exception {
         Delegatable delegatable= buildXMLObject(Delegatable.ELEMENT_NAME);
         XSBooleanValue value= delegatable.getValue();
-        Assert.assertFalse(value.getValue());
+        assert value != null;
+        Boolean flag = value.getValue();
+        assert flag != null;
+        Assert.assertFalse(flag);
         marshallAndUnmarshall(delegatable);
 
         delegatable= buildXMLObject(Delegatable.ELEMENT_NAME);
         delegatable.setValue(new XSBooleanValue(true, false));
         value= delegatable.getValue();
-        Assert.assertTrue(value.getValue());
+        assert value != null;
+        flag = value.getValue();
+        assert flag != null;
+        Assert.assertTrue(flag);
         marshallAndUnmarshall(delegatable);
     }
 
@@ -332,7 +340,8 @@ public class WSTrustObjectsTestCase extends WSBaseTestCase {
         rst.getUnknownXMLObjects().add(timestamp);
         marshallAndUnmarshall(rst);
 
-        rst= unmarshallElement("/org/opensaml/soap/wstrust/impl/RequestSecurityToken.xml");
+        rst = unmarshallElement("/org/opensaml/soap/wstrust/impl/RequestSecurityToken.xml");
+        assert rst != null;
         rst.releaseDOM();
         marshallAndUnmarshall(rst);
     }

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.IssuedTokens;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.IssuedTokens;
 public class IssuedTokensBuilder extends AbstractWSTrustObjectBuilder<IssuedTokens> {
 
     /** {@inheritDoc} */
-    public IssuedTokens buildObject() {
+    @Nonnull public IssuedTokens buildObject() {
         return buildObject(IssuedTokens.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public IssuedTokens buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public IssuedTokens buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new IssuedTokensImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,7 +17,11 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Status element.
@@ -28,10 +32,10 @@ import javax.xml.namespace.QName;
 public interface Status extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Status";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Status";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
@@ -39,27 +43,27 @@ public interface Status extends WSTrustObject {
      * 
      * @return the {@link Code} child element or <code>null</code>
      */
-    public Code getCode();
+    @Nullable public Code getCode();
 
     /**
      * Sets the wst:Code child element.
      * 
      * @param code the {@link Code} child element to set.
      */
-    public void setCode(Code code);
+    public void setCode(@Nullable final Code code);
 
     /**
      * Returns the wst:Reason child element.
      * 
      * @return the {@link Reason} child element or <code>null</code>.
      */
-    public Reason getReason();
+    @Nullable public Reason getReason();
 
     /**
      * Sets the wst:Reason child element.
      * 
      * @param reason the {@link Reason} child element to set.
      */
-    public void setReason(Reason reason);
+    public void setReason(@Nullable final Reason reason);
 
 }

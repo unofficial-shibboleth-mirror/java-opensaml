@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Detail;
@@ -31,12 +34,13 @@ public class DetailBuilder extends AbstractXMLObjectBuilder<Detail> implements S
      * 
      * @return the build Envelope object
      */
-    public Detail buildObject(){
+    @Nonnull public Detail buildObject(){
         return buildObject(null, Detail.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
     
     /** {@inheritDoc} */
-    public Detail buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Detail buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DetailImpl(namespaceURI, localName, namespacePrefix);
     }
 }

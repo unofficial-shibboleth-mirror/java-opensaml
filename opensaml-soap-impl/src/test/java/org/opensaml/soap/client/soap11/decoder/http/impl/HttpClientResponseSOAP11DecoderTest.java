@@ -20,6 +20,7 @@ package org.opensaml.soap.client.soap11.decoder.http.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
@@ -28,10 +29,8 @@ import net.shibboleth.shared.xml.SerializeSupport;
 import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpStatus;
-import org.apache.hc.core5.http.HttpVersion;
 import org.apache.hc.core5.http.io.entity.ByteArrayEntity;
 import org.apache.hc.core5.http.message.BasicClassicHttpResponse;
-import org.apache.hc.core5.http.message.BasicHttpResponse;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
@@ -51,6 +50,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("javadoc")
 public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
     
     private HttpClientResponseSOAP11Decoder decoder;
@@ -63,9 +63,11 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testDecodeToPayload() throws ComponentInitializationException, MessageDecodingException, MarshallingException, IOException {
-        Envelope envelope = buildMessageSkeleton();
-        envelope.getBody().getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
-        ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
+        final Envelope envelope = buildMessageSkeleton();
+        final Body body = envelope.getBody();
+        assert body != null;
+        body.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
+        final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
         
         decoder.setBodyHandler(new TestPayloadBodyHandler());
         decoder.setHttpResponse(httpResponse);
@@ -73,23 +75,24 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder.decode();
         
-        MessageContext messageContext = decoder.getMessageContext();
-        
-        Assert.assertNotNull(messageContext);
+        final MessageContext messageContext = decoder.getMessageContext();
+        assert messageContext != null;
         Assert.assertNotNull(messageContext.getMessage());
         Assert.assertTrue(messageContext.getMessage() instanceof SimpleXMLObject);
         
-        SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class, false);
-        Assert.assertNotNull(soapContext);
+        final SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class);
+        assert soapContext != null;
         Assert.assertNotNull(soapContext.getEnvelope());
         Assert.assertEquals(soapContext.getHTTPResponseStatus(), Integer.valueOf(HttpStatus.SC_OK));
     }
     
     @Test
     public void testDecodeToEnvelope() throws ComponentInitializationException, MessageDecodingException, MarshallingException, IOException {
-        Envelope envelope = buildMessageSkeleton();
-        envelope.getBody().getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
-        ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
+        final Envelope envelope = buildMessageSkeleton();
+        final Body body = envelope.getBody();
+        assert body != null;
+        body.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
+        final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
         
         decoder.setBodyHandler(new TestEnvelopeBodyHandler());
         decoder.setHttpResponse(httpResponse);
@@ -97,25 +100,26 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         decoder.decode();
         
-        MessageContext messageContext = decoder.getMessageContext();
-        
-        Assert.assertNotNull(messageContext);
+        final MessageContext messageContext = decoder.getMessageContext();
+        assert messageContext != null;
         Assert.assertNotNull(messageContext.getMessage());
         Assert.assertTrue(messageContext.getMessage() instanceof Envelope);
         
-        SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class, false);
-        Assert.assertNotNull(soapContext);
+        final SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class);
+        assert soapContext != null;
         Assert.assertNotNull(soapContext.getEnvelope());
         Assert.assertEquals(soapContext.getHTTPResponseStatus(), Integer.valueOf(HttpStatus.SC_OK));
     }
     
     @Test(expectedExceptions=SOAP11FaultDecodingException.class)
     public void testFault() throws ComponentInitializationException, MessageDecodingException, MarshallingException, IOException {
-        Fault fault = SOAPSupport.buildSOAP11Fault(new QName("urn:test:soap:fault:foo", "TestFault", "foo"), "Test fault", null, null, null);
+        final Fault fault = SOAPSupport.buildSOAP11Fault(new QName("urn:test:soap:fault:foo", "TestFault", "foo"), "Test fault", null, null, null);
         
-        Envelope envelope = buildMessageSkeleton();
-        envelope.getBody().getUnknownXMLObjects().add(fault);
-        ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, envelope);
+        final Envelope envelope = buildMessageSkeleton();
+        final Body body = envelope.getBody();
+        assert body != null;
+        body.getUnknownXMLObjects().add(fault);
+        final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, envelope);
         
         decoder.setBodyHandler(new TestPayloadBodyHandler());
         decoder.setHttpResponse(httpResponse);
@@ -124,39 +128,43 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         decoder.decode();
     }
     
-    private ClassicHttpResponse buildResponse(int statusResponseCode, Envelope envelope) throws MarshallingException, IOException {
-        BasicClassicHttpResponse response = new BasicClassicHttpResponse(statusResponseCode, null);
-        Element envelopeElement = XMLObjectSupport.marshall(envelope);
+    @Nonnull private ClassicHttpResponse buildResponse(int statusResponseCode, @Nonnull final Envelope envelope)
+            throws MarshallingException, IOException {
+        final BasicClassicHttpResponse response = new BasicClassicHttpResponse(statusResponseCode, null);
+        final Element envelopeElement = XMLObjectSupport.marshall(envelope);
         
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializeSupport.writeNode(envelopeElement, baos);
         baos.flush();
         
-        ByteArrayEntity entity = new ByteArrayEntity(baos.toByteArray(), ContentType.TEXT_XML);
+        final ByteArrayEntity entity = new ByteArrayEntity(baos.toByteArray(), ContentType.TEXT_XML);
         response.setEntity(entity);
         return response;
     }
 
-    private Envelope buildMessageSkeleton() {
-        Envelope envelope = buildXMLObject(Envelope.DEFAULT_ELEMENT_NAME);
-        Body body = buildXMLObject(Body.DEFAULT_ELEMENT_NAME);
+    @Nonnull private Envelope buildMessageSkeleton() {
+        final Envelope envelope = buildXMLObject(Envelope.DEFAULT_ELEMENT_NAME);
+        final Body body = buildXMLObject(Body.DEFAULT_ELEMENT_NAME);
         envelope.setBody(body);
         return envelope;
     }
     
     public class TestEnvelopeBodyHandler extends AbstractMessageHandler {
         /** {@inheritDoc} */
-        protected void doInvoke(MessageContext msgContext) throws MessageHandlerException {
-            Envelope env = (Envelope) msgContext.getSubcontext(SOAP11Context.class).getEnvelope();
+        protected void doInvoke(@Nonnull final MessageContext msgContext) throws MessageHandlerException {
+            final Envelope env = (Envelope) msgContext.ensureSubcontext(SOAP11Context.class).getEnvelope();
             msgContext.setMessage(env);
         }
     }
     
     public class TestPayloadBodyHandler extends AbstractMessageHandler {
         /** {@inheritDoc} */
-        protected void doInvoke(MessageContext msgContext) throws MessageHandlerException {
-            Envelope env = (Envelope) msgContext.getSubcontext(SOAP11Context.class).getEnvelope();
-            msgContext.setMessage(env.getBody().getUnknownXMLObjects().get(0));
+        protected void doInvoke(@Nonnull final MessageContext msgContext) throws MessageHandlerException {
+            final Envelope env = (Envelope) msgContext.ensureSubcontext(SOAP11Context.class).getEnvelope();
+            assert env != null;
+            final Body body = env.getBody();
+            assert body != null;
+            msgContext.setMessage(body.getUnknownXMLObjects().get(0));
         }
     }
 

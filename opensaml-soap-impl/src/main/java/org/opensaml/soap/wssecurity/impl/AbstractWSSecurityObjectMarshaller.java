@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -27,21 +29,14 @@ import org.w3c.dom.Element;
  */
 public abstract class AbstractWSSecurityObjectMarshaller extends AbstractXMLObjectMarshaller {
 
-    /**
-     * Constructor.
-     */
-    protected AbstractWSSecurityObjectMarshaller() {
-        super();
-    }
-
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
-
-    }
-
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-
     }
+
+    /** {@inheritDoc} */
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+    }
+
 }

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Body;
@@ -32,12 +35,13 @@ public class BodyBuilder extends AbstractXMLObjectBuilder<Body> implements SOAPO
      * 
      * @return the build Envelope object
      */
-    public Body buildObject(){
+    @Nonnull public Body buildObject(){
         return buildObject(SOAPConstants.SOAP11_NS, Body.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     }
     
     /** {@inheritDoc} */
-    public Body buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Body buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new BodyImpl(namespaceURI, localName, namespacePrefix);
     }
 }

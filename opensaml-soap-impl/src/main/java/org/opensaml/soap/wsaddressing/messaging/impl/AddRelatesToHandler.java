@@ -28,8 +28,8 @@ import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wsaddressing.RelatesTo;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -38,7 +38,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AddRelatesToHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AddRelatesToHandler.class);
     
     /** Optional lookup function for obtaining the RelatesTo URI value. */
     private ContextDataLookupFunction<MessageContext, String> relatesToURILookup;
@@ -113,7 +113,7 @@ public class AddRelatesToHandler extends AbstractHeaderGeneratingMessageHandler 
     }
 
     /** {@inheritDoc} */
-    protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         log.debug("Issuing WS-Addressing RelatesTo header with URI '{}' and RelationshipType '{}'", 
                 relatesToURI, relationshipType);
         final RelatesTo relatesTo = (RelatesTo) XMLObjectSupport.buildXMLObject(RelatesTo.ELEMENT_NAME);

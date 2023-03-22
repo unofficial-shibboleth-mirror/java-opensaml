@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
+@SuppressWarnings("javadoc")
 public class HttpClientRequestSOAP11EncoderTest extends XMLObjectBaseTestCase {
     
     private HttpClientRequestSOAP11Encoder encoder;
@@ -53,15 +54,15 @@ public class HttpClientRequestSOAP11EncoderTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testBasic() throws ComponentInitializationException, MessageEncodingException {
-        SimpleXMLObject sxo = buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        final SimpleXMLObject sxo = buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         messageContext.setMessage(sxo);
         
         encoder.initialize();
         encoder.prepareContext();
         
-        SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class);
-        Assert.assertNotNull(soapContext);
-        Envelope envelope = soapContext.getEnvelope();
+        final SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class);
+        assert soapContext != null;
+        final Envelope envelope = soapContext.getEnvelope();
         Assert.assertNotNull(envelope);
         
         encoder.encode();
@@ -75,24 +76,26 @@ public class HttpClientRequestSOAP11EncoderTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testAction() throws ComponentInitializationException, MessageEncodingException {
-        SimpleXMLObject sxo = buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
+        final SimpleXMLObject sxo = buildXMLObject(SimpleXMLObject.ELEMENT_NAME);
         messageContext.setMessage(sxo);
         
         encoder.initialize();
         encoder.prepareContext();
         
-        SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class);
-        Assert.assertNotNull(soapContext);
-        Envelope envelope = soapContext.getEnvelope();
-        Assert.assertNotNull(envelope);
+        final SOAP11Context soapContext = messageContext.getSubcontext(SOAP11Context.class);
+        assert soapContext != null;
+        final Envelope envelope = soapContext.getEnvelope();
+        assert envelope != null;
         
         // "For real" this would be added by a MessageHandler.  Here just add manually.
-        Action action = buildXMLObject(Action.ELEMENT_NAME);
+        final Action action = buildXMLObject(Action.ELEMENT_NAME);
         action.setURI("urn:test:action:foo");
-        if (envelope.getHeader() == null) {
-            envelope.setHeader((Header) buildXMLObject(Header.DEFAULT_ELEMENT_NAME));
+        Header header = envelope.getHeader();
+        if (header == null) {
+            header = (Header) buildXMLObject(Header.DEFAULT_ELEMENT_NAME);
+            envelope.setHeader(header);
         }
-        envelope.getHeader().getUnknownXMLObjects().add(action);
+        header.getUnknownXMLObjects().add(action);
         
         encoder.encode();
         

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.EncryptedHeader;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wssecurity.EncryptedHeader;
 public class EncryptedHeaderBuilder extends AbstractWSSecurityObjectBuilder<EncryptedHeader> {
 
     /** {@inheritDoc} */
-    public EncryptedHeader buildObject() {
+    @Nonnull public EncryptedHeader buildObject() {
         return buildObject(EncryptedHeader.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public EncryptedHeader buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public EncryptedHeader buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EncryptedHeaderImpl(namespaceURI, localName, namespacePrefix);
     }
 

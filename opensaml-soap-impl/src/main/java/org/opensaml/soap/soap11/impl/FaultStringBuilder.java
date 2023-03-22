@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.FaultString;
@@ -28,12 +31,14 @@ public class FaultStringBuilder extends AbstractXMLObjectBuilder<FaultString>
     implements SOAPObjectBuilder<FaultString> {
 
     /** {@inheritDoc} */
-    public FaultString buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
-        return new FaultStringImpl(namespaceURI, localName, namespacePrefix);
+    @Nonnull public FaultString buildObject() {
+        return buildObject(null, FaultString.DEFAULT_ELEMENT_LOCAL_NAME, null);
     }
 
     /** {@inheritDoc} */
-    public FaultString buildObject() {
-        return buildObject(null, FaultString.DEFAULT_ELEMENT_LOCAL_NAME, null);
+    @Nonnull public FaultString buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
+        return new FaultStringImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

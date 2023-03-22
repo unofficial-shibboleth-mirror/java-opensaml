@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wspolicy.All;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wspolicy.All;
 public class AllBuilder extends AbstractWSPolicyObjectBuilder<All> {
 
     /** {@inheritDoc} */
-    public All buildObject() {
+    @Nonnull public All buildObject() {
         return buildObject(All.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public All buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public All buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AllImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.UseKey;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.UseKey;
 public class UseKeyBuilder extends AbstractWSTrustObjectBuilder<UseKey> {
 
     /** {@inheritDoc} */
-    public UseKey buildObject() {
+    @Nonnull public UseKey buildObject() {
         return buildObject(UseKey.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public UseKey buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public UseKey buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new UseKeyImpl(namespaceURI, localName, namespacePrefix);
     }
 

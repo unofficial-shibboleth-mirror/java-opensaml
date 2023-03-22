@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wsfed.Address;
 import org.opensaml.soap.wsfed.WSFedConstants;
@@ -25,19 +28,15 @@ import org.opensaml.soap.wsfed.WSFedObjectBuilder;
 /** Builder of {@link AddressImpl} objects. */
 public class AddressBuilder extends AbstractXMLObjectBuilder<Address> implements WSFedObjectBuilder<Address> {
 
-    /** Constructor. */
-    public AddressBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public final Address buildObject() {
+    @Nonnull public final Address buildObject() {
         return buildObject(WSFedConstants.WSADDRESS_NS, Address.DEFAULT_ELEMENT_LOCAL_NAME,
                 WSFedConstants.WSADDRESS_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Address buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Address buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AddressImpl(namespaceURI, localName, namespacePrefix);
     }
 }

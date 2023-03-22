@@ -28,9 +28,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
     
     private ValidateActionHandler handler;
@@ -72,7 +70,7 @@ public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
         action.setURI("urn:test:action1");
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), action);
         
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setActionURI("urn:test:action1");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setActionURI("urn:test:action1");
         
         handler.initialize();
         handler.invoke(getMessageContext());
@@ -87,7 +85,7 @@ public class ValidateActionHandlerTest extends SOAPMessagingBaseTestCase {
         SOAPMessagingSupport.addHeaderBlock(getMessageContext(), action);
         
         handler.setExpectedActionURI("urn:test:action2");
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setActionURI("urn:test:action1");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setActionURI("urn:test:action1");
         
         handler.initialize();
         handler.invoke(getMessageContext());

@@ -17,20 +17,23 @@
 
 package org.opensaml.soap.wsfed.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wsfed.AppliesTo;
 import org.opensaml.soap.wsfed.EndPointReference;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /** Implementation of the {@link AppliesTo} Object. */
 public class AppliesToImpl extends AbstractXMLObject implements AppliesTo {
 
     /** Endpoint reference. */
-    private EndPointReference endPointReference;
+    @Nullable private EndPointReference endpointReference;
 
     /**
      * Constructor.
@@ -39,26 +42,29 @@ public class AppliesToImpl extends AbstractXMLObject implements AppliesTo {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AppliesToImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AppliesToImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public EndPointReference getEndPointReference() {
-        return endPointReference;
+    @Nullable public EndPointReference getEndPointReference() {
+        return endpointReference;
     }
 
     /** {@inheritDoc} */
-    public void setEndPointReference(final EndPointReference reference) {
-        endPointReference = prepareForAssignment(endPointReference, reference);
+    public void setEndPointReference(@Nullable final EndPointReference reference) {
+        endpointReference = prepareForAssignment(endpointReference, reference);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.add(endPointReference);
-
-        return Collections.unmodifiableList(children);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        
+        if (endpointReference != null) {
+            return CollectionSupport.singletonList(endpointReference);
+        }
+        
+        return null;
     }
+
 }

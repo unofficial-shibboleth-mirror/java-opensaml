@@ -18,9 +18,10 @@
 package org.opensaml.soap.wstrust.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,6 +30,8 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.soap.wstrust.Challenge;
 import org.opensaml.soap.wstrust.SignChallengeType;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * SignChallengeTypeImpl.
  * 
@@ -36,13 +39,13 @@ import org.opensaml.soap.wstrust.SignChallengeType;
 public class SignChallengeTypeImpl extends AbstractWSTrustObject implements SignChallengeType {
     
     /** Wilcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /** {@link Challenge} child element. */
-    private Challenge challenge;
+    @Nullable private Challenge challenge;
 
     /**
      * Constructor.
@@ -51,46 +54,47 @@ public class SignChallengeTypeImpl extends AbstractWSTrustObject implements Sign
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public SignChallengeTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public SignChallengeTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public Challenge getChallenge() {
+    @Nullable public Challenge getChallenge() {
         return challenge;
     }
 
     /** {@inheritDoc} */
-    public void setChallenge(final Challenge newChallenge) {
+    public void setChallenge(@Nullable final Challenge newChallenge) {
         challenge = prepareForAssignment(challenge, newChallenge);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> children = new ArrayList<>();
         if (challenge != null) {
             children.add(challenge);
         }
         children.addAll(unknownChildren);
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

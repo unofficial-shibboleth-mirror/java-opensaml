@@ -31,6 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
     
     private AddMessageIDHandler handler;
@@ -47,7 +48,8 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         
         Assert.assertFalse(SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).isEmpty());
         MessageID messageID = (MessageID) SOAPMessagingSupport.getOutboundHeaderBlock(getMessageContext(), MessageID.ELEMENT_NAME).get(0);
-        Assert.assertTrue(messageID.getURI().startsWith("urn:uuid:"));
+        final String uri = messageID.getURI();
+        Assert.assertTrue(uri != null && uri.startsWith("urn:uuid:"));
     }
 
     @Test
@@ -75,7 +77,7 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
     
     @Test
     public void testContext() throws ComponentInitializationException, MessageHandlerException {
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setMessageIDURI("urn:test:abc123");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setMessageIDURI("urn:test:abc123");
         
         handler.initialize();
         handler.invoke(getMessageContext());
@@ -99,7 +101,7 @@ public class AddMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
             }
         });
         
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setMessageIDURI("urn:test:def456");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setMessageIDURI("urn:test:def456");
         
         handler.initialize();
         handler.invoke(getMessageContext());

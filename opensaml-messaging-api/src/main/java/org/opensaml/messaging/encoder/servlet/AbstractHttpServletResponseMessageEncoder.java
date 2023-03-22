@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 import org.opensaml.messaging.encoder.AbstractMessageEncoder;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 
@@ -57,7 +58,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
      *
      * @return the supplier for the current HTTP response or null
      */
-    @Nullable public NonnullSupplier<HttpServletResponse> getHttpServletResponseSupplier() {
+    @NonnullAfterInit public NonnullSupplier<HttpServletResponse> getHttpServletResponseSupplier() {
         return httpServletResponseSupplier;
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.BinaryExchange;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.BinaryExchange;
 public class BinaryExchangeBuilder extends AbstractWSTrustObjectBuilder<BinaryExchange> {
 
     /** {@inheritDoc} */
-    public BinaryExchange buildObject() {
+    @Nonnull public BinaryExchange buildObject() {
         return buildObject(BinaryExchange.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public BinaryExchange buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public BinaryExchange buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new BinaryExchangeImpl(namespaceURI, localName, namespacePrefix);
     }
 

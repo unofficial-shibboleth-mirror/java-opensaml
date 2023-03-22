@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -34,7 +35,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class PolicyReferenceUnmarshaller extends AbstractWSPolicyObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final PolicyReference pr = (PolicyReference) xmlObject;
 
         final QName uriName = new QName(PolicyReference.URI_ATTRIB_NAME);

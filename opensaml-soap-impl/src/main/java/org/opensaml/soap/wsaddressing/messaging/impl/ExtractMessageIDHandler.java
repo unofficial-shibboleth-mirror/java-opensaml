@@ -29,8 +29,8 @@ import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wsaddressing.MessageID;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -44,10 +44,10 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class ExtractMessageIDHandler extends AbstractMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ExtractMessageIDHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ExtractMessageIDHandler.class);
 
     /** {@inheritDoc} */
-    protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final MessageID header = getMessageID(messageContext);
         final String headerValue = header != null ? StringSupport.trimOrNull(header.getURI()) : null;
         log.debug("Extracted inbound WS-Addressing MessageID value: {}", headerValue);

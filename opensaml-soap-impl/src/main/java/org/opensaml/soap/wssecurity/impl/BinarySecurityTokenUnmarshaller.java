@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wssecurity.BinarySecurityToken;
@@ -28,7 +30,8 @@ import org.w3c.dom.Attr;
 public class BinarySecurityTokenUnmarshaller extends EncodedStringUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final BinarySecurityToken token = (BinarySecurityToken) xmlObject;
         if (BinarySecurityToken.VALUE_TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             token.setValueType(attribute.getValue());

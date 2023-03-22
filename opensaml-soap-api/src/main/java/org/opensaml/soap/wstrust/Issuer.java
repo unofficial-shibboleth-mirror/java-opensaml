@@ -17,9 +17,12 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.soap.wsaddressing.EndpointReferenceType;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Issuer element.
@@ -30,9 +33,9 @@ import org.opensaml.soap.wsaddressing.EndpointReferenceType;
 public interface Issuer extends EndpointReferenceType, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Issuer";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Issuer";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 }

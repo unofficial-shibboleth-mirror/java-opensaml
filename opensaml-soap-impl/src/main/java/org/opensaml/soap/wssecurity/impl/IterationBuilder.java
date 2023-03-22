@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Iteration;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wssecurity.Iteration;
 public class IterationBuilder extends AbstractWSSecurityObjectBuilder<Iteration> {
 
     /** {@inheritDoc} */
-    public Iteration buildObject() {
+    @Nonnull public Iteration buildObject() {
         return buildObject(Iteration.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Iteration buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Iteration buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new IterationImpl(namespaceURI, localName, namespacePrefix);
     }
 

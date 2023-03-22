@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Nonce;
 
 /**
@@ -32,7 +35,8 @@ public class NonceImpl extends EncodedStringImpl implements Nonce {
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public NonceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public NonceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wspolicy.ExactlyOne;
 
 /**
@@ -32,7 +35,8 @@ public class ExactlyOneImpl extends OperatorContentTypeImpl implements ExactlyOn
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    protected ExactlyOneImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ExactlyOneImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

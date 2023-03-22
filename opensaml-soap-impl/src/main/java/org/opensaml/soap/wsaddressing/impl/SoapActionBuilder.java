@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.SoapAction;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.SoapAction;
 public class SoapActionBuilder extends AbstractWSAddressingObjectBuilder<SoapAction> {
 
     /** {@inheritDoc} */
-    public SoapAction buildObject() {
+    @Nonnull public SoapAction buildObject() {
         return buildObject(SoapAction.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public SoapAction buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public SoapAction buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SoapActionImpl(namespaceURI, localName, namespacePrefix);
     }
 

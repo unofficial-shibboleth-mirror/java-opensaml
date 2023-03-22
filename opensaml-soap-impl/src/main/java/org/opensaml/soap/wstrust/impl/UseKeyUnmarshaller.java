@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wstrust.UseKey;
@@ -30,7 +32,8 @@ import org.w3c.dom.Attr;
 public class UseKeyUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final UseKey uk = (UseKey) xmlObject;
         
         if (UseKey.SIG_ATTRIB_NAME.equals(attribute.getLocalName())) {
@@ -41,8 +44,8 @@ public class UseKeyUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final UseKey uk = (UseKey) parentXMLObject;
         uk.setUnknownXMLObject(childXMLObject);
     }

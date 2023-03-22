@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Status;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Status;
 public class StatusBuilder extends AbstractWSTrustObjectBuilder<Status> {
 
     /** {@inheritDoc} */
-    public Status buildObject() {
+    @Nonnull public Status buildObject() {
         return buildObject(Status.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Status buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Status buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new StatusImpl(namespaceURI, localName, namespacePrefix);
     }
 

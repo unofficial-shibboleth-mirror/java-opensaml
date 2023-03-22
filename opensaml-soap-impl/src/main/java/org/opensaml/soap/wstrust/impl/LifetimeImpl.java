@@ -18,13 +18,17 @@
 package org.opensaml.soap.wstrust.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wssecurity.Created;
 import org.opensaml.soap.wssecurity.Expires;
 import org.opensaml.soap.wstrust.Lifetime;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * LifetimeImpl.
@@ -33,10 +37,10 @@ import org.opensaml.soap.wstrust.Lifetime;
 public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
 
     /** The wsu:Created child element. */
-    private Created created;
+    @Nullable private Created created;
 
     /** The wsu:Expires child element. */
-    private Expires expires;
+    @Nullable private Expires expires;
 
     /**
      * Constructor.
@@ -45,32 +49,33 @@ public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public LifetimeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public LifetimeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Created getCreated() {
+    @Nullable public Created getCreated() {
         return created;
     }
 
     /** {@inheritDoc} */
-    public Expires getExpires() {
+    @Nullable public Expires getExpires() {
         return expires;
     }
 
     /** {@inheritDoc} */
-    public void setCreated(final Created newCreated) {
+    public void setCreated(@Nullable final Created newCreated) {
         created = prepareForAssignment(created, newCreated);
     }
 
     /** {@inheritDoc} */
-    public void setExpires(final Expires newExpires) {
+    public void setExpires(@Nullable final Expires newExpires) {
         expires = prepareForAssignment(expires, newExpires);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (created != null) {
             children.add(created);
@@ -78,7 +83,7 @@ public class LifetimeImpl extends AbstractWSTrustObject implements Lifetime {
         if (expires != null) {
             children.add(expires);
         }
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

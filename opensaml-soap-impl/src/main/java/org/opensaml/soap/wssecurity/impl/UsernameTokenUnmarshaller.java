@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -34,8 +35,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final UsernameToken token = (UsernameToken) parentXMLObject;
         if (childXMLObject instanceof Username) {
             token.setUsername((Username) childXMLObject);
@@ -45,7 +46,8 @@ public class UsernameTokenUnmarshaller extends AbstractWSSecurityObjectUnmarshal
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final UsernameToken token = (UsernameToken) xmlObject;
         
         final QName attribQName = 

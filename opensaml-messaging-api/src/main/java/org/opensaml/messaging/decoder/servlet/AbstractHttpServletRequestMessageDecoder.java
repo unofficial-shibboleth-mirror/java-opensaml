@@ -23,6 +23,7 @@ import org.opensaml.messaging.decoder.AbstractMessageDecoder;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 
@@ -33,7 +34,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
         implements HttpServletRequestMessageDecoder {
 
     /** Current HTTP request, if available. */
-    @Nullable private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
+    @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** {@inheritDoc} */
     @Nullable public HttpServletRequest getHttpServletRequest() {
@@ -49,7 +50,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
      *
      * @return current HTTP request
      */
-    @Nullable public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
+    @NonnullAfterInit public NonnullSupplier<HttpServletRequest> getHttpServletRequestSupplier() {
         return httpServletRequestSupplier;
     }
 

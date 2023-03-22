@@ -20,6 +20,8 @@ package org.opensaml.soap.client.soap11.decoder.http.impl;
 import java.io.IOException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.apache.hc.client5.http.impl.classic.CloseableHttpResponse;
@@ -33,12 +35,17 @@ import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.common.SOAP11FaultDecodingException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
+import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Basic SOAP 1.1 decoder for HTTP transport via an HttpClient's {@link ClassicHttpResponse}.
@@ -57,17 +64,17 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMessageDecoder {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(HttpClientResponseSOAP11Decoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HttpClientResponseSOAP11Decoder.class);
     
     /** Message handler to use in processing the message body. */
-    private MessageHandler bodyHandler;
+    @NonnullAfterInit private MessageHandler bodyHandler;
     
     /**
      * Get the configured body handler MessageHandler.
      * 
      * @return Returns the bodyHandler.
      */
-    public MessageHandler getBodyHandler() {
+    @NonnullAfterInit public MessageHandler getBodyHandler() {
         return bodyHandler;
     }
 
@@ -76,14 +83,27 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * 
      * @param newBodyHandler The bodyHandler to set.
      */
-    public void setBodyHandler(final MessageHandler newBodyHandler) {
-        bodyHandler = newBodyHandler;
+    public void setBodyHandler(@Nonnull final MessageHandler newBodyHandler) {
+        bodyHandler = Constraint.isNotNull(newBodyHandler, "MessageHandler cannot be null");
     }
 
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        super.doInitialize();
+        
+        if (bodyHandler == null) {
+            throw new ComponentInitializationException("Body handler MessageHandler cannot be null");
+        }
+    }    
+    
     /** {@inheritDoc} */
     protected void doDecode() throws MessageDecodingException {
         final MessageContext messageContext = new MessageContext();
         final ClassicHttpResponse response = getHttpResponse();
+        if (response == null) {
+            throw new MessageDecodingException("No HttpResponse available");
+        }
         
         log.debug("Unmarshalling SOAP message");
         try {
@@ -166,7 +186,7 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * @throws MessageDecodingException if message can not be unmarshalled
      * @throws IOException if there is a problem with the response entity input stream
      */
-    protected MessageDecodingException buildFaultException(final ClassicHttpResponse response) 
+    @Nonnull protected MessageDecodingException buildFaultException(final ClassicHttpResponse response) 
             throws MessageDecodingException, IOException {
         
         if (response.getEntity() == null) {
@@ -179,14 +199,11 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
             throw new MessageDecodingException("HTTP status code was 500 but SOAP response did not contain a Fault");
         }
         
-        QName code = null;
-        if (fault.getCode() != null) {
-            code = fault.getCode().getValue();
-        }
-        String msg = null;
-        if (fault.getMessage() != null) {
-            msg = fault.getMessage().getValue();
-        }
+        final FaultCode fcode = fault.getCode();
+        final QName code = fcode != null ? fcode.getValue() : null;
+        
+        final FaultString fmsg = fault.getMessage();
+        final String msg = fmsg != null ? fmsg.getValue() : null;
         log.debug("SOAP fault code '{}' with message '{}'", code != null ? code.toString() : "(not set)", msg);
         
         return new SOAP11FaultDecodingException(fault);
@@ -198,30 +215,22 @@ public class HttpClientResponseSOAP11Decoder extends BaseHttpClientResponseXMLMe
      * @param soapMessage the SOAP 1.1. Envelope being processed
      * @return the first Fault element found, or null
      */
-    protected Fault getFault(final Envelope soapMessage) {
-        if (soapMessage.getBody() != null) {
-            final List<XMLObject> faults = soapMessage.getBody().getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
+    @Nullable protected Fault getFault(final Envelope soapMessage) {
+        final Body body = soapMessage.getBody();
+        if (body != null) {
+            final List<XMLObject> faults = body.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
             if (!faults.isEmpty()) {
                 return (Fault) faults.get(0);
             }
         }
         return null;
     }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doInitialize() throws ComponentInitializationException {
-        super.doInitialize();
-        
-        if (getBodyHandler() == null) {
-            throw new ComponentInitializationException("Body handler MessageHandler cannot be null");
-        }
-    }    
     
     /** {@inheritDoc} */
     @Override
-    protected XMLObject getMessageToLog() {
-        return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
+    @Nullable protected XMLObject getMessageToLog() {
+        final MessageContext mc = getMessageContext();
+        return mc != null ? mc.ensureSubcontext(SOAP11Context.class).getEnvelope() : null;
     }
     
 }

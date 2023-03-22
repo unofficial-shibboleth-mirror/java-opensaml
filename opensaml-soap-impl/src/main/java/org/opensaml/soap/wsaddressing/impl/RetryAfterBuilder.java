@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.RetryAfter;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.RetryAfter;
 public class RetryAfterBuilder extends AbstractWSAddressingObjectBuilder<RetryAfter> {
 
     /** {@inheritDoc} */
-    public RetryAfter buildObject() {
+    @Nonnull public RetryAfter buildObject() {
         return buildObject(RetryAfter.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public RetryAfter buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public RetryAfter buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RetryAfterImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -32,9 +32,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
     
     private AddActionHandler handler;
@@ -66,7 +64,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
 
     @Test
     public void testContext() throws ComponentInitializationException, MessageHandlerException {
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setActionURI("urn:test:action1");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setActionURI("urn:test:action1");
         
         handler.initialize();
         handler.invoke(getMessageContext());
@@ -79,7 +77,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
     @Test
     public void testContextOverride() throws ComponentInitializationException, MessageHandlerException {
         handler.setActionURI("urn:test:action1");
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setActionURI("urn:test:action2");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setActionURI("urn:test:action2");
         
         handler.initialize();
         handler.invoke(getMessageContext());
@@ -109,7 +107,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         Fault fault = SOAPSupport.buildSOAP11Fault(FaultCode.SERVER, "MyFault", null, null, null);
         SOAPMessagingSupport.registerSOAP11Fault(getMessageContext(), fault);
         
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setFaultActionURI("urn:test:action1");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setFaultActionURI("urn:test:action1");
         
         handler.initialize();
         handler.invoke(getMessageContext());
@@ -125,7 +123,7 @@ public class AddActionHandlerTest extends SOAPMessagingBaseTestCase {
         SOAPMessagingSupport.registerSOAP11Fault(getMessageContext(), fault);
         
         handler.setFaultActionURI("urn:test:action1");
-        getMessageContext().getSubcontext(WSAddressingContext.class, true).setFaultActionURI("urn:test:action2");
+        getMessageContext().ensureSubcontext(WSAddressingContext.class).setFaultActionURI("urn:test:action2");
         
         handler.initialize();
         handler.invoke(getMessageContext());

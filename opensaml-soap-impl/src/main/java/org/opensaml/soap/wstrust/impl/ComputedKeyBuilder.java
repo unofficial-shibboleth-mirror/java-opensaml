@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.ComputedKey;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.ComputedKey;
 public class ComputedKeyBuilder extends AbstractWSTrustObjectBuilder<ComputedKey> {
 
     /** {@inheritDoc} */
-    public ComputedKey buildObject() {
+    @Nonnull public ComputedKey buildObject() {
         return buildObject(ComputedKey.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ComputedKey buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public ComputedKey buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ComputedKeyImpl(namespaceURI, localName, namespacePrefix);
     }
 

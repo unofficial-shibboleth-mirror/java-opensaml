@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.DelegateTo;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.DelegateTo;
 public class DelegateToBuilder extends AbstractWSTrustObjectBuilder<DelegateTo> {
 
     /** {@inheritDoc} */
-    public DelegateTo buildObject() {
+    @Nonnull public DelegateTo buildObject() {
         return buildObject(DelegateTo.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public DelegateTo buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public DelegateTo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DelegateToImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -32,8 +32,8 @@ import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.WSAddressingConstants;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -48,7 +48,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class ValidateActionHandler extends AbstractMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ValidateActionHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ValidateActionHandler.class);
     
     /** The expected Action URI value. */
     private String expectedActionURI;
@@ -91,11 +91,11 @@ public class ValidateActionHandler extends AbstractMessageHandler {
     }
 
     /** {@inheritDoc} */
-    protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final Action header = getAction(messageContext);
         final String headerValue = header != null ? StringSupport.trimOrNull(header.getURI()) : null;
         log.debug("Checking inbound message WS-Addressing Action URI value: {}", headerValue);
-        if (Objects.equals(getExpectedActionURI(), headerValue)) {
+        if (header != null && Objects.equals(getExpectedActionURI(), headerValue)) {
             log.debug("Inbound WS-Addressing Action URI matched expected value");
             SOAPMessagingSupport.registerUnderstoodHeader(messageContext, header);
         } else {
@@ -114,7 +114,7 @@ public class ValidateActionHandler extends AbstractMessageHandler {
      * @param messageContext the current message context
      * @return the message Action header
      */
-    protected Action getAction(@Nonnull final MessageContext messageContext) {
+    @Nullable protected Action getAction(@Nonnull final MessageContext messageContext) {
         final List<XMLObject> actions = SOAPMessagingSupport.getInboundHeaderBlock(messageContext, Action.ELEMENT_NAME);
         if (actions != null && !actions.isEmpty()) {
             return (Action) actions.get(0);

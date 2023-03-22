@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Authenticator;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Authenticator;
 public class AuthenticatorBuilder extends AbstractWSTrustObjectBuilder<Authenticator> {
 
     /** {@inheritDoc} */
-    public Authenticator buildObject() {
+    @Nonnull public Authenticator buildObject() {
         return buildObject(Authenticator.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Authenticator buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Authenticator buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AuthenticatorImpl(namespaceURI, localName, namespacePrefix);
     }
 

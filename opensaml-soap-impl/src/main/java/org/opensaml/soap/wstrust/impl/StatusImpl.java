@@ -18,13 +18,17 @@
 package org.opensaml.soap.wstrust.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wstrust.Code;
 import org.opensaml.soap.wstrust.Reason;
 import org.opensaml.soap.wstrust.Status;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * StatusImpl.
@@ -33,10 +37,10 @@ import org.opensaml.soap.wstrust.Status;
 public class StatusImpl extends AbstractWSTrustObject implements Status {
 
     /** The Code child element. */
-    private Code code;
+    @Nullable private Code code;
 
     /** The Reason child element. */
-    private Reason reason;
+    @Nullable private Reason reason;
 
     /**
      * Constructor.
@@ -45,32 +49,33 @@ public class StatusImpl extends AbstractWSTrustObject implements Status {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public StatusImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public StatusImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Code getCode() {
+    @Nullable public Code getCode() {
         return code;
     }
 
     /** {@inheritDoc} */
-    public Reason getReason() {
+    @Nullable public Reason getReason() {
         return reason;
     }
 
     /** {@inheritDoc} */
-    public void setCode(final Code newCode) {
+    public void setCode(@Nullable final Code newCode) {
         code = prepareForAssignment(code, newCode);
     }
 
     /** {@inheritDoc} */
-    public void setReason(final Reason newReason) {
+    public void setReason(@Nullable final Reason newReason) {
         reason = prepareForAssignment(reason, newReason);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (code != null) {
             children.add(code);
@@ -78,7 +83,7 @@ public class StatusImpl extends AbstractWSTrustObject implements Status {
         if (reason != null) {
             children.add(reason);
         }
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

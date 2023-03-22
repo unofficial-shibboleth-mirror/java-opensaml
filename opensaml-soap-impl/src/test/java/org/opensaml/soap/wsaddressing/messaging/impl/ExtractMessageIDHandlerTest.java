@@ -28,9 +28,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ExtractMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
     
     private ExtractMessageIDHandler handler;
@@ -49,7 +47,7 @@ public class ExtractMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertEquals(getMessageContext().getSubcontext(WSAddressingContext.class, true).getMessageIDURI(), "abc123");
+        Assert.assertEquals(getMessageContext().ensureSubcontext(WSAddressingContext.class).getMessageIDURI(), "abc123");
         
         Assert.assertTrue(SOAPMessagingSupport.checkUnderstoodHeader(getMessageContext(), messageID));
     }
@@ -59,7 +57,7 @@ public class ExtractMessageIDHandlerTest extends SOAPMessagingBaseTestCase {
         handler.initialize();
         handler.invoke(getMessageContext());
         
-        Assert.assertNull(getMessageContext().getSubcontext(WSAddressingContext.class, false));
+        Assert.assertNull(getMessageContext().getSubcontext(WSAddressingContext.class));
         
         Assert.assertTrue(SOAPMessagingSupport.getInboundSOAPContext(getMessageContext()).getUnderstoodHeaders().isEmpty());
     }

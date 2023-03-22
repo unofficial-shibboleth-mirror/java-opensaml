@@ -18,15 +18,18 @@
 package org.opensaml.soap.wstrust.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.soap.wstrust.Authenticator;
 import org.opensaml.soap.wstrust.CombinedHash;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * AuthenticatorImpl.
@@ -35,10 +38,10 @@ import org.opensaml.soap.wstrust.CombinedHash;
 public class AuthenticatorImpl extends AbstractWSTrustObject implements Authenticator {
     
     /** the wst:Authenticator/wst:CombinedHash child element. */
-    private CombinedHash combinedHash;
+    @Nullable private CombinedHash combinedHash;
 
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /**
      * Constructor.
@@ -47,39 +50,41 @@ public class AuthenticatorImpl extends AbstractWSTrustObject implements Authenti
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AuthenticatorImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public AuthenticatorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public CombinedHash getCombinedHash() {
+    @Nullable public CombinedHash getCombinedHash() {
         return combinedHash;
     }
 
     /** {@inheritDoc} */
-    public void setCombinedHash(final CombinedHash newCombinedHash) {
+    public void setCombinedHash(@Nullable final CombinedHash newCombinedHash) {
         combinedHash = prepareForAssignment(combinedHash, newCombinedHash);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (combinedHash != null) {
             children.add(combinedHash);
         }
         children.addAll(unknownChildren);
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

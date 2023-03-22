@@ -17,10 +17,10 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -30,6 +30,8 @@ import org.opensaml.soap.wssecurity.IdBearing;
 import org.opensaml.soap.wssecurity.SecurityTokenReference;
 import org.opensaml.soap.wssecurity.UsageBearing;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * SecurityTokenReferenceImpl.
  * 
@@ -37,16 +39,16 @@ import org.opensaml.soap.wssecurity.UsageBearing;
 public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject implements SecurityTokenReference {
 
     /** The &lt;wsu:Id&gt; attribute value. */
-    private String id;
+    @Nullable private String id;
 
     /** List of &lt;wsse:Usage&gt; attribute values. */
-    private List<String> usages;
+    @Nullable private List<String> usages;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -55,33 +57,32 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public SecurityTokenReferenceImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public SecurityTokenReferenceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        usages = new ArrayList<>();
         unknownAttributes = new AttributeMap(this);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
 
     /** {@inheritDoc} */
-    public List<String> getWSSEUsages() {
+    @Nullable public List<String> getWSSEUsages() {
         return usages;
     }
 
     /** {@inheritDoc} */
-    public void setWSSEUsages(final List<String> newUsages) {
+    public void setWSSEUsages(@Nullable final List<String> newUsages) {
         usages = prepareForAssignment(usages, newUsages);
-        manageQualifiedAttributeNamespace(UsageBearing.WSSE_USAGE_ATTR_NAME, !usages.isEmpty());
+        manageQualifiedAttributeNamespace(UsageBearing.WSSE_USAGE_ATTR_NAME, usages != null && !usages.isEmpty());
     }
 
     /** {@inheritDoc} */
-    public String getWSUId() {
+    @Nullable public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setWSUId(final String newId) {
+    public void setWSUId(@Nullable final String newId) {
         final String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
@@ -90,28 +91,24 @@ public class SecurityTokenReferenceImpl extends AbstractWSSecurityObject impleme
 
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final List<XMLObject> children = new ArrayList<>();
-
-        if (!getUnknownXMLObjects().isEmpty()) {
-            children.addAll(getUnknownXMLObjects());
-        }
-        return Collections.unmodifiableList(children);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
 
 }

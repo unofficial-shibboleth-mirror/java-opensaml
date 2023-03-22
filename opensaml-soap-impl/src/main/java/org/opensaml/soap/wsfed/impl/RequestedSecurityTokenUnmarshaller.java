@@ -17,8 +17,11 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.RequestedSecurityToken;
 import org.w3c.dom.Attr;
 
@@ -26,18 +29,19 @@ import org.w3c.dom.Attr;
 public class RequestedSecurityTokenUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject) {
-        final RequestedSecurityToken requestedSecurityToken = (RequestedSecurityToken) parentSAMLObject;
-        requestedSecurityToken.getSecurityTokens().add(childSAMLObject);
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
+        final RequestedSecurityToken requestedSecurityToken = (RequestedSecurityToken) parentXMLObject;
+        requestedSecurityToken.getSecurityTokens().add(childXMLObject);
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject fedObject, final Attr attribute) {
-
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject fedObject, final String content) {
+    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
 
     }
 }

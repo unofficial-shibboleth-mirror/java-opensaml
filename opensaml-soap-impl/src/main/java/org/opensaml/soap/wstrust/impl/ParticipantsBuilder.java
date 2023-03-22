@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Participants;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Participants;
 public class ParticipantsBuilder extends AbstractWSTrustObjectBuilder<Participants> {
 
     /** {@inheritDoc} */
-    public Participants buildObject() {
+    @Nonnull public Participants buildObject() {
         return buildObject(Participants.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Participants buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Participants buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ParticipantsImpl(namespaceURI, localName, namespacePrefix);
     }
 

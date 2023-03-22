@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.impl.EndpointReferenceTypeImpl;
 import org.opensaml.soap.wstrust.Issuer;
 
@@ -33,7 +36,8 @@ public class IssuerImpl extends EndpointReferenceTypeImpl implements Issuer {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public IssuerImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public IssuerImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

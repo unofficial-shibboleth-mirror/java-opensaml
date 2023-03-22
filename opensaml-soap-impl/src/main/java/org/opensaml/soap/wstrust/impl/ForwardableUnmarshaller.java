@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.wstrust.Forwardable;
@@ -29,7 +31,7 @@ import org.opensaml.soap.wstrust.Forwardable;
 public class ForwardableUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         if (elementContent != null) {
             final Forwardable forwardable = (Forwardable) xmlObject;
             final XSBooleanValue value = XSBooleanValue.valueOf(elementContent);

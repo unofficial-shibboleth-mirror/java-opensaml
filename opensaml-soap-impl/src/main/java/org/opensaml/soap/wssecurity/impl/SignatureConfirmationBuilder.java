@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.SignatureConfirmation;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wssecurity.SignatureConfirmation;
 public class SignatureConfirmationBuilder extends AbstractWSSecurityObjectBuilder<SignatureConfirmation> {
 
     /** {@inheritDoc} */
-    public SignatureConfirmation buildObject() {
+    @Nonnull public SignatureConfirmation buildObject() {
         return buildObject(SignatureConfirmation.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public SignatureConfirmation buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public SignatureConfirmation buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new SignatureConfirmationImpl(namespaceURI, localName, namespacePrefix);
     }
 

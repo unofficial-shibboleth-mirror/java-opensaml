@@ -19,6 +19,9 @@ package org.opensaml.soap.wsaddressing.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wsaddressing.WSAddressingObject;
@@ -36,13 +39,13 @@ public abstract class AbstractWSAddressingObject extends AbstractXMLObject imple
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public AbstractWSAddressingObject(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public AbstractWSAddressingObject(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return null;
     }
 

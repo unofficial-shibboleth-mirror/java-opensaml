@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Salt;
 
 /**
@@ -25,12 +28,13 @@ import org.opensaml.soap.wssecurity.Salt;
 public class SaltBuilder extends AbstractWSSecurityObjectBuilder<Salt> {
 
     /** {@inheritDoc} */
-    public Salt buildObject() {
+    @Nonnull public Salt buildObject() {
         return buildObject(Salt.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Salt buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Salt buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SaltImpl(namespaceURI, localName, namespacePrefix);
     }
 

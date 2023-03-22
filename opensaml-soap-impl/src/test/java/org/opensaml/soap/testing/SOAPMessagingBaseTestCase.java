@@ -48,9 +48,10 @@ public class SOAPMessagingBaseTestCase extends XMLObjectBaseTestCase {
         messageContext.setMessage(buildXMLObject(simpleXMLObjectQName));
         
         envelope = buildXMLObject(Envelope.DEFAULT_ELEMENT_NAME);
-        envelope.setBody((Body) buildXMLObject(Body.DEFAULT_ELEMENT_NAME));
-        envelope.getBody().getUnknownXMLObjects().add((XMLObject) messageContext.getMessage());
-        messageContext.getSubcontext(SOAP11Context.class, true).setEnvelope(envelope);
+        final Body body = buildXMLObject(Body.DEFAULT_ELEMENT_NAME);
+        envelope.setBody(body);
+        body.getUnknownXMLObjects().add((XMLObject) messageContext.getMessage());
+        messageContext.ensureSubcontext(SOAP11Context.class).setEnvelope(envelope);
     }
 
 }

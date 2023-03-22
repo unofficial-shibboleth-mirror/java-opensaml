@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.RequestKET;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.RequestKET;
 public class RequestKETBuilder extends AbstractWSTrustObjectBuilder<RequestKET> {
 
     /** {@inheritDoc} */
-    public RequestKET buildObject() {
+    @Nonnull public RequestKET buildObject() {
         return buildObject(RequestKET.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public RequestKET buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public RequestKET buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RequestKETImpl(namespaceURI, localName, namespacePrefix);
     }
 

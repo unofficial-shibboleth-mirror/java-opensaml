@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -32,7 +34,8 @@ import org.w3c.dom.Attr;
 public class ClaimsUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final Claims claims = (Claims) xmlObject;
         if (Claims.DIALECT_ATTRIB_NAME.equals(attribute.getLocalName())) {
             claims.setDialect(attribute.getValue());
@@ -42,8 +45,8 @@ public class ClaimsUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final Claims claims = (Claims) parentXMLObject;
         claims.getUnknownXMLObjects().add(childXMLObject);
     }

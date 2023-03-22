@@ -18,6 +18,8 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wssecurity.KeyIdentifier;
@@ -29,7 +31,8 @@ import org.w3c.dom.Attr;
 public class KeyIdentifierUnmarshaller extends EncodedStringUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final KeyIdentifier keyIdentifier = (KeyIdentifier) xmlObject;
         if (KeyIdentifier.VALUE_TYPE_ATTRIB_NAME.equals(attribute.getLocalName())) {
             keyIdentifier.setValueType(attribute.getValue());

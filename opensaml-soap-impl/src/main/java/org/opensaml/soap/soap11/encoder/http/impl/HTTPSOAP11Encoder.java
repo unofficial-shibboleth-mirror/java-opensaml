@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
@@ -34,6 +35,7 @@ import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.wsaddressing.Action;
 import org.slf4j.Logger;
@@ -71,10 +73,12 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
         final MessageContext messageContext = getMessageContext();
         Object payload = null;
         
+        assert messageContext != null;
         final Fault fault = SOAPMessagingSupport.getSOAP11Fault(messageContext);
         if (fault != null) {
+            final FaultCode fcode = fault.getCode();
             log.debug("Saw SOAP 1.1 Fault payload with fault code, replacing any existing context message: {}", 
-                    fault.getCode() != null ? fault.getCode().getValue() : null);
+                    fcode != null ? fcode.getValue() : null);
             payload = fault;
             messageContext.setMessage(null);
         } else {
@@ -95,12 +99,16 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
     /** {@inheritDoc} */
     protected void doEncode() throws MessageEncodingException {
         final Envelope envelope = getSOAPEnvelope();
+        if (envelope == null) {
+            throw new MessageEncodingException("SOAP envelope was null");
+        }
+        
         final Element envelopeElem = marshallMessage(envelope);
         
-        prepareHttpServletResponse();
+        final HttpServletResponse response = prepareHttpServletResponse();
 
         try {
-            SerializeSupport.writeNode(envelopeElem, getHttpServletResponse().getOutputStream());
+            SerializeSupport.writeNode(envelopeElem, response.getOutputStream());
         } catch (final IOException e) {
             throw new MessageEncodingException("Problem writing SOAP envelope to servlet output stream", e);
         }
@@ -111,7 +119,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      * 
      * @param envelope the SOAP envelope
      */
-    protected void storeSOAPEnvelope(final Envelope envelope) {
+    protected void storeSOAPEnvelope(@Nullable final Envelope envelope) {
         getMessageContext().ensureSubcontext(SOAP11Context.class).setEnvelope(envelope);
     }
 
@@ -120,7 +128,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      * 
      * @return the previously stored SOAP envelope
      */
-    protected Envelope getSOAPEnvelope() {
+    @Nullable protected Envelope getSOAPEnvelope() {
         return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
 
@@ -168,10 +176,17 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      * the method {@link #getSOAPAction()}.
      * </p>
      * 
+     * @return the prepared response
+     * 
      * @throws MessageEncodingException thrown if there is a problem preprocessing the transport
      */
-    protected void prepareHttpServletResponse() throws MessageEncodingException {
+    @Nonnull protected HttpServletResponse prepareHttpServletResponse() throws MessageEncodingException {
+        
         final HttpServletResponse response = getHttpServletResponse();
+        if (response == null) {
+            throw new MessageEncodingException("HttpServletResponse was null");
+        }
+        
         HttpServletSupport.addNoCacheHeaders(response);
         HttpServletSupport.setUTF8Encoding(response);
         HttpServletSupport.setContentType(response, "text/xml");
@@ -184,6 +199,8 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
         }
         
         response.setStatus(getHTTPResponseStatusCode());
+        
+        return response;
     }
 
     /**
@@ -198,7 +215,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      */
     protected String getSOAPAction() {
         final Envelope env = getSOAPEnvelope();
-        final Header header = env.getHeader();
+        final Header header = env != null ? env.getHeader() : null;
         if (header == null) {
             return null;
         }
@@ -222,10 +239,10 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
         }
         
         final Envelope envelope = getSOAPEnvelope();
-        if (envelope != null && envelope.getBody() != null) {
+        if (envelope != null) {
             final Body body = envelope.getBody();
-            final List<XMLObject> faults = body.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
-            if (!faults.isEmpty()) {
+            final List<XMLObject> faults = body != null ? body.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME) : null;
+            if (faults != null && !faults.isEmpty()) {
                 return HttpServletResponse.SC_INTERNAL_SERVER_ERROR;
             }
         }
@@ -234,7 +251,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
     }
     
     /** {@inheritDoc} */
-    protected XMLObject getMessageToLog() {
+    @Nullable protected XMLObject getMessageToLog() {
         return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
     

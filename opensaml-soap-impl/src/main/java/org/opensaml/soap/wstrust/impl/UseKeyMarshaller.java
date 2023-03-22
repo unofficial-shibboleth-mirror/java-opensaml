@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.soap.wstrust.UseKey;
@@ -30,7 +32,8 @@ import org.w3c.dom.Element;
 public class UseKeyMarshaller extends AbstractWSTrustObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final UseKey useKey = (UseKey) xmlObject;
         if (useKey.getSig() != null) {
             domElement.setAttributeNS(null, UseKey.SIG_ATTRIB_NAME, useKey.getSig());

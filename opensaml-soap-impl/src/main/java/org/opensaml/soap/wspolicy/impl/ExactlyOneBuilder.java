@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wspolicy.ExactlyOne;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wspolicy.ExactlyOne;
 public class ExactlyOneBuilder extends AbstractWSPolicyObjectBuilder<ExactlyOne> {
 
     /** {@inheritDoc} */
-    public ExactlyOne buildObject() {
+    @Nonnull public ExactlyOne buildObject() {
         return buildObject(ExactlyOne.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ExactlyOne buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public ExactlyOne buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ExactlyOneImpl(namespaceURI, localName, namespacePrefix);
     }
 

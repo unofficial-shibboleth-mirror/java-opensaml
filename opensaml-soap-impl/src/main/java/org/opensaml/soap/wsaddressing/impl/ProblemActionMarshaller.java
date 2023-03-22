@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -29,7 +31,8 @@ import org.w3c.dom.Element;
 public class ProblemActionMarshaller extends AbstractWSAddressingObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final ProblemAction pa = (ProblemAction) xmlObject;
         XMLObjectSupport.marshallAttributeMap(pa.getUnknownAttributes(), domElement);
     }

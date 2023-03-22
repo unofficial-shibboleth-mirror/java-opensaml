@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Forwardable;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Forwardable;
 public class ForwardableBuilder extends AbstractWSTrustObjectBuilder<Forwardable> {
 
     /** {@inheritDoc} */
-    public Forwardable buildObject() {
+    @Nonnull public Forwardable buildObject() {
         return buildObject(Forwardable.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Forwardable buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Forwardable buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ForwardableImpl(namespaceURI, localName, namespacePrefix);
     }
 

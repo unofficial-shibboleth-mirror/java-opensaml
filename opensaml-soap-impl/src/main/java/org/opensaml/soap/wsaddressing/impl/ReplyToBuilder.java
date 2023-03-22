@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.ReplyTo;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.ReplyTo;
 public class ReplyToBuilder extends AbstractWSAddressingObjectBuilder<ReplyTo> {
 
     /** {@inheritDoc} */
-    public ReplyTo buildObject() {
+    @Nonnull public ReplyTo buildObject() {
         return buildObject(ReplyTo.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ReplyTo buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public ReplyTo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ReplyToImpl(namespaceURI, localName, namespacePrefix);
     }
 

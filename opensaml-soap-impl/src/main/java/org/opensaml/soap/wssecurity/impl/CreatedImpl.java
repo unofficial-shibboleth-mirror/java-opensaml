@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Created;
 
 /**
@@ -32,7 +35,8 @@ public class CreatedImpl extends AttributedDateTimeImpl implements Created {
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public CreatedImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public CreatedImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

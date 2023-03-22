@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Fault;
@@ -32,12 +35,13 @@ public class FaultBuilder extends AbstractXMLObjectBuilder<Fault> implements SOA
      * 
      * @return the build Envelope object
      */
-    public Fault buildObject() {
+    @Nonnull public Fault buildObject() {
         return buildObject(SOAPConstants.SOAP11_NS, Fault.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Fault buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Fault buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new FaultImpl(namespaceURI, localName, namespacePrefix);
     }
 }

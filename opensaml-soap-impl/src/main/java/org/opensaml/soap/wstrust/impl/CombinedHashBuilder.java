@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.CombinedHash;
 
 /**
@@ -27,13 +30,14 @@ public class CombinedHashBuilder extends AbstractWSTrustObjectBuilder<CombinedHa
 
     /** {@inheritDoc} */
     @Override
-    public CombinedHash buildObject() {
+    @Nonnull public CombinedHash buildObject() {
         return buildObject(CombinedHash.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     @Override
-    public CombinedHash buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public CombinedHash buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new CombinedHashImpl(namespaceURI, localName, namespacePrefix);
     }
 

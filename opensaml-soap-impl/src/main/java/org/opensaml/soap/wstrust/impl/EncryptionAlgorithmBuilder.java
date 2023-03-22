@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.EncryptionAlgorithm;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.EncryptionAlgorithm;
 public class EncryptionAlgorithmBuilder extends AbstractWSTrustObjectBuilder<EncryptionAlgorithm> {
 
     /** {@inheritDoc} */
-    public EncryptionAlgorithm buildObject() {
+    @Nonnull public EncryptionAlgorithm buildObject() {
         return buildObject(EncryptionAlgorithm.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public EncryptionAlgorithm buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public EncryptionAlgorithm buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new EncryptionAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 

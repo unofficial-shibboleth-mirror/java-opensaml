@@ -19,6 +19,9 @@ package org.opensaml.soap.wssecurity.impl;
 
 import java.time.Instant;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wssecurity.AttributedDateTime;
 import org.opensaml.soap.wssecurity.IdBearing;
@@ -32,16 +35,16 @@ import net.shibboleth.shared.xml.DOMTypeSupport;
 public class AttributedDateTimeImpl extends AbstractWSSecurityObject implements AttributedDateTime {
 
     /** DateTime object. */
-    private Instant dateTimeValue;
+    @Nullable private Instant dateTimeValue;
 
     /** String dateTime representation. */
-    private String stringValue;
+    @Nullable private String stringValue;
     
     /** wsu:id attribute value. */
-    private String id;
+    @Nullable private String id;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -50,41 +53,42 @@ public class AttributedDateTimeImpl extends AbstractWSSecurityObject implements 
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AttributedDateTimeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public AttributedDateTimeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public Instant getDateTime() {
+    @Nullable public Instant getDateTime() {
         return dateTimeValue;
     }
 
     /** {@inheritDoc} */
-    public void setDateTime(final Instant newDateTime) {
+    public void setDateTime(@Nullable final Instant newDateTime) {
         dateTimeValue = newDateTime;
-        stringValue = prepareForAssignment(stringValue, DOMTypeSupport.instantToString(dateTimeValue));
+        stringValue = prepareForAssignment(stringValue,
+                dateTimeValue != null ? DOMTypeSupport.instantToString(dateTimeValue) : null);
     }
 
     /** {@inheritDoc} */
-    public String getValue() {
+    @Nullable public String getValue() {
         return stringValue;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final String newValue) {
-        dateTimeValue = DOMTypeSupport.stringToInstant(newValue);
+    public void setValue(@Nullable final String newValue) {
+        dateTimeValue = newValue != null ? DOMTypeSupport.stringToInstant(newValue) : null;
         stringValue = prepareForAssignment(stringValue, newValue);
     }
 
     /** {@inheritDoc} */
-    public String getWSUId() {
+    @Nullable public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setWSUId(final String newId) {
+    public void setWSUId(@Nullable final String newId) {
         final String oldID = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldID, id);
@@ -92,7 +96,7 @@ public class AttributedDateTimeImpl extends AbstractWSSecurityObject implements 
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
     

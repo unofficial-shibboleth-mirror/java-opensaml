@@ -18,8 +18,11 @@
 package org.opensaml.soap.soap11.decoder.http.impl;
 
 import java.io.IOException;
-import java.util.Collections;
+import java.io.InputStream;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.messaging.context.MessageContext;
@@ -34,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.net.MediaType;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 
@@ -56,7 +60,8 @@ import jakarta.servlet.http.HttpServletRequest;
 public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
 
     /** Valid Content-Type media types. */
-    private static final Set<MediaType> SUPPORTED_MEDIA_TYPES = Collections.singleton(MediaType.create("text", "xml"));
+    @Nonnull private static final Set<MediaType> SUPPORTED_MEDIA_TYPES =
+            CollectionSupport.singleton(MediaType.create("text", "xml"));
     
     /** Class logger. */
     private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Decoder.class);
@@ -87,6 +92,9 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
     protected void doDecode() throws MessageDecodingException {
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
+        if (request == null) {
+            throw new MessageDecodingException("HttpServletRequest was null");
+        }
 
         if (!"POST".equalsIgnoreCase(request.getMethod())) {
             throw new MessageDecodingException("This message decoder only supports the HTTP POST method");
@@ -94,8 +102,9 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
 
         log.debug("Unmarshalling SOAP message");
         final Envelope soapMessage;
-        try {
-            soapMessage = (Envelope) unmarshallMessage(request.getInputStream());
+        try (final InputStream in = request.getInputStream()) {
+            assert in != null;
+            soapMessage = (Envelope) unmarshallMessage(in);
             messageContext.ensureSubcontext(SOAP11Context.class).setEnvelope(soapMessage);
         } catch (final IOException e) {
             log.error("Unable to obtain input stream from HttpServletRequest: {}", e.getMessage());
@@ -115,7 +124,6 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
         }
         
         setMessageContext(messageContext);
-        
     }
     
     /** {@inheritDoc} */
@@ -130,13 +138,14 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
     
     /** {@inheritDoc} */
     @Override
-    protected XMLObject getMessageToLog() {
-        return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
+    @Nullable protected XMLObject getMessageToLog() {
+        final MessageContext mc = getMessageContext();
+        return mc != null ? mc.ensureSubcontext(SOAP11Context.class).getEnvelope() : null;
     }
 
     /** {@inheritDoc} */
     @Override
-    protected void validateHttpRequest(final HttpServletRequest request) throws MessageDecodingException {
+    protected void validateHttpRequest(@Nonnull final HttpServletRequest request) throws MessageDecodingException {
         super.validateHttpRequest(request);
         
         if (!HttpServletSupport.validateContentType(request, SUPPORTED_MEDIA_TYPES, false, false)) {

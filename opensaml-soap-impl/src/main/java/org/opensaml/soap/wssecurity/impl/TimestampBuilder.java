@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Timestamp;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wssecurity.Timestamp;
 public class TimestampBuilder extends AbstractWSSecurityObjectBuilder<Timestamp> {
 
     /** {@inheritDoc} */
-    public Timestamp buildObject() {
+    @Nonnull public Timestamp buildObject() {
         return buildObject(Timestamp.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Timestamp buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Timestamp buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new TimestampImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.SignWith;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.SignWith;
 public class SignWithBuilder extends AbstractWSTrustObjectBuilder<SignWith> {
 
     /** {@inheritDoc} */
-    public SignWith buildObject() {
+    @Nonnull public SignWith buildObject() {
         return buildObject(SignWith.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public SignWith buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public SignWith buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SignWithImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,9 +17,12 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:TokenType element.
@@ -28,13 +31,13 @@ import org.opensaml.core.xml.schema.XSURI;
 public interface TokenType extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "TokenType";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "TokenType";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** TokenType Status URI. */
-    public static final String STATUS = WSTrustConstants.WST_NS + "/RSTR/Status";
+    @Nonnull @NotEmpty public static final String STATUS = WSTrustConstants.WST_NS + "/RSTR/Status";
 
 }

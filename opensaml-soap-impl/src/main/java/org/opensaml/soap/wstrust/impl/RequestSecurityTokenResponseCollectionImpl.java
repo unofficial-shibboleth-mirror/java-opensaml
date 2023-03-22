@@ -18,13 +18,17 @@
 package org.opensaml.soap.wstrust.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wstrust.RequestSecurityTokenResponse;
 import org.opensaml.soap.wstrust.RequestSecurityTokenResponseCollection;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * RequestSecurityTokenResponseCollectionImpl.
@@ -34,10 +38,10 @@ public class RequestSecurityTokenResponseCollectionImpl extends AbstractWSTrustO
         RequestSecurityTokenResponseCollection {
 
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /** The list of wst:RequestSecurityTokenResponse child elements. */
-    private List<RequestSecurityTokenResponse> requestSecurityTokenResponses;
+    @Nonnull private final List<RequestSecurityTokenResponse> requestSecurityTokenResponses;
 
     /**
      * Constructor.
@@ -47,28 +51,26 @@ public class RequestSecurityTokenResponseCollectionImpl extends AbstractWSTrustO
      * @param namespacePrefix The namespace prefix of the element
      * 
      */
-    public RequestSecurityTokenResponseCollectionImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public RequestSecurityTokenResponseCollectionImpl(@Nullable final String namespaceURI,
+            @Nonnull final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         requestSecurityTokenResponses = new ArrayList<>();
     }
     
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<RequestSecurityTokenResponse> getRequestSecurityTokenResponses() {
+    @Nonnull public List<RequestSecurityTokenResponse> getRequestSecurityTokenResponses() {
         return requestSecurityTokenResponses;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final List<XMLObject> children = new ArrayList<>();
-        children.addAll(requestSecurityTokenResponses);
-        return Collections.unmodifiableList(children);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(requestSecurityTokenResponses);
     }
 
 }

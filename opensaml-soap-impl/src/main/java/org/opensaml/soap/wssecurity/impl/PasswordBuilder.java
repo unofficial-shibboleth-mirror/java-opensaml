@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Password;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wssecurity.Password;
 public class PasswordBuilder extends AbstractWSSecurityObjectBuilder<Password> {
 
     /** {@inheritDoc} */
-    public Password buildObject() {
+    @Nonnull public Password buildObject() {
         return buildObject(Password.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Password buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Password buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PasswordImpl(namespaceURI, localName, namespacePrefix);
     }
 

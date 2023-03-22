@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -32,14 +34,15 @@ import org.w3c.dom.Attr;
 public class PolicyAttachmentUnmarshaller extends AbstractWSPolicyObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final PolicyAttachment pa = (PolicyAttachment) xmlObject;
         XMLObjectSupport.unmarshallToAttributeMap(pa.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final PolicyAttachment pa = (PolicyAttachment) parentXMLObject;
         
         if (childXMLObject instanceof AppliesTo) {

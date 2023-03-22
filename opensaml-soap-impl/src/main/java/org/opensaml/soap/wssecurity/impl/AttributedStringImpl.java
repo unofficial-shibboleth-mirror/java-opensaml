@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wssecurity.AttributedString;
 import org.opensaml.soap.wssecurity.IdBearing;
@@ -27,13 +30,13 @@ import org.opensaml.soap.wssecurity.IdBearing;
 public class AttributedStringImpl extends AbstractWSSecurityObject implements AttributedString {
     
     /** The string value. */
-    private String value;
+    @Nullable private String value;
     
     /** The wsu:Id attribute value. */
-    private String id;
+    @Nullable private String id;
     
     /** The wildcard attributes. */
-    private AttributeMap attributes;
+    @Nonnull private final AttributeMap attributes;
     
     /**
      * Constructor.
@@ -42,29 +45,29 @@ public class AttributedStringImpl extends AbstractWSSecurityObject implements At
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public AttributedStringImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public AttributedStringImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public String getValue() {
+    @Nullable public String getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final String newValue) {
+    public void setValue(@Nullable final String newValue) {
         value = prepareForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */
-    public String getWSUId() {
+    @Nullable public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setWSUId(final String newId) {
+    public void setWSUId(@Nullable final String newId) {
         final String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
@@ -72,7 +75,7 @@ public class AttributedStringImpl extends AbstractWSSecurityObject implements At
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return attributes;
     }
 

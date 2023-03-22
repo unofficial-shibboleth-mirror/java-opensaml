@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.wstrust.WSTrustObject;
 import org.opensaml.soap.wstrust.WSTrustObjectBuilder;
@@ -33,6 +35,6 @@ public abstract class AbstractWSTrustObjectBuilder<WSTrustObjectType extends WST
         implements WSTrustObjectBuilder<WSTrustObjectType> {
 
     /** {@inheritDoc} */
-    public abstract WSTrustObjectType buildObject();
+    @Nonnull public abstract WSTrustObjectType buildObject();
 
 }

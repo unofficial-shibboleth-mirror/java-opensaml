@@ -18,6 +18,8 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.soap.wssecurity.KeyIdentifier;
@@ -32,7 +34,8 @@ import com.google.common.base.Strings;
 public class KeyIdentifierMarshaller extends EncodedStringMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final KeyIdentifier keyIdentifier = (KeyIdentifier) xmlObject;
         if (!Strings.isNullOrEmpty(keyIdentifier.getValueType())) {
             domElement.setAttributeNS(null, KeyIdentifier.VALUE_TYPE_ATTRIB_NAME, keyIdentifier.getValueType());

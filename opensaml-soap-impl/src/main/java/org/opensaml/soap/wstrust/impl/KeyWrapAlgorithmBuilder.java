@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.KeyWrapAlgorithm;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.KeyWrapAlgorithm;
 public class KeyWrapAlgorithmBuilder extends AbstractWSTrustObjectBuilder<KeyWrapAlgorithm> {
 
     /** {@inheritDoc} */
-    public KeyWrapAlgorithm buildObject() {
+    @Nonnull public KeyWrapAlgorithm buildObject() {
         return buildObject(KeyWrapAlgorithm.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public KeyWrapAlgorithm buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public KeyWrapAlgorithm buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyWrapAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 

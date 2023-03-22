@@ -17,9 +17,13 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * Interface ParticipantType complex type.
@@ -28,10 +32,10 @@ import org.opensaml.core.xml.XMLObject;
 public interface ParticipantType extends WSTrustObject {
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ParticipantType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ParticipantType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /**
@@ -39,13 +43,13 @@ public interface ParticipantType extends WSTrustObject {
      * 
      * @return the child element
      */
-    public XMLObject getUnknownXMLObject();
+    @Nullable public XMLObject getUnknownXMLObject();
     
     /**
      * Set the unknown child element.
      * 
      * @param unknownObject the new child element
      */
-    public void setUnknownXMLObject(XMLObject unknownObject);
+    public void setUnknownXMLObject(@Nullable final XMLObject unknownObject);
 
 }

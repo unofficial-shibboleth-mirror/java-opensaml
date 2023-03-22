@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -30,14 +32,15 @@ import org.w3c.dom.Attr;
 public class ReferenceParametersUnmarshaller extends AbstractWSAddressingObjectUnmarshaller {
     
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final ReferenceParameters rp = (ReferenceParameters) xmlObject;
         XMLObjectSupport.unmarshallToAttributeMap(rp.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final ReferenceParameters rp = (ReferenceParameters) parentXMLObject;
         rp.getUnknownXMLObjects().add(childXMLObject);
     }

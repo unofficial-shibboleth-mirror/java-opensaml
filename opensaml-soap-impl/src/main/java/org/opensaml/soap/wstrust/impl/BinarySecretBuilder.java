@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.BinarySecret;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.BinarySecret;
 public class BinarySecretBuilder extends AbstractWSTrustObjectBuilder<BinarySecret> {
 
     /** {@inheritDoc} */
-    public BinarySecret buildObject() {
+    @Nonnull public BinarySecret buildObject() {
         return buildObject(BinarySecret.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public BinarySecret buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public BinarySecret buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new BinarySecretImpl(namespaceURI, localName, namespacePrefix);
     }
 

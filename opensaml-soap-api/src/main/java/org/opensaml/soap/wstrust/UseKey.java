@@ -17,9 +17,13 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:UseKey element.
@@ -30,48 +34,48 @@ import org.opensaml.core.xml.XMLObject;
 public interface UseKey extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "UseKey";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "UseKey";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "UseKeyType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "UseKeyType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /** The wst:UseKey/@Sig attribute local name. */
-    public static final String SIG_ATTRIB_NAME = "Sig";
+    @Nonnull @NotEmpty public static final String SIG_ATTRIB_NAME = "Sig";
     
     /**
      * Get the unknown child element.
      * 
      * @return the child element
      */
-    public XMLObject getUnknownXMLObject();
+    @Nullable public XMLObject getUnknownXMLObject();
     
     /**
      * Set the unknown child element.
      * 
      * @param unknownObject the new child element
      */
-    public void setUnknownXMLObject(XMLObject unknownObject);
+    public void setUnknownXMLObject(@Nullable final XMLObject unknownObject);
 
     /**
      * Returns the wst:UseKey/@Sig attribute value.
      * 
      * @return the Sig attribute value or <code>null</code>
      */
-    public String getSig();
+    @Nullable public String getSig();
 
     /**
      * Sets the wst:UseKey/@Sig attribute value.
      * 
      * @param sig the Sig attribute value to set.
      */
-    public void setSig(String sig);
+    public void setSig(@Nullable final String sig);
 
 }

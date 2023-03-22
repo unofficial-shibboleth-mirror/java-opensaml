@@ -18,6 +18,8 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.soap.wssecurity.Iteration;
@@ -32,12 +34,13 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class IterationMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final Iteration iteration = (Iteration) xmlObject;
         
-        if (iteration.getValue() != null) {
-            ElementSupport.appendTextContent(domElement, iteration.getValue().toString());
+        final Integer i = iteration.getValue();
+        if (i != null) {
+            ElementSupport.appendTextContent(domElement, i.toString());
         }
     }
 

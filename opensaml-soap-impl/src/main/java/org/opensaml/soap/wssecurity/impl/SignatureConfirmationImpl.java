@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.IdBearing;
 import org.opensaml.soap.wssecurity.SignatureConfirmation;
 
@@ -26,10 +29,10 @@ import org.opensaml.soap.wssecurity.SignatureConfirmation;
 public class SignatureConfirmationImpl extends AbstractWSSecurityObject implements SignatureConfirmation {
     
     /** wsu:Id attribute value. */
-    private String id;
+    @Nullable private String id;
     
     /** the Value attribute value. */
-    private String value;
+    @Nullable private String value;
 
     /**
      * Constructor.
@@ -38,28 +41,28 @@ public class SignatureConfirmationImpl extends AbstractWSSecurityObject implemen
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public SignatureConfirmationImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public SignatureConfirmationImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getValue() {
+    @Nullable public String getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final String newValue) {
+    public void setValue(@Nullable final String newValue) {
         value = prepareForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */
-    public String getWSUId() {
+    @Nullable public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setWSUId(final String newId) {
+    public void setWSUId(@Nullable final String newId) {
         final String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);

@@ -17,10 +17,14 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Claims element.
@@ -31,34 +35,34 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface Claims extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Claims";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Claims";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ClaimsType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ClaimsType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /** The wst:Claims/@Dialect attribute local name. */
-    public static final String DIALECT_ATTRIB_NAME = "Dialect";
+    @Nonnull @NotEmpty public static final String DIALECT_ATTRIB_NAME = "Dialect";
     
     /**
      * Returns the wst:Claims/@Dialect attribute value.
      * 
      * @return the Dialect attribute value
      */
-    public String getDialect();
+    @Nullable public String getDialect();
 
     /**
      * Sets the wst:Claims/@Dialect attribute value.
      * 
      * @param dialect the Dialect attribute value.
      */
-    public void setDialect(String dialect);
+    public void setDialect(@Nullable final String dialect);
 
 }

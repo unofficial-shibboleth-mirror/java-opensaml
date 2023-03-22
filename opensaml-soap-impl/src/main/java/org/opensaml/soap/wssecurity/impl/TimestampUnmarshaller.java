@@ -18,6 +18,7 @@
 package org.opensaml.soap.wssecurity.impl;
 
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -37,8 +38,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class TimestampUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final Timestamp timestamp = (Timestamp) parentXMLObject;
         
         if (childXMLObject instanceof Created) {
@@ -51,7 +52,8 @@ public class TimestampUnmarshaller extends AbstractWSSecurityObjectUnmarshaller 
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final Timestamp timestamp = (Timestamp) xmlObject;
         
         final QName attrName =

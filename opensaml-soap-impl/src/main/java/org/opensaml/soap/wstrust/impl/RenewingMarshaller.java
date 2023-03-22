@@ -18,8 +18,11 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.wstrust.Renewing;
 import org.w3c.dom.Element;
 
@@ -30,15 +33,18 @@ import org.w3c.dom.Element;
 public class RenewingMarshaller extends AbstractWSTrustObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final Renewing renewing = (Renewing) xmlObject;
         
-        if (renewing.isAllowXSBoolean() != null) {
-            domElement.setAttributeNS(null, Renewing.ALLOW_ATTRIB_NAME, renewing.isAllowXSBoolean().toString());
+        final XSBooleanValue allow = renewing.isAllowXSBoolean();
+        if (allow != null && allow.getValue() != null) {
+            domElement.setAttributeNS(null, Renewing.ALLOW_ATTRIB_NAME, allow.toString());
         }
         
-        if (renewing.isOKXSBoolean() != null) {
-            domElement.setAttributeNS(null, Renewing.OK_ATTRIB_NAME, renewing.isOKXSBoolean().toString());
+        final XSBooleanValue ok = renewing.isOKXSBoolean();
+        if (ok != null && ok.getValue() != null) {
+            domElement.setAttributeNS(null, Renewing.OK_ATTRIB_NAME, ok.toString());
         }
     }
     

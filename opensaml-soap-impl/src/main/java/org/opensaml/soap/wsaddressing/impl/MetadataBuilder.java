@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.Metadata;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.Metadata;
 public class MetadataBuilder extends AbstractWSAddressingObjectBuilder<Metadata> {
 
     /** {@inheritDoc} */
-    public Metadata buildObject() {
+    @Nonnull public Metadata buildObject() {
         return buildObject(Metadata.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Metadata buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Metadata buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new MetadataImpl(namespaceURI, localName, namespacePrefix);
     }
 

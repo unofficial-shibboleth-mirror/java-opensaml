@@ -17,12 +17,15 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An abstract unmarshaller implementation for XMLObjects from WS-Policy.
@@ -32,28 +35,24 @@ public abstract class AbstractWSPolicyObjectUnmarshaller extends AbstractXMLObje
     /**
      * Logger.
      */
-    private final Logger log = LoggerFactory.getLogger(AbstractWSPolicyObjectUnmarshaller.class);
-
-    /** Constructor.  */
-    protected AbstractWSPolicyObjectUnmarshaller() {
-        super();
-    }
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractWSPolicyObjectUnmarshaller.class);
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         log.warn("{} ignoring unknown child element {}", parentXMLObject.getElementQName().getLocalPart(),
                 childXMLObject.getElementQName().getLocalPart());
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         log.warn("{} ignoring unknown attribute {}", xmlObject.getElementQName().getLocalPart(), attribute
                 .getLocalName());
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         log.warn("{} ignoring unknown element content: {}", xmlObject.getElementQName().getLocalPart(), elementContent);
     }
 }

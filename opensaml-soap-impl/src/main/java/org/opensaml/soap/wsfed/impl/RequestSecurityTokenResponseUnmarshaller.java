@@ -17,8 +17,11 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.AppliesTo;
 import org.opensaml.soap.wsfed.RequestSecurityTokenResponse;
 import org.opensaml.soap.wsfed.RequestedSecurityToken;
@@ -28,23 +31,24 @@ import org.w3c.dom.Attr;
 public class RequestSecurityTokenResponseUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject) {
-        final RequestSecurityTokenResponse response = (RequestSecurityTokenResponse) parentSAMLObject;
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
+        final RequestSecurityTokenResponse response = (RequestSecurityTokenResponse) parentXMLObject;
 
-        if (childSAMLObject instanceof RequestedSecurityToken) {
-            response.getRequestedSecurityToken().add((RequestedSecurityToken) childSAMLObject);
-        } else if (childSAMLObject instanceof AppliesTo) {
-            response.setAppliesTo((AppliesTo) childSAMLObject);
+        if (childXMLObject instanceof RequestedSecurityToken) {
+            response.getRequestedSecurityToken().add((RequestedSecurityToken) childXMLObject);
+        } else if (childXMLObject instanceof AppliesTo) {
+            response.setAppliesTo((AppliesTo) childXMLObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject fedObject, final Attr attribute) {
-
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject fedObject, final String content) {
+    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String content) {
 
     }
 }

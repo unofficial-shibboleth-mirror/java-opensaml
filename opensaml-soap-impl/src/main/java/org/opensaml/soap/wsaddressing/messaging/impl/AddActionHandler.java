@@ -27,12 +27,13 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.AbstractHeaderGeneratingMessageHandler;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.WSAddressingConstants;
 import org.opensaml.soap.wsaddressing.messaging.WSAddressingContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -55,16 +56,16 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AddActionHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AddActionHandler.class);
     
     /** The configured Action URI value. */
-    private String actionURI;
+    @Nullable private String actionURI;
     
     /** The configured Fault Action URI value. */
-    private String faultActionURI;
+    @Nullable private String faultActionURI;
     
     /** The actual calculated Action URI to send. */
-    private String sendURI;
+    @Nullable private String sendURI;
     
     /**
      * Get the Action URI.
@@ -146,8 +147,9 @@ public class AddActionHandler extends AbstractHeaderGeneratingMessageHandler {
      */
     @Nonnull protected String selectActionURIForFault(@Nonnull final Fault fault) {
         QName faultCode =  null;
-        if (fault.getCode() != null && fault.getCode().getValue() != null) {
-            faultCode = fault.getCode().getValue(); 
+        final FaultCode fcode = fault.getCode();
+        if (fcode != null) {
+            faultCode = fcode.getValue(); 
         }
         if (faultCode != null && WSAddressingConstants.WS_ADDRESSING_FAULTS.contains(faultCode)) {
             return WSAddressingConstants.ACTION_URI_FAULT;

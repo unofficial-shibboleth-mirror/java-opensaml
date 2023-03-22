@@ -18,9 +18,10 @@
 package org.opensaml.soap.wstrust.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,6 +30,8 @@ import org.opensaml.soap.wstrust.Participant;
 import org.opensaml.soap.wstrust.Participants;
 import org.opensaml.soap.wstrust.Primary;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * ParticipantsImpl.
  * 
@@ -36,13 +39,13 @@ import org.opensaml.soap.wstrust.Primary;
 public class ParticipantsImpl extends AbstractWSTrustObject implements Participants {
 
     /** The {@link Primary} child element. */
-    private Primary primary;
+    @Nullable private Primary primary;
 
     /** The list of {@link Participant} child elements. */
-    private List<Participant> participants;
+    @Nonnull private final List<Participant> participants;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -51,39 +54,41 @@ public class ParticipantsImpl extends AbstractWSTrustObject implements Participa
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public ParticipantsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public ParticipantsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         participants = new ArrayList<>();
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public Primary getPrimary() {
+    @Nullable public Primary getPrimary() {
         return primary;
     }
 
     /** {@inheritDoc} */
-    public void setPrimary(final Primary newPrimary) {
+    public void setPrimary(@Nullable final Primary newPrimary) {
         primary = prepareForAssignment(primary, newPrimary);
     }
 
     /** {@inheritDoc} */
-    public List<Participant> getParticipants() {
+    @Nonnull public List<Participant> getParticipants() {
         return participants;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> children = new ArrayList<>();
         if (primary != null) {
             children.add(primary);
@@ -93,7 +98,7 @@ public class ParticipantsImpl extends AbstractWSTrustObject implements Participa
         
         children.addAll(unknownChildren);
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

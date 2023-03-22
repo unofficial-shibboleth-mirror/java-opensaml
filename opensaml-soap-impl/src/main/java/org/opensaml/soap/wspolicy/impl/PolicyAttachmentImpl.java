@@ -18,9 +18,10 @@
 package org.opensaml.soap.wspolicy.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -31,22 +32,25 @@ import org.opensaml.soap.wspolicy.Policy;
 import org.opensaml.soap.wspolicy.PolicyAttachment;
 import org.opensaml.soap.wspolicy.PolicyReference;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * PolicyAttachmentImpl.
  */
+@SuppressWarnings("unchecked")
 public class PolicyAttachmentImpl extends AbstractWSPolicyObject implements PolicyAttachment {
     
     /** AppliesTo Child element. */
-    private AppliesTo appliesTo;
+    @Nullable private AppliesTo appliesTo;
     
     /** Policy and PolicyReference children. */
-    private IndexedXMLObjectChildrenList<XMLObject> policiesAndReferences;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> policiesAndReferences;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -55,8 +59,8 @@ public class PolicyAttachmentImpl extends AbstractWSPolicyObject implements Poli
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public PolicyAttachmentImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public PolicyAttachmentImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         policiesAndReferences = new IndexedXMLObjectChildrenList<>(this);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
@@ -64,49 +68,50 @@ public class PolicyAttachmentImpl extends AbstractWSPolicyObject implements Poli
     }
 
     /** {@inheritDoc} */
-    public AppliesTo getAppliesTo() {
+    @Nullable public AppliesTo getAppliesTo() {
         return appliesTo;
     }
 
     /** {@inheritDoc} */
-    public void setAppliesTo(final AppliesTo newAppliesTo) {
+    public void setAppliesTo(@Nullable final AppliesTo newAppliesTo) {
         appliesTo = prepareForAssignment(appliesTo, newAppliesTo);
     }
 
     /** {@inheritDoc} */
-    public List<Policy> getPolicies() {
+    @Nonnull public List<Policy> getPolicies() {
         return (List<Policy>) policiesAndReferences.subList(Policy.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<PolicyReference> getPolicyReferences() {
+    @Nonnull public List<PolicyReference> getPolicyReferences() {
         return (List<PolicyReference>) policiesAndReferences.subList(PolicyReference.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (appliesTo != null) {
             children.add(appliesTo);
         }
         children.addAll(policiesAndReferences);
         children.addAll(unknownChildren);
-        return Collections.unmodifiableList(children);
+        
+        return CollectionSupport.copyToList(children);
     }
 
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -32,14 +34,15 @@ import org.w3c.dom.Attr;
 public class RequestSecurityTokenResponseCollectionUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final RequestSecurityTokenResponseCollection rstrc = (RequestSecurityTokenResponseCollection) xmlObject;
         XMLObjectSupport.unmarshallToAttributeMap(rstrc.getUnknownAttributes(), attribute);
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final RequestSecurityTokenResponseCollection rstrc = (RequestSecurityTokenResponseCollection) parentXMLObject;
         if (childXMLObject instanceof RequestSecurityTokenResponse) {
             rstrc.getRequestSecurityTokenResponses().add((RequestSecurityTokenResponse) childXMLObject);

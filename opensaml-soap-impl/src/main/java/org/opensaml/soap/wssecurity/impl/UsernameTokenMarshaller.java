@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -31,7 +33,8 @@ import com.google.common.base.Strings;
 public class UsernameTokenMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final UsernameToken usernameToken = (UsernameToken) xmlObject;
         
         if (!Strings.isNullOrEmpty(usernameToken.getWSUId())) {
@@ -44,8 +47,8 @@ public class UsernameTokenMarshaller extends AbstractWSSecurityObjectMarshaller 
     }
     
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject,
-            final Element domElement) throws MarshallingException {
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         XMLObjectSupport.marshallAttributeIDness(UsernameToken.WSU_ID_ATTR_NAME, domElement, true);
         
         super.marshallAttributeIDness(xmlObject, domElement);

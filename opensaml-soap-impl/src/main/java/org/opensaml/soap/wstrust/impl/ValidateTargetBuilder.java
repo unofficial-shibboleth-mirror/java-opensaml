@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.ValidateTarget;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.ValidateTarget;
 public class ValidateTargetBuilder extends AbstractWSTrustObjectBuilder<ValidateTarget> {
 
     /** {@inheritDoc} */
-    public ValidateTarget buildObject() {
+    @Nonnull public ValidateTarget buildObject() {
         return buildObject(ValidateTarget.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ValidateTarget buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public ValidateTarget buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ValidateTargetImpl(namespaceURI, localName, namespacePrefix);
     }
 

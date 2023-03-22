@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.FaultTo;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.FaultTo;
 public class FaultToBuilder extends AbstractWSAddressingObjectBuilder<FaultTo> {
 
     /** {@inheritDoc} */
-    public FaultTo buildObject() {
+    @Nonnull public FaultTo buildObject() {
         return buildObject(FaultTo.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public FaultTo buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public FaultTo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new FaultToImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -32,7 +34,8 @@ import org.w3c.dom.Element;
 public class PolicyMarshaller extends OperatorContentTypeMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final Policy policy = (Policy) xmlObject;
         
         if (policy.getName() != null) {
@@ -47,7 +50,8 @@ public class PolicyMarshaller extends OperatorContentTypeMarshaller {
     }
     
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         XMLObjectSupport.marshallAttributeIDness(IdBearing.WSU_ID_ATTR_NAME, domElement, true);
         
         super.marshallAttributeIDness(xmlObject, domElement);

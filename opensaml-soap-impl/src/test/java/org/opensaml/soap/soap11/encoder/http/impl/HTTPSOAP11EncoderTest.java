@@ -21,6 +21,8 @@ import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
@@ -55,6 +57,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Test basic SOAP 1.1 message encoding.
  */
+@SuppressWarnings("javadoc")
 public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
     
     /**
@@ -310,16 +313,21 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getStatus(), 500);
         
-        Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
+        final Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
         Assert.assertNotNull(encodedEnv);
         Assert.assertNotNull(encodedEnv.getBody());
-        Body encodedBody = encodedEnv.getBody();
-        List<XMLObject> faults = encodedBody.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
+        final Body encodedBody = encodedEnv.getBody();
+        assert encodedBody != null;
+        final List<XMLObject> faults = encodedBody.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
         Assert.assertEquals(faults.size(), 1);
-        Fault encodedFault = (Fault) faults.get(0);
-        Assert.assertEquals(encodedFault.getCode().getValue(), FaultCode.SERVER);
-        Assert.assertEquals(encodedFault.getMessage().getValue(), "Something bad happened");
+        final Fault encodedFault = (Fault) faults.get(0);
+        final FaultCode fcode = encodedFault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.SERVER);
+        final FaultString fstring = encodedFault.getMessage();
+        assert fstring != null;
+        Assert.assertEquals(fstring.getValue(), "Something bad happened");
     }
     
     @Test
@@ -361,16 +369,22 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getStatus(), 500);
         
-        Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
+        final Envelope encodedEnv = (Envelope) parseUnmarshallResourceByteArray(response.getContentAsByteArray(), false);
         
         Assert.assertNotNull(encodedEnv);
         Assert.assertNotNull(encodedEnv.getBody());
-        Body encodedBody = encodedEnv.getBody();
+        final Body encodedBody = encodedEnv.getBody();
+        assert encodedBody != null;
         List<XMLObject> faults = encodedBody.getUnknownXMLObjects(Fault.DEFAULT_ELEMENT_NAME);
         Assert.assertEquals(faults.size(), 1);
-        Fault encodedFault = (Fault) faults.get(0);
-        Assert.assertEquals(encodedFault.getCode().getValue(), FaultCode.SERVER);
-        Assert.assertEquals(encodedFault.getMessage().getValue(), "Something bad happened");
+        final Fault encodedFault = (Fault) faults.get(0);
+        assert encodedFault != null;
+        final FaultCode fcode = encodedFault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.SERVER);
+        final FaultString fstring = encodedFault.getMessage();
+        assert fstring != null;
+        Assert.assertEquals(fstring.getValue(), "Something bad happened");
     }
     
     @Test
@@ -399,20 +413,20 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
     // Helper stuff
     //
 
-    protected XMLObject parseUnmarshallResource(String resource, boolean dropDOM) throws XMLParserException, UnmarshallingException {
+    @Nonnull protected XMLObject parseUnmarshallResource(@Nonnull final String resource, boolean dropDOM) throws XMLParserException, UnmarshallingException {
         Document soapDoc = parserPool.parse(this.getClass().getResourceAsStream(resource));
         return unmarshallXMLObject(soapDoc, dropDOM);
     }
     
-    protected XMLObject parseUnmarshallResourceByteArray(byte [] input, boolean dropDOM) throws XMLParserException, UnmarshallingException {
+    @Nonnull protected XMLObject parseUnmarshallResourceByteArray(byte [] input, boolean dropDOM) throws XMLParserException, UnmarshallingException {
         ByteArrayInputStream bais = new ByteArrayInputStream(input);
         Document soapDoc = parserPool.parse(bais);
         return unmarshallXMLObject(soapDoc, dropDOM);
     }
 
-    protected XMLObject unmarshallXMLObject(Document soapDoc, boolean dropDOM) throws UnmarshallingException {
+    @Nonnull protected XMLObject unmarshallXMLObject(@Nonnull final Document soapDoc, boolean dropDOM) throws UnmarshallingException {
         Element envelopeElem = soapDoc.getDocumentElement();
-        Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(envelopeElem);
+        Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(envelopeElem);
         
         Envelope envelope = (Envelope) unmarshaller.unmarshall(envelopeElem);
         if (dropDOM) {

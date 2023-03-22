@@ -38,7 +38,6 @@ import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.w3c.dom.Document;
@@ -47,6 +46,7 @@ import org.w3c.dom.Node;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -58,7 +58,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
 
     /** Logger */
-    private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(XMLObjectBaseTestCase.class);
 
     /** Parser pool */
     protected static ParserPool parserPool;
@@ -73,7 +73,8 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     protected static UnmarshallerFactory unmarshallerFactory;
 
     /** QName for SimpleXMLObject */
-    protected static QName simpleXMLObjectQName = new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
+    @Nonnull protected static QName simpleXMLObjectQName =
+            new QName(SimpleXMLObject.NAMESPACE, SimpleXMLObject.LOCAL_NAME);
 
     @BeforeClass
 	protected void initXMLObjectSupport() throws Exception {

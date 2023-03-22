@@ -19,6 +19,9 @@ package org.opensaml.soap.wstrust.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.soap.wstrust.Delegatable;
@@ -30,10 +33,10 @@ import org.opensaml.soap.wstrust.Delegatable;
 public class DelegatableImpl extends AbstractWSTrustObject implements Delegatable {
 
     /** Default value. */
-    private static final Boolean DEFAULT_VALUE = Boolean.FALSE;
+    @Nonnull private static final Boolean DEFAULT_VALUE = Boolean.FALSE;
 
     /** The wst:Forwardable content. */
-    private XSBooleanValue value;
+    @Nullable private XSBooleanValue value;
 
     /**
      * Constructor. Default value is <code>FALSE</code>.
@@ -42,18 +45,19 @@ public class DelegatableImpl extends AbstractWSTrustObject implements Delegatabl
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public DelegatableImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public DelegatableImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         value = new XSBooleanValue(DEFAULT_VALUE, false);
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue getValue() {
+    @Nullable public XSBooleanValue getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final XSBooleanValue newValue) {
+    public void setValue(@Nullable final XSBooleanValue newValue) {
         if (newValue != null) {
             value = prepareForAssignment(value, newValue);
         } else {
@@ -62,7 +66,7 @@ public class DelegatableImpl extends AbstractWSTrustObject implements Delegatabl
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return null;
     }
 }

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.EndpointReference;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wsaddressing.EndpointReference;
 public class EndpointReferenceBuilder extends AbstractWSAddressingObjectBuilder<EndpointReference> {
 
     /** {@inheritDoc} */
-    public EndpointReference buildObject() {
+    @Nonnull public EndpointReference buildObject() {
         return buildObject(EndpointReference.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public EndpointReference buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public EndpointReference buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EndpointReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 

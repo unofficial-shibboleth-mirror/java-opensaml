@@ -19,9 +19,14 @@ package org.opensaml.soap.wstrust;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Participants element.
@@ -32,17 +37,17 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 public interface Participants extends ElementExtensibleXMLObject, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Participants";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Participants";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "ParticipantsType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ParticipantsType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
@@ -50,20 +55,20 @@ public interface Participants extends ElementExtensibleXMLObject, WSTrustObject 
      * 
      * @return the {@link Primary} child element or <code>null</code>.
      */
-    public Primary getPrimary();
+    @Nullable public Primary getPrimary();
 
     /**
      * Sets the wst:Primary child element.
      * 
      * @param primary the {@link Primary} child element to set.
      */
-    public void setPrimary(Primary primary);
+    public void setPrimary(@Nullable final Primary primary);
 
     /**
      * Returns the list of wst:Participant child elements .
      * 
      * @return the list of {@link Participant} child elements
      */
-    public List<Participant> getParticipants();
+    @Nonnull @Live public List<Participant> getParticipants();
 
 }

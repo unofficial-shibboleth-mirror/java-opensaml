@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.TransformationParameters;
 
 /**
@@ -25,13 +28,13 @@ import org.opensaml.soap.wssecurity.TransformationParameters;
 public class TransformationParametersBuilder extends AbstractWSSecurityObjectBuilder<TransformationParameters> {
 
     /** {@inheritDoc} */
-    public TransformationParameters buildObject() {
+    @Nonnull public TransformationParameters buildObject() {
         return buildObject(TransformationParameters.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public TransformationParameters buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public TransformationParameters buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new TransformationParametersImpl(namespaceURI, localName, namespacePrefix);
     }
 

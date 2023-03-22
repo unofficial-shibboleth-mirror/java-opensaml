@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wspolicy.Policy;
 import org.opensaml.soap.wssecurity.IdBearing;
@@ -28,13 +31,13 @@ import org.opensaml.soap.wssecurity.IdBearing;
 public class PolicyImpl extends OperatorContentTypeImpl implements Policy {
 
     /** The wsu:Id attribute value. */
-    private String id;
+    @Nullable private String id;
 
     /** The Name attribute value. */
-    private String name;
+    @Nullable private String name;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -43,29 +46,30 @@ public class PolicyImpl extends OperatorContentTypeImpl implements Policy {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    protected PolicyImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PolicyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
     }
 
 
     /** {@inheritDoc} */
-    public String getName() {
+    @Nullable public String getName() {
         return name;
     }
 
     /** {@inheritDoc} */
-    public void setName(final String newName) {
+    public void setName(@Nullable final String newName) {
         name = prepareForAssignment(name, newName);
     }
 
     /** {@inheritDoc} */
-    public String getWSUId() {
+    @Nullable public String getWSUId() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setWSUId(final String newId) {
+    public void setWSUId(@Nullable final String newId) {
         final String oldId = id;
         id = prepareForAssignment(id, newId);
         registerOwnID(oldId, id);
@@ -73,7 +77,7 @@ public class PolicyImpl extends OperatorContentTypeImpl implements Policy {
     }
     
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 

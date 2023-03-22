@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.SecurityTokenReference;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wssecurity.SecurityTokenReference;
 public class SecurityTokenReferenceBuilder extends AbstractWSSecurityObjectBuilder<SecurityTokenReference> {
 
     /** {@inheritDoc} */
-    public SecurityTokenReference buildObject() {
+    @Nonnull public SecurityTokenReference buildObject() {
         return buildObject(SecurityTokenReference.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public SecurityTokenReference buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public SecurityTokenReference buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new SecurityTokenReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 

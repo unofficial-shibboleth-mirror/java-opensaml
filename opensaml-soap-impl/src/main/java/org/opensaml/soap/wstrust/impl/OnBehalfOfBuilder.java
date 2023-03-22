@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.OnBehalfOf;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.OnBehalfOf;
 public class OnBehalfOfBuilder extends AbstractWSTrustObjectBuilder<OnBehalfOf> {
 
     /** {@inheritDoc} */
-    public OnBehalfOf buildObject() {
+    @Nonnull public OnBehalfOf buildObject() {
         return buildObject(OnBehalfOf.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public OnBehalfOf buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public OnBehalfOf buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new OnBehalfOfImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Created;
 
 /**
@@ -25,25 +28,15 @@ import org.opensaml.soap.wssecurity.Created;
  */
 public class CreatedBuilder extends AbstractWSSecurityObjectBuilder<Created> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.soap.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
     @Override
-    public Created buildObject() {
+    @Nonnull public Created buildObject() {
         return buildObject(Created.ELEMENT_NAME);
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
+    
+    /** {@inheritDoc} */
     @Override
-    public Created buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public Created buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new CreatedImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,8 +17,10 @@
 
 package org.opensaml.soap.wsfed.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -28,7 +30,7 @@ import org.opensaml.soap.wsfed.Address;
 public class AddressImpl extends AbstractXMLObject implements Address {
 
     /** Address value. */
-    private String value;
+    @Nullable private String value;
 
     /**
      * Constructor.
@@ -37,23 +39,24 @@ public class AddressImpl extends AbstractXMLObject implements Address {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AddressImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AddressImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getValue() {
+    @Nullable public String getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final String newValue) {
+    public void setValue(@Nullable final String newValue) {
         value = prepareForAssignment(value, newValue);
 
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return new ArrayList<>();
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 }

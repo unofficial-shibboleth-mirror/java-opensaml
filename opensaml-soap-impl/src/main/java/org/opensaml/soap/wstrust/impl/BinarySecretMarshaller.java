@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryMarshaller;
@@ -33,7 +35,8 @@ import org.w3c.dom.Element;
 public class BinarySecretMarshaller extends XSBase64BinaryMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final BinarySecret bs = (BinarySecret) xmlObject;
         if (bs.getType() != null) {
             domElement.setAttributeNS(null, BinarySecret.TYPE_ATTRIB_NAME, bs.getType());

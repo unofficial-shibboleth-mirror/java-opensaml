@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Header;
@@ -32,12 +35,13 @@ public class HeaderBuilder extends AbstractXMLObjectBuilder<Header> implements S
      * 
      * @return the build Envelope object
      */
-    public Header buildObject() {
+    @Nonnull public Header buildObject() {
         return buildObject(SOAPConstants.SOAP11_NS, Header.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Header buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Header buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new HeaderImpl(namespaceURI, localName, namespacePrefix);
     }
 }

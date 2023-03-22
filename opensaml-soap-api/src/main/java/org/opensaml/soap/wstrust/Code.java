@@ -17,9 +17,12 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSURI;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:Code element within a wst:Status element.
@@ -31,23 +34,23 @@ import org.opensaml.core.xml.schema.XSURI;
 public interface Code extends XSURI, WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "Code";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "Code";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "StatusCodeOpenEnum"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "StatusCodeOpenEnum"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /** Status/Code 'valid' URI value . */
-    public static final String VALID= WSTrustConstants.WST_NS + "/status/valid";
+    @Nonnull @NotEmpty public static final String VALID= WSTrustConstants.WST_NS + "/status/valid";
 
     /** Status/Code 'invalid' URI value. */
-    public static final String INVALID= WSTrustConstants.WST_NS + "/status/invalid";
+    @Nonnull @NotEmpty public static final String INVALID= WSTrustConstants.WST_NS + "/status/invalid";
 
 }

@@ -19,7 +19,11 @@ package org.opensaml.soap.wstrust;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:RequestSecurityTokenCollection element.
@@ -30,17 +34,17 @@ import javax.xml.namespace.QName;
 public interface RequestSecurityTokenCollection extends WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "RequestSecurityTokenCollection";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "RequestSecurityTokenCollection";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenCollectionType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenCollectionType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
     /**
@@ -49,6 +53,6 @@ public interface RequestSecurityTokenCollection extends WSTrustObject {
      * 
      * @return the list of {@link RequestSecurityToken}s.
      */
-    public List<RequestSecurityToken> getRequestSecurityTokens();
+    @Nonnull @Live public List<RequestSecurityToken> getRequestSecurityTokens();
 
 }

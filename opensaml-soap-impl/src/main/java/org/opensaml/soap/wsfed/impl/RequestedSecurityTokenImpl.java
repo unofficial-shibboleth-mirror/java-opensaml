@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -30,7 +33,7 @@ import org.opensaml.soap.wsfed.RequestedSecurityToken;
 public class RequestedSecurityTokenImpl extends AbstractXMLObject implements RequestedSecurityToken {
 
     /** List of all the security tokens. */
-    private final XMLObjectChildrenList<XMLObject> tokens;
+    @Nonnull private final XMLObjectChildrenList<XMLObject> tokens;
 
     /**
      * Constructor.
@@ -39,14 +42,14 @@ public class RequestedSecurityTokenImpl extends AbstractXMLObject implements Req
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    public RequestedSecurityTokenImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public RequestedSecurityTokenImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         tokens = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getSecurityTokens() {
+    @Nonnull public List<XMLObject> getSecurityTokens() {
         return tokens;
     }
 

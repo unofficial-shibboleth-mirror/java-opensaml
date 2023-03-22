@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Code;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Code;
 public class CodeBuilder extends AbstractWSTrustObjectBuilder<Code> {
 
     /** {@inheritDoc} */
-    public Code buildObject() {
+    @Nonnull public Code buildObject() {
         return buildObject(Code.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Code buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Code buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new CodeImpl(namespaceURI, localName, namespacePrefix);
     }
 

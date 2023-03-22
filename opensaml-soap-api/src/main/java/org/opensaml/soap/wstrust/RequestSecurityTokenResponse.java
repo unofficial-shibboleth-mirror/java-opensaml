@@ -17,10 +17,14 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.core.xml.ElementExtensibleXMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:RequestSecurityTokenResponse element.
@@ -32,36 +36,36 @@ public interface RequestSecurityTokenResponse extends ElementExtensibleXMLObject
         WSTrustObject {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME= "RequestSecurityTokenResponse";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME= "RequestSecurityTokenResponse";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /** Local name of the XSI type. */
-    public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenResponseType"; 
+    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestSecurityTokenResponseType"; 
         
     /** QName of the XSI type. */
-    public static final QName TYPE_NAME = 
+    @Nonnull public static final QName TYPE_NAME = 
         new QName(WSTrustConstants.WST_NS, TYPE_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
     
     /**
      * The Context attribute name.
      */
-    public static final String CONTEXT_ATTRIB_NAME = "Context";
+    @Nonnull @NotEmpty public static final String CONTEXT_ATTRIB_NAME = "Context";
     
     /**
      * Returns the Context attribute value.
      * 
      * @return The Context attribute value or <code>null</code>.
      */
-    public String getContext();
+    @Nullable public String getContext();
 
     /**
      * Sets the Context attribute value.
      * 
      * @param context The Context attribute value
      */
-    public void setContext(String context);
+    public void setContext(@Nullable final String context);
 
 }

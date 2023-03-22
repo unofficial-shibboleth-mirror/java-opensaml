@@ -42,7 +42,6 @@ import org.opensaml.soap.wssecurity.Username;
 import org.opensaml.soap.wssecurity.UsernameToken;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xmlunit.builder.DiffBuilder;
 import org.xmlunit.diff.Diff;
@@ -52,6 +51,7 @@ import org.xmlunit.diff.Diff;
  * objects.
  * 
  */
+@SuppressWarnings("javadoc")
 public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
     public Logger log= LoggerFactory.getLogger(WSSecurityObjectsTestCase.class);
@@ -216,6 +216,7 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
         Assert.assertEquals(password.getType(), Password.TYPE_PASSWORD_TEXT);
 
         final List<XMLObject> children= usernameToken.getOrderedChildren();
+        assert children != null;
         Assert.assertEquals(children.size(), 3);
 
         marshallAndUnmarshall(usernameToken);
@@ -237,7 +238,10 @@ public class WSSecurityObjectsTestCase extends WSBaseTestCase {
 
         // unmarshall directly from file
         final UsernameToken ut= unmarshallElement("/org/opensaml/soap/wssecurity/impl/UsernameToken.xml");
-        Assert.assertEquals(ut.getUsername().getValue(), "test");
+        assert ut != null;
+        final Username u = ut.getUsername();
+        assert u != null;
+        Assert.assertEquals(u.getValue(), "test");
         final Password utPassword = (Password) ut.getUnknownXMLObjects(Password.ELEMENT_NAME).get(0);
         Assert.assertNotNull(utPassword);
         Assert.assertEquals(utPassword.getValue(), "test");

@@ -101,7 +101,7 @@ public abstract class BaseHttpServletResponseXMLMessageEncoder  extends Abstract
      * 
      * @throws MessageEncodingException thrown if the give message can not be marshalled into its DOM representation
      */
-    protected Element marshallMessage(@Nonnull final XMLObject message) throws MessageEncodingException {
+    @Nonnull protected Element marshallMessage(@Nonnull final XMLObject message) throws MessageEncodingException {
         log.debug("Marshalling message");
         
         try {

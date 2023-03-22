@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wssecurity.Expires;
 
 /**
@@ -24,25 +27,15 @@ import org.opensaml.soap.wssecurity.Expires;
  */
 public class ExpiresBuilder extends AbstractWSSecurityObjectBuilder<Expires> {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.soap.wssecurity.impl.AbstractWSSecurityObjectBuilder#buildObject()
-     */
+    /** {@inheritDoc} */
     @Override
-    public Expires buildObject() {
+    @Nonnull public Expires buildObject() {
         return buildObject(Expires.ELEMENT_NAME);
     }
-
-    /*
-     * (non-Javadoc)
-     * 
-     * @see org.opensaml.xml.AbstractXMLObjectBuilder#buildObject(java.lang.String,
-     *      java.lang.String, java.lang.String)
-     */
-    @Override
-    public Expires buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    
+    /** {@inheritDoc} */
+    @Nonnull public Expires buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ExpiresImpl(namespaceURI, localName, namespacePrefix);
     }
 

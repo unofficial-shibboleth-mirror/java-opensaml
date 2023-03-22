@@ -17,12 +17,15 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An abstract marshaller implementation for XMLObjects from WS-Trust.
@@ -31,22 +34,18 @@ import org.w3c.dom.Element;
 public abstract class AbstractWSTrustObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractWSTrustObjectMarshaller.class);
-
-    /** Constructor. */
-    protected AbstractWSTrustObjectMarshaller() {
-        super();
-    }
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractWSTrustObjectMarshaller.class);
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
-        log.debug("{} has no more attribute to marshall.", xmlObject.getElementQName().getLocalPart());
-
-    }
-
-    /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        log.debug("{} has no content to marshall.", xmlObject.getElementQName().getLocalPart());
+        log.trace("{} has no more attribute to marshall.", xmlObject.getElementQName().getLocalPart());
+
+    }
+
+    /** {@inheritDoc} */
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        log.trace("{} has no content to marshall.", xmlObject.getElementQName().getLocalPart());
     }
 }

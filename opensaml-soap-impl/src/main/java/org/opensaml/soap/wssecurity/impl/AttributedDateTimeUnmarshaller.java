@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -36,7 +37,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class AttributedDateTimeUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
     
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
         final QName attrName =
@@ -50,7 +52,7 @@ public class AttributedDateTimeUnmarshaller extends AbstractWSSecurityObjectUnma
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         final AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         if (!Strings.isNullOrEmpty(elementContent)) {
             dateTime.setValue(elementContent);

@@ -18,6 +18,8 @@
 package org.opensaml.soap.wstrust.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -31,7 +33,8 @@ import org.w3c.dom.Attr;
 public class RequestSecurityTokenUnmarshaller extends AbstractWSTrustObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final RequestSecurityToken rst = (RequestSecurityToken) xmlObject;
         if (RequestSecurityToken.CONTEXT_ATTRIB_NAME.equals(attribute.getLocalName())) {
             rst.setContext(attribute.getValue());
@@ -41,8 +44,8 @@ public class RequestSecurityTokenUnmarshaller extends AbstractWSTrustObjectUnmar
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final RequestSecurityToken rst = (RequestSecurityToken) parentXMLObject;
         rst.getUnknownXMLObjects().add(childXMLObject);
     }

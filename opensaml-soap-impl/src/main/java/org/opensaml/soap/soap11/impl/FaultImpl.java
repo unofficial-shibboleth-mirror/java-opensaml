@@ -18,8 +18,10 @@
 package org.opensaml.soap.soap11.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -29,22 +31,24 @@ import org.opensaml.soap.soap11.FaultActor;
 import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.FaultString;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implemenation of {@link org.opensaml.soap.soap11.Fault}.
  */
 public class FaultImpl extends AbstractXMLObject implements Fault {
 
     /** Fault code. */
-    private FaultCode faultCode;
+    @Nullable private FaultCode faultCode;
 
     /** Fault message. */
-    private FaultString message;
+    @Nullable private FaultString message;
 
     /** Actor that faulted. */
-    private FaultActor actor;
+    @Nullable private FaultActor actor;
 
     /** Details of the fault. */
-    private Detail detail;
+    @Nullable private Detail detail;
 
     /**
      * Constructor.
@@ -53,59 +57,75 @@ public class FaultImpl extends AbstractXMLObject implements Fault {
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    protected FaultImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected FaultImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public FaultCode getCode() {
+    @Nullable public FaultCode getCode() {
         return faultCode;
     }
 
     /** {@inheritDoc} */
-    public void setCode(final FaultCode newFaultCode) {
+    public void setCode(@Nullable final FaultCode newFaultCode) {
         faultCode = prepareForAssignment(faultCode, newFaultCode);
     }
 
     /** {@inheritDoc} */
-    public FaultString getMessage() {
+    @Nullable public FaultString getMessage() {
         return message;
     }
 
     /** {@inheritDoc} */
-    public void setMessage(final FaultString newMessage) {
+    public void setMessage(@Nullable final FaultString newMessage) {
         message = prepareForAssignment(message, newMessage);
     }
 
     /** {@inheritDoc} */
-    public FaultActor getActor() {
+    @Nullable public FaultActor getActor() {
         return actor;
     }
 
     /** {@inheritDoc} */
-    public void setActor(final FaultActor newActor) {
+    public void setActor(@Nullable final FaultActor newActor) {
         actor = prepareForAssignment(actor, newActor);
     }
 
     /** {@inheritDoc} */
-    public Detail getDetail() {
+    @Nullable public Detail getDetail() {
         return detail;
     }
 
     /** {@inheritDoc} */
-    public void setDetail(final Detail newDetail) {
+    public void setDetail(@Nullable final Detail newDetail) {
         detail = prepareForAssignment(detail, newDetail);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(faultCode);
-        children.add(message);
-        children.add(actor);
-        children.add(detail);
+        if (faultCode != null) {
+            children.add(faultCode);
+        }
+        
+        if (message != null) {
+            children.add(message);
+        }
+        
+        if (actor != null) {
+            children.add(actor);
+        }
+        
+        if (detail != null) {
+            children.add(detail);
+        }
 
-        return Collections.unmodifiableList(children);
+        if (children.isEmpty()) {
+            return null;
+        }
+        
+        return CollectionSupport.copyToList(children);
     }
 }

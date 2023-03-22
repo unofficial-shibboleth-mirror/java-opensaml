@@ -17,6 +17,7 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -33,7 +34,8 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class AttributedStringUnmarshaller extends AbstractWSSecurityObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AttributedString attributedString = (AttributedString) xmlObject;
         
         final QName attribQName = 
@@ -47,7 +49,7 @@ public class AttributedStringUnmarshaller extends AbstractWSSecurityObjectUnmars
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
         final AttributedString attributedString = (AttributedString) xmlObject;
         attributedString.setValue(elementContent);
     }

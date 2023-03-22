@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.ReferenceParameters;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wsaddressing.ReferenceParameters;
 public class ReferenceParametersBuilder extends AbstractWSAddressingObjectBuilder<ReferenceParameters> {
 
     /** {@inheritDoc} */
-    public ReferenceParameters buildObject() {
+    @Nonnull public ReferenceParameters buildObject() {
         return buildObject(ReferenceParameters.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ReferenceParameters buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public ReferenceParameters buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new ReferenceParametersImpl(namespaceURI, localName, namespacePrefix);
     }
 

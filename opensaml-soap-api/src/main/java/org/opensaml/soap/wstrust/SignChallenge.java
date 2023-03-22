@@ -17,7 +17,10 @@
 
 package org.opensaml.soap.wstrust;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * The wst:SignChallenge element.
@@ -28,10 +31,10 @@ import javax.xml.namespace.QName;
 public interface SignChallenge extends SignChallengeType {
 
     /** Element local name. */
-    public static final String ELEMENT_LOCAL_NAME = "SignChallenge";
+    @Nonnull @NotEmpty public static final String ELEMENT_LOCAL_NAME = "SignChallenge";
 
     /** Default element name. */
-    public static final QName ELEMENT_NAME =
+    @Nonnull public static final QName ELEMENT_NAME =
         new QName(WSTrustConstants.WST_NS, ELEMENT_LOCAL_NAME, WSTrustConstants.WST_PREFIX);
 
 }

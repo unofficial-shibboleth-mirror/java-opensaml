@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.RenewTarget;
 
 /**
@@ -27,13 +30,14 @@ public class RenewTargetBuilder extends AbstractWSTrustObjectBuilder<RenewTarget
 
     /** {@inheritDoc} */
     @Override
-    public RenewTarget buildObject() {
+    @Nonnull public RenewTarget buildObject() {
         return buildObject(RenewTarget.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
     @Override
-    public RenewTarget buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public RenewTarget buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RenewTargetImpl(namespaceURI, localName, namespacePrefix);
     }
 

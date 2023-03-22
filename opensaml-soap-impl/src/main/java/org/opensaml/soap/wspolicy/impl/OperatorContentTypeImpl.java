@@ -17,10 +17,10 @@
 
 package org.opensaml.soap.wspolicy.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -31,13 +31,16 @@ import org.opensaml.soap.wspolicy.OperatorContentType;
 import org.opensaml.soap.wspolicy.Policy;
 import org.opensaml.soap.wspolicy.PolicyReference;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * OperatorContentTypeImpl.
  */
+@SuppressWarnings("unchecked")
 public class OperatorContentTypeImpl extends AbstractWSPolicyObject implements OperatorContentType {
     
     /** All child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> xmlObjects;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> xmlObjects;
 
     /**
      * Constructor.
@@ -46,47 +49,45 @@ public class OperatorContentTypeImpl extends AbstractWSPolicyObject implements O
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public OperatorContentTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public OperatorContentTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         xmlObjects = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<All> getAlls() {
+    @Nonnull public List<All> getAlls() {
         return (List<All>) xmlObjects.subList(All.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<ExactlyOne> getExactlyOnes() {
+    @Nonnull public List<ExactlyOne> getExactlyOnes() {
         return (List<ExactlyOne>) xmlObjects.subList(ExactlyOne.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<Policy> getPolicies() {
+    @Nonnull public List<Policy> getPolicies() {
         return (List<Policy>) xmlObjects.subList(Policy.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<PolicyReference> getPolicyReferences() {
+    @Nonnull public List<PolicyReference> getPolicyReferences() {
         return (List<PolicyReference>) xmlObjects.subList(PolicyReference.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getXMLObjects() {
+    @Nonnull public List<XMLObject> getXMLObjects() {
         return xmlObjects;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getXMLObjects(final QName typeOrName) {
+    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) xmlObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(xmlObjects);
-        return Collections.unmodifiableList(children);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(xmlObjects);
     }
 
 }

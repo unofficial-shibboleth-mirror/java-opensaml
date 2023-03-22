@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wsaddressing.ProblemIRI;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wsaddressing.ProblemIRI;
 public class ProblemIRIBuilder extends AbstractWSAddressingObjectBuilder<ProblemIRI> {
 
     /** {@inheritDoc} */
-    public ProblemIRI buildObject() {
+    @Nonnull public ProblemIRI buildObject() {
         return buildObject(ProblemIRI.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public ProblemIRI buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public ProblemIRI buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ProblemIRIImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -26,9 +26,11 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
+import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A body handler for use with {@link HTTPSOAP11Decoder} that populates the 
@@ -41,16 +43,23 @@ public class SimplePayloadBodyHandler extends AbstractMessageHandler {
     @Nonnull private Logger log = LoggerFactory.getLogger(SimplePayloadBodyHandler.class);
 
     /** {@inheritDoc} */
-    protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
-        final Envelope env = (Envelope) messageContext.getSubcontext(SOAP11Context.class).getEnvelope();
-        final List<XMLObject> bodyChildren = env.getBody().getUnknownXMLObjects();
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
+        final Envelope env = (Envelope) messageContext.ensureSubcontext(SOAP11Context.class).getEnvelope();
+        if (env == null) {
+            throw new MessageHandlerException("SOAP envelope was null");
+        }
+        
+        final Body body = env.getBody();
+        
+        final List<XMLObject> bodyChildren = body != null ? body.getUnknownXMLObjects() : null;
         if (bodyChildren == null || bodyChildren.isEmpty()) {
             throw new MessageHandlerException("SOAP Envelope Body contained no children");
         } else if (bodyChildren.size() > 1) {
             log.warn("SOAP Envelope Body contained more than one child, returning the first as the message");
         }
             
-        messageContext.setMessage(env.getBody().getUnknownXMLObjects().get(0));
+        assert body != null;
+        messageContext.setMessage(body.getUnknownXMLObjects().get(0));
     }
 
 }

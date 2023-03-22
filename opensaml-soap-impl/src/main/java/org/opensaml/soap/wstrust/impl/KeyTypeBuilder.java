@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.KeyType;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.KeyType;
 public class KeyTypeBuilder extends AbstractWSTrustObjectBuilder<KeyType> {
 
     /** {@inheritDoc} */
-    public KeyType buildObject() {
+    @Nonnull public KeyType buildObject() {
         return buildObject(KeyType.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public KeyType buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public KeyType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 

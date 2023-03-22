@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.soap11.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.soap.common.SOAPObjectBuilder;
 import org.opensaml.soap.soap11.Envelope;
@@ -32,12 +35,13 @@ public class EnvelopeBuilder extends AbstractXMLObjectBuilder<Envelope> implemen
      * 
      * @return the build Envelope object
      */
-    public Envelope buildObject(){
+    @Nonnull public Envelope buildObject(){
         return buildObject(SOAPConstants.SOAP11_NS, Envelope.DEFAULT_ELEMENT_LOCAL_NAME, SOAPConstants.SOAP11_PREFIX);
     }
     
     /** {@inheritDoc} */
-    public Envelope buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Envelope buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EnvelopeImpl(namespaceURI, localName, namespacePrefix);
     }
 }

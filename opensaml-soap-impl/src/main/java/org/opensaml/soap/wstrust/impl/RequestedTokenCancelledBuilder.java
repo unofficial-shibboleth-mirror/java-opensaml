@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.RequestedTokenCancelled;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.RequestedTokenCancelled;
 public class RequestedTokenCancelledBuilder extends AbstractWSTrustObjectBuilder<RequestedTokenCancelled> {
 
     /** {@inheritDoc} */
-    public RequestedTokenCancelled buildObject() {
+    @Nonnull public RequestedTokenCancelled buildObject() {
         return buildObject(RequestedTokenCancelled.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public RequestedTokenCancelled buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public RequestedTokenCancelled buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new RequestedTokenCancelledImpl(namespaceURI, localName, namespacePrefix);
     }
 

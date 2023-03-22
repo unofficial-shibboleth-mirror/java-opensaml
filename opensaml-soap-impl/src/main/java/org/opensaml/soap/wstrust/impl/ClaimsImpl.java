@@ -17,16 +17,18 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.soap.wstrust.Claims;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * ClaimsImpl.
@@ -35,13 +37,13 @@ import org.opensaml.soap.wstrust.Claims;
 public class ClaimsImpl extends AbstractWSTrustObject implements Claims {
 
     /** The Dialect attribute value. */
-    private String dialect;
+    @Nullable private String dialect;
     
     /** Wildcard child elements. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
     
 
     /**
@@ -51,43 +53,42 @@ public class ClaimsImpl extends AbstractWSTrustObject implements Claims {
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public ClaimsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public ClaimsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public String getDialect() {
+    @Nullable public String getDialect() {
         return dialect;
     }
 
     /** {@inheritDoc} */
-    public void setDialect(final String newDialect) {
+    public void setDialect(@Nullable final String newDialect) {
         dialect = prepareForAssignment(dialect, newDialect);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(unknownChildren);
-        return Collections.unmodifiableList(children);
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
-
 
 }

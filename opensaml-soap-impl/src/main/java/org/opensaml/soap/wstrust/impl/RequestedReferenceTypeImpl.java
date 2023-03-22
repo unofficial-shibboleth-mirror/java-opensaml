@@ -17,13 +17,16 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wssecurity.SecurityTokenReference;
 import org.opensaml.soap.wstrust.RequestedReferenceType;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * RequestedReferenceTypeImpl.
@@ -32,7 +35,7 @@ import org.opensaml.soap.wstrust.RequestedReferenceType;
 public class RequestedReferenceTypeImpl extends AbstractWSTrustObject implements RequestedReferenceType {
     
     /** SecurityTokenReference child element. */
-    private SecurityTokenReference securityTokenReference;
+    @Nullable private SecurityTokenReference securityTokenReference;
 
     /**
      * Constructor.
@@ -41,28 +44,28 @@ public class RequestedReferenceTypeImpl extends AbstractWSTrustObject implements
      * @param elementLocalName name of the element
      * @param namespacePrefix namespace prefix of the element
      */
-    public RequestedReferenceTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    public RequestedReferenceTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public SecurityTokenReference getSecurityTokenReference() {
+    @Nullable public SecurityTokenReference getSecurityTokenReference() {
         return securityTokenReference;
     }
 
     /** {@inheritDoc} */
-    public void setSecurityTokenReference(final SecurityTokenReference newSecurityTokenReference) {
+    public void setSecurityTokenReference(@Nullable final SecurityTokenReference newSecurityTokenReference) {
         securityTokenReference = prepareForAssignment(securityTokenReference, newSecurityTokenReference);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final List<XMLObject> children = new ArrayList<>();
+    @Nullable public List<XMLObject> getOrderedChildren() {
         if (securityTokenReference != null) {
-            children.add(securityTokenReference);
+            return CollectionSupport.singletonList(securityTokenReference);
         }
-        return Collections.unmodifiableList(children);
+        
+        return null;
     }
 
 }

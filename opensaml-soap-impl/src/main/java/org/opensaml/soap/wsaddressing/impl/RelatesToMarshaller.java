@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wsaddressing.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
@@ -32,7 +34,8 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class RelatesToMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final RelatesTo relatesTo = (RelatesTo) xmlObject;
         
         final String relationshipType = StringSupport.trimOrNull(relatesTo.getRelationshipType());

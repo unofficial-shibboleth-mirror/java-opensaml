@@ -17,6 +17,8 @@
 
 package org.opensaml.soap.wssecurity.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -34,7 +36,8 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         
         if (!Strings.isNullOrEmpty(dateTime.getWSUId())) {
@@ -47,15 +50,15 @@ public class AttributedDateTimeMarshaller extends AbstractWSSecurityObjectMarsha
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject,
-            final Element domElement) throws MarshallingException {
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         XMLObjectSupport.marshallAttributeIDness(AttributedDateTime.WSU_ID_ATTR_NAME, domElement, true);
         
         super.marshallAttributeIDness(xmlObject, domElement);
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final AttributedDateTime dateTime = (AttributedDateTime) xmlObject;
         ElementSupport.appendTextContent(domElement, dateTime.getValue());

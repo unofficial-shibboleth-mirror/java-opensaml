@@ -17,8 +17,11 @@
 
 package org.opensaml.soap.wsfed.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
+import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.soap.wsfed.Address;
 import org.w3c.dom.Attr;
 
@@ -26,18 +29,20 @@ import org.w3c.dom.Attr;
 public class AddressUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processElementContent(final XMLObject fedObject, final String elementContent) {
+    protected void processElementContent(@Nonnull final XMLObject fedObject, @Nonnull final String elementContent) {
         final Address address = (Address) fedObject;
         address.setValue(elementContent);
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject fedObject, final Attr attribute) {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject fedObject, final XMLObject child) {
-
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
     }
+
 }

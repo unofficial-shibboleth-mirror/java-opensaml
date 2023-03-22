@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.SignatureAlgorithm;
 
 /**
@@ -26,13 +29,13 @@ import org.opensaml.soap.wstrust.SignatureAlgorithm;
 public class SignatureAlgorithmBuilder extends AbstractWSTrustObjectBuilder<SignatureAlgorithm> {
 
     /** {@inheritDoc} */
-    public SignatureAlgorithm buildObject() {
+    @Nonnull public SignatureAlgorithm buildObject() {
         return buildObject(SignatureAlgorithm.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public SignatureAlgorithm buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public SignatureAlgorithm buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SignatureAlgorithmImpl(namespaceURI, localName, namespacePrefix);
     }
 

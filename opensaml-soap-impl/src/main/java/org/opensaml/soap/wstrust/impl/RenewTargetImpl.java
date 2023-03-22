@@ -17,12 +17,15 @@
 
 package org.opensaml.soap.wstrust.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.soap.wstrust.RenewTarget;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * RenewTargetImpl.
@@ -31,7 +34,7 @@ import org.opensaml.soap.wstrust.RenewTarget;
 public class RenewTargetImpl extends AbstractWSTrustObject implements RenewTarget {
     
     /** Wildcard child element. */
-    private XMLObject unknownChild;
+    @Nullable private XMLObject unknownChild;
 
     /**
      * Constructor.
@@ -40,27 +43,29 @@ public class RenewTargetImpl extends AbstractWSTrustObject implements RenewTarge
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public RenewTargetImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public RenewTargetImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public XMLObject getUnknownXMLObject() {
+    @Nullable public XMLObject getUnknownXMLObject() {
         return unknownChild;
     }
 
     /** {@inheritDoc} */
-    public void setUnknownXMLObject(final XMLObject unknownObject) {
+    public void setUnknownXMLObject(@Nullable final XMLObject unknownObject) {
         unknownChild = unknownObject;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
+    @Nullable public List<XMLObject> getOrderedChildren() {
+        
         if (unknownChild != null) {
-            children.add(unknownChild);
+            return CollectionSupport.singletonList(unknownChild);
         }
-        return Collections.unmodifiableList(children);
+        
+        return null;
     }
 
 }

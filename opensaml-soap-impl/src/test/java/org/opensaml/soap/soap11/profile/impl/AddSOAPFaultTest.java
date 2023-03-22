@@ -17,28 +17,31 @@
 
 package org.opensaml.soap.soap11.profile.impl;
 
-import java.util.Collections;
-
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.logic.PredicateSupport;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.soap.messaging.context.SOAP11Context;
+import org.opensaml.soap.soap11.Detail;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.FaultActor;
 import org.opensaml.soap.soap11.FaultCode;
+import org.opensaml.soap.soap11.FaultString;
 import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
-
 /** {@link AddSOAPFault} unit test. */
+@SuppressWarnings("javadoc")
 public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;
@@ -56,13 +59,17 @@ public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        Assert.assertNull(mc.getMessage());
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.SERVER);
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
+        
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.SERVER);
         
         Assert.assertNull(fault.getMessage());
     }
@@ -73,39 +80,50 @@ public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
+
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
+
+        Assert.assertNull(mc.getMessage());
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.SERVER);
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.SERVER);
-        
-        Assert.assertEquals(fault.getMessage().getValue(), "Foo");
+        final FaultString fstring = fault.getMessage();
+        assert fstring != null;
+        Assert.assertEquals(fstring.getValue(), "Foo");
     }
     
     @Test public void testCodeAndStringViaLookupWithDetailedErrors() throws ComponentInitializationException {
         action.setFaultCodeLookupStrategy(FunctionSupport.constant(FaultCode.CLIENT));
         action.setFaultStringLookupStrategy(FunctionSupport.constant("TheClientError"));
         
-        action.setDetailedErrorsCondition(Predicates.<ProfileRequestContext>alwaysTrue());
+        action.setDetailedErrorsCondition(PredicateSupport.alwaysTrue());
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
+
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
+
+        Assert.assertNull(mc.getMessage());
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.CLIENT);
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.CLIENT);
-        
-        Assert.assertNotNull(fault.getMessage());
-        Assert.assertEquals(fault.getMessage().getValue(), "TheClientError");
+        final FaultString fstring = fault.getMessage();
+        assert fstring != null;
+        Assert.assertEquals(fstring.getValue(), "TheClientError");
         
         Assert.assertNull(fault.getActor());
         
@@ -116,20 +134,24 @@ public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
         action.setFaultCodeLookupStrategy(FunctionSupport.constant(FaultCode.CLIENT));
         action.setFaultStringLookupStrategy(FunctionSupport.constant("TheClientError"));
         
-        action.setDetailedErrorsCondition(Predicates.<ProfileRequestContext>alwaysFalse());
+        action.setDetailedErrorsCondition(PredicateSupport.alwaysFalse());
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        Assert.assertNull(mc.getMessage());
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.CLIENT);
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
+        
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.CLIENT);
         
         Assert.assertNull(fault.getMessage());
         
@@ -140,52 +162,63 @@ public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
     
     @Test public void testContextFaultWithDetailedErrors() throws ComponentInitializationException {
         final Fault contextFault = SOAPSupport.buildSOAP11Fault(FaultCode.CLIENT, "TheClientError", "TheFaultActor", 
-                Collections.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
+                CollectionSupport.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
         
         action.setContextFaultStrategy(FunctionSupport.constant(contextFault));
         
-        action.setDetailedErrorsCondition(Predicates.<ProfileRequestContext>alwaysTrue());
+        action.setDetailedErrorsCondition(PredicateSupport.alwaysTrue());
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
+        Assert.assertNull(mc.getMessage());
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.CLIENT);
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.CLIENT);
         
-        Assert.assertEquals(fault.getMessage().getValue(), "TheClientError");
+        final FaultString fstring = fault.getMessage();
+        assert fstring != null;
+        Assert.assertEquals(fstring.getValue(), "TheClientError");
         
-        Assert.assertEquals(fault.getActor().getURI(), "TheFaultActor");
+        final FaultActor actor = fault.getActor();
+        assert actor != null;
+        Assert.assertEquals(actor.getURI(), "TheFaultActor");
         
-        Assert.assertNotNull(fault.getDetail());
-        Assert.assertEquals(fault.getDetail().getUnknownXMLObjects().size(), 1);
+        final Detail detail = fault.getDetail();
+        assert detail != null;
+        Assert.assertEquals(detail.getUnknownXMLObjects().size(), 1);
     }
     
     @Test public void testContextFaultWithoutDetailedErrors() throws ComponentInitializationException {
         final Fault contextFault = SOAPSupport.buildSOAP11Fault(FaultCode.CLIENT, "TheClientError", "TheFaultActor", 
-                Collections.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
+                CollectionSupport.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
         
         action.setContextFaultStrategy(FunctionSupport.constant(contextFault));
-        action.setDetailedErrorsCondition(Predicates.<ProfileRequestContext>alwaysFalse());
+        action.setDetailedErrorsCondition(PredicateSupport.alwaysFalse());
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
+        Assert.assertNull(mc.getMessage());
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.CLIENT);
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.CLIENT);
         
         Assert.assertNull(fault.getMessage());
         
@@ -196,23 +229,29 @@ public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
     
     @Test public void testDefaultContextFaultStrategyFromOutbound() throws ComponentInitializationException {
         final Fault contextFault = SOAPSupport.buildSOAP11Fault(FaultCode.CLIENT, "TheClientError", "TheFaultActor", 
-                Collections.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
-        prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).setFault(contextFault);
+                CollectionSupport.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
         
-        action.setDetailedErrorsCondition(Predicates.<ProfileRequestContext>alwaysFalse());
+        final MessageContext inbound = prc.getInboundMessageContext();
+        assert inbound != null;
+        inbound.ensureSubcontext(SOAP11Context.class).setFault(contextFault);
+        
+        action.setDetailedErrorsCondition(PredicateSupport.alwaysFalse());
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
+        Assert.assertNull(mc.getMessage());
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.CLIENT);
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.CLIENT);
         
         Assert.assertNull(fault.getMessage());
         
@@ -223,23 +262,29 @@ public class AddSOAPFaultTest extends OpenSAMLInitBaseTestCase {
     
     @Test public void testDefaultContextFaultStrategyFromInbound() throws ComponentInitializationException {
         final Fault contextFault = SOAPSupport.buildSOAP11Fault(FaultCode.CLIENT, "TheClientError", "TheFaultActor", 
-                Collections.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
-        prc.getInboundMessageContext().getSubcontext(SOAP11Context.class, true).setFault(contextFault);
+                CollectionSupport.singletonList(XMLObjectSupport.buildXMLObject(SimpleXMLObject.ELEMENT_NAME)), null);
         
-        action.setDetailedErrorsCondition(Predicates.<ProfileRequestContext>alwaysFalse());
+        final MessageContext inbound = prc.getInboundMessageContext();
+        assert inbound != null;
+        inbound.ensureSubcontext(SOAP11Context.class).setFault(contextFault);
+        
+        action.setDetailedErrorsCondition(PredicateSupport.alwaysFalse());
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assert.assertNull(prc.getOutboundMessageContext().getMessage());
+        final MessageContext mc = prc.getOutboundMessageContext();
+        assert mc != null;
+        Assert.assertNull(mc.getMessage());
         
-        final Fault fault = prc.getOutboundMessageContext().getSubcontext(SOAP11Context.class, true).getFault();
-        Assert.assertNotNull(fault);
+        final Fault fault = mc.ensureSubcontext(SOAP11Context.class).getFault();
+        assert fault != null;
         
-        Assert.assertNotNull(fault.getCode());
-        Assert.assertEquals(fault.getCode().getValue(), FaultCode.CLIENT);
+        final FaultCode fcode = fault.getCode();
+        assert fcode != null;
+        Assert.assertEquals(fcode.getValue(), FaultCode.CLIENT);
         
         Assert.assertNull(fault.getMessage());
         

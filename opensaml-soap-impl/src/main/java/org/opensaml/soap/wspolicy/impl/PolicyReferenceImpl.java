@@ -19,6 +19,9 @@ package org.opensaml.soap.wspolicy.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.soap.wspolicy.PolicyReference;
@@ -30,16 +33,16 @@ import org.opensaml.soap.wspolicy.PolicyReference;
 public class PolicyReferenceImpl extends AbstractWSPolicyObject implements PolicyReference {
 
     /** URI attribute value. */
-    private String uri;
+    @Nullable private String uri;
 
     /** Digest attribute value. */
-    private String digest;
+    @Nullable private String digest;
 
     /** DigestAlgorithm attribute value. */
-    private String digestAlgorithm;
+    @Nullable private String digestAlgorithm;
 
     /** xs:anyAttribute attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -48,48 +51,49 @@ public class PolicyReferenceImpl extends AbstractWSPolicyObject implements Polic
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public PolicyReferenceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public PolicyReferenceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public String getDigest() {
+    @Nullable public String getDigest() {
         return digest;
     }
 
     /** {@inheritDoc} */
-    public String getDigestAlgorithm() {
+    @Nullable public String getDigestAlgorithm() {
         return digestAlgorithm;
     }
 
     /** {@inheritDoc} */
-    public String getURI() {
+    @Nullable public String getURI() {
         return uri;
     }
 
     /** {@inheritDoc} */
-    public void setDigest(final String newDigest) {
+    public void setDigest(@Nullable final String newDigest) {
         digest = prepareForAssignment(digest, newDigest);
     }
 
     /** {@inheritDoc} */
-    public void setDigestAlgorithm(final String newDigestAlgorithm) {
+    public void setDigestAlgorithm(@Nullable final String newDigestAlgorithm) {
         digestAlgorithm = prepareForAssignment(digestAlgorithm, newDigestAlgorithm);
     }
 
     /** {@inheritDoc} */
-    public void setURI(final String newURI) {
+    public void setURI(@Nullable final String newURI) {
         uri = prepareForAssignment(uri, newURI);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         return null;
     }
 

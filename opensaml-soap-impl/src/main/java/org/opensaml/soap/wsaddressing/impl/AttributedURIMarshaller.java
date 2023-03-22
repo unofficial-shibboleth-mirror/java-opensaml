@@ -18,6 +18,8 @@
 package org.opensaml.soap.wsaddressing.impl;
 
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -33,14 +35,15 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class AttributedURIMarshaller extends AbstractWSAddressingObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final AttributedURI attributedURI = (AttributedURI) xmlObject;
         ElementSupport.appendTextContent(domElement, attributedURI.getURI());
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final AttributedURI attributedURI = (AttributedURI) xmlObject;
         XMLObjectSupport.marshallAttributeMap(attributedURI.getUnknownAttributes(), domElement);
     }

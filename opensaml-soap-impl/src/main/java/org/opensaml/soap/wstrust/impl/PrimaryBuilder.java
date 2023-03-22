@@ -17,6 +17,9 @@
 
 package org.opensaml.soap.wstrust.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.soap.wstrust.Primary;
 
 /**
@@ -26,12 +29,13 @@ import org.opensaml.soap.wstrust.Primary;
 public class PrimaryBuilder extends AbstractWSTrustObjectBuilder<Primary> {
 
     /** {@inheritDoc} */
-    public Primary buildObject() {
+    @Nonnull public Primary buildObject() {
         return buildObject(Primary.ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public Primary buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Primary buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PrimaryImpl(namespaceURI, localName, namespacePrefix);
     }
 

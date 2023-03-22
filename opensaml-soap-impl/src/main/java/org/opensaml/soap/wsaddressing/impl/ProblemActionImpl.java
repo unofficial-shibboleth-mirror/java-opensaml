@@ -18,8 +18,10 @@
 package org.opensaml.soap.wsaddressing.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
@@ -27,19 +29,21 @@ import org.opensaml.soap.wsaddressing.Action;
 import org.opensaml.soap.wsaddressing.ProblemAction;
 import org.opensaml.soap.wsaddressing.SoapAction;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Implementation of {@link ProblemAction}.
  */
 public class ProblemActionImpl extends AbstractWSAddressingObject implements ProblemAction {
     
     /** Action child element. */
-    private Action action;
+    @Nullable private Action action;
     
     /** SoapAction child element. */
-    private SoapAction soapAction;
+    @Nullable private SoapAction soapAction;
     
     /** Wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -48,38 +52,39 @@ public class ProblemActionImpl extends AbstractWSAddressingObject implements Pro
      * @param elementLocalName The local name of the element
      * @param namespacePrefix The namespace prefix of the element
      */
-    public ProblemActionImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    public ProblemActionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public Action getAction() {
+    @Nullable public Action getAction() {
         return action;
     }
 
     /** {@inheritDoc} */
-    public SoapAction getSoapAction() {
+    @Nullable public SoapAction getSoapAction() {
         return soapAction;
     }
 
     /** {@inheritDoc} */
-    public void setAction(final Action newAction) {
+    public void setAction(@Nullable final Action newAction) {
         action = prepareForAssignment(action, newAction);
     }
 
     /** {@inheritDoc} */
-    public void setSoapAction(final SoapAction newSoapAction) {
+    public void setSoapAction(@Nullable final SoapAction newSoapAction) {
         soapAction = prepareForAssignment(soapAction, newSoapAction);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         if (action != null) {
             children.add(action);
@@ -88,7 +93,7 @@ public class ProblemActionImpl extends AbstractWSAddressingObject implements Pro
             children.add(soapAction);
         }
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }
