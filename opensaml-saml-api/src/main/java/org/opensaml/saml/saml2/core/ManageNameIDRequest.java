@@ -21,6 +21,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -34,17 +35,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ManageNameIDRequest extends RequestAbstractType {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ManageNameIDRequest";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ManageNameIDRequest";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ManageNameIDRequestType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ManageNameIDRequestType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /**
@@ -52,69 +53,69 @@ public interface ManageNameIDRequest extends RequestAbstractType {
      * 
      * @return the NameID of the request
      */
-    public NameID getNameID();
+    @Nullable NameID getNameID();
 
     /**
      * Set the NameID of the request.
      * 
      * @param newNameID the new NameID of the request
      */
-    public void setNameID(NameID newNameID);
+    void setNameID(@Nullable final NameID newNameID);
 
     /**
      * Get the EncryptedID of the request.
      * 
      * @return the EncryptedID of the request
      */
-    public EncryptedID getEncryptedID();
+    @Nullable EncryptedID getEncryptedID();
 
     /**
      * Set the EncryptedID of the request.
      * 
      * @param newEncryptedID the new EncryptedID of the request
      */
-    public void setEncryptedID(EncryptedID newEncryptedID);
+    void setEncryptedID(@Nullable final EncryptedID newEncryptedID);
 
     /**
      * Get the NewID of the request.
      * 
      * @return the NewID of the request
      */
-    public NewID getNewID();
+    @Nullable NewID getNewID();
 
     /**
      * Set the NewID of the request.
      * 
      * @param newNewID the new NewID of the request
      */
-    public void setNewID(NewID newNewID);
+    void setNewID(@Nullable final NewID newNewID);
 
     /**
      * Get the NewEncryptedID of the request.
      * 
      * @return the NewEncryptedID of the request
      */
-    public NewEncryptedID getNewEncryptedID();
+    @Nullable NewEncryptedID getNewEncryptedID();
 
     /**
      * Set the NewEncryptedID of the request.
      * 
      * @param newNewEncryptedID the new NewEncryptedID of the request
      */
-    public void setNewEncryptedID(NewEncryptedID newNewEncryptedID);
+    void setNewEncryptedID(@Nullable final NewEncryptedID newNewEncryptedID);
 
     /**
      * Get the Terminate of the request.
      * 
      * @return the Terminate of the request
      */
-    public Terminate getTerminate();
+    @Nullable Terminate getTerminate();
 
     /**
      * Set the Terminate of the request.
      * 
      * @param newTerminate the new NewID Terminate of the request
      */
-    public void setTerminate(Terminate newTerminate);
+    void setTerminate(@Nullable final Terminate newTerminate);
 
 }

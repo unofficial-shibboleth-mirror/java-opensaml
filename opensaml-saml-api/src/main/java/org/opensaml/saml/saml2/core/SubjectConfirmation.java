@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -31,93 +32,93 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectConfirmation extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Method attribute name. */
-    @Nonnull @NotEmpty public static final String METHOD_ATTRIB_NAME = "Method";
+    @Nonnull @NotEmpty static final String METHOD_ATTRIB_NAME = "Method";
     
     /** URI for the Holder of Key subject confirmation method, {@value}. */
-    @Nonnull @NotEmpty public static final String METHOD_HOLDER_OF_KEY = "urn:oasis:names:tc:SAML:2.0:cm:holder-of-key";
+    @Nonnull @NotEmpty static final String METHOD_HOLDER_OF_KEY = "urn:oasis:names:tc:SAML:2.0:cm:holder-of-key";
     
     /** URI for the Sender Vouches subject confirmation method, {@value}. */
-    @Nonnull @NotEmpty public static final String METHOD_SENDER_VOUCHES = "urn:oasis:names:tc:SAML:2.0:cm:sender-vouches";
+    @Nonnull @NotEmpty static final String METHOD_SENDER_VOUCHES = "urn:oasis:names:tc:SAML:2.0:cm:sender-vouches";
     
     /** URI for the Bearer subject confirmation method, {@value}. */
-    @Nonnull @NotEmpty public static final String METHOD_BEARER = "urn:oasis:names:tc:SAML:2.0:cm:bearer";
+    @Nonnull @NotEmpty static final String METHOD_BEARER = "urn:oasis:names:tc:SAML:2.0:cm:bearer";
 
     /**
      * Get the method used to confirm this subject.
      * 
      * @return the method used to confirm this subject
      */
-    public String getMethod();
+    @Nullable String getMethod();
 
     /**
      * Sets the method used to confirm this subject.
      * 
      * @param newMethod the method used to confirm this subject
      */
-    public void setMethod(String newMethod);
+    void setMethod(@Nullable final String newMethod);
 
     /**
      * Gets the base identifier of the principal for this request.
      * 
      * @return the base identifier of the principal for this request
      */
-    public BaseID getBaseID();
+    @Nullable BaseID getBaseID();
 
     /**
      * Sets the base identifier of the principal for this request.
      * 
      * @param newBaseID the base identifier of the principal for this request
      */
-    public void setBaseID(BaseID newBaseID);
+    void setBaseID(@Nullable final BaseID newBaseID);
 
     /**
      * Gets the name identifier of the principal for this request.
      * 
      * @return the name identifier of the principal for this request
      */
-    public NameID getNameID();
+    @Nullable NameID getNameID();
 
     /**
      * Sets the name identifier of the principal for this request.
      * 
      * @param newNameID the name identifier of the principal for this request
      */
-    public void setNameID(NameID newNameID);
+    void setNameID(@Nullable final NameID newNameID);
 
     /**
      * Gets the encrypted name identifier of the principal for this request.
      * 
      * @return the encrypted name identifier of the principal for this request
      */
-    public EncryptedID getEncryptedID();
+    @Nullable EncryptedID getEncryptedID();
 
     /**
      * Sets the encrypted name identifier of the principal for this request.
      * 
      * @param newEncryptedID the new encrypted name identifier of the principal for this request
      */
-    public void setEncryptedID(EncryptedID newEncryptedID);
+    void setEncryptedID(@Nullable final EncryptedID newEncryptedID);
 
     /**
      * Gets the data about how this subject was confirmed or constraints on the confirmation.
      * 
      * @return the data about how this subject was confirmed or constraints on the confirmation
      */
-    public SubjectConfirmationData getSubjectConfirmationData();
+    @Nullable SubjectConfirmationData getSubjectConfirmationData();
 
     /**
      * Sets the data about how this subject was confirmed or constraints on the confirmation.
@@ -125,5 +126,6 @@ public interface SubjectConfirmation extends SAMLObject {
      * @param newSubjectConfirmationData the data about how this subject was confirmed or constraints on the
      *            confirmation
      */
-    public void setSubjectConfirmationData(SubjectConfirmationData newSubjectConfirmationData);
+    void setSubjectConfirmationData(@Nullable final SubjectConfirmationData newSubjectConfirmationData);
+
 }

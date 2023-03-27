@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -31,50 +32,51 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface BaseID extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "BaseID";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "BaseID";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "BaseIDAbstractType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "BaseIDAbstractType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** NameQualifier attribute name. */
-    @Nonnull @NotEmpty public static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
+    @Nonnull @NotEmpty static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
 
     /** SPNameQualifier attribute name. */
-    @Nonnull @NotEmpty public static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
+    @Nonnull @NotEmpty static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
 
     /**
      * Gets the NameQualifier value.
      * 
      * @return the NameQualifier value
      */
-    public String getNameQualifier();
+    @Nullable String getNameQualifier();
 
     /**
      * Sets the NameQualifier value.
      * 
      * @param newNameQualifier the NameQualifier value
      */
-    public void setNameQualifier(String newNameQualifier);
+    void setNameQualifier(@Nullable final String newNameQualifier);
 
     /**
      * Gets the SPNameQualifier value.
      * 
      * @return the SPNameQualifier value
      */
-    public String getSPNameQualifier();
+    @Nullable String getSPNameQualifier();
 
     /**
      * Sets the SPNameQualifier value.
      * 
      * @param newSPNameQualifier the SPNameQualifier value
      */
-    public void setSPNameQualifier(String newSPNameQualifier);
+    void setSPNameQualifier(@Nullable final String newSPNameQualifier);
+
 }

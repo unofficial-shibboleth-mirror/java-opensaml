@@ -32,9 +32,9 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthnContextDecl extends SAMLObject, XSAny {
 
     /** Local Name of AuthnContextDecl. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextDecl";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnContextDecl";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
 }

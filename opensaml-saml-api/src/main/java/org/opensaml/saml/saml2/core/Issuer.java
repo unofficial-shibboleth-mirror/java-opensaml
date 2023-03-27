@@ -31,16 +31,16 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Issuer extends NameIDType, SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Issuer";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Issuer";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "IssuerType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "IssuerType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 }

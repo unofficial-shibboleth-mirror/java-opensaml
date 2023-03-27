@@ -20,10 +20,12 @@ package org.opensaml.saml.saml2.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -32,71 +34,72 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthzDecisionStatement extends Statement {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthzDecisionStatement";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthzDecisionStatement";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthzDecisionStatementType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthzDecisionStatementType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Resource attribute name. */
-    @Nonnull @NotEmpty public static final String RESOURCE_ATTRIB_NAME = "Resource";
+    @Nonnull @NotEmpty static final String RESOURCE_ATTRIB_NAME = "Resource";
 
     /** Decision attribute name. */
-    @Nonnull @NotEmpty public static final String DECISION_ATTRIB_NAME = "Decision";
+    @Nonnull @NotEmpty static final String DECISION_ATTRIB_NAME = "Decision";
 
     /**
      * Get URI of the resource to which authorization is saught.
      * 
      * @return URI of the resource to which authorization is saught
      */
-    public String getResource();
+    @Nullable String getResource();
 
     /**
      * Sets URI of the resource to which authorization is saught.
      * 
      * @param newResourceURI URI of the resource to which authorization is saught
      */
-    public void setResource(String newResourceURI);
+    void setResource(@Nullable final String newResourceURI);
 
     /**
      * Gets the decision of the authorization request.
      * 
      * @return the decision of the authorization request
      */
-    public DecisionTypeEnumeration getDecision();
+    @Nullable DecisionTypeEnumeration getDecision();
 
     /**
      * Sets the decision of the authorization request.
      * 
      * @param newDecision the decision of the authorization request
      */
-    public void setDecision(DecisionTypeEnumeration newDecision);
+    void setDecision(@Nullable final DecisionTypeEnumeration newDecision);
 
     /**
      * Gets the actions authorized to be performed.
      * 
      * @return the actions authorized to be performed
      */
-    public List<Action> getActions();
+    @Nonnull @Live List<Action> getActions();
 
     /**
      * Get the SAML assertion the authority relied on when making the authorization decision.
      * 
      * @return the SAML assertion the authority relied on when making the authorization decision
      */
-    public Evidence getEvidence();
+    @Nullable Evidence getEvidence();
 
     /**
      * Sets the SAML assertion the authority relied on when making the authorization decision.
      * 
      * @param newEvidence the SAML assertion the authority relied on when making the authorization decision
      */
-    public void setEvidence(Evidence newEvidence);
+    void setEvidence(@Nullable final Evidence newEvidence);
+
 }

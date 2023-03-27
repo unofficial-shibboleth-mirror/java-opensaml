@@ -154,9 +154,12 @@ public class DefaultLocalErrorPredicate implements Predicate<ProfileRequestConte
 
         final AuthnRequest authnRequest = new MessageLookup<>(AuthnRequest.class).apply(
                 new InboundMessageContextLookup().apply(input));
-        if (authnRequest != null && authnRequest.isPassive()) {
-            log.debug("Request was a SAML 2 AuthnRequest with IsPassive set, handling error with response");
-            return false;
+        if (authnRequest != null) {
+            final Boolean isPassive = authnRequest.isPassive();
+            if (isPassive != null && isPassive) {
+                log.debug("Request was a SAML 2 AuthnRequest with IsPassive set, handling error with response");
+                return false;
+            }
         }
         
         final EventContext eventCtx = eventContextLookupStrategy.apply(input);

@@ -21,12 +21,15 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.Live;
 
 /**
  * SAML 2.0 Core Assertion.
@@ -65,105 +68,105 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * 
      * @return the SAML Version of this assertion.
      */
-    SAMLVersion getVersion();
+    @Nullable SAMLVersion getVersion();
 
     /**
      * Sets the SAML Version of this assertion.
      * 
      * @param newVersion the SAML Version of this assertion
      */
-    void setVersion(SAMLVersion newVersion);
+    void setVersion(@Nullable final SAMLVersion newVersion);
 
     /**
      * Gets the issue instance of this assertion.
      * 
      * @return the issue instance of this assertion
      */
-    Instant getIssueInstant();
+    @Nullable Instant getIssueInstant();
 
     /**
      * Sets the issue instance of this assertion.
      * 
      * @param newIssueInstance the issue instance of this assertion
      */
-    void setIssueInstant(Instant newIssueInstance);
+    void setIssueInstant(@Nullable final Instant newIssueInstance);
 
     /**
      * Sets the ID of this assertion.
      * 
      * @return the ID of this assertion
      */
-    String getID();
+    @Nullable String getID();
 
     /**
      * Sets the ID of this assertion.
      * 
      * @param newID the ID of this assertion
      */
-    void setID(String newID);
+    void setID(@Nullable final String newID);
 
     /**
      * Gets the Issuer of this assertion.
      * 
      * @return the Issuer of this assertion
      */
-    Issuer getIssuer();
+    @Nullable Issuer getIssuer();
 
     /**
      * Sets the Issuer of this assertion.
      * 
      * @param newIssuer the Issuer of this assertion
      */
-    void setIssuer(Issuer newIssuer);
+    void setIssuer(@Nullable final Issuer newIssuer);
 
     /**
      * Gets the Subject of this assertion.
      * 
      * @return the Subject of this assertion
      */
-    Subject getSubject();
+    @Nullable Subject getSubject();
 
     /**
      * Sets the Subject of this assertion.
      * 
      * @param newSubject the Subject of this assertion
      */
-    void setSubject(Subject newSubject);
+    void setSubject(@Nullable final Subject newSubject);
 
     /**
      * Gets the Conditions placed on this assertion.
      * 
      * @return the Conditions placed on this assertion
      */
-    Conditions getConditions();
+    @Nullable Conditions getConditions();
 
     /**
      * Sets the Conditions placed on this assertion.
      * 
      * @param newConditions the Conditions placed on this assertion
      */
-    void setConditions(Conditions newConditions);
+    void setConditions(@Nullable final Conditions newConditions);
 
     /**
      * Gets the Advice for this assertion.
      * 
      * @return the Advice for this assertion
      */
-    Advice getAdvice();
+    @Nullable Advice getAdvice();
 
     /**
      * Sets the Advice for this assertion.
      * 
      * @param newAdvice the Advice for this assertion
      */
-    void setAdvice(Advice newAdvice);
+    void setAdvice(@Nullable final Advice newAdvice);
 
     /**
      * Gets the list of statements attached to this assertion.
      * 
      * @return the list of statements attached to this assertion
      */
-    List<Statement> getStatements();
+    @Nonnull @Live List<Statement> getStatements();
 
     /**
      * Gets the list of statements attached to this assertion that match a particular QName.
@@ -171,26 +174,27 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * @param typeOrName the QName of the statements to return
      * @return the list of statements attached to this assertion
      */
-    List<Statement> getStatements(QName typeOrName);
+    @Nonnull @Live List<Statement> getStatements(@Nonnull final QName typeOrName);
 
     /**
      * Gets the list of AuthnStatements attached to this assertion.
      * 
      * @return the list of AuthnStatements attached to this assertion
      */
-    List<AuthnStatement> getAuthnStatements();
+    @Nonnull @Live List<AuthnStatement> getAuthnStatements();
 
     /**
      * Gets the list of AuthzDecisionStatements attached to this assertion.
      * 
      * @return the list of AuthzDecisionStatements attached to this assertion
      */
-    List<AuthzDecisionStatement> getAuthzDecisionStatements();
+    @Nonnull @Live List<AuthzDecisionStatement> getAuthzDecisionStatements();
 
     /**
      * Gets the list of AttributeStatement attached to this assertion.
      * 
      * @return the list of AttributeStatement attached to this assertion
      */
-    List<AttributeStatement> getAttributeStatements();
+    @Nonnull @Live List<AttributeStatement> getAttributeStatements();
+
 }

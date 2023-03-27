@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.metadata;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -31,52 +32,52 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface IndexedEndpoint extends Endpoint {
 
     /** Local name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IndexedEndpoint";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "IndexedEndpoint";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "IndexedEndpointType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "IndexedEndpointType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** index attribute name. */
-    @Nonnull @NotEmpty public static final String INDEX_ATTRIB_NAME = "index";
+    @Nonnull @NotEmpty static final String INDEX_ATTRIB_NAME = "index";
 
     /** isDeault attribute name. */
-    @Nonnull @NotEmpty public static final String IS_DEFAULT_ATTRIB_NAME = "isDefault";
+    @Nonnull @NotEmpty static final String IS_DEFAULT_ATTRIB_NAME = "isDefault";
 
     /**
      * Gets the index of the endpoint.
      * 
      * @return index of the endpoint
      */
-    public Integer getIndex();
+    @Nullable Integer getIndex();
 
     /**
      * Sets the index of the endpoint.
      * 
      * @param index index of the endpoint
      */
-    public void setIndex(Integer index);
+    void setIndex(@Nullable final Integer index);
 
     /**
      * Gets whether this is the default endpoint in a list.
      * 
      * @return whether this is the default endpoint in a list
      */
-    public Boolean isDefault();
+    @Nullable Boolean isDefault();
 
     /**
      * Gets whether this is the default endpoint in a list.
      * 
      * @return whether this is the default endpoint in a list
      */
-    public XSBooleanValue isDefaultXSBoolean();
+    @Nullable XSBooleanValue isDefaultXSBoolean();
 
     /**
      * Sets whether this is the default endpoint in a list. Boolean values will be marshalled to either "true" or
@@ -84,12 +85,12 @@ public interface IndexedEndpoint extends Endpoint {
      * 
      * @param newIsDefault whether this is the default endpoint in a list
      */
-    public void setIsDefault(Boolean newIsDefault);
+    void setIsDefault(@Nullable final Boolean newIsDefault);
 
     /**
      * Sets whether this is the default endpoint in a list.
      * 
      * @param newIsDefault whether this is the default endpoint in a list
      */
-    public void setIsDefault(XSBooleanValue newIsDefault);
+    void setIsDefault(@Nullable final XSBooleanValue newIsDefault);
 }

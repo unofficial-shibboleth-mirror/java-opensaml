@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -32,82 +33,82 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface NameIDPolicy extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDPolicy";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDPolicy";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "NameIDPolicyType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "NameIDPolicyType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Format attribute name. */
-    @Nonnull @NotEmpty public static final String FORMAT_ATTRIB_NAME = "Format";
+    @Nonnull @NotEmpty static final String FORMAT_ATTRIB_NAME = "Format";
 
     /** SPNameQualifier attribute name. */
-    @Nonnull @NotEmpty public static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
+    @Nonnull @NotEmpty static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
 
     /** AllowCreate attribute name. */
-    @Nonnull @NotEmpty public static final String ALLOW_CREATE_ATTRIB_NAME = "AllowCreate";
+    @Nonnull @NotEmpty static final String ALLOW_CREATE_ATTRIB_NAME = "AllowCreate";
 
     /**
      * Gets the format of the NameIDPolicy.
      * 
      * @return the format of the NameIDPolicy
      */
-    public String getFormat();
+    @Nullable String getFormat();
 
     /**
      * Sets the format of the NameIDPolicy.
      * 
      * @param newFormat the format of the NameIDPolicy
      */
-    public void setFormat(String newFormat);
+    void setFormat(@Nullable final String newFormat);
 
     /**
      * Gets the SPNameQualifier value.
      * 
      * @return the SPNameQualifier value
      */
-    public String getSPNameQualifier();
+    @Nullable String getSPNameQualifier();
 
     /**
      * Sets the SPNameQualifier value.
      * 
      * @param newSPNameQualifier the SPNameQualifier value
      */
-    public void setSPNameQualifier(String newSPNameQualifier);
+    void setSPNameQualifier(@Nullable final String newSPNameQualifier);
 
     /**
      * Gets the AllowCreate value.
      * 
      * @return the AllowCreate value
      */
-    public Boolean getAllowCreate();
+    @Nullable Boolean getAllowCreate();
 
     /**
      * Gets the AllowCreate value.
      * 
      * @return the AllowCreate value
      */
-    public XSBooleanValue getAllowCreateXSBoolean();
+    @Nullable XSBooleanValue getAllowCreateXSBoolean();
 
     /**
      * Sets the AllowCreate value. Boolean values will be marshalled to either "true" or "false".
      * 
      * @param newAllowCreate the AllowCreate value
      */
-    public void setAllowCreate(Boolean newAllowCreate);
+    void setAllowCreate(@Nullable final Boolean newAllowCreate);
 
     /**
      * Sets the AllowCreate value.
      * 
      * @param newAllowCreate the AllowCreate value
      */
-    public void setAllowCreate(XSBooleanValue newAllowCreate);
+    void setAllowCreate(@Nullable final XSBooleanValue newAllowCreate);
 
 }

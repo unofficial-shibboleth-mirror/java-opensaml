@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -28,6 +29,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -37,78 +39,78 @@ public interface AffiliationDescriptor extends SignableSAMLObject, TimeBoundSAML
         AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AffiliationDescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AffiliationDescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AffiliationDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AffiliationDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "affiliationOwnerID" attribute's local name. */
-    @Nonnull @NotEmpty public static final String OWNER_ID_ATTRIB_NAME = "affiliationOwnerID";
+    @Nonnull @NotEmpty static final String OWNER_ID_ATTRIB_NAME = "affiliationOwnerID";
 
     /** ID attribute's local name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "ID";
 
     /**
      * Gets the ID of the owner of this affiliation. The owner may, or may not, be a member of the affiliation.
      * 
      * @return the ID of the owner of this affiliation
      */
-    public String getOwnerID();
+    @Nullable String getOwnerID();
 
     /**
      * Gets the ID of this Descriptor.
      * 
      * @return the ID of this Descriptor
      */
-    public String getID();
+    @Nullable String getID();
 
     /**
      * Gets the Extensions child of this object.
      * 
      * @return the Extensions child of this object
      */
-    public Extensions getExtensions();
+    @Nullable Extensions getExtensions();
 
     /**
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
      */
-    public void setExtensions(Extensions extensions);
+    void setExtensions(@Nullable final Extensions extensions);
 
     /**
      * Sets the ID of the owner of this affiliation.
      * 
      * @param ownerID the ID of the owner of this affiliation
      */
-    public void setOwnerID(String ownerID);
+    void setOwnerID(@Nullable final String ownerID);
 
     /**
      * Sets the ID of this descriptor.
      * 
      * @param newID the ID of this descriptor
      */
-    public void setID(String newID);
+    void setID(@Nullable final String newID);
 
     /**
      * Gets a list of the members of this affiliation.
      * 
      * @return a list of affiliate members
      */
-    public List<AffiliateMember> getMembers();
+    @Nonnull @Live List<AffiliateMember> getMembers();
 
     /**
-     * Gets an immutable list of KeyDescriptors for this affiliation.
+     * Gets a list of KeyDescriptors for this affiliation.
      * 
      * @return list of {@link KeyDescriptor}s for this affiliation
      */
-    public List<KeyDescriptor> getKeyDescriptors();
+    @Nonnull @Live List<KeyDescriptor> getKeyDescriptors();
 }

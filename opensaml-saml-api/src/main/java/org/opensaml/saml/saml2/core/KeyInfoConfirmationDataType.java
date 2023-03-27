@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,10 +34,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface KeyInfoConfirmationDataType extends SubjectConfirmationData {
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyInfoConfirmationDataType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "KeyInfoConfirmationDataType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
     
     /**
@@ -44,6 +45,6 @@ public interface KeyInfoConfirmationDataType extends SubjectConfirmationData {
      * 
      * @return list of child KeyInfo elements
      */
-    public List<XMLObject> getKeyInfos();
+    @Nonnull @Live List<XMLObject> getKeyInfos();
 
 }

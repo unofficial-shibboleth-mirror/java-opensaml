@@ -20,10 +20,13 @@ package org.opensaml.saml.saml2.core;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core AuthnStatement.
@@ -31,31 +34,31 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface AuthnStatement extends Statement {
 
     /** Element local name. */
-    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnStatement";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnStatement";
 
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull static final String TYPE_LOCAL_NAME = "AuthnStatementType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthnStatementType";
 
     /** QName of the XSI type. */
     @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** AuthnInstant attribute name. */
-    @Nonnull static final String AUTHN_INSTANT_ATTRIB_NAME = "AuthnInstant";
+    @Nonnull @NotEmpty static final String AUTHN_INSTANT_ATTRIB_NAME = "AuthnInstant";
 
     /** AuthnInstant attribute QName. */
     @Nonnull static final QName AUTHN_INSTANT_ATTRIB_QNAME =
             new QName(null, "AuthnInstant", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** SessionIndex attribute name. */
-    @Nonnull static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
+    @Nonnull @NotEmpty static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
 
     /** SessionNoOnOrAfter attribute name. */
-    @Nonnull static final String SESSION_NOT_ON_OR_AFTER_ATTRIB_NAME = "SessionNotOnOrAfter";
+    @Nonnull @NotEmpty static final String SESSION_NOT_ON_OR_AFTER_ATTRIB_NAME = "SessionNotOnOrAfter";
 
     /** SessionNotOnOrAfter attribute QName. */
     @Nonnull static final QName SESSION_NOT_ON_OR_AFTER_ATTRIB_QNAME =
@@ -66,68 +69,68 @@ public interface AuthnStatement extends Statement {
      * 
      * @return the time when the authentication took place
      */
-    Instant getAuthnInstant();
+    @Nullable Instant getAuthnInstant();
 
     /**
      * Sets the time when the authentication took place.
      * 
      * @param newAuthnInstant the time when the authentication took place
      */
-    void setAuthnInstant(Instant newAuthnInstant);
+    void setAuthnInstant(@Nullable final Instant newAuthnInstant);
 
     /**
      * Get the session index between the principal and the authenticating authority.
      * 
      * @return the session index between the principal and the authenticating authority
      */
-    String getSessionIndex();
+    @Nullable String getSessionIndex();
 
     /**
      * Sets the session index between the principal and the authenticating authority.
      * 
      * @param newIndex the session index between the principal and the authenticating authority
      */
-    void setSessionIndex(String newIndex);
+    void setSessionIndex(@Nullable final String newIndex);
 
     /**
      * Get the time when the session between the principal and the SAML authority ends.
      * 
      * @return the time when the session between the principal and the SAML authority ends
      */
-    Instant getSessionNotOnOrAfter();
+    @Nullable Instant getSessionNotOnOrAfter();
 
     /**
      * Set the time when the session between the principal and the SAML authority ends.
      * 
      * @param newSessionNotOnOrAfter the time when the session between the principal and the SAML authority ends
      */
-    void setSessionNotOnOrAfter(Instant newSessionNotOnOrAfter);
+    void setSessionNotOnOrAfter(@Nullable final Instant newSessionNotOnOrAfter);
 
     /**
      * Get the DNS domain and IP address of the system where the principal was authenticated.
      * 
      * @return the DNS domain and IP address of the system where the principal was authenticated
      */
-    SubjectLocality getSubjectLocality();
+    @Nullable SubjectLocality getSubjectLocality();
 
     /**
      * Set the DNS domain and IP address of the system where the principal was authenticated.
      * 
      * @param newLocality the DNS domain and IP address of the system where the principal was authenticated
      */
-    void setSubjectLocality(SubjectLocality newLocality);
+    void setSubjectLocality(@Nullable final SubjectLocality newLocality);
 
     /**
      * Gets the context used to authenticate the subject.
      * 
      * @return the context used to authenticate the subject
      */
-    AuthnContext getAuthnContext();
+    @Nullable AuthnContext getAuthnContext();
 
     /**
      * Sets the context used to authenticate the subject.
      * 
      * @param newAuthnContext the context used to authenticate the subject
      */
-    void setAuthnContext(AuthnContext newAuthnContext);
+    void setAuthnContext(@Nullable final AuthnContext newAuthnContext);
 }

@@ -22,6 +22,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -35,17 +36,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ArtifactResponse extends StatusResponseType {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ArtifactResponse";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ArtifactResponse";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ArtifactResponseType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ArtifactResponseType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
     
     /**
@@ -53,12 +54,13 @@ public interface ArtifactResponse extends StatusResponseType {
      * 
      * @return protocol message from the artifact response
      */
-    public SAMLObject getMessage();
+    @Nullable SAMLObject getMessage();
     
     /**
      * Sets the protocol message from the artifact response.
      * 
      * @param message protocol message from the artifact response
      */
-    public void setMessage(SAMLObject message);
+    void setMessage(@Nullable final SAMLObject message);
+
 }

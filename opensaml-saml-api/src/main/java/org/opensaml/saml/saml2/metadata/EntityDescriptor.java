@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -28,7 +29,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * SAML 2.0 Metadata EntityDescriptor.
@@ -37,76 +41,76 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
         AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityDescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityDescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EntityDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EntityDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Element QName, no prefix. */
-    @Nonnull public static final QName ELEMENT_QNAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME);
+    @Nonnull static final QName ELEMENT_QNAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME);
 
     /** "ID" attribute name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "ID";
 
     /** "Name" attribute name. */
-    @Nonnull @NotEmpty public static final String ENTITY_ID_ATTRIB_NAME = "entityID";
+    @Nonnull @NotEmpty static final String ENTITY_ID_ATTRIB_NAME = "entityID";
 
     /**
      * Gets the entity ID for this entity descriptor.
      * 
      * @return the entity ID for this entity descriptor
      */
-    public String getEntityID();
+    @Nullable String getEntityID();
 
     /**
      * Sets the entity ID for this entity descriptor.
      * 
      * @param id the entity ID for this entity descriptor
      */
-    public void setEntityID(String id);
+    void setEntityID(@Nullable final String id);
 
     /**
      * Gets the ID for this entity descriptor.
      * 
      * @return the ID for this entity descriptor
      */
-    public String getID();
+    @Nullable String getID();
 
     /**
      * Sets the ID for this entity descriptor.
      * 
      * @param newID the ID for this entity descriptor
      */
-    public void setID(String newID);
+    void setID(@Nullable final String newID);
 
     /**
      * Gets the Extensions child of this object.
      * 
      * @return the Extensions child of this object
      */
-    public Extensions getExtensions();
+    @Nullable Extensions getExtensions();
 
     /**
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
      */
-    public void setExtensions(Extensions extensions);
+    void setExtensions(@Nullable final Extensions extensions);
 
     /**
      * Gets all the role descriptors for this entity descriptor.
      * 
      * @return the role descriptors for this entity descriptor
      */
-    public List<RoleDescriptor> getRoleDescriptors();
+    @Nonnull @Live List<RoleDescriptor> getRoleDescriptors();
 
     /**
      * Gets all the role descriptors for this entity descriptor that match the supplied QName parameter.
@@ -115,7 +119,7 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * 
      * @return the role descriptors for this entity descriptor
      */
-    public List<RoleDescriptor> getRoleDescriptors(QName typeOrName);
+    @Nonnull @Live List<RoleDescriptor> getRoleDescriptors(@Nonnull final QName typeOrName);
 
     /**
      * Gets all the role descriptors for this entity that support the given protocol.
@@ -125,7 +129,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * 
      * @return the list of role descriptors that support the given protocol
      */
-    public List<RoleDescriptor> getRoleDescriptors(QName typeOrName, String supportedProtocol);
+    @Nonnull @Unmodifiable @NotLive List<RoleDescriptor> getRoleDescriptors(@Nonnull final QName typeOrName,
+            @Nonnull @NotEmpty String supportedProtocol);
 
     /**
      * Gets the first {@link IDPSSODescriptor} role descriptor for this entity that supports the given protocol.
@@ -134,7 +139,7 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * 
      * @return the {@link IDPSSODescriptor} role descriptor
      */
-    public IDPSSODescriptor getIDPSSODescriptor(String supportedProtocol);
+    @Nullable IDPSSODescriptor getIDPSSODescriptor(@Nonnull @NotEmpty final String supportedProtocol);
 
     /**
      * Gets the first {@link SPSSODescriptor} role descriptor for this entity that supports the given protocol.
@@ -143,7 +148,7 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
 
      * @return the {@link SPSSODescriptor} role descriptor
      */
-    public SPSSODescriptor getSPSSODescriptor(String supportedProtocol);
+    @Nullable SPSSODescriptor getSPSSODescriptor(@Nonnull @NotEmpty final String supportedProtocol);
 
     /**
      * Gets the first {@link AuthnAuthorityDescriptor} role descriptor for this entity that supports the given protocol.
@@ -152,7 +157,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * 
      * @return the {@link AuthnAuthorityDescriptor} role descriptor
      */
-    public AuthnAuthorityDescriptor getAuthnAuthorityDescriptor(String supportedProtocol);
+    @Nullable AuthnAuthorityDescriptor getAuthnAuthorityDescriptor(
+            @Nonnull @NotEmpty final String supportedProtocol);
 
     /**
      * Gets the first {@link AttributeAuthorityDescriptor} role descriptor for this entity that supports the given
@@ -162,7 +168,8 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * 
      * @return the {@link AttributeAuthorityDescriptor} role descriptor
      */
-    public AttributeAuthorityDescriptor getAttributeAuthorityDescriptor(String supportedProtocol);
+    @Nullable AttributeAuthorityDescriptor getAttributeAuthorityDescriptor(
+            @Nonnull @NotEmpty final String supportedProtocol);
 
     /**
      * Gets the first {@link PDPDescriptor} role descriptor for this entity that supports the given protocol.
@@ -171,47 +178,47 @@ public interface EntityDescriptor extends SignableSAMLObject, TimeBoundSAMLObjec
      * 
      * @return the {@link PDPDescriptor} role descriptor
      */
-    public PDPDescriptor getPDPDescriptor(String supportedProtocol);
+    @Nullable PDPDescriptor getPDPDescriptor(@Nonnull @NotEmpty final String supportedProtocol);
 
     /**
      * Gets the affiliation descriptor for this entity.
      * 
      * @return the affiliation descriptor for this entity
      */
-    public AffiliationDescriptor getAffiliationDescriptor();
+    @Nullable AffiliationDescriptor getAffiliationDescriptor();
 
     /**
      * Sets the affiliation descriptor for this entity.
      * 
      * @param descriptor the affiliation descriptor for this entity
      */
-    public void setAffiliationDescriptor(AffiliationDescriptor descriptor);
+    void setAffiliationDescriptor(@Nullable final AffiliationDescriptor descriptor);
 
     /**
      * Gets the organization for this entity.
      * 
      * @return the organization for this entity
      */
-    public Organization getOrganization();
+    @Nullable Organization getOrganization();
 
     /**
      * Sets the organization for this entity.
      * 
      * @param organization the organization for this entity
      */
-    public void setOrganization(Organization organization);
+    void setOrganization(@Nullable final Organization organization);
 
     /**
      * Get the contact people for this entity.
      * 
      * @return the contact people for this entity
      */
-    public List<ContactPerson> getContactPersons();
+    @Nonnull @Live List<ContactPerson> getContactPersons();
 
     /**
      * Gets the additional metadata locations for this entity.
      * 
      * @return the additional metadata locations for this entity
      */
-    public List<AdditionalMetadataLocation> getAdditionalMetadataLocations();
+    @Nonnull @Live List<AdditionalMetadataLocation> getAdditionalMetadataLocations();
 }

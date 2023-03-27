@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Evidence extends SAMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Evidence";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Evidence";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EvidenceType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EvidenceType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
 
     /**
@@ -51,33 +52,33 @@ public interface Evidence extends SAMLObject {
      * 
      * @return the list of AssertionID references used as evidence
      */
-    public List<AssertionIDRef> getAssertionIDReferences();
+    @Nonnull @Live List<AssertionIDRef> getAssertionIDReferences();
 
     /**
      * Gets the list of AssertionURI references used as evidence.
      * 
      * @return the list of AssertionURI references used as evidence
      */
-    public List<AssertionURIRef> getAssertionURIReferences();
+    @Nonnull @Live List<AssertionURIRef> getAssertionURIReferences();
 
     /**
      * Gets the list of Assertions used as evidence.
      * 
      * @return the list of Assertions used as evidence
      */
-    public List<Assertion> getAssertions();
+    @Nonnull @Live List<Assertion> getAssertions();
 
     /**
      * Gets the list of EncryptedAssertions used as evidence.
      * 
      * @return the list of EncryptedAssertions used as evidence
      */
-    public List<EncryptedAssertion> getEncryptedAssertions();
+    @Nonnull @Live List<EncryptedAssertion> getEncryptedAssertions();
 
     /**
      * Gets the list of all elements used as evidence.
      * 
      * @return the list of Evidentiary objects used as evidence
      */
-    public List<Evidentiary> getEvidence();
+    @Nonnull @Live List<Evidentiary> getEvidence();
 }

@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.schema.XSString;
 
@@ -29,99 +30,99 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface NameIDType extends XSString {
 
     /** NameQualifier attribute name. */
-    @Nonnull @NotEmpty public static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
+    @Nonnull @NotEmpty static final String NAME_QUALIFIER_ATTRIB_NAME = "NameQualifier";
 
     /** SPNameQualifier attribute name. */
-    @Nonnull @NotEmpty public static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
+    @Nonnull @NotEmpty static final String SP_NAME_QUALIFIER_ATTRIB_NAME = "SPNameQualifier";
 
     /** Format attribute name. */
-    @Nonnull @NotEmpty public static final String FORMAT_ATTRIB_NAME = "Format";
+    @Nonnull @NotEmpty static final String FORMAT_ATTRIB_NAME = "Format";
 
     /** SPProviderID attribute name. */
-    @Nonnull @NotEmpty public static final String SPPROVIDED_ID_ATTRIB_NAME = "SPProvidedID";
+    @Nonnull @NotEmpty static final String SPPROVIDED_ID_ATTRIB_NAME = "SPProvidedID";
 
     /** URI for unspecified name format. */
-    @Nonnull @NotEmpty public static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+    @Nonnull @NotEmpty static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
     /** URI for email name format. */
-    @Nonnull @NotEmpty public static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
+    @Nonnull @NotEmpty static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
 
     /** URI for X509 subject name format. */
-    @Nonnull @NotEmpty public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
+    @Nonnull @NotEmpty static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
 
     /** URI for windows domain qualified name name format. */
-    @Nonnull @NotEmpty public static final String WIN_DOMAIN_QUALIFIED =
+    @Nonnull @NotEmpty static final String WIN_DOMAIN_QUALIFIED =
             "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
 
     /** URI for kerberos name format. */
-    @Nonnull @NotEmpty public static final String KERBEROS = "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos";
+    @Nonnull @NotEmpty static final String KERBEROS = "urn:oasis:names:tc:SAML:2.0:nameid-format:kerberos";
 
     /** URI for SAML entity name format. */
-    @Nonnull @NotEmpty public static final String ENTITY = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity";
+    @Nonnull @NotEmpty static final String ENTITY = "urn:oasis:names:tc:SAML:2.0:nameid-format:entity";
 
     /** URI for persistent name format. */
-    @Nonnull @NotEmpty public static final String PERSISTENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
+    @Nonnull @NotEmpty static final String PERSISTENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:persistent";
 
     /** URI for transient name format. */
-    @Nonnull @NotEmpty public static final String TRANSIENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient";
+    @Nonnull @NotEmpty static final String TRANSIENT = "urn:oasis:names:tc:SAML:2.0:nameid-format:transient";
 
     /** Special URI used by NameIDPolicy to indicate a NameID should be encrypted. */
-    @Nonnull @NotEmpty public static final String ENCRYPTED = "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted";
+    @Nonnull @NotEmpty static final String ENCRYPTED = "urn:oasis:names:tc:SAML:2.0:nameid-format:encrypted";
 
     /**
      * Gets the NameQualifier value.
      * 
      * @return the NameQualifier value
      */
-    public String getNameQualifier();
+    @Nullable String getNameQualifier();
 
     /**
      * Sets the NameQualifier value.
      * 
      * @param newNameQualifier the NameQualifier value
      */
-    public void setNameQualifier(String newNameQualifier);
+    void setNameQualifier(@Nullable final String newNameQualifier);
 
     /**
      * Gets the SPNameQualifier value.
      * 
      * @return the SPNameQualifier value
      */
-    public String getSPNameQualifier();
+    @Nullable String getSPNameQualifier();
 
     /**
      * Sets the SPNameQualifier value.
      * 
      * @param newSPNameQualifier the SPNameQualifier value
      */
-    public void setSPNameQualifier(String newSPNameQualifier);
+    void setSPNameQualifier(@Nullable final String newSPNameQualifier);
 
     /**
      * Gets the format of the NameID.
      * 
      * @return the format of the NameID
      */
-    public String getFormat();
+    @Nullable String getFormat();
 
     /**
      * Sets the format of the NameID.
      * 
      * @param newFormat the format of the NameID
      */
-    public void setFormat(String newFormat);
+    void setFormat(@Nullable final String newFormat);
 
     /**
      * Gets the SPProvidedID of this NameID.
      * 
      * @return the SPProvidedID of this NameID
      */
-    public String getSPProvidedID();
+    @Nullable String getSPProvidedID();
 
     /**
      * Sets the SPProvddedID of this NameID.
      * 
      * @param newSPProvidedID the SPProvidedID of this NameID
      */
-    public void setSPProvidedID(String newSPProvidedID);
+    void setSPProvidedID(@Nullable final String newSPProvidedID);
 
 }

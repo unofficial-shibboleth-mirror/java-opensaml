@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.metadata;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -33,67 +34,67 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Endpoint extends SAMLObject, ElementExtensibleXMLObject, AttributeExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Endpoint";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Endpoint";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EndpointType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EndpointType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "Binding" attribute name. */
-    @Nonnull @NotEmpty public static final String BINDING_ATTRIB_NAME = "Binding";
+    @Nonnull @NotEmpty static final String BINDING_ATTRIB_NAME = "Binding";
 
     /** "Location" attribute name. */
-    @Nonnull @NotEmpty public static final String LOCATION_ATTRIB_NAME = "Location";
+    @Nonnull @NotEmpty static final String LOCATION_ATTRIB_NAME = "Location";
 
     /** "ResponseLocation" attribute name. */
-    @Nonnull @NotEmpty public static final String RESPONSE_LOCATION_ATTRIB_NAME = "ResponseLocation";
+    @Nonnull @NotEmpty static final String RESPONSE_LOCATION_ATTRIB_NAME = "ResponseLocation";
 
     /**
      * Gets the URI identifier for the binding supported by this Endpoint.
      * 
      * @return the URI identifier for the binding supported by this Endpoint
      */
-    public String getBinding();
+    @Nullable String getBinding();
 
     /**
      * Sets the URI identifier for the binding supported by this Endpoint.
      * 
      * @param binding the URI identifier for the binding supported by this Endpoint
      */
-    public void setBinding(String binding);
+    void setBinding(@Nullable final String binding);
 
     /**
      * Gets the URI, usually a URL, for the location of this Endpoint.
      * 
      * @return the location of this Endpoint
      */
-    public String getLocation();
+    @Nullable String getLocation();
 
     /**
      * Sets the URI, usually a URL, for the location of this Endpoint.
      * 
      * @param location the location of this Endpoint
      */
-    public void setLocation(String location);
+    void setLocation(@Nullable final String location);
 
     /**
      * Gets the URI, usually a URL, responses should be sent to this for this Endpoint.
      * 
      * @return the URI responses should be sent to this for this Endpoint
      */
-    public String getResponseLocation();
+    @Nullable String getResponseLocation();
 
     /**
      * Sets the URI, usually a URL, responses should be sent to this for this Endpoint.
      * 
      * @param location the URI responses should be sent to this for this Endpoint
      */
-    public void setResponseLocation(String location);
+    void setResponseLocation(@Nullable final String location);
 }

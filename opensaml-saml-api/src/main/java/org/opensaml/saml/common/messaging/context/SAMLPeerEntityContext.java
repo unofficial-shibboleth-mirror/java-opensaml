@@ -203,11 +203,11 @@ public final class SAMLPeerEntityContext extends AbstractAuthenticatableSAMLEnti
             return null;
         }
 
-        if (issuer.getFormat() == null || issuer.getFormat().equals(NameIDType.ENTITY)) {
+        final String format = issuer.getFormat();
+        if (format == null || format.equals(NameIDType.ENTITY)) {
             return issuer.getValue();
         }
-        log.warn("Couldn't dynamically resolve SAML 2 peer entity ID due to unsupported NameID format: {}", 
-                issuer.getFormat());
+        log.warn("Couldn't dynamically resolve SAML 2 peer entity ID due to unsupported NameID format: {}", format);
         return null;
     }
 

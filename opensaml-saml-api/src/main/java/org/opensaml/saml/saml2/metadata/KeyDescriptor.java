@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -27,6 +28,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -35,54 +37,54 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface KeyDescriptor extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyDescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyDescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "KeyDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "use" attribute's local name. */
-    @Nonnull @NotEmpty public static final String USE_ATTRIB_NAME = "use";
+    @Nonnull @NotEmpty static final String USE_ATTRIB_NAME = "use";
 
     /**
      * Gets the use of this key.
      * 
      * @return the use of this key
      */
-    public UsageType getUse();
+    @Nullable UsageType getUse();
 
     /**
      * Sets the use of this key.
      * 
      * @param newType the use of this key
      */
-    public void setUse(UsageType newType);
+    void setUse(@Nullable final UsageType newType);
 
     /**
      * Gets information about the key, including the key itself.
      * 
      * @return information about the key, including the key itself
      */
-    public KeyInfo getKeyInfo();
+    @Nullable KeyInfo getKeyInfo();
 
     /**
      * Sets information about the key, including the key itself.
      * 
      * @param newKeyInfo information about the key, including the key itself
      */
-    public void setKeyInfo(KeyInfo newKeyInfo);
+    void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
 
     /**
      * Gets the encryption methods that are supported by the entity.
      * 
      * @return the encryption methods that are supported by the entity
      */
-    public List<EncryptionMethod> getEncryptionMethods();
+    @Nonnull @Live List<EncryptionMethod> getEncryptionMethods();
 }

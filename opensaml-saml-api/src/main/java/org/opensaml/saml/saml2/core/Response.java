@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -35,17 +36,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Response extends StatusResponseType {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ResponseType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ResponseType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /**
@@ -53,12 +54,12 @@ public interface Response extends StatusResponseType {
      * 
      * @return  the list of Assertion child elements
      */
-    public List<Assertion> getAssertions();
+    @Nonnull @Live List<Assertion> getAssertions();
 
     /**
      * Return the list of EncryptedAssertion child elements.
      * 
      * @return  the list of EncryptedAssertion child elements
      */
-    public List<EncryptedAssertion> getEncryptedAssertions();
+    @Nonnull @Live List<EncryptedAssertion> getEncryptedAssertions();
 }

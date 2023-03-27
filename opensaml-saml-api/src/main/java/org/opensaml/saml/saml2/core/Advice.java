@@ -26,6 +26,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,17 +35,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Advice extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Advice";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Advice";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AdviceType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AdviceType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /**
@@ -52,7 +53,7 @@ public interface Advice extends SAMLObject {
      * 
      * @return the list of all child elements attached to this advice
      */
-    public List<XMLObject> getChildren();
+    @Nonnull @Live List<XMLObject> getChildren();
 
     /**
      * Gets the list of child elements attached to this advice that match a particular QName.
@@ -60,33 +61,33 @@ public interface Advice extends SAMLObject {
      * @param typeOrName the QName of the child elements to return
      * @return the list of matching child elements attached to this advice
      */
-    public List<XMLObject> getChildren(QName typeOrName);
+    @Nonnull @Live List<XMLObject> getChildren(@Nonnull final QName typeOrName);
 
     /**
      * Gets the list of AssertionID references used as advice.
      * 
      * @return the list of AssertionID references used as advice
      */
-    public List<AssertionIDRef> getAssertionIDReferences();
+    @Nonnull @Live List<AssertionIDRef> getAssertionIDReferences();
 
     /**
      * Gets the list of AssertionURI references used as advice.
      * 
      * @return the list of AssertionURI references used as advice
      */
-    public List<AssertionURIRef> getAssertionURIReferences();
+    @Nonnull @Live List<AssertionURIRef> getAssertionURIReferences();
 
     /**
      * Gets the list of Assertions used as advice.
      * 
      * @return the list of Assertions used as advice
      */
-    public List<Assertion> getAssertions();
+    @Nonnull @Live List<Assertion> getAssertions();
 
     /**
      * Gets the list of EncryptedAssertions used as advice.
      * 
      * @return the list of EncryptedAssertions used as advice
      */
-    public List<EncryptedAssertion> getEncryptedAssertions();
+    @Nonnull @Live List<EncryptedAssertion> getEncryptedAssertions();
 }

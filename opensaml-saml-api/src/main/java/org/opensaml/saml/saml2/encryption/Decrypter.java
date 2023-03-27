@@ -35,6 +35,7 @@ import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
 import org.opensaml.xmlsec.DecryptionParameters;
+import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -172,13 +173,14 @@ public class Decrypter extends org.opensaml.xmlsec.encryption.support.Decrypter 
      */
     private SAMLObject decryptData(@Nonnull final EncryptedElementType encElement) throws DecryptionException {
         
-        if (encElement.getEncryptedData() == null) {
+        final EncryptedData encryptedData = encElement.getEncryptedData();
+        if (encryptedData == null) {
             throw new DecryptionException("Element had no EncryptedData child");
         }
         
         XMLObject xmlObject = null;
         try {
-            xmlObject = decryptData(encElement.getEncryptedData(), isRootInNewDocument());
+            xmlObject = decryptData(encryptedData, isRootInNewDocument());
         } catch (final DecryptionException e) {
             log.error("SAML Decrypter encountered an error decrypting element content: {}", e.getMessage());
             throw e; 

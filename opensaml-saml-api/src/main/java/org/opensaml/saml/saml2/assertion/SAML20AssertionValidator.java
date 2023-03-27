@@ -399,12 +399,13 @@ public class SAML20AssertionValidator {
     @Nonnull protected ValidationResult validateIssueInstant(@Nonnull final Assertion assertion,
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
-        if (assertion.getIssueInstant() == null) {
+        final Instant issueInstant = assertion.getIssueInstant();
+
+        if (issueInstant == null) {
             context.setValidationFailureMessage(String.format(
                     "Assertion '%s' did not contain the required IssueInstant", assertion.getID()));
             return ValidationResult.INVALID; 
         }
-        final Instant issueInstant = assertion.getIssueInstant();
         
         final Duration clockSkew = getClockSkew(context);
         final Duration lifetime = getLifetime(context);
@@ -447,8 +448,9 @@ public class SAML20AssertionValidator {
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
         String issuer = null;
-        if (assertion.getIssuer() != null) {
-            issuer = StringSupport.trimOrNull(assertion.getIssuer().getValue());
+        final Issuer issuerElement = assertion.getIssuer();
+        if (issuerElement != null) {
+            issuer = StringSupport.trimOrNull(issuerElement.getValue());
         }
         if (issuer == null) {
             log.warn("Assertion Issuer was missing and was required");
@@ -548,8 +550,9 @@ public class SAML20AssertionValidator {
         assert signature != null;
         
         String tokenIssuer = null;
-        if (token.getIssuer() != null) {
-            tokenIssuer = token.getIssuer().getValue();
+        final Issuer issuerElement = token.getIssuer();
+        if (issuerElement != null) {
+            tokenIssuer = issuerElement.getValue();
         }
         
         log.debug("Attempting signature validation on Assertion '{}' from Issuer '{}'",
@@ -651,8 +654,9 @@ public class SAML20AssertionValidator {
         
         if (!criteriaSet.contains(EntityIdCriterion.class)) {
             String issuer =  null;
-            if (token.getIssuer() != null) {
-                issuer = StringSupport.trimOrNull(token.getIssuer().getValue());
+            final Issuer issuerElement = token.getIssuer();
+            if (issuerElement != null) {
+                issuer = StringSupport.trimOrNull(issuerElement.getValue());
             }
             if (issuer != null) {
                 criteriaSet.add(new EntityIdCriterion(issuer));

@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.ecp;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -33,34 +34,34 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Response extends SAMLObject, MustUnderstandBearing, ActorBearing {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ResponseType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ResponseType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** ProviderName attribute name. */
-    @Nonnull @NotEmpty public static final String ASSERTION_CONSUMER_SERVICE_URL_ATTRIB_NAME = "AssertionConsumerServiceURL";
+    @Nonnull @NotEmpty static final String ASSERTION_CONSUMER_SERVICE_URL_ATTRIB_NAME = "AssertionConsumerServiceURL";
     
     /**
      * Get the AssertionConsumerServiceURL attribute value.
      * 
      * @return the AssertionConsumerServiceURL attribute value
      */
-    public String getAssertionConsumerServiceURL();
+    @Nullable String getAssertionConsumerServiceURL();
 
     /**
      * Get the AssertionConsumerServiceURL attribute value.
      * 
      * @param newAssertionConsumerServiceURL the new AssertionConsumerServiceURL attribute value
      */
-    public void setAssertionConsumerServiceURL(String newAssertionConsumerServiceURL);
+    void setAssertionConsumerServiceURL(@Nullable final String newAssertionConsumerServiceURL);
 
 }

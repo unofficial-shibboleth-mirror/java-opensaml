@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -36,10 +37,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AssertionIDRequest extends RequestAbstractType {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDRequest";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AssertionIDRequest";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -47,5 +48,6 @@ public interface AssertionIDRequest extends RequestAbstractType {
      * 
      * @return the list of child AssertionIDRef's
      */
-    public List<AssertionIDRef> getAssertionIDRefs();
+    @Nonnull @Live List<AssertionIDRef> getAssertionIDRefs();
+
 }

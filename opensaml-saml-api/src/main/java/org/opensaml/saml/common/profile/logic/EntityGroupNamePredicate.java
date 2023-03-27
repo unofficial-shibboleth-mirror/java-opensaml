@@ -125,13 +125,16 @@ public class EntityGroupNamePredicate implements Predicate<EntityDescriptor> {
                 try {
                     assert metadataResolver != null;
                     final EntityDescriptor affiliation = metadataResolver.resolveSingle(criteria);
-                    if (affiliation != null && affiliation.getAffiliationDescriptor() != null) {
-                        for (final AffiliateMember member : affiliation.getAffiliationDescriptor().getMembers()) {
-                            final String uri = member.getURI();
-                            if (uri != null && uri.equals(input.getEntityID())) {
-                                log.debug("Found AffiliationDescriptor '{}' membership for entity '{}'",
-                                        affiliation.getEntityID(), input.getEntityID());
-                                return true;
+                    if (affiliation != null) {
+                        final AffiliationDescriptor descriptor = affiliation.getAffiliationDescriptor();
+                        if (descriptor != null) {
+                            for (final AffiliateMember member : descriptor.getMembers()) {
+                                final String uri = member.getURI();
+                                if (uri != null && uri.equals(input.getEntityID())) {
+                                    log.debug("Found AffiliationDescriptor '{}' membership for entity '{}'",
+                                            affiliation.getEntityID(), input.getEntityID());
+                                    return true;
+                                }
                             }
                         }
                     }

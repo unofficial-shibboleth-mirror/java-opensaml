@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -29,7 +30,10 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.common.CacheableSAMLObject;
 import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * SAML 2.0 Metadata RoleDescriptor.
@@ -38,48 +42,48 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
         AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RoleDescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RoleDescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RoleDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RoleDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "ID" attribute's local name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "ID";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "ID";
 
     /** "protocolEnumeration" attribute's local name. */
-    @Nonnull @NotEmpty public static final String PROTOCOL_ENUMERATION_ATTRIB_NAME = "protocolSupportEnumeration";
+    @Nonnull @NotEmpty static final String PROTOCOL_ENUMERATION_ATTRIB_NAME = "protocolSupportEnumeration";
 
     /** "errorURL" attribute's local name. */
-    @Nonnull @NotEmpty public static final String ERROR_URL_ATTRIB_NAME = "errorURL";
+    @Nonnull @NotEmpty static final String ERROR_URL_ATTRIB_NAME = "errorURL";
 
     /**
      * Gets the ID of this role descriptor.
      * 
      * @return the ID of this role descriptor
      */
-    public String getID();
+    @Nullable String getID();
 
     /**
      * Sets the ID of this role descriptor.
      * 
      * @param newID the ID of this role descriptor
      */
-    public void setID(String newID);
+    void setID(@Nullable final String newID);
 
     /**
      * Gets an immutable list of protocol URIs supported by this role.
      * 
      * @return list of protocol URIs supported by this role
      */
-    public List<String> getSupportedProtocols();
+    @Nonnull @NotLive @Unmodifiable List<String> getSupportedProtocols();
 
     /**
      * Chckes to see if the given protocol is supported by this role.
@@ -88,97 +92,97 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
      * 
      * @return true if the protocol is supported, false if not
      */
-    public boolean isSupportedProtocol(String protocol);
+    boolean isSupportedProtocol(@Nonnull @NotEmpty final String protocol);
 
     /**
      * Adds a protocol to the list of supported protocols for this role.
      * 
      * @param protocol the protocol
      */
-    public void addSupportedProtocol(String protocol);
+    void addSupportedProtocol(@Nonnull @NotEmpty final String protocol);
 
     /**
      * Removes a protocol to the list of supported protocols for this role.
      * 
      * @param protocol the protocol
      */
-    public void removeSupportedProtocol(String protocol);
+    void removeSupportedProtocol(@Nonnull @NotEmpty final String protocol);
 
     /**
      * Removes a list of protocols to the list of supported protocols for this role.
      * 
      * @param protocols the protocol
      */
-    public void removeSupportedProtocols(Collection<String> protocols);
+    void removeSupportedProtocols(@Nonnull Collection<String> protocols);
 
     /**
      * Removes all the supported protocols from this role.
      * 
      */
-    public void removeAllSupportedProtocols();
+    void removeAllSupportedProtocols();
 
     /**
      * Gets the URI users should be sent to in the event of an error.
      * 
      * @return the URI users should be sent to in the event of an error
      */
-    public String getErrorURL();
+    @Nullable String getErrorURL();
 
     /**
      * Sets the URI users should be sent to in the event of an error.
      * 
      * @param errorURL the URI users should be sent to in the event of an error
      */
-    public void setErrorURL(String errorURL);
+    void setErrorURL(@Nullable final String errorURL);
 
     /**
      * Gets the Extensions child of this object.
      * 
      * @return the Extensions child of this object
      */
-    public Extensions getExtensions();
+    @Nullable Extensions getExtensions();
 
     /**
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
      */
-    public void setExtensions(Extensions extensions);
+    void setExtensions(@Nullable final Extensions extensions);
 
     /**
      * Gets the key descriptors for this role.
      * 
      * @return the key descriptors for this role
      */
-    public List<KeyDescriptor> getKeyDescriptors();
+    @Nonnull @Live List<KeyDescriptor> getKeyDescriptors();
 
     /**
      * Gets the organization responsible for this role.
      * 
      * @return the organization responsible for this role
      */
-    public Organization getOrganization();
+    @Nullable Organization getOrganization();
 
     /**
      * Sets the organization responsible for this role.
      * 
      * @param organization the organization responsible for this role
      */
-    public void setOrganization(Organization organization);
+    void setOrganization(@Nullable final Organization organization);
 
     /**
-     * Gets an immutable list of {@link ContactPerson}s for this role.
+     * Gets list of {@link ContactPerson}s for this role.
      * 
      * @return list of {@link ContactPerson}s for this role
      */
-    public List<ContactPerson> getContactPersons();
+    @Nonnull @Live List<ContactPerson> getContactPersons();
 
     /**
-     * Gets a read-only list of endpoints for this role.
+     * Gets immutable list of endpoints for this role.
      * 
      * @return immutable list of endpoints for this role
      */
-    public List<Endpoint> getEndpoints();
+    @Nonnull @NotLive @Unmodifiable List<Endpoint> getEndpoints();
 
     /**
      * Gets a read-only list of endpoints for this role for the given type.
@@ -187,5 +191,5 @@ public interface RoleDescriptor extends SignableSAMLObject, TimeBoundSAMLObject,
      * 
      * @return immutable list of endpoints for this role
      */
-    public List<Endpoint> getEndpoints(QName type);
+    @Nonnull @NotLive @Unmodifiable List<Endpoint> getEndpoints(@Nonnull final QName type);
 }

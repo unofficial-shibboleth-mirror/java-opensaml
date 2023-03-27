@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.metadata;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -32,47 +33,47 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface RequestedAttribute extends Attribute {
 
     /** Local name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAttribute";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestedAttribute";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestedAttributeType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RequestedAttributeType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "isRequired" attribute's local name. */
-    @Nonnull @NotEmpty public static final String IS_REQUIRED_ATTRIB_NAME = "isRequired";
+    @Nonnull @NotEmpty static final String IS_REQUIRED_ATTRIB_NAME = "isRequired";
 
     /**
      * Checks to see if this requested attribute is also required.
      * 
      * @return true if this attribute is required
      */
-    public Boolean isRequired();
+    @Nullable Boolean isRequired();
 
     /**
      * Checks to see if this requested attribute is also required.
      * 
      * @return true if this attribute is required
      */
-    public XSBooleanValue isRequiredXSBoolean();
+    @Nullable XSBooleanValue isRequiredXSBoolean();
 
     /**
      * Sets if this requested attribute is also required. Boolean values will be marshalled to either "true" or "false".
      * 
      * @param newIsRequire true if this attribute is required
      */
-    public void setIsRequired(Boolean newIsRequire);
+    void setIsRequired(@Nullable final Boolean newIsRequire);
 
     /**
      * Sets if this requested attribute is also required.
      * 
      * @param newIsRequire true if this attribute is required
      */
-    public void setIsRequired(XSBooleanValue newIsRequire);
+    void setIsRequired(@Nullable final XSBooleanValue newIsRequire);
 }

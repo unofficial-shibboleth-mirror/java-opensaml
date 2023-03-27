@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -32,17 +33,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface PDPDescriptor extends RoleDescriptor {
 
     /** Local name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PDPDescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "PDPDescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PDPDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "PDPDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
@@ -50,19 +51,19 @@ public interface PDPDescriptor extends RoleDescriptor {
      * 
      * @return list of authz services for this service
      */
-    public List<AuthzService> getAuthzServices();
+    @Nonnull @Live List<AuthzService> getAuthzServices();
 
     /**
      * Gets the list of assertion ID request services for this PDP.
      * 
      * @return list of assertion ID request services for this PDP
      */
-    public List<AssertionIDRequestService> getAssertionIDRequestServices();
+    @Nonnull @Live List<AssertionIDRequestService> getAssertionIDRequestServices();
 
     /**
      * Gets the list of NameID formats this service supports.
      * 
      * @return NameID formats this service supports
      */
-    public List<NameIDFormat> getNameIDFormats();
+    @Nonnull @Live List<NameIDFormat> getNameIDFormats();
 }

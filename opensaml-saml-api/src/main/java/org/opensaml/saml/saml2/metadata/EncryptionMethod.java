@@ -31,10 +31,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface EncryptionMethod extends org.opensaml.xmlsec.encryption.EncryptionMethod, SAMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
 }

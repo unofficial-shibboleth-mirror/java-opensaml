@@ -20,12 +20,14 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,52 +36,52 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AttributeConsumingService extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeConsumingService";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeConsumingService";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributeConsumingServiceType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AttributeConsumingServiceType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "index" attribute's local name. */
-    @Nonnull @NotEmpty public static final String INDEX_ATTRIB_NAME = "index";
+    @Nonnull @NotEmpty static final String INDEX_ATTRIB_NAME = "index";
 
     /** "isDefault" attribute's local name. */
-    @Nonnull @NotEmpty public static final String IS_DEFAULT_ATTRIB_NAME = "isDefault";
+    @Nonnull @NotEmpty static final String IS_DEFAULT_ATTRIB_NAME = "isDefault";
 
     /**
      * Gets the index for this service.
      * 
      * @return the index for this service
      */
-    public int getIndex();
+    int getIndex();
 
     /**
      * Sets the index for this service.
      * 
      * @param index the index for this service
      */
-    public void setIndex(int index);
+    void setIndex(int index);
 
     /**
      * Checks if this is the default service for the service provider.
      * 
      * @return true if this is the default service, false if not
      */
-    public Boolean isDefault();
+    @Nullable Boolean isDefault();
 
     /**
      * Checks if this is the default service for the service provider.
      * 
      * @return true if this is the default service, false if not
      */
-    public XSBooleanValue isDefaultXSBoolean();
+    @Nullable XSBooleanValue isDefaultXSBoolean();
 
     /**
      * Sets if this is the default service for the service provider. Boolean values will be marshalled to either "true"
@@ -87,33 +89,33 @@ public interface AttributeConsumingService extends SAMLObject {
      * 
      * @param newIsDefault true if this is the default service, false if not
      */
-    public void setIsDefault(Boolean newIsDefault);
+    void setIsDefault(@Nullable final Boolean newIsDefault);
 
     /**
      * Sets if this is the default service for the service provider.
      * 
      * @param newIsDefault true if this is the default service, false if not
      */
-    public void setIsDefault(XSBooleanValue newIsDefault);
+    void setIsDefault(@Nullable final XSBooleanValue newIsDefault);
 
     /**
      * Gets the list of names this service has.
      * 
      * @return list of names this service has
      */
-    public List<ServiceName> getNames();
+    @Nonnull @Live List<ServiceName> getNames();
 
     /**
      * Gets the descriptions for this service.
      * 
      * @return descriptions for this service
      */
-    public List<ServiceDescription> getDescriptions();
+    @Nonnull @Live List<ServiceDescription> getDescriptions();
 
     /**
      * Gets the attributes this service requests.
      * 
      * @return attributes this service requests
      */
-    public List<RequestedAttribute> getRequestedAttributes();
+    @Nonnull @Live List<RequestedAttribute> getRequestedAttributes();
 }

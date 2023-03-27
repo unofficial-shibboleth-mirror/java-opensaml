@@ -26,6 +26,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Attribute;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,17 +35,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AttributeAuthorityDescriptor extends SAMLObject, RoleDescriptor {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeAuthorityDescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeAuthorityDescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributeAuthorityDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AttributeAuthorityDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
@@ -52,33 +53,33 @@ public interface AttributeAuthorityDescriptor extends SAMLObject, RoleDescriptor
      * 
      * @return list of attributes services
      */
-    public List<AttributeService> getAttributeServices();
+    @Nonnull @Live List<AttributeService> getAttributeServices();
 
     /**
      * Gets a list of Assertion ID request services.
      * 
      * @return list of Assertion ID request services
      */
-    public List<AssertionIDRequestService> getAssertionIDRequestServices();
+    @Nonnull @Live List<AssertionIDRequestService> getAssertionIDRequestServices();
 
     /**
      * Gets a list of NameID formats supported by this authority.
      * 
      * @return list of NameID formats supported by this authority
      */
-    public List<NameIDFormat> getNameIDFormats();
+    @Nonnull @Live List<NameIDFormat> getNameIDFormats();
 
     /**
      * Gets a list of Attribute profiles supported by this authority.
      * 
      * @return list of Attribute profiles supported by this authority
      */
-    public List<AttributeProfile> getAttributeProfiles();
+    @Nonnull @Live List<AttributeProfile> getAttributeProfiles();
 
     /**
      * Gets the list of attribute available from this authority.
      * 
      * @return list of attribute available from this authority
      */
-    public List<Attribute> getAttributes();
+    @Nonnull @Live List<Attribute> getAttributes();
 }

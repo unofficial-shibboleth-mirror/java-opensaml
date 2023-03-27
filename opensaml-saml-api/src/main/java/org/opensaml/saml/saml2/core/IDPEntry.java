@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -31,68 +32,68 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface IDPEntry extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPEntry";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPEntry";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "IDPEntryType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "IDPEntryType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** ProviderID attribute name. */
-    @Nonnull @NotEmpty public static final String PROVIDER_ID_ATTRIB_NAME = "ProviderID";
+    @Nonnull @NotEmpty static final String PROVIDER_ID_ATTRIB_NAME = "ProviderID";
 
     /** Name attribute name. */
-    @Nonnull @NotEmpty public static final String NAME_ATTRIB_NAME = "Name";
+    @Nonnull @NotEmpty static final String NAME_ATTRIB_NAME = "Name";
 
     /** Loc attribute name. */
-    @Nonnull @NotEmpty public static final String LOC_ATTRIB_NAME = "Loc";
+    @Nonnull @NotEmpty static final String LOC_ATTRIB_NAME = "Loc";
 
     /**
      * Gets ProviderID URI.
      * 
      * @return the ProviderID URI
      */
-    public String getProviderID();
+    @Nullable String getProviderID();
 
     /**
      * Sets the ProviderID URI.
      * 
      * @param newProviderID the new ProviderID URI
      */
-    public void setProviderID(String newProviderID);
+    void setProviderID(@Nullable final String newProviderID);
 
     /**
      * Gets the Name value.
      * 
      * @return the Name value
      */
-    public String getName();
+    @Nullable String getName();
 
     /**
      * Sets the Name value.
      * 
      * @param newName the Name value
      */
-    public void setName(String newName);
+    void setName(@Nullable final String newName);
 
     /**
      * Gets the Loc value.
      * 
      * @return the Loc value
      */
-    public String getLoc();
+    @Nullable String getLoc();
 
     /**
      * Sets the Loc value.
      * 
      * @param newLoc the new Loc value
      */
-    public void setLoc(String newLoc);
+    void setLoc(@Nullable final String newLoc);
 
 }

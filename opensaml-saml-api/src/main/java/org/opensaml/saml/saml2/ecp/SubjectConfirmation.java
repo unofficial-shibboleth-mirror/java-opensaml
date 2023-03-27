@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.ecp;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -35,42 +36,42 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectConfirmation extends SAMLObject, MustUnderstandBearing, ActorBearing {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectConfirmationType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20ECP_PREFIX);
 
     /** Method attribute name. */
-    @Nonnull @NotEmpty public static final String METHOD_ATTRIB_NAME = "Method";
+    @Nonnull @NotEmpty static final String METHOD_ATTRIB_NAME = "Method";
     
     /**
      * Get the method used to confirm this subject.
      * 
      * @return the method used to confirm this subject
      */
-    public String getMethod();
+    @Nullable String getMethod();
 
     /**
      * Sets the method used to confirm this subject.
      * 
      * @param newMethod the method used to confirm this subject
      */
-    public void setMethod(String newMethod);
+    void setMethod(@Nullable final String newMethod);
 
     /**
      * Gets the data about how this subject was confirmed or constraints on the confirmation.
      * 
      * @return the data about how this subject was confirmed or constraints on the confirmation
      */
-    public SubjectConfirmationData getSubjectConfirmationData();
+    @Nullable SubjectConfirmationData getSubjectConfirmationData();
 
     /**
      * Sets the data about how this subject was confirmed or constraints on the confirmation.
@@ -78,5 +79,5 @@ public interface SubjectConfirmation extends SAMLObject, MustUnderstandBearing, 
      * @param newSubjectConfirmationData the data about how this subject was confirmed or constraints on the
      *            confirmation
      */
-    public void setSubjectConfirmationData(SubjectConfirmationData newSubjectConfirmationData);
+    void setSubjectConfirmationData(@Nullable final SubjectConfirmationData newSubjectConfirmationData);
 }

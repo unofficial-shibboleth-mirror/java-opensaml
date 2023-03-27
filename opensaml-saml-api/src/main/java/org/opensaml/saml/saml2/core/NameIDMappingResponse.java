@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -30,17 +31,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface NameIDMappingResponse extends StatusResponseType {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDMappingResponse";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDMappingResponse";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull public static String TYPE_LOCAL_NAME = "NameIDMappingResponseType";
+    @Nonnull static String TYPE_LOCAL_NAME = "NameIDMappingResponseType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -48,26 +49,26 @@ public interface NameIDMappingResponse extends StatusResponseType {
      * 
      * @return the name identifier of the principal for this response
      */
-    public NameID getNameID();
+    @Nullable NameID getNameID();
 
     /**
      * Sets the name identifier of the principal for this response.
      * 
      * @param newNameID the name identifier of the principal for this response
      */
-    public void setNameID(NameID newNameID);
+    void setNameID(@Nullable final NameID newNameID);
 
     /**
      * Gets the encrypted name identifier of the principal for this response.
      * 
      * @return the encrypted name identifier of the principal for this response
      */
-    public EncryptedID getEncryptedID();
+    @Nullable EncryptedID getEncryptedID();
 
     /**
      * Sets the encrypted name identifier of the principal for this response.
      * 
      * @param newEncryptedID the new encrypted name identifier of the principal for this response
      */
-    public void setEncryptedID(EncryptedID newEncryptedID);
+    void setEncryptedID(@Nullable final EncryptedID newEncryptedID);
 }

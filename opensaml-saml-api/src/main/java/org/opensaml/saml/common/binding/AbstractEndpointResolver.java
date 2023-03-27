@@ -174,8 +174,14 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
             if (doCheckEndpoint(criteria, candidate)) {
                 if (startsWith != null) {
                     // Evaluate how good a match it is.
-                    final String candidateLocation = candidate.getLocation() != null ?
-                            candidate.getLocation() : candidate.getResponseLocation();
+                    String candidateLocation = candidate.getLocation();
+                    if (candidateLocation == null) {
+                        candidateLocation = candidate.getResponseLocation();
+                    }
+                    if (candidateLocation == null) {
+                        log.debug("Skipping endpoint with no Location or ResponseLocation");
+                        continue;
+                    }
                     int i = 0;
                     for (; i < candidateLocation.length() && i < startsWith.getLocation().length(); ++i) {
                         if (candidateLocation.charAt(i) != startsWith.getLocation().charAt(i)) {
@@ -331,8 +337,8 @@ public abstract class AbstractEndpointResolver<EndpointType extends Endpoint>
      * 
      * @return a new list containing the endpoints such that the default is first
      */
-    @SuppressWarnings("unchecked")
     // Checkstyle: CyclomaticComplexity OFF
+    @SuppressWarnings("unchecked")
     @Nonnull @NonnullElements private List<EndpointType> sortCandidates(
             @Nonnull @NonnullElements final List<Endpoint> candidates) {
         

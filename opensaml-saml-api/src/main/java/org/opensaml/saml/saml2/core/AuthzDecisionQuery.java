@@ -24,10 +24,12 @@ package org.opensaml.saml.saml2.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -36,55 +38,55 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthzDecisionQuery extends SubjectQuery {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthzDecisionQuery";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthzDecisionQuery";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthzDecisionQueryType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthzDecisionQueryType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Resource attribute name. */
-    @Nonnull @NotEmpty public static final String RESOURCE_ATTRIB_NAME = "Resource";
+    @Nonnull @NotEmpty static final String RESOURCE_ATTRIB_NAME = "Resource";
 
     /**
      * Gets the Resource attrib value of this query.
      * 
      * @return the Resource attrib value of this query
      */
-    public String getResource();
+    @Nullable String getResource();
 
     /**
      * Sets the Resource attrib value of this query.
      * 
      * @param newResource the new Resource attrib value of this query
      */
-    public void setResource(String newResource);
+    void setResource(@Nullable final String newResource);
 
     /**
      * Gets the Actions of this query.
      * 
      * @return the Actions of this query
      */
-    public List<Action> getActions();
+    @Nonnull @Live List<Action> getActions();
 
     /**
      * Gets the Evidence of this query.
      * 
      * @return the Evidence of this query
      */
-    public Evidence getEvidence();
+    @Nullable Evidence getEvidence();
 
     /**
      * Sets the Evidence of this query.
      * 
      * @param newEvidence the new Evidence of this query
      */
-    public void setEvidence(Evidence newEvidence);
+    void setEvidence(@Nullable final Evidence newEvidence);
 
 }

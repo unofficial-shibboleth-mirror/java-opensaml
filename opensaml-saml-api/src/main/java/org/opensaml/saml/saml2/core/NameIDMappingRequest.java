@@ -21,6 +21,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -34,17 +35,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface NameIDMappingRequest extends RequestAbstractType {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDMappingRequest";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIDMappingRequest";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "NameIDMappingRequestType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "NameIDMappingRequestType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /**
@@ -52,56 +53,56 @@ public interface NameIDMappingRequest extends RequestAbstractType {
      * 
      * @return the base identifier of the principal for this request
      */
-    public BaseID getBaseID();
+    @Nullable BaseID getBaseID();
     
     /**
      * Sets the base identifier of the principal for this request.
      * 
      * @param newBaseID the base identifier of the principal for this request
      */
-    public void setBaseID(BaseID newBaseID);
+    void setBaseID(@Nullable final BaseID newBaseID);
     
     /**
      * Gets the name identifier of the principal for this request.
      * 
      * @return the name identifier of the principal for this request
      */
-    public NameID getNameID();
+    @Nullable NameID getNameID();
     
     /**
      * Sets the name identifier of the principal for this request.
      * 
      * @param newNameID the name identifier of the principal for this request
      */
-    public void setNameID(NameID newNameID);
+    void setNameID(@Nullable final NameID newNameID);
     
     /**
      * Gets the encrypted name identifier of the principal for this request.
      * 
      * @return the encrypted name identifier of the principal for this request
      */
-    public EncryptedID getEncryptedID();
+    @Nullable EncryptedID getEncryptedID();
     
     /**
      * Sets the encrypted name identifier of the principal for this request.
      * 
      * @param newEncryptedID the new encrypted name identifier of the principal for this request
      */
-    public void setEncryptedID(EncryptedID newEncryptedID);
+    void setEncryptedID(@Nullable final EncryptedID newEncryptedID);
     
     /**
      * Get the NameIDPolicy of the request.
      * 
      * @return the NameIDPolicy of the request
      */
-    public NameIDPolicy getNameIDPolicy();
+    @Nullable NameIDPolicy getNameIDPolicy();
 
     /**
      * Set the NameIDPolicy of the request.
      * 
      * @param newNameIDPolicy the new NameIDPolicy of the request
      */
-    public void setNameIDPolicy(NameIDPolicy newNameIDPolicy);
+    void setNameIDPolicy(@Nullable final NameIDPolicy newNameIDPolicy);
 
 
 }

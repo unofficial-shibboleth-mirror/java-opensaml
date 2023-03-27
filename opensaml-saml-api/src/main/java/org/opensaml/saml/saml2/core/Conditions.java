@@ -21,11 +21,15 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core Conditions.
@@ -33,27 +37,27 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface Conditions extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "Conditions";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Conditions";
 
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull static final String TYPE_LOCAL_NAME = "ConditionsType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ConditionsType";
 
     /** QName of the XSI type. */
     @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** NotBefore attribute name. */
-    @Nonnull static final String NOT_BEFORE_ATTRIB_NAME = "NotBefore";
+    @Nonnull @NotEmpty static final String NOT_BEFORE_ATTRIB_NAME = "NotBefore";
 
     /** QName for the NotBefore attribute. */
     @Nonnull static final QName NOT_BEFORE_ATTRIB_QNAME = new QName(null, "NotBefore", XMLConstants.DEFAULT_NS_PREFIX);
 
     /** Name for the NotOnOrAfter attribute. */
-    @Nonnull static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
+    @Nonnull @NotEmpty static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
 
     /** QName for the NotOnOrAfter attribute. */
     @Nonnull static final QName NOT_ON_OR_AFTER_ATTRIB_QNAME =
@@ -64,35 +68,35 @@ public interface Conditions extends SAMLObject {
      * 
      * @return the date/time before which the assertion is invalid
      */
-    Instant getNotBefore();
+    @Nullable Instant getNotBefore();
 
     /**
      * Sets the date/time before which the assertion is invalid.
      * 
      * @param newNotBefore the date/time before which the assertion is invalid
      */
-    void setNotBefore(Instant newNotBefore);
+    void setNotBefore(@Nullable final Instant newNotBefore);
 
     /**
      * Gets the date/time on, or after, which the assertion is invalid.
      * 
      * @return the date/time on, or after, which the assertion is invalid
      */
-    Instant getNotOnOrAfter();
+    @Nullable Instant getNotOnOrAfter();
 
     /**
      * Sets the date/time on, or after, which the assertion is invalid.
      * 
      * @param newNotOnOrAfter the date/time on, or after, which the assertion is invalid
      */
-    void setNotOnOrAfter(Instant newNotOnOrAfter);
+    void setNotOnOrAfter(@Nullable final Instant newNotOnOrAfter);
 
     /**
      * Gets all the conditions on the assertion.
      * 
      * @return all the conditions on the assertion
      */
-    List<Condition> getConditions();
+    @Nonnull @Live List<Condition> getConditions();
 
     /**
      * Gets the list of conditions that match a particular QName.
@@ -101,26 +105,26 @@ public interface Conditions extends SAMLObject {
      * 
      * @return the list of conditions that match the specified QName
      */
-    List<Condition> getConditions(@Nonnull final QName typeOrName);
+    @Nonnull @Live List<Condition> getConditions(@Nonnull final QName typeOrName);
 
     /**
      * Gets the audience restriction conditions for the assertion.
      * 
      * @return the audience restriction conditions for the assertion
      */
-    List<AudienceRestriction> getAudienceRestrictions();
+    @Nonnull @Live List<AudienceRestriction> getAudienceRestrictions();
 
     /**
      * Gets the OneTimeUse condition for the assertion.
      * 
      * @return the OneTimeUse condition for the assertion
      */
-    OneTimeUse getOneTimeUse();
+    @Nullable OneTimeUse getOneTimeUse();
 
     /**
      * Gets the ProxyRestriction condition for the assertion.
      * 
      * @return the ProxyRestriction condition for the assertion
      */
-    ProxyRestriction getProxyRestriction();
+    @Nullable ProxyRestriction getProxyRestriction();
 }

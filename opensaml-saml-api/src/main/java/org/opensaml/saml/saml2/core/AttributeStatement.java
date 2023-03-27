@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -32,17 +33,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AttributeStatement extends Statement {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeStatement";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AttributeStatement";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AttributeStatementType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AttributeStatementType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
 
     /**
@@ -50,13 +51,13 @@ public interface AttributeStatement extends Statement {
      * 
      * @return the attributes expressed in this statement
      */
-    public List<Attribute> getAttributes();
+    @Nonnull @Live List<Attribute> getAttributes();
 
     /**
      * Gets the encrypted attributes expressed in this statement.
      * 
      * @return the encrypted attributes expressed in this statement
      */
-    public List<EncryptedAttribute> getEncryptedAttributes();
+    @Nonnull @Live List<EncryptedAttribute> getEncryptedAttributes();
 
 }

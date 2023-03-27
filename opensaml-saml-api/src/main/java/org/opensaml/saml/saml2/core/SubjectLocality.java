@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -31,50 +32,50 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectLocality extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectLocality";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectLocality";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Address attribute name. */
-    @Nonnull @NotEmpty public static final String ADDRESS_ATTRIB_NAME = "Address";
+    @Nonnull @NotEmpty static final String ADDRESS_ATTRIB_NAME = "Address";
 
     /** DNSName attribute name. */
-    @Nonnull @NotEmpty public static final String DNS_NAME_ATTRIB_NAME = "DNSName";
+    @Nonnull @NotEmpty static final String DNS_NAME_ATTRIB_NAME = "DNSName";
 
     /**
      * Gets the IP address of the system from which the subject was authenticated.
      * 
      * @return the IP address of the system from which the subject was authenticated
      */
-    public String getAddress();
+    @Nullable String getAddress();
 
     /**
      * Sets the IP address of the system from which the subject was authenticated.
      * 
      * @param newAddress the IP address of the system from which the subject was authenticated
      */
-    public void setAddress(String newAddress);
+    void setAddress(@Nullable final String newAddress);
 
     /**
      * Gets the DNSName of the system from which the subject was authenticated.
      * 
      * @return the DNSName of the system from which the subject was authenticated
      */
-    public String getDNSName();
+    @Nullable String getDNSName();
 
     /**
      * Sets the DNSName of the system from which the subject was authenticated.
      * 
      * @param newDNSName the DNSName of the system from which the subject was authenticated
      */
-    public void setDNSName(String newDNSName);
+    void setDNSName(@Nullable final String newDNSName);
 }

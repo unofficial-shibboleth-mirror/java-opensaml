@@ -20,12 +20,14 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Attribute;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,35 +36,35 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface IDPSSODescriptor extends SSODescriptor {
 
     /** Local name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPSSODescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPSSODescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "IDPSSODescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "IDPSSODescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "WantAuthnRequestSigned" attribute name. */
-    @Nonnull @NotEmpty public static final String WANT_AUTHN_REQ_SIGNED_ATTRIB_NAME = "WantAuthnRequestsSigned";
+    @Nonnull @NotEmpty static final String WANT_AUTHN_REQ_SIGNED_ATTRIB_NAME = "WantAuthnRequestsSigned";
 
     /**
      * Checks if the IDP SSO service wants authentication requests signed.
      * 
      * @return true is signing is desired, false if not
      */
-    public Boolean getWantAuthnRequestsSigned();
+    @Nullable Boolean getWantAuthnRequestsSigned();
 
     /**
      * Checks if the IDP SSO service wants authentication requests signed.
      * 
      * @return true is signing is desired, false if not
      */
-    public XSBooleanValue getWantAuthnRequestsSignedXSBoolean();
+    @Nullable XSBooleanValue getWantAuthnRequestsSignedXSBoolean();
 
     /**
      * Sets whether the IDP SSO service wants authentication requests signed. Boolean values will be marshalled to
@@ -70,47 +72,47 @@ public interface IDPSSODescriptor extends SSODescriptor {
      * 
      * @param newWantSigned true if request should be signed, false if not
      */
-    public void setWantAuthnRequestsSigned(Boolean newWantSigned);
+    void setWantAuthnRequestsSigned(@Nullable final Boolean newWantSigned);
 
     /**
      * Sets whether the IDP SSO service wants authentication requests signed.
      * 
      * @param newWantSigned true if request should be signed, false if not
      */
-    public void setWantAuthnRequestsSigned(XSBooleanValue newWantSigned);
+    void setWantAuthnRequestsSigned(@Nullable final XSBooleanValue newWantSigned);
 
     /**
      * Gets the list of single sign on services for this IDP.
      * 
      * @return list of single sign on services
      */
-    public List<SingleSignOnService> getSingleSignOnServices();
+    @Nonnull @Live List<SingleSignOnService> getSingleSignOnServices();
 
     /**
      * Gets the list of NameID mapping services for this service.
      * 
      * @return the list of NameID mapping services for this service
      */
-    public List<NameIDMappingService> getNameIDMappingServices();
+    @Nonnull @Live List<NameIDMappingService> getNameIDMappingServices();
 
     /**
      * Gets the list of assertion ID request services.
      * 
      * @return assertion ID request services
      */
-    public List<AssertionIDRequestService> getAssertionIDRequestServices();
+    @Nonnull @Live List<AssertionIDRequestService> getAssertionIDRequestServices();
 
     /**
      * Gets the list of attribute profiles supported by this IdP.
      * 
      * @return attribute profiles supported by this IdP
      */
-    public List<AttributeProfile> getAttributeProfiles();
+    @Nonnull @Live List<AttributeProfile> getAttributeProfiles();
 
     /**
      * Gets the list of attributes supported by this IdP.
      * 
      * @return attributes supported by this IdP
      */
-    public List<Attribute> getAttributes();
+    @Nonnull @Live List<Attribute> getAttributes();
 }

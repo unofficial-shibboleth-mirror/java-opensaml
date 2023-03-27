@@ -30,10 +30,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface EncryptedAttribute extends EncryptedElementType {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedAttribute";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedAttribute";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =  
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =  
         new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
 
 }

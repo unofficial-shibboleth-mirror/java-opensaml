@@ -19,12 +19,16 @@ package org.opensaml.saml.metadata.support;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Metadata support class which selects an {@link AttributeConsumingService} based on input of a mandatory
@@ -60,13 +64,13 @@ import org.slf4j.LoggerFactory;
 public class AttributeConsumingServiceSelector {
 
     /** Class logger. */
-    private Logger log = LoggerFactory.getLogger(AttributeConsumingServiceSelector.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AttributeConsumingServiceSelector.class);
 
     /** The requested service index. */
-    private Integer index;
+    @Nullable private Integer index;
 
     /** The AttributeConsumingService's parent role descriptor. */
-    private RoleDescriptor roleDescriptor;
+    @Nullable private RoleDescriptor roleDescriptor;
 
     /**
      * Flag which determines whether, in the case of an invalid index, to return the default AttributeConsumingService.
@@ -78,7 +82,7 @@ public class AttributeConsumingServiceSelector {
      * 
      * @return Returns the index.
      */
-    public Integer getIndex() {
+    @Nullable public Integer getIndex() {
         return index;
     }
 
@@ -87,7 +91,7 @@ public class AttributeConsumingServiceSelector {
      * 
      * @param requestedIndex The index to set.
      */
-    public void setIndex(final Integer requestedIndex) {
+    public void setIndex(@Nullable final Integer requestedIndex) {
         index = requestedIndex;
     }
 
@@ -96,7 +100,7 @@ public class AttributeConsumingServiceSelector {
      * 
      * @return Returns the spSSODescriptor.
      */
-    public RoleDescriptor getRoleDescriptor() {
+    @Nullable public RoleDescriptor getRoleDescriptor() {
         return roleDescriptor;
     }
 
@@ -105,7 +109,7 @@ public class AttributeConsumingServiceSelector {
      * 
      * @param descriptor The roleDescriptor to set.
      */
-    public void setRoleDescriptor(final RoleDescriptor descriptor) {
+    public void setRoleDescriptor(@Nullable final RoleDescriptor descriptor) {
         roleDescriptor = descriptor;
     }
 
@@ -134,7 +138,7 @@ public class AttributeConsumingServiceSelector {
      * 
      * @return the selected AttributeConsumingService, or null
      */
-    public AttributeConsumingService selectService() {
+    @Nullable public AttributeConsumingService selectService() {
         final List<AttributeConsumingService> candidates = getCandidates();
 
         if (candidates == null || candidates.isEmpty()) {
@@ -176,19 +180,20 @@ public class AttributeConsumingServiceSelector {
      * 
      * @return the list of candidate AttributeConsumingServices, or null if none could be resolved
      */
-    protected List<AttributeConsumingService> getCandidates() {
+    @Nullable protected List<AttributeConsumingService> getCandidates() {
         if (roleDescriptor == null) {
             log.debug("RoleDescriptor was not supplied, unable to select AttributeConsumingService");
             return null;
         }
 
-        if (roleDescriptor instanceof SPSSODescriptor) {
+        if (roleDescriptor instanceof SPSSODescriptor sprole) {
             log.debug("Resolving AttributeConsumingService candidates from SPSSODescriptor");
-            return ((SPSSODescriptor) roleDescriptor).getAttributeConsumingServices();
-        } else if (roleDescriptor instanceof AttributeQueryDescriptorType) {
+            return sprole.getAttributeConsumingServices();
+        } else if (roleDescriptor instanceof AttributeQueryDescriptorType queryrole) {
             log.debug("Resolving AttributeConsumingService candidates from AttributeQueryDescriptorType");
-            return ((AttributeQueryDescriptorType) roleDescriptor).getAttributeConsumingServices();
+            return queryrole.getAttributeConsumingServices();
         } else {
+            assert roleDescriptor != null;
             log.debug("Unable to resolve service candidates, role descriptor was of an unsupported type: {}",
                     roleDescriptor.getClass().getName());
             return null;
@@ -201,7 +206,7 @@ public class AttributeConsumingServiceSelector {
      * @param candidates the list of candiate services
      * @return the selected candidate or null
      */
-    private AttributeConsumingService selectByIndex(final List<AttributeConsumingService> candidates) {
+    @Nullable private AttributeConsumingService selectByIndex(final List<AttributeConsumingService> candidates) {
         log.debug("Selecting AttributeConsumingService by index");
         for (final AttributeConsumingService attribCS : candidates) {
             // Check for null b/c don't ever want to fail with an NPE due to autoboxing.
@@ -223,11 +228,12 @@ public class AttributeConsumingServiceSelector {
      * @param candidates the list of candiate services
      * @return the selected candidate or null
      */
-    private AttributeConsumingService selectDefault(final List<AttributeConsumingService> candidates) {
+    @Nonnull private AttributeConsumingService selectDefault(final List<AttributeConsumingService> candidates) {
         log.debug("Selecting default AttributeConsumingService");
         AttributeConsumingService firstNoDefault = null;
         for (final AttributeConsumingService attribCS : candidates) {
-            if (attribCS.isDefault()) {
+            final Boolean isDefault = attribCS.isDefault();
+            if (isDefault != null && isDefault) {
                 log.debug("Selected AttributeConsumingService with explicit isDefault of true");
                 return attribCS;
             }
@@ -245,4 +251,5 @@ public class AttributeConsumingServiceSelector {
         log.debug("Selected first AttributeConsumingService with explicit isDefault of false");
         return candidates.get(0);
     }
+    
 }

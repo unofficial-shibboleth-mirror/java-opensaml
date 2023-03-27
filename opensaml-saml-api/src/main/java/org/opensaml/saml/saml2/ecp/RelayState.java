@@ -34,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface RelayState extends XSString, SAMLObject, MustUnderstandBearing, ActorBearing {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RelayState";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RelayState";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RelayStateType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RelayStateType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
 }

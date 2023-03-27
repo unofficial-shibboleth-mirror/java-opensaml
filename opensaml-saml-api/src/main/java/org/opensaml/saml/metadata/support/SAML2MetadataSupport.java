@@ -65,7 +65,8 @@ public final class SAML2MetadataSupport {
         
         T firstNoDefault = null;
         for (final T endpoint : candidates) {
-            if (endpoint.isDefault()) {
+            final Boolean isDefault = endpoint.isDefault();
+            if (isDefault != null && isDefault) {
                 LOG.debug("Selected IndexedEndpoint with explicit isDefault of true");
                 return endpoint;
             }

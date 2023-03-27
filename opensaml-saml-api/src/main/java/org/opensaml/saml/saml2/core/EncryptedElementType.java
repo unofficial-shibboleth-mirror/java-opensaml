@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -27,6 +28,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -35,10 +37,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface EncryptedElementType extends SAMLObject {
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptedElementType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EncryptedElementType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
     
     /**
@@ -46,20 +48,20 @@ public interface EncryptedElementType extends SAMLObject {
      * 
      * @return the EncryptedData child element
      */
-    public EncryptedData getEncryptedData();
+    @Nullable EncryptedData getEncryptedData();
     
     /**
      * Set the EncryptedData child element.
      * 
      * @param newEncryptedData the new EncryptedData child element
      */
-    public void setEncryptedData(EncryptedData newEncryptedData);
+    void setEncryptedData(@Nullable final EncryptedData newEncryptedData);
     
     /**
      * A list of EncryptedKey child elements.
      * 
      * @return a list of EncryptedKey child elements
      */
-    public List<EncryptedKey> getEncryptedKeys();
+    @Nonnull @Live List<EncryptedKey> getEncryptedKeys();
 
 }

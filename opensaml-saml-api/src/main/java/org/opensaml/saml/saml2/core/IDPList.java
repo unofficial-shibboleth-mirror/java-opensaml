@@ -24,11 +24,13 @@ package org.opensaml.saml.saml2.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -37,17 +39,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface IDPList extends SAMLObject {
 
     /** Element Local Name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPList";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "IDPList";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "IDPListType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "IDPListType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -55,19 +57,19 @@ public interface IDPList extends SAMLObject {
      * 
      * @return the IDPEntry list
      */
-    public List<IDPEntry> getIDPEntrys();
+    @Nonnull @Live List<IDPEntry> getIDPEntrys();
 
     /**
      * Gets the GetComplete URI.
      * 
      * @return GetComplete URI
      */
-    public GetComplete getGetComplete();
+    @Nullable GetComplete getGetComplete();
 
     /**
      * Sets the GetComplete URI.
      * 
      * @param newGetComplete the new GetComplete URI
      */
-    public void setGetComplete(GetComplete newGetComplete);
+    void setGetComplete(@Nullable final GetComplete newGetComplete);
 }

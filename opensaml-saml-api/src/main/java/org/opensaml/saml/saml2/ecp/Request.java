@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.ecp;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -36,93 +37,93 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Request extends SAMLObject, MustUnderstandBearing, ActorBearing {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RequestType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ECP_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ECP_PREFIX);
 
     /** ProviderName attribute name. */
-    @Nonnull @NotEmpty public static final String PROVIDER_NAME_ATTRIB_NAME = "ProviderName";
+    @Nonnull @NotEmpty static final String PROVIDER_NAME_ATTRIB_NAME = "ProviderName";
 
     /** IsPassive attribute name. */
-    @Nonnull @NotEmpty public static final String IS_PASSIVE_NAME_ATTRIB_NAME = "IsPassive";
+    @Nonnull @NotEmpty static final String IS_PASSIVE_NAME_ATTRIB_NAME = "IsPassive";
     
     /**
      * Get the Issuer child elemet.
      * 
      * @return the Issuer child element
      */
-    public Issuer getIssuer();
+    @Nullable Issuer getIssuer();
     
     /**
      * Set the Issuer child elemet.
      * 
      * @param newIssuer the new Issuer child element
      */
-    public void setIssuer(Issuer newIssuer);
+    void setIssuer(@Nullable final Issuer newIssuer);
     
     /**
      * Get the IDPList child element.
      * 
      * @return the IDPList child element
      */
-    public IDPList getIDPList();
+    @Nullable IDPList getIDPList();
     
     /**
      * Set the IDPList child element.
      * 
      * @param newIDPList the new IDPList child element
      */
-    public void setIDPList(IDPList newIDPList);
+    void setIDPList(@Nullable final IDPList newIDPList);
     
     /**
      * Get the ProviderName attribute value.
      * 
      * @return the ProviderName attribute value
      */
-    public String getProviderName();
+    @Nullable String getProviderName();
     
     /**
      * Set the ProviderName attribute value.
      * 
      * @param newProviderName the new ProviderName attribute value
      */
-    public void setProviderName(String newProviderName);
+    void setProviderName(@Nullable final String newProviderName);
     
     /**
      * Get the IsPassive attribute value.
      * 
      * @return the IsPassive attribute value
      */
-    public Boolean isPassive();
+    @Nullable Boolean isPassive();
     
     /**
      * Get the IsPassive attribute value.
      * 
      * @return the IsPassive attribute value
      */
-    public XSBooleanValue isPassiveXSBoolean();
+    @Nullable XSBooleanValue isPassiveXSBoolean();
     
     /**
      * Set the IsPassive attribute value.
      * 
      * @param newIsPassive the new IsPassive attribute value
      */
-    public void setPassive(Boolean newIsPassive);
+    void setPassive(@Nullable final Boolean newIsPassive);
     
     /**
      * Set the IsPassive attribute value.
      * 
      * @param newIsPassive the new IsPassive attribute value
      */
-    public void setPassive(XSBooleanValue newIsPassive);
+    void setPassive(@Nullable final XSBooleanValue newIsPassive);
 
 }

@@ -20,99 +20,102 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Metadata SPSSODescriptorType.
  */
 public interface SPSSODescriptor extends SSODescriptor {
+    
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPSSODescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPSSODescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SPSSODescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SPSSODescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "AuthnRequestsSigned" attribute's local name. */
-    @Nonnull @NotEmpty public static final String AUTH_REQUESTS_SIGNED_ATTRIB_NAME = "AuthnRequestsSigned";
+    @Nonnull @NotEmpty static final String AUTH_REQUESTS_SIGNED_ATTRIB_NAME = "AuthnRequestsSigned";
 
     /** "WantAssertionsSigned" attribute's local name. */
-    @Nonnull @NotEmpty public static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
+    @Nonnull @NotEmpty static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
 
     /**
      * Gets whether this service signs AuthN requests.
      * 
      * @return true of this service signs requests, false if not
      */
-    public Boolean isAuthnRequestsSigned();
+    @Nullable Boolean isAuthnRequestsSigned();
 
     /**
      * Gets whether this service signs AuthN requests.
      * 
      * @return true of this service signs requests, false if not
      */
-    public XSBooleanValue isAuthnRequestsSignedXSBoolean();
+    @Nullable XSBooleanValue isAuthnRequestsSignedXSBoolean();
 
     /**
      * Sets whether this service signs AuthN requests. Boolean values will be marshalled to either "true" or "false".
      * 
      * @param newIsSigned true of this service signs requests, false if not
      */
-    public void setAuthnRequestsSigned(Boolean newIsSigned);
+    void setAuthnRequestsSigned(@Nullable final Boolean newIsSigned);
 
     /**
      * Sets whether this service signs AuthN requests.
      * 
      * @param newIsSigned true of this service signs requests, false if not
      */
-    public void setAuthnRequestsSigned(XSBooleanValue newIsSigned);
+    void setAuthnRequestsSigned(@Nullable final XSBooleanValue newIsSigned);
 
     /**
      * Gets whether this service wants assertions signed.
      * 
      * @return true if this service wants assertions signed, false if not
      */
-    public Boolean getWantAssertionsSigned();
+    @Nullable Boolean getWantAssertionsSigned();
 
     /**
      * Gets whether this service wants assertions signed.
      * 
      * @return true if this service wants assertions signed, false if not
      */
-    public XSBooleanValue getWantAssertionsSignedXSBoolean();
+    @Nullable XSBooleanValue getWantAssertionsSignedXSBoolean();
 
     /**
      * Sets whether this service wants assertions signed. Boolean values will be marshalled to either "true" or "false".
      * 
      * @param newWantAssestionSigned true if this service wants assertions signed, false if not
      */
-    public void setWantAssertionsSigned(Boolean newWantAssestionSigned);
+    void setWantAssertionsSigned(@Nullable final Boolean newWantAssestionSigned);
 
     /**
      * Sets whether this service wants assertions signed.
      * 
      * @param newWantAssestionSigned true if this service wants assertions signed, false if not
      */
-    public void setWantAssertionsSigned(XSBooleanValue newWantAssestionSigned);
+    void setWantAssertionsSigned(@Nullable final XSBooleanValue newWantAssestionSigned);
 
     /**
-     * Gets an list of assertion consumer service {@link Endpoint}s for this service.
+     * Gets a list of assertion consumer service {@link Endpoint}s for this service.
      * 
      * @return list of assertion consumer service {@link Endpoint}s for this service
      */
-    public List<AssertionConsumerService> getAssertionConsumerServices();
+    @Nonnull @Live List<AssertionConsumerService> getAssertionConsumerServices();
 
     /**
      * Gets the default assertion consumer service.
@@ -128,14 +131,14 @@ public interface SPSSODescriptor extends SSODescriptor {
      * 
      * @return default assertion consumer service (or null if there are no assertion consumer services defined)
      */
-    public AssertionConsumerService getDefaultAssertionConsumerService();
+    @Nullable AssertionConsumerService getDefaultAssertionConsumerService();
 
     /**
-     * Gets an list of attribute consuming service descriptors for this service.
+     * Gets a list of attribute consuming service descriptors for this service.
      * 
      * @return list of attribute consuming service descriptors for this service
      */
-    public List<AttributeConsumingService> getAttributeConsumingServices();
+    @Nonnull @Live List<AttributeConsumingService> getAttributeConsumingServices();
 
     /**
      * Gets the default attribute consuming service.
@@ -151,5 +154,5 @@ public interface SPSSODescriptor extends SSODescriptor {
      * 
      * @return default attribute consuming service (or null if there are no attribute consuming services defined)
      */
-    public AttributeConsumingService getDefaultAttributeConsumingService();
+    @Nullable AttributeConsumingService getDefaultAttributeConsumingService();
 }

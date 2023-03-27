@@ -20,10 +20,12 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -32,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SSODescriptor extends RoleDescriptor {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SSODescriptor";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SSODescriptor";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SSODescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SSODescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
@@ -50,7 +52,7 @@ public interface SSODescriptor extends RoleDescriptor {
      * 
      * @return list of artifact resolution services for this service
      */
-    public List<ArtifactResolutionService> getArtifactResolutionServices();
+    @Nonnull @Live List<ArtifactResolutionService> getArtifactResolutionServices();
 
     /**
      * Gets the default artifact resolution service.
@@ -67,26 +69,26 @@ public interface SSODescriptor extends RoleDescriptor {
      * @return default artifact resolution service (or null if there are no artifact resolution services defined)
      * 
      */
-    public ArtifactResolutionService getDefaultArtifactResolutionService();
+    @Nullable ArtifactResolutionService getDefaultArtifactResolutionService();
 
     /**
      * Gets a list of single logout services for this service.
      * 
      * @return list of single logout services for this service
      */
-    public List<SingleLogoutService> getSingleLogoutServices();
+    @Nonnull @Live List<SingleLogoutService> getSingleLogoutServices();
 
     /**
      * Gets a list of manage NameId services for this service.
      * 
      * @return list of manage NameId services for this service
      */
-    public List<ManageNameIDService> getManageNameIDServices();
+    @Nonnull @Live List<ManageNameIDService> getManageNameIDServices();
 
     /**
      * Gets the list of NameID formats this service supports.
      * 
      * @return NameID formats this service supports
      */
-    public List<NameIDFormat> getNameIDFormats();
+    @Nonnull @Live List<NameIDFormat> getNameIDFormats();
 }

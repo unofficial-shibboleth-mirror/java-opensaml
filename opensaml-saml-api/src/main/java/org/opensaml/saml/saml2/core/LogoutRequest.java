@@ -24,10 +24,14 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * SAML 2.0 Core LogoutRequest.
@@ -35,110 +39,110 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 public interface LogoutRequest extends RequestAbstractType {
     
     /** Element local name. */
-    @Nonnull static final String DEFAULT_ELEMENT_LOCAL_NAME = "LogoutRequest";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "LogoutRequest";
     
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull static final String TYPE_LOCAL_NAME = "LogoutRequestType"; 
+    @Nonnull @NotEmpty  static final String TYPE_LOCAL_NAME = "LogoutRequestType"; 
         
     /** QName of the XSI type. */
     @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Reason attribute name. */
-    @Nonnull static final String REASON_ATTRIB_NAME = "Reason";
+    @Nonnull @NotEmpty static final String REASON_ATTRIB_NAME = "Reason";
     
     /** NotOnOrAfter attribute name. */
-    @Nonnull static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
+    @Nonnull @NotEmpty static final String NOT_ON_OR_AFTER_ATTRIB_NAME = "NotOnOrAfter";
 
     /** QName for the NotOnOrAfter attribute. */
     @Nonnull static final QName NOT_ON_OR_AFTER_ATTRIB_QNAME =
             new QName(null, "NotOnOrAfter", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** User-initiated logout reason. */
-    @Nonnull static final String USER_REASON = "urn:oasis:names:tc:SAML:2.0:logout:user";
+    @Nonnull @NotEmpty static final String USER_REASON = "urn:oasis:names:tc:SAML:2.0:logout:user";
 
     /** Admin-initiated logout reason. */
-    @Nonnull static final String ADMIN_REASON = "urn:oasis:names:tc:SAML:2.0:logout:admin";
+    @Nonnull @NotEmpty static final String ADMIN_REASON = "urn:oasis:names:tc:SAML:2.0:logout:admin";
     
     /** Global timeout logout reason. */
-    @Nonnull static final String GLOBAL_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:global-timeout";
+    @Nonnull @NotEmpty static final String GLOBAL_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:global-timeout";
     
     /** SP timeout logout reason. */
-    @Nonnull static final String SP_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:sp-timeout";
+    @Nonnull @NotEmpty static final String SP_TIMEOUT_REASON = "urn:oasis:names:tc:SAML:2.0:logout:sp-timeout";
     
     /**
      * Get the Reason attrib value of the request.
      * 
      * @return the Reason value of the request
      */
-    String getReason();
+    @Nullable String getReason();
 
     /**
      * Set the Reason attrib value of the request.
      * 
      * @param newReason the new Reason value of the request
      */
-    void setReason(String newReason);
+    void setReason(@Nullable final String newReason);
     
     /**
      * Get the NotOnOrAfter attrib value of the request.
      * 
      * @return the NotOnOrAfter value of the request
      */
-    Instant getNotOnOrAfter();
+    @Nullable Instant getNotOnOrAfter();
 
     /**
      * Set the NotOnOrAfter attrib value of the request.
      * 
      * @param newNotOnOrAfter the new NotOnOrAfter value of the request
      */
-    void setNotOnOrAfter(Instant newNotOnOrAfter);
+    void setNotOnOrAfter(@Nullable final Instant newNotOnOrAfter);
     
     /**
      * Gets the base identifier of the principal for this request.
      * 
      * @return the base identifier of the principal for this request
      */
-    BaseID getBaseID();
+    @Nullable BaseID getBaseID();
     
     /**
      * Sets the base identifier of the principal for this request.
      * 
      * @param newBaseID the base identifier of the principal for this request
      */
-    void setBaseID(BaseID newBaseID);
+    void setBaseID(@Nullable final BaseID newBaseID);
     
     /**
      * Gets the name identifier of the principal for this request.
      * 
      * @return the name identifier of the principal for this request
      */
-    NameID getNameID();
+    @Nullable NameID getNameID();
     
     /**
      * Sets the name identifier of the principal for this request.
      * 
      * @param newNameID the name identifier of the principal for this request
      */
-    void setNameID(NameID newNameID);
+    void setNameID(@Nullable final NameID newNameID);
     
     /**
      * Gets the encrytped name identifier of the principal for this request.
      * 
      * @return the encrytped name identifier of the principal for this request
      */
-    EncryptedID getEncryptedID();
+    @Nullable EncryptedID getEncryptedID();
     
     /**
      * Sets the encrypted name identifier of the principal for this request.
      * 
      * @param newEncryptedID the new encrypted name identifier of the principal for this request
      */
-    void setEncryptedID(EncryptedID newEncryptedID);
+    void setEncryptedID(@Nullable final EncryptedID newEncryptedID);
        
     /**
      *  Get the list of SessionIndexes for the request.
@@ -146,7 +150,6 @@ public interface LogoutRequest extends RequestAbstractType {
      * 
      * @return the list of SessionIndexes
      */
-    List<SessionIndex> getSessionIndexes();
-
+    @Nonnull @Live List<SessionIndex> getSessionIndexes();
 
 }

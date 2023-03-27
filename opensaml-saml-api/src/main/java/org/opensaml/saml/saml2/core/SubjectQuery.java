@@ -35,17 +35,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectQuery extends RequestAbstractType {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectQueryAbstractType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectQueryAbstractType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -53,13 +53,13 @@ public interface SubjectQuery extends RequestAbstractType {
      * 
      * @return the Subject of this request
      */
-    @Nullable public Subject getSubject();
+    @Nullable Subject getSubject();
 
     /**
      * Sets the Subject of this request.
      * 
      * @param newSubject the Subject of this request
      */
-    public void setSubject(@Nullable Subject newSubject);
+    void setSubject(@Nullable final Subject newSubject);
 
 }

@@ -20,12 +20,14 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,103 +36,103 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ContactPerson extends SAMLObject, AttributeExtensibleXMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ContactPerson";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ContactPerson";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
-            SAMLConstants.SAML20MD_PREFIX);
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
+            new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ContactPersonType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ContactPersonType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** "contactType" attribute's local name. */
-    @Nonnull @NotEmpty public static final String CONTACT_TYPE_ATTRIB_NAME = "contactType";
+    @Nonnull @NotEmpty static final String CONTACT_TYPE_ATTRIB_NAME = "contactType";
 
     /**
      * Gets the type of contact this person.
      * 
      * @return the type of contact this person
      */
-    public ContactPersonTypeEnumeration getType();
+    @Nullable ContactPersonTypeEnumeration getType();
 
     /**
      * Sets the type of contact this person.
      * 
      * @param type the type of contact this person
      */
-    public void setType(ContactPersonTypeEnumeration type);
+    void setType(@Nullable final ContactPersonTypeEnumeration type);
 
     /**
      * Gets the Extensions child of this object.
      * 
      * @return the Extensions child of this object
      */
-    public Extensions getExtensions();
+    @Nullable Extensions getExtensions();
 
     /**
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
      */
-    public void setExtensions(Extensions extensions);
+    void setExtensions(@Nullable final Extensions extensions);
 
     /**
      * Gets the company this contact person is associated with.
      * 
      * @return the company this contact person is associated with
      */
-    public Company getCompany();
+    @Nullable Company getCompany();
 
     /**
      * Sets the company this contact person is associated with.
      * 
      * @param company the company this contact person is associated with
      */
-    public void setCompany(Company company);
+    void setCompany(@Nullable final Company company);
 
     /**
      * Gets the given name for this person.
      * 
      * @return the given name for this person
      */
-    public GivenName getGivenName();
+    @Nullable GivenName getGivenName();
 
     /**
      * Sets the given name for this person.
      * 
      * @param name the given name for this person
      */
-    public void setGivenName(GivenName name);
+    void setGivenName(@Nullable final GivenName name);
 
     /**
      * Gets the surname for this person.
      * 
      * @return the surname for this person
      */
-    public SurName getSurName();
+    @Nullable SurName getSurName();
 
     /**
      * Sets the surname for this person.
      * 
      * @param name the surname for this person
      */
-    public void setSurName(SurName name);
+    void setSurName(@Nullable final SurName name);
 
     /**
      * Gets a list of email addresses for this person.
      * 
      * @return list of email addresses for this person
      */
-    public List<EmailAddress> getEmailAddresses();
+    @Nonnull @Live List<EmailAddress> getEmailAddresses();
 
     /**
      * Gets an immutable list of telephone numbers for this person.
      * 
      * @return list of telephone numbers for this person
      */
-    public List<TelephoneNumber> getTelephoneNumbers();
+    @Nonnull @Live List<TelephoneNumber> getTelephoneNumbers();
 }

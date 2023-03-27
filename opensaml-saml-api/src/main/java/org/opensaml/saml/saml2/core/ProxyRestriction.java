@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,40 +34,40 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ProxyRestriction extends Condition {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ProxyRestriction";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ProxyRestriction";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ProxyRestrictionType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ProxyRestrictionType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20_PREFIX);
 
     /** Count attribute name. */
-    @Nonnull @NotEmpty public static final String COUNT_ATTRIB_NAME = "Count";
+    @Nonnull @NotEmpty static final String COUNT_ATTRIB_NAME = "Count";
 
     /**
      * Gets the number of times the assertion may be proxied.
      * 
      * @return the number of times the assertion may be proxied
      */
-    @Nullable public Integer getProxyCount();
+    @Nullable Integer getProxyCount();
 
     /**
      * Sets the number of times the assertion may be proxied.
      * 
      * @param newProxyCount the number of times the assertion may be proxied
      */
-    public void setProxyCount(@Nullable Integer newProxyCount);
+    void setProxyCount(@Nullable final Integer newProxyCount);
 
     /**
      * Gets the list of audiences to whom the assertion may be proxied.
      * 
      * @return the list of audiences to whom the assertion may be proxied
      */
-    @Nullable public List<Audience> getAudiences();
+    @Nonnull @Live List<Audience> getAudiences();
 }

@@ -20,12 +20,14 @@ package org.opensaml.saml.saml2.metadata;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,17 +36,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Organization extends SAMLObject, AttributeExtensibleXMLObject {
 
     /** Local name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Organization";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Organization";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20MD_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull  public static final String TYPE_LOCAL_NAME = "OrganizationType";
+    @Nonnull  static final String TYPE_LOCAL_NAME = "OrganizationType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MD_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MD_PREFIX);
 
     /**
@@ -52,33 +54,33 @@ public interface Organization extends SAMLObject, AttributeExtensibleXMLObject {
      * 
      * @return the Extensions child of this object
      */
-    public Extensions getExtensions();
+    @Nullable Extensions getExtensions();
 
     /**
      * Sets the Extensions child of this object.
      * 
      * @param extensions the Extensions child of this object
      */
-    public void setExtensions(Extensions extensions);
+    void setExtensions(@Nullable final Extensions extensions);
 
     /**
      * Gets a list of names for this organization.
      * 
      * @return list of names for this organization
      */
-    public List<OrganizationName> getOrganizationNames();
+    @Nonnull @Live List<OrganizationName> getOrganizationNames();
 
     /**
      * Gets a list of display names for this organization.
      * 
      * @return list of display names for this organization
      */
-    public List<OrganizationDisplayName> getDisplayNames();
+    @Nonnull @Live List<OrganizationDisplayName> getDisplayNames();
 
     /**
      * Gets a list of URLs for this organization.
      * 
      * @return list of URLs for this organization
      */
-    public List<OrganizationURL> getURLs();
+    @Nonnull @Live List<OrganizationURL> getURLs();
 }

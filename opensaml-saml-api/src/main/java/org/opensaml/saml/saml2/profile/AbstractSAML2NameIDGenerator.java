@@ -31,6 +31,7 @@ import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.profile.AbstractNameIdentifierGenerator;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.NameID;
+import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
@@ -109,10 +110,13 @@ public abstract class AbstractSAML2NameIDGenerator extends AbstractNameIdentifie
         
         // Override the default behavior if the SP specifies a qualifier in its request.
         final AuthnRequest request = requestLookupStrategy.apply(profileRequestContext);
-        if (request != null && request.getNameIDPolicy() != null) {
-            final String qual = request.getNameIDPolicy().getSPNameQualifier();
-            if (!Strings.isNullOrEmpty(qual)) {
-                return qual;
+        if (request != null) {
+            final NameIDPolicy policy = request.getNameIDPolicy();
+            if (policy != null) {
+                final String qual = policy.getSPNameQualifier();
+                if (!Strings.isNullOrEmpty(qual)) {
+                    return qual;
+                }
             }
         }
         

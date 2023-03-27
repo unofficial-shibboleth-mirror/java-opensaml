@@ -31,7 +31,7 @@ import org.opensaml.soap.wssecurity.messaging.AbstractToken;
 public class SAML20AssertionToken extends AbstractToken<Assertion> {
     
     /** Get the successfully attested SubjectConfirmation. */
-    private SubjectConfirmation subjectConfirmation;
+    @Nullable private SubjectConfirmation subjectConfirmation;
 
     /**
      * Constructor.

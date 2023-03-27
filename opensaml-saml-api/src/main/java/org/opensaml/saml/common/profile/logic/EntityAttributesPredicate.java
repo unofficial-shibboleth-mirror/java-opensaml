@@ -343,8 +343,13 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             // Check each attribute/tag in the populated set.
             for (final Attribute a : attributes) {
                 // Compare Name and NameFormat for a matching tag.
-                if (a.getName() != null && a.getName().equals(input.getName())
-                        && (input.getNameFormat() == null || a.getNameFormat().equals(input.getNameFormat()))) {
+                final String name = a.getName();
+                String nameFormat = a.getNameFormat();
+                if (nameFormat == null) {
+                    nameFormat = Attribute.UNSPECIFIED;
+                }
+                if (name != null && name.equals(input.getName())
+                        && (input.getNameFormat() == null || nameFormat.equals(input.getNameFormat()))) {
 
                     final List<String> attributeValues = getPossibleAttributeValuesAsStrings(a);
                     // Check each tag value's simple content for a value match.

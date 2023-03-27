@@ -92,7 +92,7 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @param newVersion the SAML Version of this request
      */
-    void setVersion(@Nullable SAMLVersion newVersion);
+    void setVersion(@Nullable final SAMLVersion newVersion);
 
     /**
      * Gets the unique identifier of the request.
@@ -106,15 +106,13 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @param newID the unique identifier of the request
      */
-
-    void setID(@Nullable String newID);
+    void setID(@Nullable final String newID);
 
     /**
      * Gets the date/time the request was issued.
      * 
      * @return the date/time the request was issued
      */
-
     @Nullable Instant getIssueInstant();
 
     /**
@@ -122,7 +120,7 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @param newIssueInstant the date/time the request was issued
      */
-    void setIssueInstant(@Nullable Instant newIssueInstant);
+    void setIssueInstant(@Nullable final Instant newIssueInstant);
 
     /**
      * Gets the URI of the destination of the request.
@@ -136,7 +134,7 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @param newDestination the URI of the destination of the request
      */
-    void setDestination(@Nullable String newDestination);
+    void setDestination(@Nullable final String newDestination);
 
     /**
      * Gets the consent obtained from the principal for sending this request.
@@ -150,7 +148,7 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @param newConsent the new consent obtained from the principal for sending this request
      */
-    void setConsent(@Nullable String newConsent);
+    void setConsent(@Nullable final String newConsent);
 
     /**
      * Gets the issuer of this request.
@@ -164,7 +162,7 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @param newIssuer the issuer of this request
      */
-    void setIssuer(@Nullable Issuer newIssuer);
+    void setIssuer(@Nullable final Issuer newIssuer);
 
     /**
      * Gets the Extensions of this request.
@@ -178,6 +176,6 @@ public interface RequestAbstractType extends SignableSAMLObject {
      * 
      * @param newExtensions the Extensions of this request
      */
-    void setExtensions(@Nullable Extensions newExtensions);
+    void setExtensions(@Nullable final Extensions newExtensions);
 
 }

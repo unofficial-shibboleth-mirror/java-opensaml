@@ -22,6 +22,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -35,17 +36,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Status extends SAMLObject {
 
     /** Local Name of Status. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Status";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Status";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "StatusType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "StatusType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20P_PREFIX);
 
     /**
@@ -53,40 +54,41 @@ public interface Status extends SAMLObject {
      * 
      * @return Status StatusCode
      */
-    public StatusCode getStatusCode();
+    @Nullable StatusCode getStatusCode();
 
     /**
      * Sets the Code of this Status.
      * 
      * @param newStatusCode the Code of this Status
      */
-    public void setStatusCode(StatusCode newStatusCode);
+    void setStatusCode(@Nullable final StatusCode newStatusCode);
 
     /**
      * Gets the Message of this Status.
      * 
      * @return Status StatusMessage
      */
-    public StatusMessage getStatusMessage();
+    @Nullable StatusMessage getStatusMessage();
 
     /**
      * Sets the Message of this Status.
      * 
      * @param newStatusMessage the Message of this Status
      */
-    public void setStatusMessage(StatusMessage newStatusMessage);
+    void setStatusMessage(@Nullable final StatusMessage newStatusMessage);
 
     /**
      * Gets the Detail of this Status.
      * 
      * @return Status StatusDetail
      */
-    public StatusDetail getStatusDetail();
+    @Nullable StatusDetail getStatusDetail();
 
     /**
      * Sets the Detail of this Status.
      * 
      * @param newStatusDetail the Detail of this Status
      */
-    public void setStatusDetail(StatusDetail newStatusDetail);
+    void setStatusDetail(@Nullable final StatusDetail newStatusDetail);
+
 }

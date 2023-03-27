@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml2.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -30,48 +31,48 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthnQuery extends SubjectQuery {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnQuery";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthnQuery";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = 
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = 
         new QName(SAMLConstants.SAML20P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthnQueryType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthnQueryType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = 
+    @Nonnull static final QName TYPE_NAME = 
         new QName(SAMLConstants.SAML20P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     
     /** SessionIndex attribute name. */
-    @Nonnull @NotEmpty public static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
+    @Nonnull @NotEmpty static final String SESSION_INDEX_ATTRIB_NAME = "SessionIndex";
     
     /**
      * Gets the SessionIndex of this request.
      * 
      * @return the SessionIndex of this request
      */
-    public String getSessionIndex();
+    @Nullable String getSessionIndex();
     
     /**
      * Sets the SessionIndex of this request.
      * 
      * @param newSessionIndex the SessionIndex of this request
      */
-    public void setSessionIndex(String newSessionIndex);
+    void setSessionIndex(@Nullable final String newSessionIndex);
     
     /**
      * Gets the RequestedAuthnContext of this request.
      * 
      * @return the RequestedAuthnContext of this request
      */
-    public RequestedAuthnContext getRequestedAuthnContext();
+    @Nullable RequestedAuthnContext getRequestedAuthnContext();
     
     /**
      * Sets the RequestedAuthnContext of this request.
      * 
      * @param newRequestedAuthnContext the RequestedAuthnContext of this request
      */
-    public void setRequestedAuthnContext(RequestedAuthnContext newRequestedAuthnContext);
+    void setRequestedAuthnContext(@Nullable final RequestedAuthnContext newRequestedAuthnContext);
 
 }
