@@ -36,50 +36,50 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectLocality extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectLocality";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectLocality";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectLocalityType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the IPAddress attribute. */
-    @Nonnull @NotEmpty public static final String IPADDRESS_ATTRIB_NAME = "IPAddress";
+    @Nonnull @NotEmpty static final String IPADDRESS_ATTRIB_NAME = "IPAddress";
 
     /** Name for the DNSAddress attribute. */
-    @Nonnull @NotEmpty public static final String DNSADDRESS_ATTRIB_NAME = "DNSAddress";
+    @Nonnull @NotEmpty static final String DNSADDRESS_ATTRIB_NAME = "DNSAddress";
 
     /**
      * Gets the IP address of the locality.
      * 
      * @return IP address of the locality
      */
-    @Nullable public String getIPAddress();
+    @Nullable String getIPAddress();
 
     /**
      * Sets the IP address of the locality.
      * 
      * @param address IP address of the locality
      */
-    public void setIPAddress(@Nullable final String address);
+    void setIPAddress(@Nullable final String address);
 
     /**
      * Gets the DNS name of the locality.
      * 
      * @return DNS name of the locality
      */
-    @Nullable public String getDNSAddress();
+    @Nullable String getDNSAddress();
 
     /**
      * Sets the DNS name of the locality.
      * 
      * @param address DNS name of the locality
      */
-    public void setDNSAddress(@Nullable final String address);
+    void setDNSAddress(@Nullable final String address);
 }

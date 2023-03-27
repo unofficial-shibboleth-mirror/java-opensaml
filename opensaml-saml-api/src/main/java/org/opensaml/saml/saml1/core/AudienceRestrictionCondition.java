@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AudienceRestrictionCondition extends Condition {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AudienceRestrictionCondition";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AudienceRestrictionCondition";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AudienceRestrictionConditionType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AudienceRestrictionConditionType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /**
@@ -51,5 +52,5 @@ public interface AudienceRestrictionCondition extends Condition {
      * 
      * @return the child Audience elements
      */
-    public List<Audience> getAudiences();
+    @Nonnull @Live List<Audience> getAudiences();
 }

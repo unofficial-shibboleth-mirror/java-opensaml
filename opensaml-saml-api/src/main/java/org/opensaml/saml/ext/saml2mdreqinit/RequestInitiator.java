@@ -31,14 +31,14 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface RequestInitiator extends Endpoint {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestInitiator";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RequestInitiator";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20MDRI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRI_PREFIX);
     
     /** Per the extension specification, the value of the 'Binding' attribute MUST be set to this fixed value. */
     @Nonnull @NotEmpty
-    public static final String REQUIRED_BINDING_VALUE = "urn:oasis:names:tc:SAML:profiles:SSO:request-init";
+    static final String REQUIRED_BINDING_VALUE = "urn:oasis:names:tc:SAML:profiles:SSO:request-init";
 
 }

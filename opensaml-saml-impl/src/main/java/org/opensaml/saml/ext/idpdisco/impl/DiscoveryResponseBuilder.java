@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.idpdisco.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
@@ -24,21 +26,15 @@ import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
 /** Builder of {@link org.opensaml.saml.ext.idpdisco.DiscoveryResponse}. */
 public class DiscoveryResponseBuilder extends AbstractSAMLObjectBuilder<DiscoveryResponse> {
 
-    /** Constructor. */
-    public DiscoveryResponseBuilder() {
-
-    }
-
     /** {@inheritDoc} */
     @Override
-    public DiscoveryResponse buildObject() {
+    @Nonnull public DiscoveryResponse buildObject() {
         return buildObject(SAMLConstants.SAML_IDP_DISCO_NS, DiscoveryResponse.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML_IDP_DISCO_PREFIX);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public DiscoveryResponse buildObject(final String namespaceURI, final String localName,
+    @Nonnull public DiscoveryResponse buildObject(final String namespaceURI, final String localName,
             final String namespacePrefix) {
         return new DiscoveryResponseImpl(namespaceURI, localName, namespacePrefix);
     }

@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -37,17 +38,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface PublicationPath extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicationPath";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "PublicationPath";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PublicationPathType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "PublicationPathType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /**
@@ -55,6 +56,6 @@ public interface PublicationPath extends SAMLObject {
      * 
      * @return the list of publications
      */
-    @Nonnull public List<Publication> getPublications();
+    @Nonnull @Live List<Publication> getPublications();
 
 }

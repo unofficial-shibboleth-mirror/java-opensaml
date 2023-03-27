@@ -21,6 +21,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -33,34 +34,34 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthenticationQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationQuery";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthenticationQuery";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthenticationQueryType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthenticationQueryType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** AuthenticationMethod attribute name. */
-    @Nonnull @NotEmpty public static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod"; 
+    @Nonnull @NotEmpty static final String AUTHENTICATIONMETHOD_ATTRIB_NAME = "AuthenticationMethod"; 
 
     /**
      * Get AuthenticationMethod attribute.
      * 
      * @return the authentication method
      */
-    public String getAuthenticationMethod();
+    @Nullable String getAuthenticationMethod();
     
     /**
      * Set AuthenticationMethod attribute.
      * 
      * @param authenticationMethod the authentication method
      */
-    public void setAuthenticationMethod(String authenticationMethod);
+    void setAuthenticationMethod(@Nullable final String authenticationMethod);
     
 }

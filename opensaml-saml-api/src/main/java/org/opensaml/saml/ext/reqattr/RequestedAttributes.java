@@ -26,6 +26,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -59,6 +60,6 @@ public interface RequestedAttributes extends SAMLObject {
      * 
      * @return list of child RequestedAttribute s
      */
-    List<RequestedAttribute> getRequestedAttributes();
+    @Nonnull @Live List<RequestedAttribute> getRequestedAttributes();
 
 }

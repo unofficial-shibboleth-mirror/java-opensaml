@@ -21,11 +21,14 @@ import java.time.Instant;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+
+import net.shibboleth.shared.annotation.constraint.Live;
 
 /**
  * This interface defines how the object representing a SAML1 <code> Conditions</code> element behaves.
@@ -64,35 +67,35 @@ public interface Conditions extends SAMLObject {
      * 
      * @return the "not before" condition 
      */
-    Instant getNotBefore();
+    @Nullable Instant getNotBefore();
 
     /**
      * Set the "not before" condition.
      * 
      * @param notBefore the "not before" condition 
      */
-    void setNotBefore(Instant notBefore);
+    void setNotBefore(@Nullable final Instant notBefore);
 
     /**
      * Get the "not on or after" condition.
      * 
      * @return the "not on or after" condition 
      */
-    Instant getNotOnOrAfter();
+    @Nullable Instant getNotOnOrAfter();
 
     /**
      * Set the "not on or after" condition.
      * 
      * @param notOnOrAfter the "not on or after" condition 
      */
-    void setNotOnOrAfter(Instant notOnOrAfter);
+    void setNotOnOrAfter(@Nullable final Instant notOnOrAfter);
     
     /**
      * Get the conditions.
      * 
      * @return the conditions
      */
-    List<Condition> getConditions();
+    @Nonnull @Live List<Condition> getConditions();
     
     /**
      * Get the conditions with the given schema type or element name.
@@ -101,19 +104,19 @@ public interface Conditions extends SAMLObject {
      * 
      * @return the matching conditions
      */
-    List<Condition> getConditions(QName typeOrName);
+    @Nonnull @Live List<Condition> getConditions(@Nonnull final QName typeOrName);
 
     /**
      * Get the audience restriction conditions.
      * 
      * @return the audience restriction conditions
      */
-    List<AudienceRestrictionCondition> getAudienceRestrictionConditions();
+    @Nonnull @Live List<AudienceRestrictionCondition> getAudienceRestrictionConditions();
 
     /**
      * Get the "do not cache" conditions.
      * 
      * @return the "do not cache" conditions
      */
-    List<DoNotCacheCondition> getDoNotCacheConditions();
+    @Nonnull @Live List<DoNotCacheCondition> getDoNotCacheConditions();
 }

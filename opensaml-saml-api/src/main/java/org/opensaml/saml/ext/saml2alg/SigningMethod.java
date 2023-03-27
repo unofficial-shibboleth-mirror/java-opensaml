@@ -31,68 +31,68 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SigningMethod extends SAMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SigningMethod";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SigningMethod";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ALG_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ALG_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SigningMethodType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SigningMethodType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ALG_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ALG_PREFIX);
     
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /** MinKeySize attribute name. */
-    @Nonnull @NotEmpty public static final String MIN_KEY_SIZE_ATTRIB_NAME = "MinKeySize";
+    @Nonnull @NotEmpty static final String MIN_KEY_SIZE_ATTRIB_NAME = "MinKeySize";
     
     /** MaxKeySize attribute name. */
-    @Nonnull @NotEmpty public static final String MAX_KEY_SIZE_ATTRIB_NAME = "MaxKeySize";
+    @Nonnull @NotEmpty static final String MAX_KEY_SIZE_ATTRIB_NAME = "MaxKeySize";
     
     /**
      * Get the value of the Algorithm URI attribute.
      * 
      * @return the algorithm URI
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
     
     /**
      * Get the value of the Algorithm URI attribute.
      * 
      * @param value the algorithm URI
      */
-    public void setAlgorithm(@Nullable final String value);
+    void setAlgorithm(@Nullable final String value);
     
     /**
      * Get the value of the MinKeySize attribute.
      * 
      * @return the MinKeySize value
      */
-    @Nullable public Integer getMinKeySize();
+    @Nullable Integer getMinKeySize();
     
     /**
      * Set the value of the MinKeySize attribute.
      * 
      * @param value the MinKeySize value
      */
-    public void setMinKeySize(@Nullable Integer value);
+    void setMinKeySize(@Nullable Integer value);
     
     /**
      * Get the value of the MaxKeySize attribute.
      * 
      * @return the MaxKeySize value
      */
-    @Nullable public Integer getMaxKeySize();
+    @Nullable Integer getMaxKeySize();
     
     /**
      * Set the value of the MaxKeySize attribute.
      * 
      * @param value the MaxKeySize value
      */
-    public void setMaxKeySize(@Nullable Integer value);
+    void setMaxKeySize(@Nullable Integer value);
     
 }

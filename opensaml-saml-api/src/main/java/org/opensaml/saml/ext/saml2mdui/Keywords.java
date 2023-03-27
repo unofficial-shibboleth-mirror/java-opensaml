@@ -20,6 +20,7 @@ package org.opensaml.saml.ext.saml2mdui;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.LangBearing;
@@ -41,17 +42,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Keywords extends SAMLObject, LangBearing  {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Keywords";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Keywords";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeywordsType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "KeywordsType";
            
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /**
@@ -59,13 +60,13 @@ public interface Keywords extends SAMLObject, LangBearing  {
      * 
      * @return the keywords
      */
-    public List<String> getKeywords();
+    @Nullable List<String> getKeywords();
     
     /**
      * Sets the keywords.
      * 
      * @param val The keywords
      */
-    public void setKeywords(List<String> val);
+    void setKeywords(@Nullable final List<String> val);
    
 }

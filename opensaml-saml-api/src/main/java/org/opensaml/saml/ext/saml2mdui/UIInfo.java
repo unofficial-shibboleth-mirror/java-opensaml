@@ -26,6 +26,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -39,17 +40,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface UIInfo extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "UIInfo";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "UIInfo";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "UIInfoType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "UIInfoType";
     
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** 
@@ -63,7 +64,7 @@ public interface UIInfo extends SAMLObject {
      *
      * @return the names
      */
-    public List <DisplayName> getDisplayNames();
+    @Nonnull @Live List <DisplayName> getDisplayNames();
     
     /** 
      * Get the keywords.
@@ -74,7 +75,7 @@ public interface UIInfo extends SAMLObject {
      *  
      * @return a list of keywords
      */
-    public List <Keywords> getKeywords();
+    @Nonnull @Live List <Keywords> getKeywords();
     
     /**
      * Return the descriptions.
@@ -90,7 +91,7 @@ public interface UIInfo extends SAMLObject {
      *
      * @return descriptions
      */
-    public List <Description> getDescriptions();
+    @Nonnull @Live List <Description> getDescriptions();
     
     /** 
      * Get the logos.
@@ -99,7 +100,7 @@ public interface UIInfo extends SAMLObject {
      *  
      * @return a list of logos
      */
-    public List <Logo> getLogos();
+    @Nonnull @Live List <Logo> getLogos();
     
     /** 
      * Get the URLs.
@@ -113,7 +114,7 @@ public interface UIInfo extends SAMLObject {
      *
      * @return the URLs
      */
-    public List <InformationURL> getInformationURLs();
+    @Nonnull @Live List <InformationURL> getInformationURLs();
     
     /**
      * Get the Privacy Statement URLs.
@@ -126,14 +127,14 @@ public interface UIInfo extends SAMLObject {
      *
      * @return the URLs
      */
-    public List <PrivacyStatementURL> getPrivacyStatementURLs(); 
+    @Nonnull @Live List <PrivacyStatementURL> getPrivacyStatementURLs(); 
     
     /**
      * Get the list of all children of this element.
      * 
      * @return the list of all XMLObject children
      */
-    public List <XMLObject> getXMLObjects(); 
+    @Nonnull @Live List <XMLObject> getXMLObjects(); 
     
     /**
      * Get the list of all children of this element which have the specified name or type.
@@ -142,6 +143,6 @@ public interface UIInfo extends SAMLObject {
      * 
      * @return the list of all XMLObject children
      */
-    public List <XMLObject> getXMLObjects(QName typeOrName); 
+    @Nonnull @Live List <XMLObject> getXMLObjects(@Nonnull final QName typeOrName); 
 
 }

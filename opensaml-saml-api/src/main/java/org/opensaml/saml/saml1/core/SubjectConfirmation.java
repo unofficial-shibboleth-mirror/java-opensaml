@@ -24,6 +24,7 @@ package org.opensaml.saml.saml1.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -31,6 +32,7 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -39,17 +41,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectConfirmation extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectConfirmation";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectConfirmationType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectConfirmationType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /**
@@ -57,33 +59,33 @@ public interface SubjectConfirmation extends SAMLObject {
      * 
      * @return mutable list of ConfirmationMethods.
      */
-    public List<ConfirmationMethod> getConfirmationMethods();
+    @Nonnull @Live List<ConfirmationMethod> getConfirmationMethods();
 
     /**
      * Set the SubjectConfirmationData.
      * 
      * @param subjectConfirmationData data to set
      */
-    public void setSubjectConfirmationData(XMLObject subjectConfirmationData);
+    void setSubjectConfirmationData(@Nullable final XMLObject subjectConfirmationData);
 
     /**
      * Get the SubjectConfirmationData.
      * 
      * @return the SubjectConfirmationData
      */
-    public XMLObject getSubjectConfirmationData();
+    @Nullable XMLObject getSubjectConfirmationData();
     
     /**
      * Gets the key information for the subject.
      * 
      * @return the key information for the subject
      */
-    public KeyInfo getKeyInfo();
+    @Nullable KeyInfo getKeyInfo();
 
     /**
      * Sets the key information for the subject.
      * 
      * @param keyInfo the key information for the subject
      */
-    public void setKeyInfo(KeyInfo keyInfo);
+    void setKeyInfo(@Nullable final KeyInfo keyInfo);
 }

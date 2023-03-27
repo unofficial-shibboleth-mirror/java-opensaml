@@ -20,6 +20,7 @@ package org.opensaml.saml.ext.saml2mdquery;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -27,6 +28,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -35,47 +37,47 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface QueryDescriptorType extends RoleDescriptor {
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "QueryDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "QueryDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MDQUERY_PREFIX);
     
     /** "WantAssertionSigned" attribute's local name. */
-    @Nonnull @NotEmpty public static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
+    @Nonnull @NotEmpty static final String WANT_ASSERTIONS_SIGNED_ATTRIB_NAME = "WantAssertionsSigned";
     
     /**
      * Gets whether assertions to this endpoint should be signed.
      * 
      * @return whether assertions to this endpoint should be signed
      */
-    public Boolean getWantAssertionsSigned();
+    @Nullable Boolean getWantAssertionsSigned();
     
     /**
      * Gets whether assertions to this endpoint should be signed.
      * 
      * @return whether assertions to this endpoint should be signed
      */
-    public XSBooleanValue getWantAssertionsSignedXSBoolean();
+    @Nullable XSBooleanValue getWantAssertionsSignedXSBoolean();
     
     /**
      * Sets whether assertions to this endpoint should be signed.
      * 
      * @param newWantAssertionsSigned whether assertions to this endpoint should be signed
      */
-    public void setWantAssertionsSigned(Boolean newWantAssertionsSigned);
+    void setWantAssertionsSigned(@Nullable final Boolean newWantAssertionsSigned);
     
     /**
      * Sets whether assertions to this endpoint should be signed.
      * 
      * @param newWantAssertionsSigned whether assertions to this endpoint should be signed
      */
-    public void setWantAssertionsSigned(XSBooleanValue newWantAssertionsSigned);
+    void setWantAssertionsSigned(@Nullable final XSBooleanValue newWantAssertionsSigned);
     
     /**
      * Gets the list of name ID formats supported by this query service.
      * 
      * @return the list of name ID formats supported by this query service
      */
-    public List<NameIDFormat> getNameIDFormat();
+    @Nonnull @Live List<NameIDFormat> getNameIDFormat();
 }

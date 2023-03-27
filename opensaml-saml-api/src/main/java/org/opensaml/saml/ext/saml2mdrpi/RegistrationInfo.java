@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -40,27 +41,27 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface RegistrationInfo extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationInfo";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RegistrationInfo";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RegistrationInfoType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RegistrationInfoType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** registrationAuthority attribute name. */
-    @Nonnull @NotEmpty public static String REGISTRATION_AUTHORITY_ATTRIB_NAME = "registrationAuthority";
+    @Nonnull @NotEmpty static String REGISTRATION_AUTHORITY_ATTRIB_NAME = "registrationAuthority";
 
     /** registrationInstant attribute name. */
-    @Nonnull @NotEmpty public static String REGISTRATION_INSTANT_ATTRIB_NAME = "registrationInstant";
+    @Nonnull @NotEmpty static String REGISTRATION_INSTANT_ATTRIB_NAME = "registrationInstant";
 
     /** QName of the registrationInstant attribute. */
-    @Nonnull public static final QName REGISTRATION_INSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName REGISTRATION_INSTANT_ATTRIB_QNAME =
             new QName(null, REGISTRATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
     /**
@@ -68,34 +69,34 @@ public interface RegistrationInfo extends SAMLObject {
      * 
      * @return the registration authority
      */
-    @Nullable public String getRegistrationAuthority();
+    @Nullable String getRegistrationAuthority();
 
     /**
      * Set the registration authority.
      * 
      * @param authority the registration authority
      */
-    public void setRegistrationAuthority(@Nullable final String authority);
+    void setRegistrationAuthority(@Nullable final String authority);
 
     /**
      * Get the registration instant.
      * 
      * @return the registration instant
      */
-    @Nullable public Instant getRegistrationInstant();
+    @Nullable Instant getRegistrationInstant();
 
     /**
      * Set the registration instant.
      * 
      * @param dateTime the instant
      */
-    public void setRegistrationInstant(@Nullable final Instant dateTime);
+    void setRegistrationInstant(@Nullable final Instant dateTime);
 
     /**
      * Get the {@link RegistrationPolicy}s.
      * 
      * @return the list of policies
      */
-    @Nonnull public List<RegistrationPolicy> getRegistrationPolicies();
+    @Nonnull @Live List<RegistrationPolicy> getRegistrationPolicies();
 
 }

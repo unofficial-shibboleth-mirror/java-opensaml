@@ -24,6 +24,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -32,10 +33,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthzDecisionQueryDescriptorType extends QueryDescriptorType {
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthzDecisionQueryDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthzDecisionQueryDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MDQUERY_PREFIX);
     
     /**
@@ -43,5 +44,5 @@ public interface AuthzDecisionQueryDescriptorType extends QueryDescriptorType {
      * 
      * @return the list of action namespaces support by this role
      */
-    public List<ActionNamespace> getActionNamespaces();
+    @Nonnull @Live List<ActionNamespace> getActionNamespaces();
 }

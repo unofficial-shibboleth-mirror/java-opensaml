@@ -22,6 +22,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -35,68 +36,68 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthorityBinding extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorityBinding";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorityBinding";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthorityBindingType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthorityBindingType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Name for the AuthorityKind attribute.  */
-    @Nonnull @NotEmpty public static final String AUTHORITYKIND_ATTRIB_NAME = "AuthorityKind";
+    @Nonnull @NotEmpty static final String AUTHORITYKIND_ATTRIB_NAME = "AuthorityKind";
     
     /** Name for the Location attribute.  */
-    @Nonnull @NotEmpty public static final String LOCATION_ATTRIB_NAME = "Location";
+    @Nonnull @NotEmpty static final String LOCATION_ATTRIB_NAME = "Location";
 
     /** Name for the Binding attribute.  */
-    @Nonnull @NotEmpty public static final String BINDING_ATTRIB_NAME = "Binding";
+    @Nonnull @NotEmpty static final String BINDING_ATTRIB_NAME = "Binding";
 
     /**
      * Get the type of authority described.
      * 
      * @return the type of authority
      */
-    public QName getAuthorityKind();
+    @Nullable QName getAuthorityKind();
 
     /**
      * Set the type of authority described.
      * 
      * @param authorityKind the type of authority
      */
-    public void setAuthorityKind(QName authorityKind);
+    void setAuthorityKind(@Nullable final QName authorityKind);
     
     /**
      * Get the authority location.
      * 
      * @return the location
      */
-    public String getLocation();
+    @Nullable String getLocation();
 
     /**
      * Set the authority location.
      * 
      * @param location the location
      */
-    public void setLocation(String location);
+    void setLocation(@Nullable final String location);
     
     /**
      * Get the authority binding.
      * 
      * @return the binding
      */
-    public String getBinding();
+    @Nullable String getBinding();
 
     /**
      * Set the authority binding.
      * 
      * @param binding the binding
      */
-    public void setBinding(String binding);
+    void setBinding(@Nullable final String binding);
 
 }

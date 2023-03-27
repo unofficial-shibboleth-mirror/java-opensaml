@@ -29,7 +29,7 @@ import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -169,7 +169,7 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * 
      * @return the List representing all the statements
      */
-    @Nonnull @NonnullElements List<Statement> getStatements();
+    @Nonnull @Live List<Statement> getStatements();
 
     /**
      * Return the List representing all the <code> Statement </code> sub elements with a given schema type or element
@@ -179,34 +179,34 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * 
      * @return the List representing all the statements
      */
-    @Nonnull @NonnullElements List<Statement> getStatements(@Nonnull final QName typeOrName);
+    @Nonnull @Live List<Statement> getStatements(@Nonnull final QName typeOrName);
 
     /**
      * Return the List representing all the <code> SubjectStatement </code> sub elements.
      * 
      * @return all the SubjectStatements
      */
-    @Nonnull @NonnullElements List<SubjectStatement> getSubjectStatements();
+    @Nonnull @Live List<SubjectStatement> getSubjectStatements();
 
     /**
      * Return the List representing all the <code> AuthenticationStatement </code> sub elements.
      * 
      * @return all the AuthenticationStatements
      */
-    @Nonnull @NonnullElements List<AuthenticationStatement> getAuthenticationStatements();
+    @Nonnull @Live List<AuthenticationStatement> getAuthenticationStatements();
 
     /**
      * Return the List representing all the <code> AuthorizationStatement </code> sub elements.
      * 
      * @return all the authorizationDecisionStatements.
      */
-    @Nonnull @NonnullElements List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements();
+    @Nonnull @Live List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements();
 
     /**
      * Return all the <code> AttributeStatement </code> elements.
      * 
      * @return all the attributeStatements
      */
-    @Nonnull @NonnullElements List<AttributeStatement> getAttributeStatements();
+    @Nonnull @Live List<AttributeStatement> getAttributeStatements();
     
 }

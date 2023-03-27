@@ -30,9 +30,9 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthnQueryDescriptorType extends QueryDescriptorType {
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthnQueryDescriptorType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthnQueryDescriptorType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML20MDQUERY_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML20MDQUERY_PREFIX);
 }

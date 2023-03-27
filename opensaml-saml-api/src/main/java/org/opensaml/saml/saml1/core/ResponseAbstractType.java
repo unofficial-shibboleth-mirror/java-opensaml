@@ -20,11 +20,14 @@ package org.opensaml.saml.saml1.core;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.common.SignableSAMLObject;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * This interface defines the base class for type derived from the SAML1 <code> ResponseAbstractType </code> .
@@ -32,90 +35,90 @@ import org.opensaml.saml.common.SignableSAMLObject;
 public interface ResponseAbstractType extends SignableSAMLObject {
 
     /** Name for the attribute which defines InResponseTo. */
-    @Nonnull static final String INRESPONSETO_ATTRIB_NAME = "InResponseTo";
+    @Nonnull @NotEmpty static final String INRESPONSETO_ATTRIB_NAME = "InResponseTo";
 
     /** Name for the attribute which defines the MajorVersion (which must be "1". */
-    @Nonnull static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
+    @Nonnull @NotEmpty static final String MAJORVERSION_ATTRIB_NAME = "MajorVersion";
 
     /** Name for the attribute which defines the MinorVersion. */
-    @Nonnull static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
+    @Nonnull @NotEmpty static final String MINORVERSION_ATTRIB_NAME = "MinorVersion";
 
     /** Name for the attribute which defines the IssueInstant. */
-    @Nonnull static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
+    @Nonnull @NotEmpty static final String ISSUEINSTANT_ATTRIB_NAME = "IssueInstant";
 
     /** QName for the attribute which defines the IssueInstant. */
     @Nonnull static final QName ISSUEINSTANT_ATTRIB_QNAME =
             new QName(null, "IssueInstant", XMLConstants.DEFAULT_NS_PREFIX);
     
     /** Name for the attribute which defines the Recipient. */
-    @Nonnull static final String RECIPIENT_ATTRIB_NAME = "Recipient";
+    @Nonnull @NotEmpty static final String RECIPIENT_ATTRIB_NAME = "Recipient";
 
     /** Name for the attribute which defines the ResponseID. */
-    @Nonnull static final String ID_ATTRIB_NAME = "ResponseID";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "ResponseID";
 
     /**
      * Return the InResponseTo (attribute).
      * 
      * @return the InResponseTo (attribute).
      */
-    String getInResponseTo();
+    @Nullable String getInResponseTo();
 
     /**
      * Set the InResponseTo (attribute).
      * 
      * @param who what to set
      */
-    void setInResponseTo(String who);
+    void setInResponseTo(@Nullable final String who);
 
     /**
      * Get the ID.
      * 
      * @return the ID
      */
-    String getID();
+    @Nullable String getID();
 
     /**
      * Set the ID.
      * 
      * @param id what to set
      */
-    void setID(String id);
+    void setID(@Nullable final String id);
 
     /**
      * Sets the SAML version for this message.
      * 
      * @return SAML version for this message
      */
-    SAMLVersion getVersion();
+    @Nullable SAMLVersion getVersion();
 
     /**
      * Sets the SAML version for this message.
      * 
      * @param version the SAML version for this message
      */
-    void setVersion(SAMLVersion version);
+    void setVersion(@Nullable final SAMLVersion version);
 
     /**
      * Return the Issue Instant (attribute).
      * 
      * @return the IssueInstant
      */
-    Instant getIssueInstant();
+    @Nullable Instant getIssueInstant();
 
     /** Set the Issue Instant (attribute).     * 
      * @param date what to set
      */
-    void setIssueInstant(Instant date);
+    void setIssueInstant(@Nullable final Instant date);
 
     /**
      * Return the Recipient (attribute). .
      * 
      * @return the Recipient
      */
-    String getRecipient();
+    @Nullable String getRecipient();
 
     /** Set the Recipient (attribute).     * 
      * @param recipient what to set
      */
-    void setRecipient(String recipient);
+    void setRecipient(@Nullable final String recipient);
 }

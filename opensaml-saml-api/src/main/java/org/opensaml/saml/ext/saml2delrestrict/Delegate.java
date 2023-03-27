@@ -20,6 +20,7 @@ package org.opensaml.saml.ext.saml2delrestrict;
 import java.time.Instant;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.XMLConstants;
 import javax.xml.namespace.QName;
 
@@ -37,97 +38,97 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Delegate extends SAMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Delegate";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Delegate";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DelegateType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "DelegateType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /** DelegationInstant attribute name. */
-    @Nonnull @NotEmpty public static final String DELEGATION_INSTANT_ATTRIB_NAME = "DelegationInstant";
+    @Nonnull @NotEmpty static final String DELEGATION_INSTANT_ATTRIB_NAME = "DelegationInstant";
 
     /** DelegationInstant attribute QName. */
-    @Nonnull public static final QName DELEGATION_INSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName DELEGATION_INSTANT_ATTRIB_QNAME =
             new QName(null, DELEGATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
     /** ConfirmationMethod attribute name. */
-    @Nonnull @NotEmpty public static final String CONFIRMATION_METHOD_ATTRIB_NAME = "ConfirmationMethod";    
+    @Nonnull @NotEmpty static final String CONFIRMATION_METHOD_ATTRIB_NAME = "ConfirmationMethod";    
 
     /**
      * Gets the BaseID child element of the delegate.
      * 
      * @return the base identifier of the delegate
      */
-    public BaseID getBaseID();
+    @Nullable BaseID getBaseID();
 
     /**
      * Sets the BaseID child element of the delegate.
      * 
      * @param newBaseID the base identifier of the delegate
      */
-    public void setBaseID(@Nonnull BaseID newBaseID);
+    void setBaseID(@Nullable  final BaseID newBaseID);
 
     /**
      * Gets the NameID child element of the delegate.
      * 
      * @return the name identifier of the principal for this request
      */
-    public NameID getNameID();
+    @Nullable NameID getNameID();
 
     /**
      * Sets the NameID child element of the delegate.
      * 
      * @param newNameID the name identifier of the delegate
      */
-    public void setNameID(@Nonnull NameID newNameID);
+    void setNameID(@Nullable final NameID newNameID);
 
     /**
      * Gets the EncryptedID child element of the delegate.
      * 
      * @return the encrypted name identifier of the delegate
      */
-    public EncryptedID getEncryptedID();
+    @Nullable EncryptedID getEncryptedID();
 
     /**
      * Sets the EncryptedID child element of the delegate.
      * 
      * @param newEncryptedID the new encrypted name identifier of the delegate
      */
-    public void setEncryptedID(EncryptedID newEncryptedID);
+    void setEncryptedID(@Nullable final EncryptedID newEncryptedID);
     
     /**
      * Get the delegation instant attribute value.
      * 
      * @return the delegation instant
      */
-    public Instant getDelegationInstant();
+    @Nullable Instant getDelegationInstant();
     
     /**
      * Set the delegation instant attribute value.
      * 
      * @param newInstant the new delegation instant
      */
-    public void setDelegationInstant(Instant newInstant);
+    void setDelegationInstant(@Nullable final Instant newInstant);
     
     /**
      * Get the confirmation method attribute value.
      * 
      * @return the confirmation method
      */
-    public String getConfirmationMethod();
+    @Nullable String getConfirmationMethod();
     
     /**
      * Set the confirmation method attribute value.
      * 
      * @param newMethod the new confirmation method
      */
-    public void setConfirmationMethod(String newMethod);
+    void setConfirmationMethod(@Nullable final String newMethod);
 
 }

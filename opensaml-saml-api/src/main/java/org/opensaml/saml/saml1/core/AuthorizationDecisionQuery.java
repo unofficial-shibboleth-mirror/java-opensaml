@@ -23,10 +23,12 @@ package org.opensaml.saml.saml1.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -35,54 +37,54 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthorizationDecisionQuery extends SubjectQuery {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionQuery";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionQuery";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthorizationDecisionQueryType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthorizationDecisionQueryType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** AuthenticationMethod attribute name. */
-    @Nonnull @NotEmpty public static final String RESOURCE_ATTRIB_NAME = "Resource"; 
+    @Nonnull @NotEmpty static final String RESOURCE_ATTRIB_NAME = "Resource"; 
 
     /** 
      * Get Resource attribute.
      * 
      * @return Resource attribute
      */
-    public String getResource();
+    @Nullable String getResource();
     
     /**
      * Set Resource attribute.
      * 
      * @param resource Resource attribute to set
      */
-    public void setResource(String resource);
+    void setResource(@Nullable final String resource);
 
     /**
      * Get list of Action child elements.
      * 
      * @return Action list
      */
-    public List<Action> getActions();
+    @Nonnull @Live List<Action> getActions();
     
     /**
      * Get the Evidence child element.
      * 
      * @return Evidence child element
      */
-    public Evidence getEvidence();
+    @Nullable Evidence getEvidence();
 
     /**
      * Set the Evidence child element.
      * 
      * @param evidence child element to set
      */
-    public void setEvidence(Evidence evidence);
+    void setEvidence(@Nullable final Evidence evidence);
 }

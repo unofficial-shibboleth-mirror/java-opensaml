@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -31,87 +32,87 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface StatusCode extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusCode";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "StatusCode";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "StatusCodeType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "StatusCodeType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML1P_PREFIX);
 
     /** Success status value. */
-    @Nonnull public static final QName SUCCESS =
+    @Nonnull static final QName SUCCESS =
             new QName(SAMLConstants.SAML10P_NS, "Success", SAMLConstants.SAML1P_PREFIX);
 
     /** VersionMismatch status value. */
-    @Nonnull public static final QName VERSION_MISMATCH = new QName(SAMLConstants.SAML10P_NS, "VersionMismatch",
+    @Nonnull static final QName VERSION_MISMATCH = new QName(SAMLConstants.SAML10P_NS, "VersionMismatch",
             SAMLConstants.SAML1P_PREFIX);
 
     /** Requester status value. */
-    @Nonnull public static final QName REQUESTER =
+    @Nonnull static final QName REQUESTER =
             new QName(SAMLConstants.SAML10P_NS, "Requester", SAMLConstants.SAML1P_PREFIX);
 
     /** Responder status value. */
-    @Nonnull public static final QName RESPONDER =
+    @Nonnull static final QName RESPONDER =
             new QName(SAMLConstants.SAML10P_NS, "Responder", SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionTooHigh status value. */
-    @Nonnull public static final QName REQUEST_VERSION_TOO_HIGH =
+    @Nonnull static final QName REQUEST_VERSION_TOO_HIGH =
             new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooHigh", SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionTooLow status value. */
-    @Nonnull public static final QName REQUEST_VERSION_TOO_LOW =
+    @Nonnull static final QName REQUEST_VERSION_TOO_LOW =
             new QName(SAMLConstants.SAML10P_NS, "RequestVersionTooLow", SAMLConstants.SAML1P_PREFIX);
 
     /** RequestVersionDepricated status value. */
-    @Nonnull public static final QName REQUEST_VERSION_DEPRECATED = new QName(SAMLConstants.SAML10P_NS,
+    @Nonnull static final QName REQUEST_VERSION_DEPRECATED = new QName(SAMLConstants.SAML10P_NS,
             "RequestVersionDeprecated", SAMLConstants.SAML1P_PREFIX);
 
     /** TooManyResponses status value. */
-    @Nonnull public static final QName TOO_MANY_RESPONSES = new QName(SAMLConstants.SAML10P_NS, "TooManyResponses",
+    @Nonnull static final QName TOO_MANY_RESPONSES = new QName(SAMLConstants.SAML10P_NS, "TooManyResponses",
             SAMLConstants.SAML1P_PREFIX);
 
     /** RequestDenied status value. */
-    @Nonnull public static final QName REQUEST_DENIED = new QName(SAMLConstants.SAML10P_NS, "RequestDenied",
+    @Nonnull static final QName REQUEST_DENIED = new QName(SAMLConstants.SAML10P_NS, "RequestDenied",
             SAMLConstants.SAML1P_PREFIX);
 
     /** ResourceNotRecognized status value. */
-    @Nonnull public static final QName RESOURCE_NOT_RECOGNIZED =
+    @Nonnull static final QName RESOURCE_NOT_RECOGNIZED =
             new QName(SAMLConstants.SAML10P_NS, "ResourceNotRecognized", SAMLConstants.SAML1P_PREFIX);
 
     /** Name for the attribute which defines the Value. */
-    @Nonnull @NotEmpty public static final String VALUE_ATTRIB_NAME = "Value";
+    @Nonnull @NotEmpty static final String VALUE_ATTRIB_NAME = "Value";
 
     /**
      * Gets the value of the status code.
      * 
      * @return value of the status code
      */
-    public QName getValue();
+    @Nullable QName getValue();
 
     /**
      * Sets the value of the status code.
      * 
      * @param value value of the status code
      */
-    public void setValue(QName value);
+    void setValue(@Nullable final QName value);
 
     /**
      * Gets the second level status code.
      * 
      * @return second level status code
      */
-    public StatusCode getStatusCode();
+    @Nullable StatusCode getStatusCode();
 
     /**
      * Sets the second level status code.
      * 
      * @param statusCode second level status code
      */
-    public void setStatusCode(StatusCode statusCode);
+    void setStatusCode(@Nullable final StatusCode statusCode);
 }

@@ -20,11 +20,13 @@ package org.opensaml.saml.saml1.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,66 +36,66 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AuthorizationDecisionStatement extends SAMLObject, SubjectStatement {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionStatement";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "AuthorizationDecisionStatement";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AuthorizationDecisionStatementType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AuthorizationDecisionStatementType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for Resource attribute. */
-    @Nonnull @NotEmpty public static final String RESOURCE_ATTRIB_NAME = "Resource";
+    @Nonnull @NotEmpty static final String RESOURCE_ATTRIB_NAME = "Resource";
     
     /** Name for Decision attribute. */
-    @Nonnull @NotEmpty public static final String DECISION_ATTRIB_NAME = "Decision";
+    @Nonnull @NotEmpty static final String DECISION_ATTRIB_NAME = "Decision";
     
     /**
      * Get the resource.
      * 
      * @return the resource
      */
-    public String getResource();
+    @Nullable String getResource();
     
     /**
      * Set the resource.
      * 
      * @param resource the resource
      */
-    public void setResource(String resource);
+    void setResource(@Nullable final String resource);
 
     /**
      * Get the decision.
      * 
      * @return the decision.
      */
-    public DecisionTypeEnumeration getDecision();
+    @Nullable DecisionTypeEnumeration getDecision();
 
     /**
      * Set the decision.
      * 
      * @param decision the decision.
      */
-    public void setDecision(DecisionTypeEnumeration decision);
+    void setDecision(@Nullable final DecisionTypeEnumeration decision);
 
     /**
      * Get the actions.
      * 
      * @return the actions.
      */
-    public List<Action> getActions();
+    @Nonnull @Live List<Action> getActions();
 
     /**
      * Get the evidence.
      * 
      * @return the evidence
      */
-    public Evidence getEvidence();
+    @Nullable Evidence getEvidence();
 
     /**
      * Set the evidence.
@@ -102,6 +104,6 @@ public interface AuthorizationDecisionStatement extends SAMLObject, SubjectState
      * 
      * @throws IllegalArgumentException if an error occurs
      */
-    public void setEvidence(Evidence evidence) throws IllegalArgumentException;
+    void setEvidence(@Nullable final Evidence evidence) throws IllegalArgumentException;
    
 }

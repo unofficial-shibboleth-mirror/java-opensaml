@@ -20,10 +20,12 @@ package org.opensaml.saml.saml1.core;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -32,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Response extends ResponseAbstractType {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Response";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ResponseAbstractType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ResponseAbstractType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAML1P_PREFIX);
 
     /**
@@ -50,20 +52,20 @@ public interface Response extends ResponseAbstractType {
      * 
      * @return the Status
      */
-    Status getStatus();
+    @Nullable Status getStatus();
 
     /**
      * Set the object representing the <code> Status </code> (element).
      * 
      * @param status what to set
      */
-    void setStatus(Status status);
+    void setStatus(@Nullable final Status status);
 
     /**
      * Return the objects representing the <code>Assertion</code> (element).
      * 
      * @return the Assertion objects
      */
-    public List<Assertion> getAssertions();
+    @Nonnull @Live List<Assertion> getAssertions();
 
 }

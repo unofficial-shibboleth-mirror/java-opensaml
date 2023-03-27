@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Request extends RequestAbstractType {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Request";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RequestType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RequestType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /* 
@@ -56,54 +56,54 @@ public interface Request extends RequestAbstractType {
      * 
      * @return request Query, SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery
      */
-    @Nullable public Query getQuery();
+    @Nullable Query getQuery();
     
     /**
      * Get the request SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery.
      *
      * @return request SubjectQuery, AuthenticationQuery, AttributeQuery, or AuthorizationDecisionQuery
      */
-    @Nullable public SubjectQuery getSubjectQuery();
+    @Nullable SubjectQuery getSubjectQuery();
     
     /**
      * Get the request AuthenticationQuery.
      * 
      * @return request AuthenticationQuery
      */ 
-    @Nullable public AuthenticationQuery getAuthenticationQuery();
+    @Nullable AuthenticationQuery getAuthenticationQuery();
     
     /**
      * Get the request AttributeQuery.
      * 
      * @return request AttributeQuery
      */
-    @Nullable public AttributeQuery getAttributeQuery();
+    @Nullable AttributeQuery getAttributeQuery();
     
     /**
      * Get the request AuthorizationDecisionQuery.
      * 
      * @return request AuthorizationDecisionQuery
      */ 
-    @Nullable public AuthorizationDecisionQuery getAuthorizationDecisionQuery();
+    @Nullable AuthorizationDecisionQuery getAuthorizationDecisionQuery();
     
     /**
      * Set the request query (Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisioonQuery).
      * 
      * @param query Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisioonQuery
      */ 
-    public void setQuery(@Nullable Query query);
+    void setQuery(@Nullable Query query);
     
     /**
      * Get the list of AssertionIDReferences.
      * 
      * @return list of AssertionIDReferences
      */
-    @Nonnull @NonnullElements public List <AssertionIDReference> getAssertionIDReferences();
+    @Nonnull @Live List <AssertionIDReference> getAssertionIDReferences();
     
     /**
      * Get the list of artifacts.
      * 
      * @return list of artifacts
      */
-    @Nonnull @NonnullElements public List <AssertionArtifact> getAssertionArtifacts();
+    @Nonnull @Live List <AssertionArtifact> getAssertionArtifacts();
 }

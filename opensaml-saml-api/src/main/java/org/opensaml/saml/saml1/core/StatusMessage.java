@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.schema.XSString;
@@ -38,25 +37,5 @@ public interface StatusMessage extends SAMLObject, XSString {
     /** Default element name. */
     @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
-    
-    /**
-     * Get the message.
-     * 
-     * @return  the message
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    @Nullable default String getMessage() {
-        return getValue();
-    }
-
-    /**
-     * Set the message.
-     * 
-     * @param value  the message
-     */
-    @Deprecated(forRemoval=true, since="4.0.0")
-    default void setMessage(@Nullable final String value) {
-        setValue(value);
-    }
 
 }

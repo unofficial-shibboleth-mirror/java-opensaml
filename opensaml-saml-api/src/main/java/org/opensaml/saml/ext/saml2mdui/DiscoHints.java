@@ -26,6 +26,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -38,17 +39,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface DiscoHints extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoHints";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "DiscoHints";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DiscoHintsType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "DiscoHintsType";
            
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDUI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDUI_PREFIX);
     
     /** 
@@ -57,7 +58,7 @@ public interface DiscoHints extends SAMLObject {
      * 
      * @return hints
      */
-    public List <IPHint> getIPHints();
+    @Nonnull @Live List <IPHint> getIPHints();
     
     /**
      * The &lt;DomainHint&gt; element specifies a set of DNS domains associated with, 
@@ -65,7 +66,7 @@ public interface DiscoHints extends SAMLObject {
      *
      * @return hints.
      */
-    public List <DomainHint> getDomainHints();
+    @Nonnull @Live List <DomainHint> getDomainHints();
     
     /**
      * The &lt;GeolocationHint&gt; element specifies the geographic coordinates associated 
@@ -74,14 +75,14 @@ public interface DiscoHints extends SAMLObject {
      * 
      * @return hints
      */
-    public List <GeolocationHint> getGeolocationHints();
+    @Nonnull @Live List <GeolocationHint> getGeolocationHints();
     
     /**
      * Get the list of all children of this element.
      * 
      * @return the list of all XMLObject children
      */
-    public List <XMLObject> getXMLObjects(); 
+    @Nonnull @Live List <XMLObject> getXMLObjects(); 
     
     /**
      * Get the list of all children of this element which have the specified name or type.
@@ -90,6 +91,6 @@ public interface DiscoHints extends SAMLObject {
      * 
      * @return the list of all XMLObject children
      */
-    public List <XMLObject> getXMLObjects(QName typeOrName); 
+    @Nonnull @Live List <XMLObject> getXMLObjects(@Nonnull final QName typeOrName); 
     
 }

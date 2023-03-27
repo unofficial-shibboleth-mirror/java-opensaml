@@ -38,54 +38,54 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SessionKey extends SAMLObject, MustUnderstandBearing, ActorBearing {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SessionKey";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SessionKey";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAMLEC_GSS_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SessionKeyType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SessionKeyType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SAMLConstants.SAMLEC_GSS_NS, TYPE_LOCAL_NAME,
             SAMLConstants.SAMLEC_GSS_PREFIX);
 
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /**
      * Get the session key derivation algorithm.
      * 
      * @return the algorithm used to derive the session key
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
 
     /**
      * Set the session key derivation algorithm.
      * 
      * @param newAlgorithm the algorithm used to derive the session key
      */
-    public void setAlgorithm(@Nullable final String newAlgorithm);
+    void setAlgorithm(@Nullable final String newAlgorithm);
     
     /**
      * Get the session key encryption typed.
      * 
      * @return the encryption types of the session key
      */
-    @Nonnull public List<EncType> getEncTypes();
+    @Nonnull List<EncType> getEncTypes();
 
     /**
      * Get the KeyInfo object that describes the session key.
      * 
      * @return the KeyInfo object that describes the session key
      */
-    @Nullable public KeyInfo getKeyInfo();
+    @Nullable KeyInfo getKeyInfo();
 
     /**
      * Set the KeyInfo object that describes the session key.
      * 
      * @param newKeyInfo the KeyInfo object that describes the session key
      */
-    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
+    void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
 }

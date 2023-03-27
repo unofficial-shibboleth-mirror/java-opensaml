@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Evidence extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Evidence";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Evidence";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EvidenceType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EvidenceType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /**
@@ -51,20 +52,20 @@ public interface Evidence extends SAMLObject {
      * 
      * @return list of all {@link Evidentiary} elements
      */
-    @Nonnull public List<Evidentiary> getEvidence();
+    @Nonnull @Live List<Evidentiary> getEvidence();
 
     /**
      * Get the list of assertion ID references.
      * 
      * @return list of assertion ID references
      */
-    @Nonnull public List<AssertionIDReference> getAssertionIDReferences();
+    @Nonnull @Live List<AssertionIDReference> getAssertionIDReferences();
     
     /**
      * Get the list of Assertions.
      * 
      * @return list of assertions
      */
-    @Nonnull public List<Assertion> getAssertions();
+    @Nonnull @Live List<Assertion> getAssertions();
     
 }

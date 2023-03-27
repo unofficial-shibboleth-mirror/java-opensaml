@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -31,17 +32,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Status extends SAMLObject {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Status";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Status";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "StatusType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "StatusType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /**
@@ -49,40 +50,40 @@ public interface Status extends SAMLObject {
      * 
      * @return object representing the <code>StatusMessage</code> (element)
      */
-    public StatusMessage getStatusMessage();
+    @Nullable StatusMessage getStatusMessage();
 
     /**
      * Set the object representing the <code>StatusMessage</code> (element).
      * 
      * @param statusMessage object representing the <code>StatusMessage</code> (element)
      */
-    public void setStatusMessage(StatusMessage statusMessage);
+    void setStatusMessage(@Nullable final StatusMessage statusMessage);
 
     /**
      * Get the object representing the <code>StatusCode</code> (element).
      * 
      * @return object representing the <code>StatusCode</code> (element)
      */
-    public StatusCode getStatusCode();
+    @Nullable StatusCode getStatusCode();
 
     /**
      * Set the object representing the <code>StatusCode</code> (element).
      * 
      * @param statusCode object representing the <code>StatusCode</code> (element)
      */
-    public void setStatusCode(StatusCode statusCode);
+    void setStatusCode(@Nullable final StatusCode statusCode);
 
     /**
      * Get the object representing the <code>StatusDetail</code> (element).
      * 
      * @return object representing the <code>StatusDetail</code> (element)
      */
-    public StatusDetail getStatusDetail();
+    @Nullable StatusDetail getStatusDetail();
 
     /**
      * Set the object representing the <code>StatusDetail</code> (element).
      * 
      * @param statusDetail object representing the <code>StatusDetail</code> (element)
      */
-    public void setStatusDetail(StatusDetail statusDetail);
+    void setStatusDetail(@Nullable final StatusDetail statusDetail);
 }

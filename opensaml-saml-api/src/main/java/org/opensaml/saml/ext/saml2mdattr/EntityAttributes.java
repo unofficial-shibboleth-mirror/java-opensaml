@@ -27,33 +27,34 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /** SAML V2.0 Metadata Extension for Entity Attributes EntityAttributes SAML object. */
 public interface EntityAttributes extends SAMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityAttributes";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EntityAttributes";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20MDATTR_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDATTR_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EntityAttributesType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EntityAttributesType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20MDATTR_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDATTR_PREFIX);
 
     /**
-     * Gets a fully mutable list of the child objects of this extension.
+     * Gets mutable list of the child objects of this extension.
      * 
      * @return mutable list of children
      * 
      * @since 4.0.0
      */
-    public List<SAMLObject> getEntityAttributesChildren();
+    @Nonnull @Live List<SAMLObject> getEntityAttributesChildren();
     
     /**
      * Gets the attributes about the entity.
@@ -62,7 +63,7 @@ public interface EntityAttributes extends SAMLObject {
      * 
      * @return attributes about the entity
      */
-    public List<Attribute> getAttributes();
+    @Nonnull @Live List<Attribute> getAttributes();
     
     /**
      * Gets the assertions about the entity.
@@ -71,5 +72,5 @@ public interface EntityAttributes extends SAMLObject {
      * 
      * @return assertions about the entity
      */
-    public List<Assertion> getAssertions();
+    @Nonnull @Live List<Assertion> getAssertions();
 }

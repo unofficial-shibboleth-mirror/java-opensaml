@@ -62,23 +62,23 @@ public interface Logo extends LocalizedURI, SAMLObject {
      * Get the height of the logo.
      * @return the height of the logo
      */
-    @Nullable public Integer getHeight();
+    @Nullable Integer getHeight();
     
     /**
      * Sets the height of the logo.
      * @param newHeight the height of the logo
      */
-    public void setHeight(@Nullable final Integer newHeight);
+    void setHeight(@Nullable final Integer newHeight);
 
     /**
      * Get the width of the logo.
      * @return the width of the logo
      */
-    @Nullable public Integer getWidth();
+    @Nullable Integer getWidth();
     
     /**
      * Sets the width of the logo.
      * @param newWidth the height of the logo
      */
-    public void setWidth(@Nullable final Integer newWidth);
+    void setWidth(@Nullable final Integer newWidth);
 }

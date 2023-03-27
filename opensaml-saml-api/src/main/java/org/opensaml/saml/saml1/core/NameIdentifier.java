@@ -31,37 +31,37 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface NameIdentifier extends SAMLObject, XSString {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIdentifier";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "NameIdentifier";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "NameIdentifierType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "NameIdentifierType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
 
     /** Name for the attribute which defines Name Qualifier. */
-    @Nonnull @NotEmpty public static final String NAMEQUALIFIER_ATTRIB_NAME = "NameQualifier";
+    @Nonnull @NotEmpty static final String NAMEQUALIFIER_ATTRIB_NAME = "NameQualifier";
 
     /** Name for the attribute which defines Name Qualifier. */
-    @Nonnull @NotEmpty public static final String FORMAT_ATTRIB_NAME = "Format";
+    @Nonnull @NotEmpty static final String FORMAT_ATTRIB_NAME = "Format";
 
     /** URI for unspecified name format. */
-    @Nonnull @NotEmpty public static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
+    @Nonnull @NotEmpty static final String UNSPECIFIED = "urn:oasis:names:tc:SAML:1.1:nameid-format:unspecified";
 
     /** URI for email name format. */
-    @Nonnull @NotEmpty public static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
+    @Nonnull @NotEmpty static final String EMAIL = "urn:oasis:names:tc:SAML:1.1:nameid-format:emailAddress";
 
     /** URI for X509 subject name format. */
     @Nonnull @NotEmpty
-    public static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
+    static final String X509_SUBJECT = "urn:oasis:names:tc:SAML:1.1:nameid-format:X509SubjectName";
 
     /** URI for windows domain qualified name name format. */
-    @Nonnull @NotEmpty public static final String WIN_DOMAIN_QUALIFIED =
+    @Nonnull @NotEmpty static final String WIN_DOMAIN_QUALIFIED =
             "urn:oasis:names:tc:SAML:1.1:nameid-format:WindowsDomainQualifiedName";
     
     /**
@@ -69,27 +69,27 @@ public interface NameIdentifier extends SAMLObject, XSString {
      * 
      * @return name qualifier for this identifier
      */
-    @Nullable public String getNameQualifier();
+    @Nullable String getNameQualifier();
 
     /**
      * Sets the name qualifier for this identifier.
      * 
      * @param nameQualifier name qualifier for this identifier
      */
-    public void setNameQualifier(@Nullable final String nameQualifier);
+    void setNameQualifier(@Nullable final String nameQualifier);
 
     /**
      * Gets the format of this identifier.
      * 
      * @return format of this identifier
      */
-    @Nullable public String getFormat();
+    @Nullable String getFormat();
 
     /**
      * Sets the format of this identifier.
      * 
      * @param format format of this identifier
      */
-    public void setFormat(@Nullable final String format);
+    void setFormat(@Nullable final String format);
 
 }

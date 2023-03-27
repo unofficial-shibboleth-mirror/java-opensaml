@@ -31,34 +31,34 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface DigestMethod extends SAMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DigestMethod";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "DigestMethod";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
         new QName(SAMLConstants.SAML20ALG_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20ALG_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DigestMethodType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "DigestMethodType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20ALG_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20ALG_PREFIX);
     
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /**
      * Get the value of the Algorithm URI attribute.
      * 
      * @return the algorithm URI
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
     
     /**
      * Get the value of the Algorithm URI attribute.
      * 
      * @param value the algorithm URI
      */
-    public void setAlgorithm(@Nullable final String value);
+    void setAlgorithm(@Nullable final String value);
     
 }

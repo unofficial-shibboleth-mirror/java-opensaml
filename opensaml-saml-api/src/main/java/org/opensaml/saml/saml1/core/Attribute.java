@@ -25,7 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -52,6 +52,6 @@ public interface Attribute extends AttributeDesignator {
      * 
      * @return the subsiduary attribute values
      */
-    @Nonnull @NonnullElements public List<XMLObject> getAttributeValues();
+    @Nonnull @Live public List<XMLObject> getAttributeValues();
     
 }

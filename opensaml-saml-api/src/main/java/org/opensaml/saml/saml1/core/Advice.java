@@ -26,7 +26,7 @@ import org.opensaml.core.xml.ElementExtensibleXMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -53,13 +53,13 @@ public interface Advice extends SAMLObject, ElementExtensibleXMLObject {
      * 
      * @return the AssertionIdReferences in order
      */
-    @Nonnull @NonnullElements List<AssertionIDReference> getAssertionIDReferences();
+    @Nonnull @Live List<AssertionIDReference> getAssertionIDReferences();
 
     /**
      * Get the Assertions.
      * 
      * @return the assertions (in order)
      */
-    @Nonnull @NonnullElements List<Assertion> getAssertions();
+    @Nonnull @Live List<Assertion> getAssertions();
     
 }

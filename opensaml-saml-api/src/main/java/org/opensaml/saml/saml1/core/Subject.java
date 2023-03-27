@@ -21,6 +21,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -32,18 +33,19 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
  * Interface to describe how the <code> Subject </code> elements work.
  */
 public interface Subject extends SAMLObject {
+
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Subject";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Subject";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /**
@@ -51,27 +53,27 @@ public interface Subject extends SAMLObject {
      * 
      * @return the name identifier
      */
-    public NameIdentifier getNameIdentifier();
+    @Nullable NameIdentifier getNameIdentifier();
     
     /**
      * Set the name identifier.
      * 
      * @param nameIdentifier the name identifier
      */
-    public void setNameIdentifier(NameIdentifier nameIdentifier);
+    void setNameIdentifier(@Nullable final NameIdentifier nameIdentifier);
     
     /**
      * Get the subject confirmation.
      * 
      * @return the subject confirmation
      */
-    public SubjectConfirmation getSubjectConfirmation();
+    @Nullable SubjectConfirmation getSubjectConfirmation();
     
     /**
      * Set the subject confirmation.
      * 
      * @param subjectConfirmation the subject confirmation
      */
-    public void setSubjectConfirmation(SubjectConfirmation subjectConfirmation);
+    void setSubjectConfirmation(@Nullable final SubjectConfirmation subjectConfirmation);
     
 }

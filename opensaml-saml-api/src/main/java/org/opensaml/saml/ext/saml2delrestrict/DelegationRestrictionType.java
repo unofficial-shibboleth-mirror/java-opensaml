@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Condition;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,10 +34,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface DelegationRestrictionType extends Condition {
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "DelegationRestrictionType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
         new QName(SAMLConstants.SAML20DEL_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20DEL_PREFIX);
     
     /**
@@ -44,6 +45,6 @@ public interface DelegationRestrictionType extends Condition {
      * 
      * @return list of Delegate children
      */
-    List<Delegate> getDelegates();
+    @Nonnull @Live List<Delegate> getDelegates();
 
 }

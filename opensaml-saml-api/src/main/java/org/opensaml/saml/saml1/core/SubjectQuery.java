@@ -31,17 +31,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectQuery extends Query {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectQuery";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML10P_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectQueryAbstractType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectQueryAbstractType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML10P_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
 
     /**
@@ -49,12 +49,12 @@ public interface SubjectQuery extends Query {
      * 
      * @return the subject
      */
-    @Nullable public Subject getSubject();
+    @Nullable Subject getSubject();
     
     /**
      * Set the subject.
      * 
      * @param subject the subject
      */
-    public void setSubject(@Nullable Subject subject);
+    void setSubject(@Nullable Subject subject);
 }

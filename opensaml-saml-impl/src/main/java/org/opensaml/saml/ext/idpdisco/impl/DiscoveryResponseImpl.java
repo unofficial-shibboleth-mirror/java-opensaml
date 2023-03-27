@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.ext.idpdisco.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
 import org.opensaml.saml.saml2.metadata.impl.IndexedEndpointImpl;
 
@@ -37,8 +40,8 @@ public class DiscoveryResponseImpl extends IndexedEndpointImpl implements Discov
      * @param elementLocalName the local name
      * @param namespacePrefix the prefix
      */
-    protected DiscoveryResponseImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected DiscoveryResponseImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 }

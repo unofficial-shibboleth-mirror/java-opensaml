@@ -39,72 +39,72 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Publication extends SAMLObject {
 
     /** Name of the element inside the Extensions. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Publication";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Publication";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PublicationType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "PublicationType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML20MDRPI_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML20MDRPI_PREFIX);
 
     /** publisher attribute name. */
-    @Nonnull public static String PUBLISHER_ATTRIB_NAME = "publisher";
+    @Nonnull static String PUBLISHER_ATTRIB_NAME = "publisher";
 
     /** creation attribute name. */
-    @Nonnull public static String CREATION_INSTANT_ATTRIB_NAME = "creationInstant";
+    @Nonnull static String CREATION_INSTANT_ATTRIB_NAME = "creationInstant";
 
     /** QName of the creation attribute. */
-    @Nonnull public static final QName CREATION_INSTANT_ATTRIB_QNAME =
+    @Nonnull static final QName CREATION_INSTANT_ATTRIB_QNAME =
             new QName(null, CREATION_INSTANT_ATTRIB_NAME, XMLConstants.DEFAULT_NS_PREFIX);
     
     /** publication id attribute name. */
-    @Nonnull public static String PUBLICATION_ID_ATTRIB_NAME = "publicationId";
+    @Nonnull static String PUBLICATION_ID_ATTRIB_NAME = "publicationId";
 
     /**
      * Get the publisher.
      * 
      * @return the publisher
      */
-    @Nullable public String getPublisher();
+    @Nullable String getPublisher();
 
     /**
      * Set the publisher.
      * 
      * @param publisher the publisher
      */
-    public void setPublisher(@Nullable final String publisher);
+    void setPublisher(@Nullable final String publisher);
 
     /**
      * Get the creation instant.
      * 
      * @return the creation instant
      */
-    @Nullable public Instant getCreationInstant();
+    @Nullable Instant getCreationInstant();
 
     /**
      * Set the creation instant.
      * 
      * @param dateTime the instant
      */
-    public void setCreationInstant(@Nullable final Instant dateTime);
+    void setCreationInstant(@Nullable final Instant dateTime);
 
     /**
      * Get the publicationId.
      * 
      * @return the publicationId
      */
-    @Nullable public String getPublicationId();
+    @Nullable String getPublicationId();
 
     /**
      * Set the publicationId.
      * 
      * @param publicationId the publicationIdr
      */
-    public void setPublicationId(@Nullable final String publicationId);
+    void setPublicationId(@Nullable final String publicationId);
 
 }

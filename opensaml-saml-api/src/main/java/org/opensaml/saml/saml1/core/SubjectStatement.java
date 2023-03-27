@@ -18,6 +18,7 @@
 package org.opensaml.saml.saml1.core;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.common.SAMLObject;
@@ -31,17 +32,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SubjectStatement extends SAMLObject, Statement {
 
     /** Element name, no namespace. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectStatement";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SubjectStatement";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SAMLConstants.SAML1_NS, DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SubjectStatementAbstractType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SubjectStatementAbstractType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SAMLConstants.SAML1_NS, TYPE_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     
     /**
@@ -49,12 +50,12 @@ public interface SubjectStatement extends SAMLObject, Statement {
      * 
      * @return the Subject
      */
-    public Subject getSubject();
+    @Nullable Subject getSubject();
     
     /**
      * Set the Subject of the statement.
      * 
      * @param subject the Subject
      */
-    public void setSubject(Subject subject);
+    void setSubject(@Nullable final Subject subject);
 }
