@@ -32,17 +32,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface CipherData extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CipherData";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "CipherData";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "CipherDataType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "CipherDataType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /**
@@ -50,26 +50,26 @@ public interface CipherData extends XMLObject {
      * 
      * @return base64-encoded encrypted value
      */
-    @Nullable public CipherValue getCipherValue();
+    @Nullable CipherValue getCipherValue();
 
     /**
      * Set the base64-encoded data representing the encrypted form of the plaintext data.
      * 
      * @param newCipherValue the new base64-encoded encrypted data
      */
-    public void setCipherValue(@Nullable final CipherValue newCipherValue);
+    void setCipherValue(@Nullable final CipherValue newCipherValue);
 
     /**
      * Get the CipherReference which points to the location encrypted data.
      * 
      * @return CipherReference child element representing the encrypted data
      */
-    @Nullable public CipherReference getCipherReference();
+    @Nullable CipherReference getCipherReference();
 
     /**
      * Get the CipherReference which points to the location encrypted data.
      * 
      * @param newCipherReference the new CipherReference child element
      */
-    public void setCipherReference(@Nullable final CipherReference newCipherReference);
+    void setCipherReference(@Nullable final CipherReference newCipherReference);
 }

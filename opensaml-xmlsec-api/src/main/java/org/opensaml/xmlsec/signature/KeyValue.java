@@ -33,17 +33,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface KeyValue extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyValue";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyValue";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyValueType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "KeyValueType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
@@ -51,74 +51,69 @@ public interface KeyValue extends XMLObject {
      * 
      * @return DSAKeyValue child element
      */
-    @Nullable public DSAKeyValue getDSAKeyValue();
+    @Nullable DSAKeyValue getDSAKeyValue();
 
     /**
      * Set the DSAKeyValue child element.
      * 
      * @param newDSAKeyValue the new DSAKeyValue child element
      */
-    public void setDSAKeyValue(@Nullable final DSAKeyValue newDSAKeyValue);
+    void setDSAKeyValue(@Nullable final DSAKeyValue newDSAKeyValue);
 
     /**
      * Get the RSAKeyValue child element.
      * 
      * @return the RSAKeyValue child element
      */
-    @Nullable public RSAKeyValue getRSAKeyValue();
+    @Nullable RSAKeyValue getRSAKeyValue();
 
     /**
      * Set the RSAKeyValue child element.
      * 
      * @param newRSAKeyValue the new RSAKeyValue child element
      */
-    public void setRSAKeyValue(@Nullable final RSAKeyValue newRSAKeyValue);
+    void setRSAKeyValue(@Nullable final RSAKeyValue newRSAKeyValue);
 
     /**
      * Get the ECKeyValue child element.
      * 
      * @return the ECKeyValue child element
      */
-    @Nullable public ECKeyValue getECKeyValue();
+    @Nullable ECKeyValue getECKeyValue();
 
     /**
      * Set the ECKeyValue child element.
      * 
      * @param newECKeyValue the new ECKeyValue child element
      */
-    public void setECKeyValue(@Nullable final ECKeyValue newECKeyValue);
+    void setECKeyValue(@Nullable final ECKeyValue newECKeyValue);
     
     /**
      * Get the DHKeyValue child element.
      * 
      * @return DHKeyValue child element
      */
-    @Nullable public default DHKeyValue getDHKeyValue() {
-        //TODO remove 'default' and method body in next major version (v5)
-        throw new UnsupportedOperationException("Method not implemented");
-    }
+    @Nullable DHKeyValue getDHKeyValue();
 
     /**
      * Set the DHKeyValue child element.
      * 
      * @param newDHKeyValue the new DHKeyValue child element
      */
-    public default void setDHKeyValue(@Nullable final DHKeyValue newDHKeyValue) {
-        //TODO remove 'default' and method body in next major version (v5)
-        throw new UnsupportedOperationException("Method not implemented");
-    }
+    void setDHKeyValue(@Nullable final DHKeyValue newDHKeyValue);
 
     /**
      * Get the wildcard &lt;any&gt; XMLObject child element.
      * 
      * @return the wildcard XMLObject child element
      */
-    @Nullable public XMLObject getUnknownXMLObject();
+    @Nullable XMLObject getUnknownXMLObject();
 
     /**
      * Set the wildcard &lt;any&gt; XMLObject child element.
      * 
      * @param newXMLObject the wildcard XMLObject child element
      */
-    public void setUnknownXMLObject(@Nullable final XMLObject newXMLObject);
+    void setUnknownXMLObject(@Nullable final XMLObject newXMLObject);
+
 }

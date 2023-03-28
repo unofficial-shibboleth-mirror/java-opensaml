@@ -32,41 +32,41 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AlgorithmIdentifierType extends XMLObject {
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "AlgorithmIdentifierType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "AlgorithmIdentifierType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC11_PREFIX);
     
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
 
     /**
      * Gets the algorithm URI attribute.
      * 
      * @return the Algorithm attribute URI attribute string
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
 
     /**
      * Sets the algorithm URI attribute.
      * 
      * @param newAlgorithm the new Algorithm URI attribute string
      */
-    public void setAlgorithm(@Nullable final String newAlgorithm);
+    void setAlgorithm(@Nullable final String newAlgorithm);
     
     /**
      * Gets the Parameters child element.
      * 
      * @return the Parameters child element
      */
-    @Nullable public XMLObject getParameters();
+    @Nullable XMLObject getParameters();
 
     /**
      * Sets the Parameters child element.
      * 
      * @param newParameters the new Parameters child element
      */
-    public void setParameters(@Nullable final XMLObject newParameters);
+    void setParameters(@Nullable final XMLObject newParameters);
 
 }

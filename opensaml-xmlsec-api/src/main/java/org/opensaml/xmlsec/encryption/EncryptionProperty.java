@@ -33,51 +33,51 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface EncryptionProperty extends AttributeExtensibleXMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionProperty";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionProperty";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptionPropertyType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EncryptionPropertyType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** Target attribute name. */
-    @Nonnull @NotEmpty public static final String TARGET_ATTRIB_NAME = "Target";
+    @Nonnull @NotEmpty static final String TARGET_ATTRIB_NAME = "Target";
 
     /** Id attribute name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "Id";
 
     /**
      * Get the target URI attribute which specifies to which element this. property applies
      * 
      * @return the target URI attribute
      */
-    @Nullable public String getTarget();
+    @Nullable String getTarget();
 
     /**
      * Set the target URI attribute which specifies to which element this property applies.
      * 
      * @param newTarget the new target URI attribute
      */
-    public void setTarget(@Nullable final String newTarget);
+    void setTarget(@Nullable final String newTarget);
 
     /**
      * Get the ID attribute which uniquely identifies this element.
      * 
      * @return the ID attribute value
      */
-    @Nullable public String getID();
+    @Nullable String getID();
 
     /**
      * Set the ID attribute which uniquely identifies this element.
      * 
      * @param newID the new ID attribute
      */
-    public void setID(@Nullable final String newID);
+    void setID(@Nullable final String newID);
 
 }

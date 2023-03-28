@@ -35,10 +35,10 @@ import net.shibboleth.shared.codec.EncodingException;
 public interface CryptoBinary extends XSBase64Binary {
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "CryptoBinary";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "CryptoBinary";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
@@ -46,7 +46,7 @@ public interface CryptoBinary extends XSBase64Binary {
      * 
      * @return the BigInteger representation of the element's content
      */
-    @Nullable public BigInteger getValueBigInt();
+    @Nullable BigInteger getValueBigInt();
 
     /**
      * Convenience method to set the value of the element as a BigInteger type.
@@ -54,6 +54,6 @@ public interface CryptoBinary extends XSBase64Binary {
      * @param bigInt the new BigInteger representation of the element's content
      * @throws EncodingException if the byte value of the BigInteger can not be base64 encoded.
      */
-    public void setValueBigInt(@Nullable final BigInteger bigInt) throws EncodingException;
+    void setValueBigInt(@Nullable final BigInteger bigInt) throws EncodingException;
 
 }

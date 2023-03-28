@@ -34,134 +34,134 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface EncryptedType extends XMLObject {
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptedType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EncryptedType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** Id attribute name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "Id";
 
     /** Type attribute name. */
-    @Nonnull @NotEmpty public static final String TYPE_ATTRIB_NAME = "Type";
+    @Nonnull @NotEmpty static final String TYPE_ATTRIB_NAME = "Type";
 
     /** MimeType attribute name. */
-    @Nonnull @NotEmpty public static final String MIMETYPE_ATTRIB_NAME = "MimeType";
+    @Nonnull @NotEmpty static final String MIMETYPE_ATTRIB_NAME = "MimeType";
 
     /** Encoding attribute name. */
-    @Nonnull @NotEmpty public static final String ENCODING_ATTRIB_NAME = "Encoding";
+    @Nonnull @NotEmpty static final String ENCODING_ATTRIB_NAME = "Encoding";
 
     /**
      * Gets the unique ID for the XML element.
      * 
      * @return the unique ID for the XML element
      */
-    @Nullable public String getID();
+    @Nullable String getID();
 
     /**
      * Sets the unique ID for the XML element.
      * 
      * @param newID the unique ID for the XML element
      */
-    public void setID(@Nullable final String newID);
+    void setID(@Nullable final String newID);
 
     /**
      * Gets the type information for the plaintext content.
      * 
      * @return the type information for the plaintext content
      */
-    @Nullable public String getType();
+    @Nullable String getType();
 
     /**
      * Sets the type information for the plaintext content.
      * 
      * @param newType the type information for the plaintext content
      */
-    public void setType(@Nullable final String newType);
+    void setType(@Nullable final String newType);
 
     /**
      * Gets the MIME type of the plaintext content.
      * 
      * @return the MIME type of the plaintext content
      */
-    @Nullable public String getMimeType();
+    @Nullable String getMimeType();
 
     /**
      * Sets the MIME type of the plaintext content.
      * 
      * @param newMimeType the MIME type of the plaintext content
      */
-    public void setMimeType(@Nullable final String newMimeType);
+    void setMimeType(@Nullable final String newMimeType);
 
     /**
      * Gets the encoding applied to the plaintext content prior to encryption.
      * 
      * @return the encoding applied to the plaintext content prior to encryption
      */
-    @Nullable public String getEncoding();
+    @Nullable String getEncoding();
 
     /**
      * Sets the encoding applied to the plaintext content prior to encryption.
      * 
      * @param newEncoding the encoding applied to the plaintext content prior to encryption
      */
-    public void setEncoding(@Nullable final String newEncoding);
+    void setEncoding(@Nullable final String newEncoding);
 
     /**
      * Gets the EncryptionMethod child element.
      * 
      * @return the EncryptionMethod child element
      */
-    @Nullable public EncryptionMethod getEncryptionMethod();
+    @Nullable EncryptionMethod getEncryptionMethod();
 
     /**
      * Sets the EncryptionMethod child element.
      * 
      * @param newEncryptionMethod the new EncryptionMethod child element
      */
-    public void setEncryptionMethod(@Nullable final EncryptionMethod newEncryptionMethod);
+    void setEncryptionMethod(@Nullable final EncryptionMethod newEncryptionMethod);
 
     /**
      * Gets the KeyInfo child element.
      * 
      * @return the KeyInfo child element
      */
-    @Nullable public KeyInfo getKeyInfo();
+    @Nullable KeyInfo getKeyInfo();
 
     /**
      * Sets the KeyInfo child element.
      * 
      * @param newKeyInfo the new KeyInfo child element
      */
-    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
+    void setKeyInfo(@Nullable final KeyInfo newKeyInfo);
 
     /**
      * Gets the CipherData child element.
      * 
      * @return the CipherData child element
      */
-    @Nullable public CipherData getCipherData();
+    @Nullable CipherData getCipherData();
 
     /**
      * Sets the CipherData child element.
      * 
      * @param newCipherData the new CipherData child element
      */
-    public void setCipherData(@Nullable final CipherData newCipherData);
+    void setCipherData(@Nullable final CipherData newCipherData);
 
     /**
      * Gets the EncryptionProperties child element.
      * 
      * @return the EncryptionProperties child element
      */
-    @Nullable public EncryptionProperties getEncryptionProperties();
+    @Nullable EncryptionProperties getEncryptionProperties();
 
     /**
      * Sets the EncryptionProperties child element.
      * 
      * @param newEncryptionProperties the new EncryptionProperties child element
      */
-    public void setEncryptionProperties(@Nullable final EncryptionProperties newEncryptionProperties);
+    void setEncryptionProperties(@Nullable final EncryptionProperties newEncryptionProperties);
 
 }

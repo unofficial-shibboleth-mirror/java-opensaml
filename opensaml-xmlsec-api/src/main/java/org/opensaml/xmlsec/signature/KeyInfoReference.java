@@ -33,51 +33,51 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface KeyInfoReference extends XMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfoReference";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfoReference";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyInfoReferenceType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "KeyInfoReferenceType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Id attribute name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "Id";
 
     /** URI attribute name. */
-    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty static final String URI_ATTRIB_NAME = "URI";
         
     /**
      * Get the Id attribute value.
      * 
      * @return the Id attribute value
      */
-    @Nullable public String getID();
+    @Nullable String getID();
 
     /**
      * Set the Id attribute value.
      * 
      * @param newID the new Id attribute value
      */
-    public void setID(@Nullable final String newID);
+    void setID(@Nullable final String newID);
     
     /**
      * Get the URI attribute value.
      * 
      * @return the URI attribute value
      */
-    @Nullable public String getURI();
+    @Nullable String getURI();
     
     /**
      * Set the URI attribute value.
      * 
      * @param newURI the new URI attribute value
      */
-    public void setURI(@Nullable final String newURI);
+    void setURI(@Nullable final String newURI);
     
 }

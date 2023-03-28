@@ -32,48 +32,48 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface CipherReference extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "CipherReference";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "CipherReference";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "CipherReferenceType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "CipherReferenceType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** URI attribute name. */
-    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty static final String URI_ATTRIB_NAME = "URI";
 
     /**
      * Get the URI attribute that describes from where to deference the encrypted data.
      * 
      * @return the URI attribute string
      */
-    @Nullable public String getURI();
+    @Nullable String getURI();
 
     /**
      * Set the URI attribute that describes from where to deference the encrypted data.
      * 
      * @param newURI the new URI attribute string value
      */
-    public void setURI(@Nullable final String newURI);
+    void setURI(@Nullable final String newURI);
 
     /**
      * Get the Transforms child element, which describes which transformations to apply when dereferencing the data.
      * 
      * @return the Transforms child element
      */
-    @Nullable public Transforms getTransforms();
+    @Nullable Transforms getTransforms();
 
     /**
      * Set the Transforms child element, which describes which transformations to apply when dereferencing the data.
      * 
      * @param newTransforms the new Transforms child element
      */
-    public void setTransforms(@Nullable final Transforms newTransforms);
+    void setTransforms(@Nullable final Transforms newTransforms);
 
 }

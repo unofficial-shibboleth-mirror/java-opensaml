@@ -32,17 +32,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface PBKDF2Params extends XMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PBKDF2-params";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "PBKDF2-params";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PBKDF2ParameterType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "PBKDF2ParameterType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /**
@@ -50,55 +50,55 @@ public interface PBKDF2Params extends XMLObject {
      * 
      * @return the element
      */
-    @Nullable public Salt getSalt();
+    @Nullable Salt getSalt();
     
     /**
      * Set the Salt child element.
      * 
      * @param salt the salt
      */
-    public void setSalt(@Nullable final Salt salt);
+    void setSalt(@Nullable final Salt salt);
     
     /**
      * Get the IterationCount child element.
      * 
      * @return the element
      */
-    @Nullable public IterationCount getIterationCount();
+    @Nullable IterationCount getIterationCount();
     
     /**
      * Set the IterationCount child element.
      * 
      * @param count the new iteration count
      */
-    public void setIterationCount(@Nullable final IterationCount count);
+    void setIterationCount(@Nullable final IterationCount count);
     
     /**
      * Get the KeyLength child element.
      * 
      * @return the element
      */
-    @Nullable public KeyLength getKeyLength();
+    @Nullable KeyLength getKeyLength();
     
     /**
      * Set the KeyLength child element.
      * 
      * @param length the new key length
      */
-    public void setKeyLength(@Nullable final KeyLength length);
+    void setKeyLength(@Nullable final KeyLength length);
     
     /**
      * Get the PRF child element.
      * 
      * @return the element
      */
-    @Nullable public PRF getPRF();
+    @Nullable PRF getPRF();
     
     /**
      * Set the PRF child element.
      * 
      * @param prf the new PRF element
      */
-    public void setPRF(@Nullable final PRF prf);
+    void setPRF(@Nullable final PRF prf);
 
 }

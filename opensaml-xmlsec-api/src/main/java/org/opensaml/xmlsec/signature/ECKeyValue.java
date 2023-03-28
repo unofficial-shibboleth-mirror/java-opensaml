@@ -31,76 +31,76 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ECKeyValue extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ECKeyValue";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ECKeyValue";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ECKeyValueType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ECKeyValueType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
 
     /** Id attribute name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "Id";
 
     /**
      * Get the Id attribute value.
      * 
      * @return the Id attribute value
      */
-    @Nullable public String getID();
+    @Nullable String getID();
 
     /**
      * Set the Id attribute value.
      * 
      * @param newID the new Id attribute value
      */
-    public void setID(@Nullable final String newID);
+    void setID(@Nullable final String newID);
     
     /**
      * Get the ECParameters child element.
      * 
      * @return the ECParameters child element
      */
-    @Nullable public XMLObject getECParameters();
+    @Nullable XMLObject getECParameters();
 
     /**
      * Set the ECParameters child element.
      * 
      * @param newParams the new ECParameters child element
      */
-    public void setECParameters(@Nullable final XMLObject newParams);
+    void setECParameters(@Nullable final XMLObject newParams);
 
     /**
      * Get the NamedCurve child element.
      * 
      * @return the NamedCurve child element
      */
-    @Nullable public NamedCurve getNamedCurve();
+    @Nullable NamedCurve getNamedCurve();
 
     /**
      * Set the NamedCurve child element.
      * 
      * @param newCurve the new NamedCurve child element
      */
-    public void setNamedCurve(@Nullable final NamedCurve newCurve);
+    void setNamedCurve(@Nullable final NamedCurve newCurve);
 
     /**
      * Get the PublicKey child element.
      * 
      * @return the PublicKey child element
      */
-    @Nullable public PublicKey getPublicKey();
+    @Nullable PublicKey getPublicKey();
 
     /**
      * Set the PublicKey child element.
      * 
      * @param newKey the new PublicKey child element
      */
-    public void setPublicKey(@Nullable final PublicKey newKey);
+    void setPublicKey(@Nullable final PublicKey newKey);
     
 }

@@ -26,6 +26,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -34,28 +35,28 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Transform extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Transform";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Transform";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "TransformType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "TransformType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
 
     /**
      * Get the Algorithm URI attribute value.
      * 
      * @return the Algorithm URI attribute value
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
 
     /**
      * 
@@ -63,7 +64,7 @@ public interface Transform extends XMLObject {
      * 
      * @param newAlgorithm the new Algorithm URI attribute value
      */
-    public void setAlgorithm(@Nullable final String newAlgorithm);
+    void setAlgorithm(@Nullable final String newAlgorithm);
 
     /**
      * Get the list of XMLObject children that match a particular QName.
@@ -72,20 +73,20 @@ public interface Transform extends XMLObject {
      * 
      * @return the list of XMLObject children that match the given QName
      */
-    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
+    @Nonnull @Live List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
 
     /**
      * Get the list of XPath child elements.
      * 
      * @return list of XPath child elements
      */
-    @Nonnull public List<XPath> getXPaths();
+    @Nonnull @Live List<XPath> getXPaths();
 
     /**
      * Gets the ordered list of all XMLObject child elements of this element.
      * 
      * @return list of XMLObject children
      */
-    @Nonnull public List<XMLObject> getAllChildren();
+    @Nonnull @Live List<XMLObject> getAllChildren();
 
 }

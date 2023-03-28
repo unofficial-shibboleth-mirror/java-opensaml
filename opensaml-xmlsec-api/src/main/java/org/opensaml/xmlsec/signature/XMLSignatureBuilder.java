@@ -35,6 +35,6 @@ public interface XMLSignatureBuilder<XMLSignatureType extends XMLObject> extends
      * 
      * @return built XMLObject
      */
-    @Nonnull public XMLSignatureType buildObject();
+    @Nonnull XMLSignatureType buildObject();
 
 }

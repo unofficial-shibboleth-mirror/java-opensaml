@@ -32,62 +32,62 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface EncryptionMethod extends ElementExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptionMethod";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptionMethodType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EncryptionMethodType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
 
     /**
      * Gets the algorithm URI attribute used in this EncryptionMethod.
      * 
      * @return the Algorithm attribute URI attribute string
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
 
     /**
      * Sets the algorithm URI attribute used in this EncryptionMethod.
      * 
      * @param newAlgorithm the new Algorithm URI attribute string
      */
-    public void setAlgorithm(@Nullable final String newAlgorithm);
+    void setAlgorithm(@Nullable final String newAlgorithm);
 
     /**
      * Gets the KeySize child element.
      * 
      * @return the KeySize child element
      */
-    @Nullable public KeySize getKeySize();
+    @Nullable KeySize getKeySize();
 
     /**
      * Sets the KeySize child element.
      * 
      * @param newKeySize the new KeySize child element
      */
-    public void setKeySize(@Nullable final KeySize newKeySize);
+    void setKeySize(@Nullable final KeySize newKeySize);
 
     /**
      * Gets the OAEPparams child element.
      * 
      * @return the OAEPparams child element
      */
-    @Nullable public OAEPparams getOAEPparams();
+    @Nullable OAEPparams getOAEPparams();
 
     /**
      * Sets the OAEPparams child element.
      * 
      * @param newOAEPparams the new OAEPparams child element
      */
-    public void setOAEPparams(@Nullable final OAEPparams newOAEPparams);
+    void setOAEPparams(@Nullable final OAEPparams newOAEPparams);
 
 }

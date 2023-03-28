@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,17 +34,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface SPKIData extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPKIData";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "SPKIData";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "SPKIDataType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "SPKIDataType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
@@ -51,7 +52,7 @@ public interface SPKIData extends XMLObject {
      * 
      * @return the list of XMLObject children
      */
-    @Nonnull public List<XMLObject> getXMLObjects();
+    @Nonnull @Live List<XMLObject> getXMLObjects();
 
     /**
      * Get the list of XMLObject children whose type or element QName matches the specified QName.
@@ -60,13 +61,13 @@ public interface SPKIData extends XMLObject {
      * 
      * @return the matching list of XMLObject children
      */
-    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
+    @Nonnull @Live List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
 
     /**
      * Get the list of SPKISexp child elements.
      * 
      * @return the list of SPKISexp child elements
      */
-    @Nonnull public List<SPKISexp> getSPKISexps();
+    @Nonnull @Live List<SPKISexp> getSPKISexps();
 
 }

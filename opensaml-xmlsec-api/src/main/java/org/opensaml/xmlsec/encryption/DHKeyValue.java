@@ -32,17 +32,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface DHKeyValue extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DHKeyValue";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "DHKeyValue";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DHKeyValueType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "DHKeyValueType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /**
@@ -50,83 +50,83 @@ public interface DHKeyValue extends XMLObject {
      * 
      * @return the P child element
      */
-    @Nullable public P getP();
+    @Nullable P getP();
 
     /**
      * Set the P child element.
      * 
      * @param newP the new P child element
      */
-    public void setP(@Nullable final P newP);
+    void setP(@Nullable final P newP);
 
     /**
      * Get the Q child element.
      * 
      * @return the Q child element
      */
-    @Nullable public Q getQ();
+    @Nullable Q getQ();
 
     /**
      * Set the Q child element.
      * 
      * @param newQ the new Q child element
      */
-    public void setQ(@Nullable final Q newQ);
+    void setQ(@Nullable final Q newQ);
 
     /**
      * Get the Generator child element.
      * 
      * @return the Generator child element
      */
-    @Nullable public Generator getGenerator();
+    @Nullable Generator getGenerator();
 
     /**
      * Set the G child element.
      * 
      * @param newGenerator the new G child element
      */
-    public void setGenerator(@Nullable final Generator newGenerator);
+    void setGenerator(@Nullable final Generator newGenerator);
 
     /**
      * Get the Public element.
      * 
      * @return the Public element
      */
-    @Nullable public Public getPublic();
+    @Nullable Public getPublic();
 
     /**
      * Set the Public element.
      * 
      * @param newPublic the new Public child element
      */
-    public void setPublic(@Nullable final Public newPublic);
+    void setPublic(@Nullable final Public newPublic);
 
     /**
      * Get the seed element.
      * 
      * @return the seed element
      */
-    @Nullable public Seed getSeed();
+    @Nullable Seed getSeed();
 
     /**
      * Set the seed element.
      * 
      * @param newSeed new seed element
      */
-    public void setSeed(@Nullable final Seed newSeed);
+    void setSeed(@Nullable final Seed newSeed);
 
     /**
      * Get the pgenCounter element.
      * 
      * @return the pgenCounter element
      */
-    @Nullable public PgenCounter getPgenCounter();
+    @Nullable PgenCounter getPgenCounter();
 
     /**
      * Set the pgenCounter element.
      * 
      * @param newPgenCounter new pgenCounter element
      */
-    public void setPgenCounter(@Nullable final PgenCounter newPgenCounter);
+    void setPgenCounter(@Nullable final PgenCounter newPgenCounter);
 
 }

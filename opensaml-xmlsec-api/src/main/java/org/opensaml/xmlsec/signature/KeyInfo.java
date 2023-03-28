@@ -28,48 +28,49 @@ import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /** XMLObject representing XML Digital Signature, version 20020212, KeyInfo element. */
 public interface KeyInfo extends XMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfo";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "KeyInfo";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "KeyInfoType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "KeyInfoType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /** Id attribute name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIB_NAME = "Id";
+    @Nonnull @NotEmpty static final String ID_ATTRIB_NAME = "Id";
 
     /**
      * Get the Id attribute value.
      * 
      * @return the Id attribute value
      */
-    @Nullable public String getID();
+    @Nullable String getID();
 
     /**
      * Set the Id attribute value.
      * 
      * @param newID the new Id attribute value
      */
-    public void setID(@Nullable final String newID);
+    void setID(@Nullable final String newID);
 
     /**
      * Get the list of all XMLObject children.
      * 
      * @return the list of XMLObject children
      */
-    @Nonnull public List<XMLObject> getXMLObjects();
+    @Nonnull @Live List<XMLObject> getXMLObjects();
 
     /**
      * Get the list of XMLObject children whose type or element QName matches the specified QName.
@@ -78,70 +79,70 @@ public interface KeyInfo extends XMLObject {
      * 
      * @return the matching list of XMLObject children
      */
-    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
+    @Nonnull @Live List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
 
     /**
      * Get the list of KeyName child elements.
      * 
      * @return the list of KeyName child elements
      */
-    @Nonnull public List<KeyName> getKeyNames();
+    @Nonnull @Live List<KeyName> getKeyNames();
 
     /**
      * Get the list of KeyValue child elements.
      * 
      * @return the list of KeyValue child elements
      */
-    @Nonnull public List<KeyValue> getKeyValues();
+    @Nonnull @Live List<KeyValue> getKeyValues();
 
     /**
      * Get the list of DEREncodedKeyValue child elements.
      * 
      * @return the list of DEREncodedKeyValue child elements
      */
-    @Nonnull public List<DEREncodedKeyValue> getDEREncodedKeyValues();
+    @Nonnull @Live List<DEREncodedKeyValue> getDEREncodedKeyValues();
     
     /**
      * Get the list of RetrievalMethod child elements.
      * 
      * @return the list of RetrievalMethod child elements
      */
-    @Nonnull public List<RetrievalMethod> getRetrievalMethods();
+    @Nonnull @Live List<RetrievalMethod> getRetrievalMethods();
 
     /**
      * Get the list of KeyInfoReference child elements.
      * 
      * @return the list of KeyInfoReference child elements
      */
-    @Nonnull public List<KeyInfoReference> getKeyInfoReferences();
+    @Nonnull @Live List<KeyInfoReference> getKeyInfoReferences();
     
     /**
      * Get the list of X509Data child elements.
      * 
      * @return the list of X509Data child elements
      */
-    @Nonnull public List<X509Data> getX509Datas();
+    @Nonnull @Live List<X509Data> getX509Datas();
 
     /**
      * Get the list of PGPData child elements.
      * 
      * @return the list of PGPData child elements
      */
-    @Nonnull public List<PGPData> getPGPDatas();
+    @Nonnull @Live List<PGPData> getPGPDatas();
 
     /**
      * Get the list of SPKIData child elements.
      * 
      * @return the list of SPKIData child elements
      */
-    @Nonnull public List<SPKIData> getSPKIDatas();
+    @Nonnull @Live List<SPKIData> getSPKIDatas();
 
     /**
      * Get the list of MgmtData child elements.
      * 
      * @return the list of MgmtData child elements
      */
-    @Nonnull public List<MgmtData> getMgmtDatas();
+    @Nonnull @Live List<MgmtData> getMgmtDatas();
 
     /**
      * Get the list of AgreementMethod child elements.
@@ -151,7 +152,7 @@ public interface KeyInfo extends XMLObject {
      * 
      * @return the list of AgreementMethod child elements
      */
-    @Nonnull public List<AgreementMethod> getAgreementMethods();
+    @Nonnull @Live List<AgreementMethod> getAgreementMethods();
 
     /**
      * Get the list of EncryptedKey child elements
@@ -161,6 +162,6 @@ public interface KeyInfo extends XMLObject {
      * 
      * @return the list of EncryptedKey child elements
      */
-    @Nonnull public List<EncryptedKey> getEncryptedKeys();
+    @Nonnull @Live List<EncryptedKey> getEncryptedKeys();
 
 }

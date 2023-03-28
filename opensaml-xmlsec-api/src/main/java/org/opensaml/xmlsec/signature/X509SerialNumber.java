@@ -35,17 +35,17 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface X509SerialNumber extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509SerialNumber";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509SerialNumber";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "integer";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "integer";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(XMLConstants.XSD_NS, TYPE_LOCAL_NAME, XMLConstants.XSD_PREFIX);
 
     /**
@@ -53,13 +53,13 @@ public interface X509SerialNumber extends XMLObject {
      * 
      * @return the integer
      */
-    @Nullable public BigInteger getValue();
+    @Nullable BigInteger getValue();
 
     /**
      * Sets the integer.
      * 
      * @param newValue the integer value
      */
-    public void setValue(@Nullable final BigInteger newValue);
+    void setValue(@Nullable final BigInteger newValue);
 
 }

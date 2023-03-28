@@ -33,34 +33,34 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface NamedCurve extends XMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "NamedCurve";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "NamedCurve";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "NamedCurveType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "NamedCurveType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** URI attribute name. */
-    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty static final String URI_ATTRIB_NAME = "URI";
     
     /**
      * Get the URI attribute value.
      * 
      * @return the URI attribute value
      */
-    @Nullable public String getURI();
+    @Nullable String getURI();
     
     /**
      * Set the URI attribute value.
      * 
      * @param newURI the new URI attribute value
      */
-    public void setURI(@Nullable final String newURI);
+    void setURI(@Nullable final String newURI);
     
 }

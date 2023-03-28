@@ -33,27 +33,27 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ReferenceType extends ElementExtensibleXMLObject {
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ReferenceType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ReferenceType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** URI attribute name. */
-    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty static final String URI_ATTRIB_NAME = "URI";
 
     /**
      * Get the URI attribute which indicates the referent of this reference.
      * 
      * @return the URI referent attribute value
      */
-    @Nullable public String getURI();
+    @Nullable String getURI();
 
     /**
      * Set the URI attribute which indicates the referent of this reference.
      * 
      * @param newURI the new URI attribute value
      */
-    public void setURI(@Nullable final String newURI);
+    void setURI(@Nullable final String newURI);
 
 }

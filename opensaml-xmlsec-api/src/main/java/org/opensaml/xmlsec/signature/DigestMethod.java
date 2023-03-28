@@ -33,28 +33,28 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface DigestMethod extends XMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DigestMethod";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "DigestMethod";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DigestMethodType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "DigestMethodType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
 
     /**
      * Get the Algorithm URI attribute value.
      * 
      * @return the Algorithm URI attribute value
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
 
     /**
      * 
@@ -62,6 +62,6 @@ public interface DigestMethod extends XMLObject, ElementExtensibleXMLObject {
      * 
      * @param newAlgorithm the new Algorithm URI attribute value
      */
-    public void setAlgorithm(@Nullable final String newAlgorithm);
+    void setAlgorithm(@Nullable final String newAlgorithm);
 
 }

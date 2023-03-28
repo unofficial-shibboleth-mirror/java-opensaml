@@ -31,62 +31,62 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface EncryptedKey extends EncryptedType {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedKey";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "EncryptedKey";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "EncryptedKeyType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "EncryptedKeyType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(EncryptionConstants.XMLENC_NS, TYPE_LOCAL_NAME,
             EncryptionConstants.XMLENC_PREFIX);
 
     /** Recipient attribute name. */
-    @Nonnull @NotEmpty public static final String RECIPIENT_ATTRIB_NAME = "Recipient";
+    @Nonnull @NotEmpty static final String RECIPIENT_ATTRIB_NAME = "Recipient";
 
     /**
      * Gets the hint about for whom this encrypted key is intended.
      * 
      * @return the hint about who this encrypted key is intended for
      */
-    @Nullable public String getRecipient();
+    @Nullable String getRecipient();
 
     /**
      * Sets the hint about for whom this encrypted key is intended.
      * 
      * @param newRecipient the hint about who this encrypted key is intended for
      */
-    public void setRecipient(@Nullable final String newRecipient);
+    void setRecipient(@Nullable final String newRecipient);
 
     /**
      * Gets the child element containing pointers to EncryptedData and EncryptedKey elements encrypted using this key.
      * 
      * @return the element containing a list of pointers to encrypted elements
      */
-    @Nullable public ReferenceList getReferenceList();
+    @Nullable ReferenceList getReferenceList();
 
     /**
      * Sets the child element containing pointers to EncryptedData and EncryptedKey elements encrypted using this key.
      * 
      * @param newReferenceList the new reference list for this encrypted key
      */
-    public void setReferenceList(@Nullable final ReferenceList newReferenceList);
+    void setReferenceList(@Nullable final ReferenceList newReferenceList);
 
     /**
      * Gets the child element carrying the human readable name for this key.
      * 
      * @return the human readable name for this key
      */
-    @Nullable public CarriedKeyName getCarriedKeyName();
+    @Nullable CarriedKeyName getCarriedKeyName();
 
     /**
      * Sets the child element carrying the human readable name for this key.
      * 
      * @param newCarriedKeyName the human readable name for this key
      */
-    public void setCarriedKeyName(@Nullable final CarriedKeyName newCarriedKeyName);
+    void setCarriedKeyName(@Nullable final CarriedKeyName newCarriedKeyName);
 
 }

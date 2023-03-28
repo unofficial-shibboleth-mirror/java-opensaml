@@ -33,17 +33,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface PGPData extends XMLObject, ElementExtensibleXMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "PGPData";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "PGPData";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "PGPDataType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "PGPDataType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
@@ -51,27 +51,27 @@ public interface PGPData extends XMLObject, ElementExtensibleXMLObject {
      * 
      * @return the PGPKeyID child element
      */
-    @Nullable public PGPKeyID getPGPKeyID();
+    @Nullable PGPKeyID getPGPKeyID();
 
     /**
      * Set PGPKeyID child element.
      * 
      * @param newPGPKeyID the new PGPKeyID
      */
-    public void setPGPKeyID(@Nullable final PGPKeyID newPGPKeyID);
+    void setPGPKeyID(@Nullable final PGPKeyID newPGPKeyID);
 
     /**
      * Get PGPKeyPacket child element.
      * 
      * @return the PGPKeyPacket child element
      */
-    @Nullable public PGPKeyPacket getPGPKeyPacket();
+    @Nullable PGPKeyPacket getPGPKeyPacket();
 
     /**
      * Set PGPKeyPacket child element.
      * 
      * @param newPGPKeyPacket the new PGPKeyPacket
      */
-    public void setPGPKeyPacket(@Nullable final PGPKeyPacket newPGPKeyPacket);
+    void setPGPKeyPacket(@Nullable final PGPKeyPacket newPGPKeyPacket);
 
 }

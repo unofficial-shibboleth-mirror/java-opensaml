@@ -32,10 +32,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface Salt extends XMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "Salt";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "Salt";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
     
     /**
@@ -43,27 +43,27 @@ public interface Salt extends XMLObject {
      * 
      * @return the element
      */
-    @Nullable public Specified getSpecified();
+    @Nullable Specified getSpecified();
     
     /**
      * Set the Specified child element.
      * 
      * @param specified the element
      */
-    public void setSpecified(@Nullable final Specified specified);
+    void setSpecified(@Nullable final Specified specified);
     
     /**
      * Get the OtherSource child element.
      * 
      * @return the element
      */
-    @Nullable public OtherSource getOtherSource();
+    @Nullable OtherSource getOtherSource();
     
     /**
      * Set the OtherSource child element.
      * 
      * @param source value
      */
-    public void setOtherSource(@Nullable final OtherSource source);
+    void setOtherSource(@Nullable final OtherSource source);
     
 }

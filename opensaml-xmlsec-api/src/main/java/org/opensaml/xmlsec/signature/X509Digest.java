@@ -33,28 +33,28 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface X509Digest extends XSBase64Binary {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509Digest";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509Digest";
     
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "X509DigestType"; 
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "X509DigestType"; 
         
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
+    @Nonnull @NotEmpty static final String ALGORITHM_ATTRIB_NAME = "Algorithm";
     
     /**
      * Get the Algorithm URI attribute value.
      *  
      * @return the Algorithm URI attribute value
      */
-    @Nullable public String getAlgorithm();
+    @Nullable String getAlgorithm();
     
     /**
      * 
@@ -62,6 +62,6 @@ public interface X509Digest extends XSBase64Binary {
      *  
      * @param newAlgorithm the new Algorithm URI attribute value
      */
-    public void setAlgorithm(@Nullable final String newAlgorithm);
+    void setAlgorithm(@Nullable final String newAlgorithm);
     
 }

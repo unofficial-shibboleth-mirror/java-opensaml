@@ -30,17 +30,17 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface RSAKeyValue extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RSAKeyValue";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RSAKeyValue";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RSAKeyValueType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RSAKeyValueType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
@@ -48,27 +48,27 @@ public interface RSAKeyValue extends XMLObject {
      * 
      * @return the Modulus child element
      */
-    @Nullable public Modulus getModulus();
+    @Nullable Modulus getModulus();
 
     /**
      * Set the Modulus child element.
      * 
      * @param newModulus the new Modulus child element
      */
-    public void setModulus(@Nullable final Modulus newModulus);
+    void setModulus(@Nullable final Modulus newModulus);
 
     /**
      * Get the Exponent child element.
      * 
      * @return the Exponent child element
      */
-    @Nullable public Exponent getExponent();
+    @Nullable Exponent getExponent();
 
     /**
      * Set the Exponent child element.
      * 
      * @param newExponent the new Exponent child element
      */
-    public void setExponent(@Nullable final Exponent newExponent);
+    void setExponent(@Nullable final Exponent newExponent);
 
 }

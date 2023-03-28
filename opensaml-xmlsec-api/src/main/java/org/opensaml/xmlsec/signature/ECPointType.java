@@ -31,10 +31,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ECPointType extends CryptoBinary {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "ECPointType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "ECPointType";
     
     /** Default element name. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(SignatureConstants.XMLSIG11_NS, TYPE_LOCAL_NAME, SignatureConstants.XMLSIG11_PREFIX);
     
 }

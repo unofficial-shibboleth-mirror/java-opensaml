@@ -25,23 +25,24 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /** XMLObject representing XML Digital Signature, version 20020212, X509Data element. */
 public interface X509Data extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509Data";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "X509Data";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "X509DataType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "X509DataType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /**
@@ -49,7 +50,7 @@ public interface X509Data extends XMLObject {
      * 
      * @return the list of XMLObject children
      */
-    @Nonnull public List<XMLObject> getXMLObjects();
+    @Nonnull @Live List<XMLObject> getXMLObjects();
 
     /**
      * Get the list of XMLObject children whose type or element QName matches the specified QName.
@@ -58,47 +59,47 @@ public interface X509Data extends XMLObject {
      * 
      * @return the matching list of XMLObject children
      */
-    @Nonnull public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
+    @Nonnull @Live List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName);
 
     /**
      * Get the list of X509IssuerSerial child elements.
      * 
      * @return the list of X509IssuerSerial child elements
      */
-    @Nonnull public List<X509IssuerSerial> getX509IssuerSerials();
+    @Nonnull @Live List<X509IssuerSerial> getX509IssuerSerials();
 
     /**
      * Get the list of X509SKI child elements.
      * 
      * @return the list of X509SKI child elements
      */
-    @Nonnull public List<X509SKI> getX509SKIs();
+    @Nonnull @Live List<X509SKI> getX509SKIs();
 
     /**
      * Get the list of X509SubjectName child elements.
      * 
      * @return the list of X509SubjectName child elements
      */
-    @Nonnull public List<X509SubjectName> getX509SubjectNames();
+    @Nonnull @Live List<X509SubjectName> getX509SubjectNames();
 
     /**
      * Get the list of X509Certificate child elements.
      * 
      * @return the list of X509Certificate child elements
      */
-    @Nonnull public List<X509Certificate> getX509Certificates();
+    @Nonnull @Live List<X509Certificate> getX509Certificates();
 
     /**
      * Get the list of X509CRL child elements.
      * 
      * @return the list of X509CRL child elements
      */
-    @Nonnull public List<X509CRL> getX509CRLs();
+    @Nonnull @Live List<X509CRL> getX509CRLs();
 
     /**
      * Get the list of X509Digest child elements.
      * 
      * @return the list of X509Digest child elements
      */
-    @Nonnull public List<X509Digest> getX509Digests();
+    @Nonnull @Live List<X509Digest> getX509Digests();
 }

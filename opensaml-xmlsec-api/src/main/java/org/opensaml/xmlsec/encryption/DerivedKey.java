@@ -29,86 +29,86 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 /**
  * XMLObject representing XML Encryption 1.1 DerivedKey element.
  */
-public interface DerivedKey extends XMLObject {
+interface DerivedKey extends XMLObject {
     
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "DerivedKey";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "DerivedKey";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME =
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "DerivedKeyType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "DerivedKeyType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME =
+    @Nonnull static final QName TYPE_NAME =
             new QName(EncryptionConstants.XMLENC11_NS, TYPE_LOCAL_NAME, EncryptionConstants.XMLENC11_PREFIX);
 
     /** Recipient attribute name. */
-    @Nonnull @NotEmpty public static final String RECIPIENT_ATTRIBUTE_NAME = "Recipient";
+    @Nonnull @NotEmpty static final String RECIPIENT_ATTRIBUTE_NAME = "Recipient";
 
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String ID_ATTRIBUTE_NAME = "Id";
+    @Nonnull @NotEmpty static final String ID_ATTRIBUTE_NAME = "Id";
 
     /** Algorithm attribute name. */
-    @Nonnull @NotEmpty public static final String TYPE_ATTRIBUTE_NAME = "Type";
+    @Nonnull @NotEmpty static final String TYPE_ATTRIBUTE_NAME = "Type";
     
     /**
      * Get the KeyDerivationMethod child element.
      * 
      * @return the element
      */
-    @Nullable public KeyDerivationMethod getKeyDerivationMethod();
+    @Nullable KeyDerivationMethod getKeyDerivationMethod();
     
     /**
      * Set the KeyDerivationMethod child element.
      * 
      * @param method the key derivation method
      */
-    public void setKeyDerivationMethod(@Nullable final KeyDerivationMethod method);
+    void setKeyDerivationMethod(@Nullable final KeyDerivationMethod method);
 
     /**
      * Get the ReferenceList child element.
      * 
      * @return the element
      */
-    @Nullable public ReferenceList getReferenceList();
+    @Nullable ReferenceList getReferenceList();
     
     /**
      * Set the ReferenceList child element.
      * 
      * @param referenceList the list
      */
-    public void setReferenceList(@Nullable final ReferenceList referenceList);
+    void setReferenceList(@Nullable final ReferenceList referenceList);
 
     /**
      * Get the DerivedKeyName child element.
      * 
      * @return the element
      */
-    @Nullable public DerivedKeyName getDerivedKeyName();
+    @Nullable DerivedKeyName getDerivedKeyName();
     
     /**
      * Set the DerivedKeyName child element.
      * 
      * @param name the key name
      */
-    public void setDerivedKeyName(@Nullable final DerivedKeyName name);
+    void setDerivedKeyName(@Nullable final DerivedKeyName name);
 
     /**
      * Get the MasterKeyName child element.
      * 
      * @return the element
      */
-    @Nullable public MasterKeyName getMasterKeyName();
+    @Nullable MasterKeyName getMasterKeyName();
     
     /**
      * Set the MasterKeyName child element.
      * 
      * @param name the key name
      */
-    public void setMasterKeyName(@Nullable final MasterKeyName name);
+    void setMasterKeyName(@Nullable final MasterKeyName name);
 
     /**
      * Gets the Recipient attribute.

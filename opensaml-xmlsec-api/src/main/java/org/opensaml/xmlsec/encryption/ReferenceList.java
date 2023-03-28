@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
@@ -33,10 +34,10 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface ReferenceList extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "ReferenceList";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ReferenceList";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(EncryptionConstants.XMLENC_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, EncryptionConstants.XMLENC_PREFIX);
 
     /**
@@ -44,20 +45,20 @@ public interface ReferenceList extends XMLObject {
      * 
      * @return the list of reference child elements
      */
-    @Nonnull public List<ReferenceType> getReferences();
+    @Nonnull @Live List<ReferenceType> getReferences();
 
     /**
      * Get the list of data reference child elements.
      * 
      * @return the list of data reference child elements
      */
-    @Nonnull public List<DataReference> getDataReferences();
+    @Nonnull @Live List<DataReference> getDataReferences();
 
     /**
      * Get the list of key reference child elements.
      * 
      * @return the list of key reference child elements
      */
-    @Nonnull public List<KeyReference> getKeyReferences();
+    @Nonnull @Live List<KeyReference> getKeyReferences();
 
 }

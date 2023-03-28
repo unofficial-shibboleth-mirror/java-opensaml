@@ -32,65 +32,65 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface RetrievalMethod extends XMLObject {
 
     /** Element local name. */
-    @Nonnull @NotEmpty public static final String DEFAULT_ELEMENT_LOCAL_NAME = "RetrievalMethod";
+    @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "RetrievalMethod";
 
     /** Default element name. */
-    @Nonnull public static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
+    @Nonnull static final QName DEFAULT_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG_NS,
             DEFAULT_ELEMENT_LOCAL_NAME, SignatureConstants.XMLSIG_PREFIX);
 
     /** Local name of the XSI type. */
-    @Nonnull @NotEmpty public static final String TYPE_LOCAL_NAME = "RetrievalMethodType";
+    @Nonnull @NotEmpty static final String TYPE_LOCAL_NAME = "RetrievalMethodType";
 
     /** QName of the XSI type. */
-    @Nonnull public static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
+    @Nonnull static final QName TYPE_NAME = new QName(SignatureConstants.XMLSIG_NS, TYPE_LOCAL_NAME,
             SignatureConstants.XMLSIG_PREFIX);
 
     /** URI attribute name. */
-    @Nonnull @NotEmpty public static final String URI_ATTRIB_NAME = "URI";
+    @Nonnull @NotEmpty static final String URI_ATTRIB_NAME = "URI";
 
     /** Type attribute name. */
-    @Nonnull @NotEmpty public static final String TYPE_ATTRIB_NAME = "Type";
+    @Nonnull @NotEmpty static final String TYPE_ATTRIB_NAME = "Type";
 
     /**
      * Get the URI attribute value.
      * 
      * @return the URI attribute value
      */
-    @Nullable public String getURI();
+    @Nullable String getURI();
 
     /**
      * Set the URI attribute value.
      * 
      * @param newURI the new URI attribute value
      */
-    public void setURI(@Nullable final String newURI);
+    void setURI(@Nullable final String newURI);
 
     /**
      * Set the Type attribute value.
      * 
      * @return the Type attribute value
      */
-    @Nullable public String getType();
+    @Nullable String getType();
 
     /**
      * Set the Type attribute value.
      * 
      * @param newType the new Type attribute value
      */
-    public void setType(@Nullable final String newType);
+    void setType(@Nullable final String newType);
 
     /**
      * Get the Transforms child element.
      * 
      * @return the Transforms child element
      */
-    @Nullable public Transforms getTransforms();
+    @Nullable Transforms getTransforms();
 
     /**
      * Set the Transforms child element.
      * 
      * @param newTransforms the new Transforms child element
      */
-    public void setTransforms(@Nullable final Transforms newTransforms);
+    void setTransforms(@Nullable final Transforms newTransforms);
 
 }

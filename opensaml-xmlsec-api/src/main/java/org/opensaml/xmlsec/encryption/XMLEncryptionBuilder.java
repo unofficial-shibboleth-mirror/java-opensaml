@@ -34,6 +34,6 @@ public interface XMLEncryptionBuilder<XMLEncryptionType extends XMLObject> exten
      * 
      * @return built XMLObject
      */
-    @Nonnull public XMLEncryptionType buildObject();
+    @Nonnull XMLEncryptionType buildObject();
 
 }
