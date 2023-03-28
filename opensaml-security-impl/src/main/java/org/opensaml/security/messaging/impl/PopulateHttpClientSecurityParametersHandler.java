@@ -17,7 +17,6 @@
 
 package org.opensaml.security.messaging.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -37,11 +36,12 @@ import org.opensaml.security.httpclient.TLSCriteriaSetCriterion;
 import org.opensaml.security.httpclient.impl.BasicHttpClientSecurityConfiguration;
 import org.opensaml.security.messaging.HttpClientSecurityContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -155,7 +155,7 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
                     // is semi-required (depending on usage), and that can't be defaulted anyway.
                     //
                     // Just return an empty instance to satisfy contract requirements.
-                    return Collections.<HttpClientSecurityConfiguration>singletonList(
+                    return CollectionSupport.singletonList(
                             new BasicHttpClientSecurityConfiguration());
                 }
             };
@@ -206,8 +206,9 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
         
         final CriteriaSet criteria = new CriteriaSet(new HttpClientSecurityConfigurationCriterion(configs));
         
-        if (paramsCtx.getTLSCriteriaSetStrategy() != null) {
-            final CriteriaSet tlsCriteriaSet = paramsCtx.getTLSCriteriaSetStrategy().apply(messageContext); 
+        final Function<MessageContext,CriteriaSet> criteriaStrategy = paramsCtx.getTLSCriteriaSetStrategy();
+        if (criteriaStrategy != null) {
+            final CriteriaSet tlsCriteriaSet = criteriaStrategy.apply(messageContext); 
             if (tlsCriteriaSet  != null) {
                 criteria.add(new TLSCriteriaSetCriterion(tlsCriteriaSet));
             }
@@ -234,9 +235,9 @@ public class PopulateHttpClientSecurityParametersHandler extends AbstractMessage
      * @param params the parameters to process
      */
     protected void postProcessParams(@Nonnull final MessageContext messageContext, 
-            @Nonnull final HttpClientSecurityParameters params) {
+            @Nullable final HttpClientSecurityParameters params) {
         
-        if (clientTLSPredicate != null) { 
+        if (params != null && clientTLSPredicate != null) { 
             if (!clientTLSPredicate.test(messageContext)) {
                 log.debug("Configured client TLS predicate indicates to exclude client TLS credential");
                 params.setClientTLSCredential(null);

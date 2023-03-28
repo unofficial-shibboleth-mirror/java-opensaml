@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
 /**
  * Tests the {@link CertPathPKIXTrustEvaluator} implementation.
  */
+@SuppressWarnings("javadoc")
 public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase {
     
     private X509Certificate entityCert3AltNamesDNS_URL_IP;

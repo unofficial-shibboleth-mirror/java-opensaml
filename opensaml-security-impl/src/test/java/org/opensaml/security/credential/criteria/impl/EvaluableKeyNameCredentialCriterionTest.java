@@ -21,15 +21,10 @@ import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
-import org.opensaml.security.credential.criteria.impl.EvaluableKeyNameCredentialCriterion;
 import org.opensaml.security.criteria.KeyNameCriterion;
 import org.opensaml.security.crypto.KeySupport;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EvaluableKeyNameCredentialCriterionTest {
     
     private BasicCredential credential;
@@ -52,28 +47,28 @@ public class EvaluableKeyNameCredentialCriterionTest {
     
     @Test
     public void testSatisfy() {
-        EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
+        final EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setKeyName(keyName + "OTHER");
-        EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
+        final EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.test(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testCanNotEvaluate() {
         credential.getKeyNames().clear();
-        EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
+        final EvaluableKeyNameCredentialCriterion evalCrit = new EvaluableKeyNameCredentialCriterion(criteria);
         Assert.assertEquals(evalCrit.test(credential), evalCrit.isUnevaluableSatisfies(), "Credential should have been unevaluable against the criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
-        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
+        final EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        assert evalCrit != null;
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 }

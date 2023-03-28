@@ -42,6 +42,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 /**
  * Tests the {@link PKIXX509CredentialTrustEngine} implementation.
  */
+@SuppressWarnings("javadoc")
 public class PKIXX509CredentialTrustEngineTest extends XMLObjectBaseTestCase {
     
     private static final String DATA_PATH = "/org/opensaml/security/x509/impl/";

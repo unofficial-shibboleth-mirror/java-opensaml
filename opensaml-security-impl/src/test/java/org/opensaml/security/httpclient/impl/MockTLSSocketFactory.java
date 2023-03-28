@@ -24,6 +24,8 @@ import java.net.UnknownHostException;
 import java.security.cert.Certificate;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
 import org.apache.hc.core5.http.HttpHost;
 import org.apache.hc.core5.http.protocol.HttpContext;
@@ -34,31 +36,40 @@ import org.apache.hc.core5.util.TimeValue;
  */
 public class MockTLSSocketFactory implements LayeredConnectionSocketFactory {
     
-    private Socket socket;
+    @Nonnull private final Socket socket;
     
+    /**
+     * Constructor.
+     */
     public MockTLSSocketFactory() {
         socket = new Socket();
     }
     
-    public MockTLSSocketFactory(List<Certificate> certs, String host) {
+    /**
+     * Constructor.
+     *
+     * @param certs certs
+     * @param host peer host
+     */
+    public MockTLSSocketFactory(@Nonnull final List<Certificate> certs, @Nonnull final String host) {
        socket = new MockSSLSocket(certs, host); 
     }
 
     /** {@inheritDoc} */
     public Socket createSocket(HttpContext context) throws IOException {
-        return this.socket;
+        return socket;
     }
 
     /** {@inheritDoc} */
     public Socket connectSocket(TimeValue connectTimeout, Socket sock, HttpHost host, InetSocketAddress remoteAddress,
             InetSocketAddress localAddress, HttpContext context) throws IOException {
-        return this.socket;
+        return socket;
     }
 
     /** {@inheritDoc} */
     public Socket createLayeredSocket(Socket socket, String target, int port, HttpContext context) throws IOException,
             UnknownHostException {
-        return this.socket;
+        return socket;
     }
 
 }

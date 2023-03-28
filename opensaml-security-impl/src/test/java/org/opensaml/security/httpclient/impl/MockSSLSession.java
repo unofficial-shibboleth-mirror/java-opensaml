@@ -21,6 +21,7 @@ import java.security.Principal;
 import java.security.cert.Certificate;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.net.ssl.SSLPeerUnverifiedException;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSessionContext;
@@ -30,10 +31,16 @@ import javax.net.ssl.SSLSessionContext;
  */
 public class MockSSLSession implements SSLSession {
     
-    private List<Certificate> peerCertificates;
-    private String peerHost;
+    @Nonnull private final List<Certificate> peerCertificates;
+    @Nonnull private final String peerHost;
     
-    public MockSSLSession(List<Certificate> certs, String host) {
+    /**
+     * Constructor.
+     *
+     * @param certs certs
+     * @param host peer host
+     */
+    public MockSSLSession(@Nonnull final List<Certificate> certs, @Nonnull final String host) {
         this.peerCertificates = certs;
         this.peerHost = host;
     }

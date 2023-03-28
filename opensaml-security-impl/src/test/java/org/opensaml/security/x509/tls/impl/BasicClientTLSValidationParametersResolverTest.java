@@ -33,13 +33,12 @@ import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.tls.CertificateNameOptions;
 import org.opensaml.security.x509.tls.ClientTLSValidationConfigurationCriterion;
 import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
-import org.opensaml.security.x509.tls.impl.BasicClientTLSValidationConfiguration;
-import org.opensaml.security.x509.tls.impl.BasicClientTLSValidationParametersResolver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class BasicClientTLSValidationParametersResolverTest {
 
     private BasicClientTLSValidationParametersResolver resolver;
@@ -138,7 +137,7 @@ public class BasicClientTLSValidationParametersResolverTest {
 
         Assert.assertTrue(iterator.hasNext());
 
-        ClientTLSValidationParameters params = iterator.next();
+        final ClientTLSValidationParameters params = iterator.next();
 
         Assert.assertNotNull(params);
         Assert.assertTrue(params.getX509TrustEngine() == controlTrustEngine1);
@@ -151,9 +150,9 @@ public class BasicClientTLSValidationParametersResolverTest {
         config1.setX509TrustEngine(controlTrustEngine1);
         config1.setCertificateNameOptions(controlNameOpts1);
 
-        ClientTLSValidationParameters params = resolver.resolveSingle(criteriaSet);
+        final ClientTLSValidationParameters params = resolver.resolveSingle(criteriaSet);
 
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertTrue(params.getX509TrustEngine() == controlTrustEngine1);
         Assert.assertTrue(params.getCertificateNameOptions() == controlNameOpts1);
     }

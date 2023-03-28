@@ -23,7 +23,8 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Auxillary trust evaluator for evaluating an untrusted key or credential against a trusted key or credential. Trust is
@@ -33,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class ExplicitKeyTrustEvaluator {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ExplicitKeyTrustEvaluator.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ExplicitKeyTrustEvaluator.class);
 
     /**
      * Evaluate trust.
@@ -109,6 +110,7 @@ public class ExplicitKeyTrustEvaluator {
             @Nonnull final Iterable<Credential> trustedCredentials) {
 
         for (final Credential trustedCredential : trustedCredentials) {
+            assert trustedCredential != null;
             if (validate(untrustedCredential, trustedCredential)) {
                 return true;
             }

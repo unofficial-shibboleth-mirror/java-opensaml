@@ -22,8 +22,9 @@ import java.security.PublicKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
-import java.util.Collections;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
@@ -43,13 +44,14 @@ import org.testng.annotations.Test;
 
 import com.google.common.base.Predicates;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /** Unit test for {@link PopulateHttpClientSecurityParametersHandler}. */
+@SuppressWarnings("javadoc")
 public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLInitBaseTestCase {
 
     private MessageContext messageContext;
@@ -66,19 +68,12 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
         handler.initialize();
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testNoContext() throws Exception {
-        handler.setHttpClientSecurityParametersResolver(new MockResolver(false));
-        handler.initialize();
-        
-        handler.invoke(null);
-    }
-    
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testResolverError() throws Exception {
         handler.setHttpClientSecurityParametersResolver(new MockResolver(true));
         handler.initialize();
         
+        assert messageContext != null;
         handler.invoke(messageContext);
     }    
 
@@ -86,9 +81,12 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
         handler.setHttpClientSecurityParametersResolver(new MockResolver(false));
         handler.initialize();
         
+        assert messageContext != null;
         handler.invoke(messageContext);
-        Assert.assertNotNull(messageContext.getSubcontext(HttpClientSecurityContext.class).getSecurityParameters());
-        Assert.assertNotNull(messageContext.getSubcontext(HttpClientSecurityContext.class).getSecurityParameters().getClientTLSCredential());
+        
+        final HttpClientSecurityParameters params = messageContext.ensureSubcontext(HttpClientSecurityContext.class).getSecurityParameters(); 
+        assert params != null;
+        Assert.assertNotNull(params.getClientTLSCredential());
     }    
     
     @Test public void testSuccessIncludeClientTLS() throws Exception {
@@ -96,9 +94,12 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
         handler.setClientTLSPredicate(Predicates.<MessageContext>alwaysTrue());
         handler.initialize();
         
+        assert messageContext != null;
         handler.invoke(messageContext);
-        Assert.assertNotNull(messageContext.getSubcontext(HttpClientSecurityContext.class).getSecurityParameters());
-        Assert.assertNotNull(messageContext.getSubcontext(HttpClientSecurityContext.class).getSecurityParameters().getClientTLSCredential());
+        
+        final HttpClientSecurityParameters params = messageContext.ensureSubcontext(HttpClientSecurityContext.class).getSecurityParameters(); 
+        assert params != null;
+        Assert.assertNotNull(params.getClientTLSCredential());
     }    
     
     @Test public void testSuccessExcludeClientTLS() throws Exception {
@@ -106,9 +107,12 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
         handler.setClientTLSPredicate(Predicates.<MessageContext>alwaysFalse());
         handler.initialize();
         
+        assert messageContext != null;
         handler.invoke(messageContext);
-        Assert.assertNotNull(messageContext.getSubcontext(HttpClientSecurityContext.class).getSecurityParameters());
-        Assert.assertNull(messageContext.getSubcontext(HttpClientSecurityContext.class).getSecurityParameters().getClientTLSCredential());
+        
+        final HttpClientSecurityParameters params = messageContext.ensureSubcontext(HttpClientSecurityContext.class).getSecurityParameters(); 
+        assert params != null;
+        Assert.assertNull(params.getClientTLSCredential());
     }    
     
     private class MockResolver implements HttpClientSecurityParametersResolver {
@@ -120,18 +124,19 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
         }
         
         /** {@inheritDoc} */
-        @Override
-        public Iterable<HttpClientSecurityParameters> resolve(CriteriaSet criteria) throws ResolverException {
-            return Collections.singletonList(resolveSingle(criteria));
+        @Nonnull public Iterable<HttpClientSecurityParameters> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+            final HttpClientSecurityParameters params = resolveSingle(criteria);
+            assert params != null;
+            return CollectionSupport.singletonList(params);
         }
 
         /** {@inheritDoc} */
-        @Override
-        public HttpClientSecurityParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
+        @Nullable public HttpClientSecurityParameters resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
             if (throwException) {
                 throw new ResolverException();
             }
             
+            assert criteria != null;
             Constraint.isNotNull(criteria.get(HttpClientSecurityConfigurationCriterion.class), "Criterion was null");
             HttpClientSecurityParameters params = new HttpClientSecurityParameters();
             params.setClientTLSCredential(new MockX509Credential());
@@ -153,8 +158,8 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
         }
 
         /** {@inheritDoc} */
-        public Collection<String> getKeyNames() {
-            return null;
+        @Nonnull public Collection<String> getKeyNames() {
+            return CollectionSupport.emptyList();
         }
 
         /** {@inheritDoc} */
@@ -178,18 +183,18 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
         }
 
         /** {@inheritDoc} */
-        public Class<? extends Credential> getCredentialType() {
-            return null;
+        @Nonnull public Class<? extends Credential> getCredentialType() {
+            return getClass();
         }
 
         /** {@inheritDoc} */
-        public X509Certificate getEntityCertificate() {
-            return null;
+        @Nonnull public X509Certificate getEntityCertificate() {
+            throw new IllegalStateException();
         }
 
         /** {@inheritDoc} */
-        public Collection<X509Certificate> getEntityCertificateChain() {
-            return null;
+        @Nonnull public Collection<X509Certificate> getEntityCertificateChain() {
+            return CollectionSupport.emptyList();
         }
 
         /** {@inheritDoc} */

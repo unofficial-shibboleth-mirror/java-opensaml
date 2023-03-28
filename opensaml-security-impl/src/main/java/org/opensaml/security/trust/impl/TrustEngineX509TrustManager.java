@@ -33,8 +33,8 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -98,6 +98,7 @@ public class TrustEngineX509TrustManager implements X509TrustManager {
         }
         
         try {
+            assert tlsTrustEngine != null;
             if (tlsTrustEngine.validate(credential, criteriaSet)) {
                 log.debug("Credential evaluated as trusted");
             } else {

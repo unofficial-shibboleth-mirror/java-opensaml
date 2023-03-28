@@ -28,7 +28,6 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -39,26 +38,27 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /** A wrapper that changes a {@link KeyStore} in to a {@link X509Credential}. */
 public class KeyStoreX509CredentialAdapter extends AbstractCredential implements X509Credential {
 
     /** Class logger. */
-    private Logger log = LoggerFactory.getLogger(KeyStoreX509CredentialAdapter.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(KeyStoreX509CredentialAdapter.class);
 
     /** Keystore that contains the credential to be exposed. */
-    private final KeyStore keyStore;
+    @Nonnull private final KeyStore keyStore;
 
     /** Alias to the credential to be exposed. */
-    private final String credentialAlias;
+    @Nonnull private final String credentialAlias;
 
     /** Password for the key to be exposed. */
-    private final char[] keyPassword;
+    @Nullable private final char[] keyPassword;
 
     /**
      * Constructor.
@@ -69,7 +69,7 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
      */
     public KeyStoreX509CredentialAdapter(@Nonnull @ParameterName(name="store") final KeyStore store,
             @Nonnull @ParameterName(name="alias") final String alias,
-            @Nullable  @ParameterName(name="password") final char[] password) {
+            @Nullable @ParameterName(name="password") final char[] password) {
         keyStore = Constraint.isNotNull(store, "Keystore cannot be null");
         credentialAlias = Constraint.isNotNull(StringSupport.trimOrNull(alias),
                 "Keystore alias cannot be null or empty");
@@ -79,24 +79,28 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
     /** {@inheritDoc} */
     @Override
     @Nullable public Collection<X509CRL> getCRLs() {
-        return Collections.EMPTY_LIST;
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
     @Override
     @Nonnull public X509Certificate getEntityCertificate() {
         try {
-            return (X509Certificate) keyStore.getCertificate(credentialAlias);
+            final Certificate cert = keyStore.getCertificate(credentialAlias);
+            if (cert instanceof X509Certificate c) {
+                return c;
+            }
+            throw new KeyStoreException("Certificate entry was not an X509Certificate");
         } catch (final KeyStoreException e) {
             log.error("Error accessing {} certificates in keystore", credentialAlias, e);
-            return null;
+            throw new IllegalStateException("Error accessing certificate in keystore");
         }
     }
 
     /** {@inheritDoc} */
     @Override
     @Nonnull public Collection<X509Certificate> getEntityCertificateChain() {
-        List<X509Certificate> certsCollection = Collections.EMPTY_LIST;
+        List<X509Certificate> certsCollection = CollectionSupport.emptyList();
 
         try {
             final Certificate[] certs = keyStore.getCertificateChain(credentialAlias);

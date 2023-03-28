@@ -35,9 +35,7 @@ import org.opensaml.security.crypto.ec.NamedCurve;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ECSupportTest extends BaseNamedCurveTest {
     
     @Test(dataProvider="namedCurves")
@@ -47,7 +45,8 @@ public class ECSupportTest extends BaseNamedCurveTest {
         final KeyPair origKeyPair = kpGenerator.generateKeyPair();
         Assert.assertNotNull(origKeyPair);
         Assert.assertTrue(ECPublicKey.class.isInstance(origKeyPair.getPublic()));
-        ECPublicKey origPublicKey = ECPublicKey.class.cast(origKeyPair.getPublic());
+        final ECPublicKey origPublicKey = ECPublicKey.class.cast(origKeyPair.getPublic());
+        assert origPublicKey != null;
         
         final KeyPair generatedKeyPair = ECSupport.generateCompatibleKeyPair(origPublicKey, null);
         
@@ -61,7 +60,7 @@ public class ECSupportTest extends BaseNamedCurveTest {
         final KeyPairGenerator kpGenerator = KeyPairGenerator.getInstance(JCAConstants.KEY_ALGO_EC);
         kpGenerator.initialize(new ECGenParameterSpec(namedCurve));
         final KeyPair publicKeyPair = kpGenerator.generateKeyPair();
-        ECPublicKey publicKey = ECPublicKey.class.cast(publicKeyPair.getPublic());
+        final ECPublicKey publicKey = ECPublicKey.class.cast(publicKeyPair.getPublic());
         
         final KeyPair privateKeyPair = ECSupport.generateCompatibleKeyPair(publicKey, null);
         
@@ -73,11 +72,11 @@ public class ECSupportTest extends BaseNamedCurveTest {
     
     @Test(dataProvider="namedCurves")
     public void convertParameterSpec(String namedCurve) throws Exception {
-        ECParameterSpec control = ECPublicKey.class.cast(
+        final ECParameterSpec control = ECPublicKey.class.cast(
                 KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec(namedCurve), null).getPublic()).getParams();
         
-        ECParameterSpec target = ECSupport.convert(ECNamedCurveTable.getParameterSpec(namedCurve));
-        Assert.assertNotNull(target);
+        final ECParameterSpec target = ECSupport.convert(ECNamedCurveTable.getParameterSpec(namedCurve));
+        assert target != null;
         
         Assert.assertNotSame(target, control);
         
@@ -90,14 +89,14 @@ public class ECSupportTest extends BaseNamedCurveTest {
 
     @Test(dataProvider="namedCurves")
     public void encodeAndDecodeECPoint(String namedCurve) throws Exception {
-        ECParameterSpec spec = ECPublicKey.class.cast(
+        final ECParameterSpec spec = ECPublicKey.class.cast(
                 KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec(namedCurve), null).getPublic()).getParams();
         
         //  Do this differently (and clearer) than in the actual code just so check the latter.
         int fieldSizeBits = spec.getCurve().getField().getFieldSize();
         int fieldSizeBytes = (fieldSizeBits % 8) == 0 ? (fieldSizeBits / 8) : (fieldSizeBits / 8) + 1;
         
-        byte[] encoded = ECSupport.encodeECPointUncompressed(spec.getGenerator(), spec.getCurve());
+        final byte[] encoded = ECSupport.encodeECPointUncompressed(spec.getGenerator(), spec.getCurve());
         Assert.assertNotNull(encoded);
         Assert.assertEquals(encoded.length, (fieldSizeBytes * 2) + 1);
         Assert.assertEquals(encoded[0], 0x04);
@@ -106,14 +105,14 @@ public class ECSupportTest extends BaseNamedCurveTest {
         Assert.assertEquals(new BigInteger(1, encoded, fieldSizeBytes+1, fieldSizeBytes),
                 spec.getGenerator().getAffineY());
         
-        ECPoint decoded = ECSupport.decodeECPoint(encoded, spec.getCurve());
+        final ECPoint decoded = ECSupport.decodeECPoint(encoded, spec.getCurve());
         Assert.assertNotNull(decoded);
         Assert.assertEquals(decoded, spec.getGenerator());
     }
     
     @Test
     public void getCurvesFromBouncyCastle() {
-        Set<NamedCurve> curves = ECSupport.getCurvesFromBouncyCastle();
+        final Set<NamedCurve> curves = ECSupport.getCurvesFromBouncyCastle();
         Assert.assertNotNull(curves);
         Assert.assertFalse(curves.isEmpty());
     }

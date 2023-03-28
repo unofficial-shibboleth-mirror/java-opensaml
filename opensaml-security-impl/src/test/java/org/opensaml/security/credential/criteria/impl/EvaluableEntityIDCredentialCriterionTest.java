@@ -24,9 +24,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EvaluableEntityIDCredentialCriterionTest {
     
     private BasicCredential credential;
@@ -47,28 +45,28 @@ public class EvaluableEntityIDCredentialCriterionTest {
     
     @Test
     public void testSatisfy() {
-        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
+        final EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria = new EntityIdCriterion("OTHER");
-        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
+        final EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.test(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testCanNotEvaluate() {
         credential.setEntityId(null);
-        EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
+        final EvaluableEntityIDCredentialCriterion evalCrit = new EvaluableEntityIDCredentialCriterion(criteria);
         Assert.assertEquals(evalCrit.test(credential), evalCrit.isUnevaluableSatisfies(), "Credential should have been unevaluable against the criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
-        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
+        final EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        assert evalCrit != null;
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 }

@@ -31,9 +31,9 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -43,7 +43,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public final class ThreadLocalX509TrustEngineSupport {
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(ThreadLocalX509TrustEngineSupport.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(ThreadLocalX509TrustEngineSupport.class);
     
     /** Constructor. */
     private ThreadLocalX509TrustEngineSupport() { }
@@ -98,9 +98,13 @@ public final class ThreadLocalX509TrustEngineSupport {
         
         LOG.trace("Evaluating X509Certificate[] chain against ThreadLocalX509TrustEngineContext");
         
-        if (performTrustEval(chain,
-                ThreadLocalX509TrustEngineContext.getTrustEngine(),
-                ThreadLocalX509TrustEngineContext.getCriteria())) {
+        final var trustEngine = ThreadLocalX509TrustEngineContext.getTrustEngine();
+        final var criteria = ThreadLocalX509TrustEngineContext.getCriteria();
+        // Due to haveCurrent() above, these should be non-null.
+        assert trustEngine != null;
+        assert criteria != null;
+        
+        if (performTrustEval(chain, trustEngine, criteria)) {
             ThreadLocalX509TrustEngineContext.setTrusted(true);
         } else {
             ThreadLocalX509TrustEngineContext.setTrusted(false);

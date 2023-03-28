@@ -132,11 +132,8 @@ public class X509Support {
      * @since 1.2
      */
     @Nullable public static X509Certificate determineEntityCertificate(
-            @Nullable final Collection<X509Certificate> certs, @Nullable final PrivateKey privateKey)
+            @Nonnull final Collection<X509Certificate> certs, @Nonnull final PrivateKey privateKey)
                     throws SecurityException {
-        if (certs == null || privateKey == null) {
-            return null;
-        }
 
         for (final X509Certificate certificate : certs) {
             try {
@@ -165,10 +162,7 @@ public class X509Support {
      * 
      * @return the common names that appear in the DN in the order they appear, or null if the given DN is null
      */
-    @Nullable public static List<String> getCommonNames(@Nullable final X500Principal dn) {
-        if (dn == null) {
-            return null;
-        }
+    @Nonnull public static List<String> getCommonNames(@Nonnull final X500Principal dn) {
 
         LOG.debug("Extracting CNs from the following DN: {}", dn.toString());
         final RDNSequence attrs = NameReader.readX500Principal(dn);
@@ -190,11 +184,8 @@ public class X509Support {
      * 
      * @return the alt names, of the given type, within the cert
      */
-    @Nullable public static List<?> getAltNames(@Nullable final X509Certificate certificate,
-            @Nullable final Integer[] nameTypes) {
-        if (certificate == null || nameTypes == null || nameTypes.length == 0) {
-            return null;
-        }
+    @Nonnull public static List<?> getAltNames(@Nonnull final X509Certificate certificate,
+            @Nonnull @NotEmpty final Integer[] nameTypes) {
 
         final List<Object> altNames = new LinkedList<>();
         final GeneralNameType[] types = new GeneralNameType[nameTypes.length];
@@ -224,19 +215,17 @@ public class X509Support {
      * 
      * @return list of subject names in the certificate
      */
-    @Nullable public static List<?> getSubjectNames(@Nullable final X509Certificate certificate,
-            @Nullable final Integer[] altNameTypes) {
+    @Nonnull public static List<?> getSubjectNames(@Nonnull final X509Certificate certificate,
+            @Nonnull @NotEmpty final Integer[] altNameTypes) {
         final List<Object> issuerNames = new LinkedList<>();
         
-        if (certificate != null) {
-            final List<String> entityCertCNs = X509Support.getCommonNames(certificate.getSubjectX500Principal());
-            if (entityCertCNs != null && !entityCertCNs.isEmpty()) {
-                issuerNames.add(entityCertCNs.get(0));
-            }
-            final List<?> entityAltNames = X509Support.getAltNames(certificate, altNameTypes);
-            if (entityAltNames != null) {
-                issuerNames.addAll(entityAltNames);
-            }
+        final List<String> entityCertCNs = X509Support.getCommonNames(certificate.getSubjectX500Principal());
+        if (entityCertCNs != null && !entityCertCNs.isEmpty()) {
+            issuerNames.add(entityCertCNs.get(0));
+        }
+        final List<?> entityAltNames = X509Support.getAltNames(certificate, altNameTypes);
+        if (entityAltNames != null) {
+            issuerNames.addAll(entityAltNames);
         }
 
         return issuerNames;

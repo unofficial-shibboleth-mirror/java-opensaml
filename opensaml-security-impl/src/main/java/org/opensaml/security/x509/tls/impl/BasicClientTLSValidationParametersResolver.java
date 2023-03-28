@@ -17,12 +17,10 @@
 
 package org.opensaml.security.x509.tls.impl;
 
-import java.util.Collections;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -48,26 +46,25 @@ import org.opensaml.security.x509.tls.ClientTLSValidationParametersResolver;
 public class BasicClientTLSValidationParametersResolver implements ClientTLSValidationParametersResolver {
 
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements public Iterable<ClientTLSValidationParameters> resolve(final CriteriaSet criteria) 
+    @Nonnull public Iterable<ClientTLSValidationParameters> resolve(@Nullable final CriteriaSet criteria) 
             throws ResolverException {
         final ClientTLSValidationParameters params = resolveSingle(criteria);
         if (params != null) {
-            return Collections.singletonList(params);
+            return CollectionSupport.singletonList(params);
         }
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
-    @Nonnull public ClientTLSValidationParameters resolveSingle(final CriteriaSet criteria) throws ResolverException {
-        Constraint.isNotNull(criteria, "CriteriaSet was null");
-        Constraint.isNotNull(criteria.get(ClientTLSValidationConfigurationCriterion.class), 
-                "Resolver requires an instance of ClientTLSValidationConfigurationCriterion");
+    @Nullable public ClientTLSValidationParameters resolveSingle(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
+        final CriteriaSet localCriteria = Constraint.isNotNull(criteria, "CriteriaSet was null");
         
         final ClientTLSValidationParameters params = new ClientTLSValidationParameters();
         
-        params.setX509TrustEngine(resolveTrustEngine(criteria));
+        params.setX509TrustEngine(resolveTrustEngine(localCriteria));
         
-        params.setCertificateNameOptions(resolveNameOptions(criteria));
+        params.setCertificateNameOptions(resolveNameOptions(localCriteria));
         
         return params;
     }
@@ -82,8 +79,10 @@ public class BasicClientTLSValidationParametersResolver implements ClientTLSVali
      */
     @Nullable protected TrustEngine<? super X509Credential> resolveTrustEngine(@Nonnull final CriteriaSet criteria) {
         
-        for (final ClientTLSValidationConfiguration config : 
-            criteria.get(ClientTLSValidationConfigurationCriterion.class).getConfigurations()) {
+        final var tlsCriterion = Constraint.isNotNull(criteria.get(ClientTLSValidationConfigurationCriterion.class), 
+                "Resolver requires an instance of ClientTLSValidationConfigurationCriterion");
+        
+        for (final ClientTLSValidationConfiguration config : tlsCriterion.getConfigurations()) {
             if (config.getX509TrustEngine() != null) {
                 return config.getX509TrustEngine();
             }
@@ -99,9 +98,11 @@ public class BasicClientTLSValidationParametersResolver implements ClientTLSVali
      * @return the effective name options, or null
      */
     @Nullable protected CertificateNameOptions resolveNameOptions(@Nonnull final CriteriaSet criteria) {
-        
-        for (final ClientTLSValidationConfiguration config : 
-            criteria.get(ClientTLSValidationConfigurationCriterion.class).getConfigurations()) {
+
+        final var tlsCriterion = Constraint.isNotNull(criteria.get(ClientTLSValidationConfigurationCriterion.class), 
+                "Resolver requires an instance of ClientTLSValidationConfigurationCriterion");
+
+        for (final ClientTLSValidationConfiguration config : tlsCriterion.getConfigurations()) {
             if (config.getCertificateNameOptions() != null) {
                 return config.getCertificateNameOptions();
             }

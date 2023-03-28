@@ -25,20 +25,16 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
-import org.opensaml.security.credential.criteria.impl.EvaluableX509SubjectNameCredentialCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509SubjectNameCriterion;
 import org.opensaml.security.x509.X509Support;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EvaluableX509SubjectNameCredentialCriterionTest {
     
     private BasicX509Credential credential;
@@ -46,7 +42,7 @@ public class EvaluableX509SubjectNameCredentialCriterionTest {
     private X509SubjectNameCriterion criteria;
     
     private X509Certificate entityCert;
-    private String entityCertBase64 = 
+    @Nonnull private String entityCertBase64 = 
         "MIIDzjCCAragAwIBAgIBMTANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
         "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDUyMTE4MjM0MFoX" +
         "DTE3MDUxODE4MjM0MFowMTESMBAGA1UEChMJSW50ZXJuZXQyMRswGQYDVQQDExJm" +
@@ -86,28 +82,28 @@ public class EvaluableX509SubjectNameCredentialCriterionTest {
     
     @Test
     public void testSatisfy() {
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
+        final EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setSubjectName( new X500Principal("cn=SomeOtherName, o=SomeOtherOrg"));
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
+        final EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.test(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
-        BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
-        EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
+        final BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        final EvaluableX509SubjectNameCredentialCriterion evalCrit = new EvaluableX509SubjectNameCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.test(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
-        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
+        final EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        assert evalCrit != null;
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 }

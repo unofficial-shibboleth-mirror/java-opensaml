@@ -37,9 +37,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class NamedCurveRegistryTest extends BaseNamedCurveTest {
     
     @Test
@@ -52,12 +50,12 @@ public class NamedCurveRegistryTest extends BaseNamedCurveTest {
         secp521r1.initialize();
         
         // To test lookup by a different param spec object instance
-        ECParameterSpec secp256r1ParamSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(secp256r1.getObjectIdentifier()));
-        ECParameterSpec secp384r1ParamSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(secp384r1.getObjectIdentifier()));
-        ECParameterSpec secp521r1ParamSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(secp521r1.getObjectIdentifier()));
-        Assert.assertNotNull(secp256r1ParamSpec);
-        Assert.assertNotNull(secp384r1ParamSpec);
-        Assert.assertNotNull(secp521r1ParamSpec);
+        final ECParameterSpec secp256r1ParamSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(secp256r1.getObjectIdentifier()));
+        final ECParameterSpec secp384r1ParamSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(secp384r1.getObjectIdentifier()));
+        final ECParameterSpec secp521r1ParamSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(secp521r1.getObjectIdentifier()));
+        assert secp256r1ParamSpec != null;
+        assert secp384r1ParamSpec != null;
+        assert secp521r1ParamSpec != null;
         
         
         NamedCurveRegistry registry = new NamedCurveRegistry();
@@ -158,12 +156,12 @@ public class NamedCurveRegistryTest extends BaseNamedCurveTest {
     
     @Test
     public void globalRegistry() {
-        NamedCurveRegistry registry = ECSupport.getGlobalNamedCurveRegistry();
-        Assert.assertNotNull(registry);
+        final NamedCurveRegistry registry = ECSupport.getGlobalNamedCurveRegistry();
+        assert registry != null;
         
         // Test that it has at least the 3 main ones.
         Assert.assertTrue(registry.getRegisteredCurves().size() >= 3);
-        Set<String> curveNames = registry.getRegisteredCurves().stream().map(NamedCurve::getName).collect(Collectors.toSet());
+        final Set<String> curveNames = registry.getRegisteredCurves().stream().map(NamedCurve::getName).collect(Collectors.toSet());
         Assert.assertTrue(curveNames.contains("secp256r1"));
         Assert.assertTrue(curveNames.contains("secp384r1"));
         Assert.assertTrue(curveNames.contains("secp521r1"));
@@ -171,23 +169,25 @@ public class NamedCurveRegistryTest extends BaseNamedCurveTest {
     
     @Test
     public void registerBouncyCastleCurves() throws Exception {
-        String propName = GlobalNamedCurveRegistryInitializer.CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES;
-        NamedCurveRegistry origRegistry = ECSupport.getGlobalNamedCurveRegistry();
+        final String propName = GlobalNamedCurveRegistryInitializer.CONFIG_PROPERTY_REGISTER_BOUNCY_CASTLE_CURVES;
+        final NamedCurveRegistry origRegistry = ECSupport.getGlobalNamedCurveRegistry();
+        assert origRegistry != null;
         try {
-            Properties props = new Properties();
+            final Properties props = new Properties();
             props.setProperty(propName, "true");
             ThreadLocalConfigurationPropertiesHolder.setProperties(props);
             
             new GlobalNamedCurveRegistryInitializer().init();
-            NamedCurveRegistry bcRegistry = ECSupport.getGlobalNamedCurveRegistry();
+            final NamedCurveRegistry bcRegistry = ECSupport.getGlobalNamedCurveRegistry();
+            assert bcRegistry != null;
             Assert.assertNotSame(bcRegistry, origRegistry);
             
-            Set<NamedCurve> origCurves = origRegistry.getRegisteredCurves();
-            Set<NamedCurve> bcCurves = bcRegistry.getRegisteredCurves();
+            final Set<NamedCurve> origCurves = origRegistry.getRegisteredCurves();
+            final Set<NamedCurve> bcCurves = bcRegistry.getRegisteredCurves();
             Assert.assertTrue(bcCurves.size() > origCurves.size());
             
-            Set<String> origOIDs = origCurves.stream().map(NamedCurve::getObjectIdentifier).collect(Collectors.toSet());
-            Set<String> bcOIDs = bcCurves.stream().map(NamedCurve::getObjectIdentifier).collect(Collectors.toSet());
+            final Set<String> origOIDs = origCurves.stream().map(NamedCurve::getObjectIdentifier).collect(Collectors.toSet());
+            final Set<String> bcOIDs = bcCurves.stream().map(NamedCurve::getObjectIdentifier).collect(Collectors.toSet());
             Assert.assertTrue(bcOIDs.containsAll(origOIDs));
         } finally {
             ThreadLocalConfigurationPropertiesHolder.clear();

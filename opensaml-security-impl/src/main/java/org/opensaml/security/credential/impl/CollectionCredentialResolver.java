@@ -42,7 +42,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class CollectionCredentialResolver extends AbstractCriteriaFilteringCredentialResolver {
     
     /** The collection of credentials which is the underlying store for the resolver. */
-    private final Collection<Credential> collection;
+    @Nonnull private final Collection<Credential> collection;
     
     /**
      * Constructor.
@@ -51,7 +51,6 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      *
      */
     public CollectionCredentialResolver() {
-        super();
         collection = new ArrayList<>();
     }
     
@@ -61,7 +60,6 @@ public class CollectionCredentialResolver extends AbstractCriteriaFilteringCrede
      * @param credentials the credential collection which is the backing store for the resolver
      */
     public CollectionCredentialResolver(@Nonnull final Collection<Credential> credentials) {
-        super();
         collection = credentials;
     }
     

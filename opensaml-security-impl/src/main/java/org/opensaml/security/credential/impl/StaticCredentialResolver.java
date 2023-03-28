@@ -43,7 +43,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class StaticCredentialResolver extends AbstractCredentialResolver {
     
     /** List of credentials held by this resolver. */
-    private List<Credential> creds;
+    @Nonnull private final List<Credential> creds;
     
     /**
      * Constructor.

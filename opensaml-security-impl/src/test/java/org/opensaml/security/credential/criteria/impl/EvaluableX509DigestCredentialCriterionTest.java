@@ -28,29 +28,27 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriteriaRegistry;
-import org.opensaml.security.credential.criteria.impl.EvaluableCredentialCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509DigestCriterion;
 import org.opensaml.security.x509.X509Support;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EvaluableX509DigestCredentialCriterionTest {
     
     private BasicX509Credential credential;
-    private String digestAlgorithm = "SHA-256";
-    private String entityCertDigestBase64 = "z+OxxIy+EZxLN6PbDEXPmOutQhaYbcJYKDrIyFSuE0I=";
+    @Nonnull private String digestAlgorithm = "SHA-256";
+    @Nonnull private String entityCertDigestBase64 = "z+OxxIy+EZxLN6PbDEXPmOutQhaYbcJYKDrIyFSuE0I=";
     private byte[] entityCertDigest;
     
     private X509DigestCriterion criteria;
     
     
     private X509Certificate entityCert;
-    private String entityCertBase64 = 
+    @Nonnull private String entityCertBase64 = 
         "MIIDzjCCAragAwIBAgIBMTANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
         "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDUyMTE4MjM0MFoX" +
         "DTE3MDUxODE4MjM0MFowMTESMBAGA1UEChMJSW50ZXJuZXQyMRswGQYDVQQDExJm" +
@@ -90,35 +88,35 @@ public class EvaluableX509DigestCredentialCriterionTest {
     
     @Test
     public void testSatisfy() {
-        EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
+        final EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 
     @Test
     public void testNotSatisfy() {
         criteria.setAlgorithm("SHA-1");
-        EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
+        final EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.test(credential), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
-        BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
-        EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
+        final BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        final EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
         Assert.assertFalse(evalCrit.test(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     
     @Test
     public void testCanNotEvaluate() {
         criteria.setAlgorithm("SHA0");
-        EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
+        final EvaluableX509DigestCredentialCriterion evalCrit = new EvaluableX509DigestCredentialCriterion(criteria);
         Assert.assertEquals(evalCrit.test(credential), evalCrit.isUnevaluableSatisfies(), "Credential should have been unevaluable against the criteria");
     }
     
     @Test
     public void testRegistry() throws Exception {
-        EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
-        Assert.assertNotNull(evalCrit, "Evaluable criteria was unavailable from the registry");
+        final EvaluableCredentialCriterion evalCrit = EvaluableCredentialCriteriaRegistry.getEvaluator(criteria);
+        assert evalCrit != null;
         Assert.assertTrue(evalCrit.test(credential), "Credential should have matched the evaluable criteria");
     }
 }

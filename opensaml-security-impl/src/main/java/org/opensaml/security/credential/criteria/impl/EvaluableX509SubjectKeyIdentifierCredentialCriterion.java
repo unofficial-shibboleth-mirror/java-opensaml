@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.apache.commons.codec.binary.Hex;
 import org.opensaml.security.credential.Credential;
@@ -32,7 +33,6 @@ import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509SubjectKeyIdentifierCriterion;
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
@@ -42,10 +42,10 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion extends Abstra
         implements EvaluableCredentialCriterion {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableX509SubjectKeyIdentifierCredentialCriterion.class);
     
     /** Base criteria. */
-    private final byte[] ski;
+    @Nonnull private final byte[] ski;
     
     /**
      * Constructor.
@@ -77,10 +77,6 @@ public class EvaluableX509SubjectKeyIdentifierCredentialCriterion extends Abstra
         }
         
         final X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
-        if (entityCert == null) {
-            log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
-            return false;
-        }
         
         final byte[] credSKI = X509Support.getSubjectKeyIdentifier(entityCert);
         if (credSKI == null || credSKI.length == 0) {

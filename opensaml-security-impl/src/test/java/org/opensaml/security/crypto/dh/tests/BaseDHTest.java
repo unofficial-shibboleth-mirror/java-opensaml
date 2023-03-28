@@ -25,6 +25,11 @@ import org.testng.annotations.DataProvider;
  */
 public class BaseDHTest extends OpenSAMLInitBaseTestCase {
     
+    /**
+     * Get key sizes.
+     * 
+     * @return key sizes
+     */
     @DataProvider
     public Object[][] dhKeySizes() {
         return new Object[][] {

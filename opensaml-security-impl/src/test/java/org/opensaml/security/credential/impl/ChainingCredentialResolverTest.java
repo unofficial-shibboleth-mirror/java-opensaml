@@ -18,8 +18,6 @@
 package org.opensaml.security.credential.impl;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -32,6 +30,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -88,7 +87,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testOneEmptyMember() throws ResolverException {
-        chainingResolver = new ChainingCredentialResolver(Collections.singletonList(staticResolverEmpty));
+        chainingResolver = new ChainingCredentialResolver(CollectionSupport.singletonList(staticResolverEmpty));
         
         final List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 0);
@@ -101,7 +100,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testMultipleEmptyMember() throws ResolverException {
-        chainingResolver = new ChainingCredentialResolver(Arrays.asList(staticResolverEmpty, staticResolverEmpty, staticResolverEmpty));
+        chainingResolver = new ChainingCredentialResolver(CollectionSupport.listOf(staticResolverEmpty, staticResolverEmpty, staticResolverEmpty));
         
         final List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 0);
@@ -114,7 +113,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test
     public void testOneMember() throws ResolverException {
-        chainingResolver = new ChainingCredentialResolver(Collections.singletonList(staticResolver12));
+        chainingResolver = new ChainingCredentialResolver(CollectionSupport.singletonList(staticResolver12));
         
         final List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 2, cred1, cred2);
@@ -128,7 +127,7 @@ public class ChainingCredentialResolverTest {
     @Test
     public void testMultipleMembers() throws ResolverException {
         chainingResolver = new ChainingCredentialResolver(
-                Arrays.asList(staticResolver12, staticResolver3, staticResolverEmpty, staticResolver45));
+                CollectionSupport.listOf(staticResolver12, staticResolver3, staticResolverEmpty, staticResolver45));
         
         final List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 5, cred1, cred2, cred3, cred4, cred5);
@@ -143,7 +142,7 @@ public class ChainingCredentialResolverTest {
     @Test
     public void testOrderingMultipleMembers() throws ResolverException {
         chainingResolver = new ChainingCredentialResolver(
-                Arrays.asList(staticResolverEmpty, staticResolver45, staticResolverEmpty, staticResolver3, staticResolver12));
+                CollectionSupport.listOf(staticResolverEmpty, staticResolver45, staticResolverEmpty, staticResolver3, staticResolver12));
         
         final List<Credential> resolved = getResolved(chainingResolver.resolve(criteriaSet));
         checkResolved(resolved, 5, cred1, cred2, cred3, cred4, cred5);
@@ -173,7 +172,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testRemove() throws ResolverException {
-        chainingResolver = new ChainingCredentialResolver(Collections.singletonList(staticResolver12));
+        chainingResolver = new ChainingCredentialResolver(CollectionSupport.singletonList(staticResolver12));
         
         final Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
         Assert.assertTrue(iter.hasNext(), "Iterator was empty");
@@ -188,7 +187,7 @@ public class ChainingCredentialResolverTest {
      */
     @Test(expectedExceptions=NoSuchElementException.class)
     public void testNoMoreMembers() throws ResolverException {
-        chainingResolver = new ChainingCredentialResolver(Arrays.asList(staticResolver12, staticResolver3));
+        chainingResolver = new ChainingCredentialResolver(CollectionSupport.listOf(staticResolver12, staticResolver3));
         
         final Iterator<Credential> iter = chainingResolver.resolve(criteriaSet).iterator();
         Assert.assertTrue(iter.hasNext(), "Should have next member");
@@ -204,7 +203,7 @@ public class ChainingCredentialResolverTest {
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testChainUnmodifiable() {
-        chainingResolver = new ChainingCredentialResolver(Collections.singletonList(staticResolver12));
+        chainingResolver = new ChainingCredentialResolver(CollectionSupport.singletonList(staticResolver12));
         chainingResolver.getResolverChain().add(staticResolver3);
     }
     

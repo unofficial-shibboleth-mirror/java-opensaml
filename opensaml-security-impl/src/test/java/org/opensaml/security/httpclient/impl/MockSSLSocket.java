@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.security.cert.Certificate;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.net.ssl.HandshakeCompletedListener;
 import javax.net.ssl.SSLSession;
 import javax.net.ssl.SSLSocket;
@@ -32,7 +33,13 @@ public class MockSSLSocket extends SSLSocket {
     
     private SSLSession session;
     
-    public MockSSLSocket(List<Certificate> certs, String host) {
+    /**
+     * Constructor.
+     *
+     * @param certs certs
+     * @param host peer host
+     */
+    public MockSSLSocket(@Nonnull final List<Certificate> certs, @Nonnull final String host) {
        session = new MockSSLSession(certs, host);
     }
 

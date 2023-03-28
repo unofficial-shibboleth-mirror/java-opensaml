@@ -17,7 +17,6 @@
 
 package org.opensaml.security.x509.tls;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -30,6 +29,8 @@ import org.opensaml.security.x509.X500DNHandler;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Options for deriving message context issuer names from an client TLS X.509 certificate.
@@ -43,20 +44,20 @@ public class CertificateNameOptions implements Cloneable {
     private boolean evaluateSubjectCommonName;
 
     /** The set of types of subject alternative names evaluate as derived issuer entity ID names. */
-    private Set<Integer> subjectAltNames;
+    @Nonnull private Set<Integer> subjectAltNames;
 
     /**
      * Responsible for serializing X.500 names to strings from certificate-derived
      * {@link javax.security.auth.x500.X500Principal} instances.
      */
-    private X500DNHandler x500DNHandler;
+    @Nonnull private X500DNHandler x500DNHandler;
 
     /** The format specifier for serializing X.500 subject names to strings. */
-    private String x500SubjectDNFormat;
+    @Nonnull private String x500SubjectDNFormat;
 
     /** Constructor. */
     public CertificateNameOptions() {
-        subjectAltNames = Collections.emptySet();
+        subjectAltNames = CollectionSupport.emptySet();
         x500DNHandler = new InternalX500DNHandler();
         x500SubjectDNFormat = X500DNHandler.FORMAT_RFC2253;
     }
@@ -115,9 +116,9 @@ public class CertificateNameOptions implements Cloneable {
      */
     public void setSubjectAltNames(@Nullable @NonnullElements final Set<Integer> names) {
         if (names == null) {
-            subjectAltNames = Collections.emptySet();
+            subjectAltNames = CollectionSupport.emptySet();
         } else {
-            subjectAltNames = Set.copyOf(names);
+            subjectAltNames = CollectionSupport.copyToSet(names);
         }
     }
 
@@ -127,7 +128,7 @@ public class CertificateNameOptions implements Cloneable {
      * 
      * @return Returns the x500DNHandler.
      */
-    public X500DNHandler getX500DNHandler() {
+    @Nonnull public X500DNHandler getX500DNHandler() {
         return x500DNHandler;
     }
 
@@ -137,11 +138,8 @@ public class CertificateNameOptions implements Cloneable {
      * 
      * @param handler the new x500DNHandler value.
      */
-    public void setX500DNHandler(final X500DNHandler handler) {
-        if (handler == null) {
-            throw new IllegalArgumentException("X500DNHandler may not be null");
-        }
-        x500DNHandler = handler;
+    public void setX500DNHandler(@Nonnull final X500DNHandler handler) {
+        x500DNHandler = Constraint.isNotNull(handler, "X500DNHandler cannot be null");
     }
     
     /**
@@ -149,7 +147,7 @@ public class CertificateNameOptions implements Cloneable {
      * 
      * @return Returns the x500SubjectDNFormat.
      */
-    public String getX500SubjectDNFormat() {
+    @Nonnull public String getX500SubjectDNFormat() {
         return x500SubjectDNFormat;
     }
 
@@ -158,8 +156,8 @@ public class CertificateNameOptions implements Cloneable {
      * 
      * @param format the new x500SubjectDNFormat value.
      */
-    public void setX500SubjectDNFormat(final String format) {
-        x500SubjectDNFormat = format;
+    public void setX500SubjectDNFormat(@Nonnull final String format) {
+        x500SubjectDNFormat = Constraint.isNotNull(format, "X.500 Subject DN Format cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -173,12 +171,11 @@ public class CertificateNameOptions implements Cloneable {
         }
 
         clonedOptions.subjectAltNames = new LinkedHashSet<>();
-        clonedOptions.subjectAltNames.addAll(this.subjectAltNames);
+        clonedOptions.subjectAltNames.addAll(subjectAltNames);
 
-        clonedOptions.x500DNHandler = this.x500DNHandler.clone();
+        clonedOptions.x500DNHandler = x500DNHandler.clone();
 
         return clonedOptions;
     }
 
 }
-

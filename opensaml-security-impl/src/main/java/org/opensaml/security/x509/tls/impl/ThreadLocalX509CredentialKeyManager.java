@@ -22,10 +22,13 @@ import java.security.Principal;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
 import javax.net.ssl.X509KeyManager;
 
+import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An implementation of {@link X509KeyManager} which returns data based on the thread-local credential 
@@ -34,10 +37,10 @@ import org.slf4j.LoggerFactory;
 public class ThreadLocalX509CredentialKeyManager implements X509KeyManager {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ThreadLocalX509CredentialKeyManager.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ThreadLocalX509CredentialKeyManager.class);
     
     /** The alias representing the supplied static credential. */
-    private String internalAlias = "internalAlias-ThreadLocal";
+    @Nonnull private String internalAlias = "internalAlias-ThreadLocal";
 
     /** {@inheritDoc} */
     public String chooseClientAlias(final String[] arg0, final Principal[] arg1, final Socket arg2) {
@@ -54,16 +57,20 @@ public class ThreadLocalX509CredentialKeyManager implements X509KeyManager {
     /** {@inheritDoc} */
     public X509Certificate[] getCertificateChain(final String arg0) {
         log.trace("In getCertificateChain");
-        return internalAlias.equals(arg0) && ThreadLocalX509CredentialContext.haveCurrent() 
-                ? ThreadLocalX509CredentialContext.getCredential().getEntityCertificateChain()
-                        .toArray(new X509Certificate[0]) : null;
+        
+        final X509Credential cred = ThreadLocalX509CredentialContext.getCredential();
+        
+        return internalAlias.equals(arg0) &&
+                cred != null ? cred.getEntityCertificateChain().toArray(new X509Certificate[0]) : null;
     }
 
     /** {@inheritDoc} */
     public PrivateKey getPrivateKey(final String arg0) {
         log.trace("In getPrivateKey");
-        return internalAlias.equals(arg0) && ThreadLocalX509CredentialContext.haveCurrent() 
-                ? ThreadLocalX509CredentialContext.getCredential().getPrivateKey() : null;
+        
+        final X509Credential cred = ThreadLocalX509CredentialContext.getCredential();
+        
+        return internalAlias.equals(arg0) && cred != null ? cred.getPrivateKey() : null;
     }
 
     /** {@inheritDoc} */

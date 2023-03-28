@@ -20,10 +20,12 @@ package org.opensaml.security.x509.tls.impl;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
 import javax.net.ssl.X509TrustManager;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An implementation of {@link X509TrustManager} which performs its evaluation using trust engine and criteria
@@ -32,7 +34,7 @@ import org.slf4j.LoggerFactory;
 public class ThreadLocalX509TrustManager implements X509TrustManager {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(ThreadLocalX509TrustManager.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(ThreadLocalX509TrustManager.class);
 
     /** {@inheritDoc} */
     public X509Certificate[] getAcceptedIssuers() {

@@ -18,18 +18,17 @@
 package org.opensaml.security.credential.criteria.impl;
 
 import java.security.cert.X509CertSelector;
-import java.security.cert.X509Certificate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate meets the criteria
@@ -40,10 +39,10 @@ public class EvaluableX509CertSelectorCredentialCriterion extends AbstractTriSta
         implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableX509CertSelectorCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableX509CertSelectorCredentialCriterion.class);
 
     /** Base criteria. */
-    private final X509CertSelector certSelector;
+    @Nonnull private final X509CertSelector certSelector;
 
     /**
      * Constructor.
@@ -64,13 +63,7 @@ public class EvaluableX509CertSelectorCredentialCriterion extends AbstractTriSta
             return false;
         }
 
-        final X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
-        if (entityCert == null) {
-            log.info("X509Credential did not contain an entity certificate, cannot evaluate X509CertSelector criteria");
-            return false;
-        }
-
-        return certSelector.match(entityCert);
+        return certSelector.match(((X509Credential) target).getEntityCertificate());
     }
     
     /** {@inheritDoc} */

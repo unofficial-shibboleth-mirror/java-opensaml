@@ -25,7 +25,8 @@ import javax.annotation.Nullable;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A dummy implementation of {@link X509CredentialNameEvaluator} which always returns true.

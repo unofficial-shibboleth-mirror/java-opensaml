@@ -30,9 +30,7 @@ import org.opensaml.security.crypto.dh.DHSupport;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DHSupportTest extends BaseDHTest {
     
     @Test(dataProvider="dhKeySizes")

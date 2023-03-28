@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.apache.commons.codec.binary.Hex;
@@ -36,7 +37,6 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509DigestCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 
 /**
@@ -47,13 +47,13 @@ public final class EvaluableX509DigestCredentialCriterion extends AbstractTriSta
         implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableX509DigestCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableX509DigestCredentialCriterion.class);
     
     /** Digest algorithm. */
-    private final String algorithm;
+    @Nonnull private final String algorithm;
     
     /** X.509 certificate digest. */
-    private final byte[] x509digest;
+    @Nonnull private final byte[] x509digest;
 
     /**
      * Constructor.
@@ -74,8 +74,7 @@ public final class EvaluableX509DigestCredentialCriterion extends AbstractTriSta
     public EvaluableX509DigestCredentialCriterion(@Nonnull final String alg, @Nonnull final byte[] digest) {
         x509digest = Constraint.isNotEmpty(digest, "X.509 digest cannot be null or empty");
         final String trimmed = StringSupport.trimOrNull(alg);
-        Constraint.isNotNull(trimmed, "Certificate digest algorithm cannot be null or empty");
-        algorithm = trimmed;
+        algorithm = Constraint.isNotNull(trimmed, "Certificate digest algorithm cannot be null or empty");
     }
 
     /** {@inheritDoc} */
@@ -89,10 +88,6 @@ public final class EvaluableX509DigestCredentialCriterion extends AbstractTriSta
         }
 
         final X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
-        if (entityCert == null) {
-            log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
-            return false;
-        }
         
         try {
             final MessageDigest hasher = MessageDigest.getInstance(algorithm);

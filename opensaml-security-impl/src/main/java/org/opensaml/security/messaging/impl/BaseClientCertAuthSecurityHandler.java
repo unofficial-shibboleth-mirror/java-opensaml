@@ -37,8 +37,8 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.opensaml.security.x509.tls.CertificateNameOptions;
+import org.opensaml.security.x509.tls.ClientTLSValidationParameters;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -48,6 +48,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -157,10 +158,13 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
             @Nonnull final MessageContext messageContext) {
         final ClientTLSSecurityParametersContext secContext = 
                 messageContext.getSubcontext(ClientTLSSecurityParametersContext.class);
-        if (secContext == null || secContext.getValidationParameters() == null)  {
-            return null;
+        
+        final ClientTLSValidationParameters params = secContext != null ? secContext.getValidationParameters() : null;
+        if (params != null) {
+            return params.getX509TrustEngine();
         }
-        return secContext.getValidationParameters().getX509TrustEngine();
+        
+        return null;
     }
 
     /** {@inheritDoc} */
@@ -178,11 +182,12 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
                     getLogPrefix());
             return false;
         }
-        if (secContext == null || secContext.getValidationParameters() == null 
-                || secContext.getValidationParameters().getCertificateNameOptions() == null)  {
+        
+        final ClientTLSValidationParameters params = secContext != null ? secContext.getValidationParameters() : null;
+        if (params == null || params.getCertificateNameOptions() == null)  {
             throw new MessageHandlerException("CertificateNameOptions was not available from the MessageContext");
         }
-        certNameOptions = secContext.getValidationParameters().getCertificateNameOptions();
+        certNameOptions = params.getCertificateNameOptions();
         
         return true;
     }
@@ -315,6 +320,7 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
 
         final CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
+            assert entityID != null;
             criteriaSet.add(new EntityIdCriterion(entityID));
         }
 
@@ -375,26 +381,29 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      * @throws MessageHandlerException thrown if there is error during processing
      */
     @Nullable protected String evaluateCertificateNameDerivedPresenters(
-            @Nullable final X509Credential requestCredential, @Nonnull final MessageContext messageContext)
+            @Nonnull final X509Credential requestCredential, @Nonnull final MessageContext messageContext)
                     throws MessageHandlerException {
 
         String candidatePresenter = null;
 
-        if (getCertificateNameOptions().evaluateSubjectDN()) {
+        final CertificateNameOptions localOptions = certNameOptions;
+        assert localOptions != null;
+        
+        if (localOptions.evaluateSubjectDN()) {
             candidatePresenter = evaluateSubjectDN(requestCredential, messageContext);
             if (candidatePresenter != null) {
                 return candidatePresenter;
             }
         }
 
-        if (!getCertificateNameOptions().getSubjectAltNames().isEmpty()) {
+        if (!localOptions.getSubjectAltNames().isEmpty()) {
             candidatePresenter = evaluateSubjectAltNames(requestCredential, messageContext);
             if (candidatePresenter != null) {
                 return candidatePresenter;
             }
         }
 
-        if (getCertificateNameOptions().evaluateSubjectCommonName()) {
+        if (localOptions.evaluateSubjectCommonName()) {
             candidatePresenter = evaluateSubjectCommonName(requestCredential, messageContext);
             if (candidatePresenter != null) {
                 return candidatePresenter;
@@ -472,7 +481,8 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
 
         log.debug("{} Evaluating client cert by deriving presenter from subject alt names", getLogPrefix());
         final X509Certificate certificate = requestCredential.getEntityCertificate();
-        for (final Integer altNameType : getCertificateNameOptions().getSubjectAltNames()) {
+        assert certNameOptions != null;
+        for (final Integer altNameType : certNameOptions.getSubjectAltNames()) {
             log.debug("{} Evaluating alt names of type: {}", getLogPrefix(), altNameType.toString());
             final List<String> altNames = getAltNames(certificate, altNameType);
             for (final String altName : altNames) {
@@ -511,16 +521,16 @@ public abstract class BaseClientCertAuthSecurityHandler extends BaseTrustEngineS
      * @return the subject name
      */
     @Nullable protected String getSubjectName(@Nonnull final X509Certificate cert) {
-        if (cert == null) {
-            return null;
-        }
+        final CertificateNameOptions localOptions = certNameOptions;
+        assert localOptions != null;
+
         String name = null;
-        if (!Strings.isNullOrEmpty(getCertificateNameOptions().getX500SubjectDNFormat())) {
+        if (!Strings.isNullOrEmpty(localOptions.getX500SubjectDNFormat())) {
             name =
-                    getCertificateNameOptions().getX500DNHandler().getName(cert.getSubjectX500Principal(),
-                            getCertificateNameOptions().getX500SubjectDNFormat());
+                    localOptions.getX500DNHandler().getName(cert.getSubjectX500Principal(),
+                            localOptions.getX500SubjectDNFormat());
         } else {
-            name = getCertificateNameOptions().getX500DNHandler().getName(cert.getSubjectX500Principal());
+            name = localOptions.getX500DNHandler().getName(cert.getSubjectX500Principal());
         }
         log.debug("{} Extracted subject name from certificate: {}", getLogPrefix(), name);
         return name;

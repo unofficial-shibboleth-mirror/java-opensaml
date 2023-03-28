@@ -25,6 +25,11 @@ import org.testng.annotations.DataProvider;
  */
 public class BaseNamedCurveTest extends OpenSAMLInitBaseTestCase {
     
+    /**
+     * Get curve names.
+     * 
+     * @return curve names
+     */
     @DataProvider
     public Object[][] namedCurves() {
         return new Object[][] {

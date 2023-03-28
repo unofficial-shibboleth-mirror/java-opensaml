@@ -22,6 +22,8 @@ import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.bouncycastle.jce.ECNamedCurveTable;
 import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
@@ -32,41 +34,42 @@ import org.opensaml.security.crypto.ec.NamedCurveRegistry;
 import org.opensaml.security.crypto.ec.curves.AbstractNamedCurve;
 import org.opensaml.security.crypto.ec.tests.BaseNamedCurveTest;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+import net.shibboleth.shared.primitive.LoggerFactory;
+
+@SuppressWarnings("javadoc")
 public class NamedCurvesTest extends BaseNamedCurveTest {
     
-    private Logger log = LoggerFactory.getLogger(NamedCurvesTest.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(NamedCurvesTest.class);
     
     @Test(dataProvider = "namedCurves")
     public void globalRegistryCurves(String namedCurve) throws Exception {
-        NamedCurveRegistry registry = ECSupport.getGlobalNamedCurveRegistry();
-        Assert.assertNotNull(registry);
+        final NamedCurveRegistry registry = ECSupport.getGlobalNamedCurveRegistry();
+        assert registry != null;
         
-        ECParameterSpec bcSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(namedCurve));
-        Assert.assertNotNull(bcSpec);
-        
-        Assert.assertNotNull(registry.getByName(namedCurve));
-        Assert.assertEquals(registry.getByName(namedCurve).getName(), namedCurve);
-        
-        Assert.assertNotNull(registry.getByParameterSpec(bcSpec));
-        // Use Enhanced- as a simple way to test equality via #equals(...).
-        // Wrap both. It seems TestNG does expected.equals(actual), but that may not always be true.
-        Assert.assertEquals(new EnhancedECParameterSpec(registry.getByParameterSpec(bcSpec).getParameterSpec()),
-                new EnhancedECParameterSpec(bcSpec));
+        final ECParameterSpec bcSpec = ECSupport.convert(ECNamedCurveTable.getParameterSpec(namedCurve));
+        assert bcSpec != null;
         
         NamedCurve curve = registry.getByName(namedCurve);
+        assert curve != null;
+        Assert.assertEquals(curve.getName(), namedCurve);
+        
+        curve = registry.getByParameterSpec(bcSpec);
+        assert curve != null;
+        
+        // Use Enhanced- as a simple way to test equality via #equals(...).
+        // Wrap both. It seems TestNG does expected.equals(actual), but that may not always be true.
+        Assert.assertEquals(new EnhancedECParameterSpec(curve.getParameterSpec()), new EnhancedECParameterSpec(bcSpec));
+        
+        curve = registry.getByName(namedCurve);
         if (AbstractNamedCurve.class.isInstance(curve)) {
             // Test the equality of the curve's spec #buildParameterSpec() against both BC and brute force from key pair generation
-            ECParameterSpec curveSpec = AbstractNamedCurve.class.cast(curve).buildParameterSpec();
-            Assert.assertNotNull(curveSpec);
+            final ECParameterSpec curveSpec = AbstractNamedCurve.class.cast(curve).buildParameterSpec();
+            assert curveSpec != null;
             
-            ECParameterSpec jcaSpec =  ECPublicKey.class.cast(
+            final ECParameterSpec jcaSpec =  ECPublicKey.class.cast(
                     KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_EC, new ECGenParameterSpec(namedCurve), null)
                     .getPublic()).getParams();
             Assert.assertNotNull(jcaSpec);
@@ -92,18 +95,18 @@ public class NamedCurvesTest extends BaseNamedCurveTest {
      */
     @Test
     public void sanityCheckOIDAndNameAndParams() throws Exception {
-        NamedCurveRegistry registry = ECSupport.getGlobalNamedCurveRegistry();
-        Assert.assertNotNull(registry);
+        final NamedCurveRegistry registry = ECSupport.getGlobalNamedCurveRegistry();
+        assert registry != null;
         
-        Set<NamedCurve> registeredCurves = registry.getRegisteredCurves();
+        final Set<NamedCurve> registeredCurves = registry.getRegisteredCurves();
         
         for (NamedCurve curve : registeredCurves) {
             log.debug("Testing OID and name for curve: impl {}", curve.getClass().getName());
             
-            ECParameterSpec specByOID = ECSupport.convert(ECNamedCurveTable.getParameterSpec(curve.getObjectIdentifier()));
-            Assert.assertNotNull(specByOID);
-            ECParameterSpec specByName = ECSupport.convert(ECNamedCurveTable.getParameterSpec(mapBCCurveName(curve.getName())));
-            Assert.assertNotNull(specByName);
+            final ECParameterSpec specByOID = ECSupport.convert(ECNamedCurveTable.getParameterSpec(curve.getObjectIdentifier()));
+            assert specByOID != null;
+            final ECParameterSpec specByName = ECSupport.convert(ECNamedCurveTable.getParameterSpec(mapBCCurveName(curve.getName())));
+            assert specByName != null;
             
             
             // Params by OID and name match each other.
@@ -122,7 +125,7 @@ public class NamedCurvesTest extends BaseNamedCurveTest {
      * @param standardName
      * @return the corresponding BC curve name
      */
-    private String mapBCCurveName(String standardName) {
+    @Nonnull private String mapBCCurveName(String standardName) {
         if (standardName.startsWith("X9.62 ")) {
             return standardName.substring(6);
         }

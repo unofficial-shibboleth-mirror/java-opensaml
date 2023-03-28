@@ -18,7 +18,6 @@
 package org.opensaml.security.x509.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -31,9 +30,8 @@ import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.PKIXValidationInformationResolver;
 import org.opensaml.security.x509.TrustedNamesCriterion;
 
-import com.google.common.collect.ImmutableSet;
-
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -44,10 +42,10 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class StaticPKIXValidationInformationResolver implements PKIXValidationInformationResolver {
 
     /** The PKIX validation information to return. */
-    private final List<PKIXValidationInformation> pkixInfo;
+    @Nonnull private final List<PKIXValidationInformation> pkixInfo;
 
     /** The set of trusted names to return. */
-    private final Set<String> trustedNames;
+    @Nonnull private final Set<String> trustedNames;
     
     /** Flag indicating whether dynamic trusted names should be extracted from criteria set. */
     private boolean supportDynamicTrustedNames;
@@ -81,13 +79,13 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
         if (info != null) {
             pkixInfo = new ArrayList<>(info);
         } else {
-            pkixInfo = Collections.emptyList();
+            pkixInfo = CollectionSupport.emptyList();
         }
 
         if (names != null) {
             trustedNames = new HashSet<>(names);
         } else {
-            trustedNames = Collections.emptySet();
+            trustedNames = CollectionSupport.emptySet();
         }
         
         supportDynamicTrustedNames = supportDynamicNames;
@@ -97,7 +95,7 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
     @Override
     @Nonnull public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet) throws ResolverException {
         if (criteriaSet == null) {
-            return ImmutableSet.copyOf(trustedNames);
+            return CollectionSupport.copyToSet(trustedNames);
         }
         
         final HashSet<String> temp = new HashSet<>(trustedNames);
@@ -113,7 +111,7 @@ public class StaticPKIXValidationInformationResolver implements PKIXValidationIn
             }
         }
         
-        return ImmutableSet.copyOf(temp);
+        return CollectionSupport.copyToSet(temp);
     }
 
     /** {@inheritDoc} */

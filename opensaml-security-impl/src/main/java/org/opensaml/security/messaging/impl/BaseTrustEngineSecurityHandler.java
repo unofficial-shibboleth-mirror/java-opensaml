@@ -26,8 +26,8 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -124,7 +124,8 @@ public abstract class BaseTrustEngineSecurityHandler<TokenType> extends Abstract
     protected boolean evaluate(@Nonnull final TokenType token, @Nullable final CriteriaSet criteriaSet)
             throws MessageHandlerException {
         try {
-            return getTrustEngine().validate(token, criteriaSet);
+            assert trustEngine != null;
+            return trustEngine.validate(token, criteriaSet);
         } catch (final SecurityException e) {
             log.error("{} There was an error evaluating the request's token using the trust engine: {}", getLogPrefix(),
                     e.getMessage());

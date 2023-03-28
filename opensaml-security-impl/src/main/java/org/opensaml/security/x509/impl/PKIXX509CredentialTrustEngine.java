@@ -29,10 +29,10 @@ import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.PKIXValidationInformationResolver;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -43,16 +43,16 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Credential> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(PKIXX509CredentialTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(PKIXX509CredentialTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private final PKIXValidationInformationResolver pkixResolver;
+    @Nonnull private final PKIXValidationInformationResolver pkixResolver;
 
     /** The external PKIX trust evaluator used to establish trust. */
-    private final PKIXTrustEvaluator pkixTrustEvaluator;
+    @Nonnull private final PKIXTrustEvaluator pkixTrustEvaluator;
     
     /** The external credential name evaluator used to establish trusted name compliance. */
-    private final X509CredentialNameEvaluator credNameEvaluator;
+    @Nullable private final X509CredentialNameEvaluator credNameEvaluator;
 
     /**
      * Constructor.
@@ -136,15 +136,6 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         
         log.debug("Attempting PKIX validation of untrusted credential");
 
-        // Nulls here technically violate the method constraints anyway
-        if (untrustedCredential == null) {
-            log.error("X.509 credential was null, unable to perform validation");
-            return false;
-        } else if (untrustedCredential.getEntityCertificate() == null) {
-            log.error("Untrusted X.509 credential's entity certificate was null, unable to perform validation");
-            return false;
-        }
-
         Set<String> trustedNames = null;
         if (getPKIXResolver().supportsTrustedNameResolution()) {
             try {
@@ -189,6 +180,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
         }
 
         for (final PKIXValidationInformation validationInfo : validationInfoSet) {
+            assert validationInfo != null;
             try {
                 if (getPKIXTrustEvaluator().validate(validationInfo, untrustedX509Credential)) {
                     log.debug("Credential trust established via PKIX validation");
@@ -216,14 +208,15 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     protected boolean checkNames(@Nullable final Set<String> trustedNames,
             @Nonnull final X509Credential untrustedCredential)  throws SecurityException {
         
-        if (getX509CredentialNameEvaluator() == null) {
+        if (credNameEvaluator == null) {
             log.debug("No credential name evaluator was available, skipping trusted name evaluation");
-           return true; 
+           return true;
         } else if (trustedNames == null) {
             log.debug("Trusted names was null, signalling PKIX resolver does not support trusted names resolution, " 
                     + "skipping trusted name evaluation");
-           return true; 
+           return true;
         } else {
+            assert credNameEvaluator != null;
             return credNameEvaluator.evaluate(untrustedCredential, trustedNames);
         }
     }

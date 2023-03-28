@@ -20,7 +20,9 @@ package org.opensaml.security.trust.impl;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -33,6 +35,7 @@ import org.testng.annotations.Test;
 /**
  * Test the chaining trust engine.
  */
+@SuppressWarnings("javadoc")
 public class ChainingTrustEngineTest {
     
     private CriteriaSet criteriaSet;
@@ -95,11 +98,6 @@ public class ChainingTrustEngineTest {
         engine.validate(token, criteriaSet);
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testNullChain() {
-        engine = new ChainingTrustEngine<>(null);
-    }
-    
     /** Mock token types. */
     private class SuperToken {
         
@@ -118,7 +116,8 @@ public class ChainingTrustEngineTest {
         }
 
         /** {@inheritDoc} */
-        public boolean validate(FooToken token1, CriteriaSet trustBasisCriteria) throws SecurityException {
+        public boolean validate(@Nonnull final FooToken token1, @Nullable final CriteriaSet trustBasisCriteria)
+                throws SecurityException {
             if (trusted == null) {
                 throw new SecurityException("This means an error happened");
             }
@@ -137,7 +136,8 @@ public class ChainingTrustEngineTest {
         }
 
         /** {@inheritDoc} */
-        public boolean validate(SuperToken token1, CriteriaSet trustBasisCriteria) throws SecurityException {
+        public boolean validate(@Nonnull final SuperToken token1, @Nullable final CriteriaSet trustBasisCriteria)
+                throws SecurityException {
             if (trusted == null) {
                 throw new SecurityException("This means an error happened");
             }

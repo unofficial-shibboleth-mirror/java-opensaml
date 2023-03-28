@@ -26,12 +26,12 @@ import javax.security.auth.x500.X500Principal;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509IssuerSerialCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential's certificate contains a particular
@@ -41,13 +41,13 @@ public class EvaluableX509IssuerSerialCredentialCriterion extends AbstractTriSta
         implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableX509IssuerSerialCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableX509IssuerSerialCredentialCriterion.class);
 
     /** Base criteria. */
-    private final X500Principal issuer;
+    @Nonnull private final X500Principal issuer;
 
     /** Base criteria. */
-    private final BigInteger serialNumber;
+    @Nonnull private final BigInteger serialNumber;
 
     /**
      * Constructor.
@@ -82,11 +82,6 @@ public class EvaluableX509IssuerSerialCredentialCriterion extends AbstractTriSta
         }
 
         final X509Certificate entityCert = ((X509Credential) target).getEntityCertificate();
-        if (entityCert == null) {
-            log.info("X509Credential did not contain an entity certificate, does not satisfy criteria");
-            return false;
-        }
-        
         return issuer.equals(entityCert.getIssuerX500Principal()) && serialNumber.equals(entityCert.getSerialNumber());
     }
     

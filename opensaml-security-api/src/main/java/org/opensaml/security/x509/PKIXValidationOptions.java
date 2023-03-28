@@ -36,7 +36,7 @@ public class PKIXValidationOptions {
     private boolean processCredentialCRLs;
     
     /** Default verification depth. */
-    private Integer defaultVerificationDepth;
+    @Nonnull private Integer defaultVerificationDepth;
 
     /** Constructor. */
     public PKIXValidationOptions() {
@@ -121,7 +121,7 @@ public class PKIXValidationOptions {
      * 
      * @return Returns the defaultVerificationDepth.
      */
-    public Integer getDefaultVerificationDepth() {
+    @Nonnull public Integer getDefaultVerificationDepth() {
         return defaultVerificationDepth;
     }
 
@@ -134,8 +134,7 @@ public class PKIXValidationOptions {
      * @param depth default verification depth to set
      */
     public void setDefaultVerificationDepth(@Nonnull final Integer depth) {
-        Constraint.isNotNull(depth, "Default verification depth cannot be null");
-        this.defaultVerificationDepth = depth;
+        defaultVerificationDepth = Constraint.isNotNull(depth, "Default verification depth cannot be null");
     }
 
 }

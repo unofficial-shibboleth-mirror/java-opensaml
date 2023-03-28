@@ -44,10 +44,10 @@ import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineContext;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineSupport;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.httpclient.HttpClientSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -110,15 +110,15 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocketFactory {
     
     /** Instance of {@link ThreadLocalClientTLSCredentialHandler} to use.  */
-    private static final ThreadLocalServerTLSHandler SERVER_TLS_HANDLER =
+    @Nonnull private static final ThreadLocalServerTLSHandler SERVER_TLS_HANDLER =
             new ThreadLocalServerTLSHandler();
 
     /** Instance of {@link ThreadLocalClientTLSCredentialHandler} to use.  */
-    private static final ThreadLocalClientTLSCredentialHandler CLIENT_TLS_HANDLER =
+    @Nonnull private static final ThreadLocalClientTLSCredentialHandler CLIENT_TLS_HANDLER =
             new ThreadLocalClientTLSCredentialHandler();
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(SecurityEnhancedTLSSocketFactory.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SecurityEnhancedTLSSocketFactory.class);
     
     /** The HttpClient socket factory instance wrapped by this implementation. */
     @Nonnull private LayeredConnectionSocketFactory wrappedFactory;

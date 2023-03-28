@@ -23,7 +23,6 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -35,6 +34,7 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.x509.X509Credential;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -42,10 +42,10 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class X509KeyManagerX509CredentialAdapter extends AbstractCredential implements X509Credential {
 
     /** Alias used to reference the credential in the key manager. */
-    private final String credentialAlias;
+    @Nonnull private final String credentialAlias;
 
     /** Wrapped key manager. */
-    private final X509KeyManager keyManager;
+    @Nonnull private final X509KeyManager keyManager;
 
     /**
      * Constructor.
@@ -62,7 +62,7 @@ public class X509KeyManagerX509CredentialAdapter extends AbstractCredential impl
     /** {@inheritDoc} */
     @Override
     @Nullable public Collection<X509CRL> getCRLs() {
-        return Collections.EMPTY_LIST;
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
@@ -73,7 +73,7 @@ public class X509KeyManagerX509CredentialAdapter extends AbstractCredential impl
             return certs[0];
         }
 
-        return null;
+        throw new IllegalStateException("Error accessing certificate in key manager");
     }
 
     /** {@inheritDoc} */
@@ -84,7 +84,7 @@ public class X509KeyManagerX509CredentialAdapter extends AbstractCredential impl
             return Arrays.asList(certs);
         }
 
-        return null;
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */

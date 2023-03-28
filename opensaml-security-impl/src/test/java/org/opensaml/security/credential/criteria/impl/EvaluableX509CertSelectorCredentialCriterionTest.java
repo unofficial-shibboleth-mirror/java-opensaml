@@ -25,17 +25,15 @@ import java.security.NoSuchProviderException;
 import java.security.cert.X509CertSelector;
 import java.security.cert.X509Certificate;
 
+import javax.annotation.Nonnull;
 import javax.security.auth.x500.X500Principal;
 
 import org.opensaml.security.credential.BasicCredential;
-import org.opensaml.security.credential.criteria.impl.EvaluableX509CertSelectorCredentialCriterion;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.security.x509.BasicX509Credential;
 import org.opensaml.security.x509.X509Support;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EvaluableX509CertSelectorCredentialCriterionTest {
     
     private BasicX509Credential credential;
@@ -44,7 +42,7 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
     private EvaluableX509CertSelectorCredentialCriterion evalCrit;
     
     private X509Certificate entityCert;
-    private String entityCertBase64 = 
+    @Nonnull private String entityCertBase64 = 
         "MIIDzjCCAragAwIBAgIBMTANBgkqhkiG9w0BAQUFADAtMRIwEAYDVQQKEwlJbnRl" +
         "cm5ldDIxFzAVBgNVBAMTDmNhLmV4YW1wbGUub3JnMB4XDTA3MDUyMTE4MjM0MFoX" +
         "DTE3MDUxODE4MjM0MFowMTESMBAGA1UEChMJSW50ZXJuZXQyMRswGQYDVQQDExJm" +
@@ -112,7 +110,7 @@ public class EvaluableX509CertSelectorCredentialCriterionTest {
     @Test
     public void testNotSatisfyWrongCredType() throws NoSuchAlgorithmException, NoSuchProviderException {
         certSelector.setCertificate(entityCert);
-        BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
+        final BasicCredential basicCred = new BasicCredential(KeySupport.generateKey("AES", 128, null));
         Assert.assertFalse(evalCrit.test(basicCred), "Credential should NOT have matched the evaluable criteria");
     }
     

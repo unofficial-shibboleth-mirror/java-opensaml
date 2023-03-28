@@ -41,6 +41,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 /**
  * Test the explicit key trust engine.
  */
+@SuppressWarnings("javadoc")
 public class ExplicitX509CertificateTrustEngineTest {
     
     private RSAPublicKey entityPubKey;

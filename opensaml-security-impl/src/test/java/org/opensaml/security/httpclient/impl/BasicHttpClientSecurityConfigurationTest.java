@@ -22,6 +22,9 @@ import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.hc.client5.http.auth.UsernamePasswordCredentials;
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
@@ -36,9 +39,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class BasicHttpClientSecurityConfigurationTest {
     
     private X509Credential x509Credential;
@@ -89,7 +90,8 @@ public class BasicHttpClientSecurityConfigurationTest {
     // Helpers
     
     public static class MockTrustEngine implements TrustEngine<X509Credential>  {
-        public boolean validate(X509Credential token, CriteriaSet trustBasisCriteria) throws SecurityException {
+        public boolean validate(@Nonnull final X509Credential token, @Nullable final CriteriaSet trustBasisCriteria)
+                throws SecurityException {
             return false;
         }
     }

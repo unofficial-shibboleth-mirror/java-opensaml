@@ -29,9 +29,7 @@ import org.opensaml.security.crypto.ec.EnhancedECParameterSpec;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EnhancedECParameterSpecTest extends BaseNamedCurveTest {
     
     @Test(dataProvider = "namedCurves")
@@ -40,8 +38,8 @@ public class EnhancedECParameterSpecTest extends BaseNamedCurveTest {
         // the same object that whatever provider is in effect produces when generating a KeyPair, etc.
         // SunEC seems to produce the same object instance for all key pairs of a given curve, presumably
         // they have an internal table of name -> ECParameterSpec.
-        ECParameterSpec controlInput = ECSupport.convert(ECNamedCurveTable.getParameterSpec(name));
-        Assert.assertNotNull(controlInput);
+        final ECParameterSpec controlInput = ECSupport.convert(ECNamedCurveTable.getParameterSpec(name));
+        assert controlInput != null;
         
         EnhancedECParameterSpec control = new EnhancedECParameterSpec(controlInput);
         

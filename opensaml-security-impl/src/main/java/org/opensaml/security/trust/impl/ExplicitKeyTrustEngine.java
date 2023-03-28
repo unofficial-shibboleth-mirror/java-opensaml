@@ -25,10 +25,10 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.trust.TrustedCredentialTrustEngine;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -42,13 +42,13 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class ExplicitKeyTrustEngine implements TrustedCredentialTrustEngine<Credential> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ExplicitKeyTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ExplicitKeyTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private final CredentialResolver credentialResolver;
+    @Nonnull private final CredentialResolver credentialResolver;
 
     /** Trust evaluator. */
-    private final ExplicitKeyTrustEvaluator trustEvaluator;
+    @Nonnull private final ExplicitKeyTrustEvaluator trustEvaluator;
 
     /**
      * Constructor.
@@ -71,11 +71,6 @@ public class ExplicitKeyTrustEngine implements TrustedCredentialTrustEngine<Cred
     @Override
     public boolean validate(@Nonnull final Credential untrustedCredential,
             @Nullable final CriteriaSet trustBasisCriteria) throws SecurityException {
-
-        if (untrustedCredential == null) {
-            log.error("Credential was null, unable to perform validation");
-            return false;
-        }
 
         log.debug("Attempting to validate untrusted credential");
         try {

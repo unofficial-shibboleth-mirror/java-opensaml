@@ -26,10 +26,10 @@ import org.opensaml.security.credential.CredentialResolver;
 import org.opensaml.security.trust.TrustedCredentialTrustEngine;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -44,13 +44,13 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class ExplicitX509CertificateTrustEngine implements TrustedCredentialTrustEngine<X509Credential> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ExplicitX509CertificateTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ExplicitX509CertificateTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private final CredentialResolver credentialResolver;
+    @Nonnull private final CredentialResolver credentialResolver;
 
     /** Trust evaluator. */
-    private final ExplicitX509CertificateTrustEvaluator trustEvaluator;
+    @Nonnull private final ExplicitX509CertificateTrustEvaluator trustEvaluator;
 
     /**
      * Constructor.
@@ -74,11 +74,6 @@ public class ExplicitX509CertificateTrustEngine implements TrustedCredentialTrus
     @Override
     public boolean validate(@Nonnull final X509Credential untrustedCredential,
             @Nullable final CriteriaSet trustBasisCriteria) throws SecurityException {
-
-        if (untrustedCredential == null) {
-            log.error("X.509 credential was null, unable to perform validation");
-            return false;
-        }
 
         log.debug("Attempting to validate untrusted credential");
         try {

@@ -17,7 +17,6 @@
 
 package org.opensaml.security.credential.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Predicate;
@@ -25,6 +24,7 @@ import java.util.function.Predicate;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Criterion;
@@ -53,7 +53,6 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * Constructor.
      */
     public AbstractCriteriaFilteringCredentialResolver() {
-        super();
         satisfyAllPredicates = true;
     }
 
@@ -113,13 +112,14 @@ public abstract class AbstractCriteriaFilteringCredentialResolver extends Abstra
      * @throws ResolverException thrown if there is an error obtaining an instance of EvaluableCredentialCriterion
      *                           from the EvaluableCredentialCriteriaRegistry
      */
-    private Set<Predicate<Credential>> getPredicates(@Nullable final CriteriaSet criteriaSet)
+    @Nonnull private Set<Predicate<Credential>> getPredicates(@Nullable final CriteriaSet criteriaSet)
             throws ResolverException {
         if (criteriaSet == null) {
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         final Set<Predicate<Credential>> predicates = new HashSet<>(criteriaSet.size());
         for (final Criterion criteria : criteriaSet) {
+            assert criteria != null;
             if (criteria instanceof EvaluableCredentialCriterion) {
                 predicates.add((EvaluableCredentialCriterion) criteria);
             } else {

@@ -50,10 +50,10 @@ import org.opensaml.security.x509.X500DNHandler;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An implementation of {@link PKIXTrustEvaluator} that is based on the Java CertPath API.
@@ -61,16 +61,16 @@ import net.shibboleth.shared.logic.Constraint;
 public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(CertPathPKIXTrustEvaluator.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(CertPathPKIXTrustEvaluator.class);
     
     /**
      * Responsible for parsing and serializing X.500 names to/from
      * {@link javax.security.auth.x500.X500Principal} instances.
      */
-    private X500DNHandler x500DNHandler;
+    @Nonnull private X500DNHandler x500DNHandler;
     
     /** Options influencing processing behavior. */
-    private PKIXValidationOptions options;
+    @Nonnull private PKIXValidationOptions options;
 
     /** Constructor. */
     public CertPathPKIXTrustEvaluator() {
@@ -290,6 +290,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
         log.trace("Constructing trust anchors for PKIX validation");
         final Set<TrustAnchor> trustAnchors = new HashSet<>();
         for (final X509Certificate cert : validationCertificates) {
+            assert cert != null;
             trustAnchors.add(buildTrustAnchor(cert));
         }
 

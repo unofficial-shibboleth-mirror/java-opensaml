@@ -22,12 +22,12 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.AbstractTriStatePredicate;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Instance of evaluable credential criteria for evaluating whether a credential contains a particular usage specifier.
@@ -36,10 +36,10 @@ public class EvaluableUsageCredentialCriterion extends AbstractTriStatePredicate
         implements EvaluableCredentialCriterion {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(EvaluableUsageCredentialCriterion.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EvaluableUsageCredentialCriterion.class);
 
     /** Base criteria. */
-    private final UsageType usage;
+    @Nonnull private final UsageType usage;
 
     /**
      * Constructor.

@@ -24,7 +24,8 @@ import javax.annotation.Nonnull;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Auxillary trust evaluator for evaluating an untrusted X509 certificate or credential against a trusted certificate or
@@ -35,7 +36,7 @@ import org.slf4j.LoggerFactory;
 public class ExplicitX509CertificateTrustEvaluator {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ExplicitX509CertificateTrustEvaluator.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ExplicitX509CertificateTrustEvaluator.class);
 
     /**
      * Evaluate trust.
@@ -77,17 +78,7 @@ public class ExplicitX509CertificateTrustEvaluator {
     public boolean validate(@Nonnull final X509Credential untrustedCredential,
             @Nonnull final X509Credential trustedCredential) {
 
-        final X509Certificate untrustedCertificate = untrustedCredential.getEntityCertificate();
-        final X509Certificate trustedCertificate = trustedCredential.getEntityCertificate();
-        if (untrustedCertificate == null) {
-            log.debug("Untrusted credential contained no entity certificate, unable to evaluate");
-            return false;
-        } else if (trustedCertificate == null) {
-            log.debug("Trusted credential contained no entity certificate, unable to evaluate");
-            return false;
-        }
-
-        if (validate(untrustedCertificate, trustedCertificate)) {
+        if (validate(untrustedCredential.getEntityCertificate(), trustedCredential.getEntityCertificate())) {
             log.debug("Successfully validated untrusted credential against trusted certificate");
             return true;
         }

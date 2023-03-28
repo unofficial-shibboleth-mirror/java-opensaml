@@ -36,7 +36,6 @@ public class BasicClientTLSValidationConfiguration implements ClientTLSValidatio
     @Nullable private CertificateNameOptions certificateNameOptions;
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public TrustEngine<? super X509Credential> getX509TrustEngine() {
         return x509TrustEngine;
     }
@@ -51,7 +50,6 @@ public class BasicClientTLSValidationConfiguration implements ClientTLSValidatio
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public CertificateNameOptions getCertificateNameOptions() {
         return certificateNameOptions;
     }

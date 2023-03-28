@@ -41,6 +41,7 @@ import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
 /**
  * Tests the {@link CertPathPKIXTrustEvaluator} implementation.
  */
+@SuppressWarnings("javadoc")
 public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     private static final String DATA_PATH = "/org/opensaml/security/x509/impl/";

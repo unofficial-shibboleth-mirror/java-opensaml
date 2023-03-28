@@ -38,16 +38,16 @@ public final class ThreadLocalX509TrustEngineContext {
     private static final class Data {
         
         /** Trust engine. */
-        private TrustEngine<? super X509Credential> trustEngine;
+        @Nonnull private TrustEngine<? super X509Credential> trustEngine;
         
         /** Criteria. */
-        private CriteriaSet criteriaSet;
+        @Nonnull private CriteriaSet criteriaSet;
         
         /** Whether evaluation target was trusted. */
-        private Boolean trusted;
+        @Nullable private Boolean trusted;
         
         /** Whether trust engine evaluation failure should be treated as fatal. Defaults to true. */
-        private Boolean failureFatal;
+        @Nonnull private Boolean failureFatal;
         
         /**
          * Constructor.
@@ -67,7 +67,7 @@ public final class ThreadLocalX509TrustEngineContext {
     }
 
     /** ThreadLocal storage for trust engine. */
-    private static ThreadLocal<Data> current = new ThreadLocal<>();
+    @Nonnull private static ThreadLocal<Data> current = new ThreadLocal<>();
 
     /** Constructor. */
     private ThreadLocalX509TrustEngineContext() { }

@@ -27,14 +27,15 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialResolver;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An abstract implementation of {@link CredentialResolver} which chains together one or more underlying credential 
@@ -58,7 +59,7 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
      * @param credResolvers the list of chained credential resolvers
      */
     public AbstractChainingCredentialResolver(@Nonnull @NonnullElements final List<ResolverType> credResolvers) {
-        resolvers = List.copyOf(Constraint.isNotNull(credResolvers, "CredentialResolver list cannot be null"));
+        resolvers = CollectionSupport.copyToList(Constraint.isNotNull(credResolvers, "CredentialResolver list cannot be null"));
     }
 
     /**
@@ -85,10 +86,10 @@ public abstract class AbstractChainingCredentialResolver<ResolverType extends Cr
     public class CredentialIterable implements Iterable<Credential> {
 
         /** The chaining credential resolver which owns this instance. */
-        private AbstractChainingCredentialResolver<ResolverType> parent;
+        @Nonnull private AbstractChainingCredentialResolver<ResolverType> parent;
 
         /** The criteria set on which to base resolution. */
-        private CriteriaSet critSet;
+        @Nullable private CriteriaSet critSet;
 
         /**
          * Constructor.

@@ -18,10 +18,10 @@
 package org.opensaml.security.httpclient.impl;
 
 import java.security.Key;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.httpclient.HttpClientSecurityConfiguration;
@@ -34,6 +34,7 @@ import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.ObjectSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -55,20 +56,23 @@ public class BasicHttpClientSecurityParametersResolver implements HttpClientSecu
     private Logger log = LoggerFactory.getLogger(BasicHttpClientSecurityParametersResolver.class);
 
     /** {@inheritDoc} */
-    public Iterable<HttpClientSecurityParameters> resolve(@Nonnull final CriteriaSet criteria) 
+    @Nonnull public Iterable<HttpClientSecurityParameters> resolve(@Nullable final CriteriaSet criteria) 
             throws ResolverException {
         
         final HttpClientSecurityParameters params = resolveSingle(criteria);
         if (params != null) {
-            return Collections.singletonList(params);
+            return CollectionSupport.singletonList(params);
         } else {
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
     }
 
     /** {@inheritDoc} */
-    public HttpClientSecurityParameters resolveSingle(@Nonnull final CriteriaSet criteria) throws ResolverException {
+    @Nullable public HttpClientSecurityParameters resolveSingle(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
         Constraint.isNotNull(criteria, "CriteriaSet was null");
+        assert criteria != null;
+        
         Constraint.isNotNull(criteria.get(HttpClientSecurityConfigurationCriterion.class), 
                 "Resolver requires an instance of HttpClientSecurityConfigurationCriterion");
         
@@ -93,8 +97,10 @@ public class BasicHttpClientSecurityParametersResolver implements HttpClientSecu
     protected void resolveAndPopulateParams(@Nonnull final HttpClientSecurityParameters params, 
             @Nonnull final CriteriaSet criteria) {
         
-        final List<HttpClientSecurityConfiguration> configs = 
-                criteria.get(HttpClientSecurityConfigurationCriterion.class).getConfigurations();
+        final HttpClientSecurityConfigurationCriterion httpCriterion =
+                criteria.get(HttpClientSecurityConfigurationCriterion.class);
+        assert httpCriterion != null;
+        final List<HttpClientSecurityConfiguration> configs = httpCriterion.getConfigurations();
         
         for (final HttpClientSecurityConfiguration config : configs) {
             params.setClientTLSCredential(ObjectSupport.firstNonNull(params.getClientTLSCredential(), 
@@ -113,8 +119,9 @@ public class BasicHttpClientSecurityParametersResolver implements HttpClientSecu
                     config.isServerTLSFailureFatal()));
         }
         
-        if (criteria.contains(TLSCriteriaSetCriterion.class)) {
-            params.setTLSCriteriaSet(criteria.get(TLSCriteriaSetCriterion.class).getCriteria());
+        final TLSCriteriaSetCriterion tlsCriterion = criteria.get(TLSCriteriaSetCriterion.class);
+        if (tlsCriterion != null) {
+            params.setTLSCriteriaSet(tlsCriterion.getCriteria());
         }
     }
 

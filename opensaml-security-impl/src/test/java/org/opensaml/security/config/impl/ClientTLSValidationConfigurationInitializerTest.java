@@ -24,6 +24,7 @@ import org.opensaml.security.x509.tls.ClientTLSValidationConfiguration;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class ClientTLSValidationConfigurationInitializerTest extends InitializerBaseTestCase {
     
     @Test
@@ -35,7 +36,7 @@ public class ClientTLSValidationConfigurationInitializerTest extends Initializer
         initializer.init();
         
         config = ConfigurationService.get(ClientTLSValidationConfiguration.class);
-        Assert.assertNotNull(config, "Config was null");
+        assert config != null;
         
         Assert.assertNotNull(config.getCertificateNameOptions());
         

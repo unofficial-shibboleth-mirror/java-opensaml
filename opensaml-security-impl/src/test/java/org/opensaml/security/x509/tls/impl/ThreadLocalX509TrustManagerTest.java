@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
+@SuppressWarnings("javadoc")
 public class ThreadLocalX509TrustManagerTest {
     
     private ThreadLocalX509TrustManager trustManager = new ThreadLocalX509TrustManager();
@@ -67,7 +68,9 @@ public class ThreadLocalX509TrustManagerTest {
         
         trustManager.checkServerTrusted(chain, "RSA");
         
-        Assert.assertTrue(ThreadLocalX509TrustEngineContext.getTrusted());
+        final Boolean trusted = ThreadLocalX509TrustEngineContext.getTrusted();
+        assert trusted != null;
+        Assert.assertTrue(trusted);
     }
 
     @Test
@@ -77,8 +80,10 @@ public class ThreadLocalX509TrustManagerTest {
         try {
             trustManager.checkServerTrusted(chain, "RSA");
             Assert.fail("Trust manager should have thrown");
-        } catch (CertificateException e) {
-            Assert.assertFalse(ThreadLocalX509TrustEngineContext.getTrusted());
+        } catch (final CertificateException e) {
+            final Boolean trusted = ThreadLocalX509TrustEngineContext.getTrusted();
+            assert trusted != null;
+            Assert.assertFalse(trusted);
         }
     }
 
@@ -87,7 +92,9 @@ public class ThreadLocalX509TrustManagerTest {
         ThreadLocalX509TrustEngineContext.loadCurrent(new MockTrustEngine<>(false), criteria, false);
         
         trustManager.checkServerTrusted(chain, "RSA");
-        Assert.assertFalse(ThreadLocalX509TrustEngineContext.getTrusted());
+        final Boolean trusted = ThreadLocalX509TrustEngineContext.getTrusted();
+        assert trusted != null;
+        Assert.assertFalse(trusted);
     }
 
     @Test
@@ -97,8 +104,10 @@ public class ThreadLocalX509TrustManagerTest {
         try {
             trustManager.checkServerTrusted(chain, "RSA");
             Assert.fail("Trust manager should have thrown");
-        } catch (CertificateException e) {
-            Assert.assertFalse(ThreadLocalX509TrustEngineContext.getTrusted());
+        } catch (final CertificateException e) {
+            final Boolean trusted = ThreadLocalX509TrustEngineContext.getTrusted();
+            assert trusted != null;
+            Assert.assertFalse(trusted);
         }
     }
 
@@ -107,7 +116,9 @@ public class ThreadLocalX509TrustManagerTest {
         ThreadLocalX509TrustEngineContext.loadCurrent(new MockTrustEngine<>(new SecurityException()), criteria, false);
         
         trustManager.checkServerTrusted(chain, "RSA");
-        Assert.assertFalse(ThreadLocalX509TrustEngineContext.getTrusted());
+        final Boolean trusted = ThreadLocalX509TrustEngineContext.getTrusted();
+        assert trusted != null;
+        Assert.assertFalse(trusted);
     }
 
     @Test
@@ -117,8 +128,10 @@ public class ThreadLocalX509TrustManagerTest {
         try {
             trustManager.checkServerTrusted(chain, "RSA");
             Assert.fail("Trust manager should have thrown");
-        } catch (CertificateException e) {
-            Assert.assertFalse(ThreadLocalX509TrustEngineContext.getTrusted());
+        } catch (final CertificateException e) {
+            final Boolean trusted = ThreadLocalX509TrustEngineContext.getTrusted();
+            assert trusted != null;
+            Assert.assertFalse(trusted);
         }
         
     }
@@ -128,7 +141,9 @@ public class ThreadLocalX509TrustManagerTest {
         ThreadLocalX509TrustEngineContext.loadCurrent(new MockTrustEngine<>(new RuntimeException()), criteria, false);
         
         trustManager.checkServerTrusted(chain, "RSA");
-        Assert.assertFalse(ThreadLocalX509TrustEngineContext.getTrusted());
+        final Boolean trusted = ThreadLocalX509TrustEngineContext.getTrusted();
+        assert trusted != null;
+        Assert.assertFalse(trusted);
         
     }
 

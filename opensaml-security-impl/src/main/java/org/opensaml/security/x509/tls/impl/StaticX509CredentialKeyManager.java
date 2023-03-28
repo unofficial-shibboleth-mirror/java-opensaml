@@ -23,13 +23,14 @@ import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
 
+import javax.annotation.Nonnull;
 import javax.net.ssl.X509KeyManager;
 
 import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * An implementation of {@link X509KeyManager} based on a single statically configured
@@ -39,16 +40,16 @@ import net.shibboleth.shared.logic.Constraint;
 public class StaticX509CredentialKeyManager implements X509KeyManager {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(StaticX509CredentialKeyManager.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(StaticX509CredentialKeyManager.class);
     
     /** The private key instance. */
-    private PrivateKey privateKey;
+    @Nonnull private PrivateKey privateKey;
     
     /** The certificate chain instance. */
-    private java.security.cert.X509Certificate[] certificateChain;
+    @Nonnull private java.security.cert.X509Certificate[] certificateChain;
     
     /** The alias representing the supplied static credential. */
-    private String internalAlias = "internalAlias-" + this.toString();
+    @Nonnull private String internalAlias = "internalAlias-" + this.toString();
 
     /**
      * Constructor.
@@ -56,13 +57,10 @@ public class StaticX509CredentialKeyManager implements X509KeyManager {
      * @param credential the static credential managed by this key manager
      */
     public StaticX509CredentialKeyManager(final X509Credential credential) {
-        super();
         Constraint.isNotNull(credential, "Credential may not be null");
-        privateKey = Constraint.isNotNull(credential.getPrivateKey(), 
-                "Credential PrivateKey may not be null");
+        privateKey = Constraint.isNotNull(credential.getPrivateKey(), "Credential PrivateKey may not be null");
         certificateChain = Constraint.isNotNull(credential.getEntityCertificateChain(), 
-                "Credential certificate chain may not be null")
-                .toArray(new X509Certificate[0]);
+                "Credential certificate chain may not be null").toArray(new X509Certificate[0]);
         log.trace("Generated static internal alias was: {}", internalAlias);
     }
 
@@ -73,7 +71,6 @@ public class StaticX509CredentialKeyManager implements X509KeyManager {
      * @param chain the certificate chain managed by this key manager
      */
     public StaticX509CredentialKeyManager(final PrivateKey key, final Collection<X509Certificate> chain) {
-        super();
         privateKey = Constraint.isNotNull(key, "PrivateKey may not be null");
         certificateChain = Constraint.isNotNull(chain, 
                 "Certificate chain may not be null").toArray(new X509Certificate[0]);

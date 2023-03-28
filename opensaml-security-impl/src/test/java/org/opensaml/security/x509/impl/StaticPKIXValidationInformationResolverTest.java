@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
+@SuppressWarnings("javadoc")
 public class StaticPKIXValidationInformationResolverTest {
     
     @Test

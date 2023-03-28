@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.net.Socket;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -44,9 +43,11 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.httpclient.HttpClientSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
+@SuppressWarnings("javadoc")
 public class SecurityEnhancedTLSSocketFactoryTest {
     
     private static final String DATA_PATH = "/org/opensaml/security/x509/impl/";
@@ -89,7 +90,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
         X509Credential cred = getCredential("foo-1A1-good.crt");
 
         securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+                CollectionSupport.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
         securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
@@ -110,7 +111,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
         httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_TRUST_ENGINE, trustEngine);
 
         securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+                CollectionSupport.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
         securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
@@ -137,7 +138,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
         httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, criteria);
 
         securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+                CollectionSupport.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
         securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);
@@ -165,7 +166,7 @@ public class SecurityEnhancedTLSSocketFactoryTest {
         httpContext.setAttribute(HttpClientSecurityConstants.CONTEXT_KEY_CRITERIA_SET, criteria);
 
         securityEnhancedSocketFactory = new SecurityEnhancedTLSSocketFactory(buildInnerSSLFactory(
-                Collections.singletonList((Certificate)cred.getEntityCertificate()), hostname));
+                CollectionSupport.singletonList((Certificate)cred.getEntityCertificate()), hostname));
         Socket socket = securityEnhancedSocketFactory.createSocket(httpContext);
 
         securityEnhancedSocketFactory.connectSocket(TimeValue.ofMilliseconds(0), socket, new HttpHost("https", hostname, 443), null, null, httpContext);

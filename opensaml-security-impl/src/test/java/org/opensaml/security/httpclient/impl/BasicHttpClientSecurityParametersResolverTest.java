@@ -23,6 +23,9 @@ import java.security.KeyException;
 import java.security.cert.CertificateException;
 import java.util.Collections;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.hc.client5.http.impl.auth.BasicCredentialsProvider;
 import org.apache.hc.client5.http.ssl.DefaultHostnameVerifier;
 import org.opensaml.security.SecurityException;
@@ -41,9 +44,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class BasicHttpClientSecurityParametersResolverTest {
     
     private BasicHttpClientSecurityParametersResolver resolver;
@@ -74,7 +75,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         HttpClientSecurityParameters params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
@@ -93,7 +94,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         HttpClientSecurityParameters params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNull(params.getAuthCache());
         Assert.assertNull(params.getClientTLSCredential());
         Assert.assertNull(params.getCredentialsProvider());
@@ -117,7 +118,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
@@ -135,7 +136,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
@@ -153,7 +154,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNull(params.getAuthCache());
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertNotNull(params.getCredentialsProvider());
@@ -181,7 +182,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertSame(params.getClientTLSCredential(), config1.getClientTLSCredential());
         
@@ -194,7 +195,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertSame(params.getClientTLSCredential(), config2.getClientTLSCredential());
         
@@ -207,7 +208,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNotNull(params.getClientTLSCredential());
         Assert.assertSame(params.getClientTLSCredential(), config3.getClientTLSCredential());
     }
@@ -220,7 +221,7 @@ public class BasicHttpClientSecurityParametersResolverTest {
         
         HttpClientSecurityParameters params = resolver.resolveSingle(criteria);
         
-        Assert.assertNotNull(params);;
+        assert params != null;
         Assert.assertNotNull(params.getTLSCriteriaSet());
     }
     
@@ -240,7 +241,8 @@ public class BasicHttpClientSecurityParametersResolverTest {
     }
     
     public static class MockTrustEngine implements TrustEngine<X509Credential>  {
-        public boolean validate(X509Credential token, CriteriaSet trustBasisCriteria) throws SecurityException {
+        public boolean validate(@Nonnull final X509Credential token, @Nullable final CriteriaSet trustBasisCriteria)
+                throws SecurityException {
             return false;
         }
     }
