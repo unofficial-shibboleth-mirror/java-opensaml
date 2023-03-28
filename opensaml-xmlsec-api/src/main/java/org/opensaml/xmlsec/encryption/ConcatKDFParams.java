@@ -30,7 +30,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 /**
  * XMLObject representing XML Encryption 1.1 ConcatKDFParams element.
  */
-interface ConcatKDFParams extends XMLObject {
+public interface ConcatKDFParams extends XMLObject {
     
     /** Element local name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "ConcatKDFParams";
