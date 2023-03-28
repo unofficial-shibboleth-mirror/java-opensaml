@@ -29,7 +29,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 /**
  * XMLObject representing XML Encryption 1.1 DerivedKey element.
  */
-interface DerivedKey extends XMLObject {
+public interface DerivedKey extends XMLObject {
     
     /** Element local name. */
     @Nonnull @NotEmpty static final String DEFAULT_ELEMENT_LOCAL_NAME = "DerivedKey";
