@@ -146,7 +146,8 @@ public class BasicHttpClientSecurityParametersResolver implements HttpClientSecu
         if (log.isDebugEnabled()) {
             log.debug("Resolved HttpClientSecurityParameters:");
             
-            final Key clientTLSKey = CredentialSupport.extractSigningKey(params.getClientTLSCredential());
+            final X509Credential clientTLSCred = params.getClientTLSCredential();
+            final Key clientTLSKey = clientTLSCred != null ? CredentialSupport.extractSigningKey(clientTLSCred) : null;
             if (clientTLSKey != null) {
                 log.debug("\tClient TLS credential with key algorithm: {}", clientTLSKey.getAlgorithm());
             } else {
