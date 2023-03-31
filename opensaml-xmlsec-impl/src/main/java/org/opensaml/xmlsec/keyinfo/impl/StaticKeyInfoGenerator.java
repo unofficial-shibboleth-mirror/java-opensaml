@@ -49,13 +49,13 @@ import net.shibboleth.shared.logic.Constraint;
 public class StaticKeyInfoGenerator implements KeyInfoGenerator {
     
     /** The KeyInfo object held by this generator instance. */
-    private KeyInfo keyInfo;
+    @Nonnull private KeyInfo keyInfo;
     
     /** Unmarshaller used in cloning operation. */
-    private Unmarshaller keyInfoUnmarshaller;
+    @Nullable private Unmarshaller keyInfoUnmarshaller;
     
     /** Marshaller used in cloning operation. */
-    private Marshaller keyInfoMarshaller;
+    @Nullable private Marshaller keyInfoMarshaller;
     
     /**
      * Constructor.
@@ -63,11 +63,10 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
      * @param newKeyInfo the KeyInfo used as the basis to return new KeyInfo objects from this generator
      */
     public StaticKeyInfoGenerator(@Nonnull @ParameterName(name="newKeyInfo") final KeyInfo newKeyInfo) {
-        setKeyInfo(newKeyInfo);
+        keyInfo = Constraint.isNotNull(newKeyInfo, "KeyInfo cannot be null");
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull public KeyInfo generate(@Nullable final Credential credential) throws SecurityException {
         if (keyInfo.getParent() == null) {
             return keyInfo;
@@ -116,7 +115,9 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
         
         KeyInfo newKeyInfo = null;
         try {
-            newKeyInfo = (KeyInfo) getUnmarshaller().unmarshall(origKeyInfo.getDOM());
+            final Element newDOM = origKeyInfo.getDOM();
+            assert newDOM != null;
+            newKeyInfo = (KeyInfo) getUnmarshaller().unmarshall(newDOM);
         } catch (final UnmarshallingException e) {
             throw new SecurityException("Error unmarshalling the new KeyInfo during cloning", e);
         }
@@ -148,6 +149,8 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
                 throw new SecurityException("Could not obtain KeyInfo marshaller from the configuration");
             }
         }
+        
+        assert keyInfoMarshaller != null;
         return keyInfoMarshaller;
     }
 
@@ -165,6 +168,8 @@ public class StaticKeyInfoGenerator implements KeyInfoGenerator {
                 throw new SecurityException("Could not obtain KeyInfo unmarshaller from the configuration");
             }
         }
+        
+        assert keyInfoUnmarshaller != null;
         return keyInfoUnmarshaller;
     }
     

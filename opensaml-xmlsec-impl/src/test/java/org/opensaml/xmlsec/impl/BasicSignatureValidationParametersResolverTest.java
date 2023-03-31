@@ -140,9 +140,9 @@ public class BasicSignatureValidationParametersResolverTest {
         assertTrue(params.getExcludedAlgorithms().contains("bar"));
     }
 
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullCriteriaSet() throws ResolverException {
-        resolver.resolve(null);
+        assertNull(resolver.resolveSingle(null));
     }
 
     @Test(expectedExceptions=ConstraintViolationException.class)

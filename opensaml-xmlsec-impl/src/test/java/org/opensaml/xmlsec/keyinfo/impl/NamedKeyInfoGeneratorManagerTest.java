@@ -140,6 +140,8 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         
         Assert.assertFalse(names.contains("BAZ"), "Non-existent manager name found in name set");
         Assert.assertNotNull(manager.getManager("BAZ"), "Failed to create new manager");
+        
+        names = manager.getManagerNames();
         Assert.assertTrue(names.contains("BAZ"), "Expected manager name not found");
     }
     
@@ -158,6 +160,7 @@ public class NamedKeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(names.contains(nameBar), "Expected manager name not found");
         
         manager.removeManager(nameFoo);
+        names = manager.getManagerNames();
         Assert.assertEquals(names.size(), 1, "Unexpected # of manager names");
         Assert.assertNotNull(manager.getManager(nameBar), "Failed to find manager by name");
         Assert.assertFalse(names.contains(nameFoo), "Unexpected manager name found");

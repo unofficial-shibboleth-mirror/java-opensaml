@@ -31,9 +31,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class PrivateCredentialTest extends OpenSAMLInitBaseTestCase  {
     
     @Test

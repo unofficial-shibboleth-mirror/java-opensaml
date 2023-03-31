@@ -39,27 +39,25 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
     
     @Test
     public void ECDHWithConcatKDF() throws KeyAgreementException {
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         
-        KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         kdm.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         
-        ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        final ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
         xmlParams.setAlgorithmID("00AA");
         xmlParams.setPartyUInfo("00BB");
         xmlParams.setPartyVInfo("00CC");
         xmlParams.setSuppPubInfo("00DD");
         xmlParams.setSuppPrivInfo("00EE");
         
-        org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         xmlParams.setDigestMethod(digestMethod);
         
@@ -67,15 +65,14 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
         
         agreementMethod.getUnknownXMLObjects().add(kdm);
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
-        KeyAgreementParameters parameters = parser.parse(agreementMethod);
+        final KeyAgreementParameters parameters = parser.parse(agreementMethod);
         Assert.assertNotNull(parameters);
         Assert.assertEquals(parameters.size(), 1);
         
-        Assert.assertTrue(parameters.contains(ConcatKDF.class));
-        
-        ConcatKDF kdf = parameters.get(ConcatKDF.class);
+        final ConcatKDF kdf = parameters.get(ConcatKDF.class);
+        assert kdf != null;
         Assert.assertTrue(kdf.isInitialized());
         Assert.assertEquals(kdf.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
         Assert.assertEquals(kdf.getAlgorithmID(), "AA");
@@ -87,33 +84,33 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
     
     @Test
     public void ECDHWithConcatKDFWithKeySize() throws KeyAgreementException {
-        org.opensaml.xmlsec.encryption.KeySize xmlKeySize = buildXMLObject(org.opensaml.xmlsec.encryption.KeySize.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.encryption.KeySize xmlKeySize = buildXMLObject(org.opensaml.xmlsec.encryption.KeySize.DEFAULT_ELEMENT_NAME);
         xmlKeySize.setValue(80);
         
-        EncryptionMethod em = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
+        final EncryptionMethod em = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
         em.setKeySize(xmlKeySize);
         
-        EncryptedData ed = buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
+        final EncryptedData ed = buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
         ed.setEncryptionMethod(em);
         
-        KeyInfo keyInfo = buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
+        final KeyInfo keyInfo = buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         ed.setKeyInfo(keyInfo);
         
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         keyInfo.getAgreementMethods().add(agreementMethod);
         
-        KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         kdm.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         
-        ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        final ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
         xmlParams.setAlgorithmID("00AA");
         xmlParams.setPartyUInfo("00BB");
         xmlParams.setPartyVInfo("00CC");
         xmlParams.setSuppPubInfo("00DD");
         xmlParams.setSuppPrivInfo("00EE");
         
-        org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         xmlParams.setDigestMethod(digestMethod);
         
@@ -121,15 +118,14 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
         
         agreementMethod.getUnknownXMLObjects().add(kdm);
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
-        KeyAgreementParameters parameters = parser.parse(agreementMethod);
+        final KeyAgreementParameters parameters = parser.parse(agreementMethod);
         Assert.assertNotNull(parameters);
         Assert.assertEquals(parameters.size(), 2);
         
-        Assert.assertTrue(parameters.contains(ConcatKDF.class));
-        
-        ConcatKDF kdf = parameters.get(ConcatKDF.class);
+        final ConcatKDF kdf = parameters.get(ConcatKDF.class);
+        assert kdf != null;
         Assert.assertTrue(kdf.isInitialized());
         Assert.assertEquals(kdf.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
         Assert.assertEquals(kdf.getAlgorithmID(), "AA");
@@ -138,34 +134,35 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(kdf.getSuppPubInfo(), "DD");
         Assert.assertEquals(kdf.getSuppPrivInfo(), "EE");
         
-        Assert.assertTrue(parameters.contains(KeySize.class));
-        Assert.assertEquals(parameters.get(KeySize.class).getSize().intValue(), 80);
+        final KeySize keySize = parameters.get(KeySize.class);
+        assert keySize != null;
+        Assert.assertEquals(keySize.getSize(), 80);
     }
     
     @Test
     public void ECDHWithPBKDF2() throws KeyAgreementException {
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         
-        KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         kdm.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2);
         
-        PBKDF2Params xmlParams = buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
+        final PBKDF2Params xmlParams = buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
         
-        IterationCount iterationCount = buildXMLObject(IterationCount.DEFAULT_ELEMENT_NAME);
+        final IterationCount iterationCount = buildXMLObject(IterationCount.DEFAULT_ELEMENT_NAME);
         iterationCount.setValue(1500);
         xmlParams.setIterationCount(iterationCount);
         
-        KeyLength keyLength = buildXMLObject(KeyLength.DEFAULT_ELEMENT_NAME);
+        final KeyLength keyLength = buildXMLObject(KeyLength.DEFAULT_ELEMENT_NAME);
         keyLength.setValue(32);
         xmlParams.setKeyLength(keyLength);
         
-        PRF prf = buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
+        final PRF prf = buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
         prf.setAlgorithm(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         xmlParams.setPRF(prf);
         
-        Salt salt = buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
-        Specified specified = buildXMLObject(Specified.DEFAULT_ELEMENT_NAME);
+        final Salt salt = buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
+        final Specified specified = buildXMLObject(Specified.DEFAULT_ELEMENT_NAME);
         specified.setValue("ABCD");
         salt.setSpecified(specified);
         xmlParams.setSalt(salt);
@@ -174,38 +171,37 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
         
         agreementMethod.getUnknownXMLObjects().add(kdm);
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
-        KeyAgreementParameters parameters = parser.parse(agreementMethod);
+        final KeyAgreementParameters parameters = parser.parse(agreementMethod);
         Assert.assertNotNull(parameters);
         Assert.assertEquals(parameters.size(), 1);
         
-        Assert.assertTrue(parameters.contains(PBKDF2.class));
-        
-        PBKDF2 kdf = parameters.get(PBKDF2.class);
+        final PBKDF2 kdf = parameters.get(PBKDF2.class);
+        assert kdf != null;
         Assert.assertTrue(kdf.isInitialized());
-        Assert.assertEquals(kdf.getIterationCount().intValue(), 1500);
-        Assert.assertEquals(kdf.getKeyLength().intValue(), 256);
+        Assert.assertEquals(kdf.getIterationCount(), 1500);
+        Assert.assertEquals(kdf.getKeyLength(), 256);
         Assert.assertEquals(kdf.getPRF(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         Assert.assertEquals(kdf.getSalt(), "ABCD");
     }
 
     @Test
     public void DHWithConcatKDF() throws KeyAgreementException {
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF);
         
-        KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         kdm.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         
-        ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        final ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
         xmlParams.setAlgorithmID("00AA");
         xmlParams.setPartyUInfo("00BB");
         xmlParams.setPartyVInfo("00CC");
         xmlParams.setSuppPubInfo("00DD");
         xmlParams.setSuppPrivInfo("00EE");
         
-        org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         xmlParams.setDigestMethod(digestMethod);
         
@@ -213,15 +209,14 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
         
         agreementMethod.getUnknownXMLObjects().add(kdm);
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
-        KeyAgreementParameters parameters = parser.parse(agreementMethod);
+        final KeyAgreementParameters parameters = parser.parse(agreementMethod);
         Assert.assertNotNull(parameters);
         Assert.assertEquals(parameters.size(), 1);
         
-        Assert.assertTrue(parameters.contains(ConcatKDF.class));
-        
-        ConcatKDF kdf = parameters.get(ConcatKDF.class);
+        final ConcatKDF kdf = parameters.get(ConcatKDF.class);
+        assert kdf != null;
         Assert.assertTrue(kdf.isInitialized());
         Assert.assertEquals(kdf.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
         Assert.assertEquals(kdf.getAlgorithmID(), "AA");
@@ -233,78 +228,78 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
     
     @Test
     public void DHWithLegacyKDF() throws KeyAgreementException {
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
         
-        org.opensaml.xmlsec.encryption.KANonce xmlNonce = buildXMLObject(org.opensaml.xmlsec.encryption.KANonce.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.encryption.KANonce xmlNonce = buildXMLObject(org.opensaml.xmlsec.encryption.KANonce.DEFAULT_ELEMENT_NAME);
         xmlNonce.setValue("ABCD");
         agreementMethod.getUnknownXMLObjects().add(xmlNonce);
         
-        org.opensaml.xmlsec.signature.DigestMethod xmlDigest = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.signature.DigestMethod xmlDigest = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         xmlDigest.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         agreementMethod.getUnknownXMLObjects().add(xmlDigest);
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
-        KeyAgreementParameters parameters = parser.parse(agreementMethod);
+        final KeyAgreementParameters parameters = parser.parse(agreementMethod);
         Assert.assertNotNull(parameters);
         Assert.assertEquals(parameters.size(), 2);
         
-        Assert.assertTrue(parameters.contains(KANonce.class));
-        KANonce nonce = parameters.get(KANonce.class);
+        final KANonce nonce = parameters.get(KANonce.class);
+        assert nonce != null;
         Assert.assertTrue(nonce.isInitialized());
         Assert.assertEquals(nonce.getValue(), "ABCD");
         Assert.assertTrue(parameters.contains(KANonce.class));
         
-        Assert.assertTrue(parameters.contains(DigestMethod.class));
-        DigestMethod digestMethod = parameters.get(DigestMethod.class);
+        final DigestMethod digestMethod = parameters.get(DigestMethod.class);
+        assert digestMethod != null;
         Assert.assertTrue(digestMethod.isInitialized());
         Assert.assertEquals(digestMethod.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
     }
     
     @Test(expectedExceptions = KeyAgreementException.class)
     public void unknownChildType() throws KeyAgreementException {
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         
         agreementMethod.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
         parser.parse(agreementMethod);
     }
     
     @Test(expectedExceptions = KeyAgreementException.class)
     public void unknownKeyDerivationAlgorithm() throws KeyAgreementException {
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         
-        KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         kdm.setAlgorithm("UNKNOWN");
         
         agreementMethod.getUnknownXMLObjects().add(kdm);
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
         parser.parse(agreementMethod);
     }
     
     @Test(expectedExceptions = KeyAgreementException.class)
     public void invalidParamData() throws KeyAgreementException {
-        AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod agreementMethod = buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         agreementMethod.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         
-        KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         kdm.setAlgorithm(EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         
-        ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        final ConcatKDFParams xmlParams = buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
         xmlParams.setAlgorithmID("01AA");
         xmlParams.setPartyUInfo("02BB");
         xmlParams.setPartyVInfo("03CC");
         xmlParams.setSuppPubInfo("04DD");
         xmlParams.setSuppPrivInfo("05EE");
         
-        org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
+        final org.opensaml.xmlsec.signature.DigestMethod digestMethod = buildXMLObject(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME);
         digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         xmlParams.setDigestMethod(digestMethod);
         
@@ -312,8 +307,9 @@ public class KeyAgreementParametersParserTest extends XMLObjectBaseTestCase {
         
         agreementMethod.getUnknownXMLObjects().add(kdm);
         
-        KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
+        final KeyAgreementParametersParser parser = new KeyAgreementParametersParser();
         
         parser.parse(agreementMethod);
     }
+
 }

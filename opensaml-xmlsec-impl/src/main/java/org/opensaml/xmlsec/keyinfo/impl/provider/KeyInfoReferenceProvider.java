@@ -32,8 +32,8 @@ import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -47,26 +47,28 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class KeyInfoReferenceProvider extends AbstractKeyInfoProvider {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(KeyInfoReferenceProvider.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(KeyInfoReferenceProvider.class);
 
     /** {@inheritDoc} */
     public boolean handles(@Nonnull final XMLObject keyInfoChild) {
         return getKeyInfoReference(keyInfoChild) != null;
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Nullable public Collection<Credential> process(@Nonnull final KeyInfoCredentialResolver resolver,
             @Nonnull final XMLObject keyInfoChild, @Nullable final CriteriaSet criteriaSet,
             @Nonnull final KeyInfoResolutionContext kiContext) throws SecurityException {
 
         final KeyInfoReference ref = getKeyInfoReference(keyInfoChild);
-        if (ref == null) {
+        final String refURI = ref != null ? ref.getURI() : null;
+        if (ref == null || refURI == null) {
             return null;
         }
-
+        
         log.debug("Attempting to follow same-document KeyInfoReference");
 
-        final XMLObject target = ref.resolveIDFromRoot(ref.getURI().substring(1));
+        final XMLObject target = ref.resolveIDFromRoot(refURI.substring(1));
         if (target == null) {
             log.warn("KeyInfoReference URI could not be dereferenced");
             return null;
@@ -83,9 +85,11 @@ public class KeyInfoReferenceProvider extends AbstractKeyInfoProvider {
         // Copy the existing CriteriaSet, excluding the KeyInfoCriteria, which is reset to the target.
         final CriteriaSet newCriteria = new CriteriaSet();
         newCriteria.add(new KeyInfoCriterion((KeyInfo) target));
-        for (final Criterion crit : criteriaSet) {
-            if (!(crit instanceof KeyInfoCriterion)) {
-                newCriteria.add(crit);
+        if (criteriaSet != null) {
+            for (final Criterion crit : criteriaSet) {
+                if (!(crit instanceof KeyInfoCriterion)) {
+                    newCriteria.add(crit);
+                }
             }
         }
         
@@ -105,7 +109,8 @@ public class KeyInfoReferenceProvider extends AbstractKeyInfoProvider {
         
         return null;
     }
-
+// Checkstyle: CyclomaticComplexity ON
+    
     /**
      * Get the KeyInfoReference from the passed XML object.
      * 

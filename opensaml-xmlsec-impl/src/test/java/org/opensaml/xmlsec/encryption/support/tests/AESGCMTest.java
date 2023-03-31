@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.algorithm.KeyLengthSpecifiedAlgorithm;
 import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.Decrypter;
 import org.opensaml.xmlsec.encryption.support.Encrypter;
@@ -39,10 +40,8 @@ import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
+import org.w3c.dom.Element;
 
-/**
- *
- */
 @SuppressWarnings("javadoc")
 public class AESGCMTest extends XMLObjectBaseTestCase {
     
@@ -62,7 +61,7 @@ public class AESGCMTest extends XMLObjectBaseTestCase {
     
     @DataProvider
     public Object[][] testDataAESGCM() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+        final AlgorithmRegistry registry = AlgorithmSupport.ensureGlobalAlgorithmRegistry();
         AlgorithmDescriptor aesGCM128 = registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM);
         AlgorithmDescriptor aesGCM192 = registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM);
         AlgorithmDescriptor aesGCM256 = registry.get(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
@@ -101,30 +100,35 @@ public class AESGCMTest extends XMLObjectBaseTestCase {
                 providerSupport.loadBC();
             }
         
-            SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+            final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+            assert sxo != null;
             
-            Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(descriptor.getURI());
+            final Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(descriptor.getURI());
             
-            DataEncryptionParameters encParams = new DataEncryptionParameters();
+            final DataEncryptionParameters encParams = new DataEncryptionParameters();
             encParams.setAlgorithm(descriptor.getURI());
             encParams.setEncryptionCredential(encCred);
             
-            Encrypter encrypter = new Encrypter();
+            final Encrypter encrypter = new Encrypter();
             
-            EncryptedData encryptedData = encrypter.encryptElement(sxo, encParams);
+            final EncryptedData encryptedData = encrypter.encryptElement(sxo, encParams);
+            assert encryptedData != null;
             
-            Assert.assertNotNull(encryptedData);
-            Assert.assertEquals(encryptedData.getEncryptionMethod().getAlgorithm(), descriptor.getURI());
+            final EncryptionMethod method = encryptedData.getEncryptionMethod();
+            assert method != null;
+            Assert.assertEquals(method.getAlgorithm(), descriptor.getURI());
             
-            StaticKeyInfoCredentialResolver dataKeyInfoResolver = new StaticKeyInfoCredentialResolver(encCred);
+            final StaticKeyInfoCredentialResolver dataKeyInfoResolver = new StaticKeyInfoCredentialResolver(encCred);
             
-            Decrypter decrypter = new Decrypter(dataKeyInfoResolver, null, null);
+            final Decrypter decrypter = new Decrypter(dataKeyInfoResolver, null, null);
             
-            XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData);
+            final XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData);
             
             Assert.assertNotNull(decryptedXMLObject);
             Assert.assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
-            assertXMLEquals(sxo.getDOM().getOwnerDocument(), decryptedXMLObject);
+            final Element dom = sxo.getDOM();
+            assert dom != null;
+            assertXMLEquals(dom.getOwnerDocument(), decryptedXMLObject);
             
         } finally {
             providerSupport.unloadBC();

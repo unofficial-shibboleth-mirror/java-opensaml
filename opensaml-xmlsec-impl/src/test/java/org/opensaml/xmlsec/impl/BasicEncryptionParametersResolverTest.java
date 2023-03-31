@@ -704,9 +704,9 @@ public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase
         assertTrue(resolver.resolveKeyTransportAlgorithmPredicate(criteriaSet) == predicate);
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullCriteriaSet() throws ResolverException {
-        resolver.resolve(null);
+        assertNull(resolver.resolveSingle(null));
     }
 
     @Test(expectedExceptions=ConstraintViolationException.class)

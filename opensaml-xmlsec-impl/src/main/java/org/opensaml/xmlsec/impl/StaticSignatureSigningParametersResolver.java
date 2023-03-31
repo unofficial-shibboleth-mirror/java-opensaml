@@ -17,10 +17,10 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.Collections;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -34,24 +34,26 @@ import org.opensaml.xmlsec.SignatureSigningParametersResolver;
 public class StaticSignatureSigningParametersResolver implements SignatureSigningParametersResolver {
     
     /** Static parameters. */
-    private SignatureSigningParameters params;
+    @Nonnull private SignatureSigningParameters params;
     
     /**
      * Constructor.
      *
      * @param parameters the static parameters instance to return
      */
-    public StaticSignatureSigningParametersResolver(final SignatureSigningParameters parameters) {
+    public StaticSignatureSigningParametersResolver(@Nonnull final SignatureSigningParameters parameters) {
         params = Constraint.isNotNull(parameters, "Parameters instance may not be null");
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<SignatureSigningParameters> resolve(final CriteriaSet criteria) throws ResolverException {
-        return Collections.singleton(params);
+    @Nonnull public Iterable<SignatureSigningParameters> resolve(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
+        return CollectionSupport.singleton(params);
     }
 
     /** {@inheritDoc} */
-    @Nonnull public SignatureSigningParameters resolveSingle(final CriteriaSet criteria) throws ResolverException {
+    @Nullable public SignatureSigningParameters resolveSingle(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
         return params;
     }
 

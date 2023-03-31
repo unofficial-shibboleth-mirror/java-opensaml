@@ -45,9 +45,9 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -109,10 +109,10 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
         KeyInfoCredentialResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(BasicProviderKeyInfoCredentialResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicProviderKeyInfoCredentialResolver.class);
 
     /** List of KeyInfo providers that are registered on this instance. */
-    private final List<KeyInfoProvider> providers;
+    @Nonnull private final List<KeyInfoProvider> providers;
 
     /**
      * Constructor.
@@ -121,8 +121,6 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
      */
     public BasicProviderKeyInfoCredentialResolver(
             @Nonnull @ParameterName(name="keyInfoProviders") final List<KeyInfoProvider> keyInfoProviders) {
-        super();
-
         providers = new ArrayList<>();
         providers.addAll(keyInfoProviders);
     }
@@ -265,7 +263,12 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
             @Nullable final CriteriaSet criteriaSet, @Nonnull final List<Credential> credentials)
                     throws ResolverException {
 
-        for (final XMLObject keyInfoChild : kiContext.getKeyInfo().getXMLObjects()) {
+        final KeyInfo keyInfo = kiContext.getKeyInfo();
+        if (keyInfo == null) {
+            return;
+        }
+        
+        for (final XMLObject keyInfoChild : keyInfo.getXMLObjects()) {
 
             if (keyInfoChild instanceof KeyValue || keyInfoChild instanceof DEREncodedKeyValue) {
                 continue;
@@ -429,11 +432,7 @@ public class BasicProviderKeyInfoCredentialResolver extends AbstractCriteriaFilt
             final PrivateKey privateKey = (PrivateKey) key;
             try {
                 final PublicKey publicKey = KeySupport.derivePublicKey(privateKey);
-                if (publicKey != null) {
-                    basicCred = new BasicCredential(publicKey, privateKey);
-                } else {
-                    log.error("Failed to derive public key from private key");
-                }
+                basicCred = new BasicCredential(publicKey, privateKey);
             } catch (final KeyException e) {
                 log.error("Could not derive public key from private key", e);
             }

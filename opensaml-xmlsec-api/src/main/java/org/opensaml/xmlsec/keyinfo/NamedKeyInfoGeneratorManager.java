@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.keyinfo;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -26,9 +25,12 @@ import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A manager for named sets of {@link KeyInfoGeneratorFactory} instances. Each name key serves as an index to an
@@ -37,13 +39,13 @@ import net.shibboleth.shared.collection.LazyMap;
 public class NamedKeyInfoGeneratorManager {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(NamedKeyInfoGeneratorManager.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(NamedKeyInfoGeneratorManager.class);
     
     /** The set of named factory managers. */
-    private final Map<String, KeyInfoGeneratorManager> managers;
+    @Nonnull private final Map<String, KeyInfoGeneratorManager> managers;
     
     /** The default manager for unnamed factories. */
-    private final KeyInfoGeneratorManager defaultManager;
+    @Nonnull private final KeyInfoGeneratorManager defaultManager;
     
     /** Flag indicating whether the default (unnamed) factory manager will be used to 
      * lookup factories for credentials. */
@@ -71,8 +73,8 @@ public class NamedKeyInfoGeneratorManager {
      * 
      * @return the set of all manager names currently configured
      */
-    @Nonnull public Set<String> getManagerNames() {
-        return Collections.unmodifiableSet(managers.keySet());
+    @Nonnull @Unmodifiable @NotLive public Set<String> getManagerNames() {
+        return CollectionSupport.copyToSet(managers.keySet());
     }
  
     /**

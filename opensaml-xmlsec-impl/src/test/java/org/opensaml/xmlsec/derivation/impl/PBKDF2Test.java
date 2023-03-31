@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.derivation.impl;
 
 import java.security.SecureRandom;
 
+import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
 
 import org.apache.commons.codec.DecoderException;
@@ -51,9 +52,7 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class PBKDF2Test extends XMLObjectBaseTestCase {
     
     @Test
@@ -86,9 +85,9 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(kdf.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2);
         
-        Assert.assertEquals(kdf.getGeneratedSaltLength().intValue(), 16);
-        Assert.assertEquals(kdf.getIterationCount().intValue(), 3000);
-        Assert.assertEquals(kdf.getKeyLength().intValue(), 256);
+        Assert.assertEquals(kdf.getGeneratedSaltLength(), 16);
+        Assert.assertEquals(kdf.getIterationCount(), 3000);
+        Assert.assertEquals(kdf.getKeyLength(), 256);
         Assert.assertEquals(kdf.getPRF(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         Assert.assertSame(kdf.getRandom(), sr);
         Assert.assertEquals(kdf.getSalt(), "ABCD");
@@ -134,18 +133,23 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         
         PBKDF2Params kdmParams = PBKDF2Params.class.cast(kdm.getUnknownXMLObjects().get(0));
         
-        Assert.assertNotNull(kdmParams.getIterationCount());
-        Assert.assertEquals(kdmParams.getIterationCount().getValue().intValue(), 3000);
+        final IterationCount icount = kdmParams.getIterationCount();
+        assert icount != null;
+        Assert.assertEquals(icount.getValue(), 3000);
         
-        Assert.assertNotNull(kdmParams.getKeyLength());
-        Assert.assertEquals(kdmParams.getKeyLength().getValue().intValue(), 32); // bytes = 256/8
+        final KeyLength klen = kdmParams.getKeyLength();
+        assert klen != null;
+        Assert.assertEquals(klen.getValue(), 32); // bytes = 256/8
         
-        Assert.assertNotNull(kdmParams.getPRF());
-        Assert.assertEquals(kdmParams.getPRF().getAlgorithm(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
+        final PRF prf = kdmParams.getPRF();
+        assert prf != null;
+        Assert.assertEquals(prf.getAlgorithm(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         
-        Assert.assertNotNull(kdmParams.getSalt());
-        Assert.assertNotNull(kdmParams.getSalt().getSpecified());
-        Assert.assertEquals(kdmParams.getSalt().getSpecified().getValue(), "ABCD");
+        final Salt salt = kdmParams.getSalt();
+        assert salt != null;
+        final Specified spec = salt.getSpecified();
+        assert spec != null;
+        Assert.assertEquals(spec.getValue(), "ABCD");
     }
     
     @Test
@@ -178,8 +182,8 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         Assert.assertNotNull(parameter);
         Assert.assertTrue(parameter.isInitialized());
         
-        Assert.assertEquals(parameter.getIterationCount().intValue(), 3000);
-        Assert.assertEquals(parameter.getKeyLength().intValue(), 128);
+        Assert.assertEquals(parameter.getIterationCount(), 3000);
+        Assert.assertEquals(parameter.getKeyLength(), 128);
         Assert.assertEquals(parameter.getPRF(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
         Assert.assertEquals(parameter.getSalt(), "ABCD");
         
@@ -262,9 +266,9 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         Assert.assertNotSame(cloned, kdf);
         
         Assert.assertNotNull(cloned);
-        Assert.assertEquals(cloned.getGeneratedSaltLength().intValue(), 16);
-        Assert.assertEquals(cloned.getIterationCount().intValue(), 3000);
-        Assert.assertEquals(cloned.getKeyLength().intValue(), 256);
+        Assert.assertEquals(cloned.getGeneratedSaltLength(), 16);
+        Assert.assertEquals(cloned.getIterationCount(), 3000);
+        Assert.assertEquals(cloned.getKeyLength(), 256);
         Assert.assertEquals(cloned.getPRF(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
         Assert.assertSame(cloned.getRandom(), sr);
         Assert.assertEquals(cloned.getSalt(), "ABCD");
@@ -284,11 +288,12 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         Assert.assertEquals(derivedKey.getEncoded().length * 8, 128);
         
         // Salt and key length were dynamically generated, so sanity check the new property values
-        Assert.assertNotNull(kdf.getSalt());
-        Assert.assertEquals(Base64Support.decode(kdf.getSalt()).length, kdf.getGeneratedSaltLength().intValue());
+        final String salt = kdf.getSalt();
+        assert salt != null;
+        Assert.assertEquals(Base64Support.decode(salt).length, kdf.getGeneratedSaltLength());
         
         Assert.assertNotNull(kdf.getKeyLength());
-        Assert.assertEquals(kdf.getKeyLength().intValue(), 128);
+        Assert.assertEquals(kdf.getKeyLength(), 128);
         
     }
     
@@ -365,7 +370,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
     
     @BeforeClass
     public void setupTestVectorAlgorithms() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+        final AlgorithmRegistry registry = AlgorithmSupport.ensureGlobalAlgorithmRegistry();
         registry.register(new MockKeyAlgorithm128());
         registry.register(new MockKeyAlgorithm160());
         registry.register(new MockKeyAlgorithm200());
@@ -375,7 +380,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
     
     @AfterClass
     public void teardownTestVectorAlgorithms() {
-        AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+        final AlgorithmRegistry registry = AlgorithmSupport.ensureGlobalAlgorithmRegistry();
         registry.deregister(new MockKeyAlgorithm128());
         registry.deregister(new MockKeyAlgorithm160());
         registry.deregister(new MockKeyAlgorithm200());
@@ -549,7 +554,7 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
         
         Assert.assertNotNull(derivedKey);
         Assert.assertEquals(derivedKey.getAlgorithm(), jcaKeyAlgorithm);
-        Assert.assertEquals(derivedKey.getEncoded().length * 8, jcaKeyLength.intValue());
+        Assert.assertEquals(derivedKey.getEncoded().length * 8, jcaKeyLength);
         Assert.assertEquals(derivedKey.getEncoded(), keyBytes);
     }
     
@@ -558,39 +563,39 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
     private class MockKeyAlgorithm128 implements BlockEncryptionAlgorithm {
 
         /** {@inheritDoc} */
-        public String getKey() {
+        @Nonnull public String getKey() {
             return "MockKey";
         }
 
         /** {@inheritDoc} */
-        public String getURI() {
+        @Nonnull public String getURI() {
             return "urn:test:MockKeyAlgorithm:128";
         }
 
         /** {@inheritDoc} */
-        public Integer getKeyLength() {
+        @Nonnull public Integer getKeyLength() {
             // 16 bytes
             return 128;
         }
 
         /** {@inheritDoc} */
-        public AlgorithmType getType() {
+        @Nonnull public AlgorithmType getType() {
             return AlgorithmType.BlockEncryption;
         }
 
         /** {@inheritDoc} */
-        public String getJCAAlgorithmID() {
-            return null;
+        @Nonnull public String getJCAAlgorithmID() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getCipherMode() {
-            return null;
+        @Nonnull public String getCipherMode() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getPadding() {
-            return null;
+        @Nonnull public String getPadding() {
+            throw new UnsupportedOperationException();
         }
         
     }
@@ -598,39 +603,39 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
     private class MockKeyAlgorithm160 implements BlockEncryptionAlgorithm {
 
         /** {@inheritDoc} */
-        public String getKey() {
+        @Nonnull public String getKey() {
             return "MockKey";
         }
 
         /** {@inheritDoc} */
-        public String getURI() {
+        @Nonnull public String getURI() {
             return "urn:test:MockKeyAlgorithm:160";
         }
 
         /** {@inheritDoc} */
-        public Integer getKeyLength() {
+        @Nonnull public Integer getKeyLength() {
             // 20 bytes
             return 160;
         }
 
         /** {@inheritDoc} */
-        public AlgorithmType getType() {
+        @Nonnull public AlgorithmType getType() {
             return AlgorithmType.BlockEncryption;
         }
 
         /** {@inheritDoc} */
-        public String getJCAAlgorithmID() {
-            return null;
+        @Nonnull public String getJCAAlgorithmID() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getCipherMode() {
-            return null;
+        @Nonnull public String getCipherMode() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getPadding() {
-            return null;
+        @Nonnull public String getPadding() {
+            throw new UnsupportedOperationException();
         }
         
     }
@@ -638,39 +643,39 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
     private class MockKeyAlgorithm200 implements BlockEncryptionAlgorithm {
 
         /** {@inheritDoc} */
-        public String getKey() {
+        @Nonnull public String getKey() {
             return "MockKey";
         }
 
         /** {@inheritDoc} */
-        public String getURI() {
+        @Nonnull public String getURI() {
             return "urn:test:MockKeyAlgorithm:200";
         }
 
         /** {@inheritDoc} */
-        public Integer getKeyLength() {
+        @Nonnull public Integer getKeyLength() {
             // 25 bytes
             return 200;
         }
 
         /** {@inheritDoc} */
-        public AlgorithmType getType() {
+        @Nonnull public AlgorithmType getType() {
             return AlgorithmType.BlockEncryption;
         }
 
         /** {@inheritDoc} */
-        public String getJCAAlgorithmID() {
-            return null;
+        @Nonnull public String getJCAAlgorithmID() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getCipherMode() {
-            return null;
+        @Nonnull public String getCipherMode() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getPadding() {
-            return null;
+        @Nonnull public String getPadding() {
+            throw new UnsupportedOperationException();
         }
         
     }
@@ -678,39 +683,39 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
     private class MockKeyAlgorithm256 implements BlockEncryptionAlgorithm {
 
         /** {@inheritDoc} */
-        public String getKey() {
+        @Nonnull public String getKey() {
             return "MockKey";
         }
 
         /** {@inheritDoc} */
-        public String getURI() {
+        @Nonnull public String getURI() {
             return "urn:test:MockKeyAlgorithm:256";
         }
 
         /** {@inheritDoc} */
-        public Integer getKeyLength() {
+        @Nonnull public Integer getKeyLength() {
             // 32 bytes
             return 256;
         }
 
         /** {@inheritDoc} */
-        public AlgorithmType getType() {
+        @Nonnull public AlgorithmType getType() {
             return AlgorithmType.BlockEncryption;
         }
 
         /** {@inheritDoc} */
-        public String getJCAAlgorithmID() {
-            return null;
+        @Nonnull public String getJCAAlgorithmID() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getCipherMode() {
-            return null;
+        @Nonnull public String getCipherMode() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getPadding() {
-            return null;
+        @Nonnull public String getPadding() {
+            throw new UnsupportedOperationException();
         }
         
     }
@@ -718,39 +723,39 @@ public class PBKDF2Test extends XMLObjectBaseTestCase {
     private class MockKeyAlgorithm320 implements BlockEncryptionAlgorithm {
 
         /** {@inheritDoc} */
-        public String getKey() {
+        @Nonnull public String getKey() {
             return "MockKey";
         }
 
         /** {@inheritDoc} */
-        public String getURI() {
+        @Nonnull public String getURI() {
             return "urn:test:MockKeyAlgorithm:320";
         }
 
         /** {@inheritDoc} */
-        public Integer getKeyLength() {
+        @Nonnull public Integer getKeyLength() {
             // 40 bytes
             return 320;
         }
 
         /** {@inheritDoc} */
-        public AlgorithmType getType() {
+        @Nonnull public AlgorithmType getType() {
             return AlgorithmType.BlockEncryption;
         }
 
         /** {@inheritDoc} */
-        public String getJCAAlgorithmID() {
-            return null;
+        @Nonnull public String getJCAAlgorithmID() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getCipherMode() {
-            return null;
+        @Nonnull public String getCipherMode() {
+            throw new UnsupportedOperationException();
         }
 
         /** {@inheritDoc} */
-        public String getPadding() {
-            return null;
+        @Nonnull public String getPadding() {
+            throw new UnsupportedOperationException();
         }
         
     }

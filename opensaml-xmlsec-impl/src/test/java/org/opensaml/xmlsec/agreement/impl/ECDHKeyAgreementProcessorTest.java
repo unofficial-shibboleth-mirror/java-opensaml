@@ -22,6 +22,8 @@ import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.crypto.SecretKey;
+
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
@@ -37,9 +39,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     private ECDHKeyAgreementProcessor processor;
@@ -64,9 +64,10 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         
         Assert.assertNotNull(keyAgreementCredential);
         
-        Assert.assertNotNull(keyAgreementCredential.getSecretKey());
-        Assert.assertEquals(keyAgreementCredential.getSecretKey().getAlgorithm(), JCAConstants.KEY_ALGO_AES);
-        Assert.assertEquals(KeySupport.getKeyLength(keyAgreementCredential.getSecretKey()), Integer.valueOf(128));
+        final SecretKey skey = keyAgreementCredential.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), JCAConstants.KEY_ALGO_AES);
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         
         Assert.assertNull(keyAgreementCredential.getPublicKey());
         Assert.assertNull(keyAgreementCredential.getPrivateKey());
@@ -85,8 +86,9 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 2);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
+        final KANonce kanonce = keyAgreementCredential.getParameters().get(KANonce.class);
+        assert kanonce != null;
+        Assert.assertEquals(kanonce.getValue(), "AABBCCDD");
         
     }
     
@@ -109,9 +111,10 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         
         Assert.assertNotNull(keyAgreementCredential);
         
-        Assert.assertNotNull(keyAgreementCredential.getSecretKey());
-        Assert.assertEquals(keyAgreementCredential.getSecretKey().getAlgorithm(), JCAConstants.KEY_ALGO_AES);
-        Assert.assertEquals(KeySupport.getKeyLength(keyAgreementCredential.getSecretKey()), Integer.valueOf(128));
+        final SecretKey skey = keyAgreementCredential.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), JCAConstants.KEY_ALGO_AES);
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         
         Assert.assertNull(keyAgreementCredential.getPublicKey());
         Assert.assertNull(keyAgreementCredential.getPrivateKey());
@@ -131,8 +134,9 @@ public class ECDHKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 3);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(PrivateCredential.class));
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
+        final KANonce kanonce = keyAgreementCredential.getParameters().get(KANonce.class);
+        assert kanonce != null;
+        Assert.assertEquals(kanonce.getValue(), "AABBCCDD");
         
     }
 

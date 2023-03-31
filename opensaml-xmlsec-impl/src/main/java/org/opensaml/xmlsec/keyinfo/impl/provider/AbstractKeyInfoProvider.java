@@ -25,6 +25,7 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoCredentialContext;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Abstract super class for {@link KeyInfoProvider} implementations.
@@ -66,8 +67,9 @@ public abstract class AbstractKeyInfoProvider implements KeyInfoProvider {
             @Nullable final KeyInfoResolutionContext kiContext) {
         // Simple for now, might do other stuff later.
         // Just want to provide a single place to build credential contexts for a provider.
-        if (kiContext != null) {
-            return new KeyInfoCredentialContext(kiContext.getKeyInfo());
+        final KeyInfo keyInfo = kiContext != null ? kiContext.getKeyInfo() : null;
+        if (keyInfo != null) {
+            return new KeyInfoCredentialContext(keyInfo);
         }
         return null;
     }

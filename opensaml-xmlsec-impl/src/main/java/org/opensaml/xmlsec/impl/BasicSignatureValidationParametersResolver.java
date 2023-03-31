@@ -17,12 +17,12 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.Collections;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -32,7 +32,6 @@ import org.opensaml.xmlsec.SignatureValidationParametersResolver;
 import org.opensaml.xmlsec.criterion.SignatureValidationConfigurationCriterion;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of {@link SignatureValidationParametersResolver}.
@@ -49,30 +48,35 @@ public class BasicSignatureValidationParametersResolver
         implements SignatureValidationParametersResolver {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(BasicSignatureValidationParametersResolver.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(BasicSignatureValidationParametersResolver.class);
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<SignatureValidationParameters> resolve(@Nonnull final CriteriaSet criteria) 
+    @Nonnull public Iterable<SignatureValidationParameters> resolve(@Nullable final CriteriaSet criteria) 
             throws ResolverException {
         
         final SignatureValidationParameters params = resolveSingle(criteria);
         if (params != null) {
-            return Collections.singletonList(params);
+            return CollectionSupport.singletonList(params);
         }
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
-    @Nullable
-    public SignatureValidationParameters resolveSingle(@Nonnull final CriteriaSet criteria) throws ResolverException {
-        Constraint.isNotNull(criteria, "CriteriaSet was null");
-        Constraint.isNotNull(criteria.get(SignatureValidationConfigurationCriterion.class), 
-                "Resolver requires an instance of SignatureValidationConfigurationCriterion");
+    @Nullable public SignatureValidationParameters resolveSingle(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
+        
+        if (criteria == null) {
+            log.debug("CriteriaSet was null");
+            return null;
+        }
+        
+        final SignatureValidationConfigurationCriterion criterion =
+                Constraint.isNotNull(criteria.get(SignatureValidationConfigurationCriterion.class),
+                        "Resolver requires an instance of SignatureValidationConfigurationCriterion");
         
         final SignatureValidationParameters params = new SignatureValidationParameters();
         
-        resolveAndPopulateIncludesExcludes(params, criteria, 
-                criteria.get(SignatureValidationConfigurationCriterion.class).getConfigurations());
+        resolveAndPopulateIncludesExcludes(params, criteria, criterion.getConfigurations());
         
         params.setSignatureTrustEngine(resolveSignatureTrustEngine(criteria));
         
@@ -107,9 +111,11 @@ public class BasicSignatureValidationParametersResolver
      */
     @Nullable protected SignatureTrustEngine resolveSignatureTrustEngine(@Nonnull final CriteriaSet criteria) {
         
-        for (final SignatureValidationConfiguration config : criteria
-                .get(SignatureValidationConfigurationCriterion.class)
-                .getConfigurations()) {
+        final SignatureValidationConfigurationCriterion criterion =
+                criteria.get(SignatureValidationConfigurationCriterion.class);
+        assert criterion != null;
+        
+        for (final SignatureValidationConfiguration config : criterion.getConfigurations()) {
             if (config.getSignatureTrustEngine() != null) {
                 return config.getSignatureTrustEngine();
             }

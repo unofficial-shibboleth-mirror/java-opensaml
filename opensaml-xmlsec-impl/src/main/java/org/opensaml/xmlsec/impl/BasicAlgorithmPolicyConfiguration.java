@@ -18,8 +18,6 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Set;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -29,6 +27,7 @@ import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -43,27 +42,27 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class BasicAlgorithmPolicyConfiguration implements AlgorithmPolicyConfiguration {
     
     /** Default precedence. */
-    public static final Precedence DEFAULT_PRECEDENCE = Precedence.INCLUDE;
+    @Nonnull public static final Precedence DEFAULT_PRECEDENCE = Precedence.INCLUDE;
     
     /** Included algorithm URIs. */
-    private Collection<String> includes;
+    @Nonnull private Collection<String> includes;
     
     /** Include merge flag. */
     private boolean includeMerge;
     
     /** Excluded algorithm URIs. */
-    private Collection<String> excludes;
+    @Nonnull private Collection<String> excludes;
     
     /** Exclude merge flag. */
     private boolean excludeMerge;
     
     /** Precedence flag. */
-    private Precedence precedence;
+    @Nonnull private Precedence precedence;
     
     /** Constructor. */
     public BasicAlgorithmPolicyConfiguration() {
-        includes = Collections.emptySet();
-        excludes = Collections.emptySet();
+        includes = CollectionSupport.emptySet();
+        excludes = CollectionSupport.emptySet();
         precedence = DEFAULT_PRECEDENCE;
         
         // These merging defaults are intended to be the more secure/conservative approach:
@@ -85,10 +84,10 @@ public class BasicAlgorithmPolicyConfiguration implements AlgorithmPolicyConfigu
      */
     public void setIncludedAlgorithms(@Nullable final Collection<String> uris) {
         if (uris == null) {
-            includes = Collections.emptySet();
+            includes = CollectionSupport.emptySet();
             return;
         }
-        includes = Set.copyOf(StringSupport.normalizeStringCollection(uris));
+        includes = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(uris));
     }
 
     /** 
@@ -124,10 +123,10 @@ public class BasicAlgorithmPolicyConfiguration implements AlgorithmPolicyConfigu
      */
     public void setExcludedAlgorithms(@Nullable final Collection<String> uris) {
         if (uris == null) {
-            excludes = Collections.emptySet();
+            excludes = CollectionSupport.emptySet();
             return;
         }
-        excludes = Set.copyOf(StringSupport.normalizeStringCollection(uris));
+        excludes = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(uris));
     }
 
     /** 

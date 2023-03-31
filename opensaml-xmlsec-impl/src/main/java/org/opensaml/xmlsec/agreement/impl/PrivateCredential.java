@@ -36,7 +36,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class PrivateCredential implements KeyAgreementParameter {
     
     /** The wrapped Credential. */
-    private Credential credential;
+    @Nonnull private Credential credential;
 
     /**
      * Constructor.

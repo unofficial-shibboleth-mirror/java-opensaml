@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.keyinfo;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.Credential;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -36,7 +36,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class KeyInfoGeneratorManager {
     
     /** The factories being managed, indexed by credential type. */
-    private final Map<Class<? extends Credential>, KeyInfoGeneratorFactory> factories;
+    @Nonnull private final Map<Class<? extends Credential>, KeyInfoGeneratorFactory> factories;
     
     /** Constructor. */
     public KeyInfoGeneratorManager() {
@@ -68,7 +68,7 @@ public class KeyInfoGeneratorManager {
      * @return the collection of managed factories
      */
     @Nonnull public Collection<KeyInfoGeneratorFactory> getFactories() {
-        return Collections.unmodifiableCollection(factories.values());
+        return CollectionSupport.copyToList(factories.values());
     }
     
     /**

@@ -67,6 +67,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 /**
  * Tests the {@link PKIXSignatureTrustEngine} implementation.
  */
+@SuppressWarnings("javadoc")
 public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     private static final String DATA_PATH = "/org/opensaml/xmlsec/signature/support/";

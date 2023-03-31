@@ -17,10 +17,10 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.Collections;
-
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -34,24 +34,25 @@ import org.opensaml.xmlsec.EncryptionParametersResolver;
 public class StaticEncryptionParametersResolver implements EncryptionParametersResolver {
     
     /** Static parameters. */
-    private EncryptionParameters params;
+    @Nonnull private EncryptionParameters params;
     
     /**
      * Constructor.
      *
      * @param parameters the static parameters instance to return
      */
-    public StaticEncryptionParametersResolver(final EncryptionParameters parameters) {
+    public StaticEncryptionParametersResolver(@Nonnull final EncryptionParameters parameters) {
         params = Constraint.isNotNull(parameters, "Parameters instance may not be null");
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<EncryptionParameters> resolve(final CriteriaSet criteria) throws ResolverException {
-        return Collections.singleton(params);
+    @Nonnull public Iterable<EncryptionParameters> resolve(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
+        return CollectionSupport.singleton(params);
     }
 
     /** {@inheritDoc} */
-    @Nonnull public EncryptionParameters resolveSingle(final CriteriaSet criteria) throws ResolverException {
+    @Nullable public EncryptionParameters resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
         return params;
     }
 

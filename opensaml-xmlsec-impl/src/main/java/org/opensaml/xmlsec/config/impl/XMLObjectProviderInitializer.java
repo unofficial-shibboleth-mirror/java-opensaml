@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.config.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
@@ -25,13 +27,13 @@ import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
-    private static String[] configs = {
+    @Nonnull private static String[] configs = {
         "/signature-config.xml",
         "/encryption-config.xml", 
         };
 
     /** {@inheritDoc} */
-    protected String[] getConfigResources() {
+    @Nonnull protected String[] getConfigResources() {
         return configs;
     }
 

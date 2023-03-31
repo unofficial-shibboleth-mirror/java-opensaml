@@ -18,8 +18,8 @@
 package org.opensaml.xmlsec.agreement.impl;
 
 import java.security.KeyPair;
-import java.util.ArrayList;
-import java.util.Collection;
+
+import javax.crypto.SecretKey;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
@@ -28,18 +28,14 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.KeyAgreementException;
-import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
-import org.opensaml.xmlsec.derivation.impl.MockKeyDerivation;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DHWithLegacyKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     private DHWithLegacyKDFKeyAgreementProcessor processor;
@@ -70,9 +66,10 @@ public class DHWithLegacyKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTe
         
         Assert.assertNotNull(keyAgreementCredential);
         
-        Assert.assertNotNull(keyAgreementCredential.getSecretKey());
-        Assert.assertEquals(keyAgreementCredential.getSecretKey().getAlgorithm(), JCAConstants.KEY_ALGO_AES);
-        Assert.assertEquals(KeySupport.getKeyLength(keyAgreementCredential.getSecretKey()), Integer.valueOf(128));
+        final SecretKey skey = keyAgreementCredential.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), JCAConstants.KEY_ALGO_AES);
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         
         Assert.assertNull(keyAgreementCredential.getPublicKey());
         Assert.assertNull(keyAgreementCredential.getPrivateKey());
@@ -90,10 +87,14 @@ public class DHWithLegacyKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTe
         Assert.assertEquals(keyAgreementCredential.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH);
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 2);
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(DigestMethod.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(DigestMethod.class).getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
+        
+        final DigestMethod method = keyAgreementCredential.getParameters().get(DigestMethod.class); 
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
+     
+        final KANonce kanonce = keyAgreementCredential.getParameters().get(KANonce.class);
+        assert kanonce != null;
+        Assert.assertEquals(kanonce.getValue(), "AABBCCDD");
     }
     
     @Test
@@ -121,9 +122,10 @@ public class DHWithLegacyKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTe
         
         Assert.assertNotNull(keyAgreementCredential);
         
-        Assert.assertNotNull(keyAgreementCredential.getSecretKey());
-        Assert.assertEquals(keyAgreementCredential.getSecretKey().getAlgorithm(), JCAConstants.KEY_ALGO_AES);
-        Assert.assertEquals(KeySupport.getKeyLength(keyAgreementCredential.getSecretKey()), Integer.valueOf(128));
+        final SecretKey skey = keyAgreementCredential.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), JCAConstants.KEY_ALGO_AES);
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         
         Assert.assertNull(keyAgreementCredential.getPublicKey());
         Assert.assertNull(keyAgreementCredential.getPrivateKey());
@@ -142,10 +144,13 @@ public class DHWithLegacyKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTe
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 3);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(PrivateCredential.class));
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(DigestMethod.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(DigestMethod.class).getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
+
+        final DigestMethod method = keyAgreementCredential.getParameters().get(DigestMethod.class); 
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
+        final KANonce kanonce = keyAgreementCredential.getParameters().get(KANonce.class);
+        assert kanonce != null;
+        Assert.assertEquals(kanonce.getValue(), "AABBCCDD");
         
     }
 

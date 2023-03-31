@@ -33,6 +33,7 @@ import org.testng.annotations.Test;
 /**
  * Test signature algorithm whitelist and blacklist evaluation.
  */
+@SuppressWarnings("javadoc")
 public class SignatureAlgorithmValidatorTest extends XMLObjectBaseTestCase {
     
     private Signature signature;
@@ -52,6 +53,7 @@ public class SignatureAlgorithmValidatorTest extends XMLObjectBaseTestCase {
         whitelist = new HashSet<>();
         blacklist = new HashSet<>();
         SignableSimpleXMLObject ssxo = unmarshallElement("/org/opensaml/xmlsec/signature/support/envelopedSignature.xml");
+        assert ssxo != null;
         signature = ssxo.getSignature();
     }
     

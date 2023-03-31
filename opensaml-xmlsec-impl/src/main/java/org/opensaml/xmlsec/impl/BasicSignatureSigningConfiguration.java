@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -26,22 +25,18 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of {@link SignatureSigningConfiguration}.
  */
 public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConfiguration 
         implements SignatureSigningConfiguration {
-    
-    /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicSignatureSigningConfiguration.class);
     
     /** Signing credentials. */
     @Nonnull @NonnullElements private List<Credential> signingCredentials;
@@ -70,9 +65,9 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
     
     /** Constructor. */
     public BasicSignatureSigningConfiguration() {
-        signingCredentials = Collections.emptyList();
-        signatureAlgorithms = Collections.emptyList();
-        signatureReferenceDigestMethods = Collections.emptyList();
+        signingCredentials = CollectionSupport.emptyList();
+        signatureAlgorithms = CollectionSupport.emptyList();
+        signatureReferenceDigestMethods = CollectionSupport.emptyList();
     }
     
     /** {@inheritDoc} */
@@ -88,9 +83,9 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      */
     public void setSigningCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
         if (credentials == null) {
-            signingCredentials = Collections.emptyList();
+            signingCredentials = CollectionSupport.emptyList();
         } else {
-            signingCredentials = List.copyOf(credentials);
+            signingCredentials = CollectionSupport.copyToList(credentials);
         }
     }
     
@@ -107,9 +102,9 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      */
     public void setSignatureAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
-            signatureAlgorithms = Collections.emptyList();
+            signatureAlgorithms = CollectionSupport.emptyList();
         } else {
-            signatureAlgorithms = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
+            signatureAlgorithms = CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
     }
     
@@ -126,9 +121,10 @@ public class BasicSignatureSigningConfiguration extends BasicAlgorithmPolicyConf
      */
     public void setSignatureReferenceDigestMethods(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
-            signatureReferenceDigestMethods = Collections.emptyList();
+            signatureReferenceDigestMethods = CollectionSupport.emptyList();
         } else {
-            signatureReferenceDigestMethods = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
+            signatureReferenceDigestMethods =
+                    CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
     }
     

@@ -24,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 import javax.crypto.interfaces.DHPrivateKey;
 import javax.crypto.interfaces.DHPublicKey;
@@ -39,9 +40,9 @@ import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.derivation.impl.DHLegacyKDF;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Implementation of {@link KeyAgreementProcessor} which performs Diffie-Hellman
@@ -53,15 +54,15 @@ public class DHWithLegacyKDFKeyAgreementProcessor extends AbstractKeyAgreementPr
     @Nonnull @NotEmpty public static final String DEFAULT_DIGEST_METHOD = EncryptionConstants.ALGO_ID_DIGEST_SHA256;
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(DHWithLegacyKDFKeyAgreementProcessor.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(DHWithLegacyKDFKeyAgreementProcessor.class);
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nonnull public String getAlgorithm() {
         return EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH;
     }
 
     /** {@inheritDoc} */
-    protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
+    @Nullable protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
         final Credential suppliedCredential = super.obtainPrivateCredential(publicCredential, parameters);
@@ -70,7 +71,6 @@ public class DHWithLegacyKDFKeyAgreementProcessor extends AbstractKeyAgreementPr
         }
         
         log.debug("Found no supplied PrivateCredential in KeyAgreementParameters, generating ephemeral key pair");
-        
         
         if (!DHPublicKey.class.isInstance(publicCredential.getPublicKey())) {
             throw new KeyAgreementException("Public credential's public key is not an instance of DHPublicKey");
@@ -87,7 +87,7 @@ public class DHWithLegacyKDFKeyAgreementProcessor extends AbstractKeyAgreementPr
     }
 
     /** {@inheritDoc} */
-    protected byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
+    @Nonnull protected byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
             @Nonnull final Credential privateCredential, @Nonnull final KeyAgreementParameters parameters)
                     throws KeyAgreementException {
         
@@ -109,16 +109,18 @@ public class DHWithLegacyKDFKeyAgreementProcessor extends AbstractKeyAgreementPr
     }
 
     /** {@inheritDoc} */
-    protected SecretKey deriveSecretKey(final byte[] secret, @Nonnull final String keyAlgorithm,
+    @Nonnull protected SecretKey deriveSecretKey(final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
-        final Integer keySize = parameters.contains(KeySize.class) ? parameters.get(KeySize.class).getSize() : null;
+        final KeySize keySizeParam = parameters.get(KeySize.class);
+        final Integer keySize = keySizeParam != null ? keySizeParam.getSize() : null;
         
         KeyAgreementSupport.validateKeyAlgorithmAndSize(keyAlgorithm, keySize);
         
+        final DigestMethod digestMethodParam = parameters.get(DigestMethod.class);
         String digestMethod = null;
-        if (parameters.contains(DigestMethod.class)) {
-            digestMethod = parameters.get(DigestMethod.class).getAlgorithm();
+        if (digestMethodParam != null) {
+            digestMethod = digestMethodParam.getAlgorithm();
         } else {
             digestMethod = DEFAULT_DIGEST_METHOD;
             // Need to add this to params so can be expressed on credential and in XML
@@ -128,14 +130,11 @@ public class DHWithLegacyKDFKeyAgreementProcessor extends AbstractKeyAgreementPr
         }
         
         // Nonce is optional
-        String nonce = null;
-        if (parameters.contains(KANonce.class)) {
-            nonce = parameters.get(KANonce.class).getValue();
-        }
+        final KANonce nonceParam = parameters.get(KANonce.class);
         
         final DHLegacyKDF kdf = new DHLegacyKDF();
         kdf.setDigestMethod(digestMethod);
-        kdf.setNonce(nonce);
+        kdf.setNonce(nonceParam != null ? nonceParam.getValue() : null);
         
         try {
             return kdf.derive(secret, keyAlgorithm, keySize);

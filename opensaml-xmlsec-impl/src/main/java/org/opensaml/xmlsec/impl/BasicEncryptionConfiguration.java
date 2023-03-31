@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -27,6 +26,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.security.credential.Credential;
@@ -35,18 +35,12 @@ import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.encryption.support.KeyAgreementEncryptionConfiguration;
 import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 
 /**
  * Basic implementation of {@link EncryptionConfiguration}.
  */
 public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfiguration 
         implements EncryptionConfiguration {
-    
-    /** Class logger. */
-    @Nonnull private final Logger log = LoggerFactory.getLogger(BasicEncryptionConfiguration.class);
     
     /** Data encryption credentials. */
     @Nonnull @NonnullElements private List<Credential> dataEncryptionCredentials;
@@ -84,11 +78,11 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
     
     /** Constructor. */
     public BasicEncryptionConfiguration() {
-        dataEncryptionCredentials = Collections.emptyList();
-        dataEncryptionAlgorithms = Collections.emptyList();
-        keyTransportEncryptionCredentials = Collections.emptyList();
-        keyTransportEncryptionAlgorithms = Collections.emptyList();
-        keyAgreementConfigurations = Collections.emptyMap();
+        dataEncryptionCredentials = CollectionSupport.emptyList();
+        dataEncryptionAlgorithms = CollectionSupport.emptyList();
+        keyTransportEncryptionCredentials = CollectionSupport.emptyList();
+        keyTransportEncryptionAlgorithms = CollectionSupport.emptyList();
+        keyAgreementConfigurations = CollectionSupport.emptyMap();
         
         rsaOAEPParametersMerge = true;
     }
@@ -106,9 +100,9 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      */
     public void setDataEncryptionCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
         if (credentials == null) {
-            dataEncryptionCredentials  = Collections.emptyList();
+            dataEncryptionCredentials  = CollectionSupport.emptyList();
         } else {
-            dataEncryptionCredentials = List.copyOf(credentials);
+            dataEncryptionCredentials = CollectionSupport.copyToList(credentials);
         }
     }
     
@@ -125,9 +119,10 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      */
     public void setDataEncryptionAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
-            dataEncryptionAlgorithms = Collections.emptyList();
+            dataEncryptionAlgorithms = CollectionSupport.emptyList();
         } else {
-            dataEncryptionAlgorithms = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
+            dataEncryptionAlgorithms =
+                    CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
     }
     
@@ -144,9 +139,9 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      */
     public void setKeyTransportEncryptionCredentials(@Nullable @NonnullElements final List<Credential> credentials) {
         if (credentials == null) {
-            keyTransportEncryptionCredentials  = Collections.emptyList();
+            keyTransportEncryptionCredentials  = CollectionSupport.emptyList();
         } else {
-            keyTransportEncryptionCredentials = List.copyOf(credentials);
+            keyTransportEncryptionCredentials = CollectionSupport.copyToList(credentials);
         }
     }
     
@@ -163,9 +158,10 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      */
     public void setKeyTransportEncryptionAlgorithms(@Nullable @NonnullElements final List<String> algorithms) {
         if (algorithms == null) {
-            keyTransportEncryptionAlgorithms = Collections.emptyList();
+            keyTransportEncryptionAlgorithms = CollectionSupport.emptyList();
         } else {
-            keyTransportEncryptionAlgorithms = List.copyOf(StringSupport.normalizeStringCollection(algorithms));
+            keyTransportEncryptionAlgorithms =
+                    CollectionSupport.copyToList(StringSupport.normalizeStringCollection(algorithms));
         }
     }
     
@@ -262,9 +258,9 @@ public class BasicEncryptionConfiguration extends BasicAlgorithmPolicyConfigurat
      */
     public void setKeyAgreementConfigurations(@Nullable final Map<String,KeyAgreementEncryptionConfiguration> configs) {
         if (configs == null) {
-            keyAgreementConfigurations = Collections.emptyMap();
+            keyAgreementConfigurations = CollectionSupport.emptyMap();
         } else {
-            keyAgreementConfigurations = Map.copyOf(configs);
+            keyAgreementConfigurations = CollectionSupport.copyToMap(configs);
         }
     }
     

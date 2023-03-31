@@ -28,9 +28,7 @@ import org.opensaml.xmlsec.encryption.support.PreDecryptionValidationException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DefaultPreDecryptionValidatorTest extends XMLObjectBaseTestCase {
     
     private DefaultPreDecryptionValidator validator;
@@ -67,13 +65,17 @@ public class DefaultPreDecryptionValidatorTest extends XMLObjectBaseTestCase {
 
     @Test(expectedExceptions=PreDecryptionValidationException.class)
     public void encryptedDataWithCipherReference() throws Exception {
-        encryptedData.getCipherData().setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
+        final CipherData cdata = encryptedData.getCipherData();
+        assert cdata != null;
+        cdata.setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
         validator.validate(encryptedData); 
     }
 
     @Test(expectedExceptions=PreDecryptionValidationException.class)
     public void encryptedKeyWithCipherReference() throws Exception {
-        encryptedKey.getCipherData().setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
+        final CipherData cdata = encryptedKey.getCipherData();
+        assert cdata != null;
+        cdata.setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
         validator.validate(encryptedKey); 
     }
 

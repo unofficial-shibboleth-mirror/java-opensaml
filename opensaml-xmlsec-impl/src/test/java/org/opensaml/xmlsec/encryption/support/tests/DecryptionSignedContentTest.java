@@ -26,6 +26,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.KeyPair;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -107,7 +109,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         Element signedElement = getSignedElement();
 
         // Unmarshall to XMLObject
-        XMLObject signedXMLObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
+        XMLObject signedXMLObject = unmarshallerFactory.ensureUnmarshaller(signedElement).unmarshall(signedElement);
         Assert.assertTrue(signedXMLObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) signedXMLObject;
 
@@ -124,7 +126,7 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         Document document = parserPool.parse(input);
         tempfile.delete();
         Element encDataElement = document.getDocumentElement();
-        XMLObject encryptedXMLObject = unmarshallerFactory.getUnmarshaller(encDataElement).unmarshall(encDataElement);
+        XMLObject encryptedXMLObject = unmarshallerFactory.ensureUnmarshaller(encDataElement).unmarshall(encDataElement);
         Assert.assertTrue(encryptedXMLObject instanceof EncryptedData);
         EncryptedData encryptedData2 = (EncryptedData) encryptedXMLObject;
 
@@ -135,14 +137,18 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
         SignableSimpleXMLObject decryptedSXO = (SignableSimpleXMLObject) decryptedXMLObject;
 
-        Signature decryptedSignature = decryptedSXO.getSignature();
+        final Signature decryptedSignature = decryptedSXO.getSignature();
+        assert decryptedSignature != null;
+        final Element sigDOM = decryptedSignature.getDOM();
+        assert sigDOM != null;
 
         // Sanity check that DOM-based ID resolution using Document getElementById
         // is working correctly
-        Element resolvedElement = decryptedSignature.getDOM().getOwnerDocument().getElementById(idValue);
+        final Element resolvedElement = sigDOM.getOwnerDocument().getElementById(idValue);
         Assert.assertNotNull(resolvedElement, "Document getElementById found no element");
-        Assert.assertTrue(decryptedSXO.getDOM()
-                .isSameNode(resolvedElement), "Document getElementById found different element");
+        final Element dom2 = decryptedSXO.getDOM();
+        assert dom2 != null;
+        Assert.assertTrue(dom2.isSameNode(resolvedElement), "Document getElementById found different element");
 
         // Verify signature of the decrypted content - this is where bug was reported.
         SignatureValidator.validate(decryptedSignature, signingCredential);
@@ -157,15 +163,17 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testPlainRoundTripSignature() throws MarshallingException, UnmarshallingException, SignatureException {
-        Element signedElement = getSignedElement();
+        final Element signedElement = getSignedElement();
 
-        XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(signedElement).unmarshall(signedElement);
+        final XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(signedElement).unmarshall(signedElement);
         Assert.assertTrue(xmlObject instanceof SignableSimpleXMLObject);
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) xmlObject;
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) xmlObject;
 
+        final Signature signature = sxo.getSignature();
+        assert signature != null;
         try {
-            SignatureValidator.validate(sxo.getSignature(), signingCredential);
-        } catch (SignatureException e) {
+            SignatureValidator.validate(signature, signingCredential);
+        } catch (final SignatureException e) {
             Assert.fail("Signature validation failed: " + e);
         }
     }
@@ -178,16 +186,16 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
      * @throws MarshallingException ...
      * @throws SignatureException ...
      */
-    private Element getSignedElement() throws MarshallingException, SignatureException {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
+    @Nonnull private Element getSignedElement() throws MarshallingException, SignatureException {
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
         sxo.setId(idValue);
 
-        Signature sig = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
+        final Signature sig = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
         sig.setSigningCredential(signingCredential);
         sig.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
 
-        DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference(idValue);
+        final DocumentInternalIDContentReference contentReference = new DocumentInternalIDContentReference(idValue);
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);
         contentReference.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
         contentReference.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
@@ -195,8 +203,8 @@ public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
         sxo.setSignature(sig);
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
-        Element signedElement = marshaller.marshall(sxo);
+        final Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
+        final Element signedElement = marshaller.marshall(sxo);
 
         Signer.signObject(sig);
         return signedElement;

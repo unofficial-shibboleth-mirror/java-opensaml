@@ -23,6 +23,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -32,6 +34,7 @@ import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -64,15 +67,16 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     public void testEmptyChain() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertTrue(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());
+        Assert.assertTrue(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -87,15 +91,16 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     public void testSingleEKInline() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleInline.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertTrue(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());
+        Assert.assertTrue(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -115,15 +120,16 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     public void testSingleEKRetrievalMethod() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverSingleRetrievalMethod.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertTrue(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertTrue(keyInfo.getEncryptedKeys().isEmpty());
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -143,15 +149,16 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     public void testMultiEKWithOneRecipient() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -172,15 +179,16 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     public void testMultiEKWithTwoRecipients() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/ChainingEncryptedKeyResolverMultiple.xml";
         SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
         EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
         
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getEncryptedKeys().isEmpty());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -205,9 +213,14 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
      * @param sxo the mock object to process
      * @return a list of EncryptedKey elements
      */
-    private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
+    private List<EncryptedKey> getEncryptedKeys(@Nonnull final SignableSimpleXMLObject sxo) {
         List<EncryptedKey> allKeys = new ArrayList<>();
-        allKeys.addAll(sxo.getSimpleXMLObjects().get(0).getEncryptedData().getKeyInfo().getEncryptedKeys());
+        
+        final EncryptedData edata = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert edata != null;
+        final KeyInfo keyInfo = edata.getKeyInfo();
+        assert keyInfo != null;
+        allKeys.addAll(keyInfo.getEncryptedKeys());
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
            if (xmlObject instanceof EncryptedKey)  {
                allKeys.add((EncryptedKey) xmlObject);

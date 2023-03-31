@@ -113,7 +113,7 @@ public class ConcatKDF extends AbstractInitializableComponent
     @Nullable private String suppPrivInfo;
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nonnull public String getAlgorithm() {
         return EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF;
     }
     
@@ -246,7 +246,7 @@ public class ConcatKDF extends AbstractInitializableComponent
         if (digestMethod == null) {
             digestMethod = DEFAULT_DIGEST_METHOD;
         } else {
-            final AlgorithmDescriptor descriptor = AlgorithmSupport.getGlobalAlgorithmRegistry().get(digestMethod);
+            final AlgorithmDescriptor descriptor = AlgorithmSupport.ensureGlobalAlgorithmRegistry().get(digestMethod);
             if (descriptor == null) {
                 throw new ComponentInitializationException("Specified digest algorithm is unknown: " + digestMethod);
             }
@@ -265,7 +265,7 @@ public class ConcatKDF extends AbstractInitializableComponent
     }
 
     /** {@inheritDoc} */
-    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+    @Nonnull public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nullable final Integer keyLength) throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
@@ -457,7 +457,7 @@ public class ConcatKDF extends AbstractInitializableComponent
     }
     
     /** {@inheritDoc} */
-    public XMLObject buildXMLObject() {
+    @Nonnull public XMLObject buildXMLObject() {
         checkComponentActive();
         
         final KeyDerivationMethod method =
@@ -511,11 +511,12 @@ public class ConcatKDF extends AbstractInitializableComponent
         
         final ConcatKDF parameter = new ConcatKDF();
         
-        if (xmlParams.getDigestMethod() == null || xmlParams.getDigestMethod().getAlgorithm() == null) {
+        final DigestMethod digest = xmlParams.getDigestMethod();
+        if (digest == null || digest.getAlgorithm() == null) {
             throw new ComponentInitializationException("KeyDerivationMethod did not contain DigestMethod value");
         }
         
-        parameter.setDigestMethod(xmlParams.getDigestMethod().getAlgorithm());
+        parameter.setDigestMethod(digest.getAlgorithm());
         
         try {
             parameter.setAlgorithmID(unpadParam(xmlParams.getAlgorithmID(), "AlgorithmID"));

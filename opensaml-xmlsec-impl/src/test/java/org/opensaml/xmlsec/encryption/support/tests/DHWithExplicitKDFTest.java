@@ -73,9 +73,7 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DHWithExplicitKDFTest extends XMLObjectBaseTestCase {
     
     private String targetFile;

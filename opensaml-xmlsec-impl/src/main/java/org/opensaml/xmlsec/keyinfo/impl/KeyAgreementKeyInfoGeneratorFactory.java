@@ -34,10 +34,12 @@ import org.opensaml.xmlsec.encryption.KANonce;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A factory implementation which produces instances of {@link KeyInfoGenerator} capable of 
@@ -46,11 +48,10 @@ import org.slf4j.LoggerFactory;
 public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
     
     /** The set of options configured for the factory. */
-    private final KeyAgreementOptions options;
+    @Nonnull private final KeyAgreementOptions options;
     
     /** Constructor. */
     public KeyAgreementKeyInfoGeneratorFactory() {
-        super();
         options = (KeyAgreementOptions) super.getOptions();
     }
     
@@ -163,7 +164,7 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
     public class KeyAgreementKeyInfoGenerator extends BasicKeyInfoGenerator {
 
         /** Class logger. */
-        private final Logger log = LoggerFactory.getLogger(KeyAgreementKeyInfoGenerator.class);
+        @Nonnull private final Logger log = LoggerFactory.getLogger(KeyAgreementKeyInfoGenerator.class);
         
         /** The set of options to be used by the generator.*/
         private KeyAgreementOptions options;
@@ -177,7 +178,7 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
          * @param newOptions the options to be used by the generator
          * @param type the KeyInfo element type
          */
-        protected KeyAgreementKeyInfoGenerator(final KeyAgreementOptions newOptions,
+        protected KeyAgreementKeyInfoGenerator(@Nonnull final KeyAgreementOptions newOptions,
                 final Class<? extends KeyInfo> type) {
             super(newOptions, type);
             options = newOptions;
@@ -261,17 +262,19 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
             
             if (options.emitOriginatorKeyInfo) {
                 if (options.originatorKeyInfoGeneratorManager == null) {
-                    log.warn("KeyInfoGeneratorManager for OriginatorKeyInfo is null, can not process");
-                    return;
-                }
-                if (credential.getOriginatorCredential() == null) {
-                    log.warn("KeyAgreementCredential originator credential is null, can not process");
+                    log.warn("KeyInfoGeneratorManager for OriginatorKeyInfo is null, cannot process");
                     return;
                 }
 
-                final KeyInfo originatorKeyInfo = options.originatorKeyInfoGeneratorManager
-                        .getFactory(credential.getOriginatorCredential())
-                        .newInstance(OriginatorKeyInfo.class)
+                assert options.originatorKeyInfoGeneratorManager != null;
+                final KeyInfoGeneratorFactory factory = options.originatorKeyInfoGeneratorManager
+                        .getFactory(credential.getOriginatorCredential());
+                if (factory == null) {
+                    log.warn("KeyInfoGeneratorFactory for OriginatorKeyInfo is unavailable");
+                    return;
+                }
+                
+                final KeyInfo originatorKeyInfo = factory.newInstance(OriginatorKeyInfo.class)
                         .generate(credential.getOriginatorCredential());
                 if (originatorKeyInfo == null) {
                     log.warn("Failed to generate KeyInfo from KeyAgreementCredential originator Credential");
@@ -301,17 +304,19 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
             
             if (options.emitRecipientKeyInfo) {
                 if (options.recipientKeyInfoGeneratorManager == null) {
-                    log.warn("KeyInfoGeneratorManager for RecipientKeyInfo is null, can not process");
-                    return;
-                }
-                if (credential.getRecipientCredential() == null) {
-                    log.warn("KeyAgreementCredential recipient credential is null, can not process");
+                    log.warn("KeyInfoGeneratorManager for RecipientKeyInfo is null, cannot process");
                     return;
                 }
                 
-                final KeyInfo recipientKeyInfo = options.recipientKeyInfoGeneratorManager
-                        .getFactory(credential.getRecipientCredential())
-                        .newInstance(RecipientKeyInfo.class)
+                assert options.recipientKeyInfoGeneratorManager != null;
+                final KeyInfoGeneratorFactory factory = options.recipientKeyInfoGeneratorManager
+                        .getFactory(credential.getRecipientCredential());
+                if (factory == null) {
+                    log.warn("KeyInfoGeneratorFactory for RecipientKeyInfo is unavailable");
+                    return;
+                }
+                
+                final KeyInfo recipientKeyInfo = factory.newInstance(RecipientKeyInfo.class)
                         .generate(credential.getRecipientCredential());
                 if (recipientKeyInfo == null) {
                     log.warn("Failed to generate KeyInfo from KeyAgreementCredential recipient Credential");
@@ -341,10 +346,10 @@ public class KeyAgreementKeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFa
        private boolean emitRecipientKeyInfo;
        
        /** KeyInfo generator manager for OriginatorKeyInfo elements. */
-       private KeyInfoGeneratorManager  originatorKeyInfoGeneratorManager;
+       @Nullable private KeyInfoGeneratorManager  originatorKeyInfoGeneratorManager;
        
        /** KeyInfo generator manager for RecipientKeyInfo elements. */
-       private KeyInfoGeneratorManager recipientKeyInfoGeneratorManager;
+       @Nullable private KeyInfoGeneratorManager recipientKeyInfoGeneratorManager;
        
        /** Constructor. */
        protected KeyAgreementOptions() {

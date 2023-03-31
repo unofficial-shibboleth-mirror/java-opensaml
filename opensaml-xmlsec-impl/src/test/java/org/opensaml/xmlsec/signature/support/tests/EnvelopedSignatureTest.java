@@ -102,9 +102,10 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
         
+        assert signature != null;
         Signer.signObject(signature);
         
         if (log.isDebugEnabled()) {
@@ -135,13 +136,13 @@ public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         Assert.assertEquals(sxo.getId(), "FOO", "Id attribute was not expected value");
 
         Signature signature = sxo.getSignature();
-        Assert.assertNotNull(signature, "Signature was null");
+        assert signature != null;
 
         KeyInfo keyInfo = signature.getKeyInfo();
         Assert.assertNotNull(keyInfo, "Signature's KeyInfo was null");

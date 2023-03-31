@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.impl;
 
+import static org.testng.Assert.assertNull;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -201,9 +203,9 @@ public class BasicDecryptionParametersResolverTest {
         Assert.assertTrue(params.getExcludedAlgorithms().contains("bar"));
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullCriteriaSet() throws ResolverException {
-        resolver.resolve(null);
+        assertNull(resolver.resolveSingle(null));
     }
 
     @Test(expectedExceptions=ConstraintViolationException.class)

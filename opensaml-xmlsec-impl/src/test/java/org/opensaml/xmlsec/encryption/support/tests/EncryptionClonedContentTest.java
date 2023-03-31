@@ -32,9 +32,7 @@ import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EncryptionClonedContentTest extends XMLObjectBaseTestCase {
     
     private String targetFile;

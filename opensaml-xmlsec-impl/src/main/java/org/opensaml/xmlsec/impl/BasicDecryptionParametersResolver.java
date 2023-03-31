@@ -17,12 +17,12 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.Collections;
-
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -33,7 +33,6 @@ import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Basic implementation of {@link DecryptionParametersResolver}.
@@ -49,29 +48,33 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
         implements DecryptionParametersResolver {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(BasicDecryptionParametersResolver.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(BasicDecryptionParametersResolver.class);
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<DecryptionParameters> resolve(@Nonnull final CriteriaSet criteria) 
+    @Nonnull public Iterable<DecryptionParameters> resolve(@Nullable final CriteriaSet criteria) 
             throws ResolverException {
         
         final DecryptionParameters params = resolveSingle(criteria);
         if (params != null) {
-            return Collections.singletonList(params);
+            return CollectionSupport.singletonList(params);
         }
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
-    @Nullable public DecryptionParameters resolveSingle(@Nonnull final CriteriaSet criteria) throws ResolverException {
-        Constraint.isNotNull(criteria, "CriteriaSet was null");
-        Constraint.isNotNull(criteria.get(DecryptionConfigurationCriterion.class), 
+    @Nullable public DecryptionParameters resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
+        if (criteria == null) {
+            log.debug("CriteriaSet was null");
+            return null;
+        }
+
+        final DecryptionConfigurationCriterion criterion = Constraint.isNotNull(
+                criteria.get(DecryptionConfigurationCriterion.class),
                 "Resolver requires an instance of DecryptionConfigurationCriterion");
         
         final DecryptionParameters params = new DecryptionParameters();
         
-        resolveAndPopulateIncludesExcludes(params, criteria, 
-                criteria.get(DecryptionConfigurationCriterion.class).getConfigurations());
+        resolveAndPopulateIncludesExcludes(params, criteria, criterion.getConfigurations());
         
         params.setDataKeyInfoCredentialResolver(resolveDataKeyInfoCredentialResolver(criteria));
         params.setKEKKeyInfoCredentialResolver(resolveKEKKeyInfoCredentialResolver(criteria));
@@ -113,8 +116,10 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
      */
     @Nullable protected EncryptedKeyResolver resolveEncryptedKeyResolver(@Nonnull final CriteriaSet criteria) {
         
-        for (final DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class)
-                .getConfigurations()) {
+        final DecryptionConfigurationCriterion criterion = criteria.get(DecryptionConfigurationCriterion.class);
+        assert criterion != null;
+
+        for (final DecryptionConfiguration config : criterion.getConfigurations()) {
             if (config.getEncryptedKeyResolver() != null) {
                 return config.getEncryptedKeyResolver();
             }
@@ -132,8 +137,10 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
     @Nullable protected KeyInfoCredentialResolver resolveKEKKeyInfoCredentialResolver(
             @Nonnull final CriteriaSet criteria) {
         
-        for (final DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class)
-                .getConfigurations()) {
+        final DecryptionConfigurationCriterion criterion = criteria.get(DecryptionConfigurationCriterion.class);
+        assert criterion != null;
+
+        for (final DecryptionConfiguration config : criterion.getConfigurations()) {
             if (config.getKEKKeyInfoCredentialResolver() != null) {
                 return config.getKEKKeyInfoCredentialResolver();
             }
@@ -151,8 +158,10 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
     @Nullable protected KeyInfoCredentialResolver resolveDataKeyInfoCredentialResolver(
             @Nonnull final CriteriaSet criteria) {
         
-        for (final DecryptionConfiguration config : criteria.get(DecryptionConfigurationCriterion.class)
-                .getConfigurations()) {
+        final DecryptionConfigurationCriterion criterion = criteria.get(DecryptionConfigurationCriterion.class);
+        assert criterion != null;
+
+        for (final DecryptionConfiguration config : criterion.getConfigurations()) {
             if (config.getDataKeyInfoCredentialResolver() != null) {
                 return config.getDataKeyInfoCredentialResolver();
             }

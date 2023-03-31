@@ -19,7 +19,6 @@ package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.security.Key;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,9 +29,9 @@ import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.collection.LazySet;
-
 
 /**
  *  Resolution context class that is used to supply state information to, and to share information
@@ -50,23 +49,23 @@ import net.shibboleth.shared.collection.LazySet;
 public class KeyInfoResolutionContext {
     
     /** The KeyInfo being processed. */
-    private KeyInfo keyInfo;
+    @Nullable private KeyInfo keyInfo;
     
     /** Key names which are known to be associated with the KeyInfo being processed.
      * These may have for example been extracted from KeyName elements present,
      * or may have been inferred from the context in which the KeyInfo exists or
      * is being used. */
-    private final Set<String> keyNames;
+    @Nonnull private final Set<String> keyNames;
     
     /** Get the key currently known to be represented by the KeyInfo. */
-    private Key key;
+    @Nullable private Key key;
     
     /** This list provides KeyInfo resolvers and providers in a particular processing
      * environment access to credentials that may have already been previously resolved. */
-    private final Collection<Credential> resolvedCredentials;
+    @Nonnull private final Collection<Credential> resolvedCredentials;
     
     /** Extensible map of properties used to share state amongst providers and/or resolver logic. */
-    private final Map<String, Object> properties;
+    @Nonnull private final Map<String, Object> properties;
     
     /**
      * Constructor.
@@ -76,7 +75,7 @@ public class KeyInfoResolutionContext {
      */
     public KeyInfoResolutionContext(
             @Nonnull @ParameterName(name="credentials") final Collection<Credential> credentials) {
-        resolvedCredentials = Collections.unmodifiableCollection(credentials);
+        resolvedCredentials = CollectionSupport.copyToList(credentials);
         properties = new LazyMap<>();
         keyNames = new LazySet<>();
     }

@@ -31,7 +31,6 @@ import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.derivation.KeyDerivationException;
 import org.opensaml.xmlsec.derivation.KeyDerivationSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Charsets;
 import com.google.common.primitives.Bytes;
@@ -39,6 +38,7 @@ import com.google.common.primitives.Bytes;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -48,7 +48,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class DHLegacyKDF {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(DHLegacyKDF.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(DHLegacyKDF.class);
     
     /** Digest method. */
     @Nullable private String digestMethod;
@@ -92,11 +92,24 @@ public class DHLegacyKDF {
         nonce = StringSupport.trimOrNull(newNonce);
     }
 
-    /** {@inheritDoc} */
-    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+    /**
+     * Derrive secret key from inouts.
+     * 
+     * @param secret underlying secret
+     * @param keyAlgorithm key algorithm
+     * @param keyLength key length
+     * 
+     * @return derived key
+     * 
+     * @throws KeyDerivationException on failure
+     */
+    @Nonnull public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nullable final Integer keyLength) throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
+        if (digestMethod == null) {
+            throw new KeyDerivationException("Digest method not set");
+        }
         
         final String jcaKeyAlgorithm = KeyDerivationSupport.getJCAKeyAlgorithm(keyAlgorithm);
         
@@ -123,6 +136,7 @@ public class DHLegacyKDF {
         
         byte[] derived = new byte[] {};
         
+        assert digestMethod != null;
         final String jcaDigest = AlgorithmSupport.getAlgorithmID(digestMethod);
         if (jcaDigest == null) {
             log.warn("Could not resolve JCA algorithm ID from URI: {}", jcaDigest);

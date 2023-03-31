@@ -29,16 +29,14 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class GlobalKeyAgreementProcessorRegistryTest extends OpenSAMLInitBaseTestCase {
     
     @Test
     public void basic() {
-       KeyAgreementProcessorRegistry registry = KeyAgreementSupport.getGlobalProcessorRegistry(); 
+       final KeyAgreementProcessorRegistry registry = KeyAgreementSupport.getGlobalProcessorRegistry(); 
+       assert registry != null;
        
-       Assert.assertNotNull(registry);
        Assert.assertEquals(registry.getRegisteredAlgorithms().size(), 3);
        
        Assert.assertEquals(registry.getRegisteredAlgorithms(), CollectionSupport.setOf(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES,

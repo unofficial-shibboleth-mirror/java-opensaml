@@ -74,9 +74,7 @@ import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DHWithLegacyKDFTest extends XMLObjectBaseTestCase {
     
     private String targetFile;

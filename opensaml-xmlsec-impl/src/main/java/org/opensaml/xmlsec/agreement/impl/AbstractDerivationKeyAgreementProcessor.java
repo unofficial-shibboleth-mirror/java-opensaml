@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.agreement.impl;
 
-
 import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
 
@@ -35,7 +34,7 @@ import org.opensaml.xmlsec.derivation.KeyDerivationException;
 public abstract class AbstractDerivationKeyAgreementProcessor extends AbstractKeyAgreementProcessor {
 
     /** {@inheritDoc} */
-    protected SecretKey deriveSecretKey(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+    @Nonnull protected SecretKey deriveSecretKey(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
         final KeyDerivation keyDerivation = parameters.stream()
@@ -47,7 +46,8 @@ public abstract class AbstractDerivationKeyAgreementProcessor extends AbstractKe
             throw new KeyAgreementException("Required KeyDerivation parameter was not supplied");
         }
         
-        final Integer keySize = parameters.contains(KeySize.class) ? parameters.get(KeySize.class).getSize() : null;
+        final KeySize keySizeParam = parameters.get(KeySize.class);
+        final Integer keySize = keySizeParam != null ? keySizeParam.getSize() : null;
         
         KeyAgreementSupport.validateKeyAlgorithmAndSize(keyAlgorithm, keySize);
         

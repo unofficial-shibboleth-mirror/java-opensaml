@@ -28,11 +28,11 @@ import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.KeyAgreementSupport;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Lists;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A component which parses an instance of {@link AgreementMethod} and produces a new instance
@@ -41,7 +41,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class KeyAgreementParametersParser {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(KeyAgreementParametersParser.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(KeyAgreementParametersParser.class);
 
     /**
      * Parse the specified {@link AgreementMethod} into an instance of {@link KeyAgreementParameters}.
@@ -68,6 +68,7 @@ public class KeyAgreementParametersParser {
         }
         
         for (final XMLObject xmlChild : xmlChildren) {
+            assert xmlChild != null;
             boolean handled = false;
             for (final KeyAgreementParameterParser parser : parsers) {
                 if (parser.handles(xmlChild)) {
@@ -108,4 +109,5 @@ public class KeyAgreementParametersParser {
         final ServiceLoader<KeyAgreementParameterParser> loader = ServiceLoader.load(KeyAgreementParameterParser.class);
         return Lists.newArrayList(loader);
     }
+
 }

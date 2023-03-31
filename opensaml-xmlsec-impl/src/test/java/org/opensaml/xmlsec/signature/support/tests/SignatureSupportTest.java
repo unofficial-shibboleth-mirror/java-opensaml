@@ -30,6 +30,7 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.config.impl.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
@@ -38,6 +39,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class SignatureSupportTest extends XMLObjectBaseTestCase {
     
     private Credential signingCredential;
@@ -48,8 +50,10 @@ public class SignatureSupportTest extends XMLObjectBaseTestCase {
     public void initializeKeyPairAndGenerator() throws NoSuchAlgorithmException, NoSuchProviderException {
         KeyPair keyPair = KeySupport.generateKeyPair("RSA", 1024, null);
         signingCredential = CredentialSupport.getSimpleCredential(keyPair.getPublic(), keyPair.getPrivate());
-        keyInfoGenerator = DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager()
-                .getDefaultManager().getFactory(signingCredential).newInstance();
+        final KeyInfoGeneratorFactory factory = DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager()
+                .getDefaultManager().getFactory(signingCredential);
+        assert factory != null;
+        keyInfoGenerator = factory.newInstance();
     }
     
     @Test

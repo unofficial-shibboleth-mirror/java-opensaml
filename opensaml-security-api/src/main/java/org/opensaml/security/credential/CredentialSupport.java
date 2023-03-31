@@ -33,7 +33,6 @@ import org.opensaml.security.x509.BasicX509Credential;
  */
 public final class CredentialSupport {
     
-    
     /** Constructor. */
     private CredentialSupport() { }
 
@@ -43,10 +42,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the encryption key
      * @return the encryption key (either a public key or a secret (symmetric) key
      */
-    @Nullable public static Key extractEncryptionKey(@Nullable final Credential credential) {
-        if (credential == null) {
-            return null;
-        }
+    @Nullable public static Key extractEncryptionKey(@Nonnull final Credential credential) {
         if (credential.getPublicKey() != null) {
             return credential.getPublicKey();
         }
@@ -59,10 +55,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the decryption key
      * @return the decryption key (either a private key or a secret (symmetric) key
      */
-    @Nullable public static Key extractDecryptionKey(@Nullable final Credential credential) {
-        if (credential == null) {
-            return null;
-        }
+    @Nullable public static Key extractDecryptionKey(@Nonnull final Credential credential) {
         if (credential.getPrivateKey() != null) {
             return credential.getPrivateKey();
         }
@@ -75,10 +68,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the signing key
      * @return the signing key (either a private key or a secret (symmetric) key
      */
-    @Nullable public static Key extractSigningKey(@Nullable final Credential credential) {
-        if (credential == null) {
-            return null;
-        }
+    @Nullable public static Key extractSigningKey(@Nonnull final Credential credential) {
         if (credential.getPrivateKey() != null) {
             return credential.getPrivateKey();
         }
@@ -91,10 +81,7 @@ public final class CredentialSupport {
      * @param credential the credential containing the verification key
      * @return the verification key (either a public key or a secret (symmetric) key
      */
-    @Nullable public static Key extractVerificationKey(@Nullable final Credential credential) {
-        if (credential == null) {
-            return null;
-        }
+    @Nullable public static Key extractVerificationKey(@Nonnull final Credential credential) {
         if (credential.getPublicKey() != null) {
             return credential.getPublicKey();
         }

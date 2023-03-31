@@ -377,36 +377,21 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testCertConversionXMLtoJava() throws CertificateException {
-        java.security.cert.X509Certificate javaCert = null;
-        try {
-            javaCert = KeyInfoSupport.getCertificate(xmlCert1);
-        } catch (CertificateException e) {
-            Assert.fail("Conversion from XML X509Certificate format to java.security.cert.X509Certificate failed: " + e);
-        }
-        Assert.assertNotNull(javaCert, "Cert1 was null, failed to convert from XML to Java representation");
+        java.security.cert.X509Certificate javaCert = KeyInfoSupport.getCertificate(xmlCert1);
+        assert javaCert != null;
         Assert.assertEquals(javaCert.getSubjectX500Principal().getName(X500Principal.RFC2253), cert1SubjectDN,
                 "Cert1 SubjectDN");
         Assert.assertEquals(javaCert, X509Support.decodeCertificate(xmlCert1.getValue()),
                 "Java cert was not the expected value");
 
-        List<java.security.cert.X509Certificate> javaCertList = null;
-
-        try {
-            javaCertList = KeyInfoSupport.getCertificates(xmlX509Data);
-        } catch (CertificateException e) {
-            Assert.fail("Obtaining certs from X509Data failed: " + e);
-        }
+        List<java.security.cert.X509Certificate> javaCertList = KeyInfoSupport.getCertificates(xmlX509Data);
         Assert.assertEquals(javaCertList.size(), numExpectedCerts, "# of certs returned");
         Assert.assertEquals(javaCertList.get(0).getSubjectX500Principal().getName(X500Principal.RFC2253), cert1SubjectDN,
                 "Cert1 SubjectDN");
         Assert.assertEquals(javaCertList.get(1).getSubjectX500Principal().getName(X500Principal.RFC2253), cert2SubjectDN,
                 "Cert2 SubjectDN");
 
-        try {
-            javaCertList = KeyInfoSupport.getCertificates(keyInfo);
-        } catch (CertificateException e) {
-            Assert.fail("Obtaining certs from KeyInfo failed: " + e);
-        }
+        javaCertList = KeyInfoSupport.getCertificates(keyInfo);
         Assert.assertEquals(javaCertList.size(), numExpectedCerts, "# of certs returned");
         Assert.assertEquals(javaCertList.get(0).getSubjectX500Principal().getName(X500Principal.RFC2253), cert1SubjectDN,
                 "Cert1 SubjectDN");
@@ -422,37 +407,22 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testCRLConversionXMLtoJava() throws CertificateException, CRLException {
-        java.security.cert.X509CRL javaCRL = null;
-        try {
-            javaCRL = KeyInfoSupport.getCRL(xmlCRL1);
-        } catch (CRLException e) {
-            Assert.fail("Conversion from XML X509CRL format to java.security.cert.X509CRL failed: " + e);
-        }
-        Assert.assertNotNull(javaCRL, "CRL was null, failed to convert from XML to Java representation");
+        final java.security.cert.X509CRL javaCRL = KeyInfoSupport.getCRL(xmlCRL1);
+        assert javaCRL != null;
         Assert.assertEquals(javaCRL.getIssuerX500Principal().getName(X500Principal.RFC2253), crl1IssuerDN, "CRL IssuerDN");
         Assert.assertEquals(javaCRL, X509Support.decodeCRL(xmlCRL1.getValue()),
                 "Java CRL was not the expected value");
 
-        List<java.security.cert.X509CRL> javaCRLList = null;
+        List<java.security.cert.X509CRL> javaCRLList = KeyInfoSupport.getCRLs(xmlX509Data);
 
-        try {
-            javaCRLList = KeyInfoSupport.getCRLs(xmlX509Data);
-        } catch (CRLException e) {
-            Assert.fail("Obtaining CRLs from X509Data failed: " + e);
-        }
         Assert.assertEquals(javaCRLList.size(), numExpectedCRLs, "# of CRLs returned");
         Assert.assertEquals(javaCRLList.get(0).getIssuerX500Principal().getName(X500Principal.RFC2253), crl1IssuerDN,
                 "CRL IssuerDN");
 
-        try {
-            javaCRLList = KeyInfoSupport.getCRLs(keyInfo);
-        } catch (CRLException e) {
-            Assert.fail("Obtaining CRLs from KeInfo failed: " + e);
-        }
+        javaCRLList = KeyInfoSupport.getCRLs(keyInfo);
         Assert.assertEquals(javaCRLList.size(), numExpectedCRLs, "# of CRLs returned");
         Assert.assertEquals(javaCRLList.get(0).getIssuerX500Principal().getName(X500Principal.RFC2253), crl1IssuerDN,
                 "CRL IssuerDN");
-
     }
 
     /**
@@ -462,13 +432,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testCertConversionJavaToXML() throws CertificateException {
-        X509Certificate xmlCert = null;
-        try {
-            xmlCert = KeyInfoSupport.buildX509Certificate(javaCert1);
-        } catch (CertificateEncodingException e) {
-            Assert.fail("Conversion from Java X509Certificate to XMLObject failed: " + e);
-        }
-
+        final X509Certificate xmlCert = KeyInfoSupport.buildX509Certificate(javaCert1);
         Assert.assertEquals(X509Support.decodeCertificate(xmlCert.getValue()), javaCert1,
                 "Java X509Certificate encoding to XMLObject failed");
     }
@@ -481,13 +445,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testCRLConversionJavaToXML() throws CertificateException, CRLException {
-        X509CRL xmlCRL = null;
-        try {
-            xmlCRL = KeyInfoSupport.buildX509CRL(javaCRL1);
-        } catch (CRLException e) {
-            Assert.fail("Conversion from Java X509CRL to XMLObject failed: " + e);
-        }
-
+        final X509CRL xmlCRL = KeyInfoSupport.buildX509CRL(javaCRL1);
         Assert.assertEquals(X509Support.decodeCRL(xmlCRL.getValue()), javaCRL1,
                 "Java X509CRL encoding to XMLObject failed");
     }

@@ -1043,9 +1043,9 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertNull(params);
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullCriteriaSet() throws ResolverException {
-        resolver.resolve(null);
+        Assert.assertNull(resolver.resolveSingle(null));
     }
 
     @Test(expectedExceptions=ConstraintViolationException.class)

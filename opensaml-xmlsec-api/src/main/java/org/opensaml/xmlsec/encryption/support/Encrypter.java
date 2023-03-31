@@ -46,6 +46,7 @@ import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallerFactory;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -298,7 +299,9 @@ public class Encrypter {
 
         checkParams(kekParams, false);
 
-        final Key encryptionKey = CredentialSupport.extractEncryptionKey(kekParams.getEncryptionCredential());
+        final Credential encryptionCred = kekParams.getEncryptionCredential();
+        final Key encryptionKey = encryptionCred != null
+                ? CredentialSupport.extractEncryptionKey(encryptionCred) : null;
         if (encryptionKey == null) {
             throw new EncryptionException("Unable to obtain encryption key from parameters");
         }
@@ -571,8 +574,11 @@ public class Encrypter {
         checkParams(encParams, kekParamsList);
 
         final String encryptionAlgorithmURI = encParams.getAlgorithm();
+        // Checked above.
         assert encryptionAlgorithmURI != null;
-        Key encryptionKey = CredentialSupport.extractEncryptionKey(encParams.getEncryptionCredential());
+        
+        final Credential encryptionCred = encParams.getEncryptionCredential();
+        Key encryptionKey = encryptionCred != null ? CredentialSupport.extractEncryptionKey(encryptionCred) : null;
         if (encryptionKey == null) {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
         }
@@ -664,7 +670,9 @@ public class Encrypter {
             log.error("Key encryption parameters are required");
             throw new EncryptionException("Key encryption parameters are required");
         }
-        final Key key = CredentialSupport.extractEncryptionKey(kekParams.getEncryptionCredential());
+        
+        final Credential encryptionCred = kekParams.getEncryptionCredential();
+        final Key key = encryptionCred != null ? CredentialSupport.extractEncryptionKey(encryptionCred) : null;
         if (key == null) {
             log.error("Key encryption credential and contained key are required");
             throw new EncryptionException("Key encryption credential and contained key are required");
@@ -715,7 +723,9 @@ public class Encrypter {
         checkParams(encParams);
         checkParams(kekParamsList, true);
 
-        if (CredentialSupport.extractEncryptionKey(encParams.getEncryptionCredential()) == null
+        final Credential encryptionCred = encParams.getEncryptionCredential();
+        
+        if ((encryptionCred == null || CredentialSupport.extractEncryptionKey(encryptionCred) == null)
                 && (kekParamsList == null || kekParamsList.isEmpty())) {
             log.error("Using a generated encryption key requires a KeyEncryptionParameters "
                     + "object and key encryption key");

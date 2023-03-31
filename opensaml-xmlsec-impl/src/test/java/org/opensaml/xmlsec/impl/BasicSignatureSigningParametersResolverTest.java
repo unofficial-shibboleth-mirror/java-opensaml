@@ -471,9 +471,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         assertNull(params);
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullCriteriaSet() throws ResolverException {
-        resolver.resolve(null);
+        assertNull(resolver.resolveSingle(null));
     }
 
     @Test(expectedExceptions=ConstraintViolationException.class)

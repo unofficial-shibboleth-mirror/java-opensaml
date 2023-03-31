@@ -100,7 +100,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
         
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 2, "Unexpected number of KeyInfo children");
@@ -125,7 +125,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
         
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
         Assert.assertEquals(keyInfo.getKeyNames().size(), 2, "Unexpected number of KeyName elements");
@@ -146,7 +146,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
         
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
         Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
@@ -180,7 +180,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
         
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 5, "Unexpected # of KeyInfo children found");
     }
@@ -210,7 +210,7 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         Assert.assertTrue(type.isInstance(keyInfo));
         
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 2, "Unexpected number of KeyInfo children");

@@ -51,6 +51,7 @@ import net.shibboleth.shared.testing.RepositorySupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.impl.BasicParserPool;
 
+@SuppressWarnings("javadoc")
 public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */
@@ -103,15 +104,16 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
 
+        assert signature != null;
         Signer.signObject(signature);
         if (log.isDebugEnabled()) {
             log.debug("Marshalled deatched Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
 
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(signedElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(signedElement);
         sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(signedElement);
         signature = (Signature) sxo.getOrderedChildren().get(1);
 
@@ -150,7 +152,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         contentReference.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         signature.getContentReferences().add(contentReference);
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(signature);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(signature);
         Element signatureElement = marshaller.marshall(signature);
 
         Signer.signObject(signature);

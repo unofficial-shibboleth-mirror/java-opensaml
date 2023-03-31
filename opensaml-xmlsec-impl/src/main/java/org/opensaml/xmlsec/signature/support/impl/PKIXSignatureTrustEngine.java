@@ -25,6 +25,7 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -43,7 +44,6 @@ import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * An implementation of {@link org.opensaml.xmlsec.signature.support.SignatureTrustEngine} which evaluates the validity
@@ -62,16 +62,16 @@ public class PKIXSignatureTrustEngine extends
         PKIXTrustEngine<Signature> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(PKIXSignatureTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(PKIXSignatureTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private final PKIXValidationInformationResolver pkixResolver;
+    @Nonnull private final PKIXValidationInformationResolver pkixResolver;
 
     /** The external PKIX trust evaluator used to establish trust. */
-    private final PKIXTrustEvaluator pkixTrustEvaluator;
+    @Nonnull private final PKIXTrustEvaluator pkixTrustEvaluator;
 
     /** The external credential name evaluator used to establish trusted name compliance. */
-    private final X509CredentialNameEvaluator credNameEvaluator;
+    @Nullable private final X509CredentialNameEvaluator credNameEvaluator;
 
     /**
      * Constructor.
@@ -214,6 +214,11 @@ public class PKIXSignatureTrustEngine extends
         }
         final X509Credential untrustedX509Credential = (X509Credential) untrustedCredential;
 
+        if (validationPair == null) {
+            log.debug("PKIX validation information not available. Aborting PKIX validation");
+            return false;
+        }
+        
         final Set<String> trustedNames = validationPair.getFirst();
         final Iterable<PKIXValidationInformation> validationInfoSet = validationPair.getSecond();
         if (validationInfoSet == null) {
@@ -227,6 +232,7 @@ public class PKIXSignatureTrustEngine extends
         }
 
         for (final PKIXValidationInformation validationInfo : validationInfoSet) {
+            assert validationInfo != null;
             try {
                 if (pkixTrustEvaluator.validate(validationInfo, untrustedX509Credential)) {
                     log.debug("Signature trust established via PKIX validation of signing credential");
@@ -299,6 +305,7 @@ public class PKIXSignatureTrustEngine extends
                     + "skipping trusted name evaluation");
            return true; 
         } else {
+            assert credNameEvaluator != null;
             return credNameEvaluator.evaluate(untrustedCredential, trustedNames);
         }
 

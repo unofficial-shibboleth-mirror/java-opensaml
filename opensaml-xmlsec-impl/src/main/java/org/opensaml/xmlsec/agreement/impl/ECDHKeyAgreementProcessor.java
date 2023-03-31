@@ -26,6 +26,7 @@ import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
@@ -35,7 +36,8 @@ import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Implementation of {@link KeyAgreementProcessor} which performs Elliptic Curve Diffie-Hellman (ECDH)
@@ -44,15 +46,15 @@ import org.slf4j.LoggerFactory;
 public class ECDHKeyAgreementProcessor extends AbstractDerivationKeyAgreementProcessor {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(ECDHKeyAgreementProcessor.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ECDHKeyAgreementProcessor.class);
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nonnull public String getAlgorithm() {
         return EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES;
     }
 
     /** {@inheritDoc} */
-    protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
+    @Nullable protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
         final Credential suppliedCredential = super.obtainPrivateCredential(publicCredential, parameters);
@@ -78,7 +80,7 @@ public class ECDHKeyAgreementProcessor extends AbstractDerivationKeyAgreementPro
     }
 
     /** {@inheritDoc} */
-    protected byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
+    @Nonnull protected byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
             @Nonnull final Credential privateCredential, @Nonnull final KeyAgreementParameters parameters)
                     throws KeyAgreementException {
         

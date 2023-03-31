@@ -22,13 +22,15 @@ import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.crypto.SecretKey;
 import javax.xml.namespace.QName;
 
-import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialResolver;
+import org.opensaml.security.credential.CredentialContextSet;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.impl.CollectionCredentialResolver;
 import org.opensaml.security.crypto.JCAConstants;
@@ -36,18 +38,16 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.impl.ECDHKeyAgreementProcessor;
-import org.opensaml.xmlsec.agreement.impl.PrivateCredential;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
-import org.opensaml.xmlsec.config.impl.DefaultSecurityConfigurationBootstrap;
 import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedType;
 import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeySize;
+import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
+import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
-import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
-import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.opensaml.xmlsec.keyinfo.impl.provider.AgreementMethodKeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DEREncodedKeyValueProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.DSAKeyValueProvider;
@@ -61,14 +61,11 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.google.common.collect.Iterables;
-import com.google.common.collect.Lists;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     private LocalKeyInfoCredentialResolver resolver;
@@ -156,7 +153,8 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
         
         // Parameters
         Assert.assertTrue(keyAgreementCred.getParameters().contains(ConcatKDF.class));
-        ConcatKDF kdf = keyAgreementCred.getParameters().get(ConcatKDF.class);
+        final ConcatKDF kdf = keyAgreementCred.getParameters().get(ConcatKDF.class);
+        assert kdf != null;
         Assert.assertEquals(kdf.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
         Assert.assertEquals(kdf.getAlgorithmID(), "AA");
         Assert.assertEquals(kdf.getPartyUInfo(), "BB");
@@ -164,17 +162,20 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(kdf.getSuppPubInfo(), "DD");
         Assert.assertEquals(kdf.getSuppPrivInfo(), "EE");
         
-        Assert.assertTrue(keyAgreementCred.getCredentialContextSet().contains(KeyInfoCredentialContext.class));
-        Assert.assertSame(keyAgreementCred.getCredentialContextSet().get(KeyInfoCredentialContext.class).getKeyInfo(), keyInfo);
+        final CredentialContextSet ctx = keyAgreementCred.getCredentialContextSet();
+        assert ctx != null;
+        final KeyInfoCredentialContext keyInfoCtx = ctx.get(KeyInfoCredentialContext.class);
+        assert keyInfoCtx != null;
+        Assert.assertSame(keyInfoCtx.getKeyInfo(), keyInfo);
     }
     
     @Test
     public void agreementAlgorithmNotRegistered() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
         
         keyInfo.getAgreementMethods().get(0).setAlgorithm("INVALID");
         
-        Iterable<Credential> creds = resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
+        final Iterable<Credential> creds = resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
         
         Assert.assertNotNull(creds);
         Assert.assertEquals(Iterables.size(creds), 0);
@@ -182,11 +183,11 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     @Test
     public void agreementMethodNotGranndchildOfEncryptedType() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
         
         keyInfo.setParent(null);
         
-        Iterable<Credential> creds = resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
+        final Iterable<Credential> creds = resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
         
         Assert.assertNotNull(creds);
         Assert.assertEquals(Iterables.size(creds), 0);
@@ -194,25 +195,28 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions = ResolverException.class)
     public void missingEncryptionAlgorithm() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
-        
-        EncryptedType.class.cast(keyInfo.getParent()).getEncryptionMethod().setAlgorithm(null);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final EncryptionMethod method = EncryptedType.class.cast(keyInfo.getParent()).getEncryptionMethod(); 
+        assert method != null;
+        method.setAlgorithm(null);
         
         resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
     }
     
     @Test(expectedExceptions = ResolverException.class)
     public void unknownEncryptionAlgorithm() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
         
-        EncryptedType.class.cast(keyInfo.getParent()).getEncryptionMethod().setAlgorithm("INVALID");
+        final EncryptionMethod method = EncryptedType.class.cast(keyInfo.getParent()).getEncryptionMethod(); 
+        assert method != null;
+        method.setAlgorithm("INVALID");
         
         resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
     }
     
     @Test(expectedExceptions = ResolverException.class)
     public void missingOriginatorKeyInfo() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
         
         keyInfo.getAgreementMethods().get(0).setOriginatorKeyInfo(null);
         
@@ -221,17 +225,19 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions = ResolverException.class)
     public void originatorCredResolutionFailedMissingKeyInfoData() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final OriginatorKeyInfo oki = keyInfo.getAgreementMethods().get(0).getOriginatorKeyInfo();
+        assert oki != null;
         
-        keyInfo.getAgreementMethods().get(0).getOriginatorKeyInfo().getDEREncodedKeyValues().clear();
-        keyInfo.getAgreementMethods().get(0).getOriginatorKeyInfo().getKeyValues().clear();
+        oki.getDEREncodedKeyValues().clear();
+        oki.getKeyValues().clear();
         
         resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
     }
     
     @Test(expectedExceptions = ResolverException.class)
     public void missingRecipientKeyInfo() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
         
         keyInfo.getAgreementMethods().get(0).setRecipientKeyInfo(null);
         
@@ -240,10 +246,12 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions = ResolverException.class)
     public void recipientCredResolutionFailedMissingKeyInfoData() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final RecipientKeyInfo rki = keyInfo.getAgreementMethods().get(0).getRecipientKeyInfo(); 
+        assert rki != null;
         
-        keyInfo.getAgreementMethods().get(0).getRecipientKeyInfo().getDEREncodedKeyValues().clear();
-        keyInfo.getAgreementMethods().get(0).getRecipientKeyInfo().getKeyValues().clear();
+        rki.getDEREncodedKeyValues().clear();
+        rki.getKeyValues().clear();
         
         resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
     }
@@ -251,7 +259,7 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions = ResolverException.class)
     public void recipientCredResolutionFailedAtCredentialResolver() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
         
         recipientLocalCredResolver.getCollection().clear();
         
@@ -260,7 +268,7 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions = ResolverException.class)
     public void recipientCredMissingPrivateKey() throws Exception {
-        KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
+        final KeyInfo keyInfo = prepareAndValidateKeyInfo(credKeyAgreementOriginatorEC);
         
         recipientLocalCredResolver.getCollection().clear();
         recipientLocalCredResolver.getCollection().add(credRecipientPublicEC);
@@ -268,22 +276,22 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
         resolver.resolve(new CriteriaSet(new KeyInfoCriterion(keyInfo)));
     }
     
-    
-    
     //
     // Helpers
     //
     
-    private KeyInfo prepareAndValidateKeyInfo(KeyAgreementCredential cred) throws SecurityException {
+    @Nonnull private KeyInfo prepareAndValidateKeyInfo(KeyAgreementCredential cred) throws SecurityException {
         KeyInfo keyInfo = keyInfoFactory.newInstance().generate(credKeyAgreementOriginatorEC);
-        Assert.assertNotNull(keyInfo);
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        assert keyInfo != null;
+        final List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         makeEncryptionMethodChild(keyInfo, expectedEncryptionAlgorithm, null, EncryptedData.DEFAULT_ELEMENT_NAME); 
         return keyInfo;
     }
     
-    private EncryptedType makeEncryptionMethodChild(KeyInfo keyinfo, String algorithm, Integer keySize, QName elementType) {
+    @Nonnull private EncryptedType makeEncryptionMethodChild(KeyInfo keyinfo, String algorithm, Integer keySize, QName elementType) {
         EncryptedType encryptedType = buildXMLObject(elementType);
         encryptedType.setKeyInfo(keyinfo);
         
@@ -298,11 +306,12 @@ public class AgreementMethodTest extends XMLObjectBaseTestCase {
         return encryptedType;
     }
     
-    private void validateDerivedKey(Credential credential, String algorithmURI) {
-        Assert.assertNotNull(credential);
+    private void validateDerivedKey(@Nonnull final Credential credential, @Nonnull final String algorithmURI) {
         Assert.assertNotNull(credential.getSecretKey());
-        Assert.assertEquals(credential.getSecretKey().getAlgorithm(), AlgorithmSupport.getKeyAlgorithm(algorithmURI));
-        Assert.assertEquals(KeySupport.getKeyLength(credential.getSecretKey()), AlgorithmSupport.getKeyLength(algorithmURI));
+        final SecretKey skey = credential.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), AlgorithmSupport.getKeyAlgorithm(algorithmURI));
+        Assert.assertEquals(KeySupport.getKeyLength(skey), AlgorithmSupport.getKeyLength(algorithmURI));
     }
 
 }

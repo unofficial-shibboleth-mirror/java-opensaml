@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.agreement.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import org.opensaml.security.credential.Credential;
@@ -26,7 +27,8 @@ import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Abstract base class for {@link KeyAgreementProcessor} implementations.
@@ -34,7 +36,7 @@ import org.slf4j.LoggerFactory;
 public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProcessor {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractKeyAgreementProcessor.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractKeyAgreementProcessor.class);
 
     /** {@inheritDoc} */
     @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
@@ -45,6 +47,9 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
         final KeyAgreementParameters parameters = new KeyAgreementParameters(inputParameters);
         
         final Credential privateCredential = obtainPrivateCredential(publicCredential, parameters);
+        if (privateCredential == null) {
+            throw new KeyAgreementException("Unable to obtain or derive private key");
+        }
         
         final byte[] secret = generateAgreementSecret(publicCredential, privateCredential, parameters);
         
@@ -63,12 +68,13 @@ public abstract class AbstractKeyAgreementProcessor implements KeyAgreementProce
      * 
      * @throws KeyAgreementException if private credential can not be obtained
      */
-    @Nonnull protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
+    @Nullable protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
-        if (parameters.contains(PrivateCredential.class)) {
+        final PrivateCredential priv = parameters.get(PrivateCredential.class);
+        if (priv != null) {
             log.debug("Found supplied PrivateCredential in KeyAgreementParameters");
-            return parameters.get(PrivateCredential.class).getCredential();
+            return priv.getCredential();
         }
         return null;
         

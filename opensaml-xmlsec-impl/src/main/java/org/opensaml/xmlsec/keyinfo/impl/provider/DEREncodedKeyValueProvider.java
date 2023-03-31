@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -38,7 +39,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider} which supports {@link DEREncodedKeyValue}.
@@ -46,7 +46,7 @@ import org.slf4j.LoggerFactory;
 public class DEREncodedKeyValueProvider extends AbstractKeyInfoProvider {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(DEREncodedKeyValueProvider.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(DEREncodedKeyValueProvider.class);
 
     /** {@inheritDoc} */
     public boolean handles(@Nonnull final XMLObject keyInfoChild) {
@@ -73,7 +73,8 @@ public class DEREncodedKeyValueProvider extends AbstractKeyInfoProvider {
             throw new SecurityException("Error extracting DER-encoded key value", e);
         }
         
-        final KeyAlgorithmCriterion algorithmCriteria = criteriaSet.get(KeyAlgorithmCriterion.class);
+        final KeyAlgorithmCriterion algorithmCriteria =
+                criteriaSet != null ? criteriaSet.get(KeyAlgorithmCriterion.class) : null;
         if (algorithmCriteria != null && algorithmCriteria.getKeyAlgorithm() != null
                 && !algorithmCriteria.getKeyAlgorithm().equals(pubKey.getAlgorithm())) {
             log.debug("Criteria specified key algorithm {}, actually {}, skipping",

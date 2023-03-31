@@ -17,7 +17,8 @@
 
 package org.opensaml.xmlsec.messaging.impl;
 
-import java.util.Collections;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -30,13 +31,14 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /** Unit test for {@link PopulateSignatureValidationParametersHandler}. */
+@SuppressWarnings("javadoc")
 public class PopulateSignatureValidationParametersHandlerTest extends OpenSAMLInitBaseTestCase {
 
     private MessageContext messageContext;
@@ -53,14 +55,6 @@ public class PopulateSignatureValidationParametersHandlerTest extends OpenSAMLIn
         handler.initialize();
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testNoContext() throws Exception {
-        handler.setSignatureValidationParametersResolver(new MockResolver(false));
-        handler.initialize();
-        
-        handler.invoke(null);
-    }
-    
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testResolverError() throws Exception {
         handler.setSignatureValidationParametersResolver(new MockResolver(true));
@@ -74,7 +68,7 @@ public class PopulateSignatureValidationParametersHandlerTest extends OpenSAMLIn
         handler.initialize();
         
         handler.invoke(messageContext);
-        Assert.assertNotNull(messageContext.getSubcontext(SecurityParametersContext.class).getSignatureValidationParameters());
+        Assert.assertNotNull(messageContext.ensureSubcontext(SecurityParametersContext.class).getSignatureValidationParameters());
     }    
     
     private class MockResolver implements SignatureValidationParametersResolver {
@@ -86,18 +80,21 @@ public class PopulateSignatureValidationParametersHandlerTest extends OpenSAMLIn
         }
         
         /** {@inheritDoc} */
-        @Override
-        public Iterable<SignatureValidationParameters> resolve(CriteriaSet criteria) throws ResolverException {
-            return Collections.singletonList(resolveSingle(criteria));
+        @Nonnull public Iterable<SignatureValidationParameters> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+            final var params = resolveSingle(criteria);
+            if (params != null) {
+                return CollectionSupport.singletonList(params);
+            }
+            return CollectionSupport.emptyList();
         }
 
         /** {@inheritDoc} */
-        @Override
-        public SignatureValidationParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
+        @Nullable public SignatureValidationParameters resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
             if (throwException) {
                 throw new ResolverException();
             }
             
+            assert criteria != null;
             Constraint.isNotNull(criteria.get(SignatureValidationConfigurationCriterion.class), "Criterion was null");
             return new SignatureValidationParameters();
         }

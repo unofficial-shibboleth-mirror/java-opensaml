@@ -122,9 +122,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
         
+        assert signature != null;
         Signer.signObject(signature);
         
         if (log.isDebugEnabled()) {
@@ -152,9 +153,10 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
         
+        assert signature != null;
         Signer.signObject(signature);
         
         if (log.isDebugEnabled()) {
@@ -184,16 +186,16 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         Assert.assertEquals(sxo.getId(), "FOO", "Id attribute was not expected value");
 
         Signature signature = sxo.getSignature();
-        Assert.assertNotNull(signature, "Signature was null");
+        assert signature != null;
 
         KeyInfo keyInfo = signature.getKeyInfo();
-        Assert.assertNotNull(keyInfo, "Signature's KeyInfo was null");
+        assert keyInfo != null;
         
         KeyName keyName = keyInfo.getKeyNames().get(0);
         Assert.assertNotNull(keyName, "KeyName was null");
@@ -216,16 +218,16 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
         Document envelopedSignatureDoc = parserPool.parse(ins);
         Element rootElement = envelopedSignatureDoc.getDocumentElement();
 
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(rootElement);
+        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(rootElement);
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(rootElement);
 
         Assert.assertEquals(sxo.getId(), "FOO", "Id attribute was not expected value");
 
         Signature signature = sxo.getSignature();
-        Assert.assertNotNull(signature, "Signature was null");
+        assert signature != null;
 
         KeyInfo keyInfo = signature.getKeyInfo();
-        Assert.assertNotNull(keyInfo, "Signature's KeyInfo was null");
+        assert keyInfo != null;
         
         KeyName keyName = keyInfo.getKeyNames().get(0);
         Assert.assertNotNull(keyName, "KeyName was null");
@@ -245,13 +247,14 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
     public void testMarshallNoOutputLength() throws MarshallingException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(false);
         Signature signature = sxo.getSignature();
+        assert signature != null;
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
         marshaller.marshall(sxo);
         
         Assert.assertNotNull(signature.getDOM(), "Signature DOM was null");
         XMLSignature apacheSignature = ((SignatureImpl) signature).getXMLSignature();
-        Assert.assertNotNull(apacheSignature, "Apache XMLSignature was null");
+        assert apacheSignature != null;
         SignedInfo apacheSignedInfo = apacheSignature.getSignedInfo(); 
         Assert.assertNotNull(apacheSignedInfo, "Apache SignedInfo was null");
         Element sigMethodElement = apacheSignedInfo.getSignatureMethodElement();
@@ -269,13 +272,14 @@ public class HMACSignatureTest extends XMLObjectBaseTestCase {
     public void testMarshallWithOutputLength() throws MarshallingException {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature(true);
         Signature signature = sxo.getSignature();
+        assert signature != null;
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo);
+        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
         marshaller.marshall(sxo);
         
         Assert.assertNotNull(signature.getDOM(), "Signature DOM was null");
         XMLSignature apacheSignature = ((SignatureImpl) signature).getXMLSignature();
-        Assert.assertNotNull(apacheSignature, "Apache XMLSignature was null");
+        assert apacheSignature != null;
         SignedInfo apacheSignedInfo = apacheSignature.getSignedInfo(); 
         Assert.assertNotNull(apacheSignedInfo, "Apache SignedInfo was null");
         Element sigMethodElement = apacheSignedInfo.getSignatureMethodElement();

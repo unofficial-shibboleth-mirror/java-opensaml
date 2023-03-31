@@ -30,25 +30,25 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.codec.Base64Support;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DHLegacyKDFTest extends OpenSAMLInitBaseTestCase {
     
     @Test
     public void specTestVector() throws Exception {
         // This tests the example test data from XML Encryption 1.1 section 5.6.2.2.
-        DHLegacyKDF kdf = new DHLegacyKDF(); 
+        DHLegacyKDF kdf = new DHLegacyKDF();
         kdf.setDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         kdf.setNonce("Zm9v");
         
+        final String nonce = kdf.getNonce();
+        assert nonce != null;
         byte[] digestCounter1 = kdf.digest(
                 1,
                 JCAConstants.DIGEST_SHA1,
                 Hex.decodeHex("DEADBEEF"),
                 "Example:Block/Alg",
                 80,
-                Base64Support.decode(kdf.getNonce()));
+                Base64Support.decode(nonce));
         
         // The value in the original spec document Example 41 is incorrect, as indicated by the errata:
         // https://www.w3.org/2008/xmlsec/errata/xmlenc-core-11-errata.html

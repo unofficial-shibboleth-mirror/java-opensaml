@@ -21,6 +21,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -36,7 +37,6 @@ import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -62,10 +62,10 @@ import com.google.common.base.Strings;
 public abstract class BaseSignatureTrustEngine<TrustBasisType> implements SignatureTrustEngine {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(BaseSignatureTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(BaseSignatureTrustEngine.class);
 
     /** KeyInfo credential resolver used to obtain the signing credential from a Signature's KeyInfo. */
-    private final KeyInfoCredentialResolver keyInfoCredentialResolver;
+    @Nonnull private final KeyInfoCredentialResolver keyInfoCredentialResolver;
 
     /**
      * Constructor.
@@ -78,7 +78,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
     }
 
     /** {@inheritDoc} */
-    @Nullable public KeyInfoCredentialResolver getKeyInfoResolver() {
+    @Nonnull public KeyInfoCredentialResolver getKeyInfoResolver() {
         return keyInfoCredentialResolver;
     }
     
@@ -87,6 +87,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
             throws SecurityException {
         
         checkParams(signature, trustBasisCriteria);
+        assert trustBasisCriteria != null;
         
         final SignatureValidationParametersCriterion validationCriterion = 
                 trustBasisCriteria.get(SignatureValidationParametersCriterion.class);
@@ -124,6 +125,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
             @Nullable final Credential candidateCredential) throws SecurityException {
         
         checkParamsRaw(signature, content, algorithmURI, trustBasisCriteria);
+        assert trustBasisCriteria != null;
         
         final SignatureValidationParametersCriterion validationCriterion = 
                 trustBasisCriteria.get(SignatureValidationParametersCriterion.class);
@@ -195,6 +197,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
 
             try {
                 for (final Credential kiCred : getKeyInfoResolver().resolve(keyInfoCriteriaSet)) {
+                    assert kiCred != null;
                     if (verifySignature(signature, kiCred)) {
                         log.debug("Successfully verified signature using KeyInfo-derived credential");
                         log.debug("Attempting to establish trust of KeyInfo-derived credential");
@@ -255,12 +258,10 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * @param trustBasisCriteria the set of trusted credential criteria
      * @throws SecurityException thrown if required values are absent or otherwise invalid
      */
-    protected void checkParams(@Nonnull final Signature signature, @Nonnull final CriteriaSet trustBasisCriteria)
+    protected void checkParams(@Nonnull final Signature signature, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException {
 
-        if (signature == null) {
-            throw new SecurityException("Signature cannot be null");
-        } else if (trustBasisCriteria == null) {
+        if (trustBasisCriteria == null) {
             throw new SecurityException("Trust basis criteria set cannot be null");
         } else if (trustBasisCriteria.isEmpty()) {
             throw new SecurityException("Trust basis criteria set cannot be empty");
@@ -277,7 +278,7 @@ public abstract class BaseSignatureTrustEngine<TrustBasisType> implements Signat
      * @throws SecurityException thrown if required values are absent or otherwise invalid
      */
     protected void checkParamsRaw(@Nonnull final byte[] signature, @Nonnull final byte[] content,
-            @Nonnull final String algorithmURI, @Nonnull final CriteriaSet trustBasisCriteria)
+            @Nonnull final String algorithmURI, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException {
 
         if (signature == null || signature.length == 0) {

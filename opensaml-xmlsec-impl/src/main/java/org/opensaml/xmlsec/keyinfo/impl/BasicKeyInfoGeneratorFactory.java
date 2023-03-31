@@ -18,6 +18,7 @@
 package org.opensaml.xmlsec.keyinfo.impl;
 
 import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.spec.InvalidKeySpecException;
 import java.util.HashMap;
 import java.util.List;
@@ -62,7 +63,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
     }
     
     /** The set of options configured for the factory. */
-    private final BasicOptions options;
+    @Nonnull private final BasicOptions options;
     
     /**
      * Constructor.
@@ -245,7 +246,7 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
          * 
          * @throws SecurityException if class type can not be mapped to an element {@link QName}
          */
-        protected KeyInfo buildKeyInfo() throws SecurityException {
+        @Nonnull protected KeyInfo buildKeyInfo() throws SecurityException {
             final QName elementName = classToElementName(keyInfoType);
             if (elementName == null) { 
                 throw new SecurityException("KeyInfo type not mapped to an element QName: "
@@ -308,17 +309,19 @@ public class BasicKeyInfoGeneratorFactory implements KeyInfoGeneratorFactory {
          */
         protected void processPublicKey(@Nonnull final KeyInfo keyInfo, @Nonnull final Credential credential)
             throws SecurityException {
-            if (credential.getPublicKey() != null) {
+            
+            final PublicKey key = credential.getPublicKey();
+            if (key != null) {
                 if (options.emitPublicKeyValue) {
                     try {
-                        KeyInfoSupport.addPublicKey(keyInfo, credential.getPublicKey());
+                        KeyInfoSupport.addPublicKey(keyInfo, key);
                     } catch (final EncodingException e) {
                         throw new SecurityException("Can't add public key to key info",e);
                     }
                 }
                 if (options.emitPublicDEREncodedKeyValue) {
                     try {
-                        KeyInfoSupport.addDEREncodedPublicKey(keyInfo, credential.getPublicKey());
+                        KeyInfoSupport.addDEREncodedPublicKey(keyInfo, key);
                     } catch (final NoSuchAlgorithmException e) {
                         throw new SecurityException("Can't DER-encode key, unsupported key algorithm", e);
                     } catch (final InvalidKeySpecException e) {

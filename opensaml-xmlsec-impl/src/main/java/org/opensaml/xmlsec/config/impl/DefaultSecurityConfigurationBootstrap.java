@@ -60,11 +60,11 @@ import org.opensaml.xmlsec.keyinfo.impl.provider.InlineX509DataProvider;
 import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A utility class which programmatically builds basic instances of various components 
@@ -83,7 +83,7 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull @NotEmpty public static final String PBKDF2 = "PBKDF2";
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(DefaultSecurityConfigurationBootstrap.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(DefaultSecurityConfigurationBootstrap.class);
     
     /** Constructor. */
     protected DefaultSecurityConfigurationBootstrap() {}
@@ -285,7 +285,7 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return an EncryptedKey resolver instance
      */
-    protected static EncryptedKeyResolver buildBasicEncryptedKeyResolver() {
+    @Nonnull protected static EncryptedKeyResolver buildBasicEncryptedKeyResolver() {
         final List<EncryptedKeyResolver> resolverChain = new ArrayList<>();
         resolverChain.add(new InlineEncryptedKeyResolver()); 
         resolverChain.add(new SimpleRetrievalMethodEncryptedKeyResolver());
@@ -299,7 +299,7 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a KeyInfo credential resolver instance
      */
-    public static KeyInfoCredentialResolver buildBasicInlineKeyInfoCredentialResolver() {
+    @Nonnull public static KeyInfoCredentialResolver buildBasicInlineKeyInfoCredentialResolver() {
         // Basic resolver for inline info
         final ArrayList<KeyInfoProvider> providers = new ArrayList<>();
         providers.add( new RSAKeyValueProvider() );
@@ -318,7 +318,7 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a named KeyInfo generator manager instance
      */
-    protected static NamedKeyInfoGeneratorManager buildDataEncryptionKeyInfoGeneratorManager() {
+    @Nonnull protected static NamedKeyInfoGeneratorManager buildDataEncryptionKeyInfoGeneratorManager() {
         // Generator for KeyAgreementCredentials. This factory already defaults the usually desired settings.
         final KeyAgreementKeyInfoGeneratorFactory keyAgreementFactory = new KeyAgreementKeyInfoGeneratorFactory();
         
@@ -333,7 +333,7 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a named KeyInfo generator manager instance
      */
-    protected static NamedKeyInfoGeneratorManager buildKeyTransportEncryptionKeyInfoGeneratorManager() {
+    @Nonnull protected static NamedKeyInfoGeneratorManager buildKeyTransportEncryptionKeyInfoGeneratorManager() {
         // Generator for KeyAgreementCredentials. This factory already defaults the usually desired settings.
         final KeyAgreementKeyInfoGeneratorFactory keyAgreementFactory = new KeyAgreementKeyInfoGeneratorFactory();
         
@@ -348,7 +348,7 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a named KeyInfo generator manager instance
      */
-    protected static NamedKeyInfoGeneratorManager buildSignatureKeyInfoGeneratorManager() {
+    @Nonnull protected static NamedKeyInfoGeneratorManager buildSignatureKeyInfoGeneratorManager() {
         final NamedKeyInfoGeneratorManager namedManager = new NamedKeyInfoGeneratorManager();
         
         namedManager.setUseDefaultManager(true);
@@ -376,7 +376,7 @@ public class DefaultSecurityConfigurationBootstrap {
      * 
      * @return a named KeyInfo generator manager instance
      */
-    public static NamedKeyInfoGeneratorManager buildBasicKeyInfoGeneratorManager() {
+    @Nonnull public static NamedKeyInfoGeneratorManager buildBasicKeyInfoGeneratorManager() {
         final NamedKeyInfoGeneratorManager namedManager = new NamedKeyInfoGeneratorManager();
         
         namedManager.setUseDefaultManager(true);

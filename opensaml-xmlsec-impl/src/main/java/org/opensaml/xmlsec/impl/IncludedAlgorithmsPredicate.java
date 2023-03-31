@@ -18,13 +18,13 @@
 package org.opensaml.xmlsec.impl;
 
 import java.util.Collection;
-import java.util.Set;
 import java.util.function.Predicate;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -42,7 +42,7 @@ public class IncludedAlgorithmsPredicate implements Predicate<String> {
      * @param algorithms collection of included algorithms
      */
     public IncludedAlgorithmsPredicate(@Nonnull final Collection<String> algorithms) {
-        includes = Set.copyOf(Constraint.isNotNull(algorithms, "Inclusions may not be null"));
+        includes = CollectionSupport.copyToSet(Constraint.isNotNull(algorithms, "Inclusions may not be null"));
     }
 
     /** {@inheritDoc} */

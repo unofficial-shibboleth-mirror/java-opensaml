@@ -37,9 +37,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ChainingSignatureTrustEngineTest extends XMLObjectBaseTestCase {
 
     private CriteriaSet criteriaSet;

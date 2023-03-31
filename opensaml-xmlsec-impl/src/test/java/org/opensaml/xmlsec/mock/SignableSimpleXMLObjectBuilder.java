@@ -21,6 +21,9 @@
 
 package org.opensaml.xmlsec.mock;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 
 /**
@@ -28,12 +31,13 @@ import org.opensaml.core.xml.AbstractXMLObjectBuilder;
  */
 public class SignableSimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SignableSimpleXMLObject> {
     
-    public SignableSimpleXMLObject buildObject(){
+    @Nonnull public SignableSimpleXMLObject buildObject(){
         return buildObject(SignableSimpleXMLObject.NAMESPACE, SignableSimpleXMLObject.LOCAL_NAME, SignableSimpleXMLObject.NAMESPACE_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SignableSimpleXMLObject buildObject(String namespaceURI, String localName, String namespacePrefix) {
+    @Nonnull public SignableSimpleXMLObject buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SignableSimpleXMLObject(namespaceURI, localName, namespacePrefix);
     }
 }

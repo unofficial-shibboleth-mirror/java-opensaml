@@ -37,9 +37,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ConcatKDFTest extends XMLObjectBaseTestCase {
     
     @Test
@@ -154,8 +152,9 @@ public class ConcatKDFTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(kdmParams.getSuppPubInfo(), "00DD");
         Assert.assertEquals(kdmParams.getSuppPrivInfo(), "00EE");
         
-        Assert.assertNotNull(kdmParams.getDigestMethod());
-        Assert.assertEquals(kdmParams.getDigestMethod().getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        final DigestMethod method = kdmParams.getDigestMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
     }
     
     @Test

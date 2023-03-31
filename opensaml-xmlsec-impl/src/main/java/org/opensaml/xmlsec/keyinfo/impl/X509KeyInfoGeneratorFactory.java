@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.keyinfo.impl;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CRLException;
 import java.security.cert.CertificateEncodingException;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -62,11 +63,10 @@ import net.shibboleth.shared.logic.Constraint;
 public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
     
     /** The set of options configured for the factory. */
-    private final X509Options options;
+    @Nonnull private final X509Options options;
     
     /** Constructor. */
     public X509KeyInfoGeneratorFactory() {
-        super();
         options = (X509Options) super.getOptions();
     }
     
@@ -460,10 +460,6 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
         protected void processEntityCertificate(@Nonnull final KeyInfo keyInfo, @Nonnull final X509Data x509Data,
                 @Nonnull final X509Credential credential) throws SecurityException {
             
-            if (credential.getEntityCertificate() == null) {
-                return;
-            }
-            
             final java.security.cert.X509Certificate javaCert = credential.getEntityCertificate();
             
             processCertX509DataOptions(x509Data, javaCert);
@@ -607,7 +603,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          * @param cert the certificate being processed
          * @return the issuer name
          */
-        protected String getIssuerName(@Nullable final java.security.cert.X509Certificate cert) {
+        @Nullable protected String getIssuerName(@Nullable final java.security.cert.X509Certificate cert) {
             if (cert == null) {
                 return null;
             } else if (!Strings.isNullOrEmpty(options.x500IssuerDNFormat)) {
@@ -625,7 +621,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          * @param cert the certificate being processed
          */
         protected void processSubjectDNKeyName(@Nonnull final KeyInfo keyInfo,
-                @Nullable final java.security.cert.X509Certificate cert) {
+                @Nonnull final java.security.cert.X509Certificate cert) {
             if (options.emitSubjectDNAsKeyName) {
                 final String subjectNameValue = getSubjectName(cert);
                 if (!Strings.isNullOrEmpty(subjectNameValue)) {
@@ -642,7 +638,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          * @param cert the certificate being processed
          */
         protected void processSubjectCNKeyName(@Nonnull final KeyInfo keyInfo,
-                @Nullable final java.security.cert.X509Certificate cert) {
+                @Nonnull final java.security.cert.X509Certificate cert) {
             if (options.emitSubjectCNAsKeyName) {
                 final List<String> cnames = X509Support.getCommonNames(cert.getSubjectX500Principal());
                 if (cnames != null) {
@@ -663,7 +659,7 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
          * @param cert the certificate being processed
          */
         protected void processSubjectAltNameKeyNames(@Nonnull final KeyInfo keyInfo,
-                @Nullable final java.security.cert.X509Certificate cert) {
+                @Nonnull final java.security.cert.X509Certificate cert) {
             if (options.emitSubjectAltNamesAsKeyNames && options.subjectAltNames.size() > 0) {
                 final Integer[] nameTypes = new Integer[ options.subjectAltNames.size() ];
                 options.subjectAltNames.toArray(nameTypes);
@@ -719,13 +715,16 @@ public class X509KeyInfoGeneratorFactory extends BasicKeyInfoGeneratorFactory {
                 @Nonnull final X509Credential credential) throws SecurityException {
             
             if (options.emitCRLs && credential.getCRLs() != null) {
-                for (final java.security.cert.X509CRL javaCRL : credential.getCRLs()) {
-                    try {
-                        final X509CRL xmlCRL = KeyInfoSupport.buildX509CRL(javaCRL);
-                        x509Data.getX509CRLs().add(xmlCRL);
-                    } catch (final CRLException e) {
-                        throw new SecurityException("Error generating X509CRL element " 
-                                + "from a CRL in credential's CRL list", e);
+                final Collection<java.security.cert.X509CRL> crls = credential.getCRLs();
+                if (crls != null) {
+                    for (final java.security.cert.X509CRL javaCRL : crls) {
+                        try {
+                            final X509CRL xmlCRL = KeyInfoSupport.buildX509CRL(javaCRL);
+                            x509Data.getX509CRLs().add(xmlCRL);
+                        } catch (final CRLException e) {
+                            throw new SecurityException("Error generating X509CRL element " 
+                                    + "from a CRL in credential's CRL list", e);
+                        }
                     }
                 }
             }

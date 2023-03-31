@@ -23,13 +23,14 @@ import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A signature prevalidator implementation which chains execution of a list of {@link SignaturePrevalidator} instances.
@@ -47,9 +48,10 @@ public class ChainingSignaturePrevalidator implements SignaturePrevalidator {
      *
      * @param validatorChain the chain of SignaturePrevalidator instances to execute
      */
-    public ChainingSignaturePrevalidator(@Nonnull @NonnullElements @ParameterName(name="validatorChain") 
-                                                      final List<SignaturePrevalidator> validatorChain) {
-        validators = List.copyOf(Constraint.isNotNull(validatorChain, "SignaturePrevalidator list cannot be null"));
+    public ChainingSignaturePrevalidator(
+            @Nonnull @ParameterName(name="validatorChain") final List<SignaturePrevalidator> validatorChain) {
+        validators = CollectionSupport.copyToList(
+                Constraint.isNotNull(validatorChain, "SignaturePrevalidator list cannot be null"));
     }
 
     /** {@inheritDoc} */

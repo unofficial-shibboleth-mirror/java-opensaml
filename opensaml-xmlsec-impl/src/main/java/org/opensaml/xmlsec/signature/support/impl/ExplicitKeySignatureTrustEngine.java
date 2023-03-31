@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -38,7 +39,6 @@ import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -57,13 +57,13 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         TrustedCredentialTrustEngine<Signature> {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ExplicitKeySignatureTrustEngine.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ExplicitKeySignatureTrustEngine.class);
 
     /** Resolver used for resolving trusted credentials. */
-    private final CredentialResolver credentialResolver;
+    @Nonnull private final CredentialResolver credentialResolver;
 
     /** The external explicit key trust engine to use as a basis for trust in this implementation. */
-    private final ExplicitKeyTrustEvaluator keyTrust;
+    @Nonnull private final ExplicitKeyTrustEvaluator keyTrust;
 
     /**
      * Constructor.
@@ -81,7 +81,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull public CredentialResolver getCredentialResolver() {
+    @Nonnull public CredentialResolver getCredentialResolver() {
         return credentialResolver;
     }
 
@@ -94,8 +94,11 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         if (!criteriaSet.contains(UsageCriterion.class)) {
             criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         }
-        final String jcaAlgorithm = AlgorithmSupport.getKeyAlgorithm(signature.getSignatureAlgorithm());
+        
+        final String signatureAlg = signature.getSignatureAlgorithm();
+        final String jcaAlgorithm = signatureAlg != null ? AlgorithmSupport.getKeyAlgorithm(signatureAlg) : null;
         if (!Strings.isNullOrEmpty(jcaAlgorithm)) {
+            assert jcaAlgorithm != null;
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 
@@ -116,6 +119,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         log.debug("Attempting to verify signature using trusted credentials");
 
         for (final Credential trustedCredential : trustedCredentials) {
+            assert trustedCredential != null;
             if (verifySignature(signature, trustedCredential)) {
                 log.debug("Successfully verified signature using resolved trusted credential");
                 return true;
@@ -138,6 +142,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         }
         final String jcaAlgorithm = AlgorithmSupport.getKeyAlgorithm(algorithmURI);
         if (!Strings.isNullOrEmpty(jcaAlgorithm)) {
+            assert jcaAlgorithm != null;
             criteriaSet.add(new KeyAlgorithmCriterion(jcaAlgorithm), true);
         }
 
@@ -173,6 +178,7 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
         log.debug("Attempting to verify signature using trusted credentials");
 
         for (final Credential trustedCredential : trustedCredentials) {
+            assert trustedCredential != null;
             try {
                 if (XMLSigningUtil.verifyWithURI(trustedCredential, algorithmURI, signature, content)) {
                     log.debug("Successfully verified signature using resolved trusted credential");
@@ -194,6 +200,12 @@ public class ExplicitKeySignatureTrustEngine extends BaseSignatureTrustEngine<It
     @Override protected boolean evaluateTrust(@Nonnull final Credential untrustedCredential,
             @Nullable final Iterable<Credential> trustedCredentials) throws SecurityException {
 
+        if (trustedCredentials == null) {
+            log.debug("No trusted credential supplied");
+            return false;
+        }
+        
         return keyTrust.validate(untrustedCredential, trustedCredentials);
     }
+
 }

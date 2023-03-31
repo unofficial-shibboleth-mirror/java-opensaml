@@ -544,7 +544,7 @@ public class KeyInfoSupport {
      * @param pk the native Java {@link PublicKey} to add
      * @throws EncodingException if base64 encoding the components of the public key <code>pk</code> fails
      */
-    public static void addPublicKey(@Nonnull final KeyInfo keyInfo, @Nullable final PublicKey pk) 
+    public static void addPublicKey(@Nonnull final KeyInfo keyInfo, @Nonnull final PublicKey pk) 
             throws EncodingException {
         Constraint.isNotNull(keyInfo, "KeyInfo cannot be null");
         
@@ -561,7 +561,7 @@ public class KeyInfoSupport {
         } else if (pk instanceof DHPublicKey) {
             keyValue.setDHKeyValue(buildDHKeyValue((DHPublicKey) pk));
         } else {
-            final String type = pk != null ? pk.getClass().getName() : "(null)";
+            final String type = pk.getClass().getName();
             throw new IllegalArgumentException("Saw unsupported public key type: " + type);
         }
 

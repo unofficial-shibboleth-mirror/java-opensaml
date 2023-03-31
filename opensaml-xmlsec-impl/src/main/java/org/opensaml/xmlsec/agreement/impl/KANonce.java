@@ -46,7 +46,7 @@ public class KANonce extends AbstractInitializableComponent
     implements XMLExpressableKeyAgreementParameter, CloneableKeyAgreementParameter {
     
     /** Default length for generated salt, in bytes. */
-    public static final Integer DEFAULT_GENERATED_LENGTH = 8;
+    @Nonnull public static final Integer DEFAULT_GENERATED_LENGTH = 8;
     
     /** Base64-encoded nonce value. */
     @Nullable private String value;

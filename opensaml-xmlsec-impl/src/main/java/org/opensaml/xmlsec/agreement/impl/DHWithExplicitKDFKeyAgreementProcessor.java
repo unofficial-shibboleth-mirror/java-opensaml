@@ -24,6 +24,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.interfaces.DHPrivateKey;
 import javax.crypto.interfaces.DHPublicKey;
 
@@ -35,7 +36,8 @@ import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Implementation of {@link KeyAgreementProcessor} which performs Diffie-Hellman
@@ -44,15 +46,15 @@ import org.slf4j.LoggerFactory;
 public class DHWithExplicitKDFKeyAgreementProcessor extends AbstractDerivationKeyAgreementProcessor {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(DHWithExplicitKDFKeyAgreementProcessor.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(DHWithExplicitKDFKeyAgreementProcessor.class);
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nonnull public String getAlgorithm() {
         return EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF;
     }
 
     /** {@inheritDoc} */
-    protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
+    @Nullable protected Credential obtainPrivateCredential(@Nonnull final Credential publicCredential,
             @Nonnull final KeyAgreementParameters parameters) throws KeyAgreementException {
         
         final Credential suppliedCredential = super.obtainPrivateCredential(publicCredential, parameters);
@@ -61,7 +63,6 @@ public class DHWithExplicitKDFKeyAgreementProcessor extends AbstractDerivationKe
         }
         
         log.debug("Found no supplied PrivateCredential in KeyAgreementParameters, generating ephemeral key pair");
-        
         
         if (!DHPublicKey.class.isInstance(publicCredential.getPublicKey())) {
             throw new KeyAgreementException("Public credential's public key is not an instance of DHPublicKey");
@@ -78,7 +79,7 @@ public class DHWithExplicitKDFKeyAgreementProcessor extends AbstractDerivationKe
     }
 
     /** {@inheritDoc} */
-    protected byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
+    @Nonnull protected byte[] generateAgreementSecret(@Nonnull final Credential publicCredential,
             @Nonnull final Credential privateCredential, @Nonnull final KeyAgreementParameters parameters)
                     throws KeyAgreementException {
         

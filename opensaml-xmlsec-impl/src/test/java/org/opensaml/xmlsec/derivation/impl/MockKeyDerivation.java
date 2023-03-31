@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.derivation.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.crypto.SecretKey;
 
 import org.opensaml.security.crypto.KeySupport;
@@ -30,15 +32,18 @@ import org.opensaml.xmlsec.derivation.KeyDerivationException;
 public class MockKeyDerivation implements KeyDerivation {
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nonnull public String getAlgorithm() {
         return "urn:test:MockKeyDerivation";
     }
 
     /** {@inheritDoc} */
-    public SecretKey derive(byte[] secret, String keyAlgorithm, Integer keyLength) throws KeyDerivationException {
+    @Nonnull public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+            @Nullable final Integer keyLength) throws KeyDerivationException {
         try {
-            String algo = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
-            Integer length = AlgorithmSupport.getKeyLength(keyAlgorithm);
+            final String algo = AlgorithmSupport.getKeyAlgorithm(keyAlgorithm);
+            assert algo != null;
+            final Integer length = AlgorithmSupport.getKeyLength(keyAlgorithm);
+            assert length != null;
             return KeySupport.generateKey(algo, length, null);
         } catch (Exception e) {
             throw new KeyDerivationException("Error generating mock derived key", e);

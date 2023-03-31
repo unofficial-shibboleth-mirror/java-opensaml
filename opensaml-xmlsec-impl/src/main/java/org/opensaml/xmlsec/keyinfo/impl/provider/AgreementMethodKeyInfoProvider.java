@@ -26,6 +26,7 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialContext;
+import org.opensaml.security.credential.CredentialContextSet;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
 import org.opensaml.xmlsec.agreement.KeyAgreementException;
 import org.opensaml.xmlsec.agreement.KeyAgreementParameters;
@@ -36,6 +37,7 @@ import org.opensaml.xmlsec.agreement.impl.KeyAgreementParametersParser;
 import org.opensaml.xmlsec.agreement.impl.PrivateCredential;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedType;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolutionMode;
@@ -44,9 +46,9 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -56,10 +58,10 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AgreementMethodKeyInfoProvider.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AgreementMethodKeyInfoProvider.class);
     
     /** Parser for AgreementMethod parameters. */
-    private final KeyAgreementParametersParser parametersParser = new KeyAgreementParametersParser();
+    @Nonnull private final KeyAgreementParametersParser parametersParser = new KeyAgreementParametersParser();
 
     /** {@inheritDoc} */
     public boolean handles(@Nonnull final XMLObject keyInfoChild) {
@@ -80,8 +82,8 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
             return false;
         }
         
-        if (agreementMethod.getParent() == null || agreementMethod.getParent().getParent() == null
-                || !EncryptedType.class.isInstance(agreementMethod.getParent().getParent())) {
+        final XMLObject parent = agreementMethod.getParent();
+        if (parent == null || parent.getParent() == null || !EncryptedType.class.isInstance(parent.getParent())) {
             log.debug("AgreementMethod is not the grandchild of an EncryptedType element");
             return false;
         }
@@ -100,8 +102,13 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
         }
         
         final AgreementMethod agreementMethod = AgreementMethod.class.cast(keyInfoChild);
-        final KeyAgreementProcessor processor =
-                KeyAgreementSupport.getGlobalProcessorRegistry().getProcessor(agreementMethod.getAlgorithm());
+        final String agreementAlg = agreementMethod.getAlgorithm();
+        
+        final KeyAgreementProcessor processor = agreementAlg != null
+                ? KeyAgreementSupport.ensureGlobalProcessorRegistry().getProcessor(agreementAlg) : null;
+        if (processor == null) {
+            throw new SecurityException("No KeyAgreementProcessor returned from registry");
+        }
         
         log.debug("Attempting to process key agreemenent for algorithm: {}", processor.getAlgorithm());
         
@@ -126,7 +133,10 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
 
         final CredentialContext credContext = buildCredentialContext(kiContext);
         if (credContext != null) {
-            cred.getCredentialContextSet().add(credContext);
+            final CredentialContextSet ctxset = cred.getCredentialContextSet();
+            if (ctxset != null) {
+                ctxset.add(credContext);
+            }
         }
 
         log.debug("Credential successfully produced by AgreementMethod with algorithm: {}", cred.getAlgorithm());
@@ -150,15 +160,23 @@ public class AgreementMethodKeyInfoProvider extends AbstractKeyInfoProvider {
      */
     @Nonnull private String resolveKeyAlgorithm(@Nonnull final AgreementMethod agreementMethod)
             throws SecurityException {
-        
+
         // This was already validated in handles(...)
-        final EncryptedType encrytpedType = EncryptedType.class.cast(agreementMethod.getParent().getParent());
+        final XMLObject parent = agreementMethod.getParent();
+        assert parent != null;
+        final EncryptedType encrytpedType = EncryptedType.class.cast(parent.getParent());
         
-        if (encrytpedType.getEncryptionMethod() == null || encrytpedType.getEncryptionMethod().getAlgorithm() == null) {
+        final EncryptionMethod method = encrytpedType.getEncryptionMethod();
+        if (method == null) {
+            throw new SecurityException("EncryptionMethod is missing");
+        }
+        
+        final String alg = method.getAlgorithm();
+        if (alg == null) {
             throw new SecurityException("EncryptedType contains no EncryptionMethod algorithm");
         }
         
-        return encrytpedType.getEncryptionMethod().getAlgorithm();
+        return alg;
     }
 
     /**

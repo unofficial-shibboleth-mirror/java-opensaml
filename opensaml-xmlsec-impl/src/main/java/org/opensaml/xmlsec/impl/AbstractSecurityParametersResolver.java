@@ -29,6 +29,8 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Resolver;
 
@@ -41,9 +43,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.NamedKeyInfoGeneratorManager;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
 
 /**
  * Abstract base class for security parameters resolvers which supplies commonly used functionality for reuse.
@@ -54,7 +54,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         implements Resolver<ProductType, CriteriaSet>{
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AbstractSecurityParametersResolver.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AbstractSecurityParametersResolver.class);
     
     /**
      * Resolve a {@link KeyInfoGenerator} instance based on a {@link NamedKeyInfoGeneratorManager}, 
@@ -160,7 +160,7 @@ public abstract class AbstractSecurityParametersResolver<ProductType>
         
         if (includes.isEmpty() && excludes.isEmpty()) {
             log.trace("Both empty, returning alwaysTrue predicate");
-            return Predicates.alwaysTrue();
+            return PredicateSupport.alwaysTrue();
         }
         
         if (includes.isEmpty()) {

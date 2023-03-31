@@ -22,6 +22,7 @@ import javax.annotation.Nonnull;
 import org.apache.xml.security.Init;
 import org.apache.xml.security.exceptions.XMLSecurityException;
 import org.apache.xml.security.signature.XMLSignature;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.impl.SignatureImpl;
@@ -55,8 +56,15 @@ public class ApacheSantuarioSignerProviderImpl implements SignerProvider {
                 throw new SignatureException(
                         "XMLObject does not have XMLSignature instance, unable to compute signature");
             }
+            
+            final Credential signingCred = signature.getSigningCredential();
+            if (signingCred == null) {
+                log.error("Unable to compute signature, Signature XMLObject does not contain a signing key");
+                throw new SignatureException("XMLObject does not have signing key, unable to compute signature");
+            }
+            
             log.debug("Computing signature over XMLSignature object");
-            xmlSignature.sign(CredentialSupport.extractSigningKey(signature.getSigningCredential()));
+            xmlSignature.sign(CredentialSupport.extractSigningKey(signingCred));
         } catch (final XMLSecurityException e) {
             log.error("An error occured computing the digital signature: {}", e.getMessage());
             throw new SignatureException("Signature computation error", e);

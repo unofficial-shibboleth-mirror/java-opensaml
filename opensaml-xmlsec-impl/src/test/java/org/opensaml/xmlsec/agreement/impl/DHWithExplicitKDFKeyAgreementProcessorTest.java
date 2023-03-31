@@ -21,6 +21,8 @@ import java.security.KeyPair;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import javax.crypto.SecretKey;
+
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
@@ -36,9 +38,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     private DHWithExplicitKDFKeyAgreementProcessor processor;
@@ -63,9 +63,10 @@ public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBase
         
         Assert.assertNotNull(keyAgreementCredential);
         
-        Assert.assertNotNull(keyAgreementCredential.getSecretKey());
-        Assert.assertEquals(keyAgreementCredential.getSecretKey().getAlgorithm(), JCAConstants.KEY_ALGO_AES);
-        Assert.assertEquals(KeySupport.getKeyLength(keyAgreementCredential.getSecretKey()), Integer.valueOf(128));
+        final SecretKey skey = keyAgreementCredential.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), JCAConstants.KEY_ALGO_AES);
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         
         Assert.assertNull(keyAgreementCredential.getPublicKey());
         Assert.assertNull(keyAgreementCredential.getPrivateKey());
@@ -84,8 +85,10 @@ public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBase
         
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 2);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
+        
+        final KANonce nonce = keyAgreementCredential.getParameters().get(KANonce.class);
+        assert nonce != null;
+        Assert.assertEquals(nonce.getValue(), "AABBCCDD");
         
     }
     
@@ -108,9 +111,10 @@ public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBase
         
         Assert.assertNotNull(keyAgreementCredential);
         
-        Assert.assertNotNull(keyAgreementCredential.getSecretKey());
-        Assert.assertEquals(keyAgreementCredential.getSecretKey().getAlgorithm(), JCAConstants.KEY_ALGO_AES);
-        Assert.assertEquals(KeySupport.getKeyLength(keyAgreementCredential.getSecretKey()), Integer.valueOf(128));
+        final SecretKey skey = keyAgreementCredential.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), JCAConstants.KEY_ALGO_AES);
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         
         Assert.assertNull(keyAgreementCredential.getPublicKey());
         Assert.assertNull(keyAgreementCredential.getPrivateKey());
@@ -130,9 +134,9 @@ public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBase
         Assert.assertEquals(keyAgreementCredential.getParameters().size(), 3);
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(PrivateCredential.class));
         Assert.assertTrue(keyAgreementCredential.getParameters().contains(MockKeyDerivation.class));
-        Assert.assertTrue(keyAgreementCredential.getParameters().contains(KANonce.class));
-        Assert.assertEquals(keyAgreementCredential.getParameters().get(KANonce.class).getValue(), "AABBCCDD");
-        
+        final KANonce nonce = keyAgreementCredential.getParameters().get(KANonce.class);
+        assert nonce != null;
+        Assert.assertEquals(nonce.getValue(), "AABBCCDD");
     }
 
     @Test(expectedExceptions = KeyAgreementException.class)
@@ -197,6 +201,5 @@ public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBase
         params.add(nonce);
         return params;
     }
-    
-        
+            
 }

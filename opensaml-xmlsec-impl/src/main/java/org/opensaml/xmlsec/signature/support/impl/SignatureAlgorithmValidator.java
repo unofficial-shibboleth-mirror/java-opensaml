@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.AttributeSupport;
 import net.shibboleth.shared.xml.ElementSupport;
@@ -38,7 +39,6 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
@@ -76,10 +76,10 @@ public class SignatureAlgorithmValidator {
     @Nonnull private Logger log = LoggerFactory.getLogger(SignatureAlgorithmValidator.class);
     
     /** The collection of algorithm URIs which are included. */
-    private Collection<String> includedAlgorithmURIs;
+    @Nullable private Collection<String> includedAlgorithmURIs;
     
     /** The collection of algorithm URIs which are excluded. */
-    private Collection<String> excludedAlgorithmURIs;
+    @Nullable private Collection<String> excludedAlgorithmURIs;
     
     /**
      * Constructor.
@@ -123,6 +123,7 @@ public class SignatureAlgorithmValidator {
         validateAlgorithmURI(signatureAlgorithm);
         
         for (final String digestMethod : getDigestMethods(signature)) {
+            assert digestMethod != null;
             log.debug("Validating SignedInfo/Reference/DigestMethod/@Algorithm against include/exclude lists: {}", 
                     digestMethod);
             validateAlgorithmURI(digestMethod);
@@ -197,6 +198,7 @@ public class SignatureAlgorithmValidator {
         }
         
         for (final Element reference : ElementSupport.getChildElements(signedInfo, ELEMENT_NAME_REFERENCE)) {
+            assert reference != null;
             final Element digestMethod = ElementSupport.getFirstChildElement(reference, ELEMENT_NAME_DIGEST_METHOD);
             if (digestMethod != null) {
                 final String digestMethodAlgorithm = StringSupport.trimOrNull(

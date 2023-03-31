@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.collection.LazySet;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -39,7 +40,6 @@ import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Implementation of {@link org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider} which supports {@link RSAKeyValue}.
@@ -47,7 +47,7 @@ import org.slf4j.LoggerFactory;
 public class RSAKeyValueProvider extends AbstractKeyInfoProvider {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(RSAKeyValueProvider.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(RSAKeyValueProvider.class);
 
     /** {@inheritDoc} */
     public boolean handles(@Nonnull final XMLObject keyInfoChild) {

@@ -35,6 +35,7 @@ import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -51,11 +52,12 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoResolutionContext;
 import org.opensaml.xmlsec.signature.X509Data;
 import org.opensaml.xmlsec.signature.X509Digest;
+import org.opensaml.xmlsec.signature.X509IssuerName;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
+import org.opensaml.xmlsec.signature.X509SerialNumber;
 import org.opensaml.xmlsec.signature.X509SubjectName;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -75,10 +77,10 @@ import com.google.common.base.Strings;
 public class InlineX509DataProvider extends AbstractKeyInfoProvider {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(InlineX509DataProvider.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(InlineX509DataProvider.class);
 
     /** Responsible for parsing and serializing X.500 names to/from {@link X500Principal} instances. */
-    private X500DNHandler x500DNHandler;
+    @Nonnull private X500DNHandler x500DNHandler;
 
     /**
      * Constructor.
@@ -289,11 +291,14 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
      */
     @Nullable protected X509Certificate findCertFromSubjectNames(@Nonnull final List<X509Certificate> certs,
             @Nonnull final List<X509SubjectName> names) {
+        
         for (final X509SubjectName subjectName : names) {
-            if (!Strings.isNullOrEmpty(subjectName.getValue())) {
+            final String subjectNameVal = subjectName.getValue();
+            if (!Strings.isNullOrEmpty(subjectNameVal)) {
                 X500Principal subjectX500Principal = null;
                 try {
-                    subjectX500Principal = x500DNHandler.parse(subjectName.getValue());
+                    assert subjectNameVal != null;
+                    subjectX500Principal = x500DNHandler.parse(subjectNameVal);
                 } catch (final IllegalArgumentException e) {
                     log.warn("X500 subject name '{}' could not be parsed by configured X500DNHandler '{}'",
                             subjectName.getValue(), x500DNHandler.getClass().getName());
@@ -319,14 +324,20 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     @Nullable protected X509Certificate findCertFromIssuerSerials(@Nonnull final List<X509Certificate> certs,
             @Nonnull final List<X509IssuerSerial> serials) {
         for (final X509IssuerSerial issuerSerial : serials) {
-            if (issuerSerial.getX509IssuerName() == null || issuerSerial.getX509SerialNumber() == null) {
+            
+            final X509IssuerName issuerNameObj = issuerSerial.getX509IssuerName();
+            final X509SerialNumber serialNumObj = issuerSerial.getX509SerialNumber();
+            
+            if (issuerNameObj == null || serialNumObj == null) {
                 continue;
             }
-            final String issuerNameValue = issuerSerial.getX509IssuerName().getValue();
-            final BigInteger serialNumber = issuerSerial.getX509SerialNumber().getValue();
+            
+            final String issuerNameValue = issuerNameObj.getValue();
+            final BigInteger serialNumber = serialNumObj.getValue();
             if (!Strings.isNullOrEmpty(issuerNameValue)) {
                 X500Principal issuerX500Principal = null;
                 try {
+                    assert issuerNameValue != null;
                     issuerX500Principal = x500DNHandler.parse(issuerNameValue);
                 } catch (final IllegalArgumentException e) {
                     log.warn("X500 issuer name '{}' could not be parsed by configured X500DNHandler '{}'",
@@ -354,13 +365,16 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
     @Nullable protected X509Certificate findCertFromSubjectKeyIdentifier(@Nonnull final List<X509Certificate> certs,
             @Nonnull final List<X509SKI> skis) {
         for (final X509SKI ski : skis) {
-            if (!Strings.isNullOrEmpty(ski.getValue())) {
-                final byte[] xmlValue = base64DecodeOrNull(ski.getValue());
+            final String skiValue = ski.getValue();
+            if (!Strings.isNullOrEmpty(skiValue)) {
+                assert skiValue != null;
+                final byte[] xmlValue = base64DecodeOrNull(skiValue);
                 if (xmlValue==null) {
                     log.warn("Could not base64 decode subject key identifier value, skipping");
                     continue;
                 }
                 for (final X509Certificate cert : certs) {
+                    assert cert != null;
                     final byte[] certValue = X509Support.getSubjectKeyIdentifier(cert);
                     if (certValue != null && Arrays.equals(xmlValue, certValue)) {
                         return cert;
@@ -398,18 +412,23 @@ public class InlineX509DataProvider extends AbstractKeyInfoProvider {
             @Nonnull final List<X509Digest> digests) {
         
         for (final X509Digest digest : digests) {
-            if (!Strings.isNullOrEmpty(digest.getValue()) && !Strings.isNullOrEmpty(digest.getAlgorithm())) {
-                final String alg = AlgorithmSupport.getAlgorithmID(digest.getAlgorithm());
+            final String digestVal = digest.getValue();
+            final String digestAlg = digest.getAlgorithm();
+            if (!Strings.isNullOrEmpty(digestVal) && !Strings.isNullOrEmpty(digestAlg)) {
+                assert digestVal != null;
+                assert digestAlg != null;
+                final String alg = AlgorithmSupport.getAlgorithmID(digestAlg);
                 if (alg == null) {
-                    log.warn("Algorithm {} not supported", digest.getAlgorithm());
+                    log.warn("Algorithm {} not supported", digestAlg);
                     continue;
                 }
-                final byte[] xmlValue = base64DecodeOrNull(digest.getValue());
+                final byte[] xmlValue = base64DecodeOrNull(digestVal);
                 if (xmlValue==null) {
                     log.warn("Could not base64 decode digest, skipping");
                     continue;
                 }
                 for (final X509Certificate cert : certs) {
+                    assert cert != null;
                     try {
                         final byte[] certValue = X509Support.getX509Digest(cert, alg);
                         if (certValue != null && Arrays.equals(xmlValue, certValue)) {

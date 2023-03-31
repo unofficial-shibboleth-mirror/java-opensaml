@@ -100,7 +100,7 @@ public class PBKDF2 extends AbstractInitializableComponent
     @NonnullAfterInit private String prf;
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nonnull public String getAlgorithm() {
         return EncryptionConstants.ALGO_ID_KEYDERIVATION_PBKDF2;
     }
     
@@ -265,7 +265,7 @@ public class PBKDF2 extends AbstractInitializableComponent
         if (prf == null) {
             prf = DEFAULT_PRF;
         } else {
-            final AlgorithmDescriptor descriptor = AlgorithmSupport.getGlobalAlgorithmRegistry().get(prf);
+            final AlgorithmDescriptor descriptor = AlgorithmSupport.ensureGlobalAlgorithmRegistry().get(prf);
             if (descriptor == null) {
                 throw new ComponentInitializationException("Specified PRF algorithm is unknown: " + prf);
             }
@@ -277,7 +277,7 @@ public class PBKDF2 extends AbstractInitializableComponent
     // Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
-    public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+    @Nonnull public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nullable final Integer specifiedKeyLength) throws KeyDerivationException {
         Constraint.isNotNull(secret, "Secret byte[] was null");
         Constraint.isNotNull(keyAlgorithm, "Key algorithm was null");
@@ -323,6 +323,7 @@ public class PBKDF2 extends AbstractInitializableComponent
         } else {
             // Usually the recipient/decrypting case, where value is parsed from the Salt XML Element.
             try {
+                assert salt != null;
                 saltBytes = Base64Support.decode(salt);
             } catch (final DecodingException e) {
                 // We already tested this during init so this shouldn't happen
@@ -353,7 +354,8 @@ public class PBKDF2 extends AbstractInitializableComponent
         } else {
             // Usually the recipient/decrypting case, where value is parsed from the KeyLength XML Element.
             // Validate that specified key length value matches that of the specified algorithm URI.
-            if (! keyLength.equals(jcaKeyLength)) {
+            assert keyLength != null;
+            if (!keyLength.equals(jcaKeyLength)) {
                 throw new KeyDerivationException(String.format("Specified key length '%d' does not match URI: %s",
                         keyLength, keyAlgorithm));
             }
@@ -373,7 +375,7 @@ public class PBKDF2 extends AbstractInitializableComponent
     }
 
     /** {@inheritDoc} */
-    public XMLObject buildXMLObject() {
+    @Nonnull public XMLObject buildXMLObject() {
         checkComponentActive();
         
         // If initialized, iterationCount and PRF are guaranteed to be non-null.
@@ -406,6 +408,7 @@ public class PBKDF2 extends AbstractInitializableComponent
         final KeyLength xmlKeyLength = (KeyLength) XMLObjectSupport.buildXMLObject(KeyLength.DEFAULT_ELEMENT_NAME);
         // Note: We're tracking this in # of bits, but the XML element uses # of bytes.
         // It's already validated to be an exact multiple of 8.
+        assert keyLength != null;
         xmlKeyLength.setValue(keyLength / 8);
         params.setKeyLength(xmlKeyLength);
         
@@ -443,20 +446,8 @@ public class PBKDF2 extends AbstractInitializableComponent
         
         final PBKDF2Params xmlParams =
                 (PBKDF2Params) xmlObject.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).get(0);
-        
-        validateXMLObjectParameters(xmlParams);
-        
-        final PBKDF2 param = new PBKDF2();
-        
-        param.setIterationCount(xmlParams.getIterationCount().getValue());
-        // Note: We're tracking this in # of bits, but the XML element uses # of bytes.
-        param.setKeyLength(xmlParams.getKeyLength().getValue() * 8);
-        param.setPRF(xmlParams.getPRF().getAlgorithm());
-        param.setSalt(xmlParams.getSalt().getSpecified().getValue());
-        
-        param.initialize();
-        
-        return param;
+        assert xmlParams != null;
+        return validateAndSetXMLObjectParameters(xmlParams);
     }
     
     /**
@@ -464,31 +455,51 @@ public class PBKDF2 extends AbstractInitializableComponent
      * 
      * @param xmlParams the instance to validate
      * 
+     * @return the initialized {@link PBKDF2} object
+     * 
      * @throws ComponentInitializationException if the specified params fails validation of required values
      */
     // Checkstyle: CyclomaticComplexity OFF
-    private static void validateXMLObjectParameters(@Nonnull final PBKDF2Params xmlParams)
+    @Nonnull private static PBKDF2 validateAndSetXMLObjectParameters(@Nonnull final PBKDF2Params xmlParams)
             throws ComponentInitializationException {
         
-        if (xmlParams.getIterationCount() == null || xmlParams.getIterationCount().getValue() == null) {
+        final IterationCount iterCount = xmlParams.getIterationCount();
+        if (iterCount == null || iterCount.getValue() == null) {
             throw new ComponentInitializationException("PBKDF2-params did not contain IterationCount value");
         }
         
-        if (xmlParams.getKeyLength() == null || xmlParams.getKeyLength().getValue() == null) {
+        final KeyLength keyLengthObject = xmlParams.getKeyLength();
+        final Integer keyLength = keyLengthObject != null ? keyLengthObject.getValue() : null;
+        if (keyLength == null) {
             throw new ComponentInitializationException("PBKDF2-params did not contain KeyLength value");
         }
         
-        if (xmlParams.getPRF() == null || xmlParams.getPRF().getAlgorithm() == null) {
+        final PRF prf = xmlParams.getPRF();
+        if (prf == null || prf.getAlgorithm() == null) {
             throw new ComponentInitializationException("PBKDF2-params did not contain PRF value");
         }
-        if (xmlParams.getPRF().getParameters() != null) {
+        
+        if (prf.getParameters() != null) {
             throw new ComponentInitializationException("PBKDF2-params contained unsupported PRF parameters");
         }
         
-        if (xmlParams.getSalt() == null || xmlParams.getSalt().getSpecified() == null
-                || xmlParams.getSalt().getSpecified().getValue() == null) {
+        final Salt salt = xmlParams.getSalt();
+        final Specified specified = salt != null ? salt.getSpecified() : null;
+        if (specified == null || specified.getValue() == null) {
             throw new ComponentInitializationException("PBKDF2-params did not contain Salt Specified value");
         }
+        
+        final PBKDF2 param = new PBKDF2();
+        
+        param.setIterationCount(iterCount.getValue());
+
+        // Note: We're tracking this in # of bits, but the XML element uses # of bytes.
+        param.setKeyLength(keyLength * 8);
+        param.setPRF(prf.getAlgorithm());
+        param.setSalt(specified.getValue());
+        
+        param.initialize();
+        return param;
     }
     // Checkstyle: CyclomaticComplexity ON
     

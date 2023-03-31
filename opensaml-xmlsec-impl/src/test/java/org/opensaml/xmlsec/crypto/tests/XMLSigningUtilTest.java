@@ -43,6 +43,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Test the SigningUtil operations for generating and verifying simple, raw signatures and MAC's.
  */
+@SuppressWarnings("javadoc")
 public class XMLSigningUtilTest extends OpenSAMLInitBaseTestCase {
     
     private SecretKey secretKeyAES128;

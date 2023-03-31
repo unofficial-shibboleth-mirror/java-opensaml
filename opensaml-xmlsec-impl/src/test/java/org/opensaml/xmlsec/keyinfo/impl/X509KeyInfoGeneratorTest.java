@@ -216,7 +216,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1, "Unexpected number of KeyInfo children");
@@ -237,7 +237,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getKeyNames().size(), 2, "Unexpected number of KeyName elements");
@@ -279,7 +279,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -302,7 +302,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -327,7 +327,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -351,7 +351,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -373,7 +373,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -395,7 +395,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -423,7 +423,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -448,7 +448,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
         
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
         Assert.assertEquals(keyInfo.getX509Datas().size(), 1, "Unexpected number of X509Data elements");
@@ -472,7 +472,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
@@ -493,7 +493,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
@@ -527,7 +527,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getKeyNames().size(), 1, "Unexpected number of KeyName elements");
@@ -540,7 +540,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getKeyNames().size(), 3, "Unexpected number of KeyName elements");
@@ -569,7 +569,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
 
         Assert.assertEquals(keyInfo.getKeyNames().size(), 7, "Unexpected number of KeyName elements");
@@ -607,7 +607,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         Assert.assertEquals(keyInfo.getOrderedChildren().size(), 4, "Unexpected # of KeyInfo children found");
     }
@@ -634,7 +634,7 @@ public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         generator = factory.newInstance(type);
         KeyInfo keyInfo = generator.generate(credential);
 
-        Assert.assertNotNull(keyInfo, "Generated KeyInfo was null");
+        assert keyInfo != null;
         Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
         Assert.assertTrue(type.isInstance(keyInfo));

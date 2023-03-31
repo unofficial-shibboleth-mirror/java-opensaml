@@ -134,7 +134,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testGlobalRegistryPresence() {
         AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
+        assert registry != null;
         
         // Test all expected types from default auto-loaded set
         
@@ -202,7 +202,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testGlobalRegistryGetByType() {
         AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(registry);
+        assert registry != null;
         
         // Test all expected types from default auto-loaded set
         Set<String> byType = null;
@@ -285,7 +285,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
     @Test(dataProvider = "loadBCTestData")
     public void testGlobalRegistryRuntimeSupported(boolean loadBC) throws InitializationException {
         AlgorithmRegistry originalRegistry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(originalRegistry);
+        assert originalRegistry != null;
         AlgorithmRegistry registry = originalRegistry;
         
         if (loadBC) {
@@ -294,7 +294,7 @@ public class AlgorithmRegistryTest extends OpenSAMLInitBaseTestCase {
             registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
         }
         
-        Assert.assertNotNull(registry);
+        assert registry != null;
         
         try {
             // First test all default algos expected to be supported unconditionally on 

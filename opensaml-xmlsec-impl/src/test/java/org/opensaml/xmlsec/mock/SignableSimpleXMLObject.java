@@ -24,6 +24,8 @@ import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AttributeExtensibleXMLObject;
@@ -42,40 +44,40 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     //TODO these and other supporting classes need to be refactored
     
     /** Default namespace */
-    public final static String NAMESPACE = "http://www.example.org/testObjects";
+    @Nonnull public final static String NAMESPACE = "http://www.example.org/testObjects";
     
     /** Default namespace prefix */
-    public final static String NAMESPACE_PREFIX = "test";
+    @Nonnull public final static String NAMESPACE_PREFIX = "test";
     
     /** Element local name */
-    public final static String LOCAL_NAME = "SignableSimpleElement";
+    @Nonnull public final static String LOCAL_NAME = "SignableSimpleElement";
     
     /** Default element name */
-    public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
+    @Nonnull public final static QName ELEMENT_NAME = new QName(NAMESPACE, LOCAL_NAME, NAMESPACE_PREFIX);
     
     /** Local name of encrypted element */
-    public final static String ENCRYPTED_NAME = "Encrypted" + LOCAL_NAME;
+    @Nonnull public final static String ENCRYPTED_NAME = "Encrypted" + LOCAL_NAME;
     
     /** Name attribute name */
-    public final static String ID_ATTRIB_NAME = "Id";
+    @Nonnull public final static String ID_ATTRIB_NAME = "Id";
     
     /** Name attribute */
-    private String id;
+    @Nullable private String id;
     
     /** Value of the object stored as text content in the element */
-    private String value;
+    @Nullable private String value;
     
     /** Child SimpleXMLObjects */
-    private XMLObjectChildrenList<SignableSimpleXMLObject> simpleXMLObjects;
+    @Nonnull private XMLObjectChildrenList<SignableSimpleXMLObject> simpleXMLObjects;
     
     /** Other children */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
+    @Nonnull private IndexedXMLObjectChildrenList<XMLObject> unknownXMLObjects;
     
     /** EncryptedData child */
-    private EncryptedData encryptedData;
+    @Nullable private EncryptedData encryptedData;
     
     /** anyAttribute wildcard attributes. */
-    private AttributeMap unknownAttributes;
+    @Nonnull private AttributeMap unknownAttributes;
     
     /**
      * Constructor
@@ -83,7 +85,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * @param localName ...
      * @param namespacePrefix ...
      */
-    public SignableSimpleXMLObject(String namspaceURI, String localName, String namespacePrefix) {
+    public SignableSimpleXMLObject(@Nullable String namspaceURI, @Nonnull String localName, @Nullable String namespacePrefix) {
         super(namspaceURI, localName, namespacePrefix);
         
         simpleXMLObjects = new XMLObjectChildrenList<>(this);
@@ -96,7 +98,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * 
      * @return the name attribute
      */
-    public String getId() {
+    @Nullable public String getId() {
         return id;
     }
     
@@ -105,7 +107,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * 
      * @param newId the name attribute
      */
-    public void setId(String newId) {
+    public void setId(@Nullable final String newId) {
         registerOwnID(id, newId);
         id = newId;
     }
@@ -115,7 +117,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * 
      * @return the value of this object
      */
-    public String getValue(){
+    @Nullable public String getValue() {
         return value;
     }
     
@@ -124,7 +126,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * 
      * @param newValue the value of this object
      */
-    public void setValue(String newValue){
+    public void setValue(@Nullable final String newValue) {
         value = prepareForAssignment(value, newValue);
     }
     
@@ -133,7 +135,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * 
      * @return the EncryptedData child element
      */
-    public EncryptedData getEncryptedData() {
+    @Nullable public EncryptedData getEncryptedData() {
        return this.encryptedData;
     }
     
@@ -142,7 +144,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
      * 
      * @param newEncryptedData the new EncryptedData child element
      */
-    public void setEncryptedData(EncryptedData newEncryptedData) {
+    public void setEncryptedData(@Nullable final EncryptedData newEncryptedData) {
         this.encryptedData = prepareForAssignment(this.encryptedData, newEncryptedData);
     }
     
@@ -156,17 +158,18 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObjects;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public List<XMLObject> getOrderedChildren() {
         List<XMLObject> children = new LinkedList<>();
         
         children.addAll(simpleXMLObjects);
@@ -180,7 +183,7 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 }

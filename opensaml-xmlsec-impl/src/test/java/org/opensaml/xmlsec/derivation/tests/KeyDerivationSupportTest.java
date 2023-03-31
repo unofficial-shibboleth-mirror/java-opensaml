@@ -25,9 +25,7 @@ import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class KeyDerivationSupportTest extends OpenSAMLInitBaseTestCase {
     
     @Test

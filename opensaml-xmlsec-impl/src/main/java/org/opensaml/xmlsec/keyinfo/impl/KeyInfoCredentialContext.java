@@ -30,7 +30,7 @@ import net.shibboleth.shared.annotation.ParameterName;
 public class KeyInfoCredentialContext implements CredentialContext {
     
     /** The KeyInfo context. */
-    private final KeyInfo keyInfo;
+    @Nonnull private final KeyInfo keyInfo;
     
     /**
      * Constructor.
@@ -49,4 +49,5 @@ public class KeyInfoCredentialContext implements CredentialContext {
     @Nonnull public KeyInfo getKeyInfo() {
         return keyInfo;
     }
+
 }

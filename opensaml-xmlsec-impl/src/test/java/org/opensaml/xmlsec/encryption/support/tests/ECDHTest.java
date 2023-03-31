@@ -72,9 +72,7 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ECDHTest extends XMLObjectBaseTestCase {
     
     private String targetFile;
@@ -180,7 +178,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxoOrig = (SignableSimpleXMLObject) unmarshallElement(targetFile);
         
         EncryptionParameters encParams = encParamsResolver.resolveSingle(encCriteria);
-        Assert.assertNotNull(encParams);
+        assert encParams != null;
         
         DataEncryptionParameters dataEncParams = new DataEncryptionParameters(encParams);
         List<KeyEncryptionParameters> kekParams = encParams.getKeyTransportEncryptionCredential() != null ?

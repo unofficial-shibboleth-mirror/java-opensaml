@@ -26,9 +26,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.component.UnmodifiableComponentException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DigestMethodTest extends XMLObjectBaseTestCase {
     
     @Test
