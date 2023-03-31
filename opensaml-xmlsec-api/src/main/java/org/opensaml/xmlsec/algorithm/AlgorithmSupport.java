@@ -40,9 +40,10 @@ import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Helper methods for working with XML security algorithm URI's.
@@ -50,7 +51,7 @@ import com.google.common.base.Strings;
 public final class AlgorithmSupport {
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(AlgorithmSupport.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(AlgorithmSupport.class);
     
     /** Constructor. */
     private AlgorithmSupport() {
@@ -64,6 +65,17 @@ public final class AlgorithmSupport {
      */
     @Nullable public static AlgorithmRegistry getGlobalAlgorithmRegistry() {
         return ConfigurationService.get(AlgorithmRegistry.class);
+    }
+    
+    /**
+     * Get the global {@link AlgorithmRegistry} instance, raising an exception if absent.
+     * 
+     * @return the global algorithm registry
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static AlgorithmRegistry ensureGlobalAlgorithmRegistry() {
+        return ConfigurationService.ensure(AlgorithmRegistry.class);
     }
     
     /**

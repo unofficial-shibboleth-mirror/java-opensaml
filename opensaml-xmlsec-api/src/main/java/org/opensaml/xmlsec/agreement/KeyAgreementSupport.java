@@ -47,7 +47,6 @@ public final class KeyAgreementSupport {
     
     /** Constructor. */
     private KeyAgreementSupport() {}
-
     
     /**
      * Get the global {@link KeyAgreementProcessorRegistry} instance.
@@ -56,6 +55,18 @@ public final class KeyAgreementSupport {
      */
     @Nullable public static KeyAgreementProcessorRegistry getGlobalProcessorRegistry() {
         return ConfigurationService.get(KeyAgreementProcessorRegistry.class);
+    }
+    
+    /**
+     * Get the global {@link KeyAgreementProcessorRegistry} instance, raising an exception
+     * if unavailable.
+     * 
+     * @return the global processor registry
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static KeyAgreementProcessorRegistry ensureGlobalProcessorRegistry() {
+        return ConfigurationService.ensure(KeyAgreementProcessorRegistry.class);
     }
     
     /**

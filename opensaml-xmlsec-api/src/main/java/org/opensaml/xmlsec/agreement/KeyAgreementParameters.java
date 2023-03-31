@@ -55,7 +55,6 @@ public class KeyAgreementParameters extends ClassIndexedSet<KeyAgreementParamete
      *              will be cloned before being added
      */
     public KeyAgreementParameters(@Nonnull final Collection<KeyAgreementParameter> source, final boolean clone) {
-        this();
         for (final KeyAgreementParameter param : source) {
             if (clone && CloneableKeyAgreementParameter.class.isInstance(param)) {
                 add(CloneableKeyAgreementParameter.class.cast(param).clone());
