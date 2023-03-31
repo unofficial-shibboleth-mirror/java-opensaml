@@ -17,10 +17,10 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -29,16 +29,22 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.signature.Transform;
 import org.opensaml.xmlsec.signature.XPath;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.Transform}.
+ * Concrete implementation of {@link Transform}.
  */
+@SuppressWarnings("unchecked")
 public class TransformImpl extends AbstractXMLObject implements Transform {
     
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** "any" children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
 
     /**
      * Constructor.
@@ -47,47 +53,40 @@ public class TransformImpl extends AbstractXMLObject implements Transform {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected TransformImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected TransformImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
-        return this.algorithm;
+    @Nullable public String getAlgorithm() {
+        return algorithm;
     }
 
     /** {@inheritDoc} */
-    public void setAlgorithm(final String newAlgorithm) {
-        this.algorithm = prepareForAssignment(this.algorithm, newAlgorithm);
+    public void setAlgorithm(@Nullable final String newAlgorithm) {
+        algorithm = prepareForAssignment(algorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getAllChildren() {
+    @Nonnull @Live public List<XMLObject> getAllChildren() {
         return indexedChildren ;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getXMLObjects(final QName typeOrName) {
+    @Nonnull @Live public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) indexedChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XPath> getXPaths() {
+    @Nonnull @Live public List<XPath> getXPaths() {
         return (List<XPath>) indexedChildren.subList(XPath.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(indexedChildren);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(indexedChildren);
     }
 
 }

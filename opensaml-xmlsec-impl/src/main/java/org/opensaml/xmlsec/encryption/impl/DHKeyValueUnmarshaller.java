@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.encryption.DHKeyValue;
@@ -33,8 +35,8 @@ import org.opensaml.xmlsec.encryption.Seed;
 public class DHKeyValueUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final DHKeyValue keyValue = (DHKeyValue) parentXMLObject;
 
         if (childXMLObject instanceof P) {

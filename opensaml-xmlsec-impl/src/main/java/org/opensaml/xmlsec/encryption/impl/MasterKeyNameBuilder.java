@@ -17,28 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.MasterKeyName;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.CarriedKeyName}.
+ * Builder of {@link MasterKeyName}.
  */
 public class MasterKeyNameBuilder extends AbstractXMLObjectBuilder<MasterKeyName> implements
         XMLEncryptionBuilder<MasterKeyName> {
 
-    /** Constructor. */
-    public MasterKeyNameBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public MasterKeyName buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public MasterKeyName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new MasterKeyNameImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public MasterKeyName buildObject() {
+    @Nonnull public MasterKeyName buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, MasterKeyName.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

@@ -17,31 +17,28 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.DigestMethod}.
+ * Builder of {@link DigestMethod}.
  */
 public class DigestMethodBuilder extends AbstractXMLObjectBuilder<DigestMethod> implements
         XMLSignatureBuilder<DigestMethod> {
 
-    /**
-     * Constructor.
-     * 
-     */
-    public DigestMethodBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public DigestMethod buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public DigestMethod buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DigestMethodImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public DigestMethod buildObject() {
+    @Nonnull public DigestMethod buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

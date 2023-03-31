@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -28,7 +30,8 @@ import org.w3c.dom.Attr;
 public class KeyInfoUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final KeyInfo keyInfo = (KeyInfo) xmlObject;
 
         if (attribute.getLocalName().equals(KeyInfo.ID_ATTRIB_NAME)) {
@@ -40,8 +43,8 @@ public class KeyInfoUnmarshaller extends AbstractXMLSignatureUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final KeyInfo keyInfo = (KeyInfo) parentXMLObject;
 
         // KeyInfoType contains a range of specific types, but also

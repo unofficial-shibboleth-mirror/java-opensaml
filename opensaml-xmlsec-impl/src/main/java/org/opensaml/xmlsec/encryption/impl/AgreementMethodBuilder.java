@@ -17,32 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.AgreementMethod}.
+ * Builder of {@link AgreementMethod}.
  */
 public class AgreementMethodBuilder extends AbstractXMLObjectBuilder<AgreementMethod> implements
         XMLEncryptionBuilder<AgreementMethod> {
 
-    /**
-     * Constructor.
-     * 
-     */
-    public AgreementMethodBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public AgreementMethod buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public AgreementMethod buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AgreementMethodImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public AgreementMethod buildObject() {
+    @Nonnull public AgreementMethod buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, AgreementMethod.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

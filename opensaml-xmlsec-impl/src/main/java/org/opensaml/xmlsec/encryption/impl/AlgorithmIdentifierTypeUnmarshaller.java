@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -32,7 +33,8 @@ import org.w3c.dom.Attr;
 public class AlgorithmIdentifierTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AlgorithmIdentifierType algoIdType = (AlgorithmIdentifierType) xmlObject;
 
         if (attribute.getLocalName().equals(AlgorithmIdentifierType.ALGORITHM_ATTRIB_NAME)) {
@@ -43,8 +45,8 @@ public class AlgorithmIdentifierTypeUnmarshaller extends AbstractXMLEncryptionUn
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final AlgorithmIdentifierType algoIdType = (AlgorithmIdentifierType) parentXMLObject;
         
         final QName childQName = childXMLObject.getElementQName();

@@ -17,9 +17,10 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -29,13 +30,18 @@ import org.opensaml.xmlsec.encryption.KeyReference;
 import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.opensaml.xmlsec.encryption.ReferenceType;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceList}.
+ * Concrete implementation of {@link ReferenceList}.
  */
 public class ReferenceListImpl extends AbstractXMLObject implements ReferenceList {
     
     /** ReferenceType child elements. */
-    private final IndexedXMLObjectChildrenList<ReferenceType> indexedChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<ReferenceType> indexedChildren;
     
     /**
      * Constructor.
@@ -44,38 +50,32 @@ public class ReferenceListImpl extends AbstractXMLObject implements ReferenceLis
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected ReferenceListImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected ReferenceListImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<ReferenceType> getReferences() {
+    @Nonnull @Live public List<ReferenceType> getReferences() {
         return indexedChildren;
     }
 
     /** {@inheritDoc} */
-    public List<DataReference> getDataReferences() {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<DataReference> getDataReferences() {
         return (List<DataReference>) indexedChildren.subList(DataReference.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<KeyReference> getKeyReferences() {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<KeyReference> getKeyReferences() {
         return (List<KeyReference>) indexedChildren.subList(KeyReference.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(indexedChildren);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(indexedChildren);
     }
 
 }

@@ -17,28 +17,33 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.Transforms;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.RetrievalMethod}.
+ * Concrete implementation of {@link RetrievalMethod}.
  */
 public class RetrievalMethodImpl extends AbstractXMLObject implements RetrievalMethod {
     
     /** URI attribute value. */
-    private String uri;
+    @Nullable private String uri;
     
     /** Type attribute value. */
-    private String type;
+    @Nullable private String type;
     
     /** Transforms attribute value. */
-    private Transforms transforms;
+    @Nullable private Transforms transforms;
 
     /**
      * Constructor.
@@ -47,54 +52,48 @@ public class RetrievalMethodImpl extends AbstractXMLObject implements RetrievalM
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RetrievalMethodImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RetrievalMethodImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getURI() {
-        return this.uri;
+    @Nullable public String getURI() {
+        return uri;
     }
 
     /** {@inheritDoc} */
-    public void setURI(final String newURI) {
-        this.uri = prepareForAssignment(this.uri, newURI);
+    public void setURI(@Nullable final String newURI) {
+        uri = prepareForAssignment(this.uri, newURI);
     }
 
     /** {@inheritDoc} */
-    public String getType() {
-        return this.type;
+    @Nullable public String getType() {
+        return type;
     }
 
     /** {@inheritDoc} */
-    public void setType(final String newType) {
-        this.type = prepareForAssignment(this.type, newType);
+    public void setType(@Nullable final String newType) {
+        type = prepareForAssignment(type, newType);
     }
 
     /** {@inheritDoc} */
-    public Transforms getTransforms() {
-        return this.transforms;
+    @Nullable public Transforms getTransforms() {
+        return transforms;
     }
 
     /** {@inheritDoc} */
-    public void setTransforms(final Transforms newTransforms) {
-        this.transforms = prepareForAssignment(this.transforms, newTransforms);
+    public void setTransforms(@Nullable final Transforms newTransforms) {
+        transforms = prepareForAssignment(transforms, newTransforms);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         if (transforms != null) {
-            children.add(transforms);
+            return CollectionSupport.singletonList(transforms);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return null;
     }
 
 }

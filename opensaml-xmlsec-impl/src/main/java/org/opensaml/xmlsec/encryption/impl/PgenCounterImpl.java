@@ -17,12 +17,15 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.PgenCounter;
 import org.opensaml.xmlsec.signature.impl.CryptoBinaryImpl;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.PgenCounter}.
+ * Concrete implementation of {@link PgenCounter}.
  */
 public class PgenCounterImpl extends CryptoBinaryImpl implements PgenCounter {
 
@@ -33,7 +36,8 @@ public class PgenCounterImpl extends CryptoBinaryImpl implements PgenCounter {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected PgenCounterImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PgenCounterImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

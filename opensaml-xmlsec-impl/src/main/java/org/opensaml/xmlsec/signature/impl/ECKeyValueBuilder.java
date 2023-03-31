@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
@@ -28,19 +31,14 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public class ECKeyValueBuilder extends AbstractXMLObjectBuilder<ECKeyValue>
     implements XMLSignatureBuilder<ECKeyValue> {
 
-    /**
-     * Constructor.
-     */
-    public ECKeyValueBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public ECKeyValue buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public ECKeyValue buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ECKeyValueImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public ECKeyValue buildObject() {
+    @Nonnull public ECKeyValue buildObject() {
         return buildObject(SignatureConstants.XMLSIG11_NS, ECKeyValue.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG11_PREFIX);
     }

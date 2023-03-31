@@ -19,9 +19,15 @@ package org.opensaml.xmlsec.signature.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.NamedCurve;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * Concrete implementation of {@link NamedCurve}.
@@ -29,7 +35,7 @@ import org.opensaml.xmlsec.signature.NamedCurve;
 public class NamedCurveImpl extends AbstractXMLObject implements NamedCurve {
     
     /** URI attribute value. */
-    private String uri;
+    @Nullable private String uri;
     
     /**
      * Constructor.
@@ -38,22 +44,23 @@ public class NamedCurveImpl extends AbstractXMLObject implements NamedCurve {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected NamedCurveImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected NamedCurveImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getURI() {
+    @Nullable public String getURI() {
         return uri;
     }
 
     /** {@inheritDoc} */
-    public void setURI(final String newURI) {
+    public void setURI(@Nullable final String newURI) {
         uri = prepareForAssignment(uri, newURI);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }

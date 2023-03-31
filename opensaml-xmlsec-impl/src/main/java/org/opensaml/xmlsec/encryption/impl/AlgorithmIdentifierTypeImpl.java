@@ -21,14 +21,18 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.AlgorithmIdentifierType;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Abstract implementation of {@link org.opensaml.xmlsec.encryption.AlgorithmIdentifierType}.
+ * Abstract implementation of {@link AlgorithmIdentifierType}.
  */
 public abstract class AlgorithmIdentifierTypeImpl extends AbstractXMLObject implements AlgorithmIdentifierType {
     
@@ -45,8 +49,8 @@ public abstract class AlgorithmIdentifierTypeImpl extends AbstractXMLObject impl
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected AlgorithmIdentifierTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AlgorithmIdentifierTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
@@ -71,7 +75,7 @@ public abstract class AlgorithmIdentifierTypeImpl extends AbstractXMLObject impl
     }
     
     /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (parameters != null) {

@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.PGPData;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.PGPData}.
+ * Builder of {@link PGPData}.
  */
 public class PGPDataBuilder extends AbstractXMLObjectBuilder<PGPData> implements XMLSignatureBuilder<PGPData> {
 
-    /**
-     * Constructor.
-     */
-    public PGPDataBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public PGPData buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public PGPData buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PGPDataImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public PGPData buildObject() {
+    @Nonnull public PGPData buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, PGPData.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

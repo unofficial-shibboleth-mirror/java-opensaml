@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.PBKDF2Params;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.PBKDF2Params}.
+ * Builder of {@link PBKDF2Params}.
  */
 public class PBKDF2ParamsBuilder extends AbstractXMLObjectBuilder<PBKDF2Params>
         implements XMLEncryptionBuilder<PBKDF2Params> {
 
-    /**
-     * Constructor.
-     */
-    public PBKDF2ParamsBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public PBKDF2Params buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public PBKDF2Params buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PBKDF2ParamsImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public PBKDF2Params buildObject() {
+    @Nonnull public PBKDF2Params buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, PBKDF2Params.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

@@ -18,9 +18,10 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -30,22 +31,27 @@ import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionMethod}.
+ * Concrete implementation of {@link EncryptionMethod}.
  */
 public class EncryptionMethodImpl extends AbstractXMLObject implements EncryptionMethod {
     
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** KeySize child element value. */
-    private KeySize keySize;
+    @Nullable private KeySize keySize;
     
     /** OAEPparams child element value. */
-    private OAEPparams oaepParams;
+    @Nullable private OAEPparams oaepParams;
     
     /** "any" children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /**
      * Constructor.
@@ -54,54 +60,56 @@ public class EncryptionMethodImpl extends AbstractXMLObject implements Encryptio
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected EncryptionMethodImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EncryptionMethodImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nullable public String getAlgorithm() {
         return algorithm;
     }
 
     /** {@inheritDoc} */
-    public void setAlgorithm(final String newAlgorithm) {
+    public void setAlgorithm(@Nullable final String newAlgorithm) {
         algorithm = prepareForAssignment(algorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
-    public KeySize getKeySize() {
+    @Nullable public KeySize getKeySize() {
         return keySize;
     }
 
     /** {@inheritDoc} */
-    public void setKeySize(final KeySize newKeySize) {
+    public void setKeySize(@Nullable final KeySize newKeySize) {
         keySize = prepareForAssignment(keySize, newKeySize);
     }
 
     /** {@inheritDoc} */
-    public OAEPparams getOAEPparams() {
+    @Nullable public OAEPparams getOAEPparams() {
         return oaepParams;
     }
 
     /** {@inheritDoc} */
-    public void setOAEPparams(final OAEPparams newOAEPparams) {
+    public void setOAEPparams(@Nullable final OAEPparams newOAEPparams) {
         oaepParams = prepareForAssignment(oaepParams, newOAEPparams);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
+    
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (keySize != null) {
@@ -113,11 +121,7 @@ public class EncryptionMethodImpl extends AbstractXMLObject implements Encryptio
         
         children.addAll(unknownChildren);
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

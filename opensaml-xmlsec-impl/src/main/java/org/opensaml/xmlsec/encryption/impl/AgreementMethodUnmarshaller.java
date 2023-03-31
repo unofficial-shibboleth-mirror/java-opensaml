@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
@@ -31,7 +33,8 @@ import org.w3c.dom.Attr;
 public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final AgreementMethod am = (AgreementMethod) xmlObject;
 
         if (attribute.getLocalName().equals(AgreementMethod.ALGORITHM_ATTRIBUTE_NAME)) {
@@ -42,8 +45,8 @@ public class AgreementMethodUnmarshaller extends AbstractXMLEncryptionUnmarshall
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final AgreementMethod am = (AgreementMethod) parentXMLObject;
 
         if (childXMLObject instanceof KANonce) {

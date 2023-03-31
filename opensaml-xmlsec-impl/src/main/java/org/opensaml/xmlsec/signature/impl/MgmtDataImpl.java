@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xmlsec.signature.MgmtData;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.MgmtData}.
+ * Concrete implementation of {@link MgmtData}.
  */
 public class MgmtDataImpl extends XSStringImpl implements MgmtData {
 
@@ -32,7 +35,8 @@ public class MgmtDataImpl extends XSStringImpl implements MgmtData {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected MgmtDataImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected MgmtDataImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

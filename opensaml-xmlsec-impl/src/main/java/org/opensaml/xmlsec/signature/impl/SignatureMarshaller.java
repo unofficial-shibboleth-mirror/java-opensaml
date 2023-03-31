@@ -33,10 +33,10 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.ContentReference;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ElementSupport;
 
 /**
@@ -47,7 +47,7 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class SignatureMarshaller implements Marshaller {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SignatureMarshaller.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SignatureMarshaller.class);
 
     /** Constructor. */
     public SignatureMarshaller() {
@@ -58,7 +58,7 @@ public class SignatureMarshaller implements Marshaller {
     }
 
     /** {@inheritDoc} */
-    public Element marshall(final XMLObject xmlObject) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject) throws MarshallingException {
         try {
             final Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
             return marshall(xmlObject, document);
@@ -68,7 +68,8 @@ public class SignatureMarshaller implements Marshaller {
     }
 
     /** {@inheritDoc} */
-    public Element marshall(final XMLObject xmlObject, final Element parentElement) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Element parentElement)
+            throws MarshallingException {
         final Element signatureElement =
                 createSignatureElement((SignatureImpl) xmlObject, parentElement.getOwnerDocument());
         ElementSupport.appendChildElement(parentElement, signatureElement);
@@ -76,7 +77,8 @@ public class SignatureMarshaller implements Marshaller {
     }
 
     /** {@inheritDoc} */
-    public Element marshall(final XMLObject xmlObject, final Document document) throws MarshallingException {
+    @Nonnull public Element marshall(@Nonnull final XMLObject xmlObject, @Nonnull final Document document)
+            throws MarshallingException {
         final Element signatureElement = createSignatureElement((SignatureImpl) xmlObject, document);
 
         final Element documentRoot = document.getDocumentElement();
@@ -99,19 +101,23 @@ public class SignatureMarshaller implements Marshaller {
      * 
      * @throws MarshallingException thrown if the signature can not be constructed
      */
-    @Nonnull private Element createSignatureElement(final Signature signature, final Document document)
-            throws MarshallingException {
+    @Nonnull private Element createSignatureElement(@Nonnull final Signature signature,
+            @Nonnull final Document document) throws MarshallingException {
         log.debug("Starting to marshall {}", signature.getElementQName());
 
+        final String sigAlg = signature.getSignatureAlgorithm();
+        if (sigAlg == null) {
+            throw new MarshallingException("No signature algorithm set");
+        }
+        
         try {
             log.debug("Creating XMLSignature object");
             XMLSignature dsig = null;
-            if (signature.getHMACOutputLength() != null && AlgorithmSupport.isHMAC(signature.getSignatureAlgorithm())) {
-                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
-                        .getHMACOutputLength(), signature.getCanonicalizationAlgorithm());
+            final Integer hmaclen = signature.getHMACOutputLength();
+            if (hmaclen != null && AlgorithmSupport.isHMAC(sigAlg)) {
+                dsig = new XMLSignature(document, "", sigAlg, hmaclen, signature.getCanonicalizationAlgorithm());
             } else {
-                dsig = new XMLSignature(document, "", signature.getSignatureAlgorithm(), signature
-                        .getCanonicalizationAlgorithm());
+                dsig = new XMLSignature(document, "", sigAlg, signature.getCanonicalizationAlgorithm());
             }
 
             log.debug("Adding content to XMLSignature.");
@@ -122,10 +128,11 @@ public class SignatureMarshaller implements Marshaller {
             log.debug("Creating Signature DOM element");
             final Element signatureElement = dsig.getElement();
 
-            if (signature.getKeyInfo() != null) {
+            final KeyInfo keyInfo = signature.getKeyInfo();
+            if (keyInfo != null) {
                 final Marshaller keyInfoMarshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory()
-                        .getMarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
-                keyInfoMarshaller.marshall(signature.getKeyInfo(), signatureElement);
+                        .ensureMarshaller(KeyInfo.DEFAULT_ELEMENT_NAME);
+                keyInfoMarshaller.marshall(keyInfo, signatureElement);
             }
 
             ((SignatureImpl) signature).setXMLSignature(dsig);

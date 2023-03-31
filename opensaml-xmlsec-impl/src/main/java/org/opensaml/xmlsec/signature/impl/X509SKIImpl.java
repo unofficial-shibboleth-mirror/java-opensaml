@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.signature.X509SKI;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509SKI}.
+ * Concrete implementation of {@link X509SKI}.
  */
 public class X509SKIImpl extends XSBase64BinaryImpl implements X509SKI {
 
@@ -32,7 +35,8 @@ public class X509SKIImpl extends XSBase64BinaryImpl implements X509SKI {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected X509SKIImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected X509SKIImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

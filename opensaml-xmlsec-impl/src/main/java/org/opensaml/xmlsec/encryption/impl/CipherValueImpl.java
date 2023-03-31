@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.encryption.CipherValue;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CipherValue}.
+ * Concrete implementation of {@link CipherValue}.
  */
 public class CipherValueImpl extends XSBase64BinaryImpl implements CipherValue {
 
@@ -32,7 +35,8 @@ public class CipherValueImpl extends XSBase64BinaryImpl implements CipherValue {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected CipherValueImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected CipherValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.SPKISexp;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.SPKISexp}.
+ * Builder of {@link SPKISexp}.
  */
 public class SPKISexpBuilder extends AbstractXMLObjectBuilder<SPKISexp> implements XMLSignatureBuilder<SPKISexp> {
 
-    /**
-     * Constructor.
-     */
-    public SPKISexpBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public SPKISexp buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public SPKISexp buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SPKISexpImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public SPKISexp buildObject() {
+    @Nonnull public SPKISexp buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, SPKISexp.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

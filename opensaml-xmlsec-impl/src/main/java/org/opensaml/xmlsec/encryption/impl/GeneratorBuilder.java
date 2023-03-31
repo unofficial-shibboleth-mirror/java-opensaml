@@ -17,30 +17,27 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.Generator;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.Generator}.
+ * Builder of {@link Generator}.
  */
 public class GeneratorBuilder extends AbstractXMLObjectBuilder<Generator> implements XMLEncryptionBuilder<Generator> {
 
-    /**
-     * Constructor.
-     * 
-     */
-    public GeneratorBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Generator buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Generator buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new GeneratorImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Generator buildObject() {
+    @Nonnull public Generator buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, Generator.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

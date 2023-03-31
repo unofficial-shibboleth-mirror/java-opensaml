@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.MgmtData;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.MgmtData}.
+ * Builder of {@link MgmtData}.
  */
 public class MgmtDataBuilder extends AbstractXMLObjectBuilder<MgmtData> implements XMLSignatureBuilder<MgmtData> {
 
-    /**
-     * Constructor.
-     */
-    public MgmtDataBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public MgmtData buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public MgmtData buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new MgmtDataImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public MgmtData buildObject() {
+    @Nonnull public MgmtData buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, MgmtData.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

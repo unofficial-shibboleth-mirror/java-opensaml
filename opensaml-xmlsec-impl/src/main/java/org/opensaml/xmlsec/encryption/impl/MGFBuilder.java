@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.MGF}.
+ * Builder of {@link MGF}.
  */
 public class MGFBuilder extends AbstractXMLObjectBuilder<MGF> implements XMLEncryptionBuilder<MGF> {
 
-    /**
-     * Constructor.
-     */
-    public MGFBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public MGF buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public MGF buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new MGFImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public MGF buildObject() {
+    @Nonnull public MGF buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, MGF.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

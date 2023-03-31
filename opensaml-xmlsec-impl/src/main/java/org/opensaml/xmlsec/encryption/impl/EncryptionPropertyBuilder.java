@@ -17,31 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}.
+ * Builder of {@link EncryptionProperty}.
  */
 public class EncryptionPropertyBuilder extends AbstractXMLObjectBuilder<EncryptionProperty> implements
         XMLEncryptionBuilder<EncryptionProperty> {
 
-    /**
-     * Constructor.
-     */
-    public EncryptionPropertyBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public EncryptionProperty buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public EncryptionProperty buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EncryptionPropertyImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public EncryptionProperty buildObject() {
+    @Nonnull public EncryptionProperty buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, EncryptionProperty.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

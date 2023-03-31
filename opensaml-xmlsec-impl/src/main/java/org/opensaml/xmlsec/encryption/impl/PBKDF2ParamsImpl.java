@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -32,7 +33,7 @@ import org.opensaml.xmlsec.encryption.PRF;
 import org.opensaml.xmlsec.encryption.Salt;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.PBKDF2Params}.
+ * Concrete implementation of {@link PBKDF2Params}.
  */
 public class PBKDF2ParamsImpl extends AbstractXMLObject implements PBKDF2Params {
     
@@ -55,7 +56,8 @@ public class PBKDF2ParamsImpl extends AbstractXMLObject implements PBKDF2Params 
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected PBKDF2ParamsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PBKDF2ParamsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

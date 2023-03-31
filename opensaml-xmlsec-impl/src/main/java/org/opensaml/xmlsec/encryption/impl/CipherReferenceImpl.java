@@ -17,25 +17,30 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.Transforms;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CipherReference}.
+ * Concrete implementation of {@link CipherReference}.
  */
 public class CipherReferenceImpl extends AbstractXMLObject implements CipherReference {
 
     /** URI attribute value. */
-    private String uri;
+    @Nullable private String uri;
 
     /** Transforms child element value. */
-    private Transforms transforms;
+    @Nullable private Transforms transforms;
 
     /**
      * Constructor.
@@ -44,44 +49,39 @@ public class CipherReferenceImpl extends AbstractXMLObject implements CipherRefe
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected CipherReferenceImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected CipherReferenceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getURI() {
-        return this.uri;
+    @Nullable public String getURI() {
+        return uri;
     }
 
     /** {@inheritDoc} */
-    public void setURI(final String newURI) {
-        this.uri = prepareForAssignment(this.uri, newURI);
+    public void setURI(@Nullable final String newURI) {
+        uri = prepareForAssignment(uri, newURI);
     }
 
     /** {@inheritDoc} */
-    public Transforms getTransforms() {
-        return this.transforms;
+    @Nullable public Transforms getTransforms() {
+        return transforms;
     }
 
     /** {@inheritDoc} */
-    public void setTransforms(final Transforms newTransforms) {
-        this.transforms = prepareForAssignment(this.transforms, newTransforms);
+    public void setTransforms(@Nullable final Transforms newTransforms) {
+        transforms = prepareForAssignment(transforms, newTransforms);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
 
         if (transforms != null) {
-            children.add(transforms);
+            return CollectionSupport.singletonList(transforms);
         }
-
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        
+        return null;
     }
 
 }

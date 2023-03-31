@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.DEREncodedKeyValue;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
@@ -28,20 +31,14 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public class DEREncodedKeyValueBuilder extends AbstractXMLObjectBuilder<DEREncodedKeyValue>
     implements XMLSignatureBuilder<DEREncodedKeyValue> {
 
-    /**
-     * Constructor.
-     */
-    public DEREncodedKeyValueBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public DEREncodedKeyValue buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public DEREncodedKeyValue buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DEREncodedKeyValueImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public DEREncodedKeyValue buildObject() {
+    @Nonnull public DEREncodedKeyValue buildObject() {
         return buildObject(SignatureConstants.XMLSIG11_NS, DEREncodedKeyValue.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG11_PREFIX);
     }

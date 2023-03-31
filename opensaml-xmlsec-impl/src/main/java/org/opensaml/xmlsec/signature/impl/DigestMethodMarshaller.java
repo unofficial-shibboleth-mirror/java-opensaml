@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xmlsec.signature.DigestMethod;
@@ -28,7 +30,8 @@ import org.w3c.dom.Element;
 public class DigestMethodMarshaller extends AbstractXMLSignatureMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final DigestMethod dm = (DigestMethod) xmlObject;
 
         if (dm.getAlgorithm() != null) {

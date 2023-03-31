@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xmlsec.signature.XPath;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.XPath}.
+ * Concrete implementation of {@link XPath}.
  */
 public class XPathImpl extends XSStringImpl implements XPath {
 
@@ -32,7 +35,8 @@ public class XPathImpl extends XSStringImpl implements XPath {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected XPathImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected XPathImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

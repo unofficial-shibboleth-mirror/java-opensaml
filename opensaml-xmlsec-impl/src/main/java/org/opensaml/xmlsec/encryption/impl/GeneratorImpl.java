@@ -17,12 +17,15 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.Generator;
 import org.opensaml.xmlsec.signature.impl.CryptoBinaryImpl;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Generator}.
+ * Concrete implementation of {@link Generator}.
  */
 public class GeneratorImpl extends CryptoBinaryImpl implements Generator {
 
@@ -33,7 +36,8 @@ public class GeneratorImpl extends CryptoBinaryImpl implements Generator {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected GeneratorImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected GeneratorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

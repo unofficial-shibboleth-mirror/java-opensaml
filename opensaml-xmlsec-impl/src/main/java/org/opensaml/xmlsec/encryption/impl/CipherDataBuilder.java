@@ -17,28 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.CipherData}.
+ * Builder of {@link CipherData}.
  */
 public class CipherDataBuilder extends AbstractXMLObjectBuilder<CipherData> implements 
         XMLEncryptionBuilder<CipherData> {
 
-    /** Constructor. */
-    public CipherDataBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public CipherData buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public CipherData buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new CipherDataImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public CipherData buildObject() {
+    @Nonnull public CipherData buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, CipherData.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

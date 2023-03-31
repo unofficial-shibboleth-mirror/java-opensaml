@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.RSAKeyValue}.
+ * Builder of {@link RSAKeyValue}.
  */
 public class RSAKeyValueBuilder extends AbstractXMLObjectBuilder<RSAKeyValue> implements
         XMLSignatureBuilder<RSAKeyValue> {
 
-    /**
-     * Constructor.
-     */
-    public RSAKeyValueBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public RSAKeyValue buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public RSAKeyValue buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RSAKeyValueImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public RSAKeyValue buildObject() {
+    @Nonnull public RSAKeyValue buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, RSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.Transform;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Transform}.
+ * Builder of {@link Transform}.
  */
 public class TransformBuilder extends AbstractXMLObjectBuilder<Transform> implements XMLSignatureBuilder<Transform> {
 
-    /**
-     * Constructor.
-     */
-    public TransformBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Transform buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Transform buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new TransformImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Transform buildObject() {
+    @Nonnull public Transform buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, Transform.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

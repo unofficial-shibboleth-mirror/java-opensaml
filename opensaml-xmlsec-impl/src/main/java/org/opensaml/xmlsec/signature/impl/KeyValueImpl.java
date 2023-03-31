@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -29,25 +31,29 @@ import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyValue}.
+ * Concrete implementation of {@link KeyValue}.
  */
 public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
  
     /** DHKeyValue child element. */
-    private DHKeyValue dhKeyValue;
+    @Nullable private DHKeyValue dhKeyValue;
     
     /** DSAKeyValue child element. */
-    private DSAKeyValue dsaKeyValue;
+    @Nullable private DSAKeyValue dsaKeyValue;
     
     /** RSAKeyValue child element. */
-    private RSAKeyValue rsaKeyValue;
+    @Nullable private RSAKeyValue rsaKeyValue;
 
     /** ECKeyValue child element. */
-    private ECKeyValue ecKeyValue;
+    @Nullable private ECKeyValue ecKeyValue;
     
     /** Wildcard &lt;any&gt; XMLObject child element. */
-    private XMLObject unknownXMLObject;
+    @Nullable private XMLObject unknownXMLObject;
 
     /**
      * Constructor.
@@ -56,62 +62,63 @@ public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected KeyValueImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected KeyValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public DHKeyValue getDHKeyValue() {
+    @Nullable public DHKeyValue getDHKeyValue() {
         return dhKeyValue;
     }
 
     /** {@inheritDoc} */
-    public void setDHKeyValue(final DHKeyValue newDHKeyValue) {
+    public void setDHKeyValue(@Nullable final DHKeyValue newDHKeyValue) {
         dhKeyValue = prepareForAssignment(dhKeyValue, newDHKeyValue);
     }
 
     /** {@inheritDoc} */
-    public DSAKeyValue getDSAKeyValue() {
+    @Nullable public DSAKeyValue getDSAKeyValue() {
         return dsaKeyValue;
     }
 
     /** {@inheritDoc} */
-    public void setDSAKeyValue(final DSAKeyValue newDSAKeyValue) {
+    public void setDSAKeyValue(@Nullable final DSAKeyValue newDSAKeyValue) {
         dsaKeyValue = prepareForAssignment(dsaKeyValue, newDSAKeyValue);
     }
 
     /** {@inheritDoc} */
-    public RSAKeyValue getRSAKeyValue() {
+    @Nullable public RSAKeyValue getRSAKeyValue() {
         return rsaKeyValue;
     }
 
     /** {@inheritDoc} */
-    public void setRSAKeyValue(final RSAKeyValue newRSAKeyValue) {
+    public void setRSAKeyValue(@Nullable final RSAKeyValue newRSAKeyValue) {
         rsaKeyValue = prepareForAssignment(rsaKeyValue, newRSAKeyValue);
     }
 
     /** {@inheritDoc} */
-    public ECKeyValue getECKeyValue() {
+    @Nullable public ECKeyValue getECKeyValue() {
         return ecKeyValue;
     }
 
     /** {@inheritDoc} */
-    public void setECKeyValue(final ECKeyValue newECKeyValue) {
+    public void setECKeyValue(@Nullable final ECKeyValue newECKeyValue) {
         ecKeyValue = prepareForAssignment(ecKeyValue, newECKeyValue);
     }
     
     /** {@inheritDoc} */
-    public XMLObject getUnknownXMLObject() {
+    @Nullable public XMLObject getUnknownXMLObject() {
         return unknownXMLObject;
     }
 
     /** {@inheritDoc} */
-    public void setUnknownXMLObject(final XMLObject newXMLObject) {
+    public void setUnknownXMLObject(@Nullable final XMLObject newXMLObject) {
         unknownXMLObject = prepareForAssignment(unknownXMLObject, newXMLObject);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (dsaKeyValue != null) {
@@ -130,11 +137,7 @@ public class KeyValueImpl extends AbstractXMLObject implements KeyValue {
             children.add(unknownXMLObject);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,16 +29,20 @@ import org.opensaml.xmlsec.signature.X509IssuerName;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SerialNumber;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509IssuerSerial}.
+ * Concrete implementation of {@link X509IssuerSerial}.
  */
 public class X509IssuerSerialImpl extends AbstractXMLObject implements X509IssuerSerial {
     
     /** X509IssuerName child element. */
-    private X509IssuerName issuerName;
+    @Nullable private X509IssuerName issuerName;
     
     /** X509SerialNumber child element. */
-    private X509SerialNumber serialNumber;
+    @Nullable private X509SerialNumber serialNumber;
 
     /**
      * Constructor.
@@ -45,33 +51,33 @@ public class X509IssuerSerialImpl extends AbstractXMLObject implements X509Issue
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected X509IssuerSerialImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected X509IssuerSerialImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public X509IssuerName getX509IssuerName() {
+    @Nullable public X509IssuerName getX509IssuerName() {
         return this.issuerName;
     }
 
     /** {@inheritDoc} */
-    public void setX509IssuerName(final X509IssuerName newX509IssuerName) {
+    public void setX509IssuerName(@Nullable final X509IssuerName newX509IssuerName) {
         this.issuerName = prepareForAssignment(this.issuerName, newX509IssuerName);
     }
 
     /** {@inheritDoc} */
-    public X509SerialNumber getX509SerialNumber() {
+    @Nullable public X509SerialNumber getX509SerialNumber() {
         return this.serialNumber;
     }
 
     /** {@inheritDoc} */
-    public void setX509SerialNumber(final X509SerialNumber newX509SerialNumber) {
+    public void setX509SerialNumber(@Nullable final X509SerialNumber newX509SerialNumber) {
         this.serialNumber = prepareForAssignment(this.serialNumber, newX509SerialNumber);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (issuerName != null) {
@@ -81,11 +87,7 @@ public class X509IssuerSerialImpl extends AbstractXMLObject implements X509Issue
             children.add(serialNumber);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

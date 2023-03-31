@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.Q;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.Q}.
+ * Builder of {@link Q}.
  */
 public class QBuilder extends AbstractXMLObjectBuilder<Q> implements XMLEncryptionBuilder<Q> {
 
-    /**
-     * Constructor.
-     */
-    public QBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Q buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Q buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new QImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Q buildObject() {
+    @Nonnull public Q buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, Q.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

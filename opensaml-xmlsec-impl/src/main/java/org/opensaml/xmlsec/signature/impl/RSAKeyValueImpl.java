@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,16 +29,20 @@ import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.Modulus;
 import org.opensaml.xmlsec.signature.RSAKeyValue;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.RSAKeyValue}.
+ * Concrete implementation of {@link RSAKeyValue}.
  */
 public class RSAKeyValueImpl extends AbstractXMLObject implements RSAKeyValue {
     
     /** Modulus child element value. */
-    private Modulus modulus;
+    @Nullable private Modulus modulus;
     
     /** Exponent child element value. */
-    private Exponent exponent;
+    @Nullable private Exponent exponent;
 
     /**
      * Constructor.
@@ -45,33 +51,34 @@ public class RSAKeyValueImpl extends AbstractXMLObject implements RSAKeyValue {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RSAKeyValueImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected RSAKeyValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Modulus getModulus() {
+    @Nullable public Modulus getModulus() {
         return this.modulus;
     }
 
     /** {@inheritDoc} */
-    public void setModulus(final Modulus newModulus) {
+    public void setModulus(@Nullable final Modulus newModulus) {
         this.modulus = prepareForAssignment(this.modulus, newModulus);
     }
 
     /** {@inheritDoc} */
-    public Exponent getExponent() {
+    @Nullable public Exponent getExponent() {
         return this.exponent;
     }
 
     /** {@inheritDoc} */
-    public void setExponent(final Exponent newExponent) {
+    public void setExponent(@Nullable final Exponent newExponent) {
         this.exponent = prepareForAssignment(this.exponent, newExponent);
 
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (modulus != null) {
@@ -81,11 +88,7 @@ public class RSAKeyValueImpl extends AbstractXMLObject implements RSAKeyValue {
             children.add(exponent);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

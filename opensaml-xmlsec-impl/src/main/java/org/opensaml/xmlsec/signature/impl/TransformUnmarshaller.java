@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.signature.Transform;
@@ -28,7 +30,8 @@ import org.w3c.dom.Attr;
 public class TransformUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final Transform transform = (Transform) xmlObject;
 
         if (attribute.getLocalName().equals(Transform.ALGORITHM_ATTRIB_NAME)) {
@@ -39,8 +42,8 @@ public class TransformUnmarshaller extends AbstractXMLSignatureUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final Transform transform = (Transform) parentXMLObject;
 
         // Has <any> open content model + XPath children

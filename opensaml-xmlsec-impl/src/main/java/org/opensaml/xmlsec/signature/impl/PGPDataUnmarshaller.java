@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.signature.PGPData;
@@ -29,8 +31,8 @@ import org.opensaml.xmlsec.signature.PGPKeyPacket;
 public class PGPDataUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final PGPData pgpData = (PGPData) parentXMLObject;
 
         if (childXMLObject instanceof PGPKeyID) {

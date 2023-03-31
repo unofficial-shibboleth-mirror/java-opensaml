@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.Transforms;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.Transforms}.
+ * Builder of {@link Transforms}.
  */
 public class TransformsBuilder
     extends AbstractXMLObjectBuilder<Transforms> implements XMLEncryptionBuilder<Transforms> {
 
-    /**
-     * Constructor.
-     */
-    public TransformsBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Transforms buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Transforms buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new TransformsImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Transforms buildObject() {
+    @Nonnull public Transforms buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, Transforms.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

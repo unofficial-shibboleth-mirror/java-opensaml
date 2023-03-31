@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.X509Digest;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
@@ -25,22 +28,16 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Builder of {@link X509Digest}.
  */
-public class X509DigestBuilder extends AbstractXMLObjectBuilder<X509Digest>
-    implements XMLSignatureBuilder<X509Digest> {
-
-    /**
-     * Constructor.
-     */
-    public X509DigestBuilder() {
-    }
+public class X509DigestBuilder extends AbstractXMLObjectBuilder<X509Digest> implements XMLSignatureBuilder<X509Digest> {
 
     /** {@inheritDoc} */
-    public X509Digest buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public X509Digest buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new X509DigestImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public X509Digest buildObject() {
+    @Nonnull public X509Digest buildObject() {
         return buildObject(SignatureConstants.XMLSIG11_NS, X509Digest.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG11_PREFIX);
     }

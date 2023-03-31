@@ -17,30 +17,30 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.CipherReference}.
+ * Builder of {@link CipherReference}.
  */
 public class CipherReferenceBuilder extends AbstractXMLObjectBuilder<CipherReference> implements
         XMLEncryptionBuilder<CipherReference> {
 
-    /** Constructor. */
-    public CipherReferenceBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public CipherReference buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public CipherReference buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new CipherReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public CipherReference buildObject() {
+    @Nonnull public CipherReference buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, CipherReference.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }
+
 }

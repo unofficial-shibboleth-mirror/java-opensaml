@@ -17,34 +17,40 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+import org.opensaml.xmlsec.encryption.EncryptionProperty;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperty}.
+ * Concrete implementation of {@link EncryptionProperty}.
  */
 public class EncryptionPropertyImpl extends AbstractXMLObject implements
-        org.opensaml.xmlsec.encryption.EncryptionProperty {
+        EncryptionProperty {
     
     /** Target attribute value. */
-    private String target;
+    @Nullable private String target;
     
     /** Id attribute value. */
-    private String id;
+    @Nullable private String id;
     
     /** Child elements from the &lt;any&gt; content model. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /** "anyAttribute" attributes. */
-    private final AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -53,60 +59,54 @@ public class EncryptionPropertyImpl extends AbstractXMLObject implements
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected EncryptionPropertyImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EncryptionPropertyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownAttributes =  new AttributeMap(this);
     }
 
     /** {@inheritDoc} */
-    public String getTarget() {
-        return this.target;
+    @Nullable public String getTarget() {
+        return target;
     }
 
     /** {@inheritDoc} */
-    public void setTarget(final String newTarget) {
-        this.target = prepareForAssignment(this.target, newTarget);
+    public void setTarget(@Nullable final String newTarget) {
+        target = prepareForAssignment(target, newTarget);
     }
 
     /** {@inheritDoc} */
-    public String getID() {
-        return this.id;
+    @Nullable public String getID() {
+        return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
-        final String oldID = this.id;
-        this.id = prepareForAssignment(this.id, newID);
-        registerOwnID(oldID, this.id);
+    public void setID(@Nullable final String newID) {
+        final String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
+    
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(unknownChildren);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
 
 }

@@ -17,9 +17,11 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.xml.security.signature.XMLSignature;
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -29,31 +31,35 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.ContentReference;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * XMLObject representing an enveloped or detached XML Digital Signature, version 20020212, Signature element.
  */
 public class SignatureImpl extends AbstractXMLObject implements Signature {
 
     /** Canonicalization algorithm used in signature. */
-    private String canonicalizationAlgorithm;
+    @Nullable private String canonicalizationAlgorithm;
 
     /** Algorithm used to generate the signature. */
-    private String signatureAlgorithm;
+    @Nullable private String signatureAlgorithm;
 
     /** Optional HMAC output length parameter to the signature algorithm. */
-    private Integer hmacOutputLength;
+    @Nullable private Integer hmacOutputLength;
 
     /** Key used to sign the signature. */
-    private Credential signingCredential;
+    @Nullable private Credential signingCredential;
 
     /** Public key information to embed in the signature. */
-    private KeyInfo keyInfo;
+    @Nullable private KeyInfo keyInfo;
 
     /** References to content to be signed. */
-    private List<ContentReference> contentReferences;
+    @Nonnull private List<ContentReference> contentReferences;
 
     /** Constructed Apache XML Security signature object. */
-    private XMLSignature xmlSignature;
+    @Nullable private XMLSignature xmlSignature;
 
     /**
      * Constructor.
@@ -62,71 +68,72 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SignatureImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected SignatureImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         contentReferences = new LinkedList<>();
     }
 
     /** {@inheritDoc} */
-    public String getCanonicalizationAlgorithm() {
+    @Nullable public String getCanonicalizationAlgorithm() {
         return canonicalizationAlgorithm;
     }
 
     /** {@inheritDoc} */
-    public void setCanonicalizationAlgorithm(final String newAlgorithm) {
+    public void setCanonicalizationAlgorithm(@Nullable final String newAlgorithm) {
         canonicalizationAlgorithm = prepareForAssignment(canonicalizationAlgorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
-    public String getSignatureAlgorithm() {
+    @Nullable public String getSignatureAlgorithm() {
         return signatureAlgorithm;
     }
 
     /** {@inheritDoc} */
-    public void setSignatureAlgorithm(final String newAlgorithm) {
+    public void setSignatureAlgorithm(@Nullable final String newAlgorithm) {
         signatureAlgorithm = prepareForAssignment(signatureAlgorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
-    public Integer getHMACOutputLength() {
+    @Nullable public Integer getHMACOutputLength() {
         return hmacOutputLength;
     }
 
     /** {@inheritDoc} */
-    public void setHMACOutputLength(final Integer length) {
+    public void setHMACOutputLength(@Nullable final Integer length) {
         hmacOutputLength = prepareForAssignment(hmacOutputLength, length);
     }
 
     /** {@inheritDoc} */
-    public Credential getSigningCredential() {
+    @Nullable public Credential getSigningCredential() {
         return signingCredential;
     }
 
     /** {@inheritDoc} */
-    public void setSigningCredential(final Credential newCredential) {
+    public void setSigningCredential(@Nullable final Credential newCredential) {
         signingCredential = prepareForAssignment(signingCredential, newCredential);
     }
 
     /** {@inheritDoc} */
-    public KeyInfo getKeyInfo() {
+    @Nullable public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
     /** {@inheritDoc} */
-    public void setKeyInfo(final KeyInfo newKeyInfo) {
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo) {
         keyInfo = prepareForAssignment(keyInfo, newKeyInfo);
     }
 
     /** {@inheritDoc} */
-    public List<ContentReference> getContentReferences() {
+    @Nonnull @Live public List<ContentReference> getContentReferences() {
         // TODO worry about detecting changes and releasing this object's and parent's DOM?
         // would need something like an Observable list/collection impl or something similar
         return contentReferences;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.EMPTY_LIST;
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
     /** {@inheritDoc} */
@@ -140,6 +147,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
         // DOM for its children too
         if (keyInfo != null) {
             keyInfo.releaseChildrenDOM(true);
+            assert keyInfo != null;
             keyInfo.releaseDOM();
         }
     }
@@ -149,7 +157,7 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      * 
      * @return an Apache XML Security signature object
      */
-    public XMLSignature getXMLSignature() {
+    @Nullable public XMLSignature getXMLSignature() {
         return xmlSignature;
     }
 
@@ -158,7 +166,8 @@ public class SignatureImpl extends AbstractXMLObject implements Signature {
      * 
      * @param signature an Apache XML Security signature object
      */
-    public void setXMLSignature(final XMLSignature signature) {
+    public void setXMLSignature(@Nullable final XMLSignature signature) {
         xmlSignature = prepareForAssignment(xmlSignature, signature);
     }
+    
 }

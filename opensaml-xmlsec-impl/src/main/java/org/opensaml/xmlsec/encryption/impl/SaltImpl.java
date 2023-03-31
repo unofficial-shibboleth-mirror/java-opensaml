@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -30,7 +31,7 @@ import org.opensaml.xmlsec.encryption.Salt;
 import org.opensaml.xmlsec.encryption.Specified;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Salt}.
+ * Concrete implementation of {@link Salt}.
  */
 public class SaltImpl extends AbstractXMLObject implements Salt {
     
@@ -47,8 +48,8 @@ public class SaltImpl extends AbstractXMLObject implements Salt {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected SaltImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected SaltImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -35,10 +35,12 @@ import org.w3c.dom.Attr;
 public class ECKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
 
     /** ECParameters element name. */
-    @Nonnull public static final QName ECPARAMETERS_ELEMENT_NAME = new QName(SignatureConstants.XMLSIG11_NS, "ECParameters");
+    @Nonnull public static final QName ECPARAMETERS_ELEMENT_NAME =
+            new QName(SignatureConstants.XMLSIG11_NS, "ECParameters");
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final ECKeyValue ec = (ECKeyValue) xmlObject;
 
         if (attribute.getLocalName().equals(ECKeyValue.ID_ATTRIB_NAME)) {
@@ -50,8 +52,8 @@ public class ECKeyValueUnmarshaller extends AbstractXMLSignatureUnmarshaller {
     }
     
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final ECKeyValue keyValue = (ECKeyValue) parentXMLObject;
 
         if (childXMLObject instanceof NamedCurve) {

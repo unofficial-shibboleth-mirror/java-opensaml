@@ -17,12 +17,15 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.Public;
 import org.opensaml.xmlsec.signature.impl.CryptoBinaryImpl;
 
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Public}.
+ * Concrete implementation of {@link Public}.
  */
 public class PublicImpl extends CryptoBinaryImpl implements Public {
 
@@ -33,7 +36,8 @@ public class PublicImpl extends CryptoBinaryImpl implements Public {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected PublicImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PublicImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

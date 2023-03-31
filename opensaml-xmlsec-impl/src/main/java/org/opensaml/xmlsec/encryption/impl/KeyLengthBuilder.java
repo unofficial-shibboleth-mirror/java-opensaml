@@ -17,28 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.KeyLength;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.CarriedKeyName}.
+ * Builder of {@link KeyLength}.
  */
 public class KeyLengthBuilder extends AbstractXMLObjectBuilder<KeyLength> implements
         XMLEncryptionBuilder<KeyLength> {
 
-    /** Constructor. */
-    public KeyLengthBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public KeyLength buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public KeyLength buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyLengthImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public KeyLength buildObject() {
+    @Nonnull public KeyLength buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, KeyLength.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

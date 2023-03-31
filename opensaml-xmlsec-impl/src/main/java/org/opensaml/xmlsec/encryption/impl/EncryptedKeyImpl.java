@@ -18,27 +18,33 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.ReferenceList;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptedKey}.
+ * Concrete implementation of {@link EncryptedKey}.
  */
 public class EncryptedKeyImpl extends EncryptedTypeImpl implements EncryptedKey {
     
     /** Recipient value. */
-    private String recipient;
+    @Nullable private String recipient;
     
     /** CarriedKeyName value. */
-    private CarriedKeyName carriedKeyName;
+    @Nullable private CarriedKeyName carriedKeyName;
     
     /** ReferenceList value. */
-    private ReferenceList referenceList;
+    @Nullable private ReferenceList referenceList;
 
     /**
      * Constructor.
@@ -47,42 +53,43 @@ public class EncryptedKeyImpl extends EncryptedTypeImpl implements EncryptedKey 
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected EncryptedKeyImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected EncryptedKeyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getRecipient() {
-        return this.recipient;
+    @Nullable public String getRecipient() {
+        return recipient;
     }
 
     /** {@inheritDoc} */
-    public void setRecipient(final String newRecipient) {
-        this.recipient = prepareForAssignment(this.recipient, newRecipient);
+    public void setRecipient(@Nullable final String newRecipient) {
+        recipient = prepareForAssignment(recipient, newRecipient);
     }
 
     /** {@inheritDoc} */
-    public ReferenceList getReferenceList() {
-        return this.referenceList;
+    @Nullable public ReferenceList getReferenceList() {
+        return referenceList;
     }
 
     /** {@inheritDoc} */
-    public void setReferenceList(final ReferenceList newReferenceList) {
-        this.referenceList = prepareForAssignment(this.referenceList, newReferenceList);
+    public void setReferenceList(@Nullable final ReferenceList newReferenceList) {
+        referenceList = prepareForAssignment(referenceList, newReferenceList);
     }
 
     /** {@inheritDoc} */
-    public CarriedKeyName getCarriedKeyName() {
-        return this.carriedKeyName;
+    @Nullable  public CarriedKeyName getCarriedKeyName() {
+        return carriedKeyName;
     }
 
     /** {@inheritDoc} */
-    public void setCarriedKeyName(final CarriedKeyName newCarriedKeyName) {
-        this.carriedKeyName = prepareForAssignment(this.carriedKeyName, newCarriedKeyName);
+    public void setCarriedKeyName(@Nullable final CarriedKeyName newCarriedKeyName) {
+        carriedKeyName = prepareForAssignment(carriedKeyName, newCarriedKeyName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (super.getOrderedChildren() != null) {
@@ -96,11 +103,7 @@ public class EncryptedKeyImpl extends EncryptedTypeImpl implements EncryptedKey 
             children.add(carriedKeyName);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,16 +29,20 @@ import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.CipherValue;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CipherData}.
+ * Concrete implementation of {@link CipherData}.
  */
 public class CipherDataImpl extends AbstractXMLObject implements CipherData {
     
     /** CipherValue child element. */
-    private CipherValue cipherValue;
+    @Nullable private CipherValue cipherValue;
     
     /** CipherReference child element. */
-    private CipherReference cipherReference;
+    @Nullable private CipherReference cipherReference;
 
     /**
      * Constructor.
@@ -45,32 +51,33 @@ public class CipherDataImpl extends AbstractXMLObject implements CipherData {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected  CipherDataImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected CipherDataImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public CipherValue getCipherValue() {
-        return this.cipherValue;
+    @Nullable public CipherValue getCipherValue() {
+        return cipherValue;
     }
 
     /** {@inheritDoc} */
-    public void setCipherValue(final CipherValue newCipherValue) {
-        this.cipherValue = prepareForAssignment(this.cipherValue, newCipherValue);
+    public void setCipherValue(@Nullable final CipherValue newCipherValue) {
+        cipherValue = prepareForAssignment(cipherValue, newCipherValue);
     }
 
     /** {@inheritDoc} */
-    public CipherReference getCipherReference() {
-        return this.cipherReference;
+    @Nullable public CipherReference getCipherReference() {
+        return cipherReference;
     }
 
     /** {@inheritDoc} */
-    public void setCipherReference(final CipherReference newCipherReference) {
-        this.cipherReference = prepareForAssignment(this.cipherReference, newCipherReference);
+    public void setCipherReference(@Nullable final CipherReference newCipherReference) {
+        cipherReference = prepareForAssignment(cipherReference, newCipherReference);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (cipherValue != null) {
@@ -80,11 +87,7 @@ public class CipherDataImpl extends AbstractXMLObject implements CipherData {
             children.add(cipherReference);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

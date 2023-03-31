@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.P;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.P}.
+ * Builder of {@link P}.
  */
 public class PBuilder extends AbstractXMLObjectBuilder<P> implements XMLSignatureBuilder<P> {
 
-    /**
-     * Constructor.
-     */
-    public PBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public P buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public P buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public P buildObject() {
+    @Nonnull public P buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, P.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

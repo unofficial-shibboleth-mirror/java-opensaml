@@ -17,10 +17,13 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.signature.Modulus;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.Exponent}.
+ * Concrete implementation of {@link Modulus}.
  */
 public class ModulusImpl extends CryptoBinaryImpl implements Modulus {
 
@@ -31,7 +34,8 @@ public class ModulusImpl extends CryptoBinaryImpl implements Modulus {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ModulusImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ModulusImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

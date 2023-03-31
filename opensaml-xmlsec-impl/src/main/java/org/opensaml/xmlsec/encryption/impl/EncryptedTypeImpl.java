@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -29,34 +31,38 @@ import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.EncryptionProperties;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Abstract implementation of {@link org.opensaml.xmlsec.encryption.EncryptedType}.
+ * Abstract implementation of {@link EncryptedType}.
  */
 public abstract class EncryptedTypeImpl extends AbstractXMLObject implements EncryptedType {
     
     /** id attribute value. */
-    private String id;
+    @Nullable private String id;
     
     /** Type attribute value. */
-    private String type;
+    @Nullable private String type;
     
     /** MimeType attribute value. */
-    private String mimeType;
+    @Nullable private String mimeType;
     
     /** Encoding attribute value. */
-    private String encoding;
+    @Nullable private String encoding;
     
     /** EncryptionMethod child element. */
-    private EncryptionMethod encryptionMethod;
+    @Nullable private EncryptionMethod encryptionMethod;
     
     /** EncryptionMethod child element. */
-    private KeyInfo keyInfo;
+    @Nullable private KeyInfo keyInfo;
     
     /** CipherData child element. */
-    private CipherData cipherData;
+    @Nullable private CipherData cipherData;
     
     /** EncryptionProperties child element. */
-    private EncryptionProperties encryptionProperties;
+    @Nullable private EncryptionProperties encryptionProperties;
     
     /**
      * Constructor.
@@ -65,95 +71,95 @@ public abstract class EncryptedTypeImpl extends AbstractXMLObject implements Enc
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected EncryptedTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EncryptedTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
     /** {@inheritDoc} */
-    public String getID() {
-        return this.id;
+    @Nullable public String getID() {
+        return id;
     }
     
     /** {@inheritDoc} */
-    public void setID(final String newID) {
-        final String oldID = this.id;
-        this.id = prepareForAssignment(this.id, newID);
-        registerOwnID(oldID, this.id);
+    public void setID(@Nullable final String newID) {
+        final String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
     
     /** {@inheritDoc} */
-    public String getType() {
-        return this.type;
+    @Nullable public String getType() {
+        return type;
     }
     
     /** {@inheritDoc} */
-    public void setType(final String newType) {
-        this.type = prepareForAssignment(this.type, newType);
+    public void setType(@Nullable final String newType) {
+        type = prepareForAssignment(type, newType);
     }
     
     /** {@inheritDoc} */
-    public String getMimeType() {
-        return this.mimeType;
+    @Nullable public String getMimeType() {
+        return mimeType;
     }
     
     /** {@inheritDoc} */
-    public void setMimeType(final String newMimeType) {
-        this.mimeType = prepareForAssignment(this.mimeType, newMimeType);
+    public void setMimeType(@Nullable final String newMimeType) {
+        mimeType = prepareForAssignment(mimeType, newMimeType);
     }
     
     /** {@inheritDoc} */
-    public String getEncoding() {
-        return this.encoding;
+    @Nullable public String getEncoding() {
+        return encoding;
     }
     
     /** {@inheritDoc} */
-    public void setEncoding(final String newEncoding) {
-        this.encoding = prepareForAssignment(this.encoding, newEncoding);
+    public void setEncoding(@Nullable final String newEncoding) {
+        encoding = prepareForAssignment(encoding, newEncoding);
     }
 
     /** {@inheritDoc} */
-    public EncryptionMethod getEncryptionMethod() {
-        return this.encryptionMethod;
+    @Nullable public EncryptionMethod getEncryptionMethod() {
+        return encryptionMethod;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptionMethod(final EncryptionMethod newEncryptionMethod) {
-        this.encryptionMethod = prepareForAssignment(this.encryptionMethod, newEncryptionMethod);
+    public void setEncryptionMethod(@Nullable final EncryptionMethod newEncryptionMethod) {
+        encryptionMethod = prepareForAssignment(encryptionMethod, newEncryptionMethod);
     }
 
     /** {@inheritDoc} */
-    public KeyInfo getKeyInfo() {
-        return this.keyInfo;
+    @Nullable public KeyInfo getKeyInfo() {
+        return keyInfo;
     }
 
     /** {@inheritDoc} */
-    public void setKeyInfo(final KeyInfo newKeyInfo) {
-        this.keyInfo = prepareForAssignment(this.keyInfo, newKeyInfo);
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo) {
+        keyInfo = prepareForAssignment(keyInfo, newKeyInfo);
     }
 
     /** {@inheritDoc} */
-    public CipherData getCipherData() {
-        return this.cipherData;
+    @Nullable public CipherData getCipherData() {
+        return cipherData;
     }
 
     /** {@inheritDoc} */
-    public void setCipherData(final CipherData newCipherData) {
-        this.cipherData = prepareForAssignment(this.cipherData, newCipherData);
+    public void setCipherData(@Nullable final CipherData newCipherData) {
+        cipherData = prepareForAssignment(cipherData, newCipherData);
     }
 
     /** {@inheritDoc} */
-    public EncryptionProperties getEncryptionProperties() {
-        return this.encryptionProperties;
+    @Nullable public EncryptionProperties getEncryptionProperties() {
+        return encryptionProperties;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptionProperties(final EncryptionProperties newEncryptionProperties) {
-        this.encryptionProperties = prepareForAssignment(this.encryptionProperties, newEncryptionProperties);
+    public void setEncryptionProperties(@Nullable final EncryptionProperties newEncryptionProperties) {
+        encryptionProperties = prepareForAssignment(encryptionProperties, newEncryptionProperties);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (encryptionMethod != null) {
@@ -169,11 +175,7 @@ public abstract class EncryptedTypeImpl extends AbstractXMLObject implements Enc
             children.add(encryptionProperties);
         }
         
-        if (children.size() == 0) {
-           return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

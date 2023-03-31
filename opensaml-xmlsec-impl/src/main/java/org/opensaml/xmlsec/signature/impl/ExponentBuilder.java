@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.Exponent;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Exponent}.
+ * Builder of {@link Exponent}.
  */
 public class ExponentBuilder extends AbstractXMLObjectBuilder<Exponent> implements XMLSignatureBuilder<Exponent> {
 
-    /**
-     * Constructor.
-     */
-    public ExponentBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Exponent buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Exponent buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ExponentImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Exponent buildObject() {
+    @Nonnull public Exponent buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, Exponent.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

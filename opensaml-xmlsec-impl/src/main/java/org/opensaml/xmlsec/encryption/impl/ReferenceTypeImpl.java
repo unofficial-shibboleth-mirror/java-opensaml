@@ -17,10 +17,10 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -28,16 +28,21 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.encryption.ReferenceType;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ReferenceType}.
+ * Concrete implementation of {@link ReferenceType}.
  */
 public class ReferenceTypeImpl extends AbstractXMLObject implements ReferenceType {
     
     /** URI attribute value. */
-    private String uri;
+    @Nullable private String uri;
     
     /** List of &lt;any&gt; XML child elements. */
-    private final IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
 
     /**
      * Constructor.
@@ -46,43 +51,36 @@ public class ReferenceTypeImpl extends AbstractXMLObject implements ReferenceTyp
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected ReferenceTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected ReferenceTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         xmlChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getURI() {
-        return this.uri;
+    @Nullable public String getURI() {
+        return uri;
     }
 
     /** {@inheritDoc} */
-    public void setURI(final String newURI) {
-        this.uri = prepareForAssignment(this.uri, newURI);
+    public void setURI(@Nullable final String newURI) {
+        uri = prepareForAssignment(uri, newURI);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return xmlChildren;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) xmlChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(xmlChildren);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(xmlChildren);
     }
     
 }

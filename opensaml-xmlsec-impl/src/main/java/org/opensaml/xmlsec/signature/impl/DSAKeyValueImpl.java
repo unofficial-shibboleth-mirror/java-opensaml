@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -32,31 +34,35 @@ import org.opensaml.xmlsec.signature.Q;
 import org.opensaml.xmlsec.signature.Seed;
 import org.opensaml.xmlsec.signature.Y;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.DSAKeyValue}.
+ * Concrete implementation of {@link DSAKeyValue}.
  */
 public class DSAKeyValueImpl extends AbstractXMLObject implements DSAKeyValue {
     
     /** P child element. */
-    private P p;
+    @Nullable private P p;
     
     /** Q child element. */
-    private Q q;
+    @Nullable private Q q;
     
     /** G child element. */
-    private G g;
+    @Nullable private G g;
     
     /** Y child element. */
-    private Y y;
+    @Nullable private Y y;
     
     /** J child element. */
-    private J j;
+    @Nullable private J j;
     
     /** Seed child element. */
-    private Seed seed;
+    @Nullable private Seed seed;
     
     /** PgenCounter child element. */
-    private PgenCounter pgenCounter;
+    @Nullable private PgenCounter pgenCounter;
 
     /**
      * Constructor.
@@ -65,82 +71,83 @@ public class DSAKeyValueImpl extends AbstractXMLObject implements DSAKeyValue {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected DSAKeyValueImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected DSAKeyValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public P getP() {
-        return this.p;
+    @Nullable public P getP() {
+        return p;
     }
 
     /** {@inheritDoc} */
-    public void setP(final P newP) {
-        this.p = prepareForAssignment(this.p, newP);
+    public void setP(@Nullable final P newP) {
+        p = prepareForAssignment(p, newP);
     }
 
     /** {@inheritDoc} */
-    public Q getQ() {
-        return this.q;
+    @Nullable public Q getQ() {
+        return q;
     }
 
     /** {@inheritDoc} */
-    public void setQ(final Q newQ) {
-        this.q = prepareForAssignment(this.q, newQ);
+    public void setQ(@Nullable final Q newQ) {
+        q = prepareForAssignment(q, newQ);
     }
 
     /** {@inheritDoc} */
-    public G getG() {
-        return this.g;
+    @Nullable public G getG() {
+        return g;
     }
 
     /** {@inheritDoc} */
-    public void setG(final G newG) {
-        this.g = prepareForAssignment(this.g, newG);
+    public void setG(@Nullable final G newG) {
+        g = prepareForAssignment(g, newG);
     }
 
     /** {@inheritDoc} */
-    public Y getY() {
-        return this.y;
+    @Nullable public Y getY() {
+        return y;
     }
 
     /** {@inheritDoc} */
-    public void setY(final Y newY) {
-        this.y = prepareForAssignment(this.y, newY);
+    public void setY(@Nullable final Y newY) {
+        y = prepareForAssignment(y, newY);
     }
 
     /** {@inheritDoc} */
-    public J getJ() {
-        return this.j;
+    @Nullable public J getJ() {
+        return j;
     }
 
     /** {@inheritDoc} */
-    public void setJ(final J newJ) {
-        this.j = prepareForAssignment(this.j, newJ);
+    public void setJ(@Nullable final J newJ) {
+        j = prepareForAssignment(j, newJ);
     }
 
     /** {@inheritDoc} */
-    public Seed getSeed() {
-        return this.seed;
+    @Nullable public Seed getSeed() {
+        return seed;
     }
 
     /** {@inheritDoc} */
-    public void setSeed(final Seed newSeed) {
-        this.seed = prepareForAssignment(this.seed, newSeed);
+    public void setSeed(@Nullable final Seed newSeed) {
+        seed = prepareForAssignment(seed, newSeed);
     }
 
     /** {@inheritDoc} */
-    public PgenCounter getPgenCounter() {
-        return this.pgenCounter;
+    @Nullable public PgenCounter getPgenCounter() {
+        return pgenCounter;
     }
 
     /** {@inheritDoc} */
-    public void setPgenCounter(final PgenCounter newPgenCounter) {
-        this.pgenCounter = prepareForAssignment(this.pgenCounter, newPgenCounter);
+    public void setPgenCounter(@Nullable final PgenCounter newPgenCounter) {
+        pgenCounter = prepareForAssignment(pgenCounter, newPgenCounter);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (p != null) {
@@ -165,11 +172,7 @@ public class DSAKeyValueImpl extends AbstractXMLObject implements DSAKeyValue {
             children.add(pgenCounter);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

@@ -17,31 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.ReferenceList}.
+ * Builder of {@link RecipientKeyInfo}.
  */
 public class RecipientKeyInfoBuilder extends AbstractXMLObjectBuilder<RecipientKeyInfo> implements
         XMLEncryptionBuilder<RecipientKeyInfo> {
 
-    /**
-     * Constructor.
-     */
-    public RecipientKeyInfoBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public RecipientKeyInfo buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public RecipientKeyInfo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RecipientKeyInfoImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public RecipientKeyInfo buildObject() {
+    @Nonnull public RecipientKeyInfo buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, RecipientKeyInfo.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

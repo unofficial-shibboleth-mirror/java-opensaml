@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.ReferenceList}.
+ * Builder of {@link ReferenceList}.
  */
 public class ReferenceListBuilder extends AbstractXMLObjectBuilder<ReferenceList> implements
         XMLEncryptionBuilder<ReferenceList> {
 
-    /**
-     * Constructor.
-     */
-    public ReferenceListBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public ReferenceList buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public ReferenceList buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ReferenceListImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public ReferenceList buildObject() {
+    @Nonnull public ReferenceList buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, ReferenceList.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

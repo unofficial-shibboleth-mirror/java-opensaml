@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.KANonce;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.KANonce}.
+ * Builder of {@link KANonce}.
  */
 public class KANonceBuilder extends AbstractXMLObjectBuilder<KANonce> implements XMLEncryptionBuilder<KANonce> {
 
-    /**
-     * Constructor.
-     */
-    public KANonceBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public KANonce buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public KANonce buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KANonceImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public KANonce buildObject() {
+    @Nonnull public KANonce buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, KANonce.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

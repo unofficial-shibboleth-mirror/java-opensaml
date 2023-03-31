@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.commons.codec.DecoderException;
@@ -32,7 +33,7 @@ import org.opensaml.xmlsec.encryption.ConcatKDFParams;
 import org.opensaml.xmlsec.signature.DigestMethod;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.ConcatKDFParams}.
+ * Concrete implementation of {@link ConcatKDFParams}.
  */
 public class ConcatKDFParamsImpl extends AbstractXMLObject implements ConcatKDFParams {
     
@@ -61,8 +62,8 @@ public class ConcatKDFParamsImpl extends AbstractXMLObject implements ConcatKDFP
      * @param elementLocalName element local name
      * @param namespacePrefix namespace prefix
      */
-    protected ConcatKDFParamsImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected ConcatKDFParamsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

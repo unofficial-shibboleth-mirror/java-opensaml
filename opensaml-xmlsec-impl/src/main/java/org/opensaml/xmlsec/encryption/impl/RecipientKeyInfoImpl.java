@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 import org.opensaml.xmlsec.signature.impl.KeyInfoImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.RecipientKeyInfo}.
+ * Concrete implementation of {@link RecipientKeyInfo}.
  */
 public class RecipientKeyInfoImpl extends KeyInfoImpl implements RecipientKeyInfo {
 
@@ -32,8 +35,8 @@ public class RecipientKeyInfoImpl extends KeyInfoImpl implements RecipientKeyInf
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected RecipientKeyInfoImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RecipientKeyInfoImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -17,10 +17,13 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.PRF;
 
 /**
- * Abstract implementation of {@link org.opensaml.xmlsec.encryption.PRF}.
+ * Abstract implementation of {@link PRF}.
  */
 public class PRFImpl extends AlgorithmIdentifierTypeImpl implements PRF {
 
@@ -31,7 +34,8 @@ public class PRFImpl extends AlgorithmIdentifierTypeImpl implements PRF {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected PRFImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PRFImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

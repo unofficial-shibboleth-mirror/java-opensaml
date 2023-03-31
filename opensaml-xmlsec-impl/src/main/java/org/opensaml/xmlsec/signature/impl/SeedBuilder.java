@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.Seed;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Seed}.
+ * Builder of {@link Seed}.
  */
 public class SeedBuilder extends AbstractXMLObjectBuilder<Seed> implements XMLSignatureBuilder<Seed> {
 
-    /**
-     * Constructor.
-     */
-    public SeedBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Seed buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Seed buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SeedImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Seed buildObject() {
+    @Nonnull public Seed buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, Seed.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

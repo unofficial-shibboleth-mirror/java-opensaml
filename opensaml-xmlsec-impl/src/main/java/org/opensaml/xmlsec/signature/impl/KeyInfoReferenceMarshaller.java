@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -29,7 +31,8 @@ import org.w3c.dom.Element;
 public class KeyInfoReferenceMarshaller extends AbstractXMLSignatureMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final KeyInfoReference ref = (KeyInfoReference) xmlObject;
 
         if (ref.getID() != null) {
@@ -42,7 +45,7 @@ public class KeyInfoReferenceMarshaller extends AbstractXMLSignatureMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         XMLObjectSupport.marshallAttributeIDness(null, KeyInfoReference.ID_ATTRIB_NAME, domElement, true);

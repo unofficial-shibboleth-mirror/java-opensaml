@@ -22,6 +22,7 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 
@@ -36,16 +37,15 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 /**
- * An unmarshaller for {@link org.opensaml.xmlsec.signature.Signature} objects.
+ * An unmarshaller for {@link Signature} objects.
  */
 public class SignatureUnmarshaller implements Unmarshaller {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(SignatureUnmarshaller.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(SignatureUnmarshaller.class);
 
     /** Constructor. */
     public SignatureUnmarshaller() {
@@ -56,7 +56,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
     }
 
     /** {@inheritDoc} */
-    public Signature unmarshall(@Nonnull final Element signatureElement) throws UnmarshallingException {
+    @Nonnull public Signature unmarshall(@Nonnull final Element signatureElement) throws UnmarshallingException {
         log.debug("Starting to unmarshall Apache XML-Security-based SignatureImpl element");
 
         final SignatureImpl signature =
@@ -79,7 +79,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
             if (xmlSecKeyInfo != null) {
                 log.debug("Adding KeyInfo to Signature");
                 final Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory()
-                        .getUnmarshaller(xmlSecKeyInfo.getElement());
+                        .ensureUnmarshaller(xmlSecKeyInfo.getElement());
                 final KeyInfo keyInfo = (KeyInfo) unmarshaller.unmarshall(xmlSecKeyInfo.getElement());
                 signature.setKeyInfo(keyInfo);
             }
@@ -98,7 +98,7 @@ public class SignatureUnmarshaller implements Unmarshaller {
      * @param signatureMethodElement the ds:SignatureMethod element
      * @return the HMAC output length value, or null if not present
      */
-    private Integer getHMACOutputLengthValue(@Nullable final Element signatureMethodElement) {
+    @Nullable private Integer getHMACOutputLengthValue(@Nullable final Element signatureMethodElement) {
         if (signatureMethodElement == null) {
             return null;
         }
@@ -115,4 +115,5 @@ public class SignatureUnmarshaller implements Unmarshaller {
         }
         return null;
     }
+    
 }

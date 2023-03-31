@@ -17,31 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.KANonce}.
+ * Builder of {@link KeyDerivationMethod}.
  */
 public class KeyDerivationMethodBuilder extends AbstractXMLObjectBuilder<KeyDerivationMethod>
         implements XMLEncryptionBuilder<KeyDerivationMethod> {
 
-    /**
-     * Constructor.
-     */
-    public KeyDerivationMethodBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public KeyDerivationMethod buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public KeyDerivationMethod buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new KeyDerivationMethodImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public KeyDerivationMethod buildObject() {
+    @Nonnull public KeyDerivationMethod buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, KeyDerivationMethod.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

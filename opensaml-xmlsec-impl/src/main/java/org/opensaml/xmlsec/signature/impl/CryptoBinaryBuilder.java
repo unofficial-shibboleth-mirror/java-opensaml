@@ -17,26 +17,30 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
-import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.xmlsec.signature.CryptoBinary;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
+import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
  * Builder of {@link org.opensaml.xmlsec.signature.CryptoBinary}.
  */
 public class CryptoBinaryBuilder extends AbstractXMLObjectBuilder<CryptoBinary> 
-    implements XMLObjectBuilder<CryptoBinary>{
+    implements XMLSignatureBuilder<CryptoBinary>{
 
-    /**
-     * Constructor.
-     *
-     */
-    public CryptoBinaryBuilder() {
+    /** {@inheritDoc} */
+    @Nonnull public CryptoBinary buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
+        return new CryptoBinaryImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public CryptoBinary buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
-        return new CryptoBinaryImpl(namespaceURI, localName, namespacePrefix);
+    @Nonnull public CryptoBinary buildObject() {
+        return buildObject(SignatureConstants.XMLSIG_NS, CryptoBinary.TYPE_LOCAL_NAME,
+                SignatureConstants.XMLSIG_PREFIX);
     }
-    
+
 }

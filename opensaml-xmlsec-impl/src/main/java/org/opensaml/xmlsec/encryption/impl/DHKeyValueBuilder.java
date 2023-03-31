@@ -17,28 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.DHKeyValue;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.DHKeyValue}.
+ * Builder of {@link DHKeyValue}.
  */
 public class DHKeyValueBuilder
     extends AbstractXMLObjectBuilder<DHKeyValue> implements XMLEncryptionBuilder<DHKeyValue> {
 
-    /** Constructor. */
-    public DHKeyValueBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public DHKeyValue buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public DHKeyValue buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DHKeyValueImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public DHKeyValue buildObject() {
+    @Nonnull public DHKeyValue buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, DHKeyValue.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

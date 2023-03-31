@@ -20,17 +20,23 @@ package org.opensaml.xmlsec.signature.impl;
 import java.math.BigInteger;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.signature.X509SerialNumber;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.X509SerialNumber}.
+ * Concrete implementation of {@link X509SerialNumber}.
  */
 public class X509SerialNumberImpl extends AbstractXMLObject implements X509SerialNumber {
     
     /** The serial number value. */
-    private BigInteger value;
+    @Nullable private BigInteger value;
 
     /**
      * Constructor.
@@ -39,25 +45,25 @@ public class X509SerialNumberImpl extends AbstractXMLObject implements X509Seria
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected X509SerialNumberImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected X509SerialNumberImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public BigInteger getValue() {
+    @Nullable public BigInteger getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final BigInteger newValue) {
+    public void setValue(@Nullable final BigInteger newValue) {
         value = prepareForAssignment(value, newValue);
     }
     
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }

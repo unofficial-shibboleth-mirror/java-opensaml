@@ -19,13 +19,16 @@ package org.opensaml.xmlsec.signature.impl;
 
 import java.lang.ref.Cleaner;
 import java.lang.ref.Cleaner.Cleanable;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.IndexingObjectStore;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.CleanerSupport;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -36,17 +39,17 @@ import org.opensaml.xmlsec.signature.X509CRL;
 public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
 
     /** Class-level index of Base64 encoded CRL values. */
-    private static final IndexingObjectStore<String> B64_CRL_STORE = new IndexingObjectStore<>();
+    @Nonnull private static final IndexingObjectStore<String> B64_CRL_STORE = new IndexingObjectStore<>();
 
     /** The {@link Cleaner} instance to use. */
-    private static final Cleaner CLEANER = CleanerSupport.getInstance(X509CRLImpl.class);
+    @Nonnull private static final Cleaner CLEANER = CleanerSupport.getInstance(X509CRLImpl.class);
 
     /** The {@link Cleanable} representing the current instance's CRL value, as represented by the
      * current <code>b64CRLIndex</code> field value. */
-    private Cleaner.Cleanable cleanable;
+    @Nullable private Cleaner.Cleanable cleanable;
 
     /** Index to a stored Base64 encoded CRL. */
-    private String b64CRLIndex;
+    @Nullable private String b64CRLIndex;
 
     /**
      * Constructor.
@@ -55,17 +58,18 @@ public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected X509CRLImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected X509CRLImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getValue() {
+    @Nullable public String getValue() {
         return B64_CRL_STORE.get(b64CRLIndex);
     }
 
     /** {@inheritDoc} */
-    public void setValue(final String newValue) {
+    public void setValue(@Nullable final String newValue) {
         // Dump our cached DOM if the new value really is new
         final String currentCRL = B64_CRL_STORE.get(b64CRLIndex);
         final String newCRL = prepareForAssignment(currentCRL, newValue);
@@ -84,9 +88,8 @@ public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.emptyList();
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
     /**
@@ -95,15 +98,15 @@ public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
     static class CleanerState implements Runnable {
 
         /** The index to remove from the store. */
-        private String index;
+        @Nonnull private final String index;
 
         /**
          * Constructor.
          *
-         * @param idx the index in the {@link X509CertificateImpl#B64_CERT_STORE}.
+         * @param idx the index in the {@link X509CRLImpl#B64_CRL_STORE}.
          */
         public CleanerState(@Nonnull final String idx) {
-            index = idx;
+            index = Constraint.isNotNull(idx, "Index cannot be null");
         }
 
         /** {@inheritDoc} */
@@ -112,4 +115,5 @@ public class X509CRLImpl extends AbstractXMLObject implements X509CRL {
         }
 
     }
+
 }

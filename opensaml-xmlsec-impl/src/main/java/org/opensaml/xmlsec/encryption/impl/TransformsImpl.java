@@ -17,9 +17,10 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,13 +28,18 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xmlsec.encryption.Transforms;
 import org.opensaml.xmlsec.signature.Transform;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.Transforms}.
+ * Concrete implementation of {@link Transforms}.
  */
 public class TransformsImpl extends AbstractXMLObject implements Transforms {
     
     /** Transform child elements. */
-    private final XMLObjectChildrenList<Transform> transforms;
+    @Nonnull private final XMLObjectChildrenList<Transform> transforms;
 
     /**
      * Constructor.
@@ -42,27 +48,20 @@ public class TransformsImpl extends AbstractXMLObject implements Transforms {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected TransformsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected TransformsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         transforms = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Transform> getTransforms() {
-        return this.transforms;
+    @Nonnull @Live public List<Transform> getTransforms() {
+        return transforms;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(transforms);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(transforms);
     }
 
 }

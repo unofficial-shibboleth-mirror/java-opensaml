@@ -17,31 +17,28 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.X509IssuerSerial}.
+ * Builder of {@link X509IssuerSerial}.
  */
 public class X509IssuerSerialBuilder extends AbstractXMLObjectBuilder<X509IssuerSerial> implements
         XMLSignatureBuilder<X509IssuerSerial> {
 
-    /**
-     * Constructor.
-     */
-    public X509IssuerSerialBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public X509IssuerSerial buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public X509IssuerSerial buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new X509IssuerSerialImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public X509IssuerSerial buildObject() {
+    @Nonnull public X509IssuerSerial buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, X509IssuerSerial.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

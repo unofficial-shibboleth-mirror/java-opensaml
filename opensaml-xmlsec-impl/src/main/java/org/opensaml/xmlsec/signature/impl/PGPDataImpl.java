@@ -18,9 +18,10 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -30,19 +31,24 @@ import org.opensaml.xmlsec.signature.PGPData;
 import org.opensaml.xmlsec.signature.PGPKeyID;
 import org.opensaml.xmlsec.signature.PGPKeyPacket;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPData}.
+ * Concrete implementation of {@link PGPData}.
  */
 public class PGPDataImpl extends AbstractXMLObject implements PGPData {
     
     /** PGPKeyID child element value. */
-    private PGPKeyID pgpKeyID;
+    @Nullable private PGPKeyID pgpKeyID;
     
     /** PGPKeyPacket child element value. */
-    private PGPKeyPacket pgpKeyPacket;
+    @Nullable private PGPKeyPacket pgpKeyPacket;
     
     /** List of &lt;any&gt; wildcard XMLObject children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
 
     /**
      * Constructor.
@@ -51,42 +57,45 @@ public class PGPDataImpl extends AbstractXMLObject implements PGPData {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected PGPDataImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PGPDataImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         xmlChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public PGPKeyID getPGPKeyID() {
-        return this.pgpKeyID;
+    @Nullable public PGPKeyID getPGPKeyID() {
+        return pgpKeyID;
     }
 
     /** {@inheritDoc} */
-    public void setPGPKeyID(final PGPKeyID newPGPKeyID) {
-        this.pgpKeyID = prepareForAssignment(this.pgpKeyID, newPGPKeyID);
+    public void setPGPKeyID(@Nullable final PGPKeyID newPGPKeyID) {
+        pgpKeyID = prepareForAssignment(pgpKeyID, newPGPKeyID);
     }
 
     /** {@inheritDoc} */
-    public PGPKeyPacket getPGPKeyPacket() {
-        return this.pgpKeyPacket;
+    @Nullable public PGPKeyPacket getPGPKeyPacket() {
+        return pgpKeyPacket;
     }
 
     /** {@inheritDoc} */
-    public void setPGPKeyPacket(final PGPKeyPacket newPGPKeyPacket) {
-        this.pgpKeyPacket = prepareForAssignment(this.pgpKeyPacket, newPGPKeyPacket);
+    public void setPGPKeyPacket(@Nullable final PGPKeyPacket newPGPKeyPacket) {
+        pgpKeyPacket = prepareForAssignment(pgpKeyPacket, newPGPKeyPacket);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return xmlChildren;
     }
+    
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) xmlChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (pgpKeyID != null) {
@@ -95,13 +104,10 @@ public class PGPDataImpl extends AbstractXMLObject implements PGPData {
         if (pgpKeyPacket != null) {
             children.add(pgpKeyPacket);
         }
+        
         children.addAll(xmlChildren);
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

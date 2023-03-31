@@ -18,9 +18,10 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -31,25 +32,29 @@ import org.opensaml.xmlsec.encryption.KANonce;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.AgreementMethod}.
+ * Concrete implementation of {@link AgreementMethod}.
  */
 public class AgreementMethodImpl extends AbstractXMLObject implements AgreementMethod {
     
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** KA-Nonce child element value. */
-    private KANonce kaNonce;
+    @Nullable private KANonce kaNonce;
     
     /** OriginatorKeyInfo child element value. */
-    private OriginatorKeyInfo originatorKeyInfo;
+    @Nullable private OriginatorKeyInfo originatorKeyInfo;
     
     /** RecipientKeyInfo child element value. */
-    private RecipientKeyInfo recipientKeyInfo;
+    @Nullable private RecipientKeyInfo recipientKeyInfo;
     
     /** List of wildcard &lt;any&gt; XMLObject children. */
-    private IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
+    @Nonnull private IndexedXMLObjectChildrenList<XMLObject> xmlChildren;
 
     /**
      * Constructor.
@@ -58,63 +63,64 @@ public class AgreementMethodImpl extends AbstractXMLObject implements AgreementM
      * @param elementLocalName element local name
      * @param namespacePrefix namespace prefix
      */
-    protected AgreementMethodImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AgreementMethodImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         xmlChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nullable public String getAlgorithm() {
         return algorithm;
     }
 
     /** {@inheritDoc} */
-    public void setAlgorithm(final String newAlgorithm) {
+    public void setAlgorithm(@Nullable final String newAlgorithm) {
         algorithm = prepareForAssignment(algorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
-    public KANonce getKANonce() {
+    @Nullable public KANonce getKANonce() {
         return this.kaNonce;
     }
 
     /** {@inheritDoc} */
-    public void setKANonce(final KANonce newKANonce) {
+    public void setKANonce(@Nullable final KANonce newKANonce) {
         kaNonce = prepareForAssignment(kaNonce, newKANonce);
     }
 
     /** {@inheritDoc} */
-    public OriginatorKeyInfo getOriginatorKeyInfo() {
+    @Nullable public OriginatorKeyInfo getOriginatorKeyInfo() {
         return originatorKeyInfo;
     }
 
     /** {@inheritDoc} */
-    public void setOriginatorKeyInfo(final OriginatorKeyInfo newOriginatorKeyInfo) {
+    public void setOriginatorKeyInfo(@Nullable final OriginatorKeyInfo newOriginatorKeyInfo) {
         originatorKeyInfo = prepareForAssignment(originatorKeyInfo, newOriginatorKeyInfo);
     }
 
     /** {@inheritDoc} */
-    public RecipientKeyInfo getRecipientKeyInfo() {
+    @Nullable public RecipientKeyInfo getRecipientKeyInfo() {
         return recipientKeyInfo;
     }
 
     /** {@inheritDoc} */
-    public void setRecipientKeyInfo(final RecipientKeyInfo newRecipientKeyInfo) {
+    public void setRecipientKeyInfo(@Nullable final RecipientKeyInfo newRecipientKeyInfo) {
         recipientKeyInfo = prepareForAssignment(recipientKeyInfo, newRecipientKeyInfo);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
         return xmlChildren;
     }
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) xmlChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (kaNonce != null) {
@@ -134,7 +140,7 @@ public class AgreementMethodImpl extends AbstractXMLObject implements AgreementM
             return null;
         }
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

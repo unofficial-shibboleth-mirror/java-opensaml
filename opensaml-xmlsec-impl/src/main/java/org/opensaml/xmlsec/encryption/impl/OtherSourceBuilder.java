@@ -17,29 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.OtherSource;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.OtherSource}.
+ * Builder of {@link OtherSource}.
  */
-public class OtherSourceBuilder extends AbstractXMLObjectBuilder<OtherSource> implements XMLEncryptionBuilder<OtherSource> {
-
-    /**
-     * Constructor.
-     */
-    public OtherSourceBuilder() {
-    }
+public class OtherSourceBuilder extends AbstractXMLObjectBuilder<OtherSource>
+        implements XMLEncryptionBuilder<OtherSource> {
 
     /** {@inheritDoc} */
-    public OtherSource buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public OtherSource buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new OtherSourceImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public OtherSource buildObject() {
+    @Nonnull public OtherSource buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, OtherSource.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

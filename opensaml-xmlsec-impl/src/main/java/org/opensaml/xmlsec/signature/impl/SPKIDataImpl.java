@@ -17,10 +17,10 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -29,13 +29,19 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.signature.SPKIData;
 import org.opensaml.xmlsec.signature.SPKISexp;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.SPKIData}.
+ * Concrete implementation of {@link SPKIData}.
  */
+@SuppressWarnings("unchecked")
 public class SPKIDataImpl extends AbstractXMLObject implements SPKIData {
     
     /** The list of XMLObject child elements. */
-    private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
 
     /**
      * Constructor.
@@ -44,37 +50,30 @@ public class SPKIDataImpl extends AbstractXMLObject implements SPKIData {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SPKIDataImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected SPKIDataImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getXMLObjects() {
         return this.indexedChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getXMLObjects(final QName typeOrName) {
+    @Nonnull @Live public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) this.indexedChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<SPKISexp> getSPKISexps() {
+    @Nonnull @Live public List<SPKISexp> getSPKISexps() {
         return (List<SPKISexp>) this.indexedChildren.subList(SPKISexp.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(indexedChildren);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(indexedChildren);
     }
 
 }

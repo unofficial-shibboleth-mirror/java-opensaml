@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.encryption.KANonce;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.KANonce}.
+ * Concrete implementation of {@link KANonce}.
  */
 public class KANonceImpl extends XSBase64BinaryImpl implements KANonce {
 
@@ -32,7 +35,8 @@ public class KANonceImpl extends XSBase64BinaryImpl implements KANonce {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected KANonceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected KANonceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

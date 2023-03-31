@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -31,28 +33,32 @@ import org.opensaml.xmlsec.encryption.Public;
 import org.opensaml.xmlsec.encryption.Q;
 import org.opensaml.xmlsec.encryption.Seed;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.DHKeyValue}.
+ * Concrete implementation of {@link DHKeyValue}.
  */
 public class DHKeyValueImpl extends AbstractXMLObject implements DHKeyValue {
     
     /** P child element. */
-    private P p;
+    @Nullable private P p;
     
     /** Q child element. */
-    private Q q;
+    @Nullable private Q q;
     
     /** Generator child element. */
-    private Generator generator;
+    @Nullable private Generator generator;
     
     /** Public element. */
-    private Public publicChild;
+    @Nullable private Public publicChild;
     
     /** seed child element. */
-    private Seed seed;
+    @Nullable private Seed seed;
     
     /** pgenCounter child element. */
-    private PgenCounter pgenCounter;
+    @Nullable private PgenCounter pgenCounter;
 
     /**
      * Constructor.
@@ -61,72 +67,73 @@ public class DHKeyValueImpl extends AbstractXMLObject implements DHKeyValue {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected DHKeyValueImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected DHKeyValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public P getP() {
-        return this.p;
+    @Nullable public P getP() {
+        return p;
     }
 
     /** {@inheritDoc} */
-    public void setP(final P newP) {
-        this.p = prepareForAssignment(this.p, newP);
+    public void setP(@Nullable final P newP) {
+        p = prepareForAssignment(p, newP);
     }
 
     /** {@inheritDoc} */
-    public Q getQ() {
-        return this.q;
+    @Nullable public Q getQ() {
+        return q;
     }
 
     /** {@inheritDoc} */
-    public void setQ(final Q newQ) {
-        this.q = prepareForAssignment(this.q, newQ);
+    public void setQ(@Nullable final Q newQ) {
+        q = prepareForAssignment(q, newQ);
     }
 
     /** {@inheritDoc} */
-    public Generator getGenerator() {
-        return this.generator;
+    @Nullable public Generator getGenerator() {
+        return generator;
     }
 
     /** {@inheritDoc} */
-    public void setGenerator(final Generator newGenerator) {
-        this.generator = prepareForAssignment(this.generator, newGenerator);
+    public void setGenerator(@Nullable final Generator newGenerator) {
+        generator = prepareForAssignment(generator, newGenerator);
     }
 
     /** {@inheritDoc} */
-    public Public getPublic() {
-        return this.publicChild;
+    @Nullable public Public getPublic() {
+        return publicChild;
     }
 
     /** {@inheritDoc} */
-    public void setPublic(final Public newPublic) {
-        this.publicChild = prepareForAssignment(this.publicChild, newPublic);
+    public void setPublic(@Nullable final Public newPublic) {
+        publicChild = prepareForAssignment(publicChild, newPublic);
     }
 
     /** {@inheritDoc} */
-    public Seed getSeed() {
-        return this.seed;
+    @Nullable public Seed getSeed() {
+        return seed;
     }
 
     /** {@inheritDoc} */
-    public void setSeed(final Seed newSeed) {
-        this.seed = prepareForAssignment(this.seed, newSeed);
+    public void setSeed(@Nullable final Seed newSeed) {
+        seed = prepareForAssignment(seed, newSeed);
     }
 
     /** {@inheritDoc} */
-    public PgenCounter getPgenCounter() {
-        return this.pgenCounter;
+    @Nullable public PgenCounter getPgenCounter() {
+        return pgenCounter;
     }
 
     /** {@inheritDoc} */
-    public void setPgenCounter(final PgenCounter newPgenCounter) {
-        this.pgenCounter = prepareForAssignment(this.pgenCounter, newPgenCounter);
+    public void setPgenCounter(@Nullable final PgenCounter newPgenCounter) {
+        pgenCounter = prepareForAssignment(pgenCounter, newPgenCounter);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (p != null) {
@@ -148,11 +155,7 @@ public class DHKeyValueImpl extends AbstractXMLObject implements DHKeyValue {
             children.add(pgenCounter);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

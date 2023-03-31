@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.NamedCurve;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
@@ -28,19 +31,14 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public class NamedCurveBuilder extends AbstractXMLObjectBuilder<NamedCurve>
     implements XMLSignatureBuilder<NamedCurve> {
 
-    /**
-     * Constructor.
-     */
-    public NamedCurveBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public NamedCurve buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public NamedCurve buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new NamedCurveImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public NamedCurve buildObject() {
+    @Nonnull public NamedCurve buildObject() {
         return buildObject(SignatureConstants.XMLSIG11_NS, NamedCurve.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG11_PREFIX);
     }

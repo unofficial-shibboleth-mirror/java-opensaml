@@ -20,27 +20,30 @@ package org.opensaml.xmlsec.signature.impl;
 import java.math.BigInteger;
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
 import org.opensaml.xmlsec.signature.CryptoBinary;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.CryptoBinary}.
+ * Concrete implementation of {@link CryptoBinary}.
  */
 public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary {
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(CryptoBinaryImpl.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(CryptoBinaryImpl.class);
     
     /** The cached BigInteger representation of the element's base64-encoded value. */
-    private BigInteger bigIntValue;
+    @Nullable private BigInteger bigIntValue;
 
     /**
      * Constructor.
@@ -49,27 +52,30 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected CryptoBinaryImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected CryptoBinaryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public BigInteger getValueBigInt() {
-        if (bigIntValue == null && !Strings.isNullOrEmpty(getValue())) {
+    @Nullable public BigInteger getValueBigInt() {
+        if (bigIntValue == null) {
             try {
-                bigIntValue = KeyInfoSupport.decodeBigIntegerFromCryptoBinary(getValue());
+                final String value = getValue();
+                if (!Strings.isNullOrEmpty(getValue())) {
+                    assert value != null;
+                    bigIntValue = KeyInfoSupport.decodeBigIntegerFromCryptoBinary(value);
+                }
             } catch (final DecodingException e) {
                 //can not decode big integer from invalid value, return original even if null.    
-                log.warn("Could not decode big integer value, returning cached value",e);
+                log.warn("Could not decode big integer value, returning cached value", e);
             }
         }
         return bigIntValue;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setValueBigInt(final BigInteger bigInt) throws EncodingException{
+    public void setValueBigInt(@Nullable final BigInteger bigInt) throws EncodingException{
         if (bigInt == null) {
             setValue(null);
         } else {
@@ -79,8 +85,7 @@ public class CryptoBinaryImpl extends XSBase64BinaryImpl implements CryptoBinary
     }
     
     /** {@inheritDoc} */
-    @Override
-    public void setValue(final String newValue) {
+    public void setValue(@Nullable final String newValue) {
         if (bigIntValue != null 
                 && (!Objects.equals(getValue(), newValue) || newValue == null)) {
             // Just clear the cached value, my not be needed in big int form again,

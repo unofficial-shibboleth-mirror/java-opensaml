@@ -18,8 +18,10 @@
 package org.opensaml.xmlsec.signature.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,22 +29,26 @@ import org.opensaml.xmlsec.signature.ECKeyValue;
 import org.opensaml.xmlsec.signature.NamedCurve;
 import org.opensaml.xmlsec.signature.PublicKey;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link ECKeyValue}.
  */
 public class ECKeyValueImpl extends AbstractXMLObject implements ECKeyValue {
     
     /** Id attribute value. */
-    private String id;
+    @Nullable private String id;
     
     /** ECParameters child element value. */
-    private XMLObject ecParams;
+    @Nullable private XMLObject ecParams;
     
     /** NamedCurve child element value. */
-    private NamedCurve namedCurve;
+    @Nullable private NamedCurve namedCurve;
 
     /** PublicKey child element value. */
-    private PublicKey publicKey;
+    @Nullable private PublicKey publicKey;
 
     /**
      * Constructor.
@@ -51,54 +57,55 @@ public class ECKeyValueImpl extends AbstractXMLObject implements ECKeyValue {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ECKeyValueImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ECKeyValueImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
+    public void setID(@Nullable final String newID) {
         final String oldID = id;
         id = prepareForAssignment(id, newID);
         registerOwnID(oldID, id);
     }
     
     /** {@inheritDoc} */
-    public XMLObject getECParameters() {
+    @Nullable public XMLObject getECParameters() {
         return ecParams;
     }
 
     /** {@inheritDoc} */
-    public void setECParameters(final XMLObject newParams) {
+    public void setECParameters(@Nullable final XMLObject newParams) {
         ecParams = prepareForAssignment(ecParams, newParams);
     }
     
     /** {@inheritDoc} */
-    public NamedCurve getNamedCurve() {
+    @Nullable public NamedCurve getNamedCurve() {
         return namedCurve;
     }
 
     /** {@inheritDoc} */
-    public void setNamedCurve(final NamedCurve newCurve) {
+    public void setNamedCurve(@Nullable final NamedCurve newCurve) {
         namedCurve = prepareForAssignment(namedCurve, newCurve);
     }
 
     /** {@inheritDoc} */
-    public PublicKey getPublicKey() {
+    @Nullable public PublicKey getPublicKey() {
         return publicKey;
     }
 
     /** {@inheritDoc} */
-    public void setPublicKey(final PublicKey newKey) {
+    public void setPublicKey(@Nullable final PublicKey newKey) {
         publicKey = prepareForAssignment(publicKey, newKey);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (ecParams != null) {
@@ -111,11 +118,7 @@ public class ECKeyValueImpl extends AbstractXMLObject implements ECKeyValue {
             children.add(publicKey);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xmlsec.encryption.MasterKeyName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.MasterKeyName}.
+ * Concrete implementation of {@link MasterKeyName}.
  */
 public class MasterKeyNameImpl extends XSStringImpl implements MasterKeyName {
 
@@ -32,8 +35,8 @@ public class MasterKeyNameImpl extends XSStringImpl implements MasterKeyName {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected MasterKeyNameImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected MasterKeyNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

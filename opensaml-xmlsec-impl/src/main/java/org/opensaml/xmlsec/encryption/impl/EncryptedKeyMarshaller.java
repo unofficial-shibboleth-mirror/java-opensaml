@@ -17,18 +17,21 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.xmlsec.encryption.EncryptedKey} objects.
+ * A thread-safe Marshaller for {@link EncryptedKey} objects.
  */
 public class EncryptedKeyMarshaller extends EncryptedTypeMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final EncryptedKey ek = (EncryptedKey) xmlObject;
 
         if (ek.getRecipient() != null) {

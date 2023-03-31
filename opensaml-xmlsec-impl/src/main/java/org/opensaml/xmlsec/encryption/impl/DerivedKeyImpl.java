@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -32,7 +33,7 @@ import org.opensaml.xmlsec.encryption.MasterKeyName;
 import org.opensaml.xmlsec.encryption.ReferenceList;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.DerivedKey}.
+ * Concrete implementation of {@link DerivedKey}.
  */
 public class DerivedKeyImpl extends AbstractXMLObject implements DerivedKey {
     
@@ -64,8 +65,8 @@ public class DerivedKeyImpl extends AbstractXMLObject implements DerivedKey {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected DerivedKeyImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected DerivedKeyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

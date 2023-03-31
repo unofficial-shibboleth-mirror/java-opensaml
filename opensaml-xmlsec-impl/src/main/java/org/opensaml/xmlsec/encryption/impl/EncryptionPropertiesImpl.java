@@ -17,9 +17,10 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,16 +28,21 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xmlsec.encryption.EncryptionProperties;
 import org.opensaml.xmlsec.encryption.EncryptionProperty;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.EncryptionProperties}.
+ * Concrete implementation of {@link EncryptionProperties}.
  */
 public class EncryptionPropertiesImpl extends AbstractXMLObject implements EncryptionProperties {
     
     /** Id attribute value. */
-    private String id;
+    @Nullable private String id;
     
     /** EncryptionProperty child elements. */
-    private final XMLObjectChildrenList<EncryptionProperty> encryptionProperties;
+    @Nonnull private final XMLObjectChildrenList<EncryptionProperty> encryptionProperties;
 
     /**
      * Constructor.
@@ -45,40 +51,32 @@ public class EncryptionPropertiesImpl extends AbstractXMLObject implements Encry
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected EncryptionPropertiesImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EncryptionPropertiesImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         encryptionProperties = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getID() {
-        return this.id;
+    @Nullable public String getID() {
+        return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
-        final String oldID = this.id;
-        this.id = prepareForAssignment(this.id, newID);
-        registerOwnID(oldID, this.id);
+    public void setID(@Nullable final String newID) {
+        final String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
-    public List<EncryptionProperty> getEncryptionProperties() {
+    @Nonnull @Live public List<EncryptionProperty> getEncryptionProperties() {
         return encryptionProperties;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(encryptionProperties);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(encryptionProperties);
     }
 
 }

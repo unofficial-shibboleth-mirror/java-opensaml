@@ -17,28 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.IterationCount;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.CarriedKeyName}.
+ * Builder of {@link IterationCount}.
  */
 public class IterationCountBuilder extends AbstractXMLObjectBuilder<IterationCount> implements
         XMLEncryptionBuilder<IterationCount> {
 
-    /** Constructor. */
-    public IterationCountBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public IterationCount buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public IterationCount buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new IterationCountImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public IterationCount buildObject() {
+    @Nonnull public IterationCount buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, IterationCount.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

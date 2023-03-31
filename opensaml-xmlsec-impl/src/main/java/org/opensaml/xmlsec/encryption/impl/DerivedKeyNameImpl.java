@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xmlsec.encryption.DerivedKeyName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.DerivedKeyName}.
+ * Concrete implementation of {@link DerivedKeyName}.
  */
 public class DerivedKeyNameImpl extends XSStringImpl implements DerivedKeyName {
 
@@ -32,8 +35,8 @@ public class DerivedKeyNameImpl extends XSStringImpl implements DerivedKeyName {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected DerivedKeyNameImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected DerivedKeyNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.DerivedKeyName;
@@ -24,22 +27,19 @@ import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.CarriedKeyName}.
+ * Builder of {@link DerivedKeyName}.
  */
 public class DerivedKeyNameBuilder extends AbstractXMLObjectBuilder<DerivedKeyName> implements
         XMLEncryptionBuilder<DerivedKeyName> {
 
-    /** Constructor. */
-    public DerivedKeyNameBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public DerivedKeyName buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public DerivedKeyName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DerivedKeyNameImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public DerivedKeyName buildObject() {
+    @Nonnull public DerivedKeyName buildObject() {
         return buildObject(EncryptionConstants.XMLENC11_NS, CarriedKeyName.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC11_PREFIX);
     }

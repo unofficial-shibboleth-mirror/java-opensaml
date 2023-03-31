@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -29,7 +31,8 @@ import org.w3c.dom.Element;
 public class EncryptionPropertiesMarshaller extends AbstractXMLEncryptionMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final EncryptionProperties ep = (EncryptionProperties) xmlObject;
 
         if (ep.getID() != null) {
@@ -39,7 +42,7 @@ public class EncryptionPropertiesMarshaller extends AbstractXMLEncryptionMarshal
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         XMLObjectSupport.marshallAttributeIDness(null, EncryptionProperties.ID_ATTRIB_NAME, domElement, true);

@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.signature.PGPKeyID;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.PGPKeyID}.
+ * Concrete implementation of {@link PGPKeyID}.
  */
 public class PGPKeyIDImpl extends XSBase64BinaryImpl implements PGPKeyID {
 
@@ -32,7 +35,8 @@ public class PGPKeyIDImpl extends XSBase64BinaryImpl implements PGPKeyID {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected PGPKeyIDImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PGPKeyIDImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

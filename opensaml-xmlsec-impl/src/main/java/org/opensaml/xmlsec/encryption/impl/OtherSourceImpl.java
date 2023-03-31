@@ -17,10 +17,13 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.encryption.OtherSource;
 
 /**
- * Abstract implementation of {@link org.opensaml.xmlsec.encryption.OtherSource}.
+ * Abstract implementation of {@link OtherSource}.
  */
 public class OtherSourceImpl extends AlgorithmIdentifierTypeImpl implements OtherSource {
 
@@ -31,7 +34,8 @@ public class OtherSourceImpl extends AlgorithmIdentifierTypeImpl implements Othe
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected OtherSourceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected OtherSourceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

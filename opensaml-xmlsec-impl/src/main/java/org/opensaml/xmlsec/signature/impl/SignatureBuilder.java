@@ -17,33 +17,29 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
+import org.opensaml.xmlsec.signature.Signature;
+import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.Signature}s.
+ * Builder of {@link Signature}.
  */
-public class SignatureBuilder extends AbstractXMLObjectBuilder<SignatureImpl> {
+public class SignatureBuilder extends AbstractXMLObjectBuilder<Signature> implements XMLSignatureBuilder<Signature> {
 
-    /**
-     * Constructor.
-     */
-    public SignatureBuilder() {
-
+    /** {@inheritDoc} */
+    @Nonnull public Signature buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
+        return new SignatureImpl(namespaceURI, localName, namespacePrefix);
     }
 
-    /**
-     * Creates the XMLObject with the default prefix and local name.
-     * 
-     * @return the Signature object
-     */
-    public SignatureImpl buildObject() {
+    /** {@inheritDoc} */
+    @Nonnull public Signature buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, SignatureImpl.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }
 
-    /** {@inheritDoc} */
-    public SignatureImpl buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
-        return new SignatureImpl(namespaceURI, localName, namespacePrefix);
-    }
 }

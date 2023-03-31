@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.OAEPparams}.
+ * Concrete implementation of {@link OAEPparams}.
  */
 public class OAEPparamsImpl extends XSBase64BinaryImpl implements OAEPparams {
 
@@ -32,7 +35,8 @@ public class OAEPparamsImpl extends XSBase64BinaryImpl implements OAEPparams {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected OAEPparamsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected OAEPparamsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

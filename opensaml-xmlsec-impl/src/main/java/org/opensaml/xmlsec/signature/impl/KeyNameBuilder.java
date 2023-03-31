@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.KeyName;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.KeyName}.
+ * Builder of {@link KeyName}.
  */
 public class KeyNameBuilder extends AbstractXMLObjectBuilder<KeyName> implements XMLSignatureBuilder<KeyName> {
 
-    /**
-     * Constructor.
-     */
-    public KeyNameBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public KeyName buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public KeyName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyNameImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public KeyName buildObject() {
+    @Nonnull public KeyName buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, KeyName.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

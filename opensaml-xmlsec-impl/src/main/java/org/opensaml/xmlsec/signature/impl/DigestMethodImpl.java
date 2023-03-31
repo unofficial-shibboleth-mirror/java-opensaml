@@ -17,10 +17,10 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -28,16 +28,21 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.signature.DigestMethod;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.DigestMethod}.
+ * Concrete implementation of {@link DigestMethod}.
  */
 public class DigestMethodImpl extends AbstractXMLObject implements DigestMethod {
     
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** "any" children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /**
      * Constructor.
@@ -46,42 +51,37 @@ public class DigestMethodImpl extends AbstractXMLObject implements DigestMethod 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected DigestMethodImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected DigestMethodImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getAlgorithm() {
+    @Nullable public String getAlgorithm() {
         return this.algorithm;
     }
 
     /** {@inheritDoc} */
-    public void setAlgorithm(final String newAlgorithm) {
+    public void setAlgorithm(@Nullable final String newAlgorithm) {
         this.algorithm = prepareForAssignment(this.algorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live  public List<XMLObject> getUnknownXMLObjects() {
         return this.unknownChildren;
     }
+    
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(unknownChildren);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
 
 }

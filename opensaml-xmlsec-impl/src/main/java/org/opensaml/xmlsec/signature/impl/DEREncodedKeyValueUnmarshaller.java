@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryUnmarshaller;
@@ -29,7 +31,8 @@ import org.w3c.dom.Attr;
 public class DEREncodedKeyValueUnmarshaller extends XSBase64BinaryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final DEREncodedKeyValue der = (DEREncodedKeyValue) xmlObject;
 
         if (attribute.getLocalName().equals(DEREncodedKeyValue.ID_ATTRIB_NAME)) {

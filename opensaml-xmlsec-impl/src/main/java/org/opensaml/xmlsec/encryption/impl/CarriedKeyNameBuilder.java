@@ -17,28 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.CarriedKeyName}.
+ * Builder of {@link CarriedKeyName}.
  */
 public class CarriedKeyNameBuilder extends AbstractXMLObjectBuilder<CarriedKeyName> implements
         XMLEncryptionBuilder<CarriedKeyName> {
 
-    /** Constructor. */
-    public CarriedKeyNameBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public CarriedKeyName buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public CarriedKeyName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new CarriedKeyNameImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public CarriedKeyName buildObject() {
+    @Nonnull public CarriedKeyName buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, CarriedKeyName.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

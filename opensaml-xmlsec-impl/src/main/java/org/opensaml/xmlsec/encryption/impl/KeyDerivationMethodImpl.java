@@ -17,8 +17,6 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -30,16 +28,21 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.KeyDerivationMethod}.
+ * Concrete implementation of {@link KeyDerivationMethod}.
  */
 public class KeyDerivationMethodImpl extends AbstractXMLObject implements KeyDerivationMethod {
 
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** Wildcard children. */
-    private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -48,8 +51,8 @@ public class KeyDerivationMethodImpl extends AbstractXMLObject implements KeyDer
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected KeyDerivationMethodImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected KeyDerivationMethodImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
@@ -66,26 +69,19 @@ public class KeyDerivationMethodImpl extends AbstractXMLObject implements KeyDer
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.addAll(unknownChildren);
-
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
 
 }

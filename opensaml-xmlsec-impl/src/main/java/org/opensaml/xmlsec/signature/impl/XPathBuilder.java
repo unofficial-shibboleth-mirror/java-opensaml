@@ -17,29 +17,27 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.XPath;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.XPath}.
+ * Builder of {@link XPath}.
  */
 public class XPathBuilder extends AbstractXMLObjectBuilder<XPath> implements XMLSignatureBuilder<XPath> {
 
-    /**
-     * Constructor.
-     */
-    public XPathBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public XPath buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public XPath buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new XPathImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public XPath buildObject() {
+    @Nonnull public XPath buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, XPath.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

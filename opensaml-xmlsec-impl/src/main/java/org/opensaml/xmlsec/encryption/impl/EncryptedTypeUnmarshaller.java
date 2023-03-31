@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.encryption.CipherData;
@@ -32,8 +34,8 @@ import org.w3c.dom.Attr;
 public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final EncryptedType et = (EncryptedType) parentXMLObject;
 
         if (childXMLObject instanceof EncryptionMethod) {
@@ -51,7 +53,8 @@ public abstract class EncryptedTypeUnmarshaller extends AbstractXMLEncryptionUnm
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final EncryptedType et = (EncryptedType) xmlObject;
 
         if (attribute.getLocalName().equals(EncryptedType.ID_ATTRIB_NAME)) {

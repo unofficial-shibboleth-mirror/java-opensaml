@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.KeyReference;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.KeyReference}.
+ * Builder of {@link KeyReference}.
  */
 public class KeyReferenceBuilder extends AbstractXMLObjectBuilder<KeyReference> implements
         XMLEncryptionBuilder<KeyReference> {
 
-    /**
-     * Constructor.
-     */
-    public KeyReferenceBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public KeyReference buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public KeyReference buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public KeyReference buildObject() {
+    @Nonnull public KeyReference buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, KeyReference.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

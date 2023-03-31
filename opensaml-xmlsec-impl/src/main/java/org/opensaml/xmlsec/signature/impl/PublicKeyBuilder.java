@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.PublicKey;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
@@ -25,22 +28,16 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Builder of {@link PublicKey}.
  */
-public class PublicKeyBuilder extends AbstractXMLObjectBuilder<PublicKey>
-    implements XMLSignatureBuilder<PublicKey> {
-
-    /**
-     * Constructor.
-     */
-    public PublicKeyBuilder() {
-    }
+public class PublicKeyBuilder extends AbstractXMLObjectBuilder<PublicKey> implements XMLSignatureBuilder<PublicKey> {
 
     /** {@inheritDoc} */
-    public PublicKey buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public PublicKey buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PublicKeyImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public PublicKey buildObject() {
+    @Nonnull public PublicKey buildObject() {
         return buildObject(SignatureConstants.XMLSIG11_NS, PublicKey.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG11_PREFIX);
     }

@@ -17,10 +17,10 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -39,16 +39,22 @@ import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.SPKIData;
 import org.opensaml.xmlsec.signature.X509Data;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.KeyInfo}.
+ * Concrete implementation of {@link KeyInfo}.
  */
+@SuppressWarnings("unchecked")
 public class KeyInfoImpl extends AbstractXMLObject implements KeyInfo {
     
     /** The list of XMLObject child elements. */
-    private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
     
     /** The Id attribute value. */
-    private String id;
+    @Nullable private String id;
 
     /**
      * Constructor.
@@ -57,99 +63,92 @@ public class KeyInfoImpl extends AbstractXMLObject implements KeyInfo {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected KeyInfoImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected KeyInfoImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
-    public String getID() {
-        return this.id;
+    @Nullable public String getID() {
+        return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
-        final String oldID = this.id;
-        this.id = prepareForAssignment(this.id, newID);
-        registerOwnID(oldID, this.id);
+    public void setID(@Nullable final String newID) {
+        final String oldID = id;
+        this.id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getXMLObjects() {
         return indexedChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getXMLObjects(final QName typeOrName) {
+    @Nonnull @Live public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) indexedChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<KeyName> getKeyNames() {
+    @Nonnull @Live public List<KeyName> getKeyNames() {
         return (List<KeyName>) indexedChildren.subList(KeyName.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<KeyValue> getKeyValues() {
+    @Nonnull @Live public List<KeyValue> getKeyValues() {
         return (List<KeyValue>) indexedChildren.subList(KeyValue.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<DEREncodedKeyValue> getDEREncodedKeyValues() {
+    @Nonnull @Live public List<DEREncodedKeyValue> getDEREncodedKeyValues() {
         return (List<DEREncodedKeyValue>) indexedChildren.subList(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
     }
     
     /** {@inheritDoc} */
-    public List<RetrievalMethod> getRetrievalMethods() {
+    @Nonnull @Live public List<RetrievalMethod> getRetrievalMethods() {
         return (List<RetrievalMethod>) indexedChildren.subList(RetrievalMethod.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<KeyInfoReference> getKeyInfoReferences() {
+    @Nonnull @Live public List<KeyInfoReference> getKeyInfoReferences() {
         return (List<KeyInfoReference>) indexedChildren.subList(KeyInfoReference.DEFAULT_ELEMENT_NAME);
     }
     
     /** {@inheritDoc} */
-    public List<X509Data> getX509Datas() {
+    @Nonnull @Live public List<X509Data> getX509Datas() {
         return (List<X509Data>) indexedChildren.subList(X509Data.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<PGPData> getPGPDatas() {
+    @Nonnull @Live public List<PGPData> getPGPDatas() {
         return (List<PGPData>) indexedChildren.subList(PGPData.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<SPKIData> getSPKIDatas() {
+    @Nonnull @Live public List<SPKIData> getSPKIDatas() {
         return (List<SPKIData>) indexedChildren.subList(SPKIData.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<MgmtData> getMgmtDatas() {
+    @Nonnull @Live public List<MgmtData> getMgmtDatas() {
         return (List<MgmtData>) indexedChildren.subList(MgmtData.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<AgreementMethod> getAgreementMethods() {
+    @Nonnull @Live public List<AgreementMethod> getAgreementMethods() {
         return (List<AgreementMethod>) indexedChildren.subList(AgreementMethod.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<EncryptedKey> getEncryptedKeys() {
+    @Nonnull @Live public List<EncryptedKey> getEncryptedKeys() {
         return (List<EncryptedKey>) indexedChildren.subList(EncryptedKey.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(indexedChildren);
-        
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(indexedChildren);
     }
 
 }

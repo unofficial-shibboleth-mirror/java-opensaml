@@ -17,31 +17,28 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.RetrievalMethod;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.RetrievalMethod}.
+ * Builder of {@link RetrievalMethod}.
  */
 public class RetrievalMethodBuilder extends AbstractXMLObjectBuilder<RetrievalMethod> implements
         XMLSignatureBuilder<RetrievalMethod> {
 
-    /**
-     * Constructor.
-     */
-    public RetrievalMethodBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public RetrievalMethod buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public RetrievalMethod buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RetrievalMethodImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public RetrievalMethod buildObject() {
+    @Nonnull public RetrievalMethod buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, RetrievalMethod.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

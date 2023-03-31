@@ -17,10 +17,13 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.xmlsec.signature.P;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.signature.P}.
+ * Concrete implementation of {@link P}.
  */
 public class PImpl extends CryptoBinaryImpl implements P {
 
@@ -31,7 +34,8 @@ public class PImpl extends CryptoBinaryImpl implements P {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected PImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

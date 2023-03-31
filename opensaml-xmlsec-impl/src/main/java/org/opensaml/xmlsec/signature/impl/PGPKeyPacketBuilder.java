@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.PGPKeyPacket;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.PGPKeyPacket}.
+ * Builder of {@link PGPKeyPacket}.
  */
 public class PGPKeyPacketBuilder extends AbstractXMLObjectBuilder<PGPKeyPacket> implements
         XMLSignatureBuilder<PGPKeyPacket> {
 
-    /**
-     * Constructor.
-     */
-    public PGPKeyPacketBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public PGPKeyPacket buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public PGPKeyPacket buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PGPKeyPacketImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public PGPKeyPacket buildObject() {
+    @Nonnull public PGPKeyPacket buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, PGPKeyPacket.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

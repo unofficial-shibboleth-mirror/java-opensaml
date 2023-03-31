@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
@@ -25,12 +27,13 @@ import org.opensaml.xmlsec.encryption.ReferenceList;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.xmlsec.encryption.EncryptedKey} objects.
+ * A thread-safe Unmarshaller for {@link EncryptedKey} objects.
  */
 public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final EncryptedKey ek = (EncryptedKey) xmlObject;
 
         if (attribute.getLocalName().equals(EncryptedKey.RECIPIENT_ATTRIB_NAME)) {
@@ -41,8 +44,8 @@ public class EncryptedKeyUnmarshaller extends EncryptedTypeUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
-            throws UnmarshallingException {
+    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
+            @Nonnull final XMLObject childXMLObject) throws UnmarshallingException {
         final EncryptedKey ek = (EncryptedKey) parentXMLObject;
 
         if (childXMLObject instanceof ReferenceList) {

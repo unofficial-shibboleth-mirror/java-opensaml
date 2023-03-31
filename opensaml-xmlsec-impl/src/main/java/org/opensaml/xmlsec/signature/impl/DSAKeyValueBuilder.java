@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.DSAKeyValue;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.signature.DSAKeyValue}.
+ * Builder of {@link DSAKeyValue}.
  */
 public class DSAKeyValueBuilder extends AbstractXMLObjectBuilder<DSAKeyValue> implements
         XMLSignatureBuilder<DSAKeyValue> {
 
-    /**
-     * Constructor.
-     */
-    public DSAKeyValueBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public DSAKeyValue buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public DSAKeyValue buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DSAKeyValueImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public DSAKeyValue buildObject() {
+    @Nonnull public DSAKeyValue buildObject() {
         return buildObject(SignatureConstants.XMLSIG_NS, DSAKeyValue.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG_PREFIX);
     }

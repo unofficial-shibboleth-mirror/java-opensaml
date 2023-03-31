@@ -17,11 +17,14 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 
 /**
- * Concrete implementation of {@link org.opensaml.xmlsec.encryption.CarriedKeyName}.
+ * Concrete implementation of {@link CarriedKeyName}.
  */
 public class CarriedKeyNameImpl extends XSStringImpl implements CarriedKeyName {
 
@@ -32,8 +35,8 @@ public class CarriedKeyNameImpl extends XSStringImpl implements CarriedKeyName {
      * @param elementLocalName local name
      * @param namespacePrefix namespace prefix
      */
-    protected CarriedKeyNameImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected CarriedKeyNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

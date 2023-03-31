@@ -17,30 +17,28 @@
 
 package org.opensaml.xmlsec.encryption.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.encryption.XMLEncryptionBuilder;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 
 /**
- * Builder of {@link org.opensaml.xmlsec.encryption.OAEPparams}.
+ * Builder of {@link OAEPparams}.
  */
 public class OAEPparamsBuilder
     extends AbstractXMLObjectBuilder<OAEPparams> implements XMLEncryptionBuilder<OAEPparams> {
 
-    /**
-     * Constructor.
-     */
-    public OAEPparamsBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public OAEPparams buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public OAEPparams buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new OAEPparamsImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public OAEPparams buildObject() {
+    @Nonnull public OAEPparams buildObject() {
         return buildObject(EncryptionConstants.XMLENC_NS, OAEPparams.DEFAULT_ELEMENT_LOCAL_NAME,
                 EncryptionConstants.XMLENC_PREFIX);
     }

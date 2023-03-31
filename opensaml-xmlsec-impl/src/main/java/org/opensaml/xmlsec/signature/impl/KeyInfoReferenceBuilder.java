@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.signature.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.opensaml.xmlsec.signature.XMLSignatureBuilder;
@@ -28,20 +31,14 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 public class KeyInfoReferenceBuilder extends AbstractXMLObjectBuilder<KeyInfoReference>
     implements XMLSignatureBuilder<KeyInfoReference> {
 
-    /**
-     * Constructor.
-     */
-    public KeyInfoReferenceBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public KeyInfoReference buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public KeyInfoReference buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyInfoReferenceImpl(namespaceURI, localName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public KeyInfoReference buildObject() {
+    @Nonnull public KeyInfoReference buildObject() {
         return buildObject(SignatureConstants.XMLSIG11_NS, KeyInfoReference.DEFAULT_ELEMENT_LOCAL_NAME,
                 SignatureConstants.XMLSIG11_PREFIX);
     }
