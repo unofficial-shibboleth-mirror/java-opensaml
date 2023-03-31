@@ -46,6 +46,7 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
 import org.opensaml.security.SecurityException;
+import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.encryption.CarriedKeyName;
 import org.opensaml.xmlsec.encryption.DataReference;
@@ -367,7 +368,9 @@ public class Encrypter extends org.opensaml.xmlsec.encryption.support.Encrypter 
         final String encryptionAlgorithmURI = encParams.getAlgorithm();
         // Checked above.
         assert encryptionAlgorithmURI != null;
-        Key encryptionKey = CredentialSupport.extractEncryptionKey(encParams.getEncryptionCredential());
+        
+        final Credential encryptionCred = encParams.getEncryptionCredential();
+        Key encryptionKey = encryptionCred != null ? CredentialSupport.extractEncryptionKey(encryptionCred) : null;
         if (encryptionKey == null) {
             encryptionKey = generateEncryptionKey(encryptionAlgorithmURI);
         }
