@@ -44,7 +44,6 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.Extensions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -52,6 +51,7 @@ import com.google.common.collect.Multimap;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A filter that adds {@link EntityAttributes} extension content to entities in order to drive software
@@ -124,7 +124,6 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         if (metadata == null) {
@@ -181,11 +180,13 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
         
         // First we check any contained EntitiesDescriptors.
         for (final EntitiesDescriptor group : descriptor.getEntitiesDescriptors()) {
+            assert group != null;
             filterEntitiesDescriptor(group);
         }
         
         // Next, check contained EntityDescriptors.
         for (final EntityDescriptor entity : descriptor.getEntityDescriptors()) {
+            assert entity != null;
             filterEntityDescriptor(entity);
         }
     }
@@ -223,6 +224,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
         
         if (toMutate != null) {
             for (final XMLObject newValue : input.getAttributeValues()) {
+                assert newValue != null;
                 try {
                     log.info("Adding value to existing EntityAttribute ({}) on EntityDescriptor ({})", input.getName(),
                             descriptor.getEntityID());
@@ -260,6 +262,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
                 while (iter.hasNext()) {
                     final SAMLObject attribute = iter.next();
                     if (attribute instanceof Attribute) {
+                        assert attributeFilter != null;
                         if (!attributeFilter.test((Attribute) attribute)) {
                             log.warn("Filtering pre-existing attribute '{}' from entity '{}'",
                                     ((Attribute) attribute).getName(), descriptor.getEntityID());

@@ -17,11 +17,11 @@
 
 package org.opensaml.saml.common.binding.security.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.xml.namespace.QName;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
@@ -35,11 +35,11 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
+import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -49,7 +49,9 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -68,8 +70,14 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
     /** The context representing the SAML peer entity. */
     @Nullable private SAMLPeerEntityContext peerContext;
     
-    /** The SAML protocol context in operation. */
-    @Nullable private SAMLProtocolContext samlProtocolContext;
+    /** The SAML protocol in use. */
+    @Nullable private String samlProtocol;
+    
+    /** The SAML role in use. */
+    @Nullable private QName samlRole;
+
+    /** Parameters for signature validation. */
+    @Nullable private SignatureValidationParameters signatureValidationParameters;
     
     /** Signature trust engine used to validate raw signatures. */
     @Nullable private SignatureTrustEngine trustEngine;
@@ -88,7 +96,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
      * 
      * @return current HTTP request
      */
-    @Nullable public HttpServletRequest getHttpServletRequest() {
+    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
         if (httpServletRequestSupplier == null) {
             return null;
         }
@@ -134,21 +142,23 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
         }
         
         peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
-        if (peerContext == null || peerContext.getRole() == null) {
+        samlRole = peerContext != null ? peerContext.getRole() : null;
+        if (samlRole == null) {
             throw new MessageHandlerException("SAMLPeerEntityContext was missing or unpopulated");
         }
         
-        samlProtocolContext = messageContext.getSubcontext(SAMLProtocolContext.class);
-        if (samlProtocolContext == null || samlProtocolContext.getProtocol() == null) {
+        final SAMLProtocolContext samlProtocolContext = messageContext.getSubcontext(SAMLProtocolContext.class);
+        samlProtocol = samlProtocolContext != null ? samlProtocolContext.getProtocol() : null;
+        if (samlProtocol == null) {
             throw new MessageHandlerException("SAMLProtocolContext was missing or unpopulated");
         }
         
         final SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class);
-        if (secParams == null || secParams.getSignatureValidationParameters() == null 
-                || secParams.getSignatureValidationParameters().getSignatureTrustEngine() == null) {
+        signatureValidationParameters = secParams != null ? secParams.getSignatureValidationParameters() : null;
+        trustEngine = signatureValidationParameters != null ? signatureValidationParameters.getSignatureTrustEngine() : null;
+        if (trustEngine == null) {
             throw new MessageHandlerException("No SignatureTrustEngine was available from the MessageContext");
         }
-        trustEngine = secParams.getSignatureValidationParameters().getSignatureTrustEngine();
         
         return true;
     }
@@ -176,6 +186,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
                     getLogPrefix());
             return;
         }
+        assert sigAlg != null;
 
         final byte[] signedContent = getSignedContent();
         if (signedContent == null || signedContent.length == 0) {
@@ -203,8 +214,9 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
 
         final List<Credential> candidateCredentials = getRequestCredentials(messageContext);
 
-        final String contextEntityID = peerContext.getEntityId();
-
+        final SAMLPeerEntityContext peerEntityContext = peerContext;
+        assert peerEntityContext != null;
+        final String contextEntityID = peerEntityContext.getEntityId();
         
         //TODO authentication flags - on peer or on message?
         
@@ -214,11 +226,11 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
             final CriteriaSet criteriaSet = buildCriteriaSet(contextEntityID, messageContext);
             if (validateSignature(signature, signedContent, algorithmURI, criteriaSet, candidateCredentials)) {
                 log.debug("{} Validation of request simple signature succeeded", getLogPrefix());
-                if (!peerContext.isAuthenticated()) {
+                if (!peerEntityContext.isAuthenticated()) {
                     log.debug(
                             "{} Authentication via request simple signature succeeded for context issuer entity ID {}",
                             getLogPrefix(), contextEntityID);
-                    peerContext.setAuthenticated(true);
+                    peerEntityContext.setAuthenticated(true);
                 }
                 return;
             }
@@ -234,11 +246,11 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
             final CriteriaSet criteriaSet = buildCriteriaSet(derivedEntityID, messageContext);
             if (validateSignature(signature, signedContent, algorithmURI, criteriaSet, candidateCredentials)) {
                 log.debug("{} Validation of request simple signature succeeded", getLogPrefix());
-                if (!peerContext.isAuthenticated()) {
+                if (!peerEntityContext.isAuthenticated()) {
                     log.debug("{} Authentication via request simple signature succeeded for derived issuer {}",
                             getLogPrefix(), derivedEntityID);
-                    peerContext.setEntityId(derivedEntityID);
-                    peerContext.setAuthenticated(true);
+                    peerEntityContext.setEntityId(derivedEntityID);
+                    peerEntityContext.setAuthenticated(true);
                 }
                 return;
             }
@@ -273,6 +285,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
             @Nonnull @NonnullElements final List<Credential> candidateCredentials) throws MessageHandlerException {
 
         final SignatureTrustEngine engine = getTrustEngine();
+        assert engine != null;
 
         // Some bindings allow candidate signing credentials to be supplied (e.g. via ds:KeyInfo), some do not.
         // So have 2 slightly different cases.
@@ -315,7 +328,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
     @Nonnull @NonnullElements protected List<Credential> getRequestCredentials(
             @Nonnull final MessageContext messageContext) throws MessageHandlerException {
         // This will be specific to the binding and message types, so no default.
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
 
     /**
@@ -332,6 +345,7 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
         if (Strings.isNullOrEmpty(signature)) {
             return null;
         }
+        assert signature != null;
         try {
             return Base64Support.decode(signature);
         } catch (final DecodingException e) {
@@ -380,18 +394,18 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
 
         final CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
+            assert entityID != null;
             criteriaSet.add(new EntityIdCriterion(entityID));
         }
         
-        criteriaSet.add(new EntityRoleCriterion(peerContext.getRole()));
-        criteriaSet.add(new ProtocolCriterion(samlProtocolContext.getProtocol()));
+        assert samlRole != null;
+        criteriaSet.add(new EntityRoleCriterion(samlRole));
+        assert samlProtocol != null;
+        criteriaSet.add(new ProtocolCriterion(samlProtocol));
         criteriaSet.add(new UsageCriterion(UsageType.SIGNING));
         
-        final SecurityParametersContext secParamsContext =
-                messageContext.getSubcontext(SecurityParametersContext.class);
-        if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
-            criteriaSet.add(
-                    new SignatureValidationParametersCriterion(secParamsContext.getSignatureValidationParameters()));
+        if (signatureValidationParameters != null) {
+            criteriaSet.add(new SignatureValidationParametersCriterion(signatureValidationParameters));
         }
 
         return criteriaSet;

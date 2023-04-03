@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,10 +30,11 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.data.impl.MetadataSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -56,7 +56,7 @@ public class ByReferenceMetadataFilter implements MetadataFilter {
     
     /** Constructor. */
     public ByReferenceMetadataFilter() {
-        filterMap = Collections.emptyMap();
+        filterMap = CollectionSupport.emptyMap();
     }
     
     /**
@@ -88,7 +88,7 @@ public class ByReferenceMetadataFilter implements MetadataFilter {
     }
     
     /** {@inheritDoc} */
-    public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
+    @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         
         final MetadataSource source = context.get(MetadataSource.class);

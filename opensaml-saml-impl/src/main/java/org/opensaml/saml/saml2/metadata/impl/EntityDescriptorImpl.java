@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.metadata.impl;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.xml.namespace.QName;
@@ -42,6 +41,8 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concretate implementation of {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor}.
@@ -287,13 +288,24 @@ public class EntityDescriptorImpl extends AbstractSignableSAMLObject implements 
         if (getSignature() != null) {
             children.add(getSignature());
         }
-        children.add(getExtensions());
+        
+        if (getExtensions() != null) {
+            children.add(getExtensions());
+        }
+        
         children.addAll(roleDescriptors);
-        children.add(getAffiliationDescriptor());
-        children.add(getOrganization());
+        
+        if (getAffiliationDescriptor() != null) {
+            children.add(getAffiliationDescriptor());
+        }
+        
+        if (getOrganization() != null) {
+            children.add(getOrganization());
+        }
+        
         children.addAll(contactPersons);
         children.addAll(additionalMetadata);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

@@ -148,10 +148,10 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         
         messageContext = new MessageContext();
         messageContext.setMessage(buildInboundSAMLMessage());
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigValParams);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(issuer);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.ensureSubcontext(SAMLProtocolContext.class).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureValidationParameters(sigValParams);
     }
     
     /**
@@ -165,10 +165,10 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
         
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), issuer, 
+        Assert.assertEquals(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
         //TODO before this was evaling isInboundSAMLMessageAuthenticated
-        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     

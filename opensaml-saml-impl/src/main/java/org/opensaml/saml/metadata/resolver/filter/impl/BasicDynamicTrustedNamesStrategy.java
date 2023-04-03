@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -25,7 +24,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.core.xml.XMLObject;
@@ -51,39 +50,56 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
  */
 public class BasicDynamicTrustedNamesStrategy implements Function<XMLObject, Set<String>> {
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
-    @Nonnull @NonnullElements public Set<String> apply(@Nullable final XMLObject input) {
+    @Nonnull public Set<String> apply(@Nullable final XMLObject input) {
         if (input == null) {
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         
         Set<String> rawResult = null;
         
-        if (input instanceof EntityDescriptor) {
-            rawResult = Collections.singleton(((EntityDescriptor)input).getEntityID());
-        } else if (input instanceof EntitiesDescriptor) {
-            rawResult = Collections.singleton(((EntitiesDescriptor)input).getName());
+        if (input instanceof EntityDescriptor entity) {
+            final String entityID = entity.getEntityID();
+            if (entityID != null) {
+                rawResult = CollectionSupport.singleton(entityID);
+            }
+        } else if (input instanceof EntitiesDescriptor entities) {
+            final String name = entities.getName();
+            if (name != null) {
+                rawResult = CollectionSupport.singleton(name);
+            }
         } else if (input instanceof RoleDescriptor) {
             final XMLObject parent = input.getParent();
-            if (parent instanceof EntityDescriptor) {
-                rawResult = Collections.singleton(((EntityDescriptor)parent).getEntityID());
+            if (parent instanceof EntityDescriptor entity) {
+                final String entityID = entity.getEntityID();
+                if (entityID != null) {
+                    rawResult = CollectionSupport.singleton(entityID);
+                }
             }
-        } else if (input instanceof AffiliationDescriptor) {
+        } else if (input instanceof AffiliationDescriptor affil) {
             rawResult = new HashSet<>();
             
-            rawResult.add(((AffiliationDescriptor)input).getOwnerID());
+            final String owner = affil.getOwnerID();
+            if (owner != null) {
+                rawResult.add(owner);
+            }
             
             final XMLObject parent = input.getParent();
-            if (parent instanceof EntityDescriptor) {
-                rawResult.add(((EntityDescriptor)parent).getEntityID());
+            if (parent instanceof EntityDescriptor entity) {
+                final String entityID = entity.getEntityID();
+                if (entityID != null) {
+                    rawResult.add(entityID);
+                }
             }
         }
         
         if (rawResult != null) {
-            return new HashSet<>(StringSupport.normalizeStringCollection(rawResult));
+            return CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(rawResult));
         }
         
-        return Collections.emptySet();
+        return CollectionSupport.emptySet();
     }
+// Checkstyle: CyclomaticComplexity ON
 
 }

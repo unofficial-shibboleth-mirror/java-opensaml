@@ -24,6 +24,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -230,12 +231,15 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
         if (extensions != null) {
             children.add(getExtensions());
         }
+        
         children.addAll(getKeyDescriptors());
+        
         if (organization != null) {
             children.add(getOrganization());
         }
+        
         children.addAll(getContactPersons());
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

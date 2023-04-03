@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,12 +34,13 @@ import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A filter that removes roles from an entity descriptor. For those roles specified within the SAML metadata
@@ -77,11 +77,11 @@ public class EntityRoleFilter implements MetadataFilter {
      * 
      * @param keptRoles list of roles NOT removed by this filter
      */
-    public EntityRoleFilter(@Nullable @NonnullElements @ParameterName(name="keptRoles") final List<QName> keptRoles) {
+    public EntityRoleFilter(@Nullable @ParameterName(name="keptRoles") final List<QName> keptRoles) {
         if (keptRoles != null) {
-            retainedRoles = List.copyOf(keptRoles);
+            retainedRoles = CollectionSupport.copyToList(keptRoles);
         } else {
-            retainedRoles = Collections.emptyList();
+            retainedRoles = CollectionSupport.emptyList();
         }
 
         removeRolelessEntityDescriptors = true;
@@ -151,7 +151,6 @@ public class EntityRoleFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         if (metadata == null) {

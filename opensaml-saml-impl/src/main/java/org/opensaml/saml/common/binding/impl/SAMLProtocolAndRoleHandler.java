@@ -115,7 +115,7 @@ public class SAMLProtocolAndRoleHandler extends AbstractMessageHandler {
     
     /** {@inheritDoc} */
     @Override
-    protected void doInvoke(final MessageContext messageContext) throws MessageHandlerException {
+    protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         
         BaseContext copySource = null;
         if (copyContextLookup != null) {

@@ -27,9 +27,9 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Security message handler implementation that checks for validity of SAML message issue instant date and time.
@@ -124,7 +124,8 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
     public void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
         final SAMLMessageInfoContext msgInfoContext = messageContext.ensureSubcontext(SAMLMessageInfoContext.class);
         
-        if (msgInfoContext.getMessageIssueInstant() == null) {
+        final Instant issueInstant = msgInfoContext.getMessageIssueInstant();
+        if (issueInstant == null) {
             if (requiredRule) {
                 log.warn("{} Inbound SAML message issue instant not present in message context", getLogPrefix());
                 throw new MessageHandlerException("Inbound SAML message issue instant not present in message context");
@@ -132,7 +133,6 @@ public class MessageLifetimeSecurityHandler extends AbstractMessageHandler {
             return;
         }
 
-        final Instant issueInstant = msgInfoContext.getMessageIssueInstant();
         final Instant now = Instant.now();
         final Instant latestValid = now.plus(getClockSkew().abs());
         final Instant expiration = issueInstant.plus(getClockSkew().abs()).plus(getMessageLifetime());

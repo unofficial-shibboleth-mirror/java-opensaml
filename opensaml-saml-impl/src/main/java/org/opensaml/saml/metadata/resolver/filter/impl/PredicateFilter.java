@@ -32,9 +32,9 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A filter that removes any {@link EntityDescriptor} that does or does not match a {@link Predicate}, thus
@@ -122,8 +122,7 @@ public class PredicateFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    @Override
-    public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
+    @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         
         if (metadata == null) {

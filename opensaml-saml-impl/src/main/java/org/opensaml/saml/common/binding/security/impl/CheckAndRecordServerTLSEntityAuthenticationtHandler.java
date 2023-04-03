@@ -32,9 +32,9 @@ import org.opensaml.saml.common.messaging.context.AbstractAuthenticatableSAMLEnt
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.security.httpclient.HttpClientSecurityConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Handler implementation that checks and records the result of {@link org.apache.hc.client5.http.classic.HttpClient}
@@ -50,20 +50,19 @@ import net.shibboleth.shared.logic.Constraint;
 public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends AbstractMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(CheckAndRecordServerTLSEntityAuthenticationtHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(CheckAndRecordServerTLSEntityAuthenticationtHandler.class);
     
     /** The strategy function for resolving the {@link HttpClientContext to evaluate}. */
     @Nonnull private ContextDataLookupFunction<MessageContext, HttpClientContext> httpClientContextLookup;
     
     /** The strategy function for resolving the authenticated entityID. */
-    @Nonnull private ContextDataLookupFunction<MessageContext, String> entityIDLookup;
+    @Nullable private ContextDataLookupFunction<MessageContext, String> entityIDLookup;
     
     /** The actual context class holding the authenticatable SAML entity. */
     @Nonnull private Class<? extends AbstractAuthenticatableSAMLEntityContext> entityContextClass;
     
     /** Constructor. */
     public CheckAndRecordServerTLSEntityAuthenticationtHandler() {
-        super();
         entityContextClass = SAMLPeerEntityContext.class;
         httpClientContextLookup = new DefaultHttpClientContextLookup();
         entityIDLookup = new OperationContextEntityIDLookup(entityContextClass);
@@ -127,6 +126,7 @@ public class CheckAndRecordServerTLSEntityAuthenticationtHandler extends Abstrac
                 entityContext.setAuthenticated(true);
                 if (entityContext.getEntityId() == null && entityIDLookup != null) {
                     log.debug("Context entityID was null, attempting to resolve");
+                    assert entityIDLookup != null;
                     final String entityID = entityIDLookup.apply(messageContext);
                     if (entityID != null) {
                         log.debug("Resolved authenticated entityID, populating on entity context: {}", entityID);

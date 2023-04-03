@@ -72,13 +72,14 @@ public class ScriptedTrustedNamesFunction extends AbstractScriptEvaluator implem
     }
 
     /** {@inheritDoc} */
+    @SuppressWarnings("unchecked")
     @Nullable public Set<String> apply(@Nullable final XMLObject context) {
         return (Set<String>) evaluate(context);
     }
     
     /** {@inheritDoc} */
     protected void prepareContext(@Nonnull final ScriptContext scriptContext, @Nullable final Object... input) {
-        scriptContext.setAttribute("profileContext", input[0], ScriptContext.ENGINE_SCOPE);
+        scriptContext.setAttribute("profileContext", input != null ? input[0] : null, ScriptContext.ENGINE_SCOPE);
     }
 
     /**

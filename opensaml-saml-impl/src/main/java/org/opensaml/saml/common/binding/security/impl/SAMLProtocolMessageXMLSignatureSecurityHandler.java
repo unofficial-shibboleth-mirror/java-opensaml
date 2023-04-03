@@ -29,7 +29,8 @@ import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * SAML security message handler which validates the signature (if present) on the
@@ -102,6 +103,8 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
             return;
         }
         final Signature signature = signableObject.getSignature();
+        
+        assert signature != null;
 
         performPrevalidation(signature);
 
@@ -124,7 +127,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
         //TODO authentication flags - on peer or on message?
         
         final SAMLPeerEntityContext peerContext = getSAMLPeerEntityContext();
-        if (peerContext.getEntityId() != null) {
+        if (peerContext != null && peerContext.getEntityId() != null) {
             final String contextEntityID = peerContext.getEntityId();
             final String msgType = signableObject.getElementQName().toString();
             log.debug("{} Attempting to verify signature on signed SAML protocol message type: {}",
@@ -158,9 +161,10 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandler extends BaseSAMLXMLS
      * @throws MessageHandlerException thrown if the signature element fails pre-validation
      */
     protected void performPrevalidation(@Nonnull final Signature signature) throws MessageHandlerException {
-        if (getSignaturePrevalidator() != null) {
+        final var prevalidator = getSignaturePrevalidator();
+        if (prevalidator != null) {
             try {
-                getSignaturePrevalidator().validate(signature);
+                prevalidator.validate(signature);
             } catch (final SignatureException e) {
                 log.debug("{} Protocol message signature failed signature pre-validation: {}", getLogPrefix(),
                         e.getMessage());

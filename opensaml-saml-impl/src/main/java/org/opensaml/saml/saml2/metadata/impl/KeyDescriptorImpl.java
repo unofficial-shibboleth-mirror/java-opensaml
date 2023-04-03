@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -28,6 +27,8 @@ import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.KeyDescriptor}.
@@ -90,9 +91,12 @@ public class KeyDescriptorImpl extends AbstractXMLObject implements KeyDescripto
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(keyInfo);
+        if (keyInfo != null) {
+            children.add(keyInfo);
+        }
+        
         children.addAll(encryptionMethods);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

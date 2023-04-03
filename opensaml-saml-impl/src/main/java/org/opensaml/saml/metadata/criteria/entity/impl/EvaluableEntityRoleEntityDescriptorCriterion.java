@@ -19,6 +19,7 @@ package org.opensaml.saml.metadata.criteria.entity.impl;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.criterion.EntityRoleCriterion;
@@ -36,8 +37,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class EvaluableEntityRoleEntityDescriptorCriterion implements EvaluableEntityDescriptorCriterion {
     
     /** Entity role. */
-    private QName role;
-
+    @Nonnull private QName role;
     
     /**
      * Constructor.

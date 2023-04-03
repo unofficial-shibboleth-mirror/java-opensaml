@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.metadata.impl;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
@@ -28,6 +27,9 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.AbstractSignableSAMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.metadata.Extensions;
+
+import net.shibboleth.shared.collection.CollectionSupport;
+
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
@@ -151,9 +153,12 @@ public class EntitiesDescriptorImpl extends AbstractSignableSAMLObject implement
             children.add(getSignature());
         }
         
-        children.add(getExtensions());
+        if (getExtensions() != null) {
+            children.add(getExtensions());
+        }
+        
         children.addAll(orderedDescriptors);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

@@ -19,6 +19,7 @@ package org.opensaml.saml.common.binding.security.impl;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import javax.xml.namespace.QName;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.messaging.context.MessageContext;
@@ -31,6 +32,7 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.impl.BaseTrustEngineSecurityHandler;
 import org.opensaml.security.trust.TrustEngine;
+import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.Signature;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
@@ -49,6 +51,15 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngin
     
     /** The SAML protocol context in operation. */
     @Nullable private SAMLProtocolContext samlProtocolContext;
+
+    /** The SAML protocol in use. */
+    @Nullable private String samlProtocol;
+    
+    /** The SAML role in use. */
+    @Nullable private QName samlRole;
+
+    /** Parameters for signature validation. */
+    @Nullable private SignatureValidationParameters signatureValidationParameters;
     
     /**
      * Get the {@link SAMLPeerEntityContext} associated with the message.
@@ -71,19 +82,27 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngin
     /** {@inheritDoc} */
     @Override
     protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
-        
+
         if (!super.doPreInvoke(messageContext)) {
             return false;
         }
         
         peerContext = messageContext.getSubcontext(SAMLPeerEntityContext.class);
-        if (peerContext == null || peerContext.getRole() == null) {
+        samlRole = peerContext != null ? peerContext.getRole() : null;
+        if (samlRole == null) {
             throw new MessageHandlerException("SAMLPeerEntityContext was missing or unpopulated");
         }
         
         samlProtocolContext = messageContext.getSubcontext(SAMLProtocolContext.class);
-        if (samlProtocolContext == null || samlProtocolContext.getProtocol() == null) {
+        samlProtocol = samlProtocolContext != null ? samlProtocolContext.getProtocol() : null;
+        if (samlProtocol == null) {
             throw new MessageHandlerException("SAMLProtocolContext was missing or unpopulated");
+        }
+     
+        // Shouldn't happen, as this is populated via superclass invoking trust engine lookup.
+        if (signatureValidationParameters == null) {
+            final SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class);
+            signatureValidationParameters = secParams != null ? secParams.getSignatureValidationParameters() : null;
         }
         
         return true;
@@ -92,11 +111,17 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngin
     /** {@inheritDoc} */
     @Override
     @Nullable protected TrustEngine<Signature> resolveTrustEngine(@Nonnull final MessageContext messageContext) {
-        final SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class);
-        if (secParams == null || secParams.getSignatureValidationParameters() == null) {
-            return null;
+
+        if (signatureValidationParameters == null) {
+            final SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class);
+            signatureValidationParameters = secParams != null ? secParams.getSignatureValidationParameters() : null;
         }
-        return secParams.getSignatureValidationParameters().getSignatureTrustEngine();
+
+        if (signatureValidationParameters != null) {
+            return signatureValidationParameters.getSignatureTrustEngine();
+        }
+        
+        return null;
     }
 
     /** {@inheritDoc} */
@@ -106,18 +131,18 @@ public abstract class BaseSAMLXMLSignatureSecurityHandler extends BaseTrustEngin
         
         final CriteriaSet criteriaSet = new CriteriaSet();
         if (!Strings.isNullOrEmpty(entityID)) {
+            assert entityID != null;
             criteriaSet.add(new EntityIdCriterion(entityID) );
         }
 
-        criteriaSet.add(new EntityRoleCriterion(peerContext.getRole()));
-        criteriaSet.add(new ProtocolCriterion(samlProtocolContext.getProtocol()));
+        assert samlRole != null;
+        criteriaSet.add(new EntityRoleCriterion(samlRole));
+        assert samlProtocol != null;
+        criteriaSet.add(new ProtocolCriterion(samlProtocol));
         criteriaSet.add( new UsageCriterion(UsageType.SIGNING) );
         
-        final SecurityParametersContext secParamsContext =
-                messageContext.getSubcontext(SecurityParametersContext.class);
-        if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
-            criteriaSet.add(
-                    new SignatureValidationParametersCriterion(secParamsContext.getSignatureValidationParameters()));
+        if (signatureValidationParameters != null) {
+            criteriaSet.add(new SignatureValidationParametersCriterion(signatureValidationParameters));
         }
         
         return criteriaSet;

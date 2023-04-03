@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.config.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
@@ -25,7 +27,7 @@ import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
-    private static String[] configs = {
+    @Nonnull private static String[] configs = {
         "/saml1-assertion-config.xml", 
         "/saml1-metadata-config.xml", 
         "/saml1-protocol-config.xml",
@@ -50,7 +52,7 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
 
     /** {@inheritDoc} */
     @Override
-    protected String[] getConfigResources() {
+    @Nonnull protected String[] getConfigResources() {
         return configs;
     }
 

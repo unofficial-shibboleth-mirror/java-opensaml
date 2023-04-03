@@ -20,6 +20,7 @@ package org.opensaml.saml.common.binding.security.impl;
 import java.util.Objects;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.InOutOperationContext;
 import org.opensaml.messaging.context.MessageContext;
@@ -27,8 +28,8 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -38,7 +39,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class InResponseToSecurityHandler extends AbstractMessageHandler {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(InResponseToSecurityHandler.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(InResponseToSecurityHandler.class);
 
     /** {@inheritDoc} */
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
@@ -61,16 +62,14 @@ public class InResponseToSecurityHandler extends AbstractMessageHandler {
      * @param messageContext the message context
      * @return the outbound request ID, or null
      */
-    private String resolveOutboundRequestID(@Nonnull final MessageContext messageContext) {
-        if (messageContext.getParent() instanceof InOutOperationContext) {
-            final MessageContext outboundContext = 
-                    ((InOutOperationContext)messageContext.getParent()).getOutboundMessageContext();
-            if (outboundContext != null && outboundContext.getMessage() instanceof SAMLObject) {
-                final SAMLObject outboundMessage = (SAMLObject) outboundContext.getMessage();
-                if (outboundMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
-                    return ((org.opensaml.saml.saml2.core.RequestAbstractType)outboundMessage).getID();
-                } else if (outboundMessage instanceof org.opensaml.saml.saml1.core.RequestAbstractType) {
-                    return ((org.opensaml.saml.saml1.core.RequestAbstractType)outboundMessage).getID();
+    @Nullable private String resolveOutboundRequestID(@Nonnull final MessageContext messageContext) {
+        if (messageContext.getParent() instanceof InOutOperationContext inout) {
+            final MessageContext outboundContext = inout.getOutboundMessageContext();
+            if (outboundContext != null && outboundContext.getMessage() instanceof SAMLObject outboundMessage) {
+                if (outboundMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType req) {
+                    return req.getID();
+                } else if (outboundMessage instanceof org.opensaml.saml.saml1.core.RequestAbstractType req) {
+                    return req.getID();
                 }
             }
         }
@@ -83,16 +82,14 @@ public class InResponseToSecurityHandler extends AbstractMessageHandler {
      * @param messageContext the message context
      * @return the inbound inResponseTo, or null
      */
-    private String resolveInboundInResponseTo(@Nonnull final MessageContext messageContext) {
-        if (messageContext.getParent() instanceof InOutOperationContext) {
-            final MessageContext inboundContext = 
-                    ((InOutOperationContext)messageContext.getParent()).getInboundMessageContext();
-            if (inboundContext != null && inboundContext.getMessage() instanceof SAMLObject) {
-                final SAMLObject inboundMessage = (SAMLObject) inboundContext.getMessage();
-                if (inboundMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
-                    return ((org.opensaml.saml.saml2.core.StatusResponseType)inboundMessage).getInResponseTo();
-                } else if (inboundMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType) {
-                    return ((org.opensaml.saml.saml1.core.ResponseAbstractType)inboundMessage).getInResponseTo();
+    @Nullable private String resolveInboundInResponseTo(@Nonnull final MessageContext messageContext) {
+        if (messageContext.getParent() instanceof InOutOperationContext inout) {
+            final MessageContext inboundContext = inout.getInboundMessageContext();
+            if (inboundContext != null && inboundContext.getMessage() instanceof SAMLObject inboundMessage) {
+                if (inboundMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType resp) {
+                    return resp.getInResponseTo();
+                } else if (inboundMessage instanceof org.opensaml.saml.saml1.core.ResponseAbstractType resp) {
+                    return resp.getInResponseTo();
                 }
             }
         }

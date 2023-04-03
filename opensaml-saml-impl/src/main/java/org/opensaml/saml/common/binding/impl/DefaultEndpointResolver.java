@@ -24,12 +24,11 @@ import javax.annotation.Nonnull;
 import org.opensaml.saml.common.binding.AbstractEndpointResolver;
 import org.opensaml.saml.criterion.BindingCriterion;
 import org.opensaml.saml.criterion.EndpointCriterion;
-import org.opensaml.saml.criterion.StartsWithLocationCriterion;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**

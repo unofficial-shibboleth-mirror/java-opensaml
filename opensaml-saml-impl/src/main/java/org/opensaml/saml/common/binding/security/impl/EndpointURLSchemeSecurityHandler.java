@@ -28,7 +28,8 @@ import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.SAMLMessageSecuritySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Class which verifies that the {@link org.opensaml.saml.saml2.metadata.Endpoint}

@@ -24,7 +24,6 @@ package org.opensaml.saml.saml2.metadata.impl;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.xml.XMLObject;
@@ -35,6 +34,8 @@ import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AffiliationDescriptor}.
@@ -174,13 +175,15 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
             children.add(getSignature());
         }
         
-        children.add(getExtensions());
+        if (getExtensions() != null) {
+            children.add(getExtensions());
+        }
 
         children.addAll(getMembers());
 
         children.addAll(getKeyDescriptors());
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

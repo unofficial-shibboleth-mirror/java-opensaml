@@ -43,11 +43,11 @@ import org.opensaml.saml.metadata.resolver.RoleDescriptorResolver;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -161,30 +161,32 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
         checkComponentActive();
 
         final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
+        final String entityID = entityCtx != null ? entityCtx.getEntityId() : null;
+        final QName role = entityCtx != null ? entityCtx.getRole() : null;
 
-        if (entityCtx == null || entityCtx.getEntityId() == null || entityCtx.getRole() == null) {
+        if (entityCtx == null || entityID == null || role == null) {
             log.info("{} SAML entity context class '{}' missing or did not contain an entityID or role", getLogPrefix(),
                     entityContextClass.getName());
             return;
         }
-
-        final SAMLMetadataContext existingMetadataCtx = resolveExisting(messageContext,
-                entityCtx.getEntityId(), entityCtx.getRole());
+        
+        final SAMLMetadataContext existingMetadataCtx = resolveExisting(messageContext, entityID, role);
         if (existingMetadataCtx != null) {
             log.info("{} Resolved existing metadata context, re-using it", getLogPrefix());
             entityCtx.addSubcontext(existingMetadataCtx);
             return;
         }
 
-        final CriteriaSet criteria = buildLookupCriteria(messageContext);
+        final CriteriaSet criteria = buildLookupCriteria(messageContext, entityID, role);
         
         try {
             final RoleDescriptor roleMetadata = metadataResolver.resolveSingle(criteria);
             if (roleMetadata == null) {
-                if (criteria.contains(ProtocolCriterion.class)) {
+                final ProtocolCriterion protocolCriterion = criteria.get(ProtocolCriterion.class);
+                if (protocolCriterion != null) {
                     log.info("{} No metadata returned for {} in role {} with protocol {}",
                             getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole(),
-                            criteria.get(ProtocolCriterion.class).getProtocol());
+                            protocolCriterion.getProtocol());
                 } else {
                     log.info("{} No metadata returned for {} in role {}",
                             getLogPrefix(), entityCtx.getEntityId(), entityCtx.getRole());
@@ -209,30 +211,35 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
      * Build the lookup criteria from the message context data.
      * 
      * @param messageContext the current message context
+     * @param entityID entityID to lookup
+     * @param role role to lookup
      * 
      * @return the new lookup criteria
      */
-    protected CriteriaSet buildLookupCriteria(final MessageContext messageContext) {
+    protected CriteriaSet buildLookupCriteria(@Nonnull final MessageContext messageContext,
+            @Nonnull final String entityID, @Nonnull final QName role) {
         
-        // This must be present in the message context, but is already checked in the calling method
-        final AbstractSAMLEntityContext entityCtx = messageContext.getSubcontext(entityContextClass);
-        
-        final EntityIdCriterion entityIdCriterion = new EntityIdCriterion(entityCtx.getEntityId());
-        final EntityRoleCriterion roleCriterion = new EntityRoleCriterion(entityCtx.getRole());
+        final EntityIdCriterion entityIdCriterion = new EntityIdCriterion(entityID);
+        final EntityRoleCriterion roleCriterion = new EntityRoleCriterion(role);
         
         ProtocolCriterion protocolCriterion = null;
         final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class);
-        if (protocolCtx != null && protocolCtx.getProtocol() != null) {
-            protocolCriterion = new ProtocolCriterion(protocolCtx.getProtocol());
+        if (protocolCtx != null) {
+            final String protocol = protocolCtx.getProtocol();
+            if (protocol != null) {
+                protocolCriterion = new ProtocolCriterion(protocol);
+            }
         }
         
         final SAMLMetadataLookupParametersContext lookupParamsContext =
                 messageContext.getSubcontext(SAMLMetadataLookupParametersContext.class); 
         
         DetectDuplicateEntityIDsCriterion detectDuplicatesCriterion = null;
-        if (lookupParamsContext != null && lookupParamsContext.getDetectDuplicateEntityIDs() != null) {
-            detectDuplicatesCriterion =
-                    new DetectDuplicateEntityIDsCriterion(lookupParamsContext.getDetectDuplicateEntityIDs()); 
+        if (lookupParamsContext != null) {
+            final var detect = lookupParamsContext.getDetectDuplicateEntityIDs();
+            if (detect != null) {
+                detectDuplicatesCriterion = new DetectDuplicateEntityIDsCriterion(detect);
+            }
         }
         
         ProfileRequestContextCriterion prcCriterion = null;
@@ -269,13 +276,16 @@ public class SAMLMetadataLookupHandler extends AbstractMessageHandler {
             return null;
         }
 
+        assert copyContextStrategy != null;
         final SAMLMetadataContext existing = copyContextStrategy.apply(messageContext);
         if (existing != null) {
-            if (existing.getEntityDescriptor() != null && existing.getRoleDescriptor() != null) {
+            final EntityDescriptor existingEntity = existing.getEntityDescriptor();
+            final RoleDescriptor existingRole = existing.getRoleDescriptor();
+            if (existingEntity != null && existingRole != null) {
                 // Validate that existing data has the same entityID and role
-                if (Objects.equals(existing.getEntityDescriptor().getEntityID(), entityID)
-                        && (Objects.equals(existing.getRoleDescriptor().getElementQName(), role)
-                                || Objects.equals(existing.getRoleDescriptor().getSchemaType(), role))
+                if (Objects.equals(existingEntity.getEntityID(), entityID)
+                        && (Objects.equals(existingRole.getElementQName(), role)
+                                || Objects.equals(existingRole.getSchemaType(), role))
                         ) {
                     log.debug("{} Found an existing and suitable SAMLMetadataContext from which to copy ",
                             getLogPrefix());

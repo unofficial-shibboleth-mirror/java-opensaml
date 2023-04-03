@@ -43,10 +43,10 @@ import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * SAML {@link org.opensaml.messaging.handler.MessageHandler} that attaches an {@link AttributeConsumingServiceContext}
@@ -180,11 +180,13 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
      * @return a suitable AttributeConsumingService
      * @throws MessageHandlerException when the cloning failed
      */
-    private AttributeConsumingService attributeConsumingServiceFromRequestedAttributes() 
+    @Nonnull private AttributeConsumingService attributeConsumingServiceFromRequestedAttributes()
             throws MessageHandlerException {
         final AttributeConsumingService newAcs = (AttributeConsumingService)
                 XMLObjectSupport.buildXMLObject(AttributeConsumingService.DEFAULT_ELEMENT_NAME);
+        assert requestedAttributes != null;
         for (final RequestedAttribute attribute: requestedAttributes) {
+            assert attribute != null;
             try {
                 newAcs.getRequestedAttributes().add(
                         XMLObjectSupport.cloneXMLObject(attribute, CloneOutputOption.DropDOM));
@@ -221,11 +223,10 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
     private class AuthnRequestLookup implements Function<MessageContext,AuthnRequest> {
 
         /** {@inheritDoc} */
-        @Override
-        public AuthnRequest apply(@Nullable final MessageContext input) {
+        @Nullable public AuthnRequest apply(@Nullable final MessageContext input) {
             if (input != null) {
                 final Object message = input.getMessage();
-                if (message != null && message instanceof AuthnRequest) {
+                if (message instanceof AuthnRequest) {
                     return (AuthnRequest) message;
                 }
             }

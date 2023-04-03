@@ -20,13 +20,13 @@ package org.opensaml.saml.common.profile.logic.tests;
 import java.util.Arrays;
 import java.util.Collections;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.profile.logic.EntityGroupNamePredicate;
-import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 import org.opensaml.saml.metadata.resolver.filter.impl.EntitiesDescriptorNameProcessor;
 import org.opensaml.saml.metadata.resolver.filter.impl.NodeProcessingMetadataFilter;
 import org.opensaml.saml.metadata.resolver.impl.ResourceBackedMetadataResolver;
@@ -41,6 +41,7 @@ import org.testng.annotations.Test;
 /**
  * Unit tests for {@link EntityGroupNamePredicate}.
  */
+@SuppressWarnings("javadoc")
 public class EntityGroupNamePredicateTest extends XMLObjectBaseTestCase {
 
     private NodeProcessingMetadataFilter filter;
@@ -54,7 +55,7 @@ public class EntityGroupNamePredicateTest extends XMLObjectBaseTestCase {
                 new ClassPathResource("/org/opensaml/saml/metadata/resolver/filter/impl/EntitiesDescriptor-Name-metadata.xml");
         
         filter = new NodeProcessingMetadataFilter();
-        filter.setNodeProcessors(Collections.<MetadataNodeProcessor>singletonList(new EntitiesDescriptorNameProcessor()));
+        filter.setNodeProcessors(CollectionSupport.singletonList(new EntitiesDescriptorNameProcessor()));
         filter.initialize();
         
         metadataProvider = new ResourceBackedMetadataResolver(null, ResourceHelper.of(resource));

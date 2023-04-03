@@ -27,9 +27,11 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.soap.messaging.context.SOAP11Context;
+import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Body handler impl for use with SAML SOAP message decoders.
@@ -48,11 +50,13 @@ public class SAMLSOAPDecoderBodyHandler extends AbstractMessageHandler {
             throw new MessageHandlerException("SOAP 1.1 context was not present in message context");
         }
         final Envelope soapMessage = soap11Context.getEnvelope();
-        if (soapMessage == null) {
-            throw new MessageHandlerException("SOAP 1.1 envelope was not present in SOAP context");
+        final Body soapBody = soapMessage != null ? soapMessage.getBody() : null; 
+        
+        if (soapBody == null) {
+            throw new MessageHandlerException("SOAP 1.1 envelope/body was not present in SOAP context");
         }
         
-        final List<XMLObject> soapBodyChildren = soapMessage.getBody().getUnknownXMLObjects();
+        final List<XMLObject> soapBodyChildren = soapBody.getUnknownXMLObjects();
         if (soapBodyChildren.size() < 1 || soapBodyChildren.size() > 1) {
             log.error("Unexpected number of children in the SOAP body, " + soapBodyChildren.size()
                     + ".  Unable to extract SAML message");

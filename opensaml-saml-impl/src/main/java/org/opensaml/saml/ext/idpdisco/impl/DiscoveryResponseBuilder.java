@@ -18,6 +18,7 @@
 package org.opensaml.saml.ext.idpdisco.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
@@ -34,8 +35,8 @@ public class DiscoveryResponseBuilder extends AbstractSAMLObjectBuilder<Discover
     }
 
     /** {@inheritDoc} */
-    @Nonnull public DiscoveryResponse buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public DiscoveryResponse buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DiscoveryResponseImpl(namespaceURI, localName, namespacePrefix);
     }
 }

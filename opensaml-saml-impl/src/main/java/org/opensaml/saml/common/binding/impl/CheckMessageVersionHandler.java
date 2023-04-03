@@ -26,7 +26,8 @@ import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /** Handler that checks whether a SAML message has an appropriate version. */
 public class CheckMessageVersionHandler extends AbstractMessageHandler {
@@ -58,24 +59,24 @@ public class CheckMessageVersionHandler extends AbstractMessageHandler {
             if (!ignoreMissingOrUnrecognized) {
                 throw new MessageHandlerException("Message was not found");
             }
-        } else if (message instanceof org.opensaml.saml.saml1.core.RequestAbstractType) {
-            final SAMLVersion version = ((org.opensaml.saml.saml1.core.RequestAbstractType) message).getVersion();
-            if (version.getMajorVersion() != 1) { 
+        } else if (message instanceof org.opensaml.saml.saml1.core.RequestAbstractType req) {
+            final SAMLVersion version = req.getVersion();
+            if (version == null || version.getMajorVersion() != 1) { 
                 throw new MessageHandlerException("Request major version  was invalid");
             }
-        } else if (message instanceof ResponseAbstractType) {
-            final SAMLVersion version = ((ResponseAbstractType) message).getVersion();
-            if (version.getMajorVersion() != 1) { 
+        } else if (message instanceof ResponseAbstractType resp) {
+            final SAMLVersion version = resp.getVersion();
+            if (version == null || version.getMajorVersion() != 1) { 
                 throw new MessageHandlerException("Request major version  was invalid");
             }
-        } else if (message instanceof org.opensaml.saml.saml2.core.RequestAbstractType) {
-            final SAMLVersion version = ((org.opensaml.saml.saml2.core.RequestAbstractType) message).getVersion();
-            if (version.getMajorVersion() != 2) { 
+        } else if (message instanceof org.opensaml.saml.saml2.core.RequestAbstractType req) {
+            final SAMLVersion version = req.getVersion();
+            if (version == null || version.getMajorVersion() != 2) { 
                 throw new MessageHandlerException("Response major version  was invalid");
             }
-        } else if (message instanceof StatusResponseType) {
-            final SAMLVersion version = ((StatusResponseType) message).getVersion();
-            if (version.getMajorVersion() != 2) { 
+        } else if (message instanceof StatusResponseType resp) {
+            final SAMLVersion version = resp.getVersion();
+            if (version == null || version.getMajorVersion() != 2) { 
                 throw new MessageHandlerException("Response major version  was invalid");
             }
         } else {

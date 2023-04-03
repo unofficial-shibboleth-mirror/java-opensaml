@@ -28,12 +28,11 @@ import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.xml.sax.SAXException;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.xml.SchemaBuilder;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A metadata filter that schema validates an incoming metadata file.
@@ -42,9 +41,6 @@ public class SchemaValidationFilter implements MetadataFilter {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SchemaValidationFilter.class);
-
-    /** Self-managed SchemaBuilder to support old extension schema parameter. */
-    @Nullable private SchemaBuilder schemaBuilder;
 
     /** SAML schema source. */
     @Nonnull private SAMLSchemaBuilder samlSchemaBuilder;
@@ -59,7 +55,6 @@ public class SchemaValidationFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         if (metadata == null) {

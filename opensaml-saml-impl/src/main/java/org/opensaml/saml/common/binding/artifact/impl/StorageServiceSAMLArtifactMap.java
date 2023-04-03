@@ -30,13 +30,13 @@ import org.opensaml.storage.StorageRecord;
 import org.opensaml.storage.StorageSerializer;
 import org.opensaml.storage.StorageService;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /** Artifact map implementation backed by {@link StorageService}. */
 public class StorageServiceSAMLArtifactMap extends AbstractInitializableComponent implements SAMLArtifactMap {

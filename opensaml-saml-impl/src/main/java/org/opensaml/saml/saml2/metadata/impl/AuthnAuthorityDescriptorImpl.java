@@ -31,6 +31,8 @@ import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor}.
  */
@@ -98,11 +100,15 @@ public class AuthnAuthorityDescriptorImpl extends RoleDescriptorImpl implements 
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.addAll(super.getOrderedChildren());
+        final List<XMLObject> parentChildren = super.getOrderedChildren();
+        if (parentChildren != null) {
+            children.addAll(parentChildren);
+        }
+        
         children.addAll(authnQueryServices);
         children.addAll(assertionIDRequestServices);
         children.addAll(nameIDFormats);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

@@ -41,7 +41,6 @@ import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -49,6 +48,7 @@ import com.google.common.collect.Multimap;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -67,13 +67,14 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
     private boolean removeExistingFormats;
     
     /** Rules for adding formats. */
-    @Nonnull @NonnullElements private Multimap<Predicate<EntityDescriptor>,String> applyMap;
+    @Nonnull private Multimap<Predicate<EntityDescriptor>,String> applyMap;
 
     /** Builder for {@link NameIDFormat}. */
     @Nonnull private final SAMLObjectBuilder<NameIDFormat> formatBuilder;
 
     /** Constructor. */
     public NameIDFormatFilter() {
+        applyMap = ArrayListMultimap.create();
         formatBuilder = (SAMLObjectBuilder<NameIDFormat>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<NameIDFormat>ensureBuilder(
                         NameIDFormat.DEFAULT_ELEMENT_NAME);
@@ -97,7 +98,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
      * 
      * @param rules rules to apply
      */
-    public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<String>> rules) {
+    public void setRules(@Nonnull final Map<Predicate<EntityDescriptor>,Collection<String>> rules) {
         checkSetterPreconditions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
         
@@ -110,7 +111,6 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         checkComponentActive();
@@ -154,19 +154,26 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
         
         final Collection<NameIDFormat> roleFormats;
         
-        if (role instanceof SPSSODescriptor) {
-            roleFormats = ((SPSSODescriptor) role).getNameIDFormats();
-        } else if (role instanceof AttributeAuthorityDescriptor) {
-            roleFormats = ((AttributeAuthorityDescriptor) role).getNameIDFormats();
-        } else if (role instanceof PDPDescriptor) {
-            roleFormats = ((PDPDescriptor) role).getNameIDFormats();
+        if (role instanceof SPSSODescriptor sp) {
+            roleFormats = sp.getNameIDFormats();
+        } else if (role instanceof AttributeAuthorityDescriptor aa) {
+            roleFormats = aa.getNameIDFormats();
+        } else if (role instanceof PDPDescriptor pdp) {
+            roleFormats = pdp.getNameIDFormats();
         } else {
             return;
         }
         
+        final String entityID;
+        if (role.getParent() instanceof EntityDescriptor entity) {
+            entityID = entity.getEntityID();
+        } else {
+            entityID = null;
+        }
+        
         if (removeExistingFormats && !roleFormats.isEmpty()) {
-            log.debug("Removing existing NameIDFormats from {} role in EntityDescriptor '{}'",
-                    role.getElementQName(), ((EntityDescriptor) role.getParent()).getEntityID());
+            log.debug("Removing existing NameIDFormats from {} role in EntityDescriptor '{}'", role.getElementQName(),
+                    entityID);
             roleFormats.clear();
         }
         
@@ -175,13 +182,11 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
         
         for (final String format : formats) {
             if (existingFormats.contains(format)) {
-                log.debug("Ignoring add of existing NameIDFormat '{}' on EntityDescriptor '{}'", format,
-                        ((EntityDescriptor) role.getParent()).getEntityID());
+                log.debug("Ignoring add of existing NameIDFormat '{}' on EntityDescriptor '{}'", format, entityID);
             } else {
                 final NameIDFormat nif = formatBuilder.buildObject();
                 nif.setURI(format);
-                log.info("Adding NameIDFormat '{}' to EntityDescriptor '{}'", format,
-                        ((EntityDescriptor) role.getParent()).getEntityID());
+                log.info("Adding NameIDFormat '{}' to EntityDescriptor '{}'", format, entityID);
                 roleFormats.add(nif);
             }
         }
@@ -197,11 +202,13 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
         
         // First we check any contained EntitiesDescriptors.
         for (final EntitiesDescriptor group : descriptor.getEntitiesDescriptors()) {
+            assert group != null;
             filterEntitiesDescriptor(group);
         }
         
         // Next, check contained EntityDescriptors.
         for (final EntityDescriptor entity : descriptor.getEntityDescriptors()) {
+            assert entity != null;
             filterEntityDescriptor(entity);
         }
     }

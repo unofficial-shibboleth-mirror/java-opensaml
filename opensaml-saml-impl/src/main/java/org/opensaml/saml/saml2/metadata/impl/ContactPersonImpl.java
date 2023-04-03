@@ -37,6 +37,8 @@ import org.opensaml.saml.saml2.metadata.GivenName;
 import org.opensaml.saml.saml2.metadata.SurName;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ContactPerson}.
  */
@@ -164,13 +166,25 @@ public class ContactPersonImpl extends AbstractXMLObject implements ContactPerso
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(extensions);
-        children.add(company);
-        children.add(givenName);
-        children.add(surName);
+        if (extensions != null) {
+            children.add(extensions);
+        }
+        
+        if (company != null) {
+            children.add(company);
+        }
+        
+        if (givenName != null) {
+            children.add(givenName);
+        }
+        
+        if (surName != null) {
+            children.add(surName);
+        }
+        
         children.addAll(emailAddresses);
         children.addAll(telephoneNumbers);
 
-        return children;
+        return CollectionSupport.copyToList(children);
     }
 }

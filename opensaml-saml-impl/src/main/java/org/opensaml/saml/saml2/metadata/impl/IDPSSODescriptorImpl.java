@@ -38,6 +38,8 @@ import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.IDPSSODescriptor}.
  */
@@ -159,13 +161,17 @@ public class IDPSSODescriptorImpl extends SSODescriptorImpl implements IDPSSODes
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.addAll(super.getOrderedChildren());
+        final List<XMLObject> parentChildren = super.getOrderedChildren();
+        if (parentChildren != null) {
+            children.addAll(parentChildren);
+        }
+        
         children.addAll(singleSignOnServices);
         children.addAll(nameIDMappingServices);
         children.addAll(assertionIDRequestServices);
         children.addAll(attributeProfiles);
         children.addAll(attributes);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

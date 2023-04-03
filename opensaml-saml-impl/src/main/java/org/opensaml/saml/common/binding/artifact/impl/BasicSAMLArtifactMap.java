@@ -33,13 +33,13 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.artifact.ExpiringSAMLArtifactMapEntry;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.TimerSupport;
 
 /** Basic artifact map implementation. */

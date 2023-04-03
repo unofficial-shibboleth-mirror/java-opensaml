@@ -30,7 +30,7 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.MetadataNodeProcessor;
 
 import net.shibboleth.shared.annotation.constraint.Live;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
 
@@ -42,7 +42,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class NodeProcessingMetadataFilter extends AbstractInitializableComponent implements MetadataFilter {
 
     /** The ordered list of metadata node processors. */
-    @Nonnull @NonnullElements private List<MetadataNodeProcessor> processors;
+    @Nonnull private List<MetadataNodeProcessor> processors;
     
     /** Constructor. */
     public NodeProcessingMetadataFilter() {
@@ -54,7 +54,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
      * 
      * @return the list of metadata node processors
      */
-    @Nonnull @NonnullElements @Live public List<MetadataNodeProcessor> getNodeProcessors() {
+    @Nonnull @Live public List<MetadataNodeProcessor> getNodeProcessors() {
         return processors;
     }
 
@@ -63,15 +63,14 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
      * 
      * @param newProcessors the new list of processors to set.
      */
-    public void setNodeProcessors(@Nonnull @NonnullElements final List<MetadataNodeProcessor> newProcessors) {
+    public void setNodeProcessors(@Nonnull final List<MetadataNodeProcessor> newProcessors) {
         checkSetterPreconditions();
         Constraint.isNotNull(newProcessors, "MetadataNodeProcessor list cannot be null");
 
-        processors = new ArrayList<>(List.copyOf(newProcessors));
+        processors = new ArrayList<>(CollectionSupport.copyToList(newProcessors));
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         checkComponentActive();
@@ -85,12 +84,6 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
         return metadata;
     }
 
-    /** {@inheritDoc} */
-    @Override protected void doDestroy() {
-        processors = null;
-        super.doDestroy();
-    }
-
     /**
      * Process an individual metadata node.
      * 
@@ -98,7 +91,7 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
      * 
      * @throws FilterException if a fatal error is encountered while processing a node
      */
-    protected void processNode(final XMLObject node) throws FilterException {
+    protected void processNode(@Nonnull final XMLObject node) throws FilterException {
         
         for (final MetadataNodeProcessor processor : getNodeProcessors()) {
             processor.process(node);
@@ -106,10 +99,9 @@ public class NodeProcessingMetadataFilter extends AbstractInitializableComponent
 
         final List<XMLObject> children = node.getOrderedChildren();
         if (children != null) {
-            for (final XMLObject child : node.getOrderedChildren()) {
-                if (child != null) {
-                    processNode(child);
-                }
+            for (final XMLObject child : children) {
+                assert child != null;
+                processNode(child);
             }
         }
     }

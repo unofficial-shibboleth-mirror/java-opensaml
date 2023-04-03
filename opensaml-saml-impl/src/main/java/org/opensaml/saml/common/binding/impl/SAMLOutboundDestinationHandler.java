@@ -28,7 +28,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BindingException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Handler for outbound SAML protocol messages which adds the destination endpoint URL as the 'recipient'
@@ -60,6 +61,7 @@ public class SAMLOutboundDestinationHandler extends AbstractMessageHandler {
             } else if (samlMessage instanceof org.opensaml.saml.saml2.core.RequestAbstractType
                     || samlMessage instanceof org.opensaml.saml.saml2.core.StatusResponseType) {
                 log.debug("Adding destination to outbound SAML 2 protocol message: {}", endpointURL);
+                assert samlMessage != null;
                 SAMLBindingSupport.setSAML2Destination(samlMessage, endpointURL);
             }
         } catch (final BindingException e) {

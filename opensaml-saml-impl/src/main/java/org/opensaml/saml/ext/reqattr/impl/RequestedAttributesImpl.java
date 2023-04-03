@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.ext.reqattr.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,6 +29,11 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.ext.reqattr.RequestedAttributes;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 
 /**
  * A concrete {@link RequestedAttributes}.
@@ -34,7 +41,7 @@ import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 public class RequestedAttributesImpl extends AbstractXMLObject implements RequestedAttributes {
 
     /** The policies. */
-    private XMLObjectChildrenList<RequestedAttribute> requestedAttributes;
+    @Nonnull private XMLObjectChildrenList<RequestedAttribute> requestedAttributes;
 
     /**
      * Constructor.
@@ -43,24 +50,21 @@ public class RequestedAttributesImpl extends AbstractXMLObject implements Reques
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RequestedAttributesImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RequestedAttributesImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         requestedAttributes = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<RequestedAttribute> getRequestedAttributes() {
+    @Nonnull @Live public List<RequestedAttribute> getRequestedAttributes() {
         return requestedAttributes;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(requestedAttributes);
-        return children;
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        
+        return CollectionSupport.copyToList(requestedAttributes);
     }
 
 }

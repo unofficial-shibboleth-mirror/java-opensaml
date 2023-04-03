@@ -30,7 +30,8 @@ import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A metadata filter that requires the presence of a <code>validUntil</code> attribute on the root element of the

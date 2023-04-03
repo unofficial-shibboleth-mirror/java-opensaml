@@ -57,6 +57,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 /**
  * Test for {@link SAMLMetadataLookupHandler}.
  */
+@SuppressWarnings("javadoc")
 public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
 
     private PredicateRoleDescriptorResolver roleResolver;
@@ -373,7 +374,7 @@ public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
         messageContext.setMessage(request);
 
         // The context data/criterion won't influence the actual results, so just test that criterion has been added as expected.
-        CriteriaSet criteria = handler.buildLookupCriteria(messageContext);
+        CriteriaSet criteria = handler.buildLookupCriteria(messageContext, "urn:mace:incommon:osu.edu", IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         Assert.assertNotNull(criteria);
         Assert.assertTrue(criteria.contains(DetectDuplicateEntityIDsCriterion.class));
         Assert.assertEquals(criteria.get(DetectDuplicateEntityIDsCriterion.class).getValue(), DetectDuplicateEntityIDs.Batch);

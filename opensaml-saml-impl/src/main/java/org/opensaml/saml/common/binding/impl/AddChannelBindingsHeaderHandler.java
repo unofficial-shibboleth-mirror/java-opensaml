@@ -34,9 +34,9 @@ import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * MessageHandler to add {@link ChannelBindings} headers to an outgoing SOAP envelope.
@@ -78,11 +78,13 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
             return false;
         }
         
-        channelBindingsContext = channelBindingsContextLookupStrategy.apply(messageContext);
-        if (channelBindingsContext == null || channelBindingsContext.getChannelBindings().isEmpty()) {
+        final ChannelBindingsContext cbCtx = channelBindingsContextLookupStrategy.apply(messageContext);
+        if (cbCtx == null || cbCtx.getChannelBindings().isEmpty()) {
             log.debug("{} No ChannelBindings to add, nothing to do", getLogPrefix());
             return false;
         }
+        
+        channelBindingsContext = cbCtx;
         
         return true;
     }
@@ -95,6 +97,7 @@ public class AddChannelBindingsHeaderHandler extends AbstractMessageHandler {
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                         ChannelBindings.DEFAULT_ELEMENT_NAME);
         
+        assert channelBindingsContext != null;
         for (final ChannelBindings cb : channelBindingsContext.getChannelBindings()) {
             final ChannelBindings header = cbBuilder.buildObject();
             header.setType(cb.getType());

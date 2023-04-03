@@ -51,7 +51,6 @@ import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
@@ -60,6 +59,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A filter that adds algorithm extension content to entities in order to drive software
@@ -74,7 +74,7 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
     @Nonnull private final Logger log = LoggerFactory.getLogger(AlgorithmFilter.class);
 
     /** Registry for sanity checking algorithms. */
-    @Nonnull private AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
+    @Nullable private AlgorithmRegistry registry = AlgorithmSupport.getGlobalAlgorithmRegistry();
     
     /** Rules for adding algorithms. */
     @Nonnull @NonnullElements private Multimap<Predicate<EntityDescriptor>,XMLObject> applyMap;
@@ -97,7 +97,7 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * 
      * @param rules rules to apply
      */
-    public void setRules(@Nonnull @NonnullElements final Map<Predicate<EntityDescriptor>,Collection<XMLObject>> rules) {
+    public void setRules(@Nonnull final Map<Predicate<EntityDescriptor>,Collection<XMLObject>> rules) {
         checkSetterPreconditions();
         Constraint.isNotNull(rules, "Rules map cannot be null");
 
@@ -135,7 +135,6 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
 // Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         if (metadata == null) {
@@ -227,11 +226,13 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
         
         // First we check any contained EntitiesDescriptors.
         for (final EntitiesDescriptor group : descriptor.getEntitiesDescriptors()) {
+            assert group != null;
             filterEntitiesDescriptor(group);
         }
         
         // Next, check contained EntityDescriptors.
         for (final EntityDescriptor entity : descriptor.getEntityDescriptors()) {
+            assert entity != null;
             filterEntityDescriptor(entity);
         }
     }
@@ -296,10 +297,11 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * @param uri input method
      */
     private void checkDigestMethod(@Nonnull @NotEmpty final String uri) {
-        if (registry != null) {
-            if (!registry.getRegisteredURIsByType(AlgorithmType.MessageDigest).contains(uri)) {
+        final AlgorithmRegistry local = registry;
+        if (local != null) {
+            if (!local.getRegisteredURIsByType(AlgorithmType.MessageDigest).contains(uri)) {
                 log.warn("DigestMethod {} unrecognized by algorithm registry", uri);
-            } else if (!registry.isRuntimeSupported(uri)) {
+            } else if (!local.isRuntimeSupported(uri)) {
                 log.warn("DigestMethod {} unsupported by runtime", uri);
             }
         }
@@ -311,11 +313,12 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * @param uri input method
      */
     private void checkSigningMethod(@Nonnull @NotEmpty final String uri) {
-        if (registry != null) {
-            if (!registry.getRegisteredURIsByType(AlgorithmType.Signature).contains(uri) &&
-                    !registry.getRegisteredURIsByType(AlgorithmType.Mac).contains(uri)) {
+        final AlgorithmRegistry local = registry;
+        if (local != null) {
+            if (!local.getRegisteredURIsByType(AlgorithmType.Signature).contains(uri) &&
+                    !local.getRegisteredURIsByType(AlgorithmType.Mac).contains(uri)) {
                 log.warn("SigningMethod {} unrecognized by algorithm registry", uri);
-            } else if (!registry.isRuntimeSupported(uri)) {
+            } else if (!local.isRuntimeSupported(uri)) {
                 log.warn("SigningMethod {} unsupported by runtime", uri);
             }
         }
@@ -327,13 +330,14 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * @param uri input method
      */
     private void checkEncryptionMethod(@Nonnull @NotEmpty final String uri) {
-        if (registry != null) {
-            if (!registry.getRegisteredURIsByType(AlgorithmType.BlockEncryption).contains(uri) &&
-                    !registry.getRegisteredURIsByType(AlgorithmType.KeyTransport).contains(uri) &&
-                    !registry.getRegisteredURIsByType(AlgorithmType.KeyAgreement).contains(uri) &&
-                    !registry.getRegisteredURIsByType(AlgorithmType.SymmetricKeyWrap).contains(uri)) {
+        final AlgorithmRegistry local = registry;
+        if (local != null) {
+            if (!local.getRegisteredURIsByType(AlgorithmType.BlockEncryption).contains(uri) &&
+                    !local.getRegisteredURIsByType(AlgorithmType.KeyTransport).contains(uri) &&
+                    !local.getRegisteredURIsByType(AlgorithmType.KeyAgreement).contains(uri) &&
+                    !local.getRegisteredURIsByType(AlgorithmType.SymmetricKeyWrap).contains(uri)) {
                 log.warn("EncryptionMethod {} unrecognized by algorithm registry", uri);
-            } else if (!registry.isRuntimeSupported(uri)) {
+            } else if (!local.isRuntimeSupported(uri)) {
                 log.warn("EncryptionMethod {} unsupported by runtime", uri);
             }
         }

@@ -26,7 +26,6 @@ import org.opensaml.messaging.handler.AbstractMessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
@@ -36,6 +35,7 @@ import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URIComparator;
 import net.shibboleth.shared.net.URIException;
 import net.shibboleth.shared.net.impl.BasicURLComparator;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -56,7 +56,6 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
 
     /** Constructor. */
     public ReceivedEndpointSecurityHandler() {
-        super();
         uriComparator = new BasicURLComparator();
     }
 
@@ -116,9 +115,7 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (uriComparator == null) {
-            throw new ComponentInitializationException("URIComparator cannot be null");
-        } else if (getHttpServletRequest() == null) {
+        if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
         }
     }
@@ -143,10 +140,9 @@ public class ReceivedEndpointSecurityHandler extends AbstractMessageHandler {
      * @throws URIException if one of the URI's to evaluate is invalid 
      */
     protected boolean compareEndpointURIs(@Nonnull @NotEmpty final String messageDestination, 
-            @Nonnull @NotEmpty final String receiverEndpoint, 
+            @Nullable final String receiverEndpoint, 
             @Nonnull final URIComparator comparator) throws URIException {
         Constraint.isNotNull(messageDestination, "Message destination URI was null");
-        Constraint.isNotNull(receiverEndpoint, "Receiver endpoint URI was null");
         Constraint.isNotNull(comparator, "URIComparator was null");
         return comparator.compare(messageDestination, receiverEndpoint);
     }

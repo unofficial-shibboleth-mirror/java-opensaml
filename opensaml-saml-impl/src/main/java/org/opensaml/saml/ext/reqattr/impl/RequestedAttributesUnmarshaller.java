@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.reqattr.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -31,7 +33,7 @@ public class RequestedAttributesUnmarshaller extends AbstractSAMLObjectUnmarshal
 
     /** {@inheritDoc} */
     @Override
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final RequestedAttributes pPath = (RequestedAttributes) parentObject;
 

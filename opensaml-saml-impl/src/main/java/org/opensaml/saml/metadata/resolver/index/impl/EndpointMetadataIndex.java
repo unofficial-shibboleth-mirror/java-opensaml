@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.index.impl;
 
 import java.net.MalformedURLException;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Objects;
@@ -38,18 +37,19 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -65,7 +65,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class EndpointMetadataIndex implements MetadataIndex {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(EndpointMetadataIndex.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(EndpointMetadataIndex.class);
     
     /** The predicate which selects which endpoints to index. */
     @Nonnull private Predicate<Endpoint> endpointSelectionPredicate;
@@ -78,7 +78,7 @@ public class EndpointMetadataIndex implements MetadataIndex {
      * </p>
      */
     public EndpointMetadataIndex() {
-        endpointSelectionPredicate = Predicates.alwaysTrue();
+        endpointSelectionPredicate = PredicateSupport.alwaysTrue();
     }
     
     /**
@@ -163,12 +163,14 @@ public class EndpointMetadataIndex implements MetadataIndex {
         final String location = StringSupport.trimOrNull(endpoint.getLocation());
         if (location != null) {
             for (final String variant : processLocation(criteriaSet, location)) {
+                assert variant != null;
                 result.add(new EndpointMetadataIndexKey(roleType, endpointType, variant, false));
             }
         }
         final String responseLocation = StringSupport.trimOrNull(endpoint.getResponseLocation());
         if (responseLocation != null) {
             for (final String variant : processLocation(criteriaSet, responseLocation)) {
+                assert variant != null;
                 result.add(new EndpointMetadataIndexKey(roleType, endpointType, variant, true));
             }
         }
@@ -216,7 +218,7 @@ public class EndpointMetadataIndex implements MetadataIndex {
             return result;
         }
         
-        return Collections.singleton(location);
+        return CollectionSupport.singleton(location);
     }
 
 
@@ -234,7 +236,7 @@ public class EndpointMetadataIndex implements MetadataIndex {
          * Constructor.
          */
         public DefaultEndpointSelectionPredicate() {
-            endpointTypes = Collections.emptyMap();
+            endpointTypes = CollectionSupport.emptyMap();
         }
         
         /**
@@ -284,7 +286,7 @@ public class EndpointMetadataIndex implements MetadataIndex {
     protected static class EndpointMetadataIndexKey implements MetadataIndexKey {
         
         /** Logger. */
-        private final Logger log = LoggerFactory.getLogger(EndpointMetadataIndexKey.class);
+        @Nonnull private final Logger log = LoggerFactory.getLogger(EndpointMetadataIndexKey.class);
         
         /** The role type. */
         @Nonnull private final QName role;

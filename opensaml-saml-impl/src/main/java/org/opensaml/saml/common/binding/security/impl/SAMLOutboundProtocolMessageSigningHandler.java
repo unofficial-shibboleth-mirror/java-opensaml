@@ -31,7 +31,8 @@ import org.opensaml.security.SecurityException;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A message handler implementation that signs an outbound SAML protocol message if the message context
@@ -93,16 +94,17 @@ public class SAMLOutboundProtocolMessageSigningHandler extends AbstractMessageHa
      */
     private boolean isErrorResponse(@Nullable final Object message) {
         if (message != null) {
-            if (message instanceof Response) {
-                if (((Response) message).getStatus() != null) {
-                    final org.opensaml.saml.saml1.core.StatusCode s1 = ((Response) message).getStatus().getStatusCode();
+            if (message instanceof Response resp) {
+                final org.opensaml.saml.saml1.core.Status status = resp.getStatus();
+                if (status != null) {
+                    final org.opensaml.saml.saml1.core.StatusCode s1 = status.getStatusCode();
                     return s1 != null && s1.getValue() != null
                             && !org.opensaml.saml.saml1.core.StatusCode.SUCCESS.equals(s1.getValue());
                 }
-            } else if (message instanceof StatusResponseType) {
-                if (((StatusResponseType) message).getStatus() != null) {
-                    final org.opensaml.saml.saml2.core.StatusCode s2 =
-                            ((StatusResponseType) message).getStatus().getStatusCode();
+            } else if (message instanceof StatusResponseType resp) {
+                final org.opensaml.saml.saml2.core.Status status = resp.getStatus();
+                if (status != null) {
+                    final org.opensaml.saml.saml2.core.StatusCode s2 = status.getStatusCode();
                     return s2 != null && s2.getValue() != null
                             && !org.opensaml.saml.saml2.core.StatusCode.SUCCESS.equals(s2.getValue());
                 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.metadata.resolver.filter;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 
 /**
@@ -31,6 +33,6 @@ public interface MetadataNodeProcessor {
      * @param metadataNode the metadata node to process
      * @throws FilterException if a fatal error is encountered while processing the node
      */
-    public void process(XMLObject metadataNode) throws FilterException;
+    public void process(@Nonnull XMLObject metadataNode) throws FilterException;
     
 }

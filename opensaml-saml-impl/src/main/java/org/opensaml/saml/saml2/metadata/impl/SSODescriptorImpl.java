@@ -37,6 +37,8 @@ import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.SSODescriptor;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SSODescriptor}.
  */
@@ -114,19 +116,22 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
             return Collections.unmodifiableList(new ArrayList<Endpoint>(manageNameIDServices));
         }
         
-        return Collections.EMPTY_LIST;
+        return CollectionSupport.emptyList();
     }
     
     /** {@inheritDoc} */
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
-        children.addAll(super.getOrderedChildren());
+        final List<XMLObject> parentChildren = super.getOrderedChildren();
+        if (parentChildren != null) {
+            children.addAll(parentChildren);
+        }
         children.addAll(artifactResolutionServices);
         children.addAll(singleLogoutServices);
         children.addAll(manageNameIDServices);
         children.addAll(nameIDFormats);
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

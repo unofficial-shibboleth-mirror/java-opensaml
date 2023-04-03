@@ -36,13 +36,13 @@ import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMap
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntryFactory;
 import org.opensaml.storage.StorageSerializer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.QNameSupport;
@@ -66,7 +66,8 @@ public class StorageServiceSAMLArtifactMapEntryFactory extends AbstractInitializ
     
     /** Constructor. */
     public StorageServiceSAMLArtifactMapEntryFactory() {
-        parserPool = XMLObjectProviderRegistrySupport.getParserPool();
+        parserPool = Constraint.isNotNull(XMLObjectProviderRegistrySupport.getParserPool(),
+                "Default ParserPool was null");
     }
 
     /**

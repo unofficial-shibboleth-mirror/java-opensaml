@@ -45,11 +45,11 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignaturePrevalidator;
 import org.opensaml.xmlsec.signature.support.SignatureTrustEngine;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -213,7 +213,6 @@ public class SignatureValidationFilter implements MetadataFilter {
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
         if (metadata == null) {
@@ -292,8 +291,8 @@ public class SignatureValidationFilter implements MetadataFilter {
             }
         }
         
-        if (entityDescriptor.getAffiliationDescriptor() != null) {
-            final AffiliationDescriptor affiliationDescriptor = entityDescriptor.getAffiliationDescriptor();
+        final AffiliationDescriptor affiliationDescriptor = entityDescriptor.getAffiliationDescriptor();
+        if (affiliationDescriptor != null) {
             if (!affiliationDescriptor.isSigned()) {
                 log.trace("AffiliationDescriptor member was not signed, skipping signature processing...");
             } else {
@@ -448,9 +447,10 @@ public class SignatureValidationFilter implements MetadataFilter {
      */
     protected void performPreValidation(@Nonnull final Signature signature,
             @Nonnull @NotEmpty final String metadataEntryName) throws FilterException {
-        if (getSignaturePrevalidator() != null) {
+        final var prevalidator = getSignaturePrevalidator();
+        if (prevalidator != null) {
             try {
-                getSignaturePrevalidator().validate(signature);
+                prevalidator.validate(signature);
             } catch (final SignatureException e) {
                 log.error("Signature on metadata entry '{}' failed signature pre-validation: {}", metadataEntryName,
                         e.getMessage());
@@ -486,8 +486,9 @@ public class SignatureValidationFilter implements MetadataFilter {
         }
         
         // If configured, add dynamic trusted names computed from metadata via strategy function.
-        if (getDynamicTrustedNamesStrategy() != null) {
-            final Set<String> dynamicTrustedNames = getDynamicTrustedNamesStrategy().apply(signedMetadata);
+        final var namesStrategy = getDynamicTrustedNamesStrategy(); 
+        if (namesStrategy != null) {
+            final Set<String> dynamicTrustedNames = namesStrategy.apply(signedMetadata);
             if (dynamicTrustedNames != null && !dynamicTrustedNames.isEmpty()) {
                 newCriteriaSet.add(new TrustedNamesCriterion(dynamicTrustedNames));
             }
@@ -504,7 +505,8 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return the constructed role ID token.
      */
-    protected String getRoleIDToken(@Nonnull @NotEmpty final String entityID, @Nonnull final RoleDescriptor role) {
+    @Nonnull protected String getRoleIDToken(@Nonnull @NotEmpty final String entityID,
+            @Nonnull final RoleDescriptor role) {
         final String roleName = role.getElementQName().getLocalPart();
         return "[Role: " + entityID + "::" + roleName + "]";
     }

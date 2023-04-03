@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.reqattr.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.reqattr.RequestedAttributes;
@@ -29,15 +32,16 @@ public class RequestedAttributesBuilder extends AbstractSAMLObjectBuilder<Reques
 
     /** {@inheritDoc} */
     @Override
-    public RequestedAttributes buildObject() {
+    @Nonnull public RequestedAttributes buildObject() {
         return buildObject(SAMLConstants.SAML20PREQ_ATTR_NS, RequestedAttributes.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20PREQ_ATTRR_PREFIX);
     }
 
     /** {@inheritDoc} */
     @Override
-    public RequestedAttributes buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public RequestedAttributes buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new RequestedAttributesImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

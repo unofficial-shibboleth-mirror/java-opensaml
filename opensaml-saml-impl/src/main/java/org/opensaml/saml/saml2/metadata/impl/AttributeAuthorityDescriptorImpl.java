@@ -33,6 +33,8 @@ import org.opensaml.saml.saml2.metadata.AttributeService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * A concrete implementation of {@link org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor}.
  */
@@ -118,13 +120,17 @@ public class AttributeAuthorityDescriptorImpl extends RoleDescriptorImpl impleme
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.addAll(super.getOrderedChildren());
+        final List<XMLObject> parentChildren = super.getOrderedChildren();
+        if (parentChildren != null) {
+            children.addAll(parentChildren);
+        }
+        
         children.addAll(attributeServices);
         children.addAll(assertionIDRequestServices);
         children.addAll(nameFormats);
         children.addAll(attributeProfiles);
         children.addAll(attributes);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 }

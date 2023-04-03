@@ -35,6 +35,8 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.PDPDescriptor}.
  */
@@ -107,6 +109,6 @@ public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescript
         children.addAll(assertionIDRequestServices);
         children.addAll(nameIDFormats);
 
-        return children;
+        return CollectionSupport.copyToList(children);
     }
 }

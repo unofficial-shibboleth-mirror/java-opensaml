@@ -31,6 +31,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.SignatureSigningConfiguration;
 import org.opensaml.xmlsec.SignatureSigningParameters;
@@ -38,11 +39,11 @@ import org.opensaml.xmlsec.SignatureSigningParametersResolver;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.criterion.SignatureSigningConfigurationCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -224,9 +225,12 @@ public class PopulateSignatureSigningParametersHandler extends AbstractMessageHa
         
         if (metadataContextLookupStrategy != null) {
             final SAMLMetadataContext metadataCtx = metadataContextLookupStrategy.apply(messageContext);
-            if (metadataCtx != null && metadataCtx.getRoleDescriptor() != null) {
-                log.debug("{} Adding metadata to resolution criteria for signing/digest algorithms", getLogPrefix());
-                criteria.add(new RoleDescriptorCriterion(metadataCtx.getRoleDescriptor()));
+            if (metadataCtx != null) {
+                final RoleDescriptor role = metadataCtx.getRoleDescriptor();
+                if (role != null) {
+                    log.debug("{} Adding metadata to resolution criteria for signing/digest algorithms", getLogPrefix());
+                    criteria.add(new RoleDescriptorCriterion(role));
+                }
             }
         }
         

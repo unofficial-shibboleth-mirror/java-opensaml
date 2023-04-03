@@ -34,6 +34,8 @@ import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.Organization}.
  */
@@ -110,11 +112,14 @@ public class OrganizationImpl extends AbstractXMLObject implements Organization 
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(extensions);
+        if (extensions != null) {
+            children.add(extensions);
+        }
+        
         children.addAll(names);
         children.addAll(displayNames);
         children.addAll(urls);
 
-        return children;
+        return CollectionSupport.copyToList(children);
     }
 }
