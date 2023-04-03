@@ -198,15 +198,26 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(issuer);
+        if (issuer != null) {
+            children.add(issuer);
+        }
         
-        if(getSignature() != null){
+        if (getSignature() != null){
             children.add(getSignature());
         }
         
-        children.add(subject);
-        children.add(conditions);
-        children.add(advice);
+        if (subject != null) {
+            children.add(subject);
+        }
+        
+        if (conditions != null) {
+            children.add(conditions);
+        }
+        
+        if (advice != null) {
+            children.add(advice);
+        }
+        
         children.addAll(statements);
 
         return Collections.unmodifiableList(children);
