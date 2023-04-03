@@ -47,6 +47,12 @@
             <artifactId>opensaml-xmlsec-api</artifactId>
             <version>${project.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>${shib-shared.groupId}</groupId>
+            <artifactId>shib-support</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -100,11 +106,6 @@
             <scope>test</scope>
         </dependency>
 
-        <dependency>
-            <groupId>net.shibboleth</groupId>
-            <artifactId>shib-support</artifactId>
-            <version>9.0.0-SNAPSHOT</version>
-        </dependency>
     </dependencies>
 
     <scm>
