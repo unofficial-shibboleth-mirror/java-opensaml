@@ -28,7 +28,6 @@ import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.cert.CRLException;
-import java.security.cert.CertificateEncodingException;
 import java.security.cert.CertificateException;
 import java.security.interfaces.DSAParams;
 import java.security.interfaces.DSAPublicKey;
@@ -70,8 +69,10 @@ import org.opensaml.xmlsec.signature.X509CRL;
 import org.opensaml.xmlsec.signature.X509Certificate;
 import org.opensaml.xmlsec.signature.X509Data;
 import org.opensaml.xmlsec.signature.X509Digest;
+import org.opensaml.xmlsec.signature.X509IssuerName;
 import org.opensaml.xmlsec.signature.X509IssuerSerial;
 import org.opensaml.xmlsec.signature.X509SKI;
+import org.opensaml.xmlsec.signature.X509SerialNumber;
 import org.opensaml.xmlsec.signature.X509SubjectName;
 import org.opensaml.xmlsec.signature.Y;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
@@ -81,6 +82,7 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.logic.Constraint;
 
 /**
  * Test to exercise the KeyInfoSupport methods to convert between XMLObject's contained within KeyInfo and Java security
@@ -381,8 +383,9 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         assert javaCert != null;
         Assert.assertEquals(javaCert.getSubjectX500Principal().getName(X500Principal.RFC2253), cert1SubjectDN,
                 "Cert1 SubjectDN");
-        Assert.assertEquals(javaCert, X509Support.decodeCertificate(xmlCert1.getValue()),
-                "Java cert was not the expected value");
+        final String xmlCert1Value = xmlCert1.getValue();
+        assert xmlCert1Value != null;
+        Assert.assertEquals(javaCert, X509Support.decodeCertificate(xmlCert1Value), "Java cert was not the expected value");
 
         List<java.security.cert.X509Certificate> javaCertList = KeyInfoSupport.getCertificates(xmlX509Data);
         Assert.assertEquals(javaCertList.size(), numExpectedCerts, "# of certs returned");
@@ -410,8 +413,9 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         final java.security.cert.X509CRL javaCRL = KeyInfoSupport.getCRL(xmlCRL1);
         assert javaCRL != null;
         Assert.assertEquals(javaCRL.getIssuerX500Principal().getName(X500Principal.RFC2253), crl1IssuerDN, "CRL IssuerDN");
-        Assert.assertEquals(javaCRL, X509Support.decodeCRL(xmlCRL1.getValue()),
-                "Java CRL was not the expected value");
+        final String crl1 = xmlCRL1.getValue();
+        assert crl1 != null;
+        Assert.assertEquals(javaCRL, X509Support.decodeCRL(crl1), "Java CRL was not the expected value");
 
         List<java.security.cert.X509CRL> javaCRLList = KeyInfoSupport.getCRLs(xmlX509Data);
 
@@ -433,7 +437,9 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testCertConversionJavaToXML() throws CertificateException {
         final X509Certificate xmlCert = KeyInfoSupport.buildX509Certificate(javaCert1);
-        Assert.assertEquals(X509Support.decodeCertificate(xmlCert.getValue()), javaCert1,
+        final String val = xmlCert.getValue();
+        assert val != null;
+        Assert.assertEquals(X509Support.decodeCertificate(val), javaCert1,
                 "Java X509Certificate encoding to XMLObject failed");
     }
 
@@ -446,7 +452,9 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testCRLConversionJavaToXML() throws CertificateException, CRLException {
         final X509CRL xmlCRL = KeyInfoSupport.buildX509CRL(javaCRL1);
-        Assert.assertEquals(X509Support.decodeCRL(xmlCRL.getValue()), javaCRL1,
+        final String val = xmlCRL.getValue();
+        assert val != null;
+        Assert.assertEquals(X509Support.decodeCRL(val), javaCRL1,
                 "Java X509CRL encoding to XMLObject failed");
     }
     
@@ -542,7 +550,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
             Assert.fail("RSA key conversion XML to Java failed: " + e);
         }
         ecKey = (ECPublicKey) key;
-        Assert.assertNotNull(ecKey, "Generated key was not an instance of ECPublicKey");
+        assert ecKey != null;
         // The standard equals() test below doesn't work b/c the standard ECParameterSpec doesn't really implement equals()beyond
         // the standard reference compare, and the control key is from BC, so the instance object isn't the same (constant one) as from SunEC.
         // So use our Enhanced- equality wrapper helper instead.
@@ -558,14 +566,22 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testDHConversionJavaToXML() throws EncodingException {
         DHKeyValue dhKeyValue = KeyInfoSupport.buildDHKeyValue(javaDHPubKey1);
-        Assert.assertNotNull(dhKeyValue);
-        Assert.assertEquals(dhKeyValue
-                .getPublic().getValueBigInt(), javaDHPubKey1.getY(), "Generated DHKeyValue Public component was not the expected value");
-        Assert.assertEquals(dhKeyValue.getP().getValueBigInt(), javaDHPubKey1.getParams().getP(),
+        assert dhKeyValue != null;
+        Assert.assertEquals(
+                Constraint.isNotNull(dhKeyValue.getPublic(), "Public was null").getValueBigInt(),
+                javaDHPubKey1.getY(),
+                "Generated DHKeyValue Public component was not the expected value");
+        Assert.assertEquals(
+                Constraint.isNotNull(dhKeyValue.getP(), "P was null").getValueBigInt(),
+                javaDHPubKey1.getParams().getP(),
                 "Generated DHKeyValue P component was not the expected value");
-        Assert.assertEquals(dhKeyValue.getGenerator().getValueBigInt(), javaDHPubKey1.getParams().getG(),
+        Assert.assertEquals(
+                Constraint.isNotNull(dhKeyValue.getGenerator(), "Generator was null").getValueBigInt(),
+                javaDHPubKey1.getParams().getG(),
                 "Generated DHKeyValue Generator component was not the expected value");
-        Assert.assertEquals(dhKeyValue.getQ().getValueBigInt(), DHSupport.getPrimeQDomainParameter(javaDHPubKey1),
+        Assert.assertEquals(
+                Constraint.isNotNull(dhKeyValue.getQ(), "Q was null").getValueBigInt(),
+                DHSupport.getPrimeQDomainParameter(javaDHPubKey1),
                 "Generated DHKeyValue Q component was not the expected value");
     }
 
@@ -574,14 +590,22 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testDSAConversionJavaToXML() throws EncodingException {
         DSAKeyValue dsaKeyValue = KeyInfoSupport.buildDSAKeyValue(javaDSAPubKey1);
-        Assert.assertNotNull(dsaKeyValue);
-        Assert.assertEquals(dsaKeyValue
-                .getY().getValueBigInt(), javaDSAPubKey1.getY(), "Generated DSAKeyValue Y component was not the expected value");
-        Assert.assertEquals(dsaKeyValue.getP().getValueBigInt(), javaDSAPubKey1.getParams().getP(),
+        assert dsaKeyValue != null;
+        Assert.assertEquals(
+                Constraint.isNotNull(dsaKeyValue.getY(), "Y was null").getValueBigInt(),
+                javaDSAPubKey1.getY(),
+                "Generated DSAKeyValue Y component was not the expected value");
+        Assert.assertEquals(
+                Constraint.isNotNull(dsaKeyValue.getP(), "P was null").getValueBigInt(),
+                javaDSAPubKey1.getParams().getP(),
                 "Generated DSAKeyValue P component was not the expected value");
-        Assert.assertEquals(dsaKeyValue.getQ().getValueBigInt(), javaDSAPubKey1.getParams().getQ(),
+        Assert.assertEquals(
+                Constraint.isNotNull(dsaKeyValue.getQ(), "Q was null").getValueBigInt(),
+                javaDSAPubKey1.getParams().getQ(),
                 "Generated DSAKeyValue Q component was not the expected value");
-        Assert.assertEquals(dsaKeyValue.getG().getValueBigInt(), javaDSAPubKey1.getParams().getG(),
+        Assert.assertEquals(
+                Constraint.isNotNull(dsaKeyValue.getG(), "G was null").getValueBigInt(),
+                javaDSAPubKey1.getParams().getG(),
                 "Generated DSAKeyValue G component was not the expected value");
     }
 
@@ -590,11 +614,15 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testRSAConversionJavaToXML() throws EncodingException {
         RSAKeyValue rsaKeyValue = KeyInfoSupport.buildRSAKeyValue(javaRSAPubKey1);
-        Assert.assertNotNull(rsaKeyValue);
-        Assert.assertEquals(rsaKeyValue.getModulus().getValueBigInt(), javaRSAPubKey1.getModulus(),
+        assert rsaKeyValue != null;
+        Assert.assertEquals(
+                Constraint.isNotNull(rsaKeyValue.getModulus(), "Modulus was null").getValueBigInt(),
+                javaRSAPubKey1.getModulus(),
                 "Generated RSAKeyValue modulus component was not the expected value");
-        Assert.assertEquals(rsaKeyValue.getExponent().getValueBigInt(),
-                javaRSAPubKey1.getPublicExponent(), "Generated RSAKeyValue exponent component was not the expected value");
+        Assert.assertEquals(
+                Constraint.isNotNull(rsaKeyValue.getExponent(), "Exponent was null").getValueBigInt(),
+                javaRSAPubKey1.getPublicExponent(),
+                "Generated RSAKeyValue exponent component was not the expected value");
     }
 
     /** Test conversion of EC public keys from Java security native type to XML. 
@@ -604,11 +632,19 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testECConversionJavaToXMLWithNamedCurve() throws EncodingException, KeyException, DecodingException {
         ECKeyValue ecKeyValue = KeyInfoSupport.buildECKeyValue(javaECPubKey_NamedCurve1);
-        Assert.assertNotNull(ecKeyValue);
-        Assert.assertEquals(ecKeyValue.getNamedCurve().getURI(), "urn:oid:" + ecPubKey_NamedCurve1_OID);
-        Assert.assertEquals(ECSupport.decodeECPoint(Base64Support.decode(ecKeyValue.getPublicKey().getValue()),
-                ECSupport.getNamedCurve("urn:oid:" + ecPubKey_NamedCurve1_OID).getParameterSpec().getCurve()),
-                javaECPubKey_NamedCurve1.getW());
+        assert ecKeyValue != null;
+        Assert.assertEquals(
+                Constraint.isNotNull(ecKeyValue.getNamedCurve(), "NamedCurve").getURI(),
+                "urn:oid:" + ecPubKey_NamedCurve1_OID);
+        final org.opensaml.xmlsec.signature.PublicKey pubKey = ecKeyValue.getPublicKey();
+        assert pubKey != null;
+        
+        final var curve = ECSupport.getNamedCurve("urn:oid:" + ecPubKey_NamedCurve1_OID);
+        assert curve != null;
+        Assert.assertEquals(
+                ECSupport.decodeECPoint(
+                        Base64Support.decode(Constraint.isNotNull(pubKey.getValue(), "Public key value was null")),
+                        curve.getParameterSpec().getCurve()), javaECPubKey_NamedCurve1.getW());
     }
 
     /** Test conversion of EC public keys from Java security native type to XML. 
@@ -618,11 +654,19 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
     @Test
     public void testECConversionJavaToXMLWithExplicitParameters() throws EncodingException, KeyException, DecodingException {
         ECKeyValue ecKeyValue = KeyInfoSupport.buildECKeyValue(javaECPubKey_ExplicitParams1);
-        Assert.assertNotNull(ecKeyValue);
-        Assert.assertEquals(ecKeyValue.getNamedCurve().getURI(), "urn:oid:" + ecPubKey_ExplicitParams1_OID);
-        Assert.assertEquals(ECSupport.decodeECPoint(Base64Support.decode(ecKeyValue.getPublicKey().getValue()),
-                ECSupport.getNamedCurve("urn:oid:" + ecPubKey_ExplicitParams1_OID).getParameterSpec().getCurve()),
-                javaECPubKey_ExplicitParams1.getW());
+        assert ecKeyValue != null;
+        Assert.assertEquals(
+                Constraint.isNotNull(ecKeyValue.getNamedCurve(), "NamedCurve").getURI(),
+                "urn:oid:" + ecPubKey_ExplicitParams1_OID);
+        final org.opensaml.xmlsec.signature.PublicKey pubKey = ecKeyValue.getPublicKey();
+        assert pubKey != null;
+
+        final var curve = ECSupport.getNamedCurve("urn:oid:" + ecPubKey_ExplicitParams1_OID);
+        assert curve != null;
+        Assert.assertEquals(
+                ECSupport.decodeECPoint(
+                        Base64Support.decode(Constraint.isNotNull(pubKey.getValue(), "Public key value was null")),
+                        curve.getParameterSpec().getCurve()), javaECPubKey_ExplicitParams1.getW());
     }
 
     /** Tests extracting a DH public key from a KeyValue. */
@@ -695,7 +739,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         KeyValue kv = keyInfo.getKeyValues().get(0);
         Assert.assertNotNull(kv, "KeyValue was null");
         DSAKeyValue dsaKeyValue = kv.getDSAKeyValue();
-        Assert.assertNotNull(dsaKeyValue, "DSAKeyValue was null");
+        assert dsaKeyValue != null;
 
         DSAPublicKey javaKey = null;
         try {
@@ -719,7 +763,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         KeyValue kv = keyInfo.getKeyValues().get(0);
         Assert.assertNotNull(kv, "KeyValue was null");
         DHKeyValue dhKeyValue = kv.getDHKeyValue();
-        Assert.assertNotNull(dhKeyValue, "DHKeyValue was null");
+        assert dhKeyValue != null;
 
         DHPublicKey javaKey = null;
         try {
@@ -743,7 +787,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         KeyValue kv = keyInfo.getKeyValues().get(0);
         Assert.assertNotNull(kv, "KeyValue was null");
         RSAKeyValue rsaKeyValue = kv.getRSAKeyValue();
-        Assert.assertNotNull(rsaKeyValue, "RSAKeyValue was null");
+        assert rsaKeyValue != null;
 
         RSAPublicKey javaKey = null;
         try {
@@ -767,7 +811,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         KeyValue kv = keyInfo.getKeyValues().get(0);
         Assert.assertNotNull(kv, "KeyValue was null");
         ECKeyValue ecKeyValue = kv.getECKeyValue();
-        Assert.assertNotNull(ecKeyValue, "ECKeyValue was null");
+        assert ecKeyValue != null;
 
         ECPublicKey javaKey = null;
         try {
@@ -791,7 +835,7 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         KeyValue kv = keyInfo.getKeyValues().get(0);
         Assert.assertNotNull(kv, "KeyValue was null");
         ECKeyValue ecKeyValue = kv.getECKeyValue();
-        Assert.assertNotNull(ecKeyValue, "ECKeyValue was null");
+        assert ecKeyValue != null;
 
         ECPublicKey javaKey = null;
         try {
@@ -799,6 +843,8 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         } catch (KeyException e) {
             Assert.fail("Extraction of Java key failed: " + e);
         }
+        
+        assert javaKey != null;
 
         // The standard equals() test below doesn't work b/c the standard ECParameterSpec doesn't really implement equals()beyond
         // the standard reference compare, and the control key is from BC, so the instance object isn't the same (constant one) as from SunEC.
@@ -1019,11 +1065,13 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         X509IssuerSerial xmlIssuerSerial = KeyInfoSupport.buildX509IssuerSerial(name, serialNumber);
         Assert.assertNotNull(xmlIssuerSerial, "Constructed X509IssuerSerial was null");
 
-        Assert.assertNotNull(xmlIssuerSerial.getX509IssuerName(), "Constructed X509IssuerName was null");
-        Assert.assertEquals(xmlIssuerSerial.getX509IssuerName().getValue(), name, "Unexpected issuer name value");
+        final X509IssuerName issuerName = xmlIssuerSerial.getX509IssuerName();
+        assert issuerName != null;
+        Assert.assertEquals(issuerName.getValue(), name, "Unexpected issuer name value");
 
-        Assert.assertNotNull(xmlIssuerSerial.getX509SerialNumber(), "Constructed X509SerialNumber was null");
-        Assert.assertEquals(xmlIssuerSerial.getX509SerialNumber().getValue(), serialNumber, "Unexpected serial number");
+        final X509SerialNumber issuerSerial = xmlIssuerSerial.getX509SerialNumber();
+        assert issuerSerial != null;
+        Assert.assertEquals(issuerSerial.getValue(), serialNumber, "Unexpected serial number");
     }
 
     /**
@@ -1035,18 +1083,20 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testBuildSubjectKeyIdentifier() throws CertificateException, DecodingException, SecurityException {
-        byte[] skiValue = Base64Support.decode(cert1SKIPlainBase64);
-        X509SKI xmlSKI = KeyInfoSupport.buildX509SKI(javaCert1);
-        Assert.assertNotNull(xmlSKI, "Constructed X509SKI was null");
-        Assert.assertFalse(Strings.isNullOrEmpty(xmlSKI.getValue()), "SKI value was empty");
-        byte[] xmlValue = Base64Support.decode(xmlSKI.getValue());
+        final byte[] skiValue = Base64Support.decode(cert1SKIPlainBase64);
+        final X509SKI xmlSKI = KeyInfoSupport.buildX509SKI(javaCert1);
+        assert xmlSKI != null;
+        final String SKI = xmlSKI.getValue();
+        Assert.assertFalse(Strings.isNullOrEmpty(SKI), "SKI value was empty");
+        assert SKI != null;
+        byte[] xmlValue = Base64Support.decode(SKI);
         Assert.assertNotNull(xmlValue, "Decoded XML SKI value was null");
         Assert.assertTrue(Arrays.equals(skiValue, xmlValue), "Incorrect SKI value");
 
         // Test that a cert with no SKI produces null
         java.security.cert.X509Certificate noExtCert = X509Support.decodeCertificate(certNoExtensions);
         Assert.assertNotNull(noExtCert);
-        X509SKI noExtXMLSKI = KeyInfoSupport.buildX509SKI(noExtCert);
+        final X509SKI noExtXMLSKI = KeyInfoSupport.buildX509SKI(noExtCert);
         Assert.assertNull(noExtXMLSKI, "Building X509SKI from cert without SKI should have generated null");
     }
 
@@ -1065,9 +1115,14 @@ public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
         } catch (NoSuchAlgorithmException e) {
             Assert.fail("Digest algorithm missing: " + e);
         }
+        
+        assert xmlDigest != null;
+        final String digest = xmlDigest.getValue();
+        
         Assert.assertNotNull(xmlDigest, "Constructed X509Digest was null");
-        Assert.assertFalse(Strings.isNullOrEmpty(xmlDigest.getValue()), "Digest value was empty");
-        byte[] xmlValue = Base64Support.decode(xmlDigest.getValue());
+        Assert.assertFalse(Strings.isNullOrEmpty(digest), "Digest value was empty");
+        assert digest != null;
+        final byte[] xmlValue = Base64Support.decode(digest);
         Assert.assertNotNull(xmlValue, "Decoded X509Digest value was null");
         Assert.assertTrue(Arrays.equals(digestValue, xmlValue), "Incorrect digest value");
     }

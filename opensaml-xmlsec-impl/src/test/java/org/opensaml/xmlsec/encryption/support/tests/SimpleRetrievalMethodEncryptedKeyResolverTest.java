@@ -26,6 +26,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -33,6 +35,7 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.SimpleRetrievalMethodEncryptedKeyResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.
@@ -45,16 +48,17 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     /** No recipients specified to resolver, one EncryptedKey in instance. */
     @Test
     public void testSingleEKNoRecipient() {
-        String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
-        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        final String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
+        final SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -71,15 +75,16 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     @Test
     public void testSingleEKWithRecipient() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingle.xml";
-        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        final SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -97,15 +102,16 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     public void testSingleEKWithTransform() {
         String filename =  
             "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverSingleWithTransforms.xml";
-        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        final SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -121,15 +127,16 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     @Test
     public void testMultiEKWithOneRecipient() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
-        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        final SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -147,15 +154,16 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
     @Test
     public void testMultiEKWithTwoRecipients() {
         String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleRetrievalMethodEncryptedKeyResolverMultiple.xml";
-        SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
-        Assert.assertNotNull(sxo);
+        final SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        assert sxo != null;
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
-        Assert.assertNotNull(encData.getKeyInfo());
-        Assert.assertFalse(encData.getKeyInfo().getRetrievalMethods().isEmpty());
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getRetrievalMethods().isEmpty());
         
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
@@ -175,7 +183,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
      * @param sxo the mock object to process
      * @return a list of EncryptedKey elements
      */
-    private List<EncryptedKey> getEncryptedKeys(SignableSimpleXMLObject sxo) {
+    @Nonnull private List<EncryptedKey> getEncryptedKeys(@Nonnull final SignableSimpleXMLObject sxo) {
         List<EncryptedKey> allKeys = new ArrayList<>();
         for (XMLObject xmlObject : sxo.getUnknownXMLObjects()) {
            if (xmlObject instanceof EncryptedKey)  {
@@ -192,7 +200,8 @@ public class SimpleRetrievalMethodEncryptedKeyResolverTest extends XMLObjectBase
      * @param ekResolver the resolver to test
      * @return list of resolved EncryptedKeys
      */
-    private List<EncryptedKey> generateList(EncryptedData encData, EncryptedKeyResolver ekResolver) {
+    @Nonnull private List<EncryptedKey> generateList(@Nonnull final EncryptedData encData,
+            @Nonnull final EncryptedKeyResolver ekResolver) {
         List<EncryptedKey> resolved = new ArrayList<>();
         for (EncryptedKey encKey : ekResolver.resolve(encData)) {
             resolved.add(encKey);

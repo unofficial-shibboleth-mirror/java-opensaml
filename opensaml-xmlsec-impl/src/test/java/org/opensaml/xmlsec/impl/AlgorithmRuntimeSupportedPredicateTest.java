@@ -59,8 +59,7 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
     
     @Test(dataProvider = "loadBCTestData")
     public void testCommon(boolean loadBC) throws InitializationException {
-        AlgorithmRegistry originalRegistry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(originalRegistry);
+        final AlgorithmRegistry originalRegistry = AlgorithmSupport.ensureGlobalAlgorithmRegistry();
         
         if (loadBC) {
             providerSupport.loadBC();
@@ -95,8 +94,7 @@ public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTest
     
     @Test(dataProvider = "loadBCTestData")
     public void testConditional(boolean loadBC) throws InitializationException {
-        AlgorithmRegistry originalRegistry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(originalRegistry);
+        final AlgorithmRegistry originalRegistry = AlgorithmSupport.ensureGlobalAlgorithmRegistry();
         
         if (loadBC) {
             providerSupport.loadBC();

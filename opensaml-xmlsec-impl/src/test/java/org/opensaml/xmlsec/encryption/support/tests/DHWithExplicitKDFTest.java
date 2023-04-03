@@ -48,6 +48,8 @@ import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.Decrypter;
@@ -63,6 +65,7 @@ import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
 import org.opensaml.xmlsec.keyinfo.impl.LocalKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.provider.AgreementMethodKeyInfoProvider;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.testing.XMLSecurityTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
@@ -71,6 +74,7 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 @SuppressWarnings("javadoc")
@@ -188,33 +192,46 @@ public class DHWithExplicitKDFTest extends XMLObjectBaseTestCase {
     
     private void testRoundtrip(String expectedDataAlgo, String expectedKEKAlgo, String expectedKDFAlgo) throws Exception {
         // Encrypt
-        SignableSimpleXMLObject sxoOrig = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxoOrig = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxoOrig != null;
         
-        EncryptionParameters encParams = encParamsResolver.resolveSingle(encCriteria);
-        Assert.assertNotNull(encParams);
+        final EncryptionParameters encParams = encParamsResolver.resolveSingle(encCriteria);
+        assert encParams != null;
         
-        DataEncryptionParameters dataEncParams = new DataEncryptionParameters(encParams);
-        List<KeyEncryptionParameters> kekParams = encParams.getKeyTransportEncryptionCredential() != null ?
+        final DataEncryptionParameters dataEncParams = new DataEncryptionParameters(encParams);
+        final List<KeyEncryptionParameters> kekParams = encParams.getKeyTransportEncryptionCredential() != null ?
                 List.of(new KeyEncryptionParameters(encParams, null)) : Collections.emptyList();
         
-        EncryptedData encryptedDataOrig = encrypter.encryptElement(sxoOrig, dataEncParams, kekParams);
+        final EncryptedData encryptedDataOrig = encrypter.encryptElement(sxoOrig, dataEncParams, kekParams);
         Assert.assertNotNull(encryptedDataOrig);
         Assert.assertNotNull(encryptedDataOrig.getKeyInfo());
         
         if (expectedDataAlgo != null) {
-            Assert.assertEquals(encryptedDataOrig.getEncryptionMethod().getAlgorithm(), expectedDataAlgo);
+            final EncryptionMethod method = encryptedDataOrig.getEncryptionMethod(); 
+            assert method != null;
+            Assert.assertEquals(method.getAlgorithm(), expectedDataAlgo);
         }
+
+        final KeyInfo encKeyInfo = encryptedDataOrig.getKeyInfo();
+        assert encKeyInfo != null;
         
         if (expectedKEKAlgo != null) {
-            Assert.assertNotNull(encryptedDataOrig.getKeyInfo().getEncryptedKeys().get(0));
-            Assert.assertEquals(encryptedDataOrig.getKeyInfo().getEncryptedKeys().get(0).getEncryptionMethod().getAlgorithm(), expectedKEKAlgo);
+            final EncryptedKey ekey = encKeyInfo.getEncryptedKeys().get(0);
+            assert ekey != null;
+            final EncryptionMethod nestedMethod = ekey.getEncryptionMethod();
+            assert nestedMethod != null;
+            Assert.assertEquals(nestedMethod.getAlgorithm(), expectedKEKAlgo);
         }
         
-        AgreementMethod agreementMethod = null;
-        if (!encryptedDataOrig.getKeyInfo().getEncryptedKeys().isEmpty())  {
-            agreementMethod = encryptedDataOrig.getKeyInfo().getEncryptedKeys().get(0).getKeyInfo().getAgreementMethods().get(0);
+        final AgreementMethod agreementMethod;
+        if (!encKeyInfo.getEncryptedKeys().isEmpty())  {
+            final EncryptedKey ekey = encKeyInfo.getEncryptedKeys().get(0);
+            assert ekey != null;
+            final KeyInfo nestedKeyInfo = ekey.getKeyInfo();
+            assert nestedKeyInfo != null;
+            agreementMethod = nestedKeyInfo.getAgreementMethods().get(0);
         } else {
-            agreementMethod = encryptedDataOrig.getKeyInfo().getAgreementMethods().get(0);
+            agreementMethod = encKeyInfo.getAgreementMethods().get(0);
         }
         Assert.assertNotNull(agreementMethod);
         Assert.assertEquals(agreementMethod.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_DH_EXPLICIT_KDF);
@@ -226,28 +243,31 @@ public class DHWithExplicitKDFTest extends XMLObjectBaseTestCase {
         }
         
         // Serialize out and back in
-        Element domEncrypted = XMLObjectSupport.marshall(encryptedDataOrig);
+        final Element domEncrypted = XMLObjectSupport.marshall(encryptedDataOrig);
         
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        final ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializeSupport.writeNode(domEncrypted, baos);
         baos.flush();
-        byte[] bytesEncrypted = baos.toByteArray();
+        final byte[] bytesEncrypted = baos.toByteArray();
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bytesEncrypted);
-        EncryptedData encryptedData = (EncryptedData) XMLObjectSupport.unmarshallFromInputStream(
-                XMLObjectProviderRegistrySupport.getParserPool(), bais);
+        final ParserPool parser = XMLObjectProviderRegistrySupport.getParserPool();
+        assert parser != null;
+        final EncryptedData encryptedData = (EncryptedData) XMLObjectSupport.unmarshallFromInputStream(parser, bais);
         Assert.assertNotNull(encryptedData);
         
         // Decrypt
-        DecryptionParameters decryptParams = decryptParamsResolver.resolveSingle(decryptCriteria);
+        final DecryptionParameters decryptParams = decryptParamsResolver.resolveSingle(decryptCriteria);
         
-        Decrypter decrypter = new Decrypter(decryptParams);
+        final Decrypter decrypter = new Decrypter(decryptParams);
         
-        XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData);
+        final XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData);
         Assert.assertNotNull(decryptedXMLObject);
         Assert.assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
         
-        assertXMLEquals(sxoOrig.getDOM().getOwnerDocument(), decryptedXMLObject);
+        final Element origDOM = sxoOrig.getDOM();
+        assert origDOM != null;
+        assertXMLEquals(origDOM.getOwnerDocument(), decryptedXMLObject);
     }
 
 }

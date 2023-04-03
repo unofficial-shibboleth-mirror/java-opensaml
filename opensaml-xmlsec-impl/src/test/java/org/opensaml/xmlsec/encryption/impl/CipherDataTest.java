@@ -42,9 +42,9 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        CipherData cipherData = (CipherData) unmarshallElement(singleElementFile);
+        final CipherData cipherData = (CipherData) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cipherData, "CipherData");
+        assert cipherData != null;
         Assert.assertNull(cipherData.getCipherValue(), "CipherValue child element");
         Assert.assertNull(cipherData.getCipherReference(), "CipherReference child element");
     }
@@ -52,9 +52,9 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        CipherData cipherData = (CipherData) unmarshallElement(childElementsFile);
+        final CipherData cipherData = (CipherData) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(cipherData, "CipherData");
+        assert cipherData != null;
         Assert.assertNotNull(cipherData.getCipherValue(), "CipherValue child element");
         Assert.assertNotNull(cipherData.getCipherReference(), "CipherReference child element");
     }
@@ -62,7 +62,7 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        CipherData cipherData = (CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME);
+        final CipherData cipherData = (CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, cipherData);
     }
@@ -70,7 +70,7 @@ public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        CipherData cipherData = (CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME);
+        final CipherData cipherData = (CipherData) buildXMLObject(CipherData.DEFAULT_ELEMENT_NAME);
         
         cipherData.setCipherValue((CipherValue) buildXMLObject(CipherValue.DEFAULT_ELEMENT_NAME));
         cipherData.setCipherReference((CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));

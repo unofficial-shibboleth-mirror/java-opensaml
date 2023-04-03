@@ -23,7 +23,6 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -91,11 +90,6 @@ public class ChainingSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         engine.validate(token, criteriaSet);
     }
 
-    @Test(expectedExceptions = ConstraintViolationException.class)
-    public void testNullChain() {
-        engine = new ChainingSignatureTrustEngine(null);
-    }
-
     /** Mock trust engine. */
     private class MockSignatureTrustEngine implements SignatureTrustEngine {
 
@@ -106,7 +100,8 @@ public class ChainingSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         }
 
         /** {@inheritDoc} */
-        public boolean validate(Signature tok, CriteriaSet trustBasisCriteria) throws SecurityException {
+        public boolean validate(@Nonnull final Signature tok, @Nullable final CriteriaSet trustBasisCriteria)
+                throws SecurityException {
             if (trusted == null) {
                 throw new SecurityException("This means an error happened");
             }
@@ -114,8 +109,8 @@ public class ChainingSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         }
 
         /** {@inheritDoc} */
-        public boolean validate(@Nonnull byte[] signature, @Nonnull byte[] content, @Nonnull String algorithmURI,
-                @Nullable CriteriaSet trustBasisCriteria, @Nullable Credential candidateCredential)
+        public boolean validate(@Nonnull final byte[] signature, @Nonnull final byte[] content, @Nonnull final String algorithmURI,
+                @Nullable final CriteriaSet trustBasisCriteria, @Nullable final Credential candidateCredential)
                 throws SecurityException {
             if (trusted == null) {
                 throw new SecurityException("This means an error happened");

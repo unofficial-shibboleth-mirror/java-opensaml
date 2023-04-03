@@ -71,8 +71,8 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
         final KeyInfo keyInfo = encData.getKeyInfo();
         assert keyInfo != null;
         Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());
@@ -95,8 +95,8 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
         final KeyInfo keyInfo = encData.getKeyInfo();
         assert keyInfo != null;
         Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());
@@ -124,8 +124,8 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
         final KeyInfo keyInfo = encData.getKeyInfo();
         assert keyInfo != null;
         Assert.assertTrue(keyInfo.getEncryptedKeys().isEmpty());
@@ -153,8 +153,8 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
         final KeyInfo keyInfo = encData.getKeyInfo();
         assert keyInfo != null;
         Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());
@@ -183,8 +183,8 @@ public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
         Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
         
-        EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
-        
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
         final KeyInfo keyInfo = encData.getKeyInfo();
         assert keyInfo != null;
         Assert.assertFalse(keyInfo.getEncryptedKeys().isEmpty());

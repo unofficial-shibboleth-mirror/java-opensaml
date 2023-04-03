@@ -49,9 +49,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTestCase {
     
     private BasicSignatureSigningParametersResolver resolver;
@@ -127,9 +125,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     public void testBasicRSA() throws ResolverException {
         config1.setSigningCredentials(Collections.singletonList(rsaCred));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);
         assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -145,9 +143,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         config2.setSignatureAlgorithms(Collections.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);
         assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -166,9 +164,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config2.setSignatureAlgorithms(List.of(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         config2.setSignatureReferenceDigestMethods(List.of(SignatureConstants.ALGO_ID_DIGEST_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);
         assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
@@ -187,9 +185,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config2.setSignatureAlgorithms(List.of(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         config2.setSignatureReferenceDigestMethods(List.of(SignatureConstants.ALGO_ID_DIGEST_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);
         assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
@@ -203,9 +201,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     public void testBasicDSA() throws ResolverException {
         config1.setSigningCredentials(Collections.singletonList(dsaCred));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), dsaCred);
         assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -221,9 +219,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         if (ecCred != null) {
             config1.setSigningCredentials(Collections.singletonList(ecCred));
             
-            SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+            final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+            assert params != null;
             
-            assertNotNull(params);
             assertEquals(params.getSigningCredential(), ecCred);
             assertEquals(params.getSignatureAlgorithm(), defaultECAlgo);
             assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -238,9 +236,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     public void testBasicHMAC() throws ResolverException {
         config1.setSigningCredentials(Collections.singletonList(hmacCred));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), hmacCred);
         assertEquals(params.getSignatureAlgorithm(), defaultHMACAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -258,9 +256,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config2.setSignatureReferenceDigestMethods(Collections.singletonList(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         config2.setSignatureHMACOutputLength(160);
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), hmacCred);
         assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA256);
         assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
@@ -276,9 +274,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         config2.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N11_WITH_COMMENTS);
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);
         assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -294,9 +292,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         config2.setSignatureReferenceCanonicalizationAlgorithm(SignatureConstants.TRANSFORM_C14N_EXCL_WITH_COMMENTS);
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);
         assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -311,8 +309,8 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config1.setSigningCredentials(List.of(rsaCred, dsaCred));
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);
         assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -324,8 +322,8 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config1.setSigningCredentials(List.of(dsaCred, rsaCred));
         
         params = resolver.resolveSingle(criteriaSet);
-        
-        assertNotNull(params);
+        assert params != null;        
+
         assertEquals(params.getSigningCredential(), dsaCred);
         assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -339,12 +337,12 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
             config1.setSigningCredentials(List.of(ecCred, dsaCred, rsaCred));
             
             params = resolver.resolveSingle(criteriaSet);
-            
-            assertNotNull(params);
+            assert params != null;            
+
             assertEquals(params.getSigningCredential(), ecCred);
             assertEquals(params.getSignatureAlgorithm(), defaultECAlgo);
             assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
-        assertNull(params.getSignatureReferenceCanonicalizationAlgorithm());
+            assertNull(params.getSignatureReferenceCanonicalizationAlgorithm());
             assertEquals(params.getSignatureCanonicalizationAlgorithm(), defaultC14N);
             assertNull(params.getSignatureHMACOutputLength());
             assertNotNull(params.getKeyInfoGenerator());
@@ -353,8 +351,8 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config1.setSigningCredentials(List.of(hmacCred, dsaCred, rsaCred));
         
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), hmacCred);
         assertEquals(params.getSignatureAlgorithm(), defaultHMACAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -371,9 +369,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         config2.setSigningCredentials(List.of(rsaCred, dsaCred, hmacCred));
         config2.setSignatureAlgorithms(Collections.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertNotNull(params);
         assertEquals(params.getSigningCredential(), dsaCred);
         assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -392,12 +390,14 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         defaultKeyInfoGeneratorManager.setUseDefaultManager(true);
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         assertNotNull(params.getKeyInfoGenerator());
         
         defaultKeyInfoGeneratorManager.setUseDefaultManager(false);
         
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         assertNull(params.getKeyInfoGenerator());
         
@@ -405,6 +405,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         defaultKeyInfoGeneratorManager.registerFactory("testKeyInfoProfile", new BasicKeyInfoGeneratorFactory());
         
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         assertNotNull(params.getKeyInfoGenerator());
     }
@@ -421,7 +422,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         assertTrue(iterator.hasNext());
         
-        SignatureSigningParameters params =iterator.next();
+        final SignatureSigningParameters params =iterator.next();
         
         assertNotNull(params);
         assertEquals(params.getSigningCredential(), rsaCred);

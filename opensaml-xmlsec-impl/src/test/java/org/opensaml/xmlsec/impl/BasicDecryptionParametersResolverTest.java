@@ -38,9 +38,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class BasicDecryptionParametersResolverTest {
     
     private BasicDecryptionParametersResolver resolver;
@@ -191,9 +189,8 @@ public class BasicDecryptionParametersResolverTest {
         config1.setKEKKeyInfoCredentialResolver(controlKeyInfoResolver1);
         config1.setEncryptedKeyResolver(controlEncKeyResolver1);
         
-        DecryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
+        final DecryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         Assert.assertTrue(params.getDataKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getKEKKeyInfoCredentialResolver() == controlKeyInfoResolver1);
         Assert.assertTrue(params.getEncryptedKeyResolver() == controlEncKeyResolver1);

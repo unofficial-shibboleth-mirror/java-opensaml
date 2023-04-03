@@ -195,8 +195,9 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testSuccess() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
-        SignableXMLObject signableXO = getValidSignedObject();
-        Signature signature = signableXO.getSignature();
+        final SignableXMLObject signableXO = getValidSignedObject();
+        final Signature signature = signableXO.getSignature();
+        assert signature != null;
         Assert.assertTrue(engine.validate(signature, criteriaSet), "Signature was valid and signing cred was trusted");
     }
     
@@ -207,8 +208,9 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testUntrustedCredential() throws SecurityException {
-        SignableXMLObject signableXO = getValidSignedObject();
-        Signature signature = signableXO.getSignature();
+        final SignableXMLObject signableXO = getValidSignedObject();
+        final Signature signature = signableXO.getSignature();
+        assert signature != null;
         Assert.assertFalse(engine.validate(signature, criteriaSet), "Signature was valid, but signing cred was untrusted");
     }
     
@@ -221,8 +223,9 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testInvalidSignature() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
-        SignableXMLObject signableXO = getInvalidSignedObject();
-        Signature signature = signableXO.getSignature();
+        final SignableXMLObject signableXO = getInvalidSignedObject();
+        final Signature signature = signableXO.getSignature();
+        assert signature != null;
         Assert.assertFalse(engine.validate(signature, criteriaSet), "Signature was invalid due to document modification");
         
     }
@@ -236,15 +239,16 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testWhitelistedAlgorithms() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
-        HashSet<String> algos = new HashSet<>();
+        final HashSet<String> algos = new HashSet<>();
         algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
-        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        final SignatureValidationParameters validationParams = new SignatureValidationParameters();
         validationParams.setIncludedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
-        SignableXMLObject signableXO = getValidSignedObject();
-        Signature signature = signableXO.getSignature();
+        final SignableXMLObject signableXO = getValidSignedObject();
+        final Signature signature = signableXO.getSignature();
+        assert signature != null;
         Assert.assertTrue(engine.validate(signature, criteriaSet), "Signature was valid with whitelisted algorithms");
     }
     
@@ -256,14 +260,15 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testBlacklistedSignatureAlgorithm() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
-        HashSet<String> algos = new HashSet<>();
+        final HashSet<String> algos = new HashSet<>();
         algos.add(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
-        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        final SignatureValidationParameters validationParams = new SignatureValidationParameters();
         validationParams.setExcludedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
-        SignableXMLObject signableXO = getValidSignedObject();
-        Signature signature = signableXO.getSignature();
+        final SignableXMLObject signableXO = getValidSignedObject();
+        final Signature signature = signableXO.getSignature();
+        assert signature != null;
         Assert.assertFalse(engine.validate(signature, criteriaSet), "Signature algorithm was blacklisted");
     }
     
@@ -275,14 +280,15 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testBlacklistedDigestAlgorithm() throws SecurityException {
         trustedCredentials.add(signingX509Cred);
         
-        HashSet<String> algos = new HashSet<>();
+        final HashSet<String> algos = new HashSet<>();
         algos.add(SignatureConstants.ALGO_ID_DIGEST_SHA1);
-        SignatureValidationParameters validationParams = new SignatureValidationParameters();
+        final SignatureValidationParameters validationParams = new SignatureValidationParameters();
         validationParams.setExcludedAlgorithms(algos);
         criteriaSet.add(new SignatureValidationParametersCriterion(validationParams));
         
-        SignableXMLObject signableXO = getValidSignedObject();
-        Signature signature = signableXO.getSignature();
+        final SignableXMLObject signableXO = getValidSignedObject();
+        final Signature signature = signableXO.getSignature();
+        assert signature != null;
         Assert.assertFalse(engine.validate(signature, criteriaSet), "Digest algorithm was blacklisted");
     } 
     
@@ -417,8 +423,9 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         signature.setSigningCredential(signingX509Cred);
-        
-        DocumentInternalIDContentReference idContentRef = new DocumentInternalIDContentReference(sxo.getId());
+        final String id = sxo.getId();
+        assert id != null;
+        DocumentInternalIDContentReference idContentRef = new DocumentInternalIDContentReference(id);
         idContentRef.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         idContentRef.getTransforms().add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);
         idContentRef.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
@@ -438,7 +445,7 @@ public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
         sxo.setSignature(signature);
         
         try {
-            XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo).marshall(sxo);
+            XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo).marshall(sxo);
         } catch (MarshallingException e) {
             Assert.fail("Error marshalling object for signing: " + e);
         }

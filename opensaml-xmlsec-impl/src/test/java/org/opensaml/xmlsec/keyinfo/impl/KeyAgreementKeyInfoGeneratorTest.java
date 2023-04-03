@@ -22,10 +22,12 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.spec.ECGenParameterSpec;
+import java.util.List;
 
 import javax.crypto.SecretKey;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.crypto.JCAConstants;
@@ -38,10 +40,15 @@ import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.derivation.impl.PBKDF2;
 import org.opensaml.xmlsec.encryption.AgreementMethod;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
+import org.opensaml.xmlsec.encryption.IterationCount;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
+import org.opensaml.xmlsec.encryption.KeyLength;
 import org.opensaml.xmlsec.encryption.OriginatorKeyInfo;
 import org.opensaml.xmlsec.encryption.PBKDF2Params;
+import org.opensaml.xmlsec.encryption.PRF;
 import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
+import org.opensaml.xmlsec.encryption.Salt;
+import org.opensaml.xmlsec.encryption.Specified;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.keyinfo.KeyInfoSupport;
@@ -52,9 +59,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     private KeyPair keyPairOriginatorECDH, keyPairRecipientECDH;
@@ -97,7 +102,7 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     @Test
     public void ECDHWithConcatKDFWithDefaults() throws Exception {
-        ConcatKDF kdf = new ConcatKDF();
+        final ConcatKDF kdf = new ConcatKDF();
         kdf.setDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         kdf.setAlgorithmID("AA");
         kdf.setPartyUInfo("BB");
@@ -108,32 +113,38 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         credECDH.getParameters().add(kdf);
         
-        KeyInfoGenerator generator = factory.newInstance();
-        KeyInfo keyInfo = generator.generate(credECDH);
+        final KeyInfoGenerator generator = factory.newInstance();
+        final KeyInfo keyInfo = generator.generate(credECDH);
+        assert keyInfo != null;
+        List<XMLObject> children = keyInfo.getOrderedChildren();
         
-        Assert.assertNotNull(keyInfo);
-        Assert.assertNotNull(keyInfo.getOrderedChildren());
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
-        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        final AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
         Assert.assertEquals(agreementMethod.getAlgorithm(), credECDH.getAlgorithm());
-                
-        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 3);
+        children = agreementMethod.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 3);
         
         //Originator
-        Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
-        OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
-        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
+        final OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
+        assert originatorKeyInfo != null;
+        children = originatorKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
         Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
         
         //Recipient
-        Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
-        RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
-        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
+        final RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
+        assert recipientKeyInfo != null;
+        children = recipientKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientECDH.getPublic());
         Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
@@ -141,13 +152,14 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         //Params
         Assert.assertEquals(agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).size(), 1);
-        KeyDerivationMethod kdm = (KeyDerivationMethod) agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0);
+        final KeyDerivationMethod kdm = (KeyDerivationMethod) agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0);
         Assert.assertEquals(kdm.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         Assert.assertEquals(kdm.getUnknownXMLObjects().size(), 1);
         Assert.assertEquals(kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).size(), 1);
-        ConcatKDFParams kdfParams = (ConcatKDFParams) kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).get(0);
-        Assert.assertNotNull(kdfParams.getDigestMethod());
-        Assert.assertEquals(kdfParams.getDigestMethod().getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        final ConcatKDFParams kdfParams = (ConcatKDFParams) kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).get(0);
+        final org.opensaml.xmlsec.signature.DigestMethod dm = kdfParams.getDigestMethod();
+        assert dm != null;
+        Assert.assertEquals(dm.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
         Assert.assertEquals(kdfParams.getAlgorithmID(), "00AA");
         Assert.assertEquals(kdfParams.getPartyUInfo(), "00BB");
         Assert.assertEquals(kdfParams.getPartyVInfo(), "00CC");
@@ -157,7 +169,7 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
 
     @Test
     public void ECDHWithPBKDF2WithDefaults() throws Exception {
-        PBKDF2 kdf = new PBKDF2();
+        final PBKDF2 kdf = new PBKDF2();
         kdf.setIterationCount(1500);
         kdf.setKeyLength(256);
         kdf.setPRF(SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
@@ -166,32 +178,39 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         credECDH.getParameters().add(kdf);
         
-        KeyInfoGenerator generator = factory.newInstance();
-        KeyInfo keyInfo = generator.generate(credECDH);
+        final KeyInfoGenerator generator = factory.newInstance();
+        final KeyInfo keyInfo = generator.generate(credECDH);
         
-        Assert.assertNotNull(keyInfo);
-        Assert.assertNotNull(keyInfo.getOrderedChildren());
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        assert keyInfo != null;
+        List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
-        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        final AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
         Assert.assertEquals(agreementMethod.getAlgorithm(), credECDH.getAlgorithm());
         
-        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 3);
+        children = agreementMethod.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 3);
         
         //Originator
-        Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
-        OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
-        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
+        final OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
+        assert originatorKeyInfo != null;
+        children = originatorKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
         Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorECDH.getPublic());
         
         //Recipient
-        Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
-        RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
-        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
+        final RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
+        assert recipientKeyInfo != null;
+        children = recipientKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientECDH.getPublic());
         Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
@@ -204,20 +223,30 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(kdm.getUnknownXMLObjects().size(), 1);
         Assert.assertEquals(kdm.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).size(), 1);
         PBKDF2Params kdfParams = (PBKDF2Params) kdm.getUnknownXMLObjects(PBKDF2Params.DEFAULT_ELEMENT_NAME).get(0);
-        Assert.assertNotNull(kdfParams.getIterationCount());
-        Assert.assertEquals(kdfParams.getIterationCount().getValue().intValue(), 1500);
-        Assert.assertNotNull(kdfParams.getKeyLength());
-        Assert.assertEquals(kdfParams.getKeyLength().getValue().intValue(), 256/8); // bytes
-        Assert.assertNotNull(kdfParams.getPRF());
-        Assert.assertEquals(kdfParams.getPRF().getAlgorithm(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
-        Assert.assertNotNull(kdfParams.getSalt());
-        Assert.assertNotNull(kdfParams.getSalt().getSpecified());
-        Assert.assertEquals(kdfParams.getSalt().getSpecified().getValue(), "ABCD");
+        
+        final IterationCount icount = kdfParams.getIterationCount();
+        assert icount != null;
+        Assert.assertEquals(icount.getValue(), 1500);
+        
+        final KeyLength keyLength = kdfParams.getKeyLength();
+        assert keyLength != null;
+        Assert.assertEquals(keyLength.getValue(), 256/8); // bytes
+        
+        final PRF prf = kdfParams.getPRF();
+        assert prf != null;
+        Assert.assertEquals(prf.getAlgorithm(), SignatureConstants.ALGO_ID_MAC_HMAC_SHA512);
+        
+        final Salt salt = kdfParams.getSalt();
+        assert salt != null;
+        
+        final Specified spec = salt.getSpecified();
+        assert spec != null;
+        Assert.assertEquals(spec.getValue(), "ABCD");
     }
     
     @Test
     public void DiffieHellmanWithConcatKDFWithDefaults() throws Exception {
-        ConcatKDF kdf = new ConcatKDF();
+        final ConcatKDF kdf = new ConcatKDF();
         kdf.setDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         kdf.setAlgorithmID("AA");
         kdf.setPartyUInfo("BB");
@@ -228,32 +257,39 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         credDiffieHellmanExplicitKDF.getParameters().add(kdf);
         
-        KeyInfoGenerator generator = factory.newInstance();
-        KeyInfo keyInfo = generator.generate(credDiffieHellmanExplicitKDF);
+        final KeyInfoGenerator generator = factory.newInstance();
+        final KeyInfo keyInfo = generator.generate(credDiffieHellmanExplicitKDF);
+        assert keyInfo != null;
         
-        Assert.assertNotNull(keyInfo);
-        Assert.assertNotNull(keyInfo.getOrderedChildren());
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
-        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        final AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
         Assert.assertEquals(agreementMethod.getAlgorithm(), credDiffieHellmanExplicitKDF.getAlgorithm());
         
-        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 3);
+        children = agreementMethod.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 3);
         
         //Originator
-        Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
-        OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
-        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
+        final OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
+        assert originatorKeyInfo != null;
+        children = originatorKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
         Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
         
         //Recipient
-        Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
-        RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
-        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
+        final RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
+        assert recipientKeyInfo != null;
+        children = recipientKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientDiffieHellman.getPublic());
         Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
@@ -261,13 +297,15 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         //Params
         Assert.assertEquals(agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).size(), 1);
-        KeyDerivationMethod kdm = (KeyDerivationMethod) agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0);
+        final KeyDerivationMethod kdm = (KeyDerivationMethod) agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0);
         Assert.assertEquals(kdm.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYDERIVATION_CONCATKDF);
         Assert.assertEquals(kdm.getUnknownXMLObjects().size(), 1);
         Assert.assertEquals(kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).size(), 1);
-        ConcatKDFParams kdfParams = (ConcatKDFParams) kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).get(0);
-        Assert.assertNotNull(kdfParams.getDigestMethod());
-        Assert.assertEquals(kdfParams.getDigestMethod().getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
+        final ConcatKDFParams kdfParams = (ConcatKDFParams) kdm.getUnknownXMLObjects(ConcatKDFParams.DEFAULT_ELEMENT_NAME).get(0);
+        
+        final org.opensaml.xmlsec.signature.DigestMethod dm = kdfParams.getDigestMethod();
+        assert dm != null;
+        Assert.assertEquals(dm.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA512);
         Assert.assertEquals(kdfParams.getAlgorithmID(), "00AA");
         Assert.assertEquals(kdfParams.getPartyUInfo(), "00BB");
         Assert.assertEquals(kdfParams.getPartyVInfo(), "00CC");
@@ -288,40 +326,49 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         credDiffieHellmanLegacyKDF.getParameters().add(dm);
         credDiffieHellmanLegacyKDF.getParameters().add(nonce);
         
-        KeyInfoGenerator generator = factory.newInstance();
-        KeyInfo keyInfo = generator.generate(credDiffieHellmanLegacyKDF);
+        final KeyInfoGenerator generator = factory.newInstance();
+        final KeyInfo keyInfo = generator.generate(credDiffieHellmanLegacyKDF);
         
-        Assert.assertNotNull(keyInfo);
-        Assert.assertNotNull(keyInfo.getOrderedChildren());
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        assert keyInfo != null;
+        
+        List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
-        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        final AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
         Assert.assertEquals(agreementMethod.getAlgorithm(), credDiffieHellmanLegacyKDF.getAlgorithm());
         
-        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 4);
+        children = agreementMethod.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 4);
         
         //Originator
-        Assert.assertNotNull(agreementMethod.getOriginatorKeyInfo());
-        OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
-        Assert.assertEquals(originatorKeyInfo.getOrderedChildren().size(), 2);
+        final OriginatorKeyInfo originatorKeyInfo = agreementMethod.getOriginatorKeyInfo();
+        assert originatorKeyInfo != null;
+        children = originatorKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(originatorKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getDEREncodedKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
         Assert.assertEquals(originatorKeyInfo.getKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(originatorKeyInfo.getKeyValues().get(0)), keyPairOriginatorDiffieHellman.getPublic());
         
         //Recipient
-        Assert.assertNotNull(agreementMethod.getRecipientKeyInfo());
-        RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
-        Assert.assertEquals(recipientKeyInfo.getOrderedChildren().size(), 2);
+        final RecipientKeyInfo recipientKeyInfo = agreementMethod.getRecipientKeyInfo();
+        assert recipientKeyInfo != null;
+        children = recipientKeyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 2);
         Assert.assertEquals(recipientKeyInfo.getDEREncodedKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getDEREncodedKeyValues().get(0)), keyPairRecipientDiffieHellman.getPublic());
         Assert.assertEquals(recipientKeyInfo.getKeyValues().size(), 1);
         Assert.assertEquals(KeyInfoSupport.getKey(recipientKeyInfo.getKeyValues().get(0)), keyPairRecipientDiffieHellman.getPublic());
         
         //Params
-        Assert.assertNotNull(agreementMethod.getKANonce());
-        Assert.assertEquals(agreementMethod.getKANonce().getValue(), "ABCD");
+        final org.opensaml.xmlsec.encryption.KANonce kanonce = agreementMethod.getKANonce();
+        assert kanonce != null;
+        Assert.assertEquals(kanonce.getValue(), "ABCD");
         Assert.assertEquals(agreementMethod.getUnknownXMLObjects(org.opensaml.xmlsec.signature.DigestMethod.DEFAULT_ELEMENT_NAME).size(), 1);
         org.opensaml.xmlsec.signature.DigestMethod xmlDigest =
                 (org.opensaml.xmlsec.signature.DigestMethod) agreementMethod.getUnknownXMLObjects(
@@ -335,7 +382,7 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory.setEmitOriginatorKeyInfo(false);
         factory.setEmitRecipientKeyInfo(false);
         
-        ConcatKDF kdf = new ConcatKDF();
+        final ConcatKDF kdf = new ConcatKDF();
         kdf.setDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         kdf.setAlgorithmID("AA");
         kdf.setPartyUInfo("BB");
@@ -346,16 +393,20 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         credECDH.getParameters().add(kdf);
         
-        KeyInfoGenerator generator = factory.newInstance();
-        KeyInfo keyInfo = generator.generate(credECDH);
+        final KeyInfoGenerator generator = factory.newInstance();
+        final KeyInfo keyInfo = generator.generate(credECDH);
         
-        Assert.assertNotNull(keyInfo);
-        Assert.assertNotNull(keyInfo.getOrderedChildren());
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        assert keyInfo != null;
+        
+        List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
-        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
-        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 1);
+        final AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        children = agreementMethod.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         
         Assert.assertEquals(agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).size(), 1);
         Assert.assertNull(agreementMethod.getOriginatorKeyInfo());
@@ -367,7 +418,7 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory.setOriginatorKeyInfoGeneratorManager(null);
         factory.setRecipientKeyInfoGeneratorManager(null);
         
-        ConcatKDF kdf = new ConcatKDF();
+        final ConcatKDF kdf = new ConcatKDF();
         kdf.setDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA512);
         kdf.setAlgorithmID("AA");
         kdf.setPartyUInfo("BB");
@@ -378,16 +429,20 @@ public class KeyAgreementKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         credECDH.getParameters().add(kdf);
         
-        KeyInfoGenerator generator = factory.newInstance();
-        KeyInfo keyInfo = generator.generate(credECDH);
+        final KeyInfoGenerator generator = factory.newInstance();
+        final KeyInfo keyInfo = generator.generate(credECDH);
         
-        Assert.assertNotNull(keyInfo);
-        Assert.assertNotNull(keyInfo.getOrderedChildren());
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 1);
+        assert keyInfo != null;
+        
+        List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         Assert.assertEquals(keyInfo.getAgreementMethods().size(), 1);
         
-        AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
-        Assert.assertEquals(agreementMethod.getOrderedChildren().size(), 1);
+        final AgreementMethod agreementMethod = keyInfo.getAgreementMethods().get(0);
+        children = agreementMethod.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 1);
         
         Assert.assertEquals(agreementMethod.getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).size(), 1);
         Assert.assertNull(agreementMethod.getOriginatorKeyInfo());

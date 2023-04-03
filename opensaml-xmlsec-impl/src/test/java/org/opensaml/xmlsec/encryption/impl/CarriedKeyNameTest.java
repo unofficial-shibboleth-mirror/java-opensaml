@@ -48,16 +48,16 @@ public class CarriedKeyNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        CarriedKeyName ckn = (CarriedKeyName) unmarshallElement(singleElementFile);
+        final CarriedKeyName ckn = (CarriedKeyName) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ckn, "CarriedKeyName");
+        assert ckn != null;
         Assert.assertEquals(expectedStringContent, ckn.getValue(), "CarriedKeyName value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        CarriedKeyName ckn = (CarriedKeyName) buildXMLObject(CarriedKeyName.DEFAULT_ELEMENT_NAME);
+        final CarriedKeyName ckn = (CarriedKeyName) buildXMLObject(CarriedKeyName.DEFAULT_ELEMENT_NAME);
         ckn.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, ckn);

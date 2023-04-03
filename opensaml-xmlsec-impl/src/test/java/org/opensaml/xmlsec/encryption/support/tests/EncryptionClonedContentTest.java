@@ -17,12 +17,15 @@
 
 package org.opensaml.xmlsec.encryption.support.tests;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.Decrypter;
 import org.opensaml.xmlsec.encryption.support.Encrypter;
@@ -31,46 +34,51 @@ import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.mock.SignableSimpleXMLObject;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.w3c.dom.Element;
 
 @SuppressWarnings("javadoc")
 public class EncryptionClonedContentTest extends XMLObjectBaseTestCase {
     
     private String targetFile;
     
-    private String algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
+    @Nonnull private final String algoURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
     
     public EncryptionClonedContentTest() {
-        super();
-        
         targetFile = "/org/opensaml/xmlsec/encryption/support/SimpleEncryptionTest.xml";
     }
 
     @Test
     public void testEncryptDecrypt() throws Exception {
-            SignableSimpleXMLObject origXMLObject = (SignableSimpleXMLObject) unmarshallElement(targetFile);
-            SignableSimpleXMLObject clonedXMLObject = XMLObjectSupport.cloneXMLObject(origXMLObject);
+            final SignableSimpleXMLObject origXMLObject = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+            assert origXMLObject != null;
+            final SignableSimpleXMLObject clonedXMLObject = XMLObjectSupport.cloneXMLObject(origXMLObject);
             
-            Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI);
+            final Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(algoURI);
             
-            DataEncryptionParameters encParams = new DataEncryptionParameters();
+            final DataEncryptionParameters encParams = new DataEncryptionParameters();
             encParams.setAlgorithm(algoURI);
             encParams.setEncryptionCredential(encCred);
             
             Encrypter encrypter = new Encrypter();
             
-            EncryptedData encryptedData = encrypter.encryptElement(clonedXMLObject, encParams);
-            
+            final EncryptedData encryptedData = encrypter.encryptElement(clonedXMLObject, encParams);
             Assert.assertNotNull(encryptedData);
-            Assert.assertEquals(encryptedData.getEncryptionMethod().getAlgorithm(), algoURI);
             
-            StaticKeyInfoCredentialResolver dataKeyInfoResolver = new StaticKeyInfoCredentialResolver(encCred);
+            final EncryptionMethod method = encryptedData.getEncryptionMethod();
+            assert method != null;
+            Assert.assertEquals(method.getAlgorithm(), algoURI);
             
-            Decrypter decrypter = new Decrypter(dataKeyInfoResolver, null, null);
+            final StaticKeyInfoCredentialResolver dataKeyInfoResolver = new StaticKeyInfoCredentialResolver(encCred);
             
-            XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData);
+            final Decrypter decrypter = new Decrypter(dataKeyInfoResolver, null, null);
+            
+            final XMLObject decryptedXMLObject = decrypter.decryptData(encryptedData);
             
             Assert.assertNotNull(decryptedXMLObject);
             Assert.assertTrue(decryptedXMLObject instanceof SignableSimpleXMLObject);
-            assertXMLEquals(origXMLObject.getDOM().getOwnerDocument(), decryptedXMLObject);
+            
+            final Element origDOM = origXMLObject.getDOM();
+            assert origDOM != null;
+            assertXMLEquals(origDOM.getOwnerDocument(), decryptedXMLObject);
     }
 }

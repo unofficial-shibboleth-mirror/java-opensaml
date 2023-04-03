@@ -519,6 +519,9 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                     .findFirst().orElse(null)
                 );
         
+        // Note this stops on the first non-null collection of parameters, so an empty collection
+        // will "break" it, and the absence of any parameters must be handled with a null.
+        
         config.setParameters(
                 encConfigs.stream()
                     .map(c -> c.getKeyAgreementConfigurations().get(keyType))

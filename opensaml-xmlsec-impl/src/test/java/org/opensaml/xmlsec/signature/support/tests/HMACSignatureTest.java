@@ -20,6 +20,7 @@ package org.opensaml.xmlsec.signature.support.tests;
 import java.io.InputStream;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.crypto.SecretKey;
 
 import org.apache.xml.security.signature.SignedInfo;
@@ -47,7 +48,6 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -55,6 +55,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import jakarta.xml.bind.ValidationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -66,7 +67,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 public class HMACSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HMACSignatureTest.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HMACSignatureTest.class);
 
     /** Credential used to sign and verify. */
     private Credential goodCredential;

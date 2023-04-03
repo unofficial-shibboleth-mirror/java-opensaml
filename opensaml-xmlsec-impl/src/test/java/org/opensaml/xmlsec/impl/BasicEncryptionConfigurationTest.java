@@ -37,9 +37,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class BasicEncryptionConfigurationTest {
     
     private BasicEncryptionConfiguration config;

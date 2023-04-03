@@ -26,11 +26,14 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
+import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
  * Test the inline encrypted key resolver.
@@ -43,17 +46,18 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** No recipients specified to resolver, one inline EncryptedKey in instance. */
     @Test
     public void  testSingleEKNoRecipients() {
-        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
-        EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        final String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
+        final EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
-        Assert.assertNotNull(encData.getKeyInfo());
-        List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
         resolver = new InlineEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        final List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -62,12 +66,13 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, one matching inline EncryptedKey in instance. */
     @Test
     public void  testSingleEKOneRecipientWithMatch() {
-        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
-        EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        final String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
+        final EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
-        Assert.assertNotNull(encData.getKeyInfo());
-        List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
         resolver = new InlineEncryptedKeyResolver(Collections.singleton("foo"));
@@ -81,12 +86,13 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** One recipient specified to resolver, zero matching inline EncryptedKey in instance. */
     @Test
     public void  testSingleEKOneRecipientNoMatch() {
-        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
-        EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        final String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverSingle.xml";
+        final EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
-        Assert.assertNotNull(encData.getKeyInfo());
-        List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
         resolver = new InlineEncryptedKeyResolver(Collections.singleton("bar"));
@@ -98,12 +104,13 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** No recipients specified to resolver. */
     @Test
     public void  testMultiEKNoRecipients() {
-        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
-        EncryptedData encData = (EncryptedData) unmarshallElement(filename);
-        
-        Assert.assertNotNull(encData);
-        Assert.assertNotNull(encData.getKeyInfo());
-        List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
+        final String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
+        final EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        assert encData != null;
+
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
         resolver = new InlineEncryptedKeyResolver();
@@ -121,12 +128,13 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
      *  inline EncryptedKey in instance. */
     @Test
     public void  testMultiEKOneRecipientWithMatch() {
-        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
-        EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        final String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
+        final EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
-        Assert.assertNotNull(encData.getKeyInfo());
-        List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
         resolver = new InlineEncryptedKeyResolver(Collections.singleton("foo"));
@@ -141,12 +149,13 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     /** Multi recipient specified to resolver, several matching inline EncryptedKey in instance. */
     @Test
     public void  testMultiEKOneRecipientWithMatches() {
-        String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
-        EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        final String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
+        final EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
-        Assert.assertNotNull(encData.getKeyInfo());
-        List<EncryptedKey> allKeys = encData.getKeyInfo().getEncryptedKeys();
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
         resolver = new InlineEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
@@ -166,7 +175,8 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
      * @param ekResolver the resolver to test
      * @return list of resolved EncryptedKeys
      */
-    private List<EncryptedKey> generateList(EncryptedData encData, EncryptedKeyResolver ekResolver) {
+    @Nonnull private List<EncryptedKey> generateList(@Nonnull final EncryptedData encData,
+            @Nonnull final EncryptedKeyResolver ekResolver) {
         List<EncryptedKey> resolved = new ArrayList<>();
         for (EncryptedKey encKey : ekResolver.resolve(encData)) {
             resolved.add(encKey);

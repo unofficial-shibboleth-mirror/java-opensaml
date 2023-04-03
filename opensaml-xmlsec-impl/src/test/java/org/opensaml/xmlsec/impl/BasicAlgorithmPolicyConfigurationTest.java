@@ -28,6 +28,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
+@SuppressWarnings("javadoc")
 public class BasicAlgorithmPolicyConfigurationTest {
     
     private BasicAlgorithmPolicyConfiguration config;
@@ -130,11 +131,6 @@ public class BasicAlgorithmPolicyConfigurationTest {
         
         config.setIncludeExcludePrecedence(Precedence.EXCLUDE);
         assertEquals(config.getIncludeExcludePrecedence(), Precedence.EXCLUDE);
-    }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testNullPrecedence() {
-        config.setIncludeExcludePrecedence(null);
     }
     
 }

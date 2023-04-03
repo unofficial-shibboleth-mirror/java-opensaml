@@ -18,10 +18,14 @@
 package org.opensaml.xmlsec.signature.support.tests;
 
 import java.security.KeyPair;
+import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import org.apache.xml.security.utils.resolver.ResourceResolver;
 import org.apache.xml.security.utils.resolver.implementations.ResolverDirectHTTP;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.core.xml.io.Marshaller;
@@ -41,12 +45,12 @@ import org.opensaml.xmlsec.signature.support.SignatureValidator;
 import org.opensaml.xmlsec.signature.support.Signer;
 import org.opensaml.xmlsec.signature.support.URIContentReference;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.testing.RepositorySupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.impl.BasicParserPool;
@@ -55,7 +59,7 @@ import net.shibboleth.shared.xml.impl.BasicParserPool;
 public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(EnvelopedSignatureTest.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(EnvelopedSignatureTest.class);
 
     /** Key resolver containing proper verification key. */
     private BasicCredential goodCredential;
@@ -104,7 +108,7 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
         SignableSimpleXMLObject sxo = getXMLObjectWithSignature();
         Signature signature = sxo.getSignature();
 
-        Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
+        final Marshaller marshaller = XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo);
         Element signedElement = marshaller.marshall(sxo);
 
         assert signature != null;
@@ -113,9 +117,11 @@ public class DetachedSignatureTest extends XMLObjectBaseTestCase {
             log.debug("Marshalled deatched Signature: \n" + SerializeSupport.nodeToString(signedElement));
         }
 
-        Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(signedElement);
+        final Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(signedElement);
         sxo = (SignableSimpleXMLObject) unmarshaller.unmarshall(signedElement);
-        signature = (Signature) sxo.getOrderedChildren().get(1);
+        final List<XMLObject> children = sxo.getOrderedChildren();
+        assert children != null;
+        signature = (Signature) children.get(1);
 
         SignatureValidator.validate(signature, goodCredential);
 

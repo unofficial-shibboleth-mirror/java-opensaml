@@ -20,6 +20,8 @@ package org.opensaml.xmlsec.testing;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.BasicProviderKeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.KeyInfoProvider;
@@ -42,12 +44,12 @@ public final class XMLSecurityTestingSupport {
      * 
      * @return a new KeyInfoCredentialResolver instance
      */
-    public static KeyInfoCredentialResolver buildBasicInlineKeyInfoResolver() {
+    @Nonnull public static KeyInfoCredentialResolver buildBasicInlineKeyInfoResolver() {
         return new BasicProviderKeyInfoCredentialResolver(getBasicInlineKeyInfoProviders());
     }
     
-    public static List<KeyInfoProvider> getBasicInlineKeyInfoProviders() {
-        List<KeyInfoProvider> providers = new ArrayList<>();
+    @Nonnull public static List<KeyInfoProvider> getBasicInlineKeyInfoProviders() {
+        final List<KeyInfoProvider> providers = new ArrayList<>();
         providers.add( new RSAKeyValueProvider() );
         providers.add( new DSAKeyValueProvider() );
         providers.add( new ECKeyValueProvider() );

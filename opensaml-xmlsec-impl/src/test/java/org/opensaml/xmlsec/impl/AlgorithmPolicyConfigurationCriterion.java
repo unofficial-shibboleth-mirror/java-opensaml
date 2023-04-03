@@ -25,6 +25,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
 
@@ -37,7 +38,7 @@ import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
 public class AlgorithmPolicyConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */
-    private List<AlgorithmPolicyConfiguration> configs;
+    @Nonnull private List<AlgorithmPolicyConfiguration> configs;
     
     /**
      * Constructor.
@@ -46,7 +47,7 @@ public class AlgorithmPolicyConfigurationCriterion implements Criterion {
      */
     public AlgorithmPolicyConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
             final List<AlgorithmPolicyConfiguration> configurations) {
-        configs = List.copyOf(Constraint.isNotNull(configurations, "List of configurations may not be null"));
+        configs = CollectionSupport.copyToList(Constraint.isNotNull(configurations, "List of configurations may not be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
         
     }
@@ -58,7 +59,7 @@ public class AlgorithmPolicyConfigurationCriterion implements Criterion {
      */
     public AlgorithmPolicyConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty
             final AlgorithmPolicyConfiguration... configurations) {
-        configs = List.of(Constraint.isNotNull(configurations, "List of configurations may not be null"));
+        configs = CollectionSupport.listOf(Constraint.isNotNull(configurations, "List of configurations may not be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
     

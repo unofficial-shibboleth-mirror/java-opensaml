@@ -17,11 +17,13 @@
 
 package org.opensaml.xmlsec.config.impl;
 
+import java.util.Collection;
 import java.util.Map;
 import java.util.Properties;
 
 import org.opensaml.core.config.provider.ThreadLocalConfigurationPropertiesHolder;
 import org.opensaml.security.crypto.JCAConstants;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.derivation.KeyDerivation;
 import org.opensaml.xmlsec.derivation.impl.ConcatKDF;
 import org.opensaml.xmlsec.derivation.impl.PBKDF2;
@@ -38,7 +40,10 @@ public class DefaultSecurityConfigurationBootstrapTest {
         Assert.assertTrue(kaConfigs.containsKey(JCAConstants.KEY_ALGO_EC));
         
         final KeyAgreementEncryptionConfiguration config = kaConfigs.get(JCAConstants.KEY_ALGO_EC);
-        final KeyDerivation keyDerivation = config.getParameters().stream()
+        final Collection<KeyAgreementParameter> params = config.getParameters();
+        assert params != null;
+        
+        final KeyDerivation keyDerivation = params.stream()
                 .filter(KeyDerivation.class::isInstance)
                 .map(KeyDerivation.class::cast)
                 .findFirst().orElse(null);
@@ -57,7 +62,9 @@ public class DefaultSecurityConfigurationBootstrapTest {
             Assert.assertTrue(kaConfigs.containsKey(JCAConstants.KEY_ALGO_EC));
         
             final KeyAgreementEncryptionConfiguration config = kaConfigs.get(JCAConstants.KEY_ALGO_EC);
-            KeyDerivation keyDerivation = config.getParameters().stream()
+            final Collection<KeyAgreementParameter> params = config.getParameters();
+            assert params != null;
+            final KeyDerivation keyDerivation = params.stream()
                     .filter(KeyDerivation.class::isInstance)
                     .map(KeyDerivation.class::cast)
                     .findFirst().orElse(null);
@@ -72,15 +79,17 @@ public class DefaultSecurityConfigurationBootstrapTest {
     @Test
     public void testECDHPBKDF2() {
         try {
-            Properties props = new Properties();
+            final Properties props = new Properties();
             props.setProperty("opensaml.config.ecdh.defaultKDF", "PBKDF2");
             ThreadLocalConfigurationPropertiesHolder.setProperties(props);
             
-            Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = DefaultSecurityConfigurationBootstrap.buildKeyAgreementConfigurations();
+            final Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = DefaultSecurityConfigurationBootstrap.buildKeyAgreementConfigurations();
             Assert.assertTrue(kaConfigs.containsKey(JCAConstants.KEY_ALGO_EC));
         
-            KeyAgreementEncryptionConfiguration config = kaConfigs.get(JCAConstants.KEY_ALGO_EC);
-            KeyDerivation keyDerivation = config.getParameters().stream()
+            final KeyAgreementEncryptionConfiguration config = kaConfigs.get(JCAConstants.KEY_ALGO_EC);
+            final Collection<KeyAgreementParameter> params = config.getParameters();
+            assert params != null;
+            final KeyDerivation keyDerivation = params.stream()
                     .filter(KeyDerivation.class::isInstance)
                     .map(KeyDerivation.class::cast)
                     .findFirst().orElse(null);
@@ -95,15 +104,17 @@ public class DefaultSecurityConfigurationBootstrapTest {
     @Test
     public void testECDHBadKDF() {
         try {
-            Properties props = new Properties();
+            final Properties props = new Properties();
             props.setProperty("opensaml.config.ecdh.defaultKDF", "BADBADBAD");
             ThreadLocalConfigurationPropertiesHolder.setProperties(props);
             
-            Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = DefaultSecurityConfigurationBootstrap.buildKeyAgreementConfigurations();
+            final Map<String, KeyAgreementEncryptionConfiguration> kaConfigs = DefaultSecurityConfigurationBootstrap.buildKeyAgreementConfigurations();
             Assert.assertTrue(kaConfigs.containsKey(JCAConstants.KEY_ALGO_EC));
         
-            KeyAgreementEncryptionConfiguration config = kaConfigs.get(JCAConstants.KEY_ALGO_EC);
-            KeyDerivation keyDerivation = config.getParameters().stream()
+            final KeyAgreementEncryptionConfiguration config = kaConfigs.get(JCAConstants.KEY_ALGO_EC);
+            final Collection<KeyAgreementParameter> params = config.getParameters();
+            assert params != null;
+            final KeyDerivation keyDerivation = params.stream()
                     .filter(KeyDerivation.class::isInstance)
                     .map(KeyDerivation.class::cast)
                     .findFirst().orElse(null);

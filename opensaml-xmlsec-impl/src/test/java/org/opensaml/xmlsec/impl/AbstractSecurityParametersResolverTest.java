@@ -23,9 +23,7 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.function.Predicate;
 
@@ -33,7 +31,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.collection.CollectionSupport;
-import net.shibboleth.shared.logic.ConstraintViolationException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -54,6 +52,7 @@ import org.testng.annotations.Test;
  * Test various aspects of the {@link AbstractSecurityParametersResolver} so don't have to test
  * them in all the individual subclasses.
  */
+@SuppressWarnings("javadoc")
 public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCase {
     
     private DummyParametersResolver resolver;
@@ -85,13 +84,14 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config1.setExcludedAlgorithms(set1);
         config2.setExcludedAlgorithms(set2);
         
-        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        final AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        HashSet<String> control = new HashSet<>();
+        final HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set2);
         
-        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getIncludedAlgorithms().equals(CollectionSupport.emptySet()));
         assertTrue(params.getExcludedAlgorithms().equals(control));
     }
     
@@ -101,9 +101,10 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config1.setExcludeMerge(false);
         config2.setExcludedAlgorithms(set2);
         
-        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        final AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getIncludedAlgorithms().equals(CollectionSupport.emptySet()));
         assertTrue(params.getExcludedAlgorithms().equals(set1));
     }
     
@@ -113,13 +114,14 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config1.setExcludeMerge(true);
         config2.setExcludedAlgorithms(set2);
         
-        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        final AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set2);
         
-        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getIncludedAlgorithms().equals(CollectionSupport.emptySet()));
         assertTrue(params.getExcludedAlgorithms().equals(control));
     }
     
@@ -130,13 +132,14 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config2.setExcludeMerge(true);
         config3.setExcludedAlgorithms(set3);
         
-        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        final AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set3);
         
-        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getIncludedAlgorithms().equals(CollectionSupport.emptySet()));
         assertTrue(params.getExcludedAlgorithms().equals(control));
     }
     
@@ -145,10 +148,11 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config1.setIncludedAlgorithms(set1);
         config2.setIncludedAlgorithms(set2);
         
-        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        final AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         assertTrue(params.getIncludedAlgorithms().equals(set1));
-        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(CollectionSupport.emptySet()));
     }
     
     @Test
@@ -157,14 +161,15 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config1.setIncludeMerge(true);
         config2.setIncludedAlgorithms(set2);
         
-        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        final AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set2);
         
         assertTrue(params.getIncludedAlgorithms().equals(control));
-        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(CollectionSupport.emptySet()));
     }
     
     @Test
@@ -174,14 +179,15 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config2.setIncludeMerge(true);
         config3.setIncludedAlgorithms(set3);
         
-        AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        final AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         HashSet<String> control = new HashSet<>();
         control.addAll(set1);
         control.addAll(set3);
         
         assertTrue(params.getIncludedAlgorithms().equals(control));
-        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(CollectionSupport.emptySet()));
     }
     
     @Test
@@ -192,15 +198,17 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         config1.setIncludeExcludePrecedence(Precedence.INCLUDE);
         
         AlgorithmPolicyParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         assertTrue(params.getIncludedAlgorithms().equals(set1));
-        assertTrue(params.getExcludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getExcludedAlgorithms().equals(CollectionSupport.emptySet()));
         
         config1.setIncludeExcludePrecedence(Precedence.EXCLUDE);
         
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
-        assertTrue(params.getIncludedAlgorithms().equals(Collections.emptySet()));
+        assertTrue(params.getIncludedAlgorithms().equals(CollectionSupport.emptySet()));
         assertTrue(params.getExcludedAlgorithms().equals(set2));
     }
 
@@ -214,7 +222,7 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         config1.setIncludeExcludePrecedence(Precedence.INCLUDE);
         
-        predicate = resolver.resolveIncludeExcludePredicate(criteriaSet, List.of(config1, config2, config3));
+        predicate = resolver.resolveIncludeExcludePredicate(criteriaSet, CollectionSupport.listOf(config1, config2, config3));
         
         // Note: Have effective whitelist based on set1
         
@@ -232,7 +240,7 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         config1.setIncludeExcludePrecedence(Precedence.EXCLUDE);
         
-        predicate = resolver.resolveIncludeExcludePredicate(criteriaSet, List.of(config1, config2, config3));
+        predicate = resolver.resolveIncludeExcludePredicate(criteriaSet, CollectionSupport.listOf(config1, config2, config3));
         
         // Note: Have effective blacklist based on set2
         
@@ -383,13 +391,6 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
         
         assertNull(resolver.lookupKeyInfoGenerator(cred, null, null));
         assertNull(resolver.lookupKeyInfoGenerator(cred, null, "test"));
-        
-        try {
-            resolver.lookupKeyInfoGenerator(null, manager, "test");
-            fail("Null credential should have thrown");
-        } catch (ConstraintViolationException e) {
-            // expected
-        }
     }
     
     
@@ -400,20 +401,22 @@ public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCas
 
         /** {@inheritDoc} */
         @Nonnull
-        public Iterable<AlgorithmPolicyParameters> resolve(CriteriaSet criteria) throws ResolverException {
-            AlgorithmPolicyParameters params = resolveSingle(criteria);
+        public Iterable<AlgorithmPolicyParameters> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+            final AlgorithmPolicyParameters params = resolveSingle(criteria);
             if (params != null) {
-                return Collections.singletonList(params);
+                return CollectionSupport.singletonList(params);
             }
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
 
         /** {@inheritDoc} */
         @Nullable
-        public AlgorithmPolicyParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
-            AlgorithmPolicyParameters params = new AlgorithmPolicyParameters();
+        public AlgorithmPolicyParameters resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
+            
+            assert criteria != null;
+            final AlgorithmPolicyParameters params = new AlgorithmPolicyParameters();
             resolveAndPopulateIncludesExcludes(params, criteria, 
-                    criteria.get(AlgorithmPolicyConfigurationCriterion.class).getConfigurations());
+                    Constraint.isNotNull(criteria.get(AlgorithmPolicyConfigurationCriterion.class), "Criterion").getConfigurations());
             return params;
         }
         

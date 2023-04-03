@@ -34,6 +34,7 @@ import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.encryption.CipherData;
 import org.opensaml.xmlsec.encryption.CipherReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
@@ -216,7 +217,9 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedDataWithCipherReference() throws DecryptionException {
-        encryptedData.getCipherData().setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
+        final CipherData data = encryptedData.getCipherData();
+        assert data != null;
+        data.setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
 
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
         decrypter.decryptData(encryptedData);
@@ -230,9 +233,11 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyWithCipherReference() throws DecryptionException {
-        encryptedKey.getCipherData().setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
+        final CipherData data = encryptedKey.getCipherData();
+        assert data != null;
+        data.setCipherReference((CipherReference) XMLObjectSupport.buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME));
 
-        Decrypter decrypter = new Decrypter(null, kekResolver, null);
+        final Decrypter decrypter = new Decrypter(null, kekResolver, null);
         decrypter.decryptKey(encryptedKey, encURI);
     }
     

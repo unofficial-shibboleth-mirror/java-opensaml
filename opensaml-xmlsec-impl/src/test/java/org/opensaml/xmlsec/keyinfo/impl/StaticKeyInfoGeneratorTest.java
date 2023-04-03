@@ -137,9 +137,9 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     public void testWithCloningWithDOMCache() throws SecurityException, KeyException, MarshallingException {
         EncryptedData encData = (EncryptedData) buildXMLObject(EncryptedData.DEFAULT_ELEMENT_NAME);
         
-        XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(origKeyInfo).marshall(origKeyInfo);
+        XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(origKeyInfo).marshall(origKeyInfo);
         Assert.assertNotNull(origKeyInfo.getDOM(), "Original KeyInfo should have a cached DOM");
-        Element origDOM = origKeyInfo.getDOM();
+        final Element origDOM = origKeyInfo.getDOM();
         
         KeyInfo keyInfo = generator.generate(null);
         checkKeyInfo(keyInfo);
@@ -154,6 +154,7 @@ public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertNull(keyInfo.getDOM(), "Generated KeyInfo should NOT have a cached DOM");
         
         Assert.assertNotNull(origKeyInfo.getDOM(), "KeyInfo cached DOM should NOT have been cleared after cloning");
+        assert origDOM != null;
         Assert.assertTrue(origDOM.isSameNode(origKeyInfo.getDOM()), "DOM Elements were not the same");
     }
     

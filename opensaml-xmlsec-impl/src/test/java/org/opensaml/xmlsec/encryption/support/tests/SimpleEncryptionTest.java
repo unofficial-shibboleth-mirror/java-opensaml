@@ -25,6 +25,8 @@ import java.security.NoSuchProviderException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.credential.CredentialSupport;
@@ -33,6 +35,7 @@ import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
@@ -149,8 +152,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptDataWithKeyNameNoKEK() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
-        
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
         
         EncryptedData encData = null;
@@ -159,14 +162,19 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+
         Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
-        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encData.getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, "KeyName");
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
         
-        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 0, "Number of EncryptedKeys");
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyName, "KeyName");
+        
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 0, "Number of EncryptedKeys");
     }
     
     /**
@@ -174,7 +182,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptDataSingleKEK() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
@@ -184,14 +193,19 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
-        
-        Assert.assertNotNull(encData);
+        assert encData != null;
+
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+
         Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
-        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
         
-        List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 1, "Number of EncryptedKeys");
+        List<EncryptedKey> encKeys = keyInfo.getEncryptedKeys();
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 1, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
     }
     
@@ -200,7 +214,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptDataMultipleKEK() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
@@ -214,14 +229,19 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+
         Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
-        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
         
-        List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 2, "Number of EncryptedKeys");
+        List<EncryptedKey> encKeys = keyInfo.getEncryptedKeys();
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 2, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
         checkKEKAES(encKeys.get(1), true);
     }
@@ -232,7 +252,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptContentWithKeyNameNoKEK() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
         
@@ -242,14 +263,19 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+
         Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_CONTENT, "Type attribute");
-        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
-        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encData.getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, "KeyName");
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyName, "KeyName");
         
-        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 0, "Number of EncryptedKeys");
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 0, "Number of EncryptedKeys");
     }
     
     /**
@@ -257,7 +283,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptContentSingleKEK() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
         
@@ -267,14 +294,18 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
+        assert encData != null;
         
-        Assert.assertNotNull(encData);
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        
         Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_CONTENT, "Type attribute");
-        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
-        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
-        
-        List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 1, "Number of EncryptedKeys");
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        List<EncryptedKey> encKeys = keyInfo.getEncryptedKeys();
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 1, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
     }
     
@@ -283,7 +314,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptContentMultipleKEK() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         kekParamsAES.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoAES));
         kekParamsRSA.setKeyInfoGenerator(new StaticKeyInfoGenerator(kekKeyInfoRSA));
@@ -297,14 +329,19 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
+        assert encData != null;
+
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
         
-        Assert.assertNotNull(encData);
         Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_CONTENT, "Type attribute");
-        Assert.assertEquals(encData.getEncryptionMethod().getAlgorithm(), algoURI, "Algorithm attribute");
-        Assert.assertNotNull(encData.getKeyInfo(), "KeyInfo");
-        
-        List<EncryptedKey> encKeys = encData.getKeyInfo().getEncryptedKeys();
-        Assert.assertEquals(encData.getKeyInfo().getEncryptedKeys().size(), 2, "Number of EncryptedKeys");
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+
+        List<EncryptedKey> encKeys = keyInfo.getEncryptedKeys();
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 2, "Number of EncryptedKeys");
         checkKEKRSA(encKeys.get(0), true);
         checkKEKAES(encKeys.get(1), true);
     }
@@ -330,9 +367,10 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         Document ownerDocument = parserPool.newDocument();
         try {
             encKey = encrypter.encryptKey(targetKey, kekParamsRSA, ownerDocument);
-        } catch (EncryptionException e) {
+        } catch (final EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
-        } 
+        }
+        assert encKey != null;
         
         checkKEKRSA(encKey, true);
     }
@@ -362,10 +400,11 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         Document ownerDocument = parserPool.newDocument();
         try {
             encKeys = encrypter.encryptKey(targetKey, kekParamsList, ownerDocument);
-        } catch (EncryptionException e) {
+        } catch (final EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
         }
         
+        assert encKeys != null;
         
         Assert.assertEquals(encKeys.size(), 2, "Number of EncryptedKeys");
         checkKEKAES(encKeys.get(0), true);
@@ -377,7 +416,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAutoKeyGen() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         encParams.setEncryptionCredential(null);
         
@@ -407,7 +447,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAutoKeyGenNoKEK() {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         encParams.setEncryptionCredential(null);
         
@@ -454,13 +495,14 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             encKey = encrypter.encryptKey(targetKey, kekParamsRSA, ownerDocument);
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
-        } 
+        }
+        assert encKey != null;
         
-        Assert.assertFalse(encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty(),
+        final EncryptionMethod method = encKey.getEncryptionMethod();
+        assert method != null;
+        Assert.assertFalse(method.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty(),
                 "EncryptedKey/EncryptionMethod/DigestMethod list was empty");
-        DigestMethod dm = 
-                (DigestMethod) encKey.getEncryptionMethod()
-                .getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).get(0);
+        final DigestMethod dm = (DigestMethod) method.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).get(0);
         Assert.assertEquals(dm.getAlgorithm(), 
                 SignatureConstants.ALGO_ID_DIGEST_SHA1, "DigestMethod algorithm URI had unexpected value");
     }
@@ -479,7 +521,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     public void testEncryptKeyDigestMethodsRSAv15() throws NoSuchAlgorithmException, NoSuchProviderException, 
             XMLParserException, KeyException {
         
-        Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
+        final Key targetKey = AlgorithmSupport.generateSymmetricKey(algoURI);
         
         kekParamsRSA.setAlgorithm(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         
@@ -489,9 +531,12 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
             encKey = encrypter.encryptKey(targetKey, kekParamsRSA, ownerDocument);
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
-        } 
+        }
+        assert encKey != null;
         
-        Assert.assertTrue(encKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty(),
+        final EncryptionMethod method = encKey.getEncryptionMethod();
+        assert method != null;
+        Assert.assertTrue(method.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME).isEmpty(),
                 "EncryptedKey/EncryptionMethod/DigestMethod list was NOT empty");
     }
     
@@ -503,7 +548,8 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testEncryptDataBadKEKDSA() throws NoSuchAlgorithmException, NoSuchProviderException {
-        SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        final SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) unmarshallElement(targetFile);
+        assert sxo != null;
         
         KeyEncryptionParameters kekParamsDSA = new KeyEncryptionParameters();
         KeyPair kp = KeySupport.generateKeyPair("DSA", 1024, null);
@@ -611,17 +657,22 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @param encKey EncryptedKey to test
      * @param hasKeyInfo flag indicating expectation of KeyInfo presence
      */
-    private void checkKEKAES(EncryptedKey encKey, boolean hasKeyInfo) {
-        Assert.assertNotNull(encKey, "EncryptedKey was null");
-        Assert.assertEquals(encKey.getEncryptionMethod().getAlgorithm(), kekURIAES, "Algorithm attribute");
+    private void checkKEKAES(@Nonnull final EncryptedKey encKey, boolean hasKeyInfo) {
+        
+        final EncryptionMethod method = encKey.getEncryptionMethod();
+        assert method != null;
+        
+        Assert.assertEquals(method.getAlgorithm(), kekURIAES, "Algorithm attribute");
         Assert.assertEquals(encKey.getRecipient(), expectedRecipientAES, "Recipient attribute");
-        if (! hasKeyInfo) {
+        if (!hasKeyInfo) {
             Assert.assertNull(encKey.getKeyInfo(), "Unexpected KeyInfo was present");
             return;
         }
-        Assert.assertNotNull(encKey.getKeyInfo(), "KeyInfo was not present");
-        Assert.assertNotNull(encKey.getKeyInfo().getKeyNames().get(0), "KeyName was not present");
-        Assert.assertEquals(encKey.getKeyInfo().getKeyNames().get(0).getValue(), expectedKEKKeyNameAES, 
+        
+        final KeyInfo keyInfo = encKey.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertNotNull(keyInfo.getKeyNames().get(0), "KeyName was not present");
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKEKKeyNameAES, 
                 "Unexpected KEK KeyName");
     }
  
@@ -631,38 +682,52 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      * @param encKey EncryptedKey to test
      * @param hasKeyInfo flag indicating expectation of KeyInfo presence
      */
-    private void checkKEKRSA(EncryptedKey encKey, boolean hasKeyInfo) {
-        Assert.assertNotNull(encKey, "EncryptedKey was null");
-        Assert.assertEquals(encKey.getEncryptionMethod().getAlgorithm(), kekURIRSA, "Algorithm attribute");
+    private void checkKEKRSA(@Nonnull final EncryptedKey encKey, boolean hasKeyInfo) {
+        
+        final EncryptionMethod method = encKey.getEncryptionMethod();
+        assert method != null;
+
+        Assert.assertEquals(method.getAlgorithm(), kekURIRSA, "Algorithm attribute");
         Assert.assertEquals(encKey.getRecipient(), expectedRecipientRSA, "Recipient attribute");
         if (! hasKeyInfo) {
             Assert.assertNull(encKey.getKeyInfo(), "Unexpected KeyInfo was present");
             return;
         }
-        Assert.assertNotNull(encKey.getKeyInfo(), "KeyInfo was not present");
-        Assert.assertNotNull(encKey.getKeyInfo().getKeyNames().get(0), "KeyName was not present");
-        Assert.assertEquals(encKey.getKeyInfo().getKeyNames().get(0).getValue(), expectedKEKKeyNameRSA, 
+
+        final KeyInfo keyInfo = encKey.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertNotNull(keyInfo.getKeyNames().get(0), "KeyName was not present");
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKEKKeyNameRSA, 
                 "Unexpected KEK KeyName");
     }
     
-    private String getDigestMethod(EncryptedKey encryptedKey) {
-        List<XMLObject> digestMethods = encryptedKey.getEncryptionMethod().getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
+    private String getDigestMethod(@Nonnull final EncryptedKey encryptedKey) {
+        final EncryptionMethod method = encryptedKey.getEncryptionMethod();
+        assert method != null;
+
+        final List<XMLObject> digestMethods = method.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
         if (digestMethods != null && digestMethods.size() > 0) { 
             return ((DigestMethod)digestMethods.get(0)).getAlgorithm();
         }
         return null;
     }
     
-    private String getMGF(EncryptedKey encryptedKey) {
-        List<XMLObject> mgfs = encryptedKey.getEncryptionMethod().getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
+    private String getMGF(@Nonnull final EncryptedKey encryptedKey) {
+        final EncryptionMethod method = encryptedKey.getEncryptionMethod();
+        assert method != null;
+
+        final List<XMLObject> mgfs = method.getUnknownXMLObjects(MGF.DEFAULT_ELEMENT_NAME);
         if (mgfs != null && mgfs.size() > 0) {
             return ((MGF)mgfs.get(0)).getAlgorithm();
         }
         return null;
     }
     
-    private String getOAEPParams(EncryptedKey encryptedKey) {
-        OAEPparams params = encryptedKey.getEncryptionMethod().getOAEPparams();
+    private String getOAEPParams(@Nonnull final EncryptedKey encryptedKey) {
+        final EncryptionMethod method = encryptedKey.getEncryptionMethod();
+        assert method != null;
+
+        final OAEPparams params = method.getOAEPparams();
         if (params != null) {
             return params.getValue();
         }

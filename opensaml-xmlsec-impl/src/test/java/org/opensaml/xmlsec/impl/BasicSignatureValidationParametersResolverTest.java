@@ -40,6 +40,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class BasicSignatureValidationParametersResolverTest {
     
     private BasicSignatureValidationParametersResolver resolver;
@@ -113,7 +114,7 @@ public class BasicSignatureValidationParametersResolverTest {
         
         assertTrue(iterator.hasNext());
         
-        SignatureValidationParameters params =iterator.next();
+        final SignatureValidationParameters params =iterator.next();
         
         assertNotNull(params);
         assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
@@ -130,9 +131,9 @@ public class BasicSignatureValidationParametersResolverTest {
         config1.setExcludedAlgorithms(List.of("foo", "bar"));
         config1.setSignatureTrustEngine(controlTrustEngine1);
         
-        SignatureValidationParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureValidationParameters params = resolver.resolveSingle(criteriaSet);
         
-        assertNotNull(params);
+        assert params != null;
         assertTrue(params.getSignatureTrustEngine() == controlTrustEngine1);
         assertTrue(params.getIncludedAlgorithms().isEmpty());
         assertEquals(params.getExcludedAlgorithms().size(), 2);

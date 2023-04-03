@@ -19,6 +19,7 @@ package org.opensaml.xmlsec.signature.support.impl;
 
 import java.io.InputStream;
 import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
@@ -26,6 +27,9 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -62,6 +66,7 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
 
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -445,7 +450,9 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     public void testRawWrongCredType() throws SecurityException {
         rawCandidateCred = getCredential("foo-1A1-good.crt", "foo-1A1-good.key");
         rawSignature = XMLSigningUtil.signWithURI(rawCandidateCred, rawAlgorithmURI, rawSignedContent);
-        rawCandidateCred = CredentialSupport.getSimpleCredential(rawCandidateCred.getPublicKey(), null);
+        final PublicKey pubKey = rawCandidateCred.getPublicKey();
+        assert pubKey != null;
+        rawCandidateCred = CredentialSupport.getSimpleCredential(pubKey, null);
         engine = getEngine(
                 getCertificates("root1-ca.crt", "inter1A-ca.crt", "inter1A1-ca.crt"),
                 EMPTY_CRLS,
@@ -521,7 +528,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         }
     }
     
-    private Signature getSignature(String entityCertFileName, String entityKeyFileName, String ... chainMembers) {
+    @Nonnull private Signature getSignature(String entityCertFileName, String entityKeyFileName, String ... chainMembers) {
         X509Credential cred = getCredential(entityCertFileName, entityKeyFileName, chainMembers);
         
         SignableXMLObject sxo = null;
@@ -534,7 +541,9 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         //System.out.println(XMLHelper.prettyPrintXML(sxo.getDOM()));
         
         //Unmarshall a new XMLObject tree around the DOM, just to avoid any xmlsec bugs or side effects.
+        assert sxo != null;
         Element signedDOM = sxo.getDOM();
+        assert signedDOM != null;
         if (tamperDocumentPostSigning) {
             Element newChild = signedDOM.getOwnerDocument().createElementNS(SimpleXMLObject.NAMESPACE, 
                     SimpleXMLObject.NAMESPACE_PREFIX + ":" + SimpleXMLObject.LOCAL_NAME);
@@ -545,18 +554,20 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         
         SignableXMLObject verifiableSXO = null;
         try {
-            verifiableSXO = (SignableXMLObject) unmarshallerFactory.getUnmarshaller(signedDOM).unmarshall(signedDOM);
-        } catch (UnmarshallingException e) {
+            verifiableSXO = (SignableXMLObject) unmarshallerFactory.ensureUnmarshaller(signedDOM).unmarshall(signedDOM);
+        } catch (final UnmarshallingException e) {
             Assert.fail("Error unmarshalling new signed object: " + e.getMessage());
         }
         
         //System.out.println(XMLHelper.prettyPrintXML(verifiableSXO.getDOM()));
-        
-        return verifiableSXO.getSignature();
+     
+        assert verifiableSXO != null;
+        return Constraint.isNotNull(verifiableSXO.getSignature(), "Signature was null");
     }
 
     private BasicX509Credential getCredential(String entityCertFileName, String entityKeyFileName, String ... chainMembers) {
         X509Certificate entityCert = getCertificate(entityCertFileName);
+        assert entityCert != null;
         BasicX509Credential cred = new BasicX509Credential(entityCert);
         
         PrivateKey privateKey = getPrivateKey(entityKeyFileName);
@@ -574,7 +585,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         return cred;
     }
     
-    private PKIXSignatureTrustEngine getEngine(Collection<X509Certificate> certs,
+    @Nonnull private PKIXSignatureTrustEngine getEngine(Collection<X509Certificate> certs,
                 Collection<X509CRL> crls, Integer depth, String ... trustedNames) {
         
         PKIXValidationInformation info = getPKIXInfoSet(certs, crls, depth);
@@ -592,12 +603,12 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         return new PKIXSignatureTrustEngine(resolver, XMLSecurityTestingSupport.buildBasicInlineKeyInfoResolver());
     }
     
-    private PKIXValidationInformation getPKIXInfoSet(Collection<X509Certificate> certs,
+    @Nonnull private PKIXValidationInformation getPKIXInfoSet(Collection<X509Certificate> certs,
                 Collection<X509CRL> crls, Integer depth) {
         return new BasicPKIXValidationInformation(certs, crls, depth);
     }
     
-    private Collection<X509Certificate> getCertificates(String ... certNames) {
+    @Nonnull private Collection<X509Certificate> getCertificates(final String ... certNames) {
         Set<X509Certificate> certs = new HashSet<>();
         for (String certName : certNames) {
            certs.add( getCertificate(certName) );
@@ -618,7 +629,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
     }
 
     
-    private X509Certificate getCertificate(String fileName) {
+    @Nullable private X509Certificate getCertificate(String fileName) {
         try {
             InputStream ins = getInputStream(fileName);
             byte[] encoded = new byte[ins.available()];
@@ -630,7 +641,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         return null;
     }
     
-    private Collection<X509CRL> getCRLS(String ... crlNames) {
+    @Nonnull private Collection<X509CRL> getCRLS(String ... crlNames) {
         Set<X509CRL> crls = new HashSet<>();
         for (String crlName : crlNames) {
            crls.add( getCRL(crlName) );
@@ -638,7 +649,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         return crls;
     }
     
-    private X509CRL getCRL(String fileName) {
+    @Nullable private X509CRL getCRL(String fileName) {
         try {
             InputStream ins = getInputStream(fileName);
             byte[] encoded = new byte[ins.available()];
@@ -650,11 +661,11 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         return null;
     }
     
-    private InputStream getInputStream(String fileName) {
+    @Nonnull private InputStream getInputStream(String fileName) {
         return  PKIXSignatureTrustEngineTest.class.getResourceAsStream(DATA_PATH + fileName);
     }
     
-    private SignableXMLObject buildSignedObject(X509Credential signingX509Cred) throws SignatureException {
+    @Nonnull private SignableXMLObject buildSignedObject(X509Credential signingX509Cred) throws SignatureException {
         SignableSimpleXMLObject sxo = (SignableSimpleXMLObject) buildXMLObject(SignableSimpleXMLObject.ELEMENT_NAME);
         sxo.setId("abc123");
         
@@ -667,7 +678,9 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         sig.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
         sig.setSigningCredential(signingX509Cred);
         
-        DocumentInternalIDContentReference idContentRef = new DocumentInternalIDContentReference(sxo.getId());
+        final String id = sxo.getId();
+        assert id != null;
+        DocumentInternalIDContentReference idContentRef = new DocumentInternalIDContentReference(id);
         idContentRef.setDigestAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA1);
         idContentRef.getTransforms().add(SignatureConstants.TRANSFORM_ENVELOPED_SIGNATURE);
         idContentRef.getTransforms().add(SignatureConstants.TRANSFORM_C14N_EXCL_OMIT_COMMENTS);
@@ -695,7 +708,7 @@ public class PKIXSignatureTrustEngineTest extends XMLObjectBaseTestCase {
         sxo.setSignature(sig);
         
         try {
-            XMLObjectProviderRegistrySupport.getMarshallerFactory().getMarshaller(sxo).marshall(sxo);
+            XMLObjectProviderRegistrySupport.getMarshallerFactory().ensureMarshaller(sxo).marshall(sxo);
         } catch (MarshallingException e) {
             Assert.fail("Error marshalling object for signing: " + e);
         }

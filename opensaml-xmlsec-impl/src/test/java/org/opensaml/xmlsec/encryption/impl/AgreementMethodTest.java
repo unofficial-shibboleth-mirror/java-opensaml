@@ -54,9 +54,9 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AgreementMethod am = (AgreementMethod) unmarshallElement(singleElementFile);
+        final AgreementMethod am = (AgreementMethod) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(am, "AgreementMethod");
+        assert am != null;
         Assert.assertEquals(am.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertNull(am.getKANonce(), "KA-Nonce child element");
         Assert.assertEquals(am.getUnknownXMLObjects().size(), 0, "Unknown children");
@@ -67,9 +67,9 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AgreementMethod am = (AgreementMethod) unmarshallElement(childElementsFile);
+        final AgreementMethod am = (AgreementMethod) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(am, "AgreementMethod");
+        assert am != null;
         Assert.assertEquals(am.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertNotNull(am.getKANonce(), "KA-Nonce child element");
         Assert.assertEquals(am.getUnknownXMLObjects().size(), expectedNumUnknownChildren, "Unknown children");
@@ -80,7 +80,7 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AgreementMethod am = (AgreementMethod) buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod am = (AgreementMethod) buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         
         am.setAlgorithm(expectedAlgorithm);
         
@@ -90,7 +90,7 @@ public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        AgreementMethod am = (AgreementMethod) buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
+        final AgreementMethod am = (AgreementMethod) buildXMLObject(AgreementMethod.DEFAULT_ELEMENT_NAME);
         
         am.setAlgorithm(expectedAlgorithm);
         am.setKANonce((KANonce) buildXMLObject(KANonce.DEFAULT_ELEMENT_NAME));

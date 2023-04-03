@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -36,7 +35,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class KeyAgreementEncryptionConfiguration {
     
     /** The key agreement algorithm URI. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** The collection of {@link KeyAgreementParameter}. */
     @Nullable private Collection<KeyAgreementParameter> parameters;
@@ -62,10 +61,13 @@ public class KeyAgreementEncryptionConfiguration {
     /**
      * Get the collection of {@link KeyAgreementParameter}.
      * 
-     * @return the collection of parameters
+     * <p>Note that null is a very significant return value here as the calling code
+     * will skip nulls but pick the first non-null result, so an empty collection will
+     * circumvent key agreement.</p>
+     * 
+     * @return the collection of parameters or null if none exist
      */
-    @Nullable @NonnullElements @NotLive @Unmodifiable
-    public Collection<KeyAgreementParameter> getParameters() {
+    @Nullable @NotLive @Unmodifiable public Collection<KeyAgreementParameter> getParameters() {
         return parameters;
     }
 

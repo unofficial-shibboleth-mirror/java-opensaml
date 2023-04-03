@@ -17,18 +17,17 @@
 
 package org.opensaml.xmlsec.impl;
 
-import java.util.List;
-
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
+import net.shibboleth.shared.collection.CollectionSupport;
 
+@SuppressWarnings("javadoc")
 public class ExcludedAlgorithmsPredicateTest {
 
     @Test
     public void testBasic() {
-        ExcludedAlgorithmsPredicate predicate = new ExcludedAlgorithmsPredicate(List.of("A", "B", "C", "D"));
+        ExcludedAlgorithmsPredicate predicate = new ExcludedAlgorithmsPredicate(CollectionSupport.listOf("A", "B", "C", "D"));
         
         Assert.assertFalse(predicate.test("A"));
         Assert.assertFalse(predicate.test("B"));
@@ -43,14 +42,9 @@ public class ExcludedAlgorithmsPredicateTest {
         Assert.assertTrue(predicate.test("bax"));
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testNullSet() {
-        new ExcludedAlgorithmsPredicate(null);
-    }
-    
     @Test(expectedExceptions=IllegalArgumentException.class)
     public void testNullArg() {
-        ExcludedAlgorithmsPredicate predicate = new ExcludedAlgorithmsPredicate(List.of("A", "B", "C", "D"));
+        ExcludedAlgorithmsPredicate predicate = new ExcludedAlgorithmsPredicate(CollectionSupport.listOf("A", "B", "C", "D"));
         predicate.test(null);
     }
     

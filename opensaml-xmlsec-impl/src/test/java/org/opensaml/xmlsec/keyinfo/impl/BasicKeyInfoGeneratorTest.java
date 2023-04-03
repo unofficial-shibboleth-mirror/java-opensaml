@@ -26,6 +26,7 @@ import java.security.PublicKey;
 import java.util.List;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
+import org.opensaml.core.xml.XMLObject;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.BasicCredential;
 import org.opensaml.security.crypto.KeySupport;
@@ -98,12 +99,13 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         factory.setEmitPublicDEREncodedKeyValue(true);
         
         generator = factory.newInstance();
-        KeyInfo keyInfo = generator.generate(credential);
-        
+        final KeyInfo keyInfo = generator.generate(credential);
         assert keyInfo != null;
-        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
         
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 2, "Unexpected number of KeyInfo children");
+        final List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+        
+        Assert.assertEquals(children.size(), 2, "Unexpected number of KeyInfo children");
         Assert.assertEquals(keyInfo.getKeyValues().size(), 1, "Unexpected number of KeyValue elements");
         Assert.assertEquals(keyInfo.getDEREncodedKeyValues().size(), 1,
                 "Unexpected number of DEREncodedKeyValue elements");
@@ -179,10 +181,12 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         
         generator = factory.newInstance();
         keyInfo = generator.generate(credential);
-        
         assert keyInfo != null;
-        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 5, "Unexpected # of KeyInfo children found");
+        
+        final List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
+
+        Assert.assertEquals(children.size(), 5, "Unexpected # of KeyInfo children found");
     }
     
     @DataProvider
@@ -211,9 +215,11 @@ public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(type.isInstance(keyInfo));
         
         assert keyInfo != null;
-        Assert.assertNotNull(keyInfo.getOrderedChildren(), "Generated KeyInfo children list was null");
+
+        final List<XMLObject> children = keyInfo.getOrderedChildren();
+        assert children != null;
         
-        Assert.assertEquals(keyInfo.getOrderedChildren().size(), 2, "Unexpected number of KeyInfo children");
+        Assert.assertEquals(children.size(), 2, "Unexpected number of KeyInfo children");
         Assert.assertEquals(keyInfo.getKeyValues().size(), 1, "Unexpected number of KeyValue elements");
         Assert.assertEquals(keyInfo.getDEREncodedKeyValues().size(), 1,
                 "Unexpected number of DEREncodedKeyValue elements");

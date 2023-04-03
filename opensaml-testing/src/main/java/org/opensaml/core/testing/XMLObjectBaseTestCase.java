@@ -138,7 +138,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * 
      * @return the built XMLObject
      */
-    protected <T extends XMLObject> T buildXMLObject(@Nonnull final QName name) {
+    @Nonnull protected <T extends XMLObject> T buildXMLObject(@Nonnull final QName name) {
         final XMLObjectBuilder<T> builder = getBuilder(name);
         if (builder == null) {
             Assert.fail("no builder registered for: " + name);
