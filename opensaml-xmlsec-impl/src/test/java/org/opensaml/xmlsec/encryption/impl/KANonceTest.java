@@ -48,16 +48,16 @@ public class KANonceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KANonce kan = (KANonce) unmarshallElement(singleElementFile);
+        final KANonce kan = (KANonce) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(kan, "KANonce");
+        assert kan != null;
         Assert.assertEquals(expectedBase64Content, kan.getValue(), "KANonce value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        KANonce kan = (KANonce) buildXMLObject(KANonce.DEFAULT_ELEMENT_NAME);
+        final KANonce kan = (KANonce) buildXMLObject(KANonce.DEFAULT_ELEMENT_NAME);
         kan.setValue(expectedBase64Content);
         
         assertXMLEquals(expectedDOM, kan);

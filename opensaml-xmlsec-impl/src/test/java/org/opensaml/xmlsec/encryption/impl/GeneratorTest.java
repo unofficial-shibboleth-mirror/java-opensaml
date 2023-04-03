@@ -48,16 +48,16 @@ public class GeneratorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Generator cbType = (Generator) unmarshallElement(singleElementFile);
+        final Generator cbType = (Generator) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "Generator");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Generator value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Generator cbType = (Generator) buildXMLObject(Generator.DEFAULT_ELEMENT_NAME);
+        final Generator cbType = (Generator) buildXMLObject(Generator.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

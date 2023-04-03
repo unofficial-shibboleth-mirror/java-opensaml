@@ -42,9 +42,9 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(singleElementFile);
+        final X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(x509Element, "X509IssuerSerial");
+        assert x509Element != null;
         Assert.assertNull(x509Element.getX509IssuerName(), "X509IssuerName child element");
         Assert.assertNull(x509Element.getX509SerialNumber(), "X509SerialNumber child element");
     }
@@ -52,9 +52,9 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(childElementsFile);
+        final X509IssuerSerial x509Element = (X509IssuerSerial) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(x509Element, "X509IssuerSerial");
+        assert x509Element != null;
         Assert.assertNotNull(x509Element.getX509IssuerName(), "X509IssuerName child element");
         Assert.assertNotNull(x509Element.getX509SerialNumber(), "X509SerialNumber child element");
     }
@@ -62,7 +62,7 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        X509IssuerSerial x509Element = (X509IssuerSerial) buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
+        final X509IssuerSerial x509Element = (X509IssuerSerial) buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, x509Element);
     }
@@ -70,7 +70,7 @@ public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        X509IssuerSerial x509Element = (X509IssuerSerial) buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
+        final X509IssuerSerial x509Element = (X509IssuerSerial) buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME);
         
         x509Element.setX509IssuerName((X509IssuerName) buildXMLObject(X509IssuerName.DEFAULT_ELEMENT_NAME));
         x509Element.setX509SerialNumber((X509SerialNumber) buildXMLObject(X509SerialNumber.DEFAULT_ELEMENT_NAME));

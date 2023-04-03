@@ -48,16 +48,16 @@ public class XPathTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        XPath xp = (XPath) unmarshallElement(singleElementFile);
+        final XPath xp = (XPath) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(xp, "XPath");
+        assert xp != null;
         Assert.assertEquals(expectedStringContent, xp.getValue(), "XPath value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        XPath xp = (XPath) buildXMLObject(XPath.DEFAULT_ELEMENT_NAME);
+        final XPath xp = (XPath) buildXMLObject(XPath.DEFAULT_ELEMENT_NAME);
         xp.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, xp);

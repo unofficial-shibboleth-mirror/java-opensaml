@@ -46,18 +46,18 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        X509Data x509Data = (X509Data) unmarshallElement(singleElementFile);
+        final X509Data x509Data = (X509Data) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(x509Data, "X509Data");
+        assert x509Data != null;
         Assert.assertEquals(x509Data.getXMLObjects().size(), 0, "Total # of XMLObject child elements");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        X509Data x509Data = (X509Data) unmarshallElement(childElementsFile);
+        final X509Data x509Data = (X509Data) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(x509Data, "X509Data");
+        assert x509Data != null;
         Assert.assertEquals(x509Data.getXMLObjects().size(), 11, "Total # of XMLObject child elements");
         Assert.assertEquals(x509Data.getX509IssuerSerials().size(), 1, "# of X509IssuerSerial child elements");
         Assert.assertEquals(x509Data.getX509SKIs().size(), 1, "# of X509SKI child elements");
@@ -70,7 +70,7 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        X509Data x509Data = (X509Data) buildXMLObject(X509Data.DEFAULT_ELEMENT_NAME);
+        final X509Data x509Data = (X509Data) buildXMLObject(X509Data.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, x509Data);
     }
@@ -78,7 +78,7 @@ public class X509DataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        X509Data x509Data = (X509Data) buildXMLObject(X509Data.DEFAULT_ELEMENT_NAME);
+        final X509Data x509Data = (X509Data) buildXMLObject(X509Data.DEFAULT_ELEMENT_NAME);
         
         x509Data.getXMLObjects().add(buildXMLObject(X509IssuerSerial.DEFAULT_ELEMENT_NAME));
         x509Data.getXMLObjects().add(buildXMLObject(X509SKI.DEFAULT_ELEMENT_NAME));

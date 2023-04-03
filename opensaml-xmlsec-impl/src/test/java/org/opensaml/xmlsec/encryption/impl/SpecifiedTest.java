@@ -48,16 +48,16 @@ public class SpecifiedTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Specified specified = (Specified) unmarshallElement(singleElementFile);
+        final Specified specified = (Specified) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(specified, "Specified");
+        assert specified != null;
         Assert.assertEquals(expectedStringContent, specified.getValue(), "Specified value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Specified specified = (Specified) buildXMLObject(Specified.DEFAULT_ELEMENT_NAME);
+        final Specified specified = (Specified) buildXMLObject(Specified.DEFAULT_ELEMENT_NAME);
         specified.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, specified);

@@ -73,9 +73,9 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EncryptionProperty ep = (EncryptionProperty) unmarshallElement(singleElementFile);
+        final EncryptionProperty ep = (EncryptionProperty) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ep, "EncryptionProperty");
+        assert ep != null;
         Assert.assertNull(ep.getTarget(), "Target attribute");
         Assert.assertNull(ep.getID(), "Id attribute");
         Assert.assertEquals(ep.getUnknownXMLObjects().size(), 0, "Unknown children");
@@ -86,9 +86,9 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        EncryptionProperty ep = (EncryptionProperty) unmarshallElement(singleElementOptionalAttributesFile);
+        final EncryptionProperty ep = (EncryptionProperty) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(ep, "EncryptionProperty");
+        assert ep != null;
         Assert.assertEquals(ep.getTarget(), expectedTarget, "Target attribute");
         Assert.assertEquals(ep.getID(), expectedID, "Id attribute");
         Assert.assertEquals(ep.getUnknownXMLObjects().size(), 0, "Unknown children");
@@ -101,9 +101,9 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        EncryptionProperty ep = (EncryptionProperty) unmarshallElement(childElementsFile);
+        final EncryptionProperty ep = (EncryptionProperty) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(ep, "EncryptionProperty");
+        assert ep != null;
         Assert.assertNull(ep.getTarget(), "Target attribute");
         Assert.assertNull(ep.getID(), "Id attribute");
         Assert.assertEquals(ep.getUnknownXMLObjects().size(), expectedNumUnknownChildren, "Unknown children");
@@ -112,7 +112,7 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
+        final EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, ep);
     }
@@ -125,7 +125,7 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
 
         ((EncryptionProperty)target).setID("id123");
 
@@ -135,7 +135,7 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
+        final EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
         
         ep.setTarget(expectedTarget);
         ep.setID(expectedID);
@@ -148,7 +148,7 @@ public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
+        final EncryptionProperty ep = (EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME);
         
         ep.getUnknownXMLObjects().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));
         ep.getUnknownXMLObjects().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));

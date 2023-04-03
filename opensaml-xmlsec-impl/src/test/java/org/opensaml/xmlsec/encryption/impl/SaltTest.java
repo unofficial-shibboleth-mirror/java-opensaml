@@ -42,7 +42,7 @@ public class SaltTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Salt salt = (Salt) unmarshallElement(singleElementFile);
+        final Salt salt = (Salt) unmarshallElement(singleElementFile);
         
         Assert.assertNotNull(salt, "Salt");
     }
@@ -50,9 +50,9 @@ public class SaltTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Salt salt = (Salt) unmarshallElement(childElementsFile);
+        final Salt salt = (Salt) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(salt, "Salt");
+        assert salt != null;
         Assert.assertNotNull(salt.getSpecified());
         Assert.assertNotNull(salt.getOtherSource());
     }
@@ -60,7 +60,7 @@ public class SaltTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Salt salt = (Salt) buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
+        final Salt salt = (Salt) buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, salt);
     }
@@ -68,7 +68,7 @@ public class SaltTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Salt salt = (Salt) buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
+        final Salt salt = (Salt) buildXMLObject(Salt.DEFAULT_ELEMENT_NAME);
         
         salt.setSpecified(buildXMLObject(Specified.DEFAULT_ELEMENT_NAME));
         salt.setOtherSource(buildXMLObject(OtherSource.DEFAULT_ELEMENT_NAME));

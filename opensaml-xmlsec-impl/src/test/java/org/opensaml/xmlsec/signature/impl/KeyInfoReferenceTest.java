@@ -53,17 +53,17 @@ public class KeyInfoReferenceTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        KeyInfoReference ref = (KeyInfoReference) unmarshallElement(singleElementFile);
+        final KeyInfoReference ref = (KeyInfoReference) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ref, "KeyInfoReference");
+        assert ref != null;
         Assert.assertEquals(ref.getURI(), expectedURI, "URI attribute");
     }
     
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesUnmarshall() {
-        KeyInfoReference ref = (KeyInfoReference) unmarshallElement(singleElementOptionalAttributesFile);
+        final KeyInfoReference ref = (KeyInfoReference) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(ref, "KeyInfoReference");
+        assert ref != null;
         Assert.assertEquals(ref.getID(), expectedID, "Id attribute");
         Assert.assertEquals(ref.getURI(), expectedURI, "URI attribute");
         Assert.assertEquals(ref.resolveIDFromRoot(expectedID), ref);
@@ -71,7 +71,7 @@ public class KeyInfoReferenceTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        KeyInfoReference ref = (KeyInfoReference) buildXMLObject(KeyInfoReference.DEFAULT_ELEMENT_NAME);
+        final KeyInfoReference ref = (KeyInfoReference) buildXMLObject(KeyInfoReference.DEFAULT_ELEMENT_NAME);
         
         ref.setURI(expectedURI);
         
@@ -86,7 +86,7 @@ public class KeyInfoReferenceTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(KeyInfoReference.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(KeyInfoReference.DEFAULT_ELEMENT_NAME);
 
         ((KeyInfoReference)target).setID("id123");
 
@@ -95,7 +95,7 @@ public class KeyInfoReferenceTest extends XMLObjectProviderBaseTestCase {
     
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        KeyInfoReference ref = (KeyInfoReference) buildXMLObject(KeyInfoReference.DEFAULT_ELEMENT_NAME);
+        final KeyInfoReference ref = (KeyInfoReference) buildXMLObject(KeyInfoReference.DEFAULT_ELEMENT_NAME);
 
         ref.setID(expectedID);
         ref.setURI(expectedURI);

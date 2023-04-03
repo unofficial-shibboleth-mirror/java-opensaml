@@ -47,16 +47,16 @@ public class PublicKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PublicKey cbType = (PublicKey) unmarshallElement(singleElementFile);
+        final PublicKey cbType = (PublicKey) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "PublicKey");
+        assert cbType != null;
         Assert.assertEquals(cbType.getValue(), expectedCryptoBinaryContent, "PublicKey value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PublicKey cbType = (PublicKey) buildXMLObject(PublicKey.DEFAULT_ELEMENT_NAME);
+        final PublicKey cbType = (PublicKey) buildXMLObject(PublicKey.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

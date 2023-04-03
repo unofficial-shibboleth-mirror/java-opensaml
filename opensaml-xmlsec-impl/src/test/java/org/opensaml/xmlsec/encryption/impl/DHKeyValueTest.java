@@ -51,9 +51,9 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DHKeyValue keyValue = (DHKeyValue) unmarshallElement(singleElementFile);
+        final DHKeyValue keyValue = (DHKeyValue) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyValue, "DHKeyValue");
+        assert keyValue != null;
         Assert.assertNull(keyValue.getP(), "P child element");
         Assert.assertNull(keyValue.getQ(), "Q child element");
         Assert.assertNull(keyValue.getGenerator(), "Generator child element");
@@ -65,9 +65,9 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        DHKeyValue keyValue = (DHKeyValue) unmarshallElement(childElementsFile);
+        final DHKeyValue keyValue = (DHKeyValue) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(keyValue, "DHKeyValue");
+        assert keyValue != null;
         Assert.assertNotNull(keyValue.getP(), "P child element");
         Assert.assertNotNull(keyValue.getQ(), "Q child element");
         Assert.assertNotNull(keyValue.getGenerator(), "Generator child element");
@@ -79,7 +79,7 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DHKeyValue keyValue = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
+        final DHKeyValue keyValue = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, keyValue);
     }
@@ -87,7 +87,7 @@ public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        DHKeyValue keyValue = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
+        final DHKeyValue keyValue = (DHKeyValue) buildXMLObject(DHKeyValue.DEFAULT_ELEMENT_NAME);
         
         keyValue.setP((P) buildXMLObject(P.DEFAULT_ELEMENT_NAME));
         keyValue.setQ((Q) buildXMLObject(Q.DEFAULT_ELEMENT_NAME));

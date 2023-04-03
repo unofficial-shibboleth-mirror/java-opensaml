@@ -48,16 +48,16 @@ public class MgmtDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        MgmtData keyName = (MgmtData) unmarshallElement(singleElementFile);
+        final MgmtData keyName = (MgmtData) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyName, "MgmtData");
+        assert keyName != null;
         Assert.assertEquals(expectedStringContent, keyName.getValue(), "MgmtData value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        MgmtData keyName = (MgmtData) buildXMLObject(MgmtData.DEFAULT_ELEMENT_NAME);
+        final MgmtData keyName = (MgmtData) buildXMLObject(MgmtData.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, keyName);

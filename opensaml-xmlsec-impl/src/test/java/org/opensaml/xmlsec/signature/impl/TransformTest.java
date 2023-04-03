@@ -54,9 +54,9 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Transform transform = (Transform) unmarshallElement(singleElementFile);
+        final Transform transform = (Transform) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(transform, "Transform");
+        assert transform != null;
         Assert.assertEquals(transform.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertEquals(transform.getAllChildren().size(), 0, "Total children");
         Assert.assertEquals(transform.getXPaths().size(), 0, "XPath children");
@@ -65,9 +65,9 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Transform transform = (Transform) unmarshallElement(childElementsFile);
+        final Transform transform = (Transform) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(transform, "Transform");
+        assert transform != null;
         Assert.assertEquals(transform.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertEquals(transform.getAllChildren().size(), expectedTotalChildren, "Total children");
         Assert.assertEquals(transform.getXPaths().size(), expectedXPathChildren, "XPath children");
@@ -76,7 +76,7 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Transform transform = (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME);
+        final Transform transform = (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME);
         
         transform.setAlgorithm(expectedAlgorithm);
         
@@ -86,7 +86,7 @@ public class TransformTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Transform transform = (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME);
+        final Transform transform = (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME);
         
         transform.setAlgorithm(expectedAlgorithm);
         transform.getAllChildren().add( buildXMLObject(XPath.DEFAULT_ELEMENT_NAME));

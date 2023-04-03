@@ -52,9 +52,9 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ReferenceList rl = (ReferenceList) unmarshallElement(singleElementFile);
+        final ReferenceList rl = (ReferenceList) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(rl, "ReferenceList");
+        assert rl != null;
         Assert.assertEquals(rl.getDataReferences().size(), 0, "# of DataReference children");
         Assert.assertEquals(rl.getKeyReferences().size(), 0, "# of KeyReference children");
     }
@@ -62,9 +62,9 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        ReferenceList rl = (ReferenceList) unmarshallElement(childElementsFile);
+        final ReferenceList rl = (ReferenceList) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(rl, "ReferenceList");
+        assert rl != null;
         Assert.assertEquals(rl.getDataReferences().size(), expectedNumDataRefs, "# of DataReference children");
         Assert.assertEquals(rl.getKeyReferences().size(), expectedNumKeyRefs, "# of KeyReference children");
     }
@@ -72,7 +72,7 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ReferenceList rl = (ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME);
+        final ReferenceList rl = (ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, rl);
     }
@@ -80,7 +80,7 @@ public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        ReferenceList rl = (ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME);
+        final ReferenceList rl = (ReferenceList) buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME);
         
         rl.getReferences().add( (DataReference) buildXMLObject(DataReference.DEFAULT_ELEMENT_NAME));
         rl.getReferences().add( (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME));

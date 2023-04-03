@@ -48,16 +48,16 @@ public class MasterKeyNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        MasterKeyName mkn = (MasterKeyName) unmarshallElement(singleElementFile);
+        final MasterKeyName mkn = (MasterKeyName) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(mkn, "MasterKeyName");
+        assert mkn != null;
         Assert.assertEquals(expectedStringContent, mkn.getValue(), "MasterKeyName value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        MasterKeyName mkn = (MasterKeyName) buildXMLObject(MasterKeyName.DEFAULT_ELEMENT_NAME);
+        final MasterKeyName mkn = (MasterKeyName) buildXMLObject(MasterKeyName.DEFAULT_ELEMENT_NAME);
         mkn.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, mkn);

@@ -54,27 +54,27 @@ public class MGFTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        MGF mgf = (MGF) unmarshallElement(singleElementFile);
+        final MGF mgf = (MGF) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(mgf, "MGF");
+        assert mgf != null;
         Assert.assertEquals(mgf.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        MGF mgf = (MGF) unmarshallElement(childElementsFile);
+        final MGF mgf = (MGF) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(mgf, "MGF");
+        assert mgf != null;
         Assert.assertEquals(mgf.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
+        
         Assert.assertNotNull(mgf.getParameters(), "Parameters child element");
-        System.out.println("Parameters: " + mgf.getParameters().getClass().getName());
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        MGF mgf = (MGF) buildXMLObject(MGF.DEFAULT_ELEMENT_NAME);
+        final MGF mgf = (MGF) buildXMLObject(MGF.DEFAULT_ELEMENT_NAME);
         
         mgf.setAlgorithm(expectedAlgorithm);
         
@@ -84,7 +84,7 @@ public class MGFTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        MGF mgf = (MGF) buildXMLObject(MGF.DEFAULT_ELEMENT_NAME);
+        final MGF mgf = (MGF) buildXMLObject(MGF.DEFAULT_ELEMENT_NAME);
         
         mgf.setAlgorithm(expectedAlgorithm);
         

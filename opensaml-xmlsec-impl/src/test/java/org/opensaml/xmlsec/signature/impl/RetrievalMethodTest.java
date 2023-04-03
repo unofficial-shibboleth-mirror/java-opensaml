@@ -52,9 +52,9 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementFile);
+        final RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(rm, "RetrievalMethod");
+        assert rm != null;
         Assert.assertEquals(rm.getURI(), expectedURI, "URI attribute");
         Assert.assertNull(rm.getTransforms(), "Transforms child element");
     }
@@ -64,9 +64,9 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementOptionalAttributesFile);
+        final RetrievalMethod rm = (RetrievalMethod) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(rm, "RetrievalMethod");
+        assert rm != null;
         Assert.assertEquals(rm.getURI(), expectedURI, "URI attribute");
         Assert.assertEquals(rm.getType(), expectedType, "Type attribute");
         Assert.assertNull(rm.getTransforms(), "Transforms child element");
@@ -75,9 +75,9 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        RetrievalMethod rm = (RetrievalMethod) unmarshallElement(childElementsFile);
+        final RetrievalMethod rm = (RetrievalMethod) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(rm, "RetrievalMethod");
+        assert rm != null;
         Assert.assertEquals(rm.getURI(), expectedURI, "URI attribute");
         Assert.assertNotNull(rm.getTransforms(), "Transforms child element");
     }
@@ -85,7 +85,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
+        final RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
         
         rm.setURI(expectedURI);
         
@@ -97,7 +97,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
+        final RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
         
         rm.setURI(expectedURI);
         rm.setType(expectedType);
@@ -108,7 +108,7 @@ public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
+        final RetrievalMethod rm = (RetrievalMethod) buildXMLObject(RetrievalMethod.DEFAULT_ELEMENT_NAME);
         
         rm.setURI(expectedURI);
         rm.setTransforms((Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME));

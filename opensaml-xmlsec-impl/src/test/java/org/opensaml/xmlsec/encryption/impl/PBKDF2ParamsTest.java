@@ -44,7 +44,7 @@ public class PBKDF2ParamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PBKDF2Params params = (PBKDF2Params) unmarshallElement(singleElementFile);
+        final PBKDF2Params params = (PBKDF2Params) unmarshallElement(singleElementFile);
         
         Assert.assertNotNull(params, "PBKDF2Params");
     }
@@ -52,9 +52,9 @@ public class PBKDF2ParamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        PBKDF2Params params = (PBKDF2Params) unmarshallElement(childElementsFile);
+        final PBKDF2Params params = (PBKDF2Params) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(params, "PBKDF2Params");
+        assert params != null;
         Assert.assertNotNull(params.getSalt());
         Assert.assertNotNull(params.getIterationCount());
         Assert.assertNotNull(params.getKeyLength());
@@ -64,7 +64,7 @@ public class PBKDF2ParamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PBKDF2Params params = (PBKDF2Params) buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
+        final PBKDF2Params params = (PBKDF2Params) buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, params);
     }
@@ -72,7 +72,7 @@ public class PBKDF2ParamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        PBKDF2Params params = (PBKDF2Params) buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
+        final PBKDF2Params params = (PBKDF2Params) buildXMLObject(PBKDF2Params.DEFAULT_ELEMENT_NAME);
         
         params.setSalt(buildXMLObject(Salt.DEFAULT_ELEMENT_NAME));
         params.setIterationCount(buildXMLObject(IterationCount.DEFAULT_ELEMENT_NAME));

@@ -48,16 +48,16 @@ public class SPKISexpTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SPKISexp spkiElement = (SPKISexp) unmarshallElement(singleElementFile);
+        final SPKISexp spkiElement = (SPKISexp) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(spkiElement, "SPKISexp");
+        assert spkiElement != null;
         Assert.assertEquals(expectedStringContent, spkiElement.getValue(), "SPKISexp value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SPKISexp spkiElement = (SPKISexp) buildXMLObject(SPKISexp.DEFAULT_ELEMENT_NAME);
+        final SPKISexp spkiElement = (SPKISexp) buildXMLObject(SPKISexp.DEFAULT_ELEMENT_NAME);
         spkiElement.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, spkiElement);

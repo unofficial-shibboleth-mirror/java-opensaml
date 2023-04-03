@@ -49,25 +49,25 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Transforms em = (Transforms) unmarshallElement(singleElementFile);
+        final Transforms em = (Transforms) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(em, "Transforms");
+        assert em != null;
         Assert.assertEquals(em.getTransforms().size(), 0, "Transform children");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Transforms em = (Transforms) unmarshallElement(childElementsFile);
+        final Transforms em = (Transforms) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(em, "Transforms");
+        assert em != null;
         Assert.assertEquals(em.getTransforms().size(), expectedNumTransforms, "Transform children");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Transforms em = (Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME);
+        final Transforms em = (Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, em);
     }
@@ -75,7 +75,7 @@ public class TransformsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Transforms em = (Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME);
+        final Transforms em = (Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME);
         
         em.getTransforms().add( (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME));
         em.getTransforms().add( (Transform) buildXMLObject(Transform.DEFAULT_ELEMENT_NAME));

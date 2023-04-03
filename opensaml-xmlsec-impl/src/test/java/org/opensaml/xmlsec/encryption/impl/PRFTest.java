@@ -54,27 +54,26 @@ public class PRFTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PRF prf = (PRF) unmarshallElement(singleElementFile);
+        final PRF prf = (PRF) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(prf, "PRF");
+        assert prf != null;
         Assert.assertEquals(prf.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        PRF prf = (PRF) unmarshallElement(childElementsFile);
+        final PRF prf = (PRF) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(prf, "PRF");
+        assert prf != null;
         Assert.assertEquals(prf.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertNotNull(prf.getParameters(), "Parameters child element");
-        System.out.println("Parameters: " + prf.getParameters().getClass().getName());
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PRF prf = (PRF) buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
+        final PRF prf = (PRF) buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
         
         prf.setAlgorithm(expectedAlgorithm);
         
@@ -84,7 +83,7 @@ public class PRFTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        PRF prf = (PRF) buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
+        final PRF prf = (PRF) buildXMLObject(PRF.DEFAULT_ELEMENT_NAME);
         
         prf.setAlgorithm(expectedAlgorithm);
         

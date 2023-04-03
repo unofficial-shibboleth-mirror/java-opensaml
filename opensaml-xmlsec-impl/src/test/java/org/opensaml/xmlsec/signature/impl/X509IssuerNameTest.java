@@ -48,16 +48,16 @@ public class X509IssuerNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        X509IssuerName x509Element = (X509IssuerName) unmarshallElement(singleElementFile);
+        final X509IssuerName x509Element = (X509IssuerName) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(x509Element, "X509IssuerName");
+        assert x509Element != null;
         Assert.assertEquals(expectedStringContent, x509Element.getValue(), "X509IssuerName value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        X509IssuerName x509Element = (X509IssuerName) buildXMLObject(X509IssuerName.DEFAULT_ELEMENT_NAME);
+        final X509IssuerName x509Element = (X509IssuerName) buildXMLObject(X509IssuerName.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, x509Element);

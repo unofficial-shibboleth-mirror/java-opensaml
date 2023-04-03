@@ -42,9 +42,9 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(singleElementFile);
+        final RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyValue, "RSAKeyValue");
+        assert keyValue != null;
         Assert.assertNull(keyValue.getModulus(), "Modulus child element");
         Assert.assertNull(keyValue.getExponent(), "Exponent child element");
     }
@@ -52,9 +52,9 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(childElementsFile);
+        final RSAKeyValue keyValue = (RSAKeyValue) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(keyValue, "RSAKeyValue");
+        assert keyValue != null;
         Assert.assertNotNull(keyValue.getModulus(), "Modulus child element");
         Assert.assertNotNull(keyValue.getExponent(), "Exponent child element");
     }
@@ -62,7 +62,7 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        RSAKeyValue keyValue = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
+        final RSAKeyValue keyValue = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, keyValue);
     }
@@ -70,7 +70,7 @@ public class RSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        RSAKeyValue keyValue = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
+        final RSAKeyValue keyValue = (RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME);
         
         keyValue.setModulus((Modulus) buildXMLObject(Modulus.DEFAULT_ELEMENT_NAME));
         keyValue.setExponent((Exponent) buildXMLObject(Exponent.DEFAULT_ELEMENT_NAME));

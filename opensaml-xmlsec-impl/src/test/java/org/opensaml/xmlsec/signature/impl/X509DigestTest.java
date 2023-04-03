@@ -25,6 +25,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class X509DigestTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;
@@ -48,9 +49,9 @@ public class X509DigestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        X509Digest digest = (X509Digest) unmarshallElement(singleElementFile);
+        final X509Digest digest = (X509Digest) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(digest, "X509Digest");
+        assert digest != null;
         Assert.assertEquals(expectedAlgorithm, digest.getAlgorithm(), "Algorithm attribute");
         Assert.assertEquals(digest.getValue(), expectedStringContent, "X509Digest value");
     }
@@ -58,7 +59,7 @@ public class X509DigestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        X509Digest digest = (X509Digest) buildXMLObject(X509Digest.DEFAULT_ELEMENT_NAME);
+        final X509Digest digest = (X509Digest) buildXMLObject(X509Digest.DEFAULT_ELEMENT_NAME);
         
         digest.setValue(expectedStringContent);
         digest.setAlgorithm(expectedAlgorithm);

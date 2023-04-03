@@ -48,16 +48,16 @@ public class QTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Q cbType = (Q) unmarshallElement(singleElementFile);
+        final Q cbType = (Q) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "Q");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Q value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Q cbType = (Q) buildXMLObject(Q.DEFAULT_ELEMENT_NAME);
+        final Q cbType = (Q) buildXMLObject(Q.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

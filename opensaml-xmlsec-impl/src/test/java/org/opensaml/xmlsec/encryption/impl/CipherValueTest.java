@@ -48,16 +48,16 @@ public class CipherValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        CipherValue cv = (CipherValue) unmarshallElement(singleElementFile);
+        final CipherValue cv = (CipherValue) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cv, "CipherValue");
+        assert cv != null;
         Assert.assertEquals(expectedBase64Content, cv.getValue(), "CipherValue value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        CipherValue cv = (CipherValue) buildXMLObject(CipherValue.DEFAULT_ELEMENT_NAME);
+        final CipherValue cv = (CipherValue) buildXMLObject(CipherValue.DEFAULT_ELEMENT_NAME);
         cv.setValue(expectedBase64Content);
         
         assertXMLEquals(expectedDOM, cv);

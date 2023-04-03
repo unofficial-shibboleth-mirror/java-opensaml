@@ -48,16 +48,16 @@ public class PGPKeyPacketTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PGPKeyPacket pgpElement = (PGPKeyPacket) unmarshallElement(singleElementFile);
+        final PGPKeyPacket pgpElement = (PGPKeyPacket) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(pgpElement, "PGPKeyPacket");
+        assert pgpElement != null;
         Assert.assertEquals(expectedStringContent, pgpElement.getValue(), "PGPKeyPacket value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PGPKeyPacket pgpElement = (PGPKeyPacket) buildXMLObject(PGPKeyPacket.DEFAULT_ELEMENT_NAME);
+        final PGPKeyPacket pgpElement = (PGPKeyPacket) buildXMLObject(PGPKeyPacket.DEFAULT_ELEMENT_NAME);
         pgpElement.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, pgpElement);

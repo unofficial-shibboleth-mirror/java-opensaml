@@ -49,9 +49,9 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        CipherReference cr = (CipherReference) unmarshallElement(singleElementFile);
+        final CipherReference cr = (CipherReference) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cr, "CipherReference");
+        assert cr != null;
         Assert.assertEquals(cr.getURI(), expectedURI, "URI attribute");
         Assert.assertNull(cr.getTransforms(), "Transforms child");
     }
@@ -59,9 +59,9 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        CipherReference cr = (CipherReference) unmarshallElement(childElementsFile);
+        final CipherReference cr = (CipherReference) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(cr, "CipherReference");
+        assert cr != null;
         Assert.assertEquals(cr.getURI(), expectedURI, "URI attribute");
         Assert.assertNotNull(cr.getTransforms(), "Transforms child");
     }
@@ -69,7 +69,7 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        CipherReference cr = (CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME);
+        final CipherReference cr = (CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME);
         
         cr.setURI(expectedURI);
         
@@ -79,7 +79,7 @@ public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        CipherReference cr = (CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME);
+        final CipherReference cr = (CipherReference) buildXMLObject(CipherReference.DEFAULT_ELEMENT_NAME);
         
         cr.setURI(expectedURI);
         cr.setTransforms((Transforms) buildXMLObject(Transforms.DEFAULT_ELEMENT_NAME));

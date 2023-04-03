@@ -48,16 +48,16 @@ public class KeySizeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KeySize keySize = (KeySize) unmarshallElement(singleElementFile);
+        final KeySize keySize = (KeySize) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keySize, "KeySize");
+        assert keySize != null;
         Assert.assertEquals(expectedIntegerContent, keySize.getValue(), "KeySize value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        KeySize keySize = (KeySize) buildXMLObject(KeySize.DEFAULT_ELEMENT_NAME);
+        final KeySize keySize = (KeySize) buildXMLObject(KeySize.DEFAULT_ELEMENT_NAME);
         keySize.setValue(expectedIntegerContent);
         
         assertXMLEquals(expectedDOM, keySize);

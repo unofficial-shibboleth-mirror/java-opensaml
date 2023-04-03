@@ -48,16 +48,16 @@ public class PgenCounterTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PgenCounter cbType = (PgenCounter) unmarshallElement(singleElementFile);
+        final PgenCounter cbType = (PgenCounter) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "PgenCounter");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "PgenCounter value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PgenCounter cbType = (PgenCounter) buildXMLObject(PgenCounter.DEFAULT_ELEMENT_NAME);
+        final PgenCounter cbType = (PgenCounter) buildXMLObject(PgenCounter.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

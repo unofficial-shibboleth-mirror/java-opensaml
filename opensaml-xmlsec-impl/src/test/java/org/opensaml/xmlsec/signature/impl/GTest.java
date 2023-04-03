@@ -48,16 +48,16 @@ public class GTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        G cbType = (G) unmarshallElement(singleElementFile);
+        final G cbType = (G) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "G");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "G value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        G cbType = (G) buildXMLObject(G.DEFAULT_ELEMENT_NAME);
+        final G cbType = (G) buildXMLObject(G.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

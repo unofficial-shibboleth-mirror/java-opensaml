@@ -50,16 +50,16 @@ public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        X509SerialNumber x509Element = (X509SerialNumber) unmarshallElement(singleElementFile);
+        final X509SerialNumber x509Element = (X509SerialNumber) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(x509Element, "X509SerialNumber");
+        assert x509Element != null;
         Assert.assertEquals(expectedBigIntegerContent, x509Element.getValue(), "X509SerialNumber value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        X509SerialNumber x509Element = (X509SerialNumber) buildXMLObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
+        final X509SerialNumber x509Element = (X509SerialNumber) buildXMLObject(X509SerialNumber.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedBigIntegerContent);
         
         assertXMLEquals(expectedDOM, x509Element);

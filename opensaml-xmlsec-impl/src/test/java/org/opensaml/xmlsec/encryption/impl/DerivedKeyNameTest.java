@@ -48,16 +48,16 @@ public class DerivedKeyNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DerivedKeyName dkn = (DerivedKeyName) unmarshallElement(singleElementFile);
+        final DerivedKeyName dkn = (DerivedKeyName) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(dkn, "DerivedKeyName");
+        assert dkn != null;
         Assert.assertEquals(expectedStringContent, dkn.getValue(), "DerivedKeyName value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DerivedKeyName dkn = (DerivedKeyName) buildXMLObject(DerivedKeyName.DEFAULT_ELEMENT_NAME);
+        final DerivedKeyName dkn = (DerivedKeyName) buildXMLObject(DerivedKeyName.DEFAULT_ELEMENT_NAME);
         dkn.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, dkn);

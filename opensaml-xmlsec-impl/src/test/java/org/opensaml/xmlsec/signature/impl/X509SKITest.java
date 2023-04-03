@@ -48,16 +48,16 @@ public class X509SKITest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        X509SKI x509Element = (X509SKI) unmarshallElement(singleElementFile);
+        final X509SKI x509Element = (X509SKI) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(x509Element, "X509SKI");
+        assert x509Element != null;
         Assert.assertEquals(expectedStringContent, x509Element.getValue(), "X509SKI value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        X509SKI x509Element = (X509SKI) buildXMLObject(X509SKI.DEFAULT_ELEMENT_NAME);
+        final X509SKI x509Element = (X509SKI) buildXMLObject(X509SKI.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, x509Element);

@@ -71,9 +71,9 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementFile);
+        final EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ek, "EncryptedKey");
+        assert ek != null;
         Assert.assertNull(ek.getEncryptionMethod(), "EncryptionMethod child");
         Assert.assertNull(ek.getKeyInfo(), "KeyInfo child");
         Assert.assertNull(ek.getCipherData(), "CipherData child");
@@ -85,9 +85,9 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        EncryptedKey ek = (EncryptedKey) unmarshallElement(childElementsFile);
+        final EncryptedKey ek = (EncryptedKey) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(ek, "EncryptedKey");
+        assert ek != null;
         Assert.assertNotNull(ek.getEncryptionMethod(), "EncryptionMethod child");
         Assert.assertNotNull(ek.getKeyInfo(), "KeyInfo child");
         Assert.assertNotNull(ek.getCipherData(), "CipherData child");
@@ -99,9 +99,9 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementOptionalAttributesFile);
+        final EncryptedKey ek = (EncryptedKey) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(ek, "EncryptedKey");
+        assert ek != null;
         Assert.assertEquals(ek.getID(), expectedId, "Id attribute");
         Assert.assertEquals(ek.getType(), expectedType, "Type attribute");
         Assert.assertEquals(ek.getMimeType(), expectedMimeType, "MimeType attribute");
@@ -114,7 +114,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
+        final EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, ek);
     }
@@ -127,7 +127,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
 
         ((EncryptedKey)target).setID("id123");
 
@@ -137,7 +137,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
+        final EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         
         
         ek.setEncryptionMethod((EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME));
@@ -153,7 +153,7 @@ public class EncryptedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
+        final EncryptedKey ek = (EncryptedKey) buildXMLObject(EncryptedKey.DEFAULT_ELEMENT_NAME);
         
         ek.setID(expectedId);
         ek.setType(expectedType);

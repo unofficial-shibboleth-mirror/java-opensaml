@@ -57,7 +57,7 @@ public class DerivedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DerivedKey dk = (DerivedKey) unmarshallElement(singleElementFile);
+        final DerivedKey dk = (DerivedKey) unmarshallElement(singleElementFile);
         
         Assert.assertNotNull(dk);
     }
@@ -65,7 +65,8 @@ public class DerivedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        DerivedKey dk = (DerivedKey) unmarshallElement(childElementsFile);
+        final DerivedKey dk = (DerivedKey) unmarshallElement(childElementsFile);
+        assert dk != null;
         
         Assert.assertNotNull(dk.getKeyDerivationMethod());
         Assert.assertNotNull(dk.getReferenceList());
@@ -76,9 +77,9 @@ public class DerivedKeyTest extends XMLObjectProviderBaseTestCase {
     
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesUnmarshall() {
-        DerivedKey dk = (DerivedKey) unmarshallElement(singleElementOptionalAttributesFile);
+        final DerivedKey dk = (DerivedKey) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(dk);
+        assert dk != null;
         Assert.assertEquals(dk.getId(), expectedId);
         Assert.assertEquals(dk.getRecipient(), expectedRecipient);
         Assert.assertEquals(dk.getType(), expectedType);
@@ -87,7 +88,7 @@ public class DerivedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DerivedKey dk = (DerivedKey) buildXMLObject(DerivedKey.DEFAULT_ELEMENT_NAME);
+        final DerivedKey dk = (DerivedKey) buildXMLObject(DerivedKey.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, dk);
     }
@@ -95,7 +96,7 @@ public class DerivedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        DerivedKey dk = (DerivedKey) buildXMLObject(DerivedKey.DEFAULT_ELEMENT_NAME);
+        final DerivedKey dk = (DerivedKey) buildXMLObject(DerivedKey.DEFAULT_ELEMENT_NAME);
         
         dk.setKeyDerivationMethod(buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME));
         dk.setReferenceList(buildXMLObject(ReferenceList.DEFAULT_ELEMENT_NAME));
@@ -107,7 +108,7 @@ public class DerivedKeyTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        DerivedKey dk = (DerivedKey) buildXMLObject(DerivedKey.DEFAULT_ELEMENT_NAME);
+        final DerivedKey dk = (DerivedKey) buildXMLObject(DerivedKey.DEFAULT_ELEMENT_NAME);
         
         dk.setId(expectedId);
         dk.setRecipient(expectedRecipient);

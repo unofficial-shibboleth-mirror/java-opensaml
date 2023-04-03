@@ -44,9 +44,9 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PGPData pgpData = (PGPData) unmarshallElement(singleElementFile);
+        final PGPData pgpData = (PGPData) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(pgpData, "PGPData");
+        assert pgpData != null;
         Assert.assertNull(pgpData.getPGPKeyID(), "PGPKeyID child element");
         Assert.assertNull(pgpData.getPGPKeyPacket(), "PGPKeyPacket child element");
         Assert.assertEquals(pgpData.getUnknownXMLObjects().size(), 0, "# of other XMLObject children");
@@ -55,9 +55,9 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        PGPData pgpData = (PGPData) unmarshallElement(childElementsFile);
+        final PGPData pgpData = (PGPData) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(pgpData, "PGPData");
+        assert pgpData != null;
         Assert.assertNotNull(pgpData.getPGPKeyID(), "PGPKeyID child element");
         Assert.assertNotNull(pgpData.getPGPKeyPacket(), "PGPKeyPacket child element");
         Assert.assertEquals(pgpData.getUnknownXMLObjects().size(), 2, "# of other XMLObject children");
@@ -66,7 +66,7 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PGPData pgpData = (PGPData) buildXMLObject(PGPData.DEFAULT_ELEMENT_NAME);
+        final PGPData pgpData = (PGPData) buildXMLObject(PGPData.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, pgpData);
     }
@@ -74,7 +74,7 @@ public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        PGPData pgpData = (PGPData) buildXMLObject(PGPData.DEFAULT_ELEMENT_NAME);
+        final PGPData pgpData = (PGPData) buildXMLObject(PGPData.DEFAULT_ELEMENT_NAME);
         
         pgpData.setPGPKeyID((PGPKeyID) buildXMLObject(PGPKeyID.DEFAULT_ELEMENT_NAME));
         pgpData.setPGPKeyPacket((PGPKeyPacket) buildXMLObject(PGPKeyPacket.DEFAULT_ELEMENT_NAME));

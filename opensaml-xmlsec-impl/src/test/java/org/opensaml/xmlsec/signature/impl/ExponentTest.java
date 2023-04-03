@@ -48,16 +48,16 @@ public class ExponentTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Exponent cbType = (Exponent) unmarshallElement(singleElementFile);
+        final Exponent cbType = (Exponent) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "Exponent");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Exponent value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Exponent cbType = (Exponent) buildXMLObject(Exponent.DEFAULT_ELEMENT_NAME);
+        final Exponent cbType = (Exponent) buildXMLObject(Exponent.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

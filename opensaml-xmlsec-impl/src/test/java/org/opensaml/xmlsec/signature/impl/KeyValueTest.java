@@ -41,9 +41,9 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KeyValue keyValue = (KeyValue) unmarshallElement(singleElementFile);
+        final KeyValue keyValue = (KeyValue) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyValue, "KeyValue");
+        assert keyValue != null;
         Assert.assertNull(keyValue.getRSAKeyValue(), "RSAKeyValue child element");
         Assert.assertNull(keyValue.getDSAKeyValue(), "DSAKeyValue child element");
         Assert.assertNull(keyValue.getUnknownXMLObject(), "Wildcard child element");
@@ -52,9 +52,9 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        KeyValue keyValue = (KeyValue) unmarshallElement(childElementsFile);
+        final KeyValue keyValue = (KeyValue) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(keyValue, "KeyValue");
+        assert keyValue != null;
         Assert.assertNotNull(keyValue.getRSAKeyValue(), "RSAKeyValue child element");
         Assert.assertNull(keyValue.getDSAKeyValue(), "DSAKeyValue child element");
         Assert.assertNull(keyValue.getUnknownXMLObject(), "Wildcard child element");
@@ -63,7 +63,7 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        KeyValue keyValue = (KeyValue) buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME);
+        final KeyValue keyValue = (KeyValue) buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, keyValue);
     }
@@ -71,7 +71,7 @@ public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        KeyValue keyValue = (KeyValue) buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME);
+        final KeyValue keyValue = (KeyValue) buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME);
         
         keyValue.setRSAKeyValue((RSAKeyValue) buildXMLObject(RSAKeyValue.DEFAULT_ELEMENT_NAME));
         

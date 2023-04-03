@@ -57,9 +57,9 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementFile);
+        final EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ep, "EncryptionProperties");
+        assert ep != null;
         Assert.assertNull(ep.getID(), "Id attribute");
         Assert.assertEquals(ep.getEncryptionProperties().size(), 0, "# of EncryptionProperty children");
     }
@@ -67,9 +67,9 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementOptionalAttributesFile);
+        final EncryptionProperties ep = (EncryptionProperties) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(ep, "EncryptionProperties");
+        assert ep != null;
         Assert.assertEquals(ep.getID(), expectedID, "Id attribute");
         Assert.assertEquals(ep.getEncryptionProperties().size(), 0, "# of EncryptionProperty children");
         
@@ -79,9 +79,9 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        EncryptionProperties ep = (EncryptionProperties) unmarshallElement(childElementsFile);
+        final EncryptionProperties ep = (EncryptionProperties) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(ep, "EncryptionProperties");
+        assert ep != null;
         Assert.assertNull(ep.getID(), "Id attribute");
         Assert.assertEquals(ep.getEncryptionProperties().size(), expectedNumEncProps, "# of EncryptionProperty children");
     }
@@ -89,7 +89,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
+        final EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, ep);
     }
@@ -102,7 +102,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
 
         ((EncryptionProperties)target).setID("id123");
 
@@ -113,7 +113,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
+        final EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
         
         ep.setID(expectedID);
         
@@ -123,7 +123,7 @@ public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
+        final EncryptionProperties ep = (EncryptionProperties) buildXMLObject(EncryptionProperties.DEFAULT_ELEMENT_NAME);
         
         ep.getEncryptionProperties().add((EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME));
         ep.getEncryptionProperties().add((EncryptionProperty) buildXMLObject(EncryptionProperty.DEFAULT_ELEMENT_NAME));

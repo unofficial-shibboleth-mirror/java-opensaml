@@ -48,16 +48,16 @@ public class KeyNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KeyName keyName = (KeyName) unmarshallElement(singleElementFile);
+        final KeyName keyName = (KeyName) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyName, "KeyName");
+        assert keyName != null;
         Assert.assertEquals(expectedStringContent, keyName.getValue(), "KeyName value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
+        final KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, keyName);

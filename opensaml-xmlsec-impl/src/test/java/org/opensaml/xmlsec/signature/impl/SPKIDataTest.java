@@ -42,18 +42,18 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SPKIData spkiData = (SPKIData) unmarshallElement(singleElementFile);
+        final SPKIData spkiData = (SPKIData) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(spkiData, "SPKIData");
+        assert spkiData != null;
         Assert.assertEquals(spkiData.getXMLObjects().size(), 0, "Total # of XMLObject child elements");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        SPKIData spkiData = (SPKIData) unmarshallElement(childElementsFile);
+        final SPKIData spkiData = (SPKIData) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(spkiData, "SPKIData");
+        assert spkiData != null;
         Assert.assertEquals(spkiData.getXMLObjects().size(), 4, "Total # of XMLObject child elements");
         Assert.assertEquals(spkiData.getSPKISexps().size(), 2, "# of SPKISexp child elements");
         Assert.assertEquals(spkiData.getXMLObjects(SimpleXMLObject.ELEMENT_NAME).size(), 2, "# of SimpleElement child elements");
@@ -62,7 +62,7 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SPKIData spkiData = (SPKIData) buildXMLObject(SPKIData.DEFAULT_ELEMENT_NAME);
+        final SPKIData spkiData = (SPKIData) buildXMLObject(SPKIData.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, spkiData);
     }
@@ -70,7 +70,7 @@ public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        SPKIData spkiData = (SPKIData) buildXMLObject(SPKIData.DEFAULT_ELEMENT_NAME);
+        final SPKIData spkiData = (SPKIData) buildXMLObject(SPKIData.DEFAULT_ELEMENT_NAME);
         
         spkiData.getXMLObjects().add(buildXMLObject(SPKISexp.DEFAULT_ELEMENT_NAME));
         spkiData.getXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));

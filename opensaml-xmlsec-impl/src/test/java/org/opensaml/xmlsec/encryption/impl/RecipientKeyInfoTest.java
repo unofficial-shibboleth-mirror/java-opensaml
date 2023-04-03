@@ -57,9 +57,9 @@ public class RecipientKeyInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        RecipientKeyInfo keyInfo = (RecipientKeyInfo) unmarshallElement(singleElementFile);
+        final RecipientKeyInfo keyInfo = (RecipientKeyInfo) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyInfo, "RecipientKeyInfo");
+        assert keyInfo != null;
         Assert.assertNull(keyInfo.getID(), "Id attribute");
         Assert.assertEquals(keyInfo.getXMLObjects().size(), 0, "Total # of XMLObject child elements");
     }
@@ -67,9 +67,9 @@ public class RecipientKeyInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        RecipientKeyInfo keyInfo = (RecipientKeyInfo) unmarshallElement(singleElementOptionalAttributesFile);
+        final RecipientKeyInfo keyInfo = (RecipientKeyInfo) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(keyInfo, "RecipientKeyInfo");
+        assert keyInfo != null;
         Assert.assertEquals(keyInfo.getID(), expectedID, "Id attribute");
         Assert.assertEquals(keyInfo.getXMLObjects().size(), 0, "Total # of XMLObject child elements");
     }
@@ -77,9 +77,9 @@ public class RecipientKeyInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        RecipientKeyInfo keyInfo = (RecipientKeyInfo) unmarshallElement(childElementsFile);
+        final RecipientKeyInfo keyInfo = (RecipientKeyInfo) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(keyInfo, "RecipientKeyInfo");
+        assert keyInfo != null;
         Assert.assertEquals(keyInfo.getXMLObjects().size(), 11, "Total # of XMLObject child elements");
         Assert.assertEquals(keyInfo.getKeyNames().size(), 2, "# of KeyName child elements");
         Assert.assertEquals(keyInfo.getKeyValues().size(), 2, "# of KeyValue child elements");
@@ -94,7 +94,7 @@ public class RecipientKeyInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        RecipientKeyInfo keyInfo = (RecipientKeyInfo) buildXMLObject(RecipientKeyInfo.DEFAULT_ELEMENT_NAME);
+        final RecipientKeyInfo keyInfo = (RecipientKeyInfo) buildXMLObject(RecipientKeyInfo.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, keyInfo);
     }
@@ -102,7 +102,7 @@ public class RecipientKeyInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        RecipientKeyInfo keyInfo = (RecipientKeyInfo) buildXMLObject(RecipientKeyInfo.DEFAULT_ELEMENT_NAME);
+        final RecipientKeyInfo keyInfo = (RecipientKeyInfo) buildXMLObject(RecipientKeyInfo.DEFAULT_ELEMENT_NAME);
         
         keyInfo.setID(expectedID);
         
@@ -112,7 +112,7 @@ public class RecipientKeyInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        RecipientKeyInfo keyInfo = (RecipientKeyInfo) buildXMLObject(RecipientKeyInfo.DEFAULT_ELEMENT_NAME);
+        final RecipientKeyInfo keyInfo = (RecipientKeyInfo) buildXMLObject(RecipientKeyInfo.DEFAULT_ELEMENT_NAME);
         
         keyInfo.getXMLObjects().add(buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME));
         keyInfo.getXMLObjects().add(buildXMLObject(KeyValue.DEFAULT_ELEMENT_NAME));

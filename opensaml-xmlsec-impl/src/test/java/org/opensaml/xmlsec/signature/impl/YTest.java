@@ -48,16 +48,16 @@ public class YTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Y cbType = (Y) unmarshallElement(singleElementFile);
+        final Y cbType = (Y) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "Y");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Y value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Y cbType = (Y) buildXMLObject(Y.DEFAULT_ELEMENT_NAME);
+        final Y cbType = (Y) buildXMLObject(Y.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

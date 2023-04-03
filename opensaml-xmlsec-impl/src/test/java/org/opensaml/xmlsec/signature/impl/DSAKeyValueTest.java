@@ -47,9 +47,9 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DSAKeyValue keyValue = (DSAKeyValue) unmarshallElement(singleElementFile);
+        final DSAKeyValue keyValue = (DSAKeyValue) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyValue, "DSAKeyValue");
+        assert keyValue != null;
         Assert.assertNull(keyValue.getP(), "P child element");
         Assert.assertNull(keyValue.getQ(), "Q child element");
         Assert.assertNull(keyValue.getG(), "G child element");
@@ -62,9 +62,9 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        DSAKeyValue keyValue = (DSAKeyValue) unmarshallElement(childElementsFile);
+        final DSAKeyValue keyValue = (DSAKeyValue) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(keyValue, "DSAKeyValue");
+        assert keyValue != null;
         Assert.assertNotNull(keyValue.getP(), "P child element");
         Assert.assertNotNull(keyValue.getQ(), "Q child element");
         Assert.assertNotNull(keyValue.getG(), "G child element");
@@ -77,7 +77,7 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DSAKeyValue keyValue = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
+        final DSAKeyValue keyValue = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, keyValue);
     }
@@ -85,7 +85,7 @@ public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        DSAKeyValue keyValue = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
+        final DSAKeyValue keyValue = (DSAKeyValue) buildXMLObject(DSAKeyValue.DEFAULT_ELEMENT_NAME);
         
         keyValue.setP((P) buildXMLObject(P.DEFAULT_ELEMENT_NAME));
         keyValue.setQ((Q) buildXMLObject(Q.DEFAULT_ELEMENT_NAME));

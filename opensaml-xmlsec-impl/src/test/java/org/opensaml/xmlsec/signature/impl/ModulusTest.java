@@ -48,16 +48,16 @@ public class ModulusTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Modulus cbType = (Modulus) unmarshallElement(singleElementFile);
+        final Modulus cbType = (Modulus) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "Modulus");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Modulus value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Modulus cbType = (Modulus) buildXMLObject(Modulus.DEFAULT_ELEMENT_NAME);
+        final Modulus cbType = (Modulus) buildXMLObject(Modulus.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

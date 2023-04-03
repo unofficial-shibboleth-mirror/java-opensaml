@@ -60,9 +60,9 @@ public class ConcatKDFParamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ConcatKDFParams params = (ConcatKDFParams) unmarshallElement(singleElementFile);
+        final ConcatKDFParams params = (ConcatKDFParams) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getAlgorithmID(), expectedAlgorithmID);
         Assert.assertEquals(params.getPartyVInfo(), expectedPartyVInfo);
         Assert.assertEquals(params.getPartyUInfo(), expectedPartyUInfo);
@@ -73,23 +73,24 @@ public class ConcatKDFParamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        ConcatKDFParams params = (ConcatKDFParams) unmarshallElement(childElementsFile);
+        final ConcatKDFParams params = (ConcatKDFParams) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getAlgorithmID(), expectedAlgorithmID);
         Assert.assertEquals(params.getPartyVInfo(), expectedPartyVInfo);
         Assert.assertEquals(params.getPartyUInfo(), expectedPartyUInfo);
         Assert.assertEquals(params.getSuppPubInfo(), expectedSuppPubInfo);
         Assert.assertEquals(params.getSuppPrivInfo(), expectedSuppPrivInfo);
         
-        Assert.assertNotNull(params.getDigestMethod());
-        Assert.assertEquals(params.getDigestMethod().getAlgorithm(), expectedDigestMethod);
+        final DigestMethod method = params.getDigestMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), expectedDigestMethod);
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ConcatKDFParams params = (ConcatKDFParams) buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        final ConcatKDFParams params = (ConcatKDFParams) buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
         
         params.setAlgorithmID(expectedAlgorithmID);
         params.setPartyUInfo(expectedPartyUInfo);
@@ -103,7 +104,7 @@ public class ConcatKDFParamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        ConcatKDFParams params = (ConcatKDFParams) buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
+        final ConcatKDFParams params = (ConcatKDFParams) buildXMLObject(ConcatKDFParams.DEFAULT_ELEMENT_NAME);
         
         params.setAlgorithmID(expectedAlgorithmID);
         params.setPartyUInfo(expectedPartyUInfo);

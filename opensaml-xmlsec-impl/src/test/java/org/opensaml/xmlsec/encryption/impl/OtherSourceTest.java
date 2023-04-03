@@ -54,27 +54,26 @@ public class OtherSourceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        OtherSource otherSource = (OtherSource) unmarshallElement(singleElementFile);
+        final OtherSource otherSource = (OtherSource) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(otherSource, "OtherSource");
+        assert otherSource != null;
         Assert.assertEquals(otherSource.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        OtherSource otherSource = (OtherSource) unmarshallElement(childElementsFile);
+        final OtherSource otherSource = (OtherSource) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(otherSource, "OtherSource");
+        assert otherSource != null;
         Assert.assertEquals(otherSource.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertNotNull(otherSource.getParameters(), "Parameters child element");
-        System.out.println("Parameters: " + otherSource.getParameters().getClass().getName());
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        OtherSource otherSource = (OtherSource) buildXMLObject(OtherSource.DEFAULT_ELEMENT_NAME);
+        final OtherSource otherSource = (OtherSource) buildXMLObject(OtherSource.DEFAULT_ELEMENT_NAME);
         
         otherSource.setAlgorithm(expectedAlgorithm);
         
@@ -84,7 +83,7 @@ public class OtherSourceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        OtherSource otherSource = (OtherSource) buildXMLObject(OtherSource.DEFAULT_ELEMENT_NAME);
+        final OtherSource otherSource = (OtherSource) buildXMLObject(OtherSource.DEFAULT_ELEMENT_NAME);
         
         otherSource.setAlgorithm(expectedAlgorithm);
         

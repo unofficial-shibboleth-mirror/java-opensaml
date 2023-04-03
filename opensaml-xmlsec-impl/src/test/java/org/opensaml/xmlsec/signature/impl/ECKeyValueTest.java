@@ -55,9 +55,9 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ECKeyValue keyValue = (ECKeyValue) unmarshallElement(singleElementFile);
+        final ECKeyValue keyValue = (ECKeyValue) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyValue, "ECKeyValue");
+        assert keyValue != null;
         Assert.assertNull(keyValue.getNamedCurve(), "NamedCurve child element");
         Assert.assertNull(keyValue.getPublicKey(), "PublicKey child element");
     }
@@ -65,9 +65,9 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        ECKeyValue keyValue = (ECKeyValue) unmarshallElement(singleElementOptionalAttributesFile);
+        final ECKeyValue keyValue = (ECKeyValue) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(keyValue, "ECKeyValue");
+        assert keyValue != null;
         Assert.assertEquals(expectedID, keyValue.getID(), "Id attribute");
         Assert.assertEquals(keyValue.resolveIDFromRoot(expectedID), keyValue);
         Assert.assertNull(keyValue.getNamedCurve(), "NamedCurve child element");
@@ -77,9 +77,9 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        ECKeyValue keyValue = (ECKeyValue) unmarshallElement(childElementsFile);
+        final ECKeyValue keyValue = (ECKeyValue) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(keyValue, "ECKeyValue");
+        assert keyValue != null;
         Assert.assertNotNull(keyValue.getNamedCurve(), "NamedCurve child element");
         Assert.assertNotNull(keyValue.getPublicKey(), "PublicKey child element");
     }
@@ -87,7 +87,7 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ECKeyValue keyValue = (ECKeyValue) buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+        final ECKeyValue keyValue = (ECKeyValue) buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, keyValue);
     }
@@ -100,7 +100,7 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
 
         ((ECKeyValue)target).setID("id123");
 
@@ -110,7 +110,7 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        ECKeyValue keyValue = (ECKeyValue) buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+        final ECKeyValue keyValue = (ECKeyValue) buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
 
         keyValue.setID(expectedID);
         
@@ -121,7 +121,7 @@ public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        ECKeyValue keyValue = (ECKeyValue) buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
+        final ECKeyValue keyValue = (ECKeyValue) buildXMLObject(ECKeyValue.DEFAULT_ELEMENT_NAME);
         
         keyValue.setNamedCurve((NamedCurve) buildXMLObject(NamedCurve.DEFAULT_ELEMENT_NAME));
         keyValue.setPublicKey((PublicKey) buildXMLObject(PublicKey.DEFAULT_ELEMENT_NAME));

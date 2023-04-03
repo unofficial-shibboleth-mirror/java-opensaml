@@ -55,18 +55,18 @@ public class DEREncodedKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DEREncodedKeyValue der = (DEREncodedKeyValue) unmarshallElement(singleElementFile);
+        final DEREncodedKeyValue der = (DEREncodedKeyValue) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(der, "DEREncodedKeyValue");
+        assert der != null;
         Assert.assertEquals(der.getValue(), expectedStringContent, "DEREncodedKeyValue value");
     }
     
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        DEREncodedKeyValue der = (DEREncodedKeyValue) unmarshallElement(singleElementOptionalAttributesFile);
+        final DEREncodedKeyValue der = (DEREncodedKeyValue) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(der, "DEREncodedKeyValue");
+        assert der != null;
         Assert.assertEquals(expectedID, der.getID(), "Id attribute");
         Assert.assertEquals(der.getValue(), expectedStringContent, "DEREncodedKeyValue value");
         Assert.assertEquals(der.resolveIDFromRoot(expectedID), der);
@@ -75,7 +75,7 @@ public class DEREncodedKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DEREncodedKeyValue der = (DEREncodedKeyValue) buildXMLObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+        final DEREncodedKeyValue der = (DEREncodedKeyValue) buildXMLObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
         
         der.setValue(expectedStringContent);
         
@@ -90,7 +90,7 @@ public class DEREncodedKeyValueTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
 
         ((DEREncodedKeyValue)target).setID("id123");
 
@@ -100,7 +100,7 @@ public class DEREncodedKeyValueTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        DEREncodedKeyValue der = (DEREncodedKeyValue) buildXMLObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
+        final DEREncodedKeyValue der = (DEREncodedKeyValue) buildXMLObject(DEREncodedKeyValue.DEFAULT_ELEMENT_NAME);
 
         der.setID(expectedID);
         der.setValue(expectedStringContent);

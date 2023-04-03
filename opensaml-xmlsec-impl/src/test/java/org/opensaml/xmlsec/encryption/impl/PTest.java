@@ -48,16 +48,16 @@ public class PTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        P cbType = (P) unmarshallElement(singleElementFile);
+        final P cbType = (P) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "P");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "P value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        P cbType = (P) buildXMLObject(P.DEFAULT_ELEMENT_NAME);
+        final P cbType = (P) buildXMLObject(P.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

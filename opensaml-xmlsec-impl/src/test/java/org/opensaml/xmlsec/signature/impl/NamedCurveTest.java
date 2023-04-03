@@ -24,6 +24,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class NamedCurveTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedURI;
@@ -44,16 +45,16 @@ public class NamedCurveTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        NamedCurve nc = (NamedCurve) unmarshallElement(singleElementFile);
+        final NamedCurve nc = (NamedCurve) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(nc, "NamedCurve");
+        assert nc != null;
         Assert.assertEquals(expectedURI, nc.getURI(), "URI attribute");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        NamedCurve nc = (NamedCurve) buildXMLObject(NamedCurve.DEFAULT_ELEMENT_NAME);
+        final NamedCurve nc = (NamedCurve) buildXMLObject(NamedCurve.DEFAULT_ELEMENT_NAME);
         
         nc.setURI(expectedURI);
         

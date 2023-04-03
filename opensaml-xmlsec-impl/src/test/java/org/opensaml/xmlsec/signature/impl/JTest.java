@@ -48,16 +48,16 @@ public class JTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        J cbType = (J) unmarshallElement(singleElementFile);
+        final J cbType = (J) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "J");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "J value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        J cbType = (J) buildXMLObject(J.DEFAULT_ELEMENT_NAME);
+        final J cbType = (J) buildXMLObject(J.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

@@ -51,9 +51,9 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KeyReference ref = (KeyReference) unmarshallElement(singleElementFile);
+        final KeyReference ref = (KeyReference) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ref, "KeyReference");
+        assert ref != null;
         Assert.assertEquals(ref.getURI(), expectedURI, "URI attribute");
         Assert.assertEquals(ref.getUnknownXMLObjects().size(), 0, "Unknown children");
     }
@@ -61,9 +61,9 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        KeyReference ref = (KeyReference) unmarshallElement(childElementsFile);
+        final KeyReference ref = (KeyReference) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(ref, "KeyReference");
+        assert ref != null;
         Assert.assertEquals(ref.getURI(), expectedURI, "URI attribute");
         Assert.assertEquals(ref.getUnknownXMLObjects().size(), expectedNumUnknownChildren, "Unknown children");
     }
@@ -71,7 +71,7 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        KeyReference ref = (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME);
+        final KeyReference ref = (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME);
         
         ref.setURI(expectedURI);
         
@@ -81,7 +81,7 @@ public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        KeyReference ref = (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME);
+        final KeyReference ref = (KeyReference) buildXMLObject(KeyReference.DEFAULT_ELEMENT_NAME);
         
         ref.setURI(expectedURI);
         ref.getUnknownXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));

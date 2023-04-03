@@ -48,16 +48,16 @@ public class X509CRLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        X509CRL x509Element = (X509CRL) unmarshallElement(singleElementFile);
+        final X509CRL x509Element = (X509CRL) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(x509Element, "X509CRL");
+        assert x509Element != null;
         Assert.assertEquals(expectedStringContent, x509Element.getValue(), "X509CRL value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        X509CRL x509Element = (X509CRL) buildXMLObject(X509CRL.DEFAULT_ELEMENT_NAME);
+        final X509CRL x509Element = (X509CRL) buildXMLObject(X509CRL.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, x509Element);

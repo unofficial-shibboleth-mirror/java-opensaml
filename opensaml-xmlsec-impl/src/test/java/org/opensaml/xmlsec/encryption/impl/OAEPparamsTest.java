@@ -48,16 +48,16 @@ public class OAEPparamsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        OAEPparams oaep = (OAEPparams) unmarshallElement(singleElementFile);
+        final OAEPparams oaep = (OAEPparams) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(oaep, "OAEPparams");
+        assert oaep != null;
         Assert.assertEquals(expectedBase64Content, oaep.getValue(), "OAEPparams value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        OAEPparams oaep = (OAEPparams) buildXMLObject(OAEPparams.DEFAULT_ELEMENT_NAME);
+        final OAEPparams oaep = (OAEPparams) buildXMLObject(OAEPparams.DEFAULT_ELEMENT_NAME);
         oaep.setValue(expectedBase64Content);
         
         assertXMLEquals(expectedDOM, oaep);

@@ -48,16 +48,16 @@ public class IterationCountTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        IterationCount ic = (IterationCount) unmarshallElement(singleElementFile);
+        final IterationCount ic = (IterationCount) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ic, "IterationCount");
+        assert ic != null;
         Assert.assertEquals(expectedIntegerContent, ic.getValue(), "IterationCount value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        IterationCount ic = (IterationCount) buildXMLObject(IterationCount.DEFAULT_ELEMENT_NAME);
+        final IterationCount ic = (IterationCount) buildXMLObject(IterationCount.DEFAULT_ELEMENT_NAME);
         ic.setValue(expectedIntegerContent);
         
         assertXMLEquals(expectedDOM, ic);

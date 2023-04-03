@@ -48,16 +48,16 @@ public class PublicTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Public cbType = (Public) unmarshallElement(singleElementFile);
+        final Public cbType = (Public) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "Public");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Public");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Public cbType = (Public) buildXMLObject(Public.DEFAULT_ELEMENT_NAME);
+        final Public cbType = (Public) buildXMLObject(Public.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);

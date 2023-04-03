@@ -47,16 +47,16 @@ public class X509CertificateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
 	public void testSingleElementUnmarshall() {
-        X509Certificate x509Element = (X509Certificate) unmarshallElement(singleElementFile);
+        final X509Certificate x509Element = (X509Certificate) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(x509Element, "X509Certificate");
+        assert x509Element != null;
         Assert.assertEquals(expectedStringContent, x509Element.getValue(), "X509Certificate value");
     }
 
     /** {@inheritDoc} */
     @Test
 	public void testSingleElementMarshall() {
-        X509Certificate x509Element = (X509Certificate) buildXMLObject(X509Certificate.DEFAULT_ELEMENT_NAME);
+        final X509Certificate x509Element = (X509Certificate) buildXMLObject(X509Certificate.DEFAULT_ELEMENT_NAME);
         x509Element.setValue(expectedStringContent);
         
         assertXMLEquals(expectedDOM, x509Element);

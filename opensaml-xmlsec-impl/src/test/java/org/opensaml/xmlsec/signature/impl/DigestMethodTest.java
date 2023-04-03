@@ -25,6 +25,7 @@ import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.DigestMethod;
 
+@SuppressWarnings("javadoc")
 public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;
@@ -48,9 +49,9 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DigestMethod digestMethod = (DigestMethod) unmarshallElement(singleElementFile);
+        final DigestMethod digestMethod = (DigestMethod) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(digestMethod, "DigestMethod");
+        assert digestMethod != null;
         Assert.assertEquals(digestMethod.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertEquals(digestMethod.getUnknownXMLObjects().size(), 0, "Total children");
     }
@@ -58,9 +59,9 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        DigestMethod digestMethod = (DigestMethod) unmarshallElement(childElementsFile);
+        final DigestMethod digestMethod = (DigestMethod) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(digestMethod, "DigestMethod");
+        assert digestMethod != null;
         Assert.assertEquals(digestMethod.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertEquals(digestMethod.getUnknownXMLObjects().size(), expectedTotalChildren, "Total children");
     }
@@ -68,7 +69,7 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        final DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         
         digestMethod.setAlgorithm(expectedAlgorithm);
         
@@ -78,7 +79,7 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        final DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         
         digestMethod.setAlgorithm(expectedAlgorithm);
         digestMethod.getUnknownXMLObjects().add( buildXMLObject(SimpleXMLObject.ELEMENT_NAME));

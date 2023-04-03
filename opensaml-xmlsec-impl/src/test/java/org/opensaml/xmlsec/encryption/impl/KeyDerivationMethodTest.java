@@ -51,9 +51,9 @@ public class KeyDerivationMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KeyDerivationMethod kdm = (KeyDerivationMethod) unmarshallElement(singleElementFile);
+        final KeyDerivationMethod kdm = (KeyDerivationMethod) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(kdm, "KeyDerivationMethod");
+        assert kdm != null;
         Assert.assertEquals(kdm.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertEquals(kdm.getUnknownXMLObjects().size(), 0, "Unknown children");
     }
@@ -61,9 +61,9 @@ public class KeyDerivationMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        KeyDerivationMethod kdm = (KeyDerivationMethod) unmarshallElement(childElementsFile);
+        final KeyDerivationMethod kdm = (KeyDerivationMethod) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(kdm, "KeyDerivationMethod");
+        assert kdm != null;
         Assert.assertEquals(kdm.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertEquals(kdm.getUnknownXMLObjects().size(), expectedNumUnknownChildren, "Unknown children");
     }
@@ -71,7 +71,7 @@ public class KeyDerivationMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        KeyDerivationMethod kdm = (KeyDerivationMethod) buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = (KeyDerivationMethod) buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         
         kdm.setAlgorithm(expectedAlgorithm);
         
@@ -81,7 +81,7 @@ public class KeyDerivationMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        KeyDerivationMethod kdm = (KeyDerivationMethod) buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
+        final KeyDerivationMethod kdm = (KeyDerivationMethod) buildXMLObject(KeyDerivationMethod.DEFAULT_ELEMENT_NAME);
         
         kdm.setAlgorithm(expectedAlgorithm);
         kdm.getUnknownXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));

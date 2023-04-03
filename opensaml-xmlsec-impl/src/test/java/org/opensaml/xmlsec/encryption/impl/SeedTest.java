@@ -48,16 +48,16 @@ public class SeedTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Seed cbType = (Seed) unmarshallElement(singleElementFile);
+        final Seed cbType = (Seed) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(cbType, "Seed");
+        assert cbType != null;
         Assert.assertEquals(expectedCryptoBinaryContent, cbType.getValue(), "Seed value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Seed cbType = (Seed) buildXMLObject(Seed.DEFAULT_ELEMENT_NAME);
+        final Seed cbType = (Seed) buildXMLObject(Seed.DEFAULT_ELEMENT_NAME);
         cbType.setValue(expectedCryptoBinaryContent);
         
         assertXMLEquals(expectedDOM, cbType);
