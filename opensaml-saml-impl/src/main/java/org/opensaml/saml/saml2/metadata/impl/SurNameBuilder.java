@@ -21,30 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.SurName;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SurNameImpl}.
+ * Builder for {@link SurName}.
  */
 public class SurNameBuilder extends AbstractSAMLObjectBuilder<SurName> {
 
-    /**
-     * Constructor.
-     */
-    public SurNameBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public SurName buildObject() {
+    @Override
+    @Nonnull public SurName buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, SurName.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SurName buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public SurName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SurNameImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

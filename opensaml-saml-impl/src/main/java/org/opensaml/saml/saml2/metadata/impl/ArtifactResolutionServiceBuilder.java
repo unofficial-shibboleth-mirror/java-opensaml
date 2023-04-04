@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.ArtifactResolutionServiceImpl}.
+ * Builder for {@link ArtifactResolutionService}.
  */
 public class ArtifactResolutionServiceBuilder extends AbstractSAMLObjectBuilder<ArtifactResolutionService> {
 
-    /**
-     * Constructor.
-     */
-    public ArtifactResolutionServiceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public ArtifactResolutionService buildObject() {
+    @Override
+    @Nonnull public ArtifactResolutionService buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, ArtifactResolutionService.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public ArtifactResolutionService buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public ArtifactResolutionService buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new ArtifactResolutionServiceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

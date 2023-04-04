@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 /**
- * An Builder for EntityDescriptor elements.
+ * Builder for {@link EntityDescriptor}.
  */
 public class EntityDescriptorBuilder extends AbstractSAMLObjectBuilder<EntityDescriptor> {
 
-    /**
-     * Constructor.
-     */
-    public EntityDescriptorBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public EntityDescriptor buildObject() {
+    @Override
+    @Nonnull public EntityDescriptor buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public EntityDescriptor buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public EntityDescriptor buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EntityDescriptorImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

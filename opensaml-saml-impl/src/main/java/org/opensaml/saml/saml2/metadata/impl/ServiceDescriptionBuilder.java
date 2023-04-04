@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.ServiceDescription;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.ServiceDescriptionImpl}.
+ * Builder for {@link ServiceDescription}.
  */
 public class ServiceDescriptionBuilder extends AbstractSAMLObjectBuilder<ServiceDescription> {
 
-    /**
-     * Constructor.
-     */
-    public ServiceDescriptionBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public ServiceDescription buildObject() {
+    @Override
+    @Nonnull public ServiceDescription buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, ServiceDescription.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public ServiceDescription buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public ServiceDescription buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ServiceDescriptionImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

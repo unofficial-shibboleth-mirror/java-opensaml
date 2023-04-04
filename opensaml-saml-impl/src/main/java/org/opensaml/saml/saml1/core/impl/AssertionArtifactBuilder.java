@@ -17,33 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AssertionArtifact;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AssertionArtifactImpl} objects.
+ * Builder of {@link AssertionArtifact} objects.
  */
 public class AssertionArtifactBuilder extends AbstractSAMLObjectBuilder<AssertionArtifact> {
 
-    /**
-     * Constructor.
-     */
-    public AssertionArtifactBuilder() {
-
-    }
-
     /** {@inheritDoc} */
     @Override
-    public AssertionArtifact buildObject() {
+    @Nonnull public AssertionArtifact buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, AssertionArtifact.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
     @Override
-    public AssertionArtifact buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public AssertionArtifact buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AssertionArtifactImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

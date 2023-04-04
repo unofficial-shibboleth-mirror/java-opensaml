@@ -26,7 +26,7 @@ import org.opensaml.saml.saml1.core.Evidence;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.impl.AuthorizationDecisionStatementImpl} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.impl.AuthorizationDecisionStatement} objects.
  */
 public class AuthorizationDecisionStatementUnmarshaller extends SubjectStatementUnmarshaller {
 

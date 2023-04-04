@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceImpl}.
+ * Builder for {@link SingleLogoutService}.
  */
 public class SingleLogoutServiceBuilder extends AbstractSAMLObjectBuilder<SingleLogoutService> {
 
-    /**
-     * Constructor.
-     */
-    public SingleLogoutServiceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public SingleLogoutService buildObject() {
+    @Override
+    @Nonnull public SingleLogoutService buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, SingleLogoutService.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SingleLogoutService buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public SingleLogoutService buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new SingleLogoutServiceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

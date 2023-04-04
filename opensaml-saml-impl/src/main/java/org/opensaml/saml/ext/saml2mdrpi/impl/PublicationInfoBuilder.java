@@ -17,25 +17,30 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdrpi.PublicationInfo;
 
-
 /**
- * Summon up a new {@link PublicationInfo}.
+ * Builder for {@link PublicationInfo}.
  */
 public class PublicationInfoBuilder extends AbstractSAMLObjectBuilder<PublicationInfo> {
 
     /** {@inheritDoc} */
-    public PublicationInfo buildObject() {
+    @Override
+    @Nonnull public PublicationInfo buildObject() {
         return buildObject(SAMLConstants.SAML20MDRPI_NS, PublicationInfo.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDRPI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public PublicationInfo buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public PublicationInfo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new PublicationInfoImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

@@ -17,27 +17,29 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Request;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.RequestImpl} objects.
+ * Builder of {@link Request} objects.
  */
 public class RequestBuilder extends AbstractSAMLObjectBuilder<Request> {
 
-    /** Constructor. */
-    public RequestBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public Request buildObject() {
+    @Override
+    @Nonnull public Request buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, Request.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Request buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Request buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RequestImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

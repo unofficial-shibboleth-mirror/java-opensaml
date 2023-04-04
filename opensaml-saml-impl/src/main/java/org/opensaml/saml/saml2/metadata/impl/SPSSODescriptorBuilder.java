@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SPSSODescriptorImpl}.
+ * Builder for {@link SPSSODescriptor}.
  */
 public class SPSSODescriptorBuilder extends AbstractSAMLObjectBuilder<SPSSODescriptor> {
 
-    /**
-     * Constructor.
-     */
-    public SPSSODescriptorBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public SPSSODescriptor buildObject() {
+    @Override
+    @Nonnull public SPSSODescriptor buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SPSSODescriptor buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public SPSSODescriptor buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SPSSODescriptorImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

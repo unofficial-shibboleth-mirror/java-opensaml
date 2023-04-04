@@ -25,7 +25,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Attribute;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.impl.AttributeImpl} objects.
+ * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.impl.Attribute} objects.
  */
 public class AttributeUnmarshaller extends AttributeDesignatorUnmarshaller {
 

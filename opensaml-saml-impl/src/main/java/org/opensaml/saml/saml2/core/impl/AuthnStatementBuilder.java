@@ -21,27 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.core.impl.AuthnStatementImpl} objects.
+ * Builder for {@link AuthnStatement} objects.
  */
 public class AuthnStatementBuilder extends AbstractSAMLObjectBuilder<AuthnStatement> {
 
-    /** Constructor. */
-    public AuthnStatementBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public AuthnStatement buildObject() {
+    @Override
+    @Nonnull public AuthnStatement buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, AuthnStatement.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthnStatement buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthnStatement buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AuthnStatementImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

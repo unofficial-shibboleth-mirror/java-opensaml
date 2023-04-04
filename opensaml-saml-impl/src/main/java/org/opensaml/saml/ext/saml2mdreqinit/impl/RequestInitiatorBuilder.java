@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.ext.saml2mdreqinit.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdreqinit.RequestInitiator;
 
 /**
- * Builder of {@link org.opensaml.saml.ext.saml2mdreqinit.RequestInitiator}.
+ * Builder of {@link RequestInitiator}.
  */
 public class RequestInitiatorBuilder extends AbstractSAMLObjectBuilder<RequestInitiator> {
 
-    /**
-     * Constructor.
-     */
-    public RequestInitiatorBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public RequestInitiator buildObject() {
+    @Override
+    @Nonnull public RequestInitiator buildObject() {
         return buildObject(SAMLConstants.SAML20MDRI_NS, RequestInitiator.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDRI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public RequestInitiator buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public RequestInitiator buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RequestInitiatorImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

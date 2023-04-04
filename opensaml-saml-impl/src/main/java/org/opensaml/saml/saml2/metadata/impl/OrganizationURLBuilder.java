@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.OrganizationURLImpl}.
+ * Builder for {@link OrganizationURL}.
  */
 public class OrganizationURLBuilder extends AbstractSAMLObjectBuilder<OrganizationURL> {
 
-    /**
-     * Constructor.
-     */
-    public OrganizationURLBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public OrganizationURL buildObject() {
+    @Override
+    @Nonnull public OrganizationURL buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, OrganizationURL.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public OrganizationURL buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public OrganizationURL buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new OrganizationURLImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

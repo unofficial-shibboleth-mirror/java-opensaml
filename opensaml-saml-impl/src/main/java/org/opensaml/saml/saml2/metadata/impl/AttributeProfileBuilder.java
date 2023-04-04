@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AttributeProfileImpl}s.
+ * Builder for {@link AttributeProfile}.
  */
 public class AttributeProfileBuilder extends AbstractSAMLObjectBuilder<AttributeProfile> {
 
-    /**
-     * Constructor.
-     */
-    public AttributeProfileBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AttributeProfile buildObject() {
+    @Override
+    @Nonnull public AttributeProfile buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, AttributeProfile.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AttributeProfile buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AttributeProfile buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AttributeProfileImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

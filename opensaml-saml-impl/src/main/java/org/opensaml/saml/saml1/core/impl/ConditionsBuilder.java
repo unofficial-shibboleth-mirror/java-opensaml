@@ -17,29 +17,29 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Conditions;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.ConditionsImpl} objects.
+ * Builder of {@link Conditions} objects.
  */
 public class ConditionsBuilder extends AbstractSAMLObjectBuilder<Conditions> {
 
-    /**
-     * Constructor.
-     */
-    public ConditionsBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public Conditions buildObject() {
+    @Override
+    @Nonnull public Conditions buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, Conditions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Conditions buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Conditions buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ConditionsImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

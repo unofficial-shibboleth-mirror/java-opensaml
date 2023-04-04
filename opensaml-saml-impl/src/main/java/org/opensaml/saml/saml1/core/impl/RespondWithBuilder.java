@@ -17,23 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.RespondWith;
 
 /**
- * Builder of {@link RespondWithImpl} objects.
+ * Builder of {@link RespondWith} objects.
  */
 public class RespondWithBuilder extends AbstractSAMLObjectBuilder<RespondWith> {
 
     /** {@inheritDoc} */
-    public RespondWith buildObject() {
+    @Override
+    @Nonnull public RespondWith buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, RespondWith.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public RespondWith buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public RespondWith buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RespondWithImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.IDPSSODescriptorImpl}.
+ * Builder for {@link IDPSSODescriptor}.
  */
 public class IDPSSODescriptorBuilder extends AbstractSAMLObjectBuilder<IDPSSODescriptor> {
 
-    /**
-     * Constructor.
-     */
-    public IDPSSODescriptorBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public IDPSSODescriptor buildObject() {
+    @Override
+    @Nonnull public IDPSSODescriptor buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public IDPSSODescriptor buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public IDPSSODescriptor buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new IDPSSODescriptorImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

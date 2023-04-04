@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.ecp.RequestAuthenticated;
@@ -31,22 +34,18 @@ import org.opensaml.saml.saml2.ecp.RequestAuthenticated;
  */
 public class RequestAuthenticatedBuilder extends AbstractSAMLObjectBuilder<RequestAuthenticated> {
 
-    /**
-     * Constructor.
-     */
-    public RequestAuthenticatedBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public RequestAuthenticated buildObject() {
+    @Override
+    @Nonnull public RequestAuthenticated buildObject() {
         return buildObject(SAMLConstants.SAML20ECP_NS, RequestAuthenticated.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20ECP_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public RequestAuthenticated buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public RequestAuthenticated buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new RequestAuthenticatedImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

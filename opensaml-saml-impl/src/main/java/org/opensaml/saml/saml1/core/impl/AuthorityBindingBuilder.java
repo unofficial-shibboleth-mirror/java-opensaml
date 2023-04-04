@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AuthorityBindingImpl} objects.
+ * Builder of {@link AuthorityBinding} objects.
  */
 public class AuthorityBindingBuilder extends AbstractSAMLObjectBuilder<AuthorityBinding> {
 
-    /**
-     * Constructor.
-     */
-    public AuthorityBindingBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthorityBinding buildObject() {
+    @Override
+    @Nonnull public AuthorityBinding buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, AuthorityBinding.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthorityBinding buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthorityBinding buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AuthorityBindingImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

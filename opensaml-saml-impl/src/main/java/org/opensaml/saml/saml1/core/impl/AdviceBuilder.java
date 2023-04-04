@@ -17,31 +17,27 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Advice;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AdviceImpl} objects.
+ * Builder of {@link Advice} objects.
  */
 public class AdviceBuilder extends AbstractSAMLObjectBuilder<Advice> {
-
-    /**
-     * Constructor.
-     */
-    public AdviceBuilder() {
-
-    }
     
     /** {@inheritDoc} */
-    @Override
-    public Advice buildObject() {
+    @Nonnull public Advice buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, Advice.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Advice buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Nonnull public Advice buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AdviceImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

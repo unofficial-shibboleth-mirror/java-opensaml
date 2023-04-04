@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AudienceRestrictionConditionImpl} objects.
+ * Builder of {@link AudienceRestrictionCondition} objects.
  */
 public class AudienceRestrictionConditionBuilder extends AbstractSAMLObjectBuilder<AudienceRestrictionCondition> {
 
-    /**
-     * Constructor.
-     */
-    public AudienceRestrictionConditionBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AudienceRestrictionCondition buildObject() {
+    @Override
+    @Nonnull public AudienceRestrictionCondition buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, AudienceRestrictionCondition.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AudienceRestrictionCondition buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AudienceRestrictionCondition buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AudienceRestrictionConditionImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

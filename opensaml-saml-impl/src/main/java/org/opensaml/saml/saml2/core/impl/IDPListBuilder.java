@@ -21,29 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.IDPList;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.core.impl.IDPListImpl}.
+ * Builder for {@link IDPList}.
  */
 public class IDPListBuilder extends AbstractSAMLObjectBuilder<IDPList> {
 
-    /**
-     * Constructor.
-     */
-    public IDPListBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public IDPList buildObject() {
+    @Override
+    @Nonnull public IDPList buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, IDPList.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public IDPList buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public IDPList buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new IDPListImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

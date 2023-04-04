@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AuthorizationDecisionQueryImpl} objects.
+ * Builder of {@link AuthorizationDecisionQuery} objects.
  */
 public class AuthorizationDecisionQueryBuilder extends AbstractSAMLObjectBuilder<AuthorizationDecisionQuery> {
 
-    /**
-     * Constructor.
-     */
-    public AuthorizationDecisionQueryBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthorizationDecisionQuery buildObject() {
+    @Override
+    @Nonnull public AuthorizationDecisionQuery buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, AuthorizationDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthorizationDecisionQuery buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthorizationDecisionQuery buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AuthorizationDecisionQueryImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

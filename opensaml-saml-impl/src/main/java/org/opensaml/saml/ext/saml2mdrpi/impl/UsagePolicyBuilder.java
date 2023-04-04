@@ -17,24 +17,29 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdrpi.UsagePolicy;
 
-
 /**
- * Summon up a new {@link UsagePolicy}.
+ * Builder for {@link UsagePolicy}.
  */
 public class UsagePolicyBuilder extends AbstractSAMLObjectBuilder<UsagePolicy> {
 
     /** {@inheritDoc} */
-    public UsagePolicy buildObject() {
+    @Override
+    @Nonnull public UsagePolicy buildObject() {
         return buildObject(SAMLConstants.SAML20MDRPI_NS, UsagePolicy.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDRPI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public UsagePolicy buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public UsagePolicy buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new UsagePolicyImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 
 /**
- * Builder of (@link org.opensaml.saml.saml2.metadata.impl.NameIDMappingServiceImpl}.
+ * Builder of (@link NameIDMappingService}.
  */
 public class NameIDMappingServiceBuilder extends AbstractSAMLObjectBuilder<NameIDMappingService> {
 
-    /**
-     * Constructor.
-     */
-    public NameIDMappingServiceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public NameIDMappingService buildObject() {
+    @Override
+    @Nonnull public NameIDMappingService buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, NameIDMappingService.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public NameIDMappingService buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public NameIDMappingService buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new NameIDMappingServiceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

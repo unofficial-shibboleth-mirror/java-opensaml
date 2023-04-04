@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.DisplayName;
@@ -26,21 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.DisplayName;
  */
 public class DisplayNameBuilder extends AbstractSAMLObjectBuilder<DisplayName> {
 
-    /**
-     * Constructor.
-     */
-    public DisplayNameBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public DisplayName buildObject() {
+    @Override
+    @Nonnull public DisplayName buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, DisplayName.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public DisplayName buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public DisplayName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DisplayNameImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

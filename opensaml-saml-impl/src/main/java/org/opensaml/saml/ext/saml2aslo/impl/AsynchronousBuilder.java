@@ -21,31 +21,31 @@
 
 package org.opensaml.saml.ext.saml2aslo.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2aslo.Asynchronous;
 
 
 /**
- * A Builder for {@link AsynchronousImpl} objects.
+ * A Builder for {@link Asynchronous} objects.
  */
 public class AsynchronousBuilder extends AbstractSAMLObjectBuilder<Asynchronous> {
 
-    /**
-     * Constructor.
-     */
-    public AsynchronousBuilder() {
-        
-    }
-
     /** {@inheritDoc} */
-    public Asynchronous buildObject() {
+    @Override
+    @Nonnull public Asynchronous buildObject() {
         return buildObject(SAMLConstants.SAML20PASLO_NS, Asynchronous.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20PASLO_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Asynchronous buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Asynchronous buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AsynchronousImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

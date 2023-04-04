@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
@@ -26,22 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
  */
 public class GeolocationHintBuilder extends AbstractSAMLObjectBuilder<GeolocationHint> {
 
-    /**
-     * Constructor.
-     */
-    public GeolocationHintBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public GeolocationHint buildObject() {
+    @Override
+    @Nonnull public GeolocationHint buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, GeolocationHint.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public GeolocationHint buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public GeolocationHint buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new GeolocationHintImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

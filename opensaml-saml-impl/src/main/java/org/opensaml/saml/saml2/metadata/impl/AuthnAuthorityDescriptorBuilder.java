@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor;
 
 /**
- * A builder for {@link org.opensaml.saml.saml2.metadata.impl.AuthnAuthorityDescriptorImpl} objects.
+ * Builder for {@link AuthnAuthorityDescriptor} objects.
  */
 public class AuthnAuthorityDescriptorBuilder extends AbstractSAMLObjectBuilder<AuthnAuthorityDescriptor> {
 
-    /**
-     * Constructor.
-     */
-    public AuthnAuthorityDescriptorBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthnAuthorityDescriptor buildObject() {
+    @Override
+    @Nonnull public AuthnAuthorityDescriptor buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, AuthnAuthorityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthnAuthorityDescriptor buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthnAuthorityDescriptor buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AuthnAuthorityDescriptorImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

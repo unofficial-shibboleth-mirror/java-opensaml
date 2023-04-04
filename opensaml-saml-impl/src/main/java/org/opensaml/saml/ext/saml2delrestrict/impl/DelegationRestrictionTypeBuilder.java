@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 
@@ -28,22 +31,17 @@ import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
  * Builder of {@link DelegationRestrictionType}.
  */
 public class DelegationRestrictionTypeBuilder extends AbstractSAMLObjectBuilder<DelegationRestrictionType> {
-
-    /**
-     * Constructor.
-     */
-    public DelegationRestrictionTypeBuilder() {
-
-    }
     
     /** {@inheritDoc} */
-    public DelegationRestrictionType buildObject() {
+    @Override
+    @Nonnull public DelegationRestrictionType buildObject() {
         return buildObject(DelegationRestrictionType.DEFAULT_ELEMENT_NAME, DelegationRestrictionType.TYPE_NAME);
     }
 
     /** {@inheritDoc} */
-    public DelegationRestrictionType buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public DelegationRestrictionType buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new DelegationRestrictionTypeImpl(namespaceURI, localName, namespacePrefix);
     }
 

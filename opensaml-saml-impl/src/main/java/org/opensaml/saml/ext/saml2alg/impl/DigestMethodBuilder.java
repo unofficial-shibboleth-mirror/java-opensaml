@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2alg.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2alg.DigestMethod;
@@ -25,22 +28,18 @@ import org.opensaml.saml.ext.saml2alg.DigestMethod;
  * DigestMethod builder.
  */
 public class DigestMethodBuilder extends AbstractSAMLObjectBuilder<DigestMethod> {
-
-    /**
-     * Constructor.
-     *
-     */
-    public DigestMethodBuilder() {
-    }
     
     /** {@inheritDoc} */
-    public DigestMethod buildObject() {
+    @Override
+    @Nonnull public DigestMethod buildObject() {
         return buildObject(SAMLConstants.SAML20ALG_NS, DigestMethod.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20ALG_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public DigestMethod buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public DigestMethod buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DigestMethodImpl(namespaceURI, localName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2alg.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2alg.SigningMethod;
@@ -25,22 +28,18 @@ import org.opensaml.saml.ext.saml2alg.SigningMethod;
  * SigningMethod builder.
  */
 public class SigningMethodBuilder extends AbstractSAMLObjectBuilder<SigningMethod> {
-
-    /**
-     * Constructor.
-     *
-     */
-    public SigningMethodBuilder() {
-    }
     
     /** {@inheritDoc} */
-    public SigningMethod buildObject() {
+    @Override
+    @Nonnull public SigningMethod buildObject() {
         return buildObject(SAMLConstants.SAML20ALG_NS, SigningMethod.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20ALG_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SigningMethod buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public SigningMethod buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SigningMethodImpl(namespaceURI, localName, namespacePrefix);
     }
 

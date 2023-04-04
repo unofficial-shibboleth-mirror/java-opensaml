@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AuthenticationQuery;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AuthenticationQueryImpl} objects.
+ * Builder of {@link AuthenticationQuery} objects.
  */
 public class AuthenticationQueryBuilder extends AbstractSAMLObjectBuilder<AuthenticationQuery> {
 
-    /**
-     * Constructor.
-     */
-    public AuthenticationQueryBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthenticationQuery buildObject() {
+    @Override
+    @Nonnull public AuthenticationQuery buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, AuthenticationQuery.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthenticationQuery buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthenticationQuery buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AuthenticationQueryImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

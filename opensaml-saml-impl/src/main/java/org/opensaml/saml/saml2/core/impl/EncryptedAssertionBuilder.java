@@ -17,31 +17,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.core.impl.EncryptedAssertionImpl} objects.
+ * Builder for {@link EncryptedAssertion} objects.
  */
 public class EncryptedAssertionBuilder extends AbstractSAMLObjectBuilder<EncryptedAssertion> {
 
-    /**
-     * Constructor.
-     */
-    public EncryptedAssertionBuilder() {
-        super();
-    }
-
     /** {@inheritDoc} */
-    public EncryptedAssertion buildObject() {
+    @Override
+    @Nonnull public EncryptedAssertion buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, EncryptedAssertion.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public EncryptedAssertion buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public EncryptedAssertion buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EncryptedAssertionImpl(namespaceURI, localName, namespacePrefix);
     }
 

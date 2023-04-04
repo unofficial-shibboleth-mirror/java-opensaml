@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AssertionIDRequestServiceImpl}.
+ * Builder for {@link AssertionIDRequestService}.
  */
 public class AssertionIDRequestServiceBuilder extends AbstractSAMLObjectBuilder<AssertionIDRequestService> {
 
-    /**
-     * Constructor.
-     */
-    public AssertionIDRequestServiceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AssertionIDRequestService buildObject() {
+    @Override
+    @Nonnull public AssertionIDRequestService buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, AssertionIDRequestService.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AssertionIDRequestService buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AssertionIDRequestService buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AssertionIDRequestServiceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

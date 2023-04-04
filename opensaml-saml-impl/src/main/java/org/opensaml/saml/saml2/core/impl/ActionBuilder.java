@@ -21,27 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Action;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.core.impl.ActionImpl} objects.
+ * Builder for {@link Action} objects.
  */
 public class ActionBuilder extends AbstractSAMLObjectBuilder<Action> {
 
-    /** Constructor. */
-    public ActionBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public Action buildObject() {
+    @Override
+    @Nonnull public Action buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Action buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Action buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ActionImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

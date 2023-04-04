@@ -17,34 +17,32 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.EncryptionMethod}.
+ * Builder of {@link EncryptionMethod}.
  */
 public class EncryptionMethodBuilder extends AbstractSAMLObjectBuilder<EncryptionMethod> 
     implements SAMLObjectBuilder<EncryptionMethod> {
 
-    /**
-     * Constructor.
-     *
-     */
-    public EncryptionMethodBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public EncryptionMethod buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
-        return new EncryptionMethodImpl(namespaceURI, localName, namespacePrefix);
-    }
-
-    /** {@inheritDoc} */
-    public EncryptionMethod buildObject() {
+    @Override
+    @Nonnull public EncryptionMethod buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, EncryptionMethod.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20MD_PREFIX);
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    @Nonnull public EncryptionMethod buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
+        return new EncryptionMethodImpl(namespaceURI, localName, namespacePrefix);
     }
 
 }

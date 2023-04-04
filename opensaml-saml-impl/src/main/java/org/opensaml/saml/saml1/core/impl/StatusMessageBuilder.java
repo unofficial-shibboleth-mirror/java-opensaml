@@ -17,30 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.StatusMessage;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.StatusMessageImpl} objects.
+ * Builder of {@link StatusMessage} objects.
  */
 public class StatusMessageBuilder extends AbstractSAMLObjectBuilder<StatusMessage> {
 
-    /**
-     * Constructor.
-     */
-    public StatusMessageBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public StatusMessage buildObject() {
+    @Override
+    @Nonnull public StatusMessage buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, StatusMessage.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public StatusMessage buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public StatusMessage buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new StatusMessageImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

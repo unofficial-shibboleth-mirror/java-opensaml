@@ -21,29 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Terminate;
 
 /**
- * A Builder for {@link TerminateImpl} objects.
+ * A Builder for {@link Terminate} objects.
  */
 public class TerminateBuilder extends AbstractSAMLObjectBuilder<Terminate> {
 
-    /**
-     * Constructor.
-     */
-    public TerminateBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Terminate buildObject() {
+    @Override
+    @Nonnull public Terminate buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, Terminate.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Terminate buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Terminate buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new TerminateImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

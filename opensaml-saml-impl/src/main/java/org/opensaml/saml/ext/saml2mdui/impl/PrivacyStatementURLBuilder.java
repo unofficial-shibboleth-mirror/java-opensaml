@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
@@ -26,22 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
  */
 public class PrivacyStatementURLBuilder extends AbstractSAMLObjectBuilder<PrivacyStatementURL> {
 
-    /**
-     * Constructor.
-     */
-    public PrivacyStatementURLBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public PrivacyStatementURL buildObject() {
+    @Override
+    @Nonnull public PrivacyStatementURL buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, PrivacyStatementURL.DEFAULT_ELEMENT_LOCAL_NAME, 
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public PrivacyStatementURL buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public PrivacyStatementURL buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new PrivacyStatementURLImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

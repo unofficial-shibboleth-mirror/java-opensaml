@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.SingleSignOnServiceImpl}.
+ * Builder for {@link SingleSignOnService}.
  */
 public class SingleSignOnServiceBuilder extends AbstractSAMLObjectBuilder<SingleSignOnService> {
 
-    /**
-     * Constructor.
-     */
-    public SingleSignOnServiceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public SingleSignOnService buildObject() {
+    @Override
+    @Nonnull public SingleSignOnService buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, SingleSignOnService.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SingleSignOnService buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public SingleSignOnService buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new SingleSignOnServiceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

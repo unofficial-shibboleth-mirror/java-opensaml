@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.IPHint;
@@ -26,21 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.IPHint;
  */
 public class IPHintBuilder extends AbstractSAMLObjectBuilder<IPHint> {
 
-    /**
-     * Constructor.
-     */
-    public IPHintBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public IPHint buildObject() {
+    @Override
+    @Nonnull public IPHint buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, IPHint.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public IPHint buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public IPHint buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new IPHintImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

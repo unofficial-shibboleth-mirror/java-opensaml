@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.DomainHint;
@@ -26,21 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.DomainHint;
  */
 public class DomainHintBuilder extends AbstractSAMLObjectBuilder<DomainHint> {
 
-    /**
-     * Constructor.
-     */
-    public DomainHintBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public DomainHint buildObject() {
+    @Override
+    @Nonnull public DomainHint buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, DomainHint.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public DomainHint buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public DomainHint buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DomainHintImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

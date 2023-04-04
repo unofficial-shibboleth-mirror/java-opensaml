@@ -17,26 +17,23 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.StatusDetail;
 
 /**
- * Builder of {@link StatusDetailImpl}.
+ * Builder of {@link StatusDetail}.
  */
 public class StatusDetailBuilder extends AbstractSAMLObjectBuilder<StatusDetail> {
 
     /**
-     * Constructor.
-     */
-    public StatusDetailBuilder() {
-
-    }
-
-    /**
      * {@inheritDoc}
      */
-    public StatusDetail buildObject() {
+    @Override
+    @Nonnull public StatusDetail buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, StatusDetail.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
@@ -44,7 +41,10 @@ public class StatusDetailBuilder extends AbstractSAMLObjectBuilder<StatusDetail>
     /**
      * {@inheritDoc}
      */
-    public StatusDetail buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public StatusDetail buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new StatusDetailImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

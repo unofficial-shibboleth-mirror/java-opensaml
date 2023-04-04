@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.ext.saml2cb.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
@@ -31,21 +34,18 @@ import org.opensaml.saml.ext.saml2cb.ChannelBindings;
  */
 public class ChannelBindingsBuilder extends AbstractSAMLObjectBuilder<ChannelBindings> {
 
-    /**
-     * Constructor.
-     */
-    public ChannelBindingsBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public ChannelBindings buildObject() {
+    @Override
+    @Nonnull public ChannelBindings buildObject() {
         return buildObject(SAMLConstants.SAML20CB_NS, ChannelBindings.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20CB_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public ChannelBindings buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public ChannelBindings buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ChannelBindingsImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

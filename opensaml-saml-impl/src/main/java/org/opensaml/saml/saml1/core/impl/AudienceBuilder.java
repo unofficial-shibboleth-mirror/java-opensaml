@@ -17,29 +17,29 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Audience;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AudienceImpl} objects.
+ * Builder of {@link Audience} objects.
  */
 public class AudienceBuilder extends AbstractSAMLObjectBuilder<Audience> {
 
-    /**
-     * Constructor.
-     */
-    public AudienceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public Audience buildObject() {
+    @Override
+    @Nonnull public Audience buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, Audience.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Audience buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Audience buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AudienceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

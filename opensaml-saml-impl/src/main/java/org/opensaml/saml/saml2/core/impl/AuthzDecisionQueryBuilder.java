@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthzDecisionQuery;
 
 /**
- * A Builder for {@link org.opensaml.saml.saml2.core.impl.AuthzDecisionQueryImpl} objects.
+ * A Builder for {@link AuthzDecisionQuery} objects.
  */
 public class AuthzDecisionQueryBuilder extends AbstractSAMLObjectBuilder<AuthzDecisionQuery> {
 
-    /**
-     * Constructor.
-     */
-    public AuthzDecisionQueryBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthzDecisionQuery buildObject() {
+    @Override
+    @Nonnull public AuthzDecisionQuery buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthzDecisionQuery buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthzDecisionQuery buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AuthzDecisionQueryImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

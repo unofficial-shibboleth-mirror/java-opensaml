@@ -17,23 +17,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.KeyDescriptorImpl} objects.
+ * Builder for {@link KeyDescriptor} objects.
  */
 public class KeyDescriptorBuilder extends AbstractSAMLObjectBuilder<KeyDescriptor> {
 
     /** {@inheritDoc} */
-    public KeyDescriptor buildObject() {
+    @Override
+    @Nonnull public KeyDescriptor buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, KeyDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public KeyDescriptor buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public KeyDescriptor buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeyDescriptorImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

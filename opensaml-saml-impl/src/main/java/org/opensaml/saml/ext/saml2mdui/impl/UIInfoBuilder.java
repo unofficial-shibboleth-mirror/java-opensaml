@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
@@ -26,21 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.UIInfo;
  */
 public class UIInfoBuilder extends AbstractSAMLObjectBuilder<UIInfo> {
 
-    /**
-     * Constructor.
-     */
-    public UIInfoBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public UIInfo buildObject() {
+    @Override
+    @Nonnull public UIInfo buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, UIInfo.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public UIInfo buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public UIInfo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new UIInfoImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

@@ -21,27 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Evidence;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.core.impl.EvidenceImpl} objects.
+ * Builder for {@link Evidence} objects.
  */
 public class EvidenceBuilder extends AbstractSAMLObjectBuilder<Evidence> {
 
-    /** Constructor. */
-    public EvidenceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public Evidence buildObject() {
+    @Override
+    @Nonnull public Evidence buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, Evidence.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Evidence buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Evidence buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EvidenceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

@@ -21,28 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.Scoping;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.core.impl.ScopingImpl}.
+ * Builder for {@link Scoping}.
  */
 public class ScopingBuilder extends AbstractSAMLObjectBuilder<Scoping> {
 
-    /**
-     * Constructor.
-     */
-    public ScopingBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public Scoping buildObject() {
+    @Override
+    @Nonnull public Scoping buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, Scoping.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Scoping buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Scoping buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ScopingImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

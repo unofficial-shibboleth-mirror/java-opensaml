@@ -21,30 +21,30 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.samlec.EncType;
-
 
 /**
  * A Builder for {@link EncType} objects.
  */
 public class EncTypeBuilder extends AbstractSAMLObjectBuilder<EncType> {
 
-    /**
-     * Constructor.
-     */
-    public EncTypeBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public EncType buildObject() {
+    @Override
+    @Nonnull public EncType buildObject() {
         return buildObject(SAMLConstants.SAMLEC_GSS_NS, EncType.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAMLEC_GSS_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public EncType buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public EncType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EncTypeImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

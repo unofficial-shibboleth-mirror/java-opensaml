@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 
 /**
- * A builder for {@link org.opensaml.saml.saml2.metadata.impl.AffiliationDescriptorImpl} objects.
+ * Builder for {@link AffiliationDescriptor} objects.
  */
 public class AffiliationDescriptorBuilder extends AbstractSAMLObjectBuilder<AffiliationDescriptor> {
 
-    /**
-     * Constructor.
-     */
-    public AffiliationDescriptorBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AffiliationDescriptor buildObject() {
+    @Override
+    @Nonnull public AffiliationDescriptor buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AffiliationDescriptor buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AffiliationDescriptor buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AffiliationDescriptorImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AffiliateMemberImpl}s.
+ * Builder for {@link AffiliateMember}.
  */
 public class AffiliateMemberBuilder extends AbstractSAMLObjectBuilder<AffiliateMember> {
 
-    /**
-     * Constructor.
-     */
-    public AffiliateMemberBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AffiliateMember buildObject() {
+    @Override
+    @Nonnull public AffiliateMember buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AffiliateMember buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AffiliateMember buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AffiliateMemberImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

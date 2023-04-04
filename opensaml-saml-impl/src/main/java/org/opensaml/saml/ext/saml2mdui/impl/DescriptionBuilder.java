@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.Description;
@@ -33,13 +36,17 @@ public class DescriptionBuilder extends AbstractSAMLObjectBuilder<Description> {
     }
 
     /** {@inheritDoc} */
-    public Description buildObject() {
+    @Override
+    @Nonnull public Description buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, Description.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Description buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Description buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DescriptionImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

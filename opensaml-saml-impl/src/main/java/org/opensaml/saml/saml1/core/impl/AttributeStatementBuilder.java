@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeStatement;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AttributeStatementImpl} objects.
+ * Builder of {@link AttributeStatement} objects.
  */
 public class AttributeStatementBuilder extends AbstractSAMLObjectBuilder<AttributeStatement> {
 
-    /**
-     * Constructor.
-     */
-    public AttributeStatementBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AttributeStatement buildObject() {
+    @Override
+    @Nonnull public AttributeStatement buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AttributeStatement buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AttributeStatement buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AttributeStatementImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

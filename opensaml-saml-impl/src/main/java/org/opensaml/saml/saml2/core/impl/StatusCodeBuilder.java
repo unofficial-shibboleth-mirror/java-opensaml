@@ -21,30 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.StatusCode;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.core.impl.StatusCodeImpl}.
+ * Builder for {@link StatusCode}.
  */
 public class StatusCodeBuilder extends AbstractSAMLObjectBuilder<StatusCode> {
 
-    /**
-     * Constructor.
-     * 
-     */
-    public StatusCodeBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public StatusCode buildObject() {
+    @Override
+    @Nonnull public StatusCode buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public StatusCode buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public StatusCode buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new StatusCodeImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

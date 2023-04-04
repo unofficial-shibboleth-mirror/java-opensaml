@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.InformationURL;
@@ -25,21 +28,19 @@ import org.opensaml.saml.ext.saml2mdui.InformationURL;
  * Builder of {@link InformationURL} objects.
  */
 public class InformationURLBuilder extends AbstractSAMLObjectBuilder<InformationURL> {
-    /**
-     * Constructor.
-     */
-    public InformationURLBuilder() {
-
-    }
 
     /** {@inheritDoc} */
-    public InformationURL buildObject() {
+    @Override
+    @Nonnull public InformationURL buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, InformationURL.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public InformationURL buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public InformationURL buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new InformationURLImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

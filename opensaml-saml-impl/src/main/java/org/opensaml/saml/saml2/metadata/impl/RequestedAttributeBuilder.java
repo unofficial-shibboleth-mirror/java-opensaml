@@ -21,29 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.RequestedAttributeImpl}.
+ * Builder for {@link RequestedAttribute}.
  */
 public class RequestedAttributeBuilder extends AbstractSAMLObjectBuilder<RequestedAttribute> {
 
-    /** Constructor. */
-    public RequestedAttributeBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public RequestedAttribute buildObject() {
+    @Override
+    @Nonnull public RequestedAttribute buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, RequestedAttribute.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public RequestedAttribute buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public RequestedAttribute buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new RequestedAttributeImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

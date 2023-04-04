@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.Keywords;
@@ -25,21 +28,19 @@ import org.opensaml.saml.ext.saml2mdui.Keywords;
  * Builder of {@link Keywords} objects.
  */
 public class KeywordsBuilder extends AbstractSAMLObjectBuilder<Keywords> {
-    /**
-     * Constructor.
-     */
-    public KeywordsBuilder() {
-
-    }
 
     /** {@inheritDoc} */
-    public Keywords buildObject() {
+    @Override
+    @Nonnull public Keywords buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, Keywords.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Keywords buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Keywords buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new KeywordsImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

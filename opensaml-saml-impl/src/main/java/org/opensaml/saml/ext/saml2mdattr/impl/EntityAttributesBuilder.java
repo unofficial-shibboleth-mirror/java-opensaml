@@ -17,25 +17,26 @@
 
 package org.opensaml.saml.ext.saml2mdattr.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 
-/** Builder of {@link EntityAttributesImpl} objects. */
+/** Builder of {@link EntityAttributes} objects. */
 public class EntityAttributesBuilder extends AbstractSAMLObjectBuilder<EntityAttributes> {
 
-    /** Constructor. */
-    public EntityAttributesBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public EntityAttributes buildObject() {
+    @Override
+    @Nonnull public EntityAttributes buildObject() {
         return buildObject(EntityAttributes.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public EntityAttributes buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public EntityAttributes buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new EntityAttributesImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

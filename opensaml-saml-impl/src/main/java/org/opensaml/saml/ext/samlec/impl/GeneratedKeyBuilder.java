@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.samlec.GeneratedKey;
-
-
 
 /**
  * A Builder for {@link GeneratedKey} objects.
  */
 public class GeneratedKeyBuilder extends AbstractSAMLObjectBuilder<GeneratedKey> {
 
-    /**
-     * Constructor.
-     */
-    public GeneratedKeyBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public GeneratedKey buildObject() {
+    @Override
+    @Nonnull public GeneratedKey buildObject() {
         return buildObject(SAMLConstants.SAMLEC_GSS_NS, GeneratedKey.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAMLEC_GSS_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public GeneratedKey buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public GeneratedKey buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new GeneratedKeyImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

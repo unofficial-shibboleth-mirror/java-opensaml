@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameIDMappingResponse;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.core.impl.NameIDMappingResponseImpl}.
+ * Builder for {@link NameIDMappingResponse}.
  */
 public class NameIDMappingResponseBuilder extends AbstractSAMLObjectBuilder<NameIDMappingResponse> {
 
-    /**
-     * Constructor.
-     */
-    public NameIDMappingResponseBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public NameIDMappingResponse buildObject() {
+    @Override
+    @Nonnull public NameIDMappingResponse buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, NameIDMappingResponse.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public NameIDMappingResponse buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public NameIDMappingResponse buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new NameIDMappingResponseImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

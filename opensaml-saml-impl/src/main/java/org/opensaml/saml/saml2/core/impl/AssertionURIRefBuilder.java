@@ -21,29 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.core.impl.AssertionURIRefImpl} objects.
+ * Builder for {@link AssertionURIRef} objects.
  */
 public class AssertionURIRefBuilder extends AbstractSAMLObjectBuilder<AssertionURIRef> {
 
-    /** Constructor. */
-    public AssertionURIRefBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AssertionURIRef buildObject() {
+    @Override
+    @Nonnull public AssertionURIRef buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, AssertionURIRef.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AssertionURIRef buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AssertionURIRef buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AssertionURIRefImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

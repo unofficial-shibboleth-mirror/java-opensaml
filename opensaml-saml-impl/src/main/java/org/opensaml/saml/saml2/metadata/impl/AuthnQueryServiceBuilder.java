@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AuthnQueryServiceImpl}.
+ * Builder for {@link AuthnQueryService}.
  */
 public class AuthnQueryServiceBuilder extends AbstractSAMLObjectBuilder<AuthnQueryService> {
 
-    /**
-     * Constructor.
-     */
-    public AuthnQueryServiceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthnQueryService buildObject() {
+    @Override
+    @Nonnull public AuthnQueryService buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, AuthnQueryService.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthnQueryService buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthnQueryService buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AuthnQueryServiceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

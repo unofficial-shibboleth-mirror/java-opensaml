@@ -21,29 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.core.impl.AuthenticatingAuthorityImpl} objects.
+ * Builder for {@link AuthenticatingAuthority} objects.
  */
 public class AuthenticatingAuthorityBuilder extends AbstractSAMLObjectBuilder<AuthenticatingAuthority> {
 
-    /** Constructor. */
-    public AuthenticatingAuthorityBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthenticatingAuthority buildObject() {
+    @Override
+    @Nonnull public AuthenticatingAuthority buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, AuthenticatingAuthority.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthenticatingAuthority buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthenticatingAuthority buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AuthenticatingAuthorityImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

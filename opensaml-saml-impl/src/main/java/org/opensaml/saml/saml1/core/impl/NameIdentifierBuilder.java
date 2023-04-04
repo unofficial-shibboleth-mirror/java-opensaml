@@ -17,30 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 
 /**
- * Builder of{@link org.opensaml.saml.saml1.core.impl.NameIdentifierImpl} objects.
+ * Builder of {@link NameIdentifier} objects.
  */
 public class NameIdentifierBuilder extends AbstractSAMLObjectBuilder<NameIdentifier> {
 
-    /**
-     * Constructor.
-     */
-    public NameIdentifierBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public NameIdentifier buildObject() {
+    @Override
+    @Nonnull public NameIdentifier buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, NameIdentifier.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public NameIdentifier buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public NameIdentifier buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new NameIdentifierImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

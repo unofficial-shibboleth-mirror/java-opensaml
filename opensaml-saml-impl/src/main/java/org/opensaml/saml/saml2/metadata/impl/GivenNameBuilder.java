@@ -21,30 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.GivenName;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.GivenNameImpl}.
+ * Builder for {@link GivenName}.
  */
 public class GivenNameBuilder extends AbstractSAMLObjectBuilder<GivenName> {
 
-    /**
-     * Constructor.
-     */
-    public GivenNameBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public GivenName buildObject() {
+    @Override
+    @Nonnull public GivenName buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, GivenName.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public GivenName buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public GivenName buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new GivenNameImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

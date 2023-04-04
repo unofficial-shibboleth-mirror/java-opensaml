@@ -17,30 +17,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.AuthzService;
 
 /**
- * Builder for {@link org.opensaml.saml.saml2.metadata.impl.AuthzServiceImpl}.
+ * Builder for {@link AuthzService}.
  */
 public class AuthzServiceBuilder extends AbstractSAMLObjectBuilder<AuthzService> {
 
-    /**
-     * Constructor.
-     */
-    public AuthzServiceBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AuthzService buildObject() {
+    @Override
+    @Nonnull public AuthzService buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, AuthzService.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AuthzService buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public AuthzService buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AuthzServiceImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

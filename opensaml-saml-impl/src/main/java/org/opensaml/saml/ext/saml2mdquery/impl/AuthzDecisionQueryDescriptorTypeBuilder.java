@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdquery.AuthzDecisionQueryDescriptorType;
@@ -29,15 +32,16 @@ public class AuthzDecisionQueryDescriptorTypeBuilder
 
     /** {@inheritDoc} */
     @Override
-    public AuthzDecisionQueryDescriptorType buildObject() {
+    @Nonnull public AuthzDecisionQueryDescriptorType buildObject() {
         return buildObject(SAMLConstants.SAML20MDQUERY_NS, AuthzDecisionQueryDescriptorType.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDQUERY_PREFIX, AuthzDecisionQueryDescriptorType.TYPE_NAME);
     }
 
     /** {@inheritDoc} */
     @Override
-    public AuthzDecisionQueryDescriptorType buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Nonnull public AuthzDecisionQueryDescriptorType buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new AuthzDecisionQueryDescriptorTypeImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

@@ -17,27 +17,28 @@
 
 package org.opensaml.saml.ext.saml1md.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml1md.SourceID;
 
 /**
- * Builder of {@link SourceIDImpl} objects.
+ * Builder of {@link SourceID} objects.
  */
 public class SourceIDBuilder extends AbstractSAMLObjectBuilder<SourceID> {
 
-    /** Constructor. */
-    public SourceIDBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public SourceID buildObject() {
+    @Override
+    @Nonnull public SourceID buildObject() {
         return buildObject(SAMLConstants.SAML1MD_NS, SourceID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SourceID buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public SourceID buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SourceIDImpl(namespaceURI, localName, namespacePrefix);
     }
 }

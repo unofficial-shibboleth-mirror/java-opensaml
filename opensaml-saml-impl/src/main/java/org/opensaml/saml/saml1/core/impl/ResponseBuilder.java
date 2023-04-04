@@ -17,22 +17,29 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Response;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.ResponseImpl} objects.
+ * Builder of {@link Response} objects.
  */
 public class ResponseBuilder extends AbstractSAMLObjectBuilder<Response> {
 
     /** {@inheritDoc} */
-    public Response buildObject() {
+    @Override
+    @Nonnull public Response buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, Response.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Response buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Response buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ResponseImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

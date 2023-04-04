@@ -21,29 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.core.impl.NameIDPolicyImpl}.
+ * Builder for {@link NameIDPolicy}.
  */
 public class NameIDPolicyBuilder extends AbstractSAMLObjectBuilder<NameIDPolicy> {
 
-    /**
-     * Constructor.
-     */
-    public NameIDPolicyBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public NameIDPolicy buildObject() {
+    @Override
+    @Nonnull public NameIDPolicy buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, NameIDPolicy.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public NameIDPolicy buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public NameIDPolicy buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new NameIDPolicyImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

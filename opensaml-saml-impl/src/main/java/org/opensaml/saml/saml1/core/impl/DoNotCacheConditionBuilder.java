@@ -17,31 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.DoNotCacheConditionImpl} objects.
+ * Builder of {@link DoNotCacheCondition} objects.
  */
 public class DoNotCacheConditionBuilder extends AbstractSAMLObjectBuilder<DoNotCacheCondition> {
 
-    /**
-     * Constructor.
-     */
-    public DoNotCacheConditionBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public DoNotCacheCondition buildObject() {
+    @Override
+    @Nonnull public DoNotCacheCondition buildObject() {
         return buildObject(SAMLConstants.SAML1_NS, DoNotCacheCondition.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public DoNotCacheCondition buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public DoNotCacheCondition buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new DoNotCacheConditionImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

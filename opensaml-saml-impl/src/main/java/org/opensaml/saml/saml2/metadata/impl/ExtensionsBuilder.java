@@ -17,19 +17,23 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.Extensions;
 
 /**
- * Builder of {@link ExtensionsImpl} objects.
+ * Builder of {@link Extensions} objects.
  */
 public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
 
     /**
      * {@inheritDoc}
      */
-    public Extensions buildObject() {
+    @Override
+    @Nonnull public Extensions buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
@@ -37,7 +41,10 @@ public class ExtensionsBuilder extends AbstractSAMLObjectBuilder<Extensions> {
     /**
      * {@inheritDoc}
      */
-    public Extensions buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Extensions buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ExtensionsImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

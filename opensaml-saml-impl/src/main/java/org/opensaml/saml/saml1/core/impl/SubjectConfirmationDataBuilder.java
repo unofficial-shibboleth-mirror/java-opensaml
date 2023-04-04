@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.SubjectConfirmationData;
@@ -31,14 +34,16 @@ import org.opensaml.saml.saml1.core.SubjectConfirmationData;
 public class SubjectConfirmationDataBuilder extends AbstractSAMLObjectBuilder<SubjectConfirmationData> {
 
     /** {@inheritDoc} */
-    public SubjectConfirmationData buildObject() {
+    @Override
+    @Nonnull public SubjectConfirmationData buildObject() {
         return buildObject(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SubjectConfirmationData buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public SubjectConfirmationData buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new SubjectConfirmationDataImpl(namespaceURI, localName, namespacePrefix);
     }
     

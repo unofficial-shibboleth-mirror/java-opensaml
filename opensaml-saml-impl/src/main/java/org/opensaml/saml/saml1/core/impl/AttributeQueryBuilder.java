@@ -17,30 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 
 /**
- * Builder of {@link org.opensaml.saml.saml1.core.impl.AttributeQueryImpl} objects.
+ * Builder of {@link AttributeQuery} objects.
  */
 public class AttributeQueryBuilder extends AbstractSAMLObjectBuilder<AttributeQuery> {
 
-    /**
-     * Constructor.
-     */
-    public AttributeQueryBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public AttributeQuery buildObject() {
+    @Override
+    @Nonnull public AttributeQuery buildObject() {
         return buildObject(SAMLConstants.SAML10P_NS, AttributeQuery.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML1P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public AttributeQuery buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public AttributeQuery buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new AttributeQueryImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.samlec.SessionKey;
@@ -31,20 +34,18 @@ import org.opensaml.saml.ext.samlec.SessionKey;
  */
 public class SessionKeyBuilder extends AbstractSAMLObjectBuilder<SessionKey> {
 
-    /**
-     * Constructor.
-     */
-    public SessionKeyBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public SessionKey buildObject() {
+    @Override
+    @Nonnull public SessionKey buildObject() {
         return buildObject(SAMLConstants.SAMLEC_GSS_NS, SessionKey.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAMLEC_GSS_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SessionKey buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public SessionKey buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SessionKeyImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.Logo;
@@ -26,21 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.Logo;
  */
 public class LogoBuilder extends AbstractSAMLObjectBuilder<Logo> {
 
-    /**
-     * Constructor.
-     */
-    public LogoBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public Logo buildObject() {
+    @Override
+    @Nonnull public Logo buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, Logo.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Logo buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Logo buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new LogoImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }

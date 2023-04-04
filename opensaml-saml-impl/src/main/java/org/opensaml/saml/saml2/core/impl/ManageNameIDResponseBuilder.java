@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.ManageNameIDResponse;
 
 /**
- * A Builder for {@link org.opensaml.saml.saml2.core.impl.ManageNameIDResponseImpl} objects.
+ * A Builder for {@link ManageNameIDResponse} objects.
  */
 public class ManageNameIDResponseBuilder extends AbstractSAMLObjectBuilder<ManageNameIDResponse> {
 
-    /**
-     * Constructor.
-     */
-    public ManageNameIDResponseBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public ManageNameIDResponse buildObject() {
+    @Override
+    @Nonnull public ManageNameIDResponse buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, ManageNameIDResponse.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public ManageNameIDResponse buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public ManageNameIDResponse buildObject(@Nullable final String namespaceURI,
+            @Nonnull final String localName, @Nullable final String namespacePrefix) {
         return new ManageNameIDResponseImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

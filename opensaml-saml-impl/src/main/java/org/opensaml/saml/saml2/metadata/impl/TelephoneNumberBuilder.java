@@ -21,31 +21,30 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
 /**
- * Builder of {@link org.opensaml.saml.saml2.metadata.impl.TelephoneNumberImpl}.
+ * Builder for {@link TelephoneNumber}.
  */
 public class TelephoneNumberBuilder extends AbstractSAMLObjectBuilder<TelephoneNumber> {
 
-    /**
-     * Constructor.
-     */
-    public TelephoneNumberBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public TelephoneNumber buildObject() {
+    @Override
+    @Nonnull public TelephoneNumber buildObject() {
         return buildObject(SAMLConstants.SAML20MD_NS, TelephoneNumber.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public TelephoneNumber buildObject(final String namespaceURI, final String localName,
-            final String namespacePrefix) {
+    @Override
+    @Nonnull public TelephoneNumber buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new TelephoneNumberImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

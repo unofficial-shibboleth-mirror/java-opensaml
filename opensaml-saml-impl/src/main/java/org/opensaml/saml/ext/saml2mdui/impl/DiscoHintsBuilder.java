@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.ext.saml2mdui.DiscoHints;
@@ -26,21 +29,18 @@ import org.opensaml.saml.ext.saml2mdui.DiscoHints;
  */
 public class DiscoHintsBuilder extends AbstractSAMLObjectBuilder<DiscoHints> {
 
-    /**
-     * Constructor.
-     */
-    public DiscoHintsBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public DiscoHints buildObject() {
+    @Override
+    @Nonnull public DiscoHints buildObject() {
         return buildObject(SAMLConstants.SAML20MDUI_NS, DiscoHints.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MDUI_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public DiscoHints buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public DiscoHints buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new DiscoHintsImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

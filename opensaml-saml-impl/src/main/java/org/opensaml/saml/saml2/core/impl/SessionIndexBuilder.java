@@ -21,29 +21,30 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
 /**
- * A Builder for {@link org.opensaml.saml.saml2.core.impl.SessionIndexImpl} objects.
+ * A Builder for {@link SessionIndex} objects.
  */
 public class SessionIndexBuilder extends AbstractSAMLObjectBuilder<SessionIndex> {
 
-    /**
-     * Constructor.
-     */
-    public SessionIndexBuilder() {
-    }
-
     /** {@inheritDoc} */
-    public SessionIndex buildObject() {
+    @Override
+    @Nonnull public SessionIndex buildObject() {
         return buildObject(SAMLConstants.SAML20P_NS, SessionIndex.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20P_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public SessionIndex buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public SessionIndex buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new SessionIndexImpl(namespaceURI, localName, namespacePrefix);
     }
+    
 }

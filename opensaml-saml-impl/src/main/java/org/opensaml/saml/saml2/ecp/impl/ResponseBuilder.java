@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.AbstractSAMLObjectBuilder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.ecp.Response;
@@ -30,21 +33,18 @@ import org.opensaml.saml.saml2.ecp.Response;
  */
 public class ResponseBuilder extends AbstractSAMLObjectBuilder<Response> {
 
-    /**
-     * Constructor.
-     */
-    public ResponseBuilder() {
-
-    }
-
     /** {@inheritDoc} */
-    public Response buildObject() {
+    @Override
+    @Nonnull public Response buildObject() {
         return buildObject(SAMLConstants.SAML20ECP_NS, Response.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20ECP_PREFIX);
     }
 
     /** {@inheritDoc} */
-    public Response buildObject(final String namespaceURI, final String localName, final String namespacePrefix) {
+    @Override
+    @Nonnull public Response buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+            @Nullable final String namespacePrefix) {
         return new ResponseImpl(namespaceURI, localName, namespacePrefix);
     }
+
 }
