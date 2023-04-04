@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.AuthnQuery;
@@ -28,31 +30,34 @@ import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthnQuery} objects.
+ * A thread-safe Unmarshaller for {@link AuthnQuery} objects.
  */
 public class AuthnQueryUnmarshaller extends SubjectQueryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final AuthnQuery query = (AuthnQuery) parentSAMLObject;
+        final AuthnQuery query = (AuthnQuery) parentObject;
     
-        if (childSAMLObject instanceof RequestedAuthnContext) {
-            query.setRequestedAuthnContext((RequestedAuthnContext) childSAMLObject);
+        if (childObject instanceof RequestedAuthnContext) {
+            query.setRequestedAuthnContext((RequestedAuthnContext) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AuthnQuery query = (AuthnQuery) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AuthnQuery query = (AuthnQuery) xmlObject;
 
         if (attribute.getLocalName().equals(AuthnQuery.SESSION_INDEX_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
             query.setSessionIndex(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

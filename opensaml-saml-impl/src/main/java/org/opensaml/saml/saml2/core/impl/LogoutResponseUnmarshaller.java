@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.LogoutResponse;
+
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.LogoutResponse} objects.
+ * A thread-safe Unmarshaller for {@link LogoutResponse} objects.
  */
 public class LogoutResponseUnmarshaller extends StatusResponseTypeUnmarshaller {
 

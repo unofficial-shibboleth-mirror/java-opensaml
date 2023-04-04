@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -27,27 +29,30 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.KeyDescriptor}s.
+ * A thread-safe unmarshaller for {@link KeyDescriptor}.
  */
 public class KeyDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final KeyDescriptor keyDescriptor = (KeyDescriptor) parentSAMLObject;
+        final KeyDescriptor keyDescriptor = (KeyDescriptor) parentObject;
 
-        if (childSAMLObject instanceof KeyInfo) {
-            keyDescriptor.setKeyInfo((KeyInfo) childSAMLObject);
-        } else if (childSAMLObject instanceof EncryptionMethod) {
-            keyDescriptor.getEncryptionMethods().add((EncryptionMethod) childSAMLObject);
+        if (childObject instanceof KeyInfo) {
+            keyDescriptor.setKeyInfo((KeyInfo) childObject);
+        } else if (childObject instanceof EncryptionMethod) {
+            keyDescriptor.getEncryptionMethods().add((EncryptionMethod) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final KeyDescriptor keyDescriptor = (KeyDescriptor) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final KeyDescriptor keyDescriptor = (KeyDescriptor) xmlObject;
 
         if (attribute.getName().equals(KeyDescriptor.USE_ATTRIB_NAME) && attribute.getNamespaceURI() == null) {
             if (UsageType.SIGNING.getValue().equals(attribute.getValue())) {
@@ -58,7 +63,7 @@ public class KeyDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
                 throw new UnmarshallingException("Invalid key usage type: " + attribute.getValue());
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

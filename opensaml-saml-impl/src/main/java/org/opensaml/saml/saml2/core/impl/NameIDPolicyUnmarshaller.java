@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -29,13 +31,15 @@ import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameIDPolicy} objects.
+ * A thread-safe Unmarshaller for {@link NameIDPolicy} objects.
  */
 public class NameIDPolicyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final NameIDPolicy policy = (NameIDPolicy) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final NameIDPolicy policy = (NameIDPolicy) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(NameIDPolicy.FORMAT_ATTRIB_NAME)) {
@@ -47,10 +51,10 @@ public class NameIDPolicyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             if (attribute.getLocalName().equals(NameIDPolicy.ALLOW_CREATE_ATTRIB_NAME)) {
                 policy.setAllowCreate(XSBooleanValue.valueOf(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

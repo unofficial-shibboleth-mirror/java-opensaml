@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -25,22 +27,24 @@ import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.SubjectConfirmation} objects.
+ * A thread-safe Unmarshaller for {@link SubjectConfirmation} objects.
  */
 public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final SubjectConfirmation subjectConfirmation = (SubjectConfirmation) parentSAMLObject;
+        final SubjectConfirmation subjectConfirmation = (SubjectConfirmation) parentObject;
 
-        if (childSAMLObject instanceof ConfirmationMethod) {
-            subjectConfirmation.getConfirmationMethods().add((ConfirmationMethod) childSAMLObject);
-        } else if (childSAMLObject instanceof KeyInfo) {
-            subjectConfirmation.setKeyInfo((KeyInfo)childSAMLObject);
+        if (childObject instanceof ConfirmationMethod) {
+            subjectConfirmation.getConfirmationMethods().add((ConfirmationMethod) childObject);
+        } else if (childObject instanceof KeyInfo) {
+            subjectConfirmation.setKeyInfo((KeyInfo)childObject);
         } else {
-            subjectConfirmation.setSubjectConfirmationData(childSAMLObject);
+            subjectConfirmation.setSubjectConfirmationData(childObject);
         }
     }
+
 }

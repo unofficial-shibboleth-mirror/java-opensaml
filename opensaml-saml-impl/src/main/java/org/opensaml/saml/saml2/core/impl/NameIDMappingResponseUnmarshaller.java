@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.EncryptedID;
@@ -24,21 +26,22 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDMappingResponse;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameIDMappingResponse} objects.
+ * A thread safe Unmarshaller for {@link NameIDMappingResponse} objects.
  */
 public class NameIDMappingResponseUnmarshaller extends StatusResponseTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final NameIDMappingResponse resp = (NameIDMappingResponse) parentSAMLObject;
+        final NameIDMappingResponse resp = (NameIDMappingResponse) parentObject;
 
-        if (childSAMLObject instanceof NameID) {
-            resp.setNameID((NameID) childSAMLObject);
-        } else if (childSAMLObject instanceof EncryptedID) {
-            resp.setEncryptedID((EncryptedID) childSAMLObject);
+        if (childObject instanceof NameID) {
+            resp.setNameID((NameID) childObject);
+        } else if (childObject instanceof EncryptedID) {
+            resp.setEncryptedID((EncryptedID) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

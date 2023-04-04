@@ -22,10 +22,11 @@
 package org.opensaml.saml.ext.saml2aslo.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
+import org.opensaml.saml.ext.saml2aslo.Asynchronous;
 
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.ext.saml2aslo.Asynchronous} objects.
+ * A thread-safe Unmarshaller for {@link Asynchronous} objects.
  */
 public class AsynchronousUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

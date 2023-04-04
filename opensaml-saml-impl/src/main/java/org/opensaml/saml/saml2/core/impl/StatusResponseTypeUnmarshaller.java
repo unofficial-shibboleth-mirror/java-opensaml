@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -41,26 +43,29 @@ import net.shibboleth.shared.xml.DOMTypeSupport;
 public abstract class StatusResponseTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final StatusResponseType sr = (StatusResponseType) parentSAMLObject;
+        final StatusResponseType sr = (StatusResponseType) parentObject;
     
-        if (childSAMLObject instanceof Issuer) {
-            sr.setIssuer((Issuer) childSAMLObject);
-        } else if (childSAMLObject instanceof Signature) {
-            sr.setSignature((Signature) childSAMLObject);
-        } else if (childSAMLObject instanceof Extensions) {
-            sr.setExtensions((Extensions) childSAMLObject);
-        } else if (childSAMLObject instanceof Status) {
-            sr.setStatus((Status) childSAMLObject);
+        if (childObject instanceof Issuer) {
+            sr.setIssuer((Issuer) childObject);
+        } else if (childObject instanceof Signature) {
+            sr.setSignature((Signature) childObject);
+        } else if (childObject instanceof Extensions) {
+            sr.setExtensions((Extensions) childObject);
+        } else if (childObject instanceof Status) {
+            sr.setStatus((Status) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final StatusResponseType sr = (StatusResponseType) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final StatusResponseType sr = (StatusResponseType) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(StatusResponseType.VERSION_ATTRIB_NAME)) {
@@ -78,10 +83,10 @@ public abstract class StatusResponseTypeUnmarshaller extends AbstractSAMLObjectU
             } else if (attribute.getLocalName().equals(StatusResponseType.CONSENT_ATTRIB_NAME)) {
                 sr.setConsent(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

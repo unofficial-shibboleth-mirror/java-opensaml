@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -25,22 +26,23 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Attribute;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.impl.Attribute} objects.
+ * A thread-safe Unmarshaller for {@link Attribute} objects.
  */
 public class AttributeUnmarshaller extends AttributeDesignatorUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final Attribute attribute = (Attribute) parentSAMLObject;
+        final Attribute attribute = (Attribute) parentObject;
 
-        final QName childQName = childSAMLObject.getElementQName();
+        final QName childQName = childObject.getElementQName();
         if ("AttributeValue".equals(childQName.getLocalPart())
                 && childQName.getNamespaceURI().equals(SAMLConstants.SAML1_NS)) {
-            attribute.getAttributeValues().add(childSAMLObject);
+            attribute.getAttributeValues().add(childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

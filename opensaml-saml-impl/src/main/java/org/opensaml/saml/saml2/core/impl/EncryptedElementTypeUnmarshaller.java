@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -25,21 +27,22 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.EncryptedElementType}.
+ * A thread-safe Unmarshaller for {@link EncryptedElementType}.
  */
 public class EncryptedElementTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final EncryptedElementType eet = (EncryptedElementType) parentSAMLObject;
+        final EncryptedElementType eet = (EncryptedElementType) parentObject;
 
-        if (childSAMLObject instanceof EncryptedData) {
-            eet.setEncryptedData((EncryptedData) childSAMLObject);
-        } else if (childSAMLObject instanceof EncryptedKey) {
-            eet.getEncryptedKeys().add((EncryptedKey) childSAMLObject);
+        if (childObject instanceof EncryptedData) {
+            eet.setEncryptedData((EncryptedData) childObject);
+        } else if (childObject instanceof EncryptedKey) {
+            eet.getEncryptedKeys().add((EncryptedKey) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 

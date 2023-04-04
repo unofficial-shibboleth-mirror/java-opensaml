@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -35,12 +37,13 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Assertion} objects.
+ * A thread-safe Unmarshaller for {@link Assertion} objects.
  */
 public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    public XMLObject unmarshall(final Element domElement) throws UnmarshallingException {
+    @Override
+    @Nonnull public XMLObject unmarshall(@Nonnull final Element domElement) throws UnmarshallingException {
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         final Assertion assertion = (Assertion) super.unmarshall(domElement);
         if (assertion.getMinorVersion() != 0 && !Strings.isNullOrEmpty(assertion.getID())) {
@@ -50,29 +53,32 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final Assertion assertion = (Assertion) parentSAMLObject;
+        final Assertion assertion = (Assertion) parentObject;
 
-        if (childSAMLObject instanceof Signature) {
-            assertion.setSignature((Signature) childSAMLObject);
-        } else if (childSAMLObject instanceof Conditions) {
-            assertion.setConditions((Conditions) childSAMLObject);
-        } else if (childSAMLObject instanceof Advice) {
-            assertion.setAdvice((Advice) childSAMLObject);
-        } else if (childSAMLObject instanceof Statement) {
-            assertion.getStatements().add((Statement) childSAMLObject);
+        if (childObject instanceof Signature) {
+            assertion.setSignature((Signature) childObject);
+        } else if (childObject instanceof Conditions) {
+            assertion.setConditions((Conditions) childObject);
+        } else if (childObject instanceof Advice) {
+            assertion.setAdvice((Advice) childObject);
+        } else if (childObject instanceof Statement) {
+            assertion.getStatements().add((Statement) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
-        final Assertion assertion = (Assertion) samlObject;
+        final Assertion assertion = (Assertion) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (Assertion.ID_ATTRIB_NAME.equals(attribute.getLocalName())) {
@@ -105,10 +111,10 @@ public class AssertionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
                     assertion.setVersion(SAMLVersion.VERSION_11);
                 }
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 // Checkstyle: CyclomaticComplexity ON

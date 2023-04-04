@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -24,21 +26,23 @@ import org.opensaml.saml.saml1.core.Audience;
 import org.opensaml.saml.saml1.core.AudienceRestrictionCondition;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AudienceRestrictionCondition} objects.
+ * A thread-safe Unmarshaller for {@link AudienceRestrictionCondition} objects.
  */
 public class AudienceRestrictionConditionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
         final AudienceRestrictionCondition audienceRestrictionCondition =
-                (AudienceRestrictionCondition) parentSAMLObject;
+                (AudienceRestrictionCondition) parentObject;
 
-        if (childSAMLObject instanceof Audience) {
-            audienceRestrictionCondition.getAudiences().add((Audience) childSAMLObject);
+        if (childObject instanceof Audience) {
+            audienceRestrictionCondition.getAudiences().add((Audience) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
+
 }

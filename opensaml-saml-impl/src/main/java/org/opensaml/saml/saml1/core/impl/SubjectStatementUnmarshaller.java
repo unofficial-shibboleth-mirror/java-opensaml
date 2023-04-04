@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -28,19 +30,20 @@ import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectStatement;
 
 /**
- * Unamershaller for {@link SubjectStatement}s.
+ * Unamershaller for {@link SubjectStatement}.
  */
 public abstract class SubjectStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final SubjectStatement statement = (SubjectStatement) parentSAMLObject;
+        final SubjectStatement statement = (SubjectStatement) parentObject;
 
-        if (childSAMLObject instanceof Subject) {
-            statement.setSubject((Subject) childSAMLObject);
+        if (childObject instanceof Subject) {
+            statement.setSubject((Subject) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 

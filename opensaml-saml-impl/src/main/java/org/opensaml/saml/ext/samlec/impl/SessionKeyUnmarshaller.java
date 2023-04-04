@@ -37,6 +37,7 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class SessionKeyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final SessionKey key = (SessionKey) parentObject;
@@ -51,9 +52,10 @@ public class SessionKeyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        final SessionKey key = (SessionKey) samlObject;
+        final SessionKey key = (SessionKey) xmlObject;
 
         final QName attrName = QNameSupport.getNodeQName(attribute);
         if (SessionKey.SOAP11_MUST_UNDERSTAND_ATTR_NAME.equals(attrName)) {
@@ -64,7 +66,7 @@ public class SessionKeyUnmarshaller extends AbstractSAMLObjectUnmarshaller {
                 && attribute.getNamespaceURI() == null) {
             key.setAlgorithm(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

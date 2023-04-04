@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -28,13 +30,15 @@ import org.opensaml.saml.saml2.core.BaseID;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.BaseID} objects.
+ * A thread-safe Unmarshaller for {@link BaseID} objects.
  */
 public abstract class BaseIDUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final BaseID baseID = (BaseID) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final BaseID baseID = (BaseID) xmlObject;
         
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(BaseID.NAME_QUALIFIER_ATTRIB_NAME)) {
@@ -42,10 +46,10 @@ public abstract class BaseIDUnmarshaller extends AbstractSAMLObjectUnmarshaller 
             } else if (attribute.getLocalName().equals(BaseID.SP_NAME_QUALIFIER_ATTRIB_NAME)) {
                 baseID.setSPNameQualifier(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -27,29 +28,30 @@ import org.opensaml.saml.saml2.core.Attribute;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Attribute} objects.
+ * A thread-safe Unmarshaller for {@link Attribute} objects.
  */
 public class AttributeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
+        final Attribute attribute = (Attribute) parentObject;
 
-        final Attribute attribute = (Attribute) parentSAMLObject;
-
-        final QName childQName = childSAMLObject.getElementQName();
+        final QName childQName = childObject.getElementQName();
         if ("AttributeValue".equals(childQName.getLocalPart())
                 && childQName.getNamespaceURI().equals(SAMLConstants.SAML20_NS)) {
-            attribute.getAttributeValues().add(childSAMLObject);
+            attribute.getAttributeValues().add(childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-
-        final Attribute attrib = (Attribute) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final Attribute attrib = (Attribute) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(Attribute.NAME_ATTTRIB_NAME)) {
@@ -59,7 +61,7 @@ public class AttributeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             } else if (attribute.getLocalName().equals(Attribute.FRIENDLY_NAME_ATTRIB_NAME)) {
                 attrib.setFriendlyName(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
            }
         } else {
             processUnknownAttribute(attrib, attribute);

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml1.core.Action;
@@ -25,35 +27,38 @@ import org.opensaml.saml.saml1.core.Evidence;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AuthorizationDecisionQuery} objects.
+ * A thread-safe Unmarshaller for {@link AuthorizationDecisionQuery} objects.
  */
 public class AuthorizationDecisionQueryUnmarshaller extends SubjectQueryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final AuthorizationDecisionQuery authorizationDecisionQuery = (AuthorizationDecisionQuery) parentSAMLObject;
+        final AuthorizationDecisionQuery authorizationDecisionQuery = (AuthorizationDecisionQuery) parentObject;
 
-        if (childSAMLObject instanceof Action) {
-            authorizationDecisionQuery.getActions().add((Action) childSAMLObject);
-        } else if (childSAMLObject instanceof Evidence) {
-            authorizationDecisionQuery.setEvidence((Evidence) childSAMLObject);
+        if (childObject instanceof Action) {
+            authorizationDecisionQuery.getActions().add((Action) childObject);
+        } else if (childObject instanceof Evidence) {
+            authorizationDecisionQuery.setEvidence((Evidence) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
-        final AuthorizationDecisionQuery authorizationDecisionQuery = (AuthorizationDecisionQuery) samlObject;
+        final AuthorizationDecisionQuery authorizationDecisionQuery = (AuthorizationDecisionQuery) xmlObject;
 
         if (attribute.getLocalName().equals(AuthorizationDecisionQuery.RESOURCE_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
             authorizationDecisionQuery.setResource(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

@@ -17,41 +17,42 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml2.metadata.Extensions;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
+
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.Extensions} objects.
+ * A thread-safe Unmarshaller for {@link Extensions} objects.
  */
 public class ExtensionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractSAMLObjectUnmarshaller.class);
-
-    /** Constructor. */
-    public ExtensionsUnmarshaller() {
-        super();
-    }
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractSAMLObjectUnmarshaller.class);
 
     /**
      * {@inheritDoc}
      */
-    protected void processChildElement(final XMLObject parentXMLObject, final XMLObject childXMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Extensions extensions = (Extensions) parentXMLObject;
+        final Extensions extensions = (Extensions) parentObject;
 
-        extensions.getUnknownXMLObjects().add(childXMLObject);
+        extensions.getUnknownXMLObjects().add(childObject);
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void processAttribute(final XMLObject xmlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         log.debug("Ignorning unknown attribute {}", attribute.getLocalName());
     }
 
@@ -61,4 +62,5 @@ public class ExtensionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     protected void processElementContent(final XMLObject xmlObject, final String elementContent) {
         log.debug("Ignoring element content {}", elementContent);
     }
+
 }

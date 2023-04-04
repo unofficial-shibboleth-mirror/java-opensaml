@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -29,12 +31,13 @@ import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.EncryptedAttribute;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AttributeStatement}.
+ * A thread-safe Unmarshaller for {@link AttributeStatement}.
  */
 public class AttributeStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final AttributeStatement attributeStatement = (AttributeStatement) parentObject;
 

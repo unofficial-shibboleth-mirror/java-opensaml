@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -30,23 +32,25 @@ import org.opensaml.saml.saml2.core.StatusDetail;
 import org.opensaml.saml.saml2.core.StatusMessage;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Status} objects.
+ * A thread-safe Unmarshaller for {@link Status} objects.
  */
 public class StatusUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Status status = (Status) parentSAMLObject;
+        final Status status = (Status) parentObject;
 
-        if (childSAMLObject instanceof StatusCode) {
-            status.setStatusCode((StatusCode) childSAMLObject);
-        } else if (childSAMLObject instanceof StatusMessage) {
-            status.setStatusMessage((StatusMessage) childSAMLObject);
-        } else if (childSAMLObject instanceof StatusDetail) {
-            status.setStatusDetail((StatusDetail) childSAMLObject);
+        if (childObject instanceof StatusCode) {
+            status.setStatusCode((StatusCode) childObject);
+        } else if (childObject instanceof StatusMessage) {
+            status.setStatusMessage((StatusMessage) childObject);
+        } else if (childObject instanceof StatusDetail) {
+            status.setStatusDetail((StatusDetail) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
+    
 }

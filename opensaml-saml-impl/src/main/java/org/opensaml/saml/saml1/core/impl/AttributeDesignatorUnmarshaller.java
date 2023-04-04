@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -27,9 +29,11 @@ import org.w3c.dom.Attr;
 public class AttributeDesignatorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
-        final AttributeDesignator designator = (AttributeDesignator) samlObject;
+        final AttributeDesignator designator = (AttributeDesignator) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (AttributeDesignator.ATTRIBUTENAME_ATTRIB_NAME.equals(attribute.getLocalName())) {
@@ -37,10 +41,10 @@ public class AttributeDesignatorUnmarshaller extends AbstractSAMLObjectUnmarshal
             } else if (AttributeDesignator.ATTRIBUTENAMESPACE_ATTRIB_NAME.equals(attribute.getLocalName())) {
                 designator.setAttributeNamespace(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 

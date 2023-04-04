@@ -17,23 +17,25 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.saml1.core.StatusDetail;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.StatusDetail} objects.
+ * A thread-safe Unmarshaller for {@link StatusDetail} objects.
  */
 public class StatusDetailUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    /** {@inheritDoc} */
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final StatusDetail statusDetail = (StatusDetail) parentSAMLObject;
+        final StatusDetail statusDetail = (StatusDetail) parentObject;
 
-        statusDetail.getUnknownXMLObjects().add(childSAMLObject);
+        statusDetail.getUnknownXMLObjects().add(childObject);
     }
+
 }

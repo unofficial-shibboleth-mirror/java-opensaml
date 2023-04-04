@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.ext.saml2mdui.Logo;
@@ -29,15 +31,17 @@ import org.w3c.dom.Attr;
 public class LogoUnmarshaller extends LocalizedURIUnmarshaller {
     
     /**  {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final Logo logo = (Logo) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final Logo logo = (Logo) xmlObject;
 
         if (attribute.getLocalName().equals(Logo.HEIGHT_ATTR_NAME) && attribute.getNamespaceURI() == null) {
             logo.setHeight(Integer.valueOf(attribute.getValue()));
         } else if (attribute.getLocalName().equals(Logo.WIDTH_ATTR_NAME) && attribute.getNamespaceURI() == null) {
             logo.setWidth(Integer.valueOf(attribute.getValue()));
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 

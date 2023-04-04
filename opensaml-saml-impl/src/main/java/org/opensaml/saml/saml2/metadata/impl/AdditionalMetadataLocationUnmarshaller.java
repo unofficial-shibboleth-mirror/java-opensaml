@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSURIUnmarshaller;
@@ -29,14 +31,16 @@ import org.w3c.dom.Attr;
 public class AdditionalMetadataLocationUnmarshaller extends XSURIUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AdditionalMetadataLocation aml = (AdditionalMetadataLocation) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AdditionalMetadataLocation aml = (AdditionalMetadataLocation) xmlObject;
         
         if (attribute.getLocalName().equals(AdditionalMetadataLocation.NAMESPACE_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
             aml.setNamespaceURI(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

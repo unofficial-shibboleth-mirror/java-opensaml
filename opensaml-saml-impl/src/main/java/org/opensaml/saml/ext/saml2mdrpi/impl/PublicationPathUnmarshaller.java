@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -30,8 +32,9 @@ import org.opensaml.saml.ext.saml2mdrpi.PublicationPath;
 public class PublicationPathUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
-            throws UnmarshallingException {
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject,
+            @Nonnull final XMLObject childObject) throws UnmarshallingException {
         final PublicationPath pPath = (PublicationPath) parentObject;
 
         if (childObject instanceof Publication) {

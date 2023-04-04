@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -28,10 +30,11 @@ import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 public class DiscoHintsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final DiscoHints info = (DiscoHints) parentSAMLObject;
-        info.getXMLObjects().add(childSAMLObject);
+        final DiscoHints info = (DiscoHints) parentObject;
+        info.getXMLObjects().add(childObject);
     }
 
 }

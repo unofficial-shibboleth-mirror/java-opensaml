@@ -19,6 +19,8 @@ package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.StringTokenizer;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -37,33 +39,36 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.RoleDescriptor} objects.
+ * A thread safe Unmarshaller for {@link RoleDescriptor} objects.
  */
 public abstract class RoleDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final RoleDescriptor roleDescriptor = (RoleDescriptor) parentSAMLObject;
+        final RoleDescriptor roleDescriptor = (RoleDescriptor) parentObject;
 
-        if (childSAMLObject instanceof Extensions) {
-            roleDescriptor.setExtensions((Extensions) childSAMLObject);
-        } else if (childSAMLObject instanceof Signature) {
-            roleDescriptor.setSignature((Signature) childSAMLObject);
-        } else if (childSAMLObject instanceof KeyDescriptor) {
-            roleDescriptor.getKeyDescriptors().add((KeyDescriptor) childSAMLObject);
-        } else if (childSAMLObject instanceof Organization) {
-            roleDescriptor.setOrganization((Organization) childSAMLObject);
-        } else if (childSAMLObject instanceof ContactPerson) {
-            roleDescriptor.getContactPersons().add((ContactPerson) childSAMLObject);
+        if (childObject instanceof Extensions) {
+            roleDescriptor.setExtensions((Extensions) childObject);
+        } else if (childObject instanceof Signature) {
+            roleDescriptor.setSignature((Signature) childObject);
+        } else if (childObject instanceof KeyDescriptor) {
+            roleDescriptor.getKeyDescriptors().add((KeyDescriptor) childObject);
+        } else if (childObject instanceof Organization) {
+            roleDescriptor.setOrganization((Organization) childObject);
+        } else if (childObject instanceof ContactPerson) {
+            roleDescriptor.getContactPersons().add((ContactPerson) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final RoleDescriptor roleDescriptor = (RoleDescriptor) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final RoleDescriptor roleDescriptor = (RoleDescriptor) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(RoleDescriptor.ID_ATTRIB_NAME)) {
@@ -82,7 +87,7 @@ public abstract class RoleDescriptorUnmarshaller extends AbstractSAMLObjectUnmar
             } else if (attribute.getLocalName().equals(RoleDescriptor.ERROR_URL_ATTRIB_NAME)) {
                 roleDescriptor.setErrorURL(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
             processUnknownAttribute(roleDescriptor, attribute);

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.BaseID;
@@ -26,25 +28,27 @@ import org.opensaml.saml.saml2.core.NameIDMappingRequest;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.NameIDMappingRequest} objects.
+ * A thread-safe Unmarshaller for {@link NameIDMappingRequest} objects.
  */
 public class NameIDMappingRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final NameIDMappingRequest req = (NameIDMappingRequest) parentSAMLObject;
+        final NameIDMappingRequest req = (NameIDMappingRequest) parentObject;
 
-        if (childSAMLObject instanceof BaseID) {
-            req.setBaseID((BaseID) childSAMLObject);
-        } else if (childSAMLObject instanceof NameID) {
-            req.setNameID((NameID) childSAMLObject);
-        } else if (childSAMLObject instanceof EncryptedID) {
-            req.setEncryptedID((EncryptedID) childSAMLObject);
-        } else if (childSAMLObject instanceof NameIDPolicy) {
-            req.setNameIDPolicy((NameIDPolicy) childSAMLObject);
+        if (childObject instanceof BaseID) {
+            req.setBaseID((BaseID) childObject);
+        } else if (childObject instanceof NameID) {
+            req.setNameID((NameID) childObject);
+        } else if (childObject instanceof EncryptedID) {
+            req.setEncryptedID((EncryptedID) childObject);
+        } else if (childObject instanceof NameIDPolicy) {
+            req.setNameIDPolicy((NameIDPolicy) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
+    
 }

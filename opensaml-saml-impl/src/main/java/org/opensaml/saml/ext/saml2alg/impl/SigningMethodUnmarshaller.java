@@ -26,19 +26,20 @@ import org.opensaml.saml.ext.saml2alg.SigningMethod;
 import org.w3c.dom.Attr;
 
 /**
- * SigningMethod unmarshaller.
+ * Unmarshaller for {@link SigningMethod}.
  */
 public class SigningMethodUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
-            @Nonnull final XMLObject childXMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final SigningMethod signingMethod = (SigningMethod) parentXMLObject;
-        signingMethod.getUnknownXMLObjects().add(childXMLObject);
+        final SigningMethod signingMethod = (SigningMethod) parentObject;
+        signingMethod.getUnknownXMLObjects().add(childObject);
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute) 
             throws UnmarshallingException {
         final SigningMethod signingMethod = (SigningMethod) xmlObject;

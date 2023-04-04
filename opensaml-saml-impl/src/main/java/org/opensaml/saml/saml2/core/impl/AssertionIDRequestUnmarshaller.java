@@ -21,25 +21,28 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
 import org.opensaml.saml.saml2.core.AssertionIDRequest;
 
 /**
- * A thead-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AssertionIDRequest}.
+ * A thead-safe Unmarshaller for {@link AssertionIDRequest}.
  */
 public class AssertionIDRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final AssertionIDRequest idRequest = (AssertionIDRequest) parentSAMLObject;
+        final AssertionIDRequest idRequest = (AssertionIDRequest) parentObject;
 
-        if (childSAMLObject instanceof AssertionIDRef) {
-            idRequest.getAssertionIDRefs().add((AssertionIDRef) childSAMLObject);
+        if (childObject instanceof AssertionIDRef) {
+            idRequest.getAssertionIDRefs().add((AssertionIDRef) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

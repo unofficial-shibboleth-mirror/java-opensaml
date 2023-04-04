@@ -17,20 +17,24 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.UIInfo} objects.
+ * A thread-safe Unmarshaller for {@link UIInfo} objects.
  */
 public class UIInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final UIInfo info = (UIInfo) parentSAMLObject;
-        info.getXMLObjects().add(childSAMLObject);
+        final UIInfo info = (UIInfo) parentObject;
+        info.getXMLObjects().add(childObject);
     }
+
 }

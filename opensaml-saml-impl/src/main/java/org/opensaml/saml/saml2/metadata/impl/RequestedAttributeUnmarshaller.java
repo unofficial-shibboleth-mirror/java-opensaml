@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -29,19 +31,21 @@ import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.RequestedAttribute} objects.
+ * A thread-safe Unmarshaller for {@link RequestedAttribute} objects.
  */
 public class RequestedAttributeUnmarshaller extends AttributeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final RequestedAttribute requestedAttribute = (RequestedAttribute) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final RequestedAttribute requestedAttribute = (RequestedAttribute) xmlObject;
         
         if (attribute.getLocalName().equals(RequestedAttribute.IS_REQUIRED_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
             requestedAttribute.setIsRequired(XSBooleanValue.valueOf(attribute.getValue()));
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

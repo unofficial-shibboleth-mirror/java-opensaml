@@ -19,6 +19,8 @@ package org.opensaml.saml.ext.saml2mdui.impl;
 
 import java.util.ArrayList;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -29,7 +31,7 @@ import org.w3c.dom.Attr;
 import net.shibboleth.shared.xml.XMLConstants;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.ext.saml2mdui.Keywords} objects.
+ * A thread-safe unmarshaller for {@link Keywords} objects.
  */
 public class KeywordsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -37,10 +39,11 @@ public class KeywordsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
      * {@inheritDoc}
      */
     @Override
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
                 && XMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
-            final Keywords keywords = (Keywords) samlObject;
+            final Keywords keywords = (Keywords) xmlObject;
 
             keywords.setXMLLang(attribute.getValue());
         }
@@ -48,8 +51,8 @@ public class KeywordsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
     @Override
-    protected void processElementContent(final XMLObject samlObject, final String elementContent) {
-        final Keywords keywords = (Keywords) samlObject;
+    protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
+        final Keywords keywords = (Keywords) xmlObject;
         final String[] words = elementContent.split("\\s+");
         final ArrayList<String> wordlist = new ArrayList<>(words.length);
         
@@ -59,4 +62,5 @@ public class KeywordsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
         keywords.setKeywords(wordlist);
     }
+
 }

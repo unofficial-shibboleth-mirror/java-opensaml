@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -25,22 +27,23 @@ import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectConfirmation;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Subject} objects.
+ * A thread-safe Unmarshaller for {@link Subject} objects.
  */
 public class SubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final Subject subject = (Subject) parentSAMLObject;
+        final Subject subject = (Subject) parentObject;
 
-        if (childSAMLObject instanceof NameIdentifier) {
-            subject.setNameIdentifier((NameIdentifier) childSAMLObject);
-        } else if (childSAMLObject instanceof SubjectConfirmation) {
-            subject.setSubjectConfirmation((SubjectConfirmation) childSAMLObject);
+        if (childObject instanceof NameIdentifier) {
+            subject.setNameIdentifier((NameIdentifier) childObject);
+        } else if (childObject instanceof SubjectConfirmation) {
+            subject.setSubjectConfirmation((SubjectConfirmation) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

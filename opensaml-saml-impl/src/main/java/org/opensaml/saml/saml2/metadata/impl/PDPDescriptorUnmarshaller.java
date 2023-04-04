@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
@@ -29,23 +31,25 @@ import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.PDPDescriptor} objects.
+ * A thread safe Unmarshaller for {@link PDPDescriptor} objects.
  */
 public class PDPDescriptorUnmarshaller extends RoleDescriptorUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final PDPDescriptor descriptor = (PDPDescriptor) parentSAMLObject;
+        final PDPDescriptor descriptor = (PDPDescriptor) parentObject;
 
-        if (childSAMLObject instanceof AuthzService) {
-            descriptor.getAuthzServices().add((AuthzService) childSAMLObject);
-        } else if (childSAMLObject instanceof AssertionIDRequestService) {
-            descriptor.getAssertionIDRequestServices().add((AssertionIDRequestService) childSAMLObject);
-        } else if (childSAMLObject instanceof NameIDFormat) {
-            descriptor.getNameIDFormats().add((NameIDFormat) childSAMLObject);
+        if (childObject instanceof AuthzService) {
+            descriptor.getAuthzServices().add((AuthzService) childObject);
+        } else if (childObject instanceof AssertionIDRequestService) {
+            descriptor.getAssertionIDRequestServices().add((AssertionIDRequestService) childObject);
+        } else if (childObject instanceof NameIDFormat) {
+            descriptor.getNameIDFormats().add((NameIDFormat) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
+
 }

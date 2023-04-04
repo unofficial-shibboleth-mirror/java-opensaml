@@ -21,25 +21,28 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.Artifact;
 import org.opensaml.saml.saml2.core.ArtifactResolve;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ArtifactResolve}.
+ * A thread-safe Unmarshaller for {@link ArtifactResolve}.
  */
 public class ArtifactResolveUnmarshaller extends RequestAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final ArtifactResolve ar = (ArtifactResolve) parentSAMLObject;
+        final ArtifactResolve ar = (ArtifactResolve) parentObject;
 
-        if (childSAMLObject instanceof Artifact) {
-            ar.setArtifact((Artifact) childSAMLObject);
+        if (childObject instanceof Artifact) {
+            ar.setArtifact((Artifact) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

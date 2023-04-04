@@ -36,6 +36,7 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final SubjectConfirmation sc = (SubjectConfirmation) parentObject;
@@ -48,9 +49,10 @@ public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshal
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        final SubjectConfirmation sc = (SubjectConfirmation) samlObject;
+        final SubjectConfirmation sc = (SubjectConfirmation) xmlObject;
 
         final QName attrName = QNameSupport.getNodeQName(attribute);
         if (SubjectConfirmation.SOAP11_MUST_UNDERSTAND_ATTR_NAME.equals(attrName)) {
@@ -60,7 +62,7 @@ public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshal
         } else if (attribute.getLocalName().equals(SubjectConfirmation.METHOD_ATTRIB_NAME)) {
             sc.setMethod(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -34,31 +36,34 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AffiliationDescriptor}s.
+ * A thread safe Unmarshaller for {@link AffiliationDescriptor}s.
  */
 public class AffiliationDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final AffiliationDescriptor descriptor = (AffiliationDescriptor) parentSAMLObject;
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) parentObject;
 
-        if (childSAMLObject instanceof Extensions) {
-            descriptor.setExtensions((Extensions) childSAMLObject);
-        } else if (childSAMLObject instanceof Signature) {
-            descriptor.setSignature((Signature) childSAMLObject);
-        } else if (childSAMLObject instanceof AffiliateMember) {
-            descriptor.getMembers().add((AffiliateMember) childSAMLObject);
-        } else if (childSAMLObject instanceof KeyDescriptor) {
-            descriptor.getKeyDescriptors().add((KeyDescriptor) childSAMLObject);
+        if (childObject instanceof Extensions) {
+            descriptor.setExtensions((Extensions) childObject);
+        } else if (childObject instanceof Signature) {
+            descriptor.setSignature((Signature) childObject);
+        } else if (childObject instanceof AffiliateMember) {
+            descriptor.getMembers().add((AffiliateMember) childObject);
+        } else if (childObject instanceof KeyDescriptor) {
+            descriptor.getKeyDescriptors().add((KeyDescriptor) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AffiliationDescriptor descriptor = (AffiliationDescriptor) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(AffiliationDescriptor.OWNER_ID_ATTRIB_NAME)) {
@@ -72,7 +77,7 @@ public class AffiliationDescriptorUnmarshaller extends AbstractSAMLObjectUnmarsh
             } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
                 descriptor.setCacheDuration(DOMTypeSupport.stringToDuration(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
             processUnknownAttribute(descriptor, attribute);

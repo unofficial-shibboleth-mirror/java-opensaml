@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.ManageNameIDResponse;
+
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ManageNameIDResponse} objects.
+ * A thread-safe Unmarshaller for {@link ManageNameIDResponse} objects.
  */
 public class ManageNameIDResponseUnmarshaller extends StatusResponseTypeUnmarshaller {
 

@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -34,12 +36,13 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthnStatement}.
+ * A thread-safe Unmarshaller for {@link AuthnStatement}.
  */
 public class AuthnStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final AuthnStatement authnStatement = (AuthnStatement) parentObject;
         if (childObject instanceof SubjectLocality) {
@@ -52,8 +55,10 @@ public class AuthnStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AuthnStatement authnStatement = (AuthnStatement) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AuthnStatement authnStatement = (AuthnStatement) xmlObject;
         
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(AuthnStatement.AUTHN_INSTANT_ATTRIB_NAME)
@@ -65,10 +70,10 @@ public class AuthnStatementUnmarshaller extends AbstractSAMLObjectUnmarshaller {
                     && !Strings.isNullOrEmpty(attribute.getValue())) {
                 authnStatement.setSessionNotOnOrAfter(DOMTypeSupport.stringToInstant(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

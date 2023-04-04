@@ -37,9 +37,10 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class RequestUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        final Request request = (Request) samlObject;
+        final Request request = (Request) xmlObject;
         
         final QName attrName = QNameSupport.getNodeQName(attribute);
         if (Request.SOAP11_MUST_UNDERSTAND_ATTR_NAME.equals(attrName)) {
@@ -51,21 +52,22 @@ public class RequestUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         } else if (Request.PROVIDER_NAME_ATTRIB_NAME.equals(attribute.getLocalName())) {
             request.setProviderName(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(@Nonnull final XMLObject parentSAMLObject,
-            @Nonnull final XMLObject childSAMLObject) throws UnmarshallingException {
-        final Request request = (Request) parentSAMLObject;
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
+            throws UnmarshallingException {
+        final Request request = (Request) parentObject;
         
-        if (childSAMLObject instanceof Issuer) {
-            request.setIssuer((Issuer) childSAMLObject);
-        } else if (childSAMLObject instanceof IDPList) {
-            request.setIDPList((IDPList) childSAMLObject);
+        if (childObject instanceof Issuer) {
+            request.setIssuer((Issuer) childObject);
+        } else if (childObject instanceof IDPList) {
+            request.setIDPList((IDPList) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
     

@@ -17,26 +17,29 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml1.core.Attribute;
 import org.opensaml.saml.saml1.core.AttributeStatement;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AttributeStatement} objects.
+ * A thread-safe Unmarshaller for {@link AttributeStatement} objects.
  */
 public class AttributeStatementUnmarshaller extends SubjectStatementUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final AttributeStatement attributeStatement = (AttributeStatement) parentSAMLObject;
+        final AttributeStatement attributeStatement = (AttributeStatement) parentObject;
 
-        if (childSAMLObject instanceof Attribute) {
-            attributeStatement.getAttributes().add((Attribute) childSAMLObject);
+        if (childObject instanceof Attribute) {
+            attributeStatement.getAttributes().add((Attribute) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

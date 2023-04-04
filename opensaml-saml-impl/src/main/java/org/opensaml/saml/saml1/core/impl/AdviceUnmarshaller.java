@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -25,22 +27,22 @@ import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Advice} objects.
+ * A thread-safe Unmarshaller for {@link Advice} objects.
  */
 public class AdviceUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
+        final Advice advice = (Advice) parentObject;
 
-        final Advice advice = (Advice) parentSAMLObject;
-
-        if (childSAMLObject instanceof Assertion) {
-            advice.getAssertions().add((Assertion) childSAMLObject);
-        } else if (childSAMLObject instanceof AssertionIDReference) {
-            advice.getAssertionIDReferences().add((AssertionIDReference) childSAMLObject);
+        if (childObject instanceof Assertion) {
+            advice.getAssertions().add((Assertion) childObject);
+        } else if (childObject instanceof AssertionIDReference) {
+            advice.getAssertionIDReferences().add((AssertionIDReference) childObject);
         } else {
-            advice.getUnknownXMLObjects().add(childSAMLObject);
+            advice.getUnknownXMLObjects().add(childObject);
         }
     }
 }

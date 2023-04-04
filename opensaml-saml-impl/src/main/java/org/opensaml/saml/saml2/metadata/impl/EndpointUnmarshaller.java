@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -24,13 +26,15 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.Endpoint} objects.
+ * A thread-safe unmarshaller for {@link Endpoint} objects.
  */
 public class EndpointUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final Endpoint endpoint = (Endpoint) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final Endpoint endpoint = (Endpoint) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(Endpoint.BINDING_ATTRIB_NAME)) {
@@ -40,7 +44,7 @@ public class EndpointUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             } else if (attribute.getLocalName().equals(Endpoint.RESPONSE_LOCATION_ATTRIB_NAME)) {
                 endpoint.setResponseLocation(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
             processUnknownAttribute(endpoint, attribute);
@@ -50,10 +54,12 @@ public class EndpointUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     /**
      * {@inheritDoc}
      */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Endpoint endpoint = (Endpoint) parentSAMLObject;
+        final Endpoint endpoint = (Endpoint) parentObject;
 
-        endpoint.getUnknownXMLObjects().add(childSAMLObject);
+        endpoint.getUnknownXMLObjects().add(childObject);
     }
+
 }

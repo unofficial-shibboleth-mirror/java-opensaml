@@ -35,6 +35,7 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class RelayStateUnmarshaller extends XSStringUnmarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
         final RelayState relayState = (RelayState) xmlObject;

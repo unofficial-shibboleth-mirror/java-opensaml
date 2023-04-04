@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -32,8 +34,9 @@ import net.shibboleth.shared.xml.DOMTypeSupport;
 public class PublicationInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
-            throws UnmarshallingException {
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject,
+            @Nonnull final XMLObject childObject) throws UnmarshallingException {
         final PublicationInfo info = (PublicationInfo) parentObject;
 
         if (childObject instanceof UsagePolicy) {
@@ -44,8 +47,10 @@ public class PublicationInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller 
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final PublicationInfo info = (PublicationInfo) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final PublicationInfo info = (PublicationInfo) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (PublicationInfo.PUBLISHER_ATTRIB_NAME.equals(attribute.getName())) {
@@ -55,10 +60,10 @@ public class PublicationInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller 
             } else if (PublicationInfo.PUBLICATION_ID_ATTRIB_NAME.equals(attribute.getName())) {
                 info.setPublicationId(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 

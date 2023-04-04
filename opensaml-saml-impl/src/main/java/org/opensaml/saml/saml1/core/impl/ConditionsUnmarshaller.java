@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -29,19 +31,20 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Conditions} objects.
+ * A thread-safe Unmarshaller for {@link Conditions} objects.
  */
 public class ConditionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Conditions conditions = (Conditions) parentSAMLObject;
+        final Conditions conditions = (Conditions) parentObject;
 
-        if (childSAMLObject instanceof Condition) {
-            conditions.getConditions().add((Condition) childSAMLObject);
+        if (childObject instanceof Condition) {
+            conditions.getConditions().add((Condition) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
@@ -64,4 +67,5 @@ public class ConditionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             super.processAttribute(samlObject, attribute);
         }
     }
+
 }

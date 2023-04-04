@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -29,19 +31,22 @@ import org.w3c.dom.Attr;
 public class QueryDescriptorTypeUnmarshaller extends RoleDescriptorUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
-            throws UnmarshallingException {
-        final QueryDescriptorType descriptor = (QueryDescriptorType) parentSAMLObject;
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject,
+            @Nonnull final XMLObject childObject) throws UnmarshallingException {
+        final QueryDescriptorType descriptor = (QueryDescriptorType) parentObject;
 
-        if (childSAMLObject instanceof NameIDFormat) {
-            descriptor.getNameIDFormat().add((NameIDFormat) childSAMLObject);
+        if (childObject instanceof NameIDFormat) {
+            descriptor.getNameIDFormat().add((NameIDFormat) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
         final QueryDescriptorType descriptor = (QueryDescriptorType) samlObject;
 
         if (attribute.getLocalName().equals(QueryDescriptorType.WANT_ASSERTIONS_SIGNED_ATTRIB_NAME)
@@ -51,4 +56,5 @@ public class QueryDescriptorTypeUnmarshaller extends RoleDescriptorUnmarshaller 
             super.processAttribute(samlObject, attribute);
         }
     }
+
 }

@@ -17,25 +17,29 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml1.core.AuthenticationQuery;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AuthenticationQuery} objects.
+ * A thread-safe Unmarshaller for {@link AuthenticationQuery} objects.
  */
 public class AuthenticationQueryUnmarshaller extends SubjectQueryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AuthenticationQuery authenticationQuery = (AuthenticationQuery) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AuthenticationQuery authenticationQuery = (AuthenticationQuery) xmlObject;
 
         if (AuthenticationQuery.AUTHENTICATIONMETHOD_ATTRIB_NAME.equals(attribute.getLocalName())
                 && attribute.getNamespaceURI() == null) {
             authenticationQuery.setAuthenticationMethod(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

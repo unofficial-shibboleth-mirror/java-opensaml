@@ -35,7 +35,9 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class ChannelBindingsUnmarshaller extends XSBase64BinaryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute) 
+            throws UnmarshallingException {
         final ChannelBindings cb = (ChannelBindings) xmlObject;
         
         final QName attrName = QNameSupport.getNodeQName(attribute);

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -34,8 +36,10 @@ import net.shibboleth.shared.xml.DOMTypeSupport;
 public class DelegateUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final Delegate delegate = (Delegate) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute) 
+            throws UnmarshallingException {
+        final Delegate delegate = (Delegate) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             final String attrName = attribute.getLocalName();
@@ -44,26 +48,27 @@ public class DelegateUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             } else if (Delegate.DELEGATION_INSTANT_ATTRIB_NAME.equals(attrName)) {
                 delegate.setDelegationInstant(DOMTypeSupport.stringToInstant(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Delegate delegate = (Delegate) parentSAMLObject;
+        final Delegate delegate = (Delegate) parentObject;
         
-        if (childSAMLObject instanceof BaseID) {
-            delegate.setBaseID((BaseID) childSAMLObject);
-        } else if (childSAMLObject instanceof NameID) {
-            delegate.setNameID((NameID) childSAMLObject);
-        } else if (childSAMLObject instanceof EncryptedID) {
-            delegate.setEncryptedID((EncryptedID) childSAMLObject);
+        if (childObject instanceof BaseID) {
+            delegate.setBaseID((BaseID) childObject);
+        } else if (childObject instanceof NameID) {
+            delegate.setNameID((NameID) childObject);
+        } else if (childObject instanceof EncryptedID) {
+            delegate.setEncryptedID((EncryptedID) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 

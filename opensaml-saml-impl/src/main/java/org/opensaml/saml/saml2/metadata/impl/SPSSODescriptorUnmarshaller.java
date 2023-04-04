@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -30,27 +32,30 @@ import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.w3c.dom.Attr;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.SPSSODescriptor} objects.
+ * A thread safe Unmarshaller for {@link SPSSODescriptor} objects.
  */
 public class SPSSODescriptorUnmarshaller extends SSODescriptorUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final SPSSODescriptor descriptor = (SPSSODescriptor) parentSAMLObject;
+        final SPSSODescriptor descriptor = (SPSSODescriptor) parentObject;
 
-        if (childSAMLObject instanceof AssertionConsumerService) {
-            descriptor.getAssertionConsumerServices().add((AssertionConsumerService) childSAMLObject);
-        } else if (childSAMLObject instanceof AttributeConsumingService) {
-            descriptor.getAttributeConsumingServices().add((AttributeConsumingService) childSAMLObject);
+        if (childObject instanceof AssertionConsumerService) {
+            descriptor.getAssertionConsumerServices().add((AssertionConsumerService) childObject);
+        } else if (childObject instanceof AttributeConsumingService) {
+            descriptor.getAttributeConsumingServices().add((AttributeConsumingService) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final SPSSODescriptor descriptor = (SPSSODescriptor) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final SPSSODescriptor descriptor = (SPSSODescriptor) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(SPSSODescriptor.AUTH_REQUESTS_SIGNED_ATTRIB_NAME)) {
@@ -58,10 +63,10 @@ public class SPSSODescriptorUnmarshaller extends SSODescriptorUnmarshaller {
             } else if (attribute.getLocalName().equals(SPSSODescriptor.WANT_ASSERTIONS_SIGNED_ATTRIB_NAME)) {
                 descriptor.setWantAssertionsSigned(XSBooleanValue.valueOf(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml1.core.AssertionArtifact;
@@ -25,24 +27,25 @@ import org.opensaml.saml.saml1.core.Query;
 import org.opensaml.saml.saml1.core.Request;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml1.core.Request} objects.
+ * A thread safe Unmarshaller for {@link Request} objects.
  */
 public class RequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentElement, final XMLObject childElement)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Request request = (Request) parentElement;
+        final Request request = (Request) parentObject;
 
         try {
-            if (childElement instanceof Query) {
-                request.setQuery((Query) childElement);
-            } else if (childElement instanceof AssertionIDReference) {
-                request.getAssertionIDReferences().add((AssertionIDReference) childElement);
-            } else if (childElement instanceof AssertionArtifact) {
-                request.getAssertionArtifacts().add((AssertionArtifact) childElement);
+            if (childObject instanceof Query c) {
+                request.setQuery(c);
+            } else if (childObject instanceof AssertionIDReference c) {
+                request.getAssertionIDReferences().add(c);
+            } else if (childObject instanceof AssertionArtifact c) {
+                request.getAssertionArtifacts().add(c);
             } else {
-                super.processChildElement(parentElement, childElement);
+                super.processChildElement(parentObject, childObject);
             }
         } catch (final IllegalArgumentException e) {
             throw new UnmarshallingException(e);

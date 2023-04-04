@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.EncryptedAssertion;
+
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.EncryptedAssertion}.
+ * A thread-safe Unmarshaller for {@link EncryptedAssertion}.
  */
 public class EncryptedAssertionUnmarshaller extends EncryptedElementTypeUnmarshaller {
 

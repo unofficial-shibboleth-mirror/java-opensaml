@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml1.core.AttributeDesignator;
@@ -24,33 +26,36 @@ import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AttributeQuery} objects.
+ * A thread-safe Unmarshaller for {@link AttributeQuery} objects.
  */
 public class AttributeQueryUnmarshaller extends SubjectQueryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final AttributeQuery attributeQuery = (AttributeQuery) parentSAMLObject;
+        final AttributeQuery attributeQuery = (AttributeQuery) parentObject;
 
-        if (childSAMLObject instanceof AttributeDesignator) {
-            attributeQuery.getAttributeDesignators().add((AttributeDesignator) childSAMLObject);
+        if (childObject instanceof AttributeDesignator) {
+            attributeQuery.getAttributeDesignators().add((AttributeDesignator) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
-        final AttributeQuery attributeQuery = (AttributeQuery) samlObject;
+        final AttributeQuery attributeQuery = (AttributeQuery) xmlObject;
 
         if (attribute.getLocalName().equals(AttributeQuery.RESOURCE_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
             attributeQuery.setResource(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

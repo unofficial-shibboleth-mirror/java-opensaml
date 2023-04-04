@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml1.core.Assertion;
@@ -30,17 +32,18 @@ import org.opensaml.saml.saml1.core.Status;
 public class ResponseUnmarshaller extends ResponseAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final Response response = (Response) parentSAMLObject;
+        final Response response = (Response) parentObject;
 
-        if (childSAMLObject instanceof Assertion) {
-            response.getAssertions().add((Assertion) childSAMLObject);
-        } else if (childSAMLObject instanceof Status) {
-            response.setStatus((Status) childSAMLObject);
+        if (childObject instanceof Assertion) {
+            response.getAssertions().add((Assertion) childObject);
+        } else if (childObject instanceof Status) {
+            response.setStatus((Status) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 

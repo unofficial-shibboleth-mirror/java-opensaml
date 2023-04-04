@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.ext.saml2mdquery.ActionNamespace;
@@ -26,14 +28,15 @@ import org.opensaml.saml.ext.saml2mdquery.AuthzDecisionQueryDescriptorType;
 public class AuthzDecisionQueryDescriptorTypeUnmarshaller extends QueryDescriptorTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
-            throws UnmarshallingException {
-        final AuthzDecisionQueryDescriptorType descriptor = (AuthzDecisionQueryDescriptorType) parentSAMLObject;
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject,
+            @Nonnull final XMLObject childObject) throws UnmarshallingException {
+        final AuthzDecisionQueryDescriptorType descriptor = (AuthzDecisionQueryDescriptorType) parentObject;
 
-        if (childSAMLObject instanceof ActionNamespace) {
-            descriptor.getActionNamespaces().add((ActionNamespace) childSAMLObject);
+        if (childObject instanceof ActionNamespace) {
+            descriptor.getActionNamespaces().add((ActionNamespace) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

@@ -26,19 +26,20 @@ import org.opensaml.saml.ext.saml2alg.DigestMethod;
 import org.w3c.dom.Attr;
 
 /**
- * DigestMethod unmarshaller.
+ * Unmarshaller for {@link DigestMethod}.
  */
 public class DigestMethodUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(@Nonnull final XMLObject parentXMLObject,
-            @Nonnull final XMLObject childXMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final DigestMethod digestMethod = (DigestMethod) parentXMLObject;
-        digestMethod.getUnknownXMLObjects().add(childXMLObject);
+        final DigestMethod digestMethod = (DigestMethod) parentObject;
+        digestMethod.getUnknownXMLObjects().add(childObject);
     }
 
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute) 
             throws UnmarshallingException {
         final DigestMethod digestMethod = (DigestMethod) xmlObject;

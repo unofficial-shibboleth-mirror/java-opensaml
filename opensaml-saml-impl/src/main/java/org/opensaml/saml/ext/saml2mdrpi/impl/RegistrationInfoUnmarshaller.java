@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -32,8 +34,9 @@ import net.shibboleth.shared.xml.DOMTypeSupport;
 public class RegistrationInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
-            throws UnmarshallingException {
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject,
+            @Nonnull final XMLObject childObject) throws UnmarshallingException {
         final RegistrationInfo info = (RegistrationInfo) parentObject;
         
         if (childObject instanceof RegistrationPolicy) {
@@ -44,8 +47,10 @@ public class RegistrationInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller
     }
     
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final RegistrationInfo info = (RegistrationInfo) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final RegistrationInfo info = (RegistrationInfo) xmlObject;
         
         if (attribute.getNamespaceURI() == null) {
             if (RegistrationInfo.REGISTRATION_AUTHORITY_ATTRIB_NAME.equals(attribute.getName())) {
@@ -53,10 +58,10 @@ public class RegistrationInfoUnmarshaller extends AbstractSAMLObjectUnmarshaller
             } else if (RegistrationInfo.REGISTRATION_INSTANT_ATTRIB_NAME.equals(attribute.getName())) {
                 info.setRegistrationInstant(DOMTypeSupport.stringToInstant(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 

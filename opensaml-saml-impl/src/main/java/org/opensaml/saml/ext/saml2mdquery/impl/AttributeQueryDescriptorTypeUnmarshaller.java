@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
@@ -28,14 +30,16 @@ import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 public class AttributeQueryDescriptorTypeUnmarshaller extends QueryDescriptorTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
-            throws UnmarshallingException {
-        final AttributeQueryDescriptorType descriptor = (AttributeQueryDescriptorType) parentSAMLObject;
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject,
+            @Nonnull final XMLObject childObject) throws UnmarshallingException {
+        final AttributeQueryDescriptorType descriptor = (AttributeQueryDescriptorType) parentObject;
 
-        if (childSAMLObject instanceof AttributeConsumingService) {
-            descriptor.getAttributeConsumingServices().add((AttributeConsumingService) childSAMLObject);
+        if (childObject instanceof AttributeConsumingService) {
+            descriptor.getAttributeConsumingServices().add((AttributeConsumingService) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
+
 }

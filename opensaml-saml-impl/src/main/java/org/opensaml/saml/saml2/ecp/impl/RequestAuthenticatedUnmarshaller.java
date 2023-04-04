@@ -35,6 +35,7 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class RequestAuthenticatedUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
+    @Override
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
         final RequestAuthenticated ra = (RequestAuthenticated) xmlObject;

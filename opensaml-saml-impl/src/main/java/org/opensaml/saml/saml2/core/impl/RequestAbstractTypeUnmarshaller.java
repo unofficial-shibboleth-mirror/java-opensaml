@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -35,29 +37,32 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.RequestAbstractType} objects.
+ * A thread-safe Unmarshaller for {@link RequestAbstractType} objects.
  */
 public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final RequestAbstractType req = (RequestAbstractType) parentSAMLObject;
+        final RequestAbstractType req = (RequestAbstractType) parentObject;
     
-        if (childSAMLObject instanceof Issuer) {
-            req.setIssuer((Issuer) childSAMLObject);
-        } else if (childSAMLObject instanceof Signature) {
-            req.setSignature((Signature) childSAMLObject);
-        } else if (childSAMLObject instanceof Extensions) {
-            req.setExtensions((Extensions) childSAMLObject);
+        if (childObject instanceof Issuer) {
+            req.setIssuer((Issuer) childObject);
+        } else if (childObject instanceof Signature) {
+            req.setSignature((Signature) childObject);
+        } else if (childObject instanceof Extensions) {
+            req.setExtensions((Extensions) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final RequestAbstractType req = (RequestAbstractType) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final RequestAbstractType req = (RequestAbstractType) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(RequestAbstractType.VERSION_ATTRIB_NAME)) {
@@ -73,10 +78,10 @@ public abstract class RequestAbstractTypeUnmarshaller extends AbstractSAMLObject
             } else if (attribute.getLocalName().equals(RequestAbstractType.CONSENT_ATTRIB_NAME)) {
                 req.setConsent(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

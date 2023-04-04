@@ -28,34 +28,37 @@ import org.w3c.dom.Attr;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.StatusCode} objects.
+ * A thread-safe Unmarshaller for {@link StatusCode} objects.
  */
 public class StatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(@Nonnull final XMLObject parentSAMLObject,
-            @Nonnull final XMLObject childSAMLObject) throws UnmarshallingException {
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
+            throws UnmarshallingException {
 
-        final StatusCode statusCode = (StatusCode) parentSAMLObject;
+        final StatusCode statusCode = (StatusCode) parentObject;
 
-        if (childSAMLObject instanceof StatusCode) {
-            statusCode.setStatusCode((StatusCode) childSAMLObject);
+        if (childObject instanceof StatusCode) {
+            statusCode.setStatusCode((StatusCode) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
 
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
 
-        final StatusCode statusCode = (StatusCode) samlObject;
+        final StatusCode statusCode = (StatusCode) xmlObject;
 
         if (attribute.getName().equals(StatusCode.VALUE_ATTRIB_NAME) && attribute.getNamespaceURI() == null) {
             statusCode.setValue(AttributeSupport.getAttributeValueAsQName(attribute));
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
+
 }

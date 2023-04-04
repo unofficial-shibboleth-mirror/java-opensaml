@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -32,37 +34,40 @@ import org.opensaml.saml.saml2.metadata.OrganizationURL;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.Organization} objects.
+ * A thread-safe Unmarshaller for {@link Organization} objects.
  */
 public class OrganizationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Organization org = (Organization) parentSAMLObject;
+        final Organization org = (Organization) parentObject;
 
-        if (childSAMLObject instanceof Extensions) {
-            org.setExtensions((Extensions) childSAMLObject);
-        } else if (childSAMLObject instanceof OrganizationName) {
-            org.getOrganizationNames().add((OrganizationName) childSAMLObject);
-        } else if (childSAMLObject instanceof OrganizationDisplayName) {
-            org.getDisplayNames().add((OrganizationDisplayName) childSAMLObject);
-        } else if (childSAMLObject instanceof OrganizationURL) {
-            org.getURLs().add((OrganizationURL) childSAMLObject);
+        if (childObject instanceof Extensions) {
+            org.setExtensions((Extensions) childObject);
+        } else if (childObject instanceof OrganizationName) {
+            org.getOrganizationNames().add((OrganizationName) childObject);
+        } else if (childObject instanceof OrganizationDisplayName) {
+            org.getDisplayNames().add((OrganizationDisplayName) childObject);
+        } else if (childObject instanceof OrganizationURL) {
+            org.getURLs().add((OrganizationURL) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /**
      * {@inheritDoc}
      */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
         if (attribute.getNamespaceURI() == null) {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         } else {
-            processUnknownAttribute((Organization) samlObject, attribute);
+            processUnknownAttribute((Organization) xmlObject, attribute);
         }
     }
     

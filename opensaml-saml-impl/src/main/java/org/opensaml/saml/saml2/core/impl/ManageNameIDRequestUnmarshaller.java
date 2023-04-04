@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.EncryptedID;
@@ -31,27 +33,28 @@ import org.opensaml.saml.saml2.core.NewID;
 import org.opensaml.saml.saml2.core.Terminate;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ManageNameIDRequest} objects.
+ * A thread-safe Unmarshaller for {@link ManageNameIDRequest} objects.
  */
 public class ManageNameIDRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final ManageNameIDRequest req = (ManageNameIDRequest) parentSAMLObject;
+        final ManageNameIDRequest req = (ManageNameIDRequest) parentObject;
 
-        if (childSAMLObject instanceof NameID) {
-            req.setNameID((NameID) childSAMLObject);
-        } else if (childSAMLObject instanceof EncryptedID) {
-            req.setEncryptedID((EncryptedID) childSAMLObject);
-        } else if (childSAMLObject instanceof NewID) {
-            req.setNewID((NewID) childSAMLObject);
-        } else if (childSAMLObject instanceof NewEncryptedID) {
-            req.setNewEncryptedID((NewEncryptedID) childSAMLObject);
-        } else if (childSAMLObject instanceof Terminate) {
-            req.setTerminate((Terminate) childSAMLObject);
+        if (childObject instanceof NameID) {
+            req.setNameID((NameID) childObject);
+        } else if (childObject instanceof EncryptedID) {
+            req.setEncryptedID((EncryptedID) childObject);
+        } else if (childObject instanceof NewID) {
+            req.setNewID((NewID) childObject);
+        } else if (childObject instanceof NewEncryptedID) {
+            req.setNewEncryptedID((NewEncryptedID) childObject);
+        } else if (childObject instanceof Terminate) {
+            req.setTerminate((Terminate) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 }

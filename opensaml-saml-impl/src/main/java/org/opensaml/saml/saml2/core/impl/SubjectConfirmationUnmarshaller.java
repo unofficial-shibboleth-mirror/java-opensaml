@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -28,12 +30,13 @@ import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.SubjectConfirmation} objects.
+ * A thread-safe Unmarshaller for {@link SubjectConfirmation} objects.
  */
 public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final SubjectConfirmation subjectConfirmation = (SubjectConfirmation) parentObject;
 
@@ -51,14 +54,16 @@ public class SubjectConfirmationUnmarshaller extends AbstractSAMLObjectUnmarshal
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final SubjectConfirmation subjectConfirmation = (SubjectConfirmation) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final SubjectConfirmation subjectConfirmation = (SubjectConfirmation) xmlObject;
 
         if (attribute.getLocalName().equals(SubjectConfirmation.METHOD_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
             subjectConfirmation.setMethod(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

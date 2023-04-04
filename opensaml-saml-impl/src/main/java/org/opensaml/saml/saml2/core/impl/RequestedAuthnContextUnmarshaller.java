@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -31,27 +33,30 @@ import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.RequestedAuthnContext} objects.
+ * A thread-safe Unmarshaller for {@link RequestedAuthnContext} objects.
  */
 public class RequestedAuthnContextUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final RequestedAuthnContext rac = (RequestedAuthnContext) parentSAMLObject;
+        final RequestedAuthnContext rac = (RequestedAuthnContext) parentObject;
         
-        if (childSAMLObject instanceof AuthnContextClassRef) {
-            rac.getAuthnContextClassRefs().add((AuthnContextClassRef) childSAMLObject);
-        } else if (childSAMLObject instanceof AuthnContextDeclRef) {
-            rac.getAuthnContextDeclRefs().add((AuthnContextDeclRef) childSAMLObject);
+        if (childObject instanceof AuthnContextClassRef) {
+            rac.getAuthnContextClassRefs().add((AuthnContextClassRef) childObject);
+        } else if (childObject instanceof AuthnContextDeclRef) {
+            rac.getAuthnContextDeclRefs().add((AuthnContextDeclRef) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final RequestedAuthnContext rac = (RequestedAuthnContext) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final RequestedAuthnContext rac = (RequestedAuthnContext) xmlObject;
 
         if (attribute.getLocalName().equals(RequestedAuthnContext.COMPARISON_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
@@ -67,7 +72,7 @@ public class RequestedAuthnContextUnmarshaller extends AbstractSAMLObjectUnmarsh
                         + attribute.getValue());
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

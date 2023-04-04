@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -34,14 +36,17 @@ public class LocalizedURIUnmarshaller extends XSURIUnmarshaller {
     /**
      * {@inheritDoc}
      */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        
         if (attribute.getLocalName().equals(LangBearing.XML_LANG_ATTR_LOCAL_NAME)
                 && XMLConstants.XML_NS.equals(attribute.getNamespaceURI())) {
-            final LocalizedURI name = (LocalizedURI) samlObject;
+            final LocalizedURI name = (LocalizedURI) xmlObject;
 
             name.setXMLLang(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

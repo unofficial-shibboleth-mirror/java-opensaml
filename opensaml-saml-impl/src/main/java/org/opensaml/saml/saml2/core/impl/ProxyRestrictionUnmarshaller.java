@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -29,12 +31,13 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ProxyRestriction} objects.
+ * A thread-safe Unmarshaller for {@link ProxyRestriction} objects.
  */
 public class ProxyRestrictionUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final ProxyRestriction proxyRestriction = (ProxyRestriction) parentObject;
 
@@ -46,14 +49,16 @@ public class ProxyRestrictionUnmarshaller extends AbstractSAMLObjectUnmarshaller
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final ProxyRestriction proxyRestriction = (ProxyRestriction) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final ProxyRestriction proxyRestriction = (ProxyRestriction) xmlObject;
 
         if (attribute.getLocalName().equals(ProxyRestriction.COUNT_ATTRIB_NAME)
                 && attribute.getNamespaceURI() == null) {
             proxyRestriction.setProxyCount(Integer.valueOf(attribute.getValue()));
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

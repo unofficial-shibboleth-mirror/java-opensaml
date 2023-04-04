@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -28,30 +30,33 @@ import org.opensaml.saml.saml2.core.StatusCode;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.StatusCode} objects.
+ * A thread-safe Unmarshaller for {@link StatusCode} objects.
  */
 public class StatusCodeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final StatusCode statusCode = (StatusCode) parentSAMLObject;
+        final StatusCode statusCode = (StatusCode) parentObject;
     
-        if (childSAMLObject instanceof StatusCode) {
-            statusCode.setStatusCode((StatusCode) childSAMLObject);
+        if (childObject instanceof StatusCode) {
+            statusCode.setStatusCode((StatusCode) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final StatusCode statusCode = (StatusCode) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final StatusCode statusCode = (StatusCode) xmlObject;
 
         if (attribute.getLocalName().equals(StatusCode.VALUE_ATTRIB_NAME) && attribute.getNamespaceURI() == null) {
             statusCode.setValue(attribute.getValue());
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

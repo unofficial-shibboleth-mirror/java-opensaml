@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -29,14 +31,15 @@ import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 public class DelegationRestrictionTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final DelegationRestrictionType drt = (DelegationRestrictionType) parentSAMLObject;
+        final DelegationRestrictionType drt = (DelegationRestrictionType) parentObject;
         
-        if (childSAMLObject instanceof Delegate) {
-            drt.getDelegates().add((Delegate) childSAMLObject);
+        if (childObject instanceof Delegate) {
+            drt.getDelegates().add((Delegate) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 

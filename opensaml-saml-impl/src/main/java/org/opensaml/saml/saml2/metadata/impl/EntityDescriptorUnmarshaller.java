@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -37,37 +39,40 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.EntityDescriptor}s.
+ * A thread safe Unmarshaller for {@link EntityDescriptor}s.
  */
 public class EntityDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final EntityDescriptor entityDescriptor = (EntityDescriptor) parentSAMLObject;
+        final EntityDescriptor entityDescriptor = (EntityDescriptor) parentObject;
 
-        if (childSAMLObject instanceof Extensions) {
-            entityDescriptor.setExtensions((Extensions) childSAMLObject);
-        } else if (childSAMLObject instanceof Signature) {
-            entityDescriptor.setSignature((Signature) childSAMLObject);
-        } else if (childSAMLObject instanceof RoleDescriptor) {
-            entityDescriptor.getRoleDescriptors().add((RoleDescriptor) childSAMLObject);
-        } else if (childSAMLObject instanceof AffiliationDescriptor) {
-            entityDescriptor.setAffiliationDescriptor((AffiliationDescriptor) childSAMLObject);
-        } else if (childSAMLObject instanceof Organization) {
-            entityDescriptor.setOrganization((Organization) childSAMLObject);
-        } else if (childSAMLObject instanceof ContactPerson) {
-            entityDescriptor.getContactPersons().add((ContactPerson) childSAMLObject);
-        } else if (childSAMLObject instanceof AdditionalMetadataLocation) {
-            entityDescriptor.getAdditionalMetadataLocations().add((AdditionalMetadataLocation) childSAMLObject);
+        if (childObject instanceof Extensions) {
+            entityDescriptor.setExtensions((Extensions) childObject);
+        } else if (childObject instanceof Signature) {
+            entityDescriptor.setSignature((Signature) childObject);
+        } else if (childObject instanceof RoleDescriptor) {
+            entityDescriptor.getRoleDescriptors().add((RoleDescriptor) childObject);
+        } else if (childObject instanceof AffiliationDescriptor) {
+            entityDescriptor.setAffiliationDescriptor((AffiliationDescriptor) childObject);
+        } else if (childObject instanceof Organization) {
+            entityDescriptor.setOrganization((Organization) childObject);
+        } else if (childObject instanceof ContactPerson) {
+            entityDescriptor.getContactPersons().add((ContactPerson) childObject);
+        } else if (childObject instanceof AdditionalMetadataLocation) {
+            entityDescriptor.getAdditionalMetadataLocations().add((AdditionalMetadataLocation) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final EntityDescriptor entityDescriptor = (EntityDescriptor) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final EntityDescriptor entityDescriptor = (EntityDescriptor) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(EntityDescriptor.ENTITY_ID_ATTRIB_NAME)) {
@@ -81,7 +86,7 @@ public class EntityDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller
             } else if (attribute.getLocalName().equals(CacheableSAMLObject.CACHE_DURATION_ATTRIB_NAME)) {
                 entityDescriptor.setCacheDuration(DOMTypeSupport.stringToDuration(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
             processUnknownAttribute(entityDescriptor, attribute);

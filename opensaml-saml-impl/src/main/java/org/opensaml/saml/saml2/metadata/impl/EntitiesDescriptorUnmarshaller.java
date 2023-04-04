@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -33,31 +35,34 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor} objects.
+ * A thread safe Unmarshaller for {@link EntitiesDescriptor} objects.
  */
 public class EntitiesDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) parentSAMLObject;
+        final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) parentObject;
 
-        if (childSAMLObject instanceof Extensions) {
-            entitiesDescriptor.setExtensions((Extensions) childSAMLObject);
-        } else if (childSAMLObject instanceof EntitiesDescriptor) {
-            entitiesDescriptor.getEntitiesDescriptors().add((EntitiesDescriptor) childSAMLObject);
-        } else if (childSAMLObject instanceof EntityDescriptor) {
-            entitiesDescriptor.getEntityDescriptors().add((EntityDescriptor) childSAMLObject);
-        } else if (childSAMLObject instanceof Signature) {
-            entitiesDescriptor.setSignature((Signature) childSAMLObject);
+        if (childObject instanceof Extensions) {
+            entitiesDescriptor.setExtensions((Extensions) childObject);
+        } else if (childObject instanceof EntitiesDescriptor) {
+            entitiesDescriptor.getEntitiesDescriptors().add((EntitiesDescriptor) childObject);
+        } else if (childObject instanceof EntityDescriptor) {
+            entitiesDescriptor.getEntityDescriptors().add((EntityDescriptor) childObject);
+        } else if (childObject instanceof Signature) {
+            entitiesDescriptor.setSignature((Signature) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(EntitiesDescriptor.ID_ATTRIB_NAME)) {
@@ -71,10 +76,10 @@ public class EntitiesDescriptorUnmarshaller extends AbstractSAMLObjectUnmarshall
             } else if (attribute.getLocalName().equals(EntitiesDescriptor.NAME_ATTRIB_NAME)) {
                 entitiesDescriptor.setName(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 

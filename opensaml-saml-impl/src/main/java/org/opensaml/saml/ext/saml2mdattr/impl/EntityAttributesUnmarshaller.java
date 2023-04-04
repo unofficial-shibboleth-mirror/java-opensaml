@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdattr.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -24,11 +26,12 @@ import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 
-/** A thread-safe Unmarshaller for {@link org.opensaml.saml.ext.saml2mdattr.EntityAttributes}. */
+/** A thread-safe Unmarshaller for {@link EntityAttributes}. */
 public class EntityAttributesUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final EntityAttributes entityAttrs = (EntityAttributes) parentObject;
 
@@ -40,4 +43,5 @@ public class EntityAttributesUnmarshaller extends AbstractSAMLObjectUnmarshaller
             super.processChildElement(parentObject, childObject);
         }
     }
+
 }

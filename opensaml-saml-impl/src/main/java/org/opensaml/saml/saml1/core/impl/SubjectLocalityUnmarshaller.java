@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -24,14 +26,16 @@ import org.opensaml.saml.saml1.core.SubjectLocality;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.SubjectLocality} objects.
+ * A thread-safe Unmarshaller for {@link SubjectLocality} objects.
  */
 public class SubjectLocalityUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
-        final SubjectLocality subjectLocality = (SubjectLocality) samlObject;
+        final SubjectLocality subjectLocality = (SubjectLocality) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (SubjectLocality.DNSADDRESS_ATTRIB_NAME.equals(attribute.getLocalName())) {
@@ -39,10 +43,10 @@ public class SubjectLocalityUnmarshaller extends AbstractSAMLObjectUnmarshaller 
             } else if (SubjectLocality.IPADDRESS_ATTRIB_NAME.equals(attribute.getLocalName())) {
                 subjectLocality.setIPAddress(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

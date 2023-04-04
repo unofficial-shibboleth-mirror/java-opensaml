@@ -35,9 +35,10 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class ResponseUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        final Response response = (Response) samlObject;
+        final Response response = (Response) xmlObject;
         
         final QName attrName = QNameSupport.getNodeQName(attribute);
         if (Response.SOAP11_MUST_UNDERSTAND_ATTR_NAME.equals(attrName)) {
@@ -47,7 +48,7 @@ public class ResponseUnmarshaller extends AbstractSAMLObjectUnmarshaller {
         } else if (Response.ASSERTION_CONSUMER_SERVICE_URL_ATTRIB_NAME.equals(attribute.getLocalName())) {
             response.setAssertionConsumerServiceURL(attribute.getValue());
         } else { 
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
             
     }

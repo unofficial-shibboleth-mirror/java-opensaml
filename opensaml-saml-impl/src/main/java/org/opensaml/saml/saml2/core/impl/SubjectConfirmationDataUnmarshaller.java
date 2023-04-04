@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -32,23 +34,26 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} objects.
+ * A thread-safe Unmarshaller for {@link SubjectConfirmationData} objects.
  */
 public class SubjectConfirmationDataUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /**
      * {@inheritDoc}
      */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) parentSAMLObject;
+        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) parentObject;
 
-        subjectCD.getUnknownXMLObjects().add(childSAMLObject);
+        subjectCD.getUnknownXMLObjects().add(childObject);
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(SubjectConfirmationData.NOT_BEFORE_ATTRIB_NAME)
@@ -64,10 +69,11 @@ public class SubjectConfirmationDataUnmarshaller extends AbstractSAMLObjectUnmar
             } else if (attribute.getLocalName().equals(SubjectConfirmationData.ADDRESS_ATTRIB_NAME)) {
                 subjectCD.setAddress(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
             processUnknownAttribute(subjectCD, attribute);
         }
     }
+    
 }

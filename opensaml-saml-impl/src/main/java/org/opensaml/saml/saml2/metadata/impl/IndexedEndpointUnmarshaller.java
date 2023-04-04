@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -28,13 +30,15 @@ import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe unmarshaller for {@link org.opensaml.saml.saml2.metadata.IndexedEndpoint} objects.
+ * A thread-safe unmarshaller for {@link IndexedEndpoint} objects.
  */
 public class IndexedEndpointUnmarshaller extends EndpointUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final IndexedEndpoint iEndpoint = (IndexedEndpoint) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final IndexedEndpoint iEndpoint = (IndexedEndpoint) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(IndexedEndpoint.INDEX_ATTRIB_NAME)) {
@@ -42,10 +46,10 @@ public class IndexedEndpointUnmarshaller extends EndpointUnmarshaller {
             } else if (attribute.getLocalName().equals(IndexedEndpoint.IS_DEFAULT_ATTRIB_NAME)) {
                 iEndpoint.setIsDefault(XSBooleanValue.valueOf(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

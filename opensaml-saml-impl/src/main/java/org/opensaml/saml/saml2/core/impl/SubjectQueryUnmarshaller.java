@@ -21,25 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectQuery;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.SubjectQuery}.
+ * A thread-safe Unmarshaller for {@link SubjectQuery}.
  */
 public abstract class SubjectQueryUnmarshaller extends RequestAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final SubjectQuery sq = (SubjectQuery) parentSAMLObject;
+        final SubjectQuery sq = (SubjectQuery) parentObject;
 
-        if (childSAMLObject instanceof Subject) {
-            sq.setSubject((Subject) childSAMLObject);
+        if (childObject instanceof Subject) {
+            sq.setSubject((Subject) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
+    
 }

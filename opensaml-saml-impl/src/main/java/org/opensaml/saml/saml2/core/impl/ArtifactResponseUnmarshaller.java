@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.SAMLObject;
@@ -31,25 +33,26 @@ import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.xmlsec.signature.Signature;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.ArtifactResponse}.
+ * A thread-safe Unmarshaller for {@link ArtifactResponse}.
  */
 public class ArtifactResponseUnmarshaller extends StatusResponseTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final ArtifactResponse artifactResponse = (ArtifactResponse) parentSAMLObject;
+        final ArtifactResponse artifactResponse = (ArtifactResponse) parentObject;
 
-        if (childSAMLObject instanceof Issuer) {
-            artifactResponse.setIssuer((Issuer) childSAMLObject);
-        } else if (childSAMLObject instanceof Signature) {
-            artifactResponse.setSignature((Signature) childSAMLObject);
-        } else if (childSAMLObject instanceof Extensions) {
-            artifactResponse.setExtensions((Extensions) childSAMLObject);
-        } else if (childSAMLObject instanceof Status) {
-            artifactResponse.setStatus((Status) childSAMLObject);
+        if (childObject instanceof Issuer) {
+            artifactResponse.setIssuer((Issuer) childObject);
+        } else if (childObject instanceof Signature) {
+            artifactResponse.setSignature((Signature) childObject);
+        } else if (childObject instanceof Extensions) {
+            artifactResponse.setExtensions((Extensions) childObject);
+        } else if (childObject instanceof Status) {
+            artifactResponse.setStatus((Status) childObject);
         } else {
-            artifactResponse.setMessage((SAMLObject) childSAMLObject);
+            artifactResponse.setMessage((SAMLObject) childObject);
         }
     }
 }

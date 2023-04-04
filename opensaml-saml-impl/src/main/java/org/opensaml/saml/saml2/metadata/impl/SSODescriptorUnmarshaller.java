@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
@@ -26,24 +28,27 @@ import org.opensaml.saml.saml2.metadata.SSODescriptor;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.SSODescriptor} objects.
+ * A thread safe Unmarshaller for {@link SSODescriptor} objects.
  */
 public abstract class SSODescriptorUnmarshaller extends RoleDescriptorUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentElement, final XMLObject childElement)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final SSODescriptor descriptor = (SSODescriptor) parentElement;
-        if (childElement instanceof ArtifactResolutionService) {
-            descriptor.getArtifactResolutionServices().add((ArtifactResolutionService) childElement);
-        } else if (childElement instanceof SingleLogoutService) {
-            descriptor.getSingleLogoutServices().add((SingleLogoutService) childElement);
-        } else if (childElement instanceof ManageNameIDService) {
-            descriptor.getManageNameIDServices().add((ManageNameIDService) childElement);
-        } else if (childElement instanceof NameIDFormat) {
-            descriptor.getNameIDFormats().add((NameIDFormat) childElement);
+        final SSODescriptor descriptor = (SSODescriptor) parentObject;
+        
+        if (childObject instanceof ArtifactResolutionService) {
+            descriptor.getArtifactResolutionServices().add((ArtifactResolutionService) childObject);
+        } else if (childObject instanceof SingleLogoutService) {
+            descriptor.getSingleLogoutServices().add((SingleLogoutService) childObject);
+        } else if (childObject instanceof ManageNameIDService) {
+            descriptor.getManageNameIDServices().add((ManageNameIDService) childObject);
+        } else if (childObject instanceof NameIDFormat) {
+            descriptor.getNameIDFormats().add((NameIDFormat) childObject);
         } else {
-            super.processChildElement(parentElement, childElement);
+            super.processChildElement(parentObject, childObject);
         }
     }
+
 }

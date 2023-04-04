@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -33,33 +35,36 @@ import org.opensaml.saml.saml2.core.Subject;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.AuthnRequest} objects.
+ * A thread-safe Unmarshaller for {@link AuthnRequest} objects.
  */
 public class AuthnRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final AuthnRequest req = (AuthnRequest) parentSAMLObject;
+        final AuthnRequest req = (AuthnRequest) parentObject;
     
-        if (childSAMLObject instanceof Subject) {
-            req.setSubject((Subject) childSAMLObject);
-        } else if (childSAMLObject instanceof NameIDPolicy) {
-            req.setNameIDPolicy((NameIDPolicy) childSAMLObject);
-        } else if (childSAMLObject instanceof Conditions) {
-            req.setConditions((Conditions) childSAMLObject);
-        } else if (childSAMLObject instanceof RequestedAuthnContext) {
-            req.setRequestedAuthnContext((RequestedAuthnContext) childSAMLObject);
-        } else if (childSAMLObject instanceof Scoping) {
-            req.setScoping((Scoping) childSAMLObject);
+        if (childObject instanceof Subject) {
+            req.setSubject((Subject) childObject);
+        } else if (childObject instanceof NameIDPolicy) {
+            req.setNameIDPolicy((NameIDPolicy) childObject);
+        } else if (childObject instanceof Conditions) {
+            req.setConditions((Conditions) childObject);
+        } else if (childObject instanceof RequestedAuthnContext) {
+            req.setRequestedAuthnContext((RequestedAuthnContext) childObject);
+        } else if (childObject instanceof Scoping) {
+            req.setScoping((Scoping) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AuthnRequest req = (AuthnRequest) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AuthnRequest req = (AuthnRequest) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(AuthnRequest.FORCE_AUTHN_ATTRIB_NAME)) {
@@ -77,10 +82,10 @@ public class AuthnRequestUnmarshaller extends RequestAbstractTypeUnmarshaller {
             } else if (attribute.getLocalName().equals(AuthnRequest.PROVIDER_NAME_ATTRIB_NAME)) {
                 req.setProviderName(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

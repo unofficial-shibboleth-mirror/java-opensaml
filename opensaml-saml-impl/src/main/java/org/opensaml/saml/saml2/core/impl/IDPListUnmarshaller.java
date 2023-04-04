@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -29,21 +31,23 @@ import org.opensaml.saml.saml2.core.IDPEntry;
 import org.opensaml.saml.saml2.core.IDPList;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.IDPList} objects.
+ * A thread-safe Unmarshaller for {@link IDPList} objects.
  */
 public class IDPListUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final IDPList list = (IDPList) parentSAMLObject;
+        final IDPList list = (IDPList) parentObject;
 
-        if (childSAMLObject instanceof IDPEntry) {
-            list.getIDPEntrys().add((IDPEntry) childSAMLObject);
-        } else if (childSAMLObject instanceof GetComplete) {
-            list.setGetComplete((GetComplete) childSAMLObject);
+        if (childObject instanceof IDPEntry) {
+            list.getIDPEntrys().add((IDPEntry) childObject);
+        } else if (childObject instanceof GetComplete) {
+            list.setGetComplete((GetComplete) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
+    
 }

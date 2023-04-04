@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -32,29 +34,32 @@ import org.opensaml.saml.saml2.metadata.ServiceName;
 import org.w3c.dom.Attr;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AttributeConsumingService} objects.
+ * A thread safe Unmarshaller for {@link AttributeConsumingService} objects.
  */
 public class AttributeConsumingServiceUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final AttributeConsumingService service = (AttributeConsumingService) parentSAMLObject;
+        final AttributeConsumingService service = (AttributeConsumingService) parentObject;
 
-        if (childSAMLObject instanceof ServiceName) {
-            service.getNames().add((ServiceName) childSAMLObject);
-        } else if (childSAMLObject instanceof ServiceDescription) {
-            service.getDescriptions().add((ServiceDescription) childSAMLObject);
-        } else if (childSAMLObject instanceof RequestedAttribute) {
-            service.getRequestedAttributes().add((RequestedAttribute) childSAMLObject);
+        if (childObject instanceof ServiceName) {
+            service.getNames().add((ServiceName) childObject);
+        } else if (childObject instanceof ServiceDescription) {
+            service.getDescriptions().add((ServiceDescription) childObject);
+        } else if (childObject instanceof RequestedAttribute) {
+            service.getRequestedAttributes().add((RequestedAttribute) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AttributeConsumingService service = (AttributeConsumingService) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AttributeConsumingService service = (AttributeConsumingService) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(AttributeConsumingService.INDEX_ATTRIB_NAME)) {
@@ -62,10 +67,11 @@ public class AttributeConsumingServiceUnmarshaller extends AbstractSAMLObjectUnm
             } else if (attribute.getLocalName().equals(AttributeConsumingService.IS_DEFAULT_ATTRIB_NAME)) {
                 service.setIsDefault(XSBooleanValue.valueOf(attribute.getValue()));
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
+
 }

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.metadata.AssertionIDRequestService;
@@ -25,23 +27,25 @@ import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.metadata.AuthnAuthorityDescriptor} objects.
+ * A thread-safe Unmarshaller for {@link AuthnAuthorityDescriptor} objects.
  */
 public class AuthnAuthorityDescriptorUnmarshaller extends RoleDescriptorUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentElement, final XMLObject childElement)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final AuthnAuthorityDescriptor descriptor = (AuthnAuthorityDescriptor) parentElement;
+        final AuthnAuthorityDescriptor descriptor = (AuthnAuthorityDescriptor) parentObject;
 
-        if (childElement instanceof AuthnQueryService) {
-            descriptor.getAuthnQueryServices().add((AuthnQueryService) childElement);
-        } else if (childElement instanceof AssertionIDRequestService) {
-            descriptor.getAssertionIDRequestServices().add((AssertionIDRequestService) childElement);
-        } else if (childElement instanceof NameIDFormat) {
-            descriptor.getNameIDFormats().add((NameIDFormat) childElement);
+        if (childObject instanceof AuthnQueryService) {
+            descriptor.getAuthnQueryServices().add((AuthnQueryService) childObject);
+        } else if (childObject instanceof AssertionIDRequestService) {
+            descriptor.getAssertionIDRequestServices().add((AssertionIDRequestService) childObject);
+        } else if (childObject instanceof NameIDFormat) {
+            descriptor.getNameIDFormats().add((NameIDFormat) childObject);
         } else {
-            super.processChildElement(parentElement, childElement);
+            super.processChildElement(parentObject, childObject);
         }
     }
+
 }

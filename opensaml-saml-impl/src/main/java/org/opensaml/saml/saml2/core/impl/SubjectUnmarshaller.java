@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -27,12 +29,13 @@ import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Subject} objects.
+ * A thread-safe Unmarshaller for {@link Subject} objects.
  */
 public class SubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentObject, final XMLObject childObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
         final Subject subject = (Subject) parentObject;
 
@@ -48,4 +51,5 @@ public class SubjectUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             super.processChildElement(parentObject, childObject);
         }
     }
+    
 }

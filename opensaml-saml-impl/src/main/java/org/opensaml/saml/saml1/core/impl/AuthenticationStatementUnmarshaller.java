@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
@@ -29,28 +31,31 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AuthenticationStatement} objects.
+ * A thread-safe Unmarshaller for {@link AuthenticationStatement} objects.
  */
 public class AuthenticationStatementUnmarshaller extends SubjectStatementUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
 
-        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) parentSAMLObject;
+        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) parentObject;
 
-        if (childSAMLObject instanceof SubjectLocality) {
-            authenticationStatement.setSubjectLocality((SubjectLocality) childSAMLObject);
-        } else if (childSAMLObject instanceof AuthorityBinding) {
-            authenticationStatement.getAuthorityBindings().add((AuthorityBinding) childSAMLObject);
+        if (childObject instanceof SubjectLocality) {
+            authenticationStatement.setSubjectLocality((SubjectLocality) childObject);
+        } else if (childObject instanceof AuthorityBinding) {
+            authenticationStatement.getAuthorityBindings().add((AuthorityBinding) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (AuthenticationStatement.AUTHENTICATIONINSTANT_ATTRIB_NAME.equals(attribute.getLocalName())
@@ -60,10 +65,11 @@ public class AuthenticationStatementUnmarshaller extends SubjectStatementUnmarsh
             } else if (AuthenticationStatement.AUTHENTICATIONMETHOD_ATTRIB_NAME.equals(attribute.getLocalName())) {
                 authenticationStatement.setAuthenticationMethod(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
+
 }

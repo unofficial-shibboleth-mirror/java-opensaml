@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.saml2.core.Assertion;
@@ -28,21 +30,22 @@ import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml.saml2.core.Response;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Response} objects.
+ * A thread-safe Unmarshaller for {@link Response} objects.
  */
 public class ResponseUnmarshaller extends StatusResponseTypeUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Response resp = (Response) parentSAMLObject;
+        final Response resp = (Response) parentObject;
 
-        if (childSAMLObject instanceof Assertion) {
-            resp.getAssertions().add((Assertion) childSAMLObject);
-        } else if (childSAMLObject instanceof EncryptedAssertion) {
-            resp.getEncryptedAssertions().add((EncryptedAssertion) childSAMLObject);
+        if (childObject instanceof Assertion) {
+            resp.getAssertions().add((Assertion) childObject);
+        } else if (childObject instanceof EncryptedAssertion) {
+            resp.getEncryptedAssertions().add((EncryptedAssertion) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 

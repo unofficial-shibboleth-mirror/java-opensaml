@@ -35,9 +35,10 @@ import net.shibboleth.shared.xml.QNameSupport;
 public class GeneratedKeyUnmarshaller extends XSBase64BinaryUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
-        final GeneratedKey key = (GeneratedKey) samlObject;
+        final GeneratedKey key = (GeneratedKey) xmlObject;
 
         final QName attrName = QNameSupport.getNodeQName(attribute);
         if (GeneratedKey.SOAP11_MUST_UNDERSTAND_ATTR_NAME.equals(attrName)) {
@@ -45,7 +46,7 @@ public class GeneratedKeyUnmarshaller extends XSBase64BinaryUnmarshaller {
         } else if (GeneratedKey.SOAP11_ACTOR_ATTR_NAME.equals(attrName)) {
             key.setSOAP11Actor(attribute.getValue()); 
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

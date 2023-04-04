@@ -28,8 +28,7 @@ import org.w3c.dom.Attr;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for {@link org.opensaml.saml.saml1.core.AuthorityBinding}
- * objects.
+ * A thread-safe Unmarshaller for {@link AuthorityBinding} objects.
  */
 public class AuthorityBindingUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

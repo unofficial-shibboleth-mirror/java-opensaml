@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -30,32 +32,35 @@ import org.opensaml.saml.saml2.core.Scoping;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Unmarshaller for {@link org.opensaml.saml.saml2.core.Scoping} objects.
+ * A thread-safe Unmarshaller for {@link Scoping} objects.
  */
 public class ScopingUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final Scoping scoping = (Scoping) parentSAMLObject;
+        final Scoping scoping = (Scoping) parentObject;
         
-        if (childSAMLObject instanceof IDPList) {
-            scoping.setIDPList((IDPList) childSAMLObject);
-        } else if (childSAMLObject instanceof RequesterID) {
-            scoping.getRequesterIDs().add((RequesterID) childSAMLObject);
+        if (childObject instanceof IDPList) {
+            scoping.setIDPList((IDPList) childObject);
+        } else if (childObject instanceof RequesterID) {
+            scoping.getRequesterIDs().add((RequesterID) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final Scoping scoping = (Scoping) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final Scoping scoping = (Scoping) xmlObject;
 
         if (attribute.getLocalName().equals(Scoping.PROXY_COUNT_ATTRIB_NAME) && attribute.getNamespaceURI() == null) {
             scoping.setProxyCount(Integer.valueOf(attribute.getValue()));
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

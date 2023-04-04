@@ -40,8 +40,7 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**
- * A thread-safe {@link org.opensaml.core.xml.io.Unmarshaller} for
- * {@link org.opensaml.saml.saml1.core.ResponseAbstractType} objects.
+ * A thread-safe Unmarshaller for {@link ResponseAbstractType} objects.
  */
 public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
@@ -49,7 +48,8 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
     @Nonnull private final Logger log = LoggerFactory.getLogger(ResponseUnmarshaller.class);
 
     /** {@inheritDoc} */
-    public XMLObject unmarshall(final Element domElement) throws UnmarshallingException {
+    @Override
+    @Nonnull public XMLObject unmarshall(@Nonnull final Element domElement) throws UnmarshallingException {
         // After regular unmarshalling, check the minor version and set ID-ness if not SAML 1.0
         final ResponseAbstractType response = (ResponseAbstractType) super.unmarshall(domElement);
         if (response.getVersion() != SAMLVersion.VERSION_10 && !Strings.isNullOrEmpty(response.getID())) {
@@ -59,21 +59,24 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
     }
 
     /** {@inheritDoc} */
-    protected void processChildElement(final XMLObject parentSAMLObject, final XMLObject childSAMLObject)
+    @Override
+    protected void processChildElement(@Nonnull final XMLObject parentObject, @Nonnull final XMLObject childObject)
             throws UnmarshallingException {
-        final ResponseAbstractType response = (ResponseAbstractType) parentSAMLObject;
+        final ResponseAbstractType response = (ResponseAbstractType) parentObject;
 
-        if (childSAMLObject instanceof Signature) {
-            response.setSignature((Signature) childSAMLObject);
+        if (childObject instanceof Signature) {
+            response.setSignature((Signature) childObject);
         } else {
-            super.processChildElement(parentSAMLObject, childSAMLObject);
+            super.processChildElement(parentObject, childObject);
         }
     }
 
 // Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final ResponseAbstractType response = (ResponseAbstractType) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final ResponseAbstractType response = (ResponseAbstractType) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (attribute.getLocalName().equals(ResponseAbstractType.ID_ATTRIB_NAME)) {
@@ -110,10 +113,10 @@ public abstract class ResponseAbstractTypeUnmarshaller extends AbstractSAMLObjec
             } else if (attribute.getLocalName().equals(ResponseAbstractType.RECIPIENT_ATTRIB_NAME)) {
                 response.setRecipient(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
         
     }

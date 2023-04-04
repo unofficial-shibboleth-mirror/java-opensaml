@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringUnmarshaller;
@@ -29,8 +31,10 @@ import org.w3c.dom.Attr;
 public class NameIdentifierUnmarshaller extends XSStringUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final NameIdentifier nameIdentifier = (NameIdentifier) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final NameIdentifier nameIdentifier = (NameIdentifier) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (NameIdentifier.FORMAT_ATTRIB_NAME.equals(attribute.getLocalName())) {
@@ -38,10 +42,10 @@ public class NameIdentifierUnmarshaller extends XSStringUnmarshaller {
             } else if (NameIdentifier.NAMEQUALIFIER_ATTRIB_NAME.equals(attribute.getLocalName())) {
                 nameIdentifier.setNameQualifier(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
     

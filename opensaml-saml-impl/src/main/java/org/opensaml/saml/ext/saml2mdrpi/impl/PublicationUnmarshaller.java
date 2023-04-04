@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectUnmarshaller;
@@ -31,8 +33,10 @@ import net.shibboleth.shared.xml.DOMTypeSupport;
 public class PublicationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
-        final Publication info = (Publication) samlObject;
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
+        final Publication info = (Publication) xmlObject;
 
         if (attribute.getNamespaceURI() == null) {
             if (Publication.PUBLISHER_ATTRIB_NAME.equals(attribute.getName())) {
@@ -42,10 +46,10 @@ public class PublicationUnmarshaller extends AbstractSAMLObjectUnmarshaller {
             } else if (Publication.PUBLICATION_ID_ATTRIB_NAME.equals(attribute.getName())) {
                 info.setPublicationId(attribute.getValue());
             } else {
-                super.processAttribute(samlObject, attribute);
+                super.processAttribute(xmlObject, attribute);
             }
         } else {
-            super.processAttribute(samlObject, attribute);
+            super.processAttribute(xmlObject, attribute);
         }
     }
 
