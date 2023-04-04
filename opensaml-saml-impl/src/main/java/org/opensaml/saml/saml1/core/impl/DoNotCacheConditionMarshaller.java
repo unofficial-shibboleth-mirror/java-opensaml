@@ -18,9 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
 /**
- * Thread safe Marshaller for {@link org.opensaml.saml.saml1.core.DoNotCacheCondition} objects.
+ * Thread safe Marshaller for {@link DoNotCacheCondition} objects.
  */
 public class DoNotCacheConditionMarshaller extends AbstractSAMLObjectMarshaller {
 

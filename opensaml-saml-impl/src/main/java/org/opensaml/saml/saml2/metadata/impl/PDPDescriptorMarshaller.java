@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.opensaml.saml.saml2.metadata.PDPDescriptor;
+
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.PDPDescriptor} objects.
+ * A thread safe Marshaller for {@link PDPDescriptor} objects.
  */
 public class PDPDescriptorMarshaller extends RoleDescriptorMarshaller {
 

@@ -15,34 +15,37 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-
 package org.opensaml.saml.saml2.metadata.impl;
+
+import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.AttributeConsumingService} objects.
+ * A thread safe Marshaller for {@link AttributeConsumingService} objects.
  */
 public class AttributeConsumingServiceMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AttributeConsumingService service = (AttributeConsumingService) samlObject;
+        final AttributeConsumingService service = (AttributeConsumingService) xmlObject;
 
-        domElement.setAttributeNS(null, AttributeConsumingService.INDEX_ATTRIB_NAME, Integer.toString(service
-                .getIndex()));
+        final Integer i = service.getIndex();
+        if (i != null) {
+            domElement.setAttributeNS(null, AttributeConsumingService.INDEX_ATTRIB_NAME, i.toString());
+        }
 
-        if (service.isDefaultXSBoolean() != null) {
-            domElement.setAttributeNS(null, AttributeConsumingService.IS_DEFAULT_ATTRIB_NAME, service
-                    .isDefaultXSBoolean().toString());
+        final XSBooleanValue flag = service.isDefaultXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, AttributeConsumingService.IS_DEFAULT_ATTRIB_NAME, flag.toString());
         }
     }
+
 }

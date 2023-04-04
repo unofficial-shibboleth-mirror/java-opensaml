@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.ArtifactResponse;
+
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.ArtifactResponse}.
+ * A thread-safe Marshaller for {@link ArtifactResponse}.
  */
 public class ArtifactResponseMarshaller extends StatusResponseTypeMarshaller {
 

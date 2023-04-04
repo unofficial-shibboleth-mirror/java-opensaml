@@ -21,32 +21,39 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Assertion}.
+ * A thread-safe Marshaller for {@link Assertion}.
  */
 public class AssertionMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final Assertion assertion = (Assertion) samlObject;
+        final Assertion assertion = (Assertion) xmlObject;
 
-        if (assertion.getVersion() != null) {
-            domElement.setAttributeNS(null, Assertion.VERSION_ATTRIB_NAME, assertion.getVersion().toString());
+        final SAMLVersion version = assertion.getVersion();
+        if (version != null) {
+            domElement.setAttributeNS(null, Assertion.VERSION_ATTRIB_NAME, version.toString());
         }
 
-        if (assertion.getIssueInstant() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, Assertion.ISSUEINSTANT_ATTRIB_QNAME,
-                    assertion.getIssueInstant());
+        final Instant i = assertion.getIssueInstant();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, Assertion.ISSUEINSTANT_ATTRIB_QNAME, i);
         }
 
         if (assertion.getID() != null) {
@@ -55,7 +62,8 @@ public class AssertionMarshaller extends AbstractSAMLObjectMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    @Override
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         XMLObjectSupport.marshallAttributeIDness(null, Assertion.ID_ATTRIB_NAME, domElement, true);

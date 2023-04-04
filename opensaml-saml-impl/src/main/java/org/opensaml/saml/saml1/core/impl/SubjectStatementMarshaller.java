@@ -22,9 +22,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.saml1.core.SubjectStatement;
 
 /**
- * Marshaller for {@link org.opensaml.saml.saml1.core.SubjectStatement} XMLObjects.
+ * Marshaller for {@link SubjectStatement} XMLObjects.
  */
 public abstract class SubjectStatementMarshaller extends AbstractSAMLObjectMarshaller {
 

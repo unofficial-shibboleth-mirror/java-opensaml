@@ -22,9 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.saml2.core.Advice;
 
 /**
- * A thread-safe marshaller for {@link org.opensaml.saml.saml2.core.Advice}.
+ * A thread-safe marshaller for {@link Advice}.
  */
 public class AdviceMarshaller extends AbstractSAMLObjectMarshaller {
 

@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.ManageNameIDResponse;
+
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.ManageNameIDResponse} objects.
+ * A thread safe Marshaller for {@link ManageNameIDResponse} objects.
  */
 public class ManageNameIDResponseMarshaller extends StatusResponseTypeMarshaller {
 

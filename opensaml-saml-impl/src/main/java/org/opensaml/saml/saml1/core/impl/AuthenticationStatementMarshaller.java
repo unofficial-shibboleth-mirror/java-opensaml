@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.AuthenticationStatement;
@@ -25,24 +29,26 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AuthenticationStatement} objects.
+ * A thread safe Marshaller for {@link AuthenticationStatement} objects.
  */
 public class AuthenticationStatementMarshaller extends SubjectStatementMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) samlElement;
+        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) xmlObject;
 
         if (authenticationStatement.getAuthenticationMethod() != null) {
             domElement.setAttributeNS(null, AuthenticationStatement.AUTHENTICATIONMETHOD_ATTRIB_NAME,
                     authenticationStatement.getAuthenticationMethod());
         }
 
-        if (authenticationStatement.getAuthenticationInstant() != null) {
+        final Instant i = authenticationStatement.getAuthenticationInstant();
+        if (i != null) {
             AttributeSupport.appendDateTimeAttribute(domElement,
-                    AuthenticationStatement.AUTHENTICATIONINSTANT_ATTRIB_QNAME,
-                    authenticationStatement.getAuthenticationInstant());
+                    AuthenticationStatement.AUTHENTICATIONINSTANT_ATTRIB_QNAME, i);
         }
     }
+
 }

@@ -21,6 +21,8 @@ import net.shibboleth.shared.xml.AttributeSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.XMLConstants;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -37,9 +39,10 @@ public class LocalizedURIMarshaller extends XSURIMarshaller {
     /**
      * {@inheritDoc}
      */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final LocalizedURI name = (LocalizedURI) samlObject;
+        final LocalizedURI name = (LocalizedURI) xmlObject;
 
         if (name.getXMLLang() != null) {
             final Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(),
@@ -50,7 +53,8 @@ public class LocalizedURIMarshaller extends XSURIMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallElementContent(@Nonnull final XMLObject samlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final LocalizedURI name = (LocalizedURI) samlObject;
 
@@ -58,4 +62,5 @@ public class LocalizedURIMarshaller extends XSURIMarshaller {
             ElementSupport.appendTextContent(domElement, name.getURI());
         }
     }
+
 }

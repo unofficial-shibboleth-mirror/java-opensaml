@@ -21,27 +21,32 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.core.impl.AttributeMarshaller;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.metadata.RequestedAttribute} objects.
+ * A thread-safe Marshaller for {@link RequestedAttribute} objects.
  */
 public class RequestedAttributeMarshaller extends AttributeMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final RequestedAttribute requestedAttribute = (RequestedAttribute) samlObject;
+        final RequestedAttribute requestedAttribute = (RequestedAttribute) xmlObject;
 
-        if (requestedAttribute.isRequiredXSBoolean() != null) {
-            domElement.setAttributeNS(null, RequestedAttribute.IS_REQUIRED_ATTRIB_NAME, requestedAttribute
-                    .isRequiredXSBoolean().toString());
+        final XSBooleanValue flag = requestedAttribute.isRequiredXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, RequestedAttribute.IS_REQUIRED_ATTRIB_NAME, flag.toString());
         }
 
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
     }
+
 }

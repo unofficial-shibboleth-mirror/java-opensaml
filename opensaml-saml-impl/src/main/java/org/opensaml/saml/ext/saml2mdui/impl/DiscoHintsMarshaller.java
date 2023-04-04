@@ -18,9 +18,10 @@
 package org.opensaml.saml.ext.saml2mdui.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.ext.saml2mdui.DiscoHints;
 
 /**
- * A thread safe Marshaller for {@link  org.opensaml.saml.ext.saml2mdui.DiscoHints} objects.
+ * A thread safe Marshaller for {@link DiscoHints} objects.
  */
 public class DiscoHintsMarshaller extends AbstractSAMLObjectMarshaller {
 

@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -27,18 +29,19 @@ import org.w3c.dom.Element;
 public class AttributeDesignatorMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AttributeDesignator designator = (AttributeDesignator) samlElement;
+        final AttributeDesignator designator = (AttributeDesignator) xmlObject;
 
         if (designator.getAttributeName() != null) {
-            domElement.setAttributeNS(null, AttributeDesignator.ATTRIBUTENAME_ATTRIB_NAME, designator
-                    .getAttributeName());
+            domElement.setAttributeNS(null, AttributeDesignator.ATTRIBUTENAME_ATTRIB_NAME,
+                    designator.getAttributeName());
         }
 
         if (designator.getAttributeNamespace() != null) {
-            domElement.setAttributeNS(null, AttributeDesignator.ATTRIBUTENAMESPACE_ATTRIB_NAME, designator
-                    .getAttributeNamespace());
+            domElement.setAttributeNS(null, AttributeDesignator.ATTRIBUTENAMESPACE_ATTRIB_NAME,
+                    designator.getAttributeNamespace());
         }
     }
 

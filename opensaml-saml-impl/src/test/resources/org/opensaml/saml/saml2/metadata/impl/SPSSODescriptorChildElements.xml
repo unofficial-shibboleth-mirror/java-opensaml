@@ -29,5 +29,5 @@
     <md:NameIDFormat />
     <md:AssertionConsumerService />
     <md:AssertionConsumerService />
-    <md:AttributeConsumingService index="0" />
+    <md:AttributeConsumingService />
 </md:SPSSODescriptor>

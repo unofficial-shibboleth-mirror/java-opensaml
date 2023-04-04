@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -30,25 +34,25 @@ import net.shibboleth.shared.xml.AttributeSupport;
  * A marshaller for {@link PublicationInfo}.
  */
 public class PublicationInfoMarshaller extends AbstractSAMLObjectMarshaller {
+    
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final PublicationInfo info = (PublicationInfo) samlObject;
+        final PublicationInfo info = (PublicationInfo) xmlObject;
 
         if (info.getPublisher() != null) {
-            domElement.setAttributeNS(null, PublicationInfo.PUBLISHER_ATTRIB_NAME,
-                    info.getPublisher());
+            domElement.setAttributeNS(null, PublicationInfo.PUBLISHER_ATTRIB_NAME, info.getPublisher());
         }
 
         if (info.getPublicationId() != null) {
-            domElement.setAttributeNS(null, PublicationInfo.PUBLICATION_ID_ATTRIB_NAME,
-                    info.getPublicationId());
+            domElement.setAttributeNS(null, PublicationInfo.PUBLICATION_ID_ATTRIB_NAME, info.getPublicationId());
         }
 
-
-        if (info.getCreationInstant() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, PublicationInfo.CREATION_INSTANT_ATTRIB_QNAME,
-                    info.getCreationInstant());
+        final Instant i = info.getCreationInstant();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, PublicationInfo.CREATION_INSTANT_ATTRIB_QNAME, i);
         }
     }
+
 }

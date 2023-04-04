@@ -17,8 +17,11 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.ext.saml2mdquery.QueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.impl.RoleDescriptorMarshaller;
 import org.w3c.dom.Element;
@@ -30,14 +33,16 @@ public abstract class QueryDescriptorTypeMarshaller extends RoleDescriptorMarsha
 
     /** {@inheritDoc} */
     @Override
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final QueryDescriptorType descriptor = (QueryDescriptorType) xmlObject;
 
-        if (descriptor.getWantAssertionsSignedXSBoolean() != null) {
-            domElement.setAttributeNS(null, QueryDescriptorType.WANT_ASSERTIONS_SIGNED_ATTRIB_NAME, descriptor
-                    .getWantAssertionsSignedXSBoolean().toString());
+        final XSBooleanValue flag = descriptor.getWantAssertionsSignedXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, QueryDescriptorType.WANT_ASSERTIONS_SIGNED_ATTRIB_NAME, flag.toString());
         }
 
         super.marshallAttributes(xmlObject, domElement);
     }
+
 }

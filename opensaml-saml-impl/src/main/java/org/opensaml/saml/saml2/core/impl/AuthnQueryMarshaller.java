@@ -21,25 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml2.core.AuthnQuery;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthnQuery}.
+ * A thread-safe Marshaller for {@link AuthnQuery}.
  */
 public class AuthnQueryMarshaller extends SubjectQueryMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AuthnQuery query = (AuthnQuery) samlObject;
+        final AuthnQuery query = (AuthnQuery) xmlObject;
 
         if (query.getSessionIndex() != null) {
             domElement.setAttributeNS(null, AuthnQuery.SESSION_INDEX_ATTRIB_NAME, query.getSessionIndex());
         }
 
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
     }
+
 }

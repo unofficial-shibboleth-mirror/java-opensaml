@@ -17,6 +17,11 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import java.time.Duration;
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -29,31 +34,32 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor} objects.
+ * A thread safe Marshaller for {@link EntitiesDescriptor} objects.
  */
 public class EntitiesDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
-        final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) samlElement;
+        final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) xmlObject;
 
         // Set the ID attribute
         if (entitiesDescriptor.getID() != null) {
             domElement.setAttributeNS(null, EntitiesDescriptor.ID_ATTRIB_NAME, entitiesDescriptor.getID());
         }
-
+        
         // Set the validUntil attribute
-        if (entitiesDescriptor.getValidUntil() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_QNAME,
-                    entitiesDescriptor.getValidUntil());
+        final Instant i = entitiesDescriptor.getValidUntil();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_QNAME, i);
         }
 
         // Set the cacheDuration attribute
-        if (entitiesDescriptor.getCacheDuration() != null) {
-            AttributeSupport.appendDurationAttribute(domElement, CacheableSAMLObject.CACHE_DURATION_ATTRIB_QNAME,
-                    entitiesDescriptor.getCacheDuration());
+        final Duration d = entitiesDescriptor.getCacheDuration();
+        if (d != null) {
+            AttributeSupport.appendDurationAttribute(domElement, CacheableSAMLObject.CACHE_DURATION_ATTRIB_QNAME, d);
         }
 
         // Set the Name attribute
@@ -63,7 +69,8 @@ public class EntitiesDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    @Override
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         XMLObjectSupport.marshallAttributeIDness(null, EntitiesDescriptor.ID_ATTRIB_NAME, domElement, true);

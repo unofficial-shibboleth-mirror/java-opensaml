@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
@@ -32,9 +34,10 @@ import net.shibboleth.shared.xml.ElementSupport;
 public class NameIDTypeMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final NameIDType nameID = (NameIDType) samlObject;
+        final NameIDType nameID = (NameIDType) xmlObject;
 
         if (nameID.getNameQualifier() != null) {
             domElement.setAttributeNS(null, NameID.NAME_QUALIFIER_ATTRIB_NAME, nameID.getNameQualifier());
@@ -54,10 +57,12 @@ public class NameIDTypeMarshaller extends XSStringMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final NameIDType nameID = (NameIDType) samlObject;
+        final NameIDType nameID = (NameIDType) xmlObject;
         
         ElementSupport.appendTextContent(domElement, nameID.getValue());
     }
+
 }

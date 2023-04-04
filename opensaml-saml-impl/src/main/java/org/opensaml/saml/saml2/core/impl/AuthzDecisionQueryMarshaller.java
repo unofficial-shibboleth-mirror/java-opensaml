@@ -21,25 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml2.core.AuthzDecisionQuery;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthzDecisionQuery} objects.
+ * A thread-safe Marshaller for {@link AuthzDecisionQuery} objects.
  */
 public class AuthzDecisionQueryMarshaller extends SubjectQueryMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AuthzDecisionQuery query = (AuthzDecisionQuery) samlObject;
+        final AuthzDecisionQuery query = (AuthzDecisionQuery) xmlObject;
 
         if (query.getResource() != null) {
             domElement.setAttributeNS(null, AuthzDecisionQuery.RESOURCE_ATTRIB_NAME, query.getResource());
         }
 
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
     }
+
 }

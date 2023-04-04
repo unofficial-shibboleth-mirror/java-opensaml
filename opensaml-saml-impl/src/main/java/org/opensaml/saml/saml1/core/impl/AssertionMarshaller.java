@@ -17,6 +17,10 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -27,15 +31,16 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Assertion} objects.
+ * A thread safe Marshaller for {@link Assertion} objects.
  */
 public class AssertionMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
-        final Assertion assertion = (Assertion) samlElement;
+        final Assertion assertion = (Assertion) xmlObject;
 
         if (assertion.getID() != null) {
             domElement.setAttributeNS(null, Assertion.ID_ATTRIB_NAME, assertion.getID());
@@ -45,9 +50,9 @@ public class AssertionMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, Assertion.ISSUER_ATTRIB_NAME, assertion.getIssuer());
         }
 
-        if (assertion.getIssueInstant() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, Assertion.ISSUEINSTANT_ATTRIB_QNAME,
-                    assertion.getIssueInstant());
+        final Instant i = assertion.getIssueInstant();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, Assertion.ISSUEINSTANT_ATTRIB_QNAME, i);
         }
 
         domElement.setAttributeNS(null, Assertion.MAJORVERSION_ATTRIB_NAME, "1");
@@ -59,7 +64,8 @@ public class AssertionMarshaller extends AbstractSAMLObjectMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    @Override
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         if (((Assertion)xmlObject).getMinorVersion() != 0) {

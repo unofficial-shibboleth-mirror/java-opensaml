@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,16 +30,19 @@ import org.opensaml.saml.saml2.metadata.Organization;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.Organization} objects.
+ * A thread safe Marshaller for {@link Organization} objects.
  */
 public class OrganizationMarshaller extends AbstractSAMLObjectMarshaller {
 
     /**
      * {@inheritDoc}
      */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final Organization org = (Organization) xmlObject;
 
         marshallUnknownAttributes(org, domElement);
     }
+
 }

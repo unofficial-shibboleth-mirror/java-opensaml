@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -24,13 +26,15 @@ import org.opensaml.saml.saml1.core.SubjectLocality;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.SubjectLocality} objects.
+ * A thread safe Marshaller for {@link SubjectLocality} objects.
  */
 public class SubjectLocalityMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    public void marshallAttributes(final XMLObject samlElement, final Element domElement) throws MarshallingException {
-        final SubjectLocality subjectLocality = (SubjectLocality) samlElement;
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        final SubjectLocality subjectLocality = (SubjectLocality) xmlObject;
 
         if (subjectLocality.getIPAddress() != null) {
             domElement.setAttributeNS(null, SubjectLocality.IPADDRESS_ATTRIB_NAME, subjectLocality.getIPAddress());
@@ -40,4 +44,5 @@ public class SubjectLocalityMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, SubjectLocality.DNSADDRESS_ATTRIB_NAME, subjectLocality.getDNSAddress());
         }
     }
+
 }

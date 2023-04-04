@@ -17,13 +17,15 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.w3c.dom.Element;
-
-import com.google.common.base.Strings;
 
 import net.shibboleth.shared.xml.AttributeSupport;
 
@@ -33,14 +35,17 @@ import net.shibboleth.shared.xml.AttributeSupport;
 public class DelegateMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final Delegate delegate = (Delegate) xmlObject;
         
-        if (delegate.getDelegationInstant() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement,
-                    Delegate.DELEGATION_INSTANT_ATTRIB_QNAME, delegate.getDelegationInstant());
+        final Instant i = delegate.getDelegationInstant();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, Delegate.DELEGATION_INSTANT_ATTRIB_QNAME, i);
         }
-        if (!Strings.isNullOrEmpty(delegate.getConfirmationMethod())) {
+        
+        if (delegate.getConfirmationMethod() != null) {
             domElement.setAttributeNS(null, Delegate.CONFIRMATION_METHOD_ATTRIB_NAME, delegate.getConfirmationMethod());
         }
         

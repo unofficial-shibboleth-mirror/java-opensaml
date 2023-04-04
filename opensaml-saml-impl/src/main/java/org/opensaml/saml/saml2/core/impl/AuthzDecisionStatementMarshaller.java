@@ -21,29 +21,34 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
+import org.opensaml.saml.saml2.core.DecisionTypeEnumeration;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthzDecisionStatement}.
+ * A thread-safe Marshaller for {@link AuthzDecisionStatement}.
  */
 public class AuthzDecisionStatementMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AuthzDecisionStatement authzDS = (AuthzDecisionStatement) samlObject;
+        final AuthzDecisionStatement authzDS = (AuthzDecisionStatement) xmlObject;
 
         if (authzDS.getResource() != null) {
             domElement.setAttributeNS(null, AuthzDecisionStatement.RESOURCE_ATTRIB_NAME, authzDS.getResource());
         }
 
-        if (authzDS.getDecision() != null) {
-            domElement.setAttributeNS(null, AuthzDecisionStatement.DECISION_ATTRIB_NAME, authzDS.getDecision()
-                    .toString());
+        final DecisionTypeEnumeration decision = authzDS.getDecision();
+        if (decision != null) {
+            domElement.setAttributeNS(null, AuthzDecisionStatement.DECISION_ATTRIB_NAME, decision.toString());
         }
     }
+
 }

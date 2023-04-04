@@ -22,9 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.saml2.core.IDPList;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.IDPList} objects.
+ * A thread safe Marshaller for {@link IDPList} objects.
  */
 public class IDPListMarshaller extends AbstractSAMLObjectMarshaller {
 

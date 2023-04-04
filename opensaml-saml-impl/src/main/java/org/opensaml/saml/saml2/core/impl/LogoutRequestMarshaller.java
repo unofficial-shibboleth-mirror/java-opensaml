@@ -21,6 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml2.core.LogoutRequest;
@@ -29,25 +33,26 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.LogoutRequest}.
+ * A thread-safe Marshaller for {@link LogoutRequest}.
  */
 public class LogoutRequestMarshaller extends RequestAbstractTypeMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final LogoutRequest req = (LogoutRequest) samlObject;
+        final LogoutRequest req = (LogoutRequest) xmlObject;
 
         if (req.getReason() != null) {
             domElement.setAttributeNS(null, LogoutRequest.REASON_ATTRIB_NAME, req.getReason());
         }
 
-        if (req.getNotOnOrAfter() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, LogoutRequest.NOT_ON_OR_AFTER_ATTRIB_QNAME,
-                    req.getNotOnOrAfter());
+        final Instant i = req.getNotOnOrAfter();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, LogoutRequest.NOT_ON_OR_AFTER_ATTRIB_QNAME, i);
         }
 
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
     }
 
 }

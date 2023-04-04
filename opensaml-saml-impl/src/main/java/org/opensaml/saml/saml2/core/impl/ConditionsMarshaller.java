@@ -21,6 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -30,23 +34,25 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Conditions} objects.
+ * A thread-safe Marshaller for {@link Conditions} objects.
  */
 public class ConditionsMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final Conditions conditions = (Conditions) samlObject;
+        final Conditions conditions = (Conditions) xmlObject;
 
-        if (conditions.getNotBefore() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, Conditions.NOT_BEFORE_ATTRIB_QNAME,
-                    conditions.getNotBefore());
+        Instant i = conditions.getNotBefore();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, Conditions.NOT_BEFORE_ATTRIB_QNAME, i);
         }
 
-        if (conditions.getNotOnOrAfter() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, Conditions.NOT_ON_OR_AFTER_ATTRIB_QNAME,
-                    conditions.getNotOnOrAfter());
+        i = conditions.getNotOnOrAfter();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, Conditions.NOT_ON_OR_AFTER_ATTRIB_QNAME, i);
         }
     }
+
 }

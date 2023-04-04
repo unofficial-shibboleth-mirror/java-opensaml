@@ -18,8 +18,9 @@
 package org.opensaml.saml.ext.saml2mdattr.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 
-/** A thread-safe Marshaller for {@link org.opensaml.saml.ext.saml2mdattr.EntityAttributes}. */
+/** A thread-safe Marshaller for {@link EntityAttributes}. */
 public class EntityAttributesMarshaller extends AbstractSAMLObjectMarshaller {
 
 }

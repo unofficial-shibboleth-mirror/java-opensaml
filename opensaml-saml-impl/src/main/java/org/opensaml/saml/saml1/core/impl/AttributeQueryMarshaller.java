@@ -17,24 +17,28 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AttributeQuery} objects.
+ * A thread safe Marshaller for {@link AttributeQuery} objects.
  */
 public class AttributeQueryMarshaller extends SubjectQueryMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
-        final AttributeQuery attributeQuery = (AttributeQuery) samlElement;
+        final AttributeQuery attributeQuery = (AttributeQuery) xmlObject;
 
         if (attributeQuery.getResource() != null) {
             domElement.setAttributeNS(null, AttributeQuery.RESOURCE_ATTRIB_NAME, attributeQuery.getResource());
         }
     }
+
 }

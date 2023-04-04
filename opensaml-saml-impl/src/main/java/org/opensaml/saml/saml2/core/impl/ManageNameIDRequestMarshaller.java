@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.ManageNameIDRequest;
+
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.ManageNameIDRequest} objects.
+ * A thread safe Marshaller for {@link ManageNameIDRequest} objects.
  */
 public class ManageNameIDRequestMarshaller extends RequestAbstractTypeMarshaller {
 

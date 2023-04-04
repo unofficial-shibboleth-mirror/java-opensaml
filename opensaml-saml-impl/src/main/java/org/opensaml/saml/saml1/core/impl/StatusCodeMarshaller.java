@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -28,14 +29,15 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.QNameSupport;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.StatusCode} objects.
+ * A thread safe Marshaller for {@link StatusCode} objects.
  */
 public class StatusCodeMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final StatusCode statusCode = (StatusCode) samlElement;
+        final StatusCode statusCode = (StatusCode) xmlObject;
 
         final QName statusValue = statusCode.getValue();
         if (statusValue != null) {
@@ -43,4 +45,5 @@ public class StatusCodeMarshaller extends AbstractSAMLObjectMarshaller {
                     QNameSupport.qnameToContentString(statusValue));
         }
     }
+
 }

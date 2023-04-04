@@ -21,6 +21,10 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -32,32 +36,37 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.RequestAbstractType} objects.
+ * A thread safe Marshaller for {@link RequestAbstractType} objects.
  */
 public class RequestAbstractTypeMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final RequestAbstractType request = (RequestAbstractType) samlElement;
+        final RequestAbstractType request = (RequestAbstractType) xmlObject;
 
         if (request.getID() != null) {
             domElement.setAttributeNS(null, RequestAbstractType.ID_ATTRIB_NAME, request.getID());
         }
 
-        if (request.getIssueInstant() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, RequestAbstractType.ISSUEINSTANT_ATTRIB_QNAME,
-                    request.getIssueInstant());
+        final Instant i = request.getIssueInstant();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, RequestAbstractType.ISSUEINSTANT_ATTRIB_QNAME, i);
         }
 
-        domElement.setAttributeNS(null, RequestAbstractType.MAJORVERSION_ATTRIB_NAME,
-                Integer.toString(request.getVersion().getMajorVersion()));
-        domElement.setAttributeNS(null, RequestAbstractType.MINORVERSION_ATTRIB_NAME,
-                Integer.toString(request.getVersion().getMinorVersion()));
+        final SAMLVersion version = request.getVersion();
+        if (version != null) {
+            domElement.setAttributeNS(null, RequestAbstractType.MAJORVERSION_ATTRIB_NAME,
+                    Integer.toString(version.getMajorVersion()));
+            domElement.setAttributeNS(null, RequestAbstractType.MINORVERSION_ATTRIB_NAME,
+                    Integer.toString(version.getMinorVersion()));
+        }
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    @Override
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         if (((RequestAbstractType)xmlObject).getVersion() != SAMLVersion.VERSION_10) {

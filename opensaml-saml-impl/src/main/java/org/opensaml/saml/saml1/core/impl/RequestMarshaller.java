@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.opensaml.saml.saml1.core.Request;
+
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Request} objects.
+ * A thread safe Marshaller for {@link Request} objects.
  */
 public class RequestMarshaller extends RequestAbstractTypeMarshaller {
 

@@ -21,8 +21,11 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryMarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.ext.samlec.GeneratedKey;
@@ -34,13 +37,15 @@ import org.w3c.dom.Element;
 public class GeneratedKeyMarshaller extends XSBase64BinaryMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final GeneratedKey key = (GeneratedKey) samlObject;
+        final GeneratedKey key = (GeneratedKey) xmlObject;
 
-        if (key.isSOAP11MustUnderstandXSBoolean() != null) {
+        final XSBooleanValue mustUnderstand = key.isSOAP11MustUnderstandXSBoolean();
+        if (mustUnderstand != null) {
             XMLObjectSupport.marshallAttribute(GeneratedKey.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
-                    key.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
+                    mustUnderstand.toString(), domElement, false);
         }
         
         if (key.getSOAP11Actor() != null) {
@@ -48,4 +53,5 @@ public class GeneratedKeyMarshaller extends XSBase64BinaryMarshaller {
                     key.getSOAP11Actor(), domElement, false);
         }
     }
+
 }

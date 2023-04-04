@@ -21,6 +21,10 @@ import net.shibboleth.shared.xml.AttributeSupport;
 import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.XMLConstants;
 
+import java.util.List;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -30,38 +34,39 @@ import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2mdui.Keywords} objects.
+ * A thread safe Marshaller for {@link Keywords} objects.
  */
 public class KeywordsMarshaller extends AbstractSAMLObjectMarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    /** {@inheritDoc} */
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final Keywords words = (Keywords) samlObject;
+        final Keywords words = (Keywords) xmlObject;
 
         if (words.getXMLLang() != null) {
             final Attr attribute = AttributeSupport.constructAttribute(domElement.getOwnerDocument(),
-                    XMLConstants.XML_NS,
-                    LangBearing.XML_LANG_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
+                    XMLConstants.XML_NS, LangBearing.XML_LANG_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
             attribute.setValue(words.getXMLLang());
             domElement.setAttributeNodeNS(attribute);
         }
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final Keywords words = (Keywords) samlObject;
+        final Keywords words = (Keywords) xmlObject;
 
-        if (words.getKeywords() != null) {
+        final List<String> keywords = words.getKeywords();
+        if (keywords != null && !keywords.isEmpty()) {
             final StringBuilder sb = new StringBuilder();
-            for (final String s : words.getKeywords()) {
+            for (final String s : keywords) {
                 sb.append(s);
                 sb.append(' ');
             }
             ElementSupport.appendTextContent(domElement, sb.toString());
         }
     }
+
 }

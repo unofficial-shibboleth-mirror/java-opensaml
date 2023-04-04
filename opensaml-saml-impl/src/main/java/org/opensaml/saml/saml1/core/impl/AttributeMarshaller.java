@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.opensaml.saml.saml1.core.Attribute;
+
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Attribute} objects.
+ * A thread safe Marshaller for {@link Attribute} objects.
  */
 public class AttributeMarshaller extends AttributeDesignatorMarshaller {
 

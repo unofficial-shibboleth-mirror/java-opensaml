@@ -18,9 +18,11 @@
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.ext.saml2mdrpi.PublicationPath;
 
 /**
- * A marshaller for {@link org.opensaml.saml.ext.saml2mdrpi.PublicationPath}.
+ * A marshaller for {@link PublicationPath}.
  */
 public class PublicationPathMarshaller extends AbstractSAMLObjectMarshaller {
+    
 }

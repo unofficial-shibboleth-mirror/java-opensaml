@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.NameIDMappingResponse;
+
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.NameIDMappingResponse} objects.
+ * A thread safe Marshaller for {@link NameIDMappingResponse} objects.
  */
 public class NameIDMappingResponseMarshaller extends StatusResponseTypeMarshaller {
 

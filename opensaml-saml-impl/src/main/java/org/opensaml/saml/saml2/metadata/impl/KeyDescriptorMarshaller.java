@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -25,17 +27,18 @@ import org.opensaml.security.credential.UsageType;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe marshaller for {@link org.opensaml.saml.saml2.metadata.KeyDescriptor}s.
+ * A thread-safe marshaller for {@link KeyDescriptor}s.
  */
 public class KeyDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
     @Override
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final KeyDescriptor keyDescriptor = (KeyDescriptor) xmlObject;
 
-        if (keyDescriptor.getUse() != null) {
-            final UsageType use = keyDescriptor.getUse();
+        final UsageType use = keyDescriptor.getUse();
+        if (use != null) {
             // UsageType enum contains more values than are allowed by SAML 2 schema
             if (use.equals(UsageType.SIGNING) || use.equals(UsageType.ENCRYPTION)) {
                 domElement.setAttributeNS(null, KeyDescriptor.USE_ATTRIB_NAME, use.toString().toLowerCase());
@@ -47,4 +50,5 @@ public class KeyDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
             }
         }
     }
+
 }

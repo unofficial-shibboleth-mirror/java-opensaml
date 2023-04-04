@@ -17,7 +17,11 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+
+import javax.annotation.Nonnull;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -31,14 +35,15 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.RoleDescriptor} objects.
+ * A thread safe Marshaller for {@link RoleDescriptor} objects.
  */
 public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final RoleDescriptor roleDescriptor = (RoleDescriptor) samlElement;
+        final RoleDescriptor roleDescriptor = (RoleDescriptor) xmlObject;
 
         // Set the ID attribute
         if (roleDescriptor.getID() != null) {
@@ -46,20 +51,20 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
         }
 
         // Set the validUntil attribute
-        if (roleDescriptor.getValidUntil() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_QNAME,
-                    roleDescriptor.getValidUntil());
+        final Instant i = roleDescriptor.getValidUntil();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_QNAME, i);
         }
 
         // Set the cacheDuration attribute
-        if (roleDescriptor.getCacheDuration() != null) {
-            AttributeSupport.appendDurationAttribute(domElement, CacheableSAMLObject.CACHE_DURATION_ATTRIB_QNAME,
-                    roleDescriptor.getCacheDuration());
+        final Duration d = roleDescriptor.getCacheDuration();
+        if (d != null) {
+            AttributeSupport.appendDurationAttribute(domElement, CacheableSAMLObject.CACHE_DURATION_ATTRIB_QNAME, d);
         }
 
         // Set the protocolSupportEnumeration attribute
         final List<String> supportedProtocols = roleDescriptor.getSupportedProtocols();
-        if (supportedProtocols != null && supportedProtocols.size() > 0) {
+        if (supportedProtocols != null && !supportedProtocols.isEmpty()) {
 
             final StringBuilder builder = new StringBuilder();
             for (final String protocol : supportedProtocols) {
@@ -79,7 +84,8 @@ public abstract class RoleDescriptorMarshaller extends AbstractSAMLObjectMarshal
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    @Override
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
 
         XMLObjectSupport.marshallAttributeIDness(null, RoleDescriptor.ID_ATTRIB_NAME, domElement, true);

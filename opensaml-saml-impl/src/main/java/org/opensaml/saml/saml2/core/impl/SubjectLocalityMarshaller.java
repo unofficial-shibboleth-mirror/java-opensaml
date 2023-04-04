@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,14 +30,15 @@ import org.opensaml.saml.saml2.core.SubjectLocality;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaler for {@link org.opensaml.saml.saml2.core.SubjectLocality}.
+ * A thread-safe Marshaller for {@link SubjectLocality}.
  */
 public class SubjectLocalityMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final SubjectLocality subjectLocality = (SubjectLocality) samlObject;
+        final SubjectLocality subjectLocality = (SubjectLocality) xmlObject;
         if (subjectLocality.getAddress() != null) {
             domElement.setAttributeNS(null, SubjectLocality.ADDRESS_ATTRIB_NAME, subjectLocality.getAddress());
         }

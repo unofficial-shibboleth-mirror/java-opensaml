@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -28,18 +29,21 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.QNameSupport;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AuthorityBinding} objects.
+ * A thread safe Marshaller for {@link AuthorityBinding} objects.
  */
 public class AuthorityBindingMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    public void marshallAttributes(final XMLObject samlElement, final Element domElement) throws MarshallingException {
-        final AuthorityBinding authorityBinding = (AuthorityBinding) samlElement;
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        final AuthorityBinding authorityBinding = (AuthorityBinding) xmlObject;
+        
 
-        if (authorityBinding.getAuthorityKind() != null) {
-            final QName authKind = authorityBinding.getAuthorityKind();
-            domElement.setAttributeNS(null, AuthorityBinding.AUTHORITYKIND_ATTRIB_NAME, QNameSupport
-                    .qnameToContentString(authKind));
+        final QName authKind = authorityBinding.getAuthorityKind();
+        if (authKind != null) {
+            domElement.setAttributeNS(null, AuthorityBinding.AUTHORITYKIND_ATTRIB_NAME,
+                    QNameSupport.qnameToContentString(authKind));
         }
 
         if (authorityBinding.getBinding() != null) {
@@ -50,4 +54,5 @@ public class AuthorityBindingMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, AuthorityBinding.LOCATION_ATTRIB_NAME, authorityBinding.getLocation());
         }
     }
+
 }

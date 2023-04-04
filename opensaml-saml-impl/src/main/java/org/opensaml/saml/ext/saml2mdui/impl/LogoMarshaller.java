@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.ext.saml2mdui.Logo;
@@ -28,21 +30,22 @@ import org.w3c.dom.Element;
  */
 public class LogoMarshaller extends LocalizedURIMarshaller {
 
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    /** {@inheritDoc} */
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
         
-        final Logo logo = (Logo) samlObject;
+        final Logo logo = (Logo) xmlObject;
 
-        if (logo.getHeight() != null) {
-            domElement.setAttributeNS(null, Logo.HEIGHT_ATTR_NAME, logo.getHeight().toString());
+        Integer size = logo.getHeight();
+        if (size != null) {
+            domElement.setAttributeNS(null, Logo.HEIGHT_ATTR_NAME, size.toString());
         }
         
-        if (logo.getWidth() != null) {
-            domElement.setAttributeNS(null, Logo.WIDTH_ATTR_NAME, logo.getWidth().toString());
+        size = logo.getWidth();
+        if (size != null) {
+            domElement.setAttributeNS(null, Logo.WIDTH_ATTR_NAME, size.toString());
         }
     }
 

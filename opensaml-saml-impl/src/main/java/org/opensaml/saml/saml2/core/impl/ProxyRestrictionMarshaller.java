@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,17 +30,20 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.ProxyRestriction} objects.
+ * A thread-safe Marshaller for {@link ProxyRestriction} objects.
  */
 public class ProxyRestrictionMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final ProxyRestriction proxyRestriction = (ProxyRestriction) samlObject;
-        if (proxyRestriction.getProxyCount() != null) {
-            domElement.setAttributeNS(null, ProxyRestriction.COUNT_ATTRIB_NAME, Integer.toString(proxyRestriction
-                    .getProxyCount()));
+        final ProxyRestriction proxyRestriction = (ProxyRestriction) xmlObject;
+        
+        final Integer i = proxyRestriction.getProxyCount();
+        if (i != null) {
+            domElement.setAttributeNS(null, ProxyRestriction.COUNT_ATTRIB_NAME, i.toString());
         }
     }
+
 }

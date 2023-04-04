@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,17 +30,20 @@ import org.opensaml.saml.saml2.core.Scoping;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.Scoping} objects.
+ * A thread safe Marshaller for {@link Scoping} objects.
  */
 public class ScopingMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final Scoping scoping = (Scoping) samlObject;
+        final Scoping scoping = (Scoping) xmlObject;
 
-        if (scoping.getProxyCount() != null) {
-            domElement.setAttributeNS(null, Scoping.PROXY_COUNT_ATTRIB_NAME, scoping.getProxyCount().toString());
+        final Integer i = scoping.getProxyCount();
+        if (i != null) {
+            domElement.setAttributeNS(null, Scoping.PROXY_COUNT_ATTRIB_NAME, i.toString());
         }
     }
+
 }

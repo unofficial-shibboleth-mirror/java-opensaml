@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2alg.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -24,12 +26,14 @@ import org.opensaml.saml.ext.saml2alg.DigestMethod;
 import org.w3c.dom.Element;
 
 /**
- * DigestMethod marshaller.
+ * Marshaller for {@link DigestMethod}.
  */
 public class DigestMethodMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final DigestMethod digestMethod = (DigestMethod) xmlObject;
         
         if (digestMethod.getAlgorithm() != null) {

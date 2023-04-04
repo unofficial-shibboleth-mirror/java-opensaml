@@ -21,37 +21,42 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthnRequest}.
+ * A thread-safe Marshaller for {@link AuthnRequest}.
  */
 public class AuthnRequestMarshaller extends RequestAbstractTypeMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AuthnRequest req = (AuthnRequest) samlObject;
+        final AuthnRequest req = (AuthnRequest) xmlObject;
 
-        if (req.isForceAuthnXSBoolean() != null) {
-            domElement.setAttributeNS(null, AuthnRequest.FORCE_AUTHN_ATTRIB_NAME, req.isForceAuthnXSBoolean()
-                    .toString());
+        XSBooleanValue flag = req.isForceAuthnXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, AuthnRequest.FORCE_AUTHN_ATTRIB_NAME, flag.toString());
         }
 
-        if (req.isPassiveXSBoolean() != null) {
-            domElement.setAttributeNS(null, AuthnRequest.IS_PASSIVE_ATTRIB_NAME, req.isPassiveXSBoolean().toString());
+        flag = req.isPassiveXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, AuthnRequest.IS_PASSIVE_ATTRIB_NAME, flag.toString());
         }
 
         if (req.getProtocolBinding() != null) {
             domElement.setAttributeNS(null, AuthnRequest.PROTOCOL_BINDING_ATTRIB_NAME, req.getProtocolBinding());
         }
 
-        if (req.getAssertionConsumerServiceIndex() != null) {
-            domElement.setAttributeNS(null, AuthnRequest.ASSERTION_CONSUMER_SERVICE_INDEX_ATTRIB_NAME, req
-                    .getAssertionConsumerServiceIndex().toString());
+        Integer i = req.getAssertionConsumerServiceIndex();
+        if (i != null) {
+            domElement.setAttributeNS(null, AuthnRequest.ASSERTION_CONSUMER_SERVICE_INDEX_ATTRIB_NAME, i.toString());
         }
 
         if (req.getAssertionConsumerServiceURL() != null) {
@@ -59,15 +64,16 @@ public class AuthnRequestMarshaller extends RequestAbstractTypeMarshaller {
                     .getAssertionConsumerServiceURL());
         }
 
-        if (req.getAttributeConsumingServiceIndex() != null) {
-            domElement.setAttributeNS(null, AuthnRequest.ATTRIBUTE_CONSUMING_SERVICE_INDEX_ATTRIB_NAME, req
-                    .getAttributeConsumingServiceIndex().toString());
+        i = req.getAttributeConsumingServiceIndex();
+        if (i != null) {
+            domElement.setAttributeNS(null, AuthnRequest.ATTRIBUTE_CONSUMING_SERVICE_INDEX_ATTRIB_NAME, i.toString());
         }
 
         if (req.getProviderName() != null) {
             domElement.setAttributeNS(null, AuthnRequest.PROVIDER_NAME_ATTRIB_NAME, req.getProviderName());
         }
 
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
     }
+    
 }

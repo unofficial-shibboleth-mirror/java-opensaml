@@ -17,8 +17,11 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.saml2.ecp.RelayState;
@@ -30,12 +33,15 @@ import org.w3c.dom.Element;
 public class RelayStateMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final RelayState relayState = (RelayState) xmlObject;
         
-        if (relayState.isSOAP11MustUnderstandXSBoolean() != null) {
+        final XSBooleanValue mustUnderstand = relayState.isSOAP11MustUnderstandXSBoolean();
+        if (mustUnderstand != null) {
             XMLObjectSupport.marshallAttribute(RelayState.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
-                    relayState.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
+                    mustUnderstand.toString(), domElement, false);
         }
         if (relayState.getSOAP11Actor() != null) {
             XMLObjectSupport.marshallAttribute(RelayState.SOAP11_ACTOR_ATTR_NAME, 

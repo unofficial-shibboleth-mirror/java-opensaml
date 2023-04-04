@@ -28,7 +28,7 @@ import org.opensaml.saml.saml2.core.SubjectLocality;
 import org.w3c.dom.Attr;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.SubjectLocality}.
+ * A thread-safe Marshaller for {@link SubjectLocality}.
  */
 public class SubjectLocalityUnmarshaller extends AbstractSAMLObjectUnmarshaller {
 

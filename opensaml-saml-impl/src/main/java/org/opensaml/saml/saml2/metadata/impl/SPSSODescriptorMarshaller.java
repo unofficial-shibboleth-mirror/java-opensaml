@@ -21,31 +21,36 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.SPSSODescriptor} objects.
+ * A thread safe Marshaller for {@link SPSSODescriptor} objects.
  */
 public class SPSSODescriptorMarshaller extends SSODescriptorMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final SPSSODescriptor descriptor = (SPSSODescriptor) samlObject;
+        final SPSSODescriptor descriptor = (SPSSODescriptor) xmlObject;
 
-        if (descriptor.isAuthnRequestsSignedXSBoolean() != null) {
-            domElement.setAttributeNS(null, SPSSODescriptor.AUTH_REQUESTS_SIGNED_ATTRIB_NAME, descriptor
-                    .isAuthnRequestsSignedXSBoolean().toString());
+        XSBooleanValue flag = descriptor.isAuthnRequestsSignedXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, SPSSODescriptor.AUTH_REQUESTS_SIGNED_ATTRIB_NAME, flag.toString());
         }
 
-        if (descriptor.getWantAssertionsSignedXSBoolean() != null) {
-            domElement.setAttributeNS(null, SPSSODescriptor.WANT_ASSERTIONS_SIGNED_ATTRIB_NAME, descriptor
-                    .getWantAssertionsSignedXSBoolean().toString());
+        flag = descriptor.getWantAssertionsSignedXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, SPSSODescriptor.WANT_ASSERTIONS_SIGNED_ATTRIB_NAME, flag.toString());
         }
 
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
     }
+
 }

@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.EncryptedID;
+
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.EncryptedID}.
+ * A thread-safe Marshaller for {@link EncryptedID}.
  */
 public class EncryptedIDMarshaller extends EncryptedElementTypeMarshaller {
 

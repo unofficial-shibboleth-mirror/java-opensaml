@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import org.opensaml.saml.saml2.core.EncryptedAttribute;
+
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.EncryptedAttribute}.
+ * A thread-safe Marshaller for {@link EncryptedAttribute}.
  */
 public class EncryptedAttributeMarshaller extends EncryptedElementTypeMarshaller {
 

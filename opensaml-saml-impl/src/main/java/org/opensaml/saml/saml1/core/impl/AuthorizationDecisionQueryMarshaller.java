@@ -17,24 +17,28 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionQuery;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AuthorizationDecisionQuery} objects.
+ * A thread safe Marshaller for {@link AuthorizationDecisionQuery} objects.
  */
 public class AuthorizationDecisionQueryMarshaller extends SubjectQueryMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AuthorizationDecisionQuery authorizationDecisionQuery = (AuthorizationDecisionQuery) samlElement;
+        final AuthorizationDecisionQuery authorizationDecisionQuery = (AuthorizationDecisionQuery) xmlObject;
 
         if (authorizationDecisionQuery.getResource() != null) {
-            domElement.setAttributeNS(null, AuthorizationDecisionQuery.RESOURCE_ATTRIB_NAME, authorizationDecisionQuery
-                    .getResource());
+            domElement.setAttributeNS(null, AuthorizationDecisionQuery.RESOURCE_ATTRIB_NAME,
+                    authorizationDecisionQuery.getResource());
         }
     }
+    
 }

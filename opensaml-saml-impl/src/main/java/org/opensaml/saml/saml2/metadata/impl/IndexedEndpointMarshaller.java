@@ -21,28 +21,36 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.IndexedEndpoint} objects.
+ * A thread safe Marshaller for {@link IndexedEndpoint} objects.
  */
 public class IndexedEndpointMarshaller extends EndpointMarshaller {
 
     /** {@inheritDoc} */
-    public void marshallAttributes(final XMLObject samlObject, final Element domElement) {
-        final IndexedEndpoint iEndpoint = (IndexedEndpoint) samlObject;
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        final IndexedEndpoint iEndpoint = (IndexedEndpoint) xmlObject;
 
-        if (iEndpoint.getIndex() != null) {
-            domElement.setAttributeNS(null, IndexedEndpoint.INDEX_ATTRIB_NAME, iEndpoint.getIndex().toString());
+        final Integer i = iEndpoint.getIndex();
+        if (i != null) {
+            domElement.setAttributeNS(null, IndexedEndpoint.INDEX_ATTRIB_NAME, i.toString());
         }
 
-        if (iEndpoint.isDefaultXSBoolean() != null) {
-            domElement.setAttributeNS(null, IndexedEndpoint.IS_DEFAULT_ATTRIB_NAME, iEndpoint.isDefaultXSBoolean()
-                    .toString());
+        final XSBooleanValue flag = iEndpoint.isDefaultXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, IndexedEndpoint.IS_DEFAULT_ATTRIB_NAME, flag.toString());
         }
 
-        super.marshallAttributes(samlObject, domElement);
+        super.marshallAttributes(xmlObject, domElement);
     }
+
 }

@@ -18,8 +18,12 @@
 package org.opensaml.saml.ext.saml2cb.impl;
 
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryMarshaller;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.w3c.dom.Element;
@@ -30,16 +34,19 @@ import org.w3c.dom.Element;
 public class ChannelBindingsMarshaller extends XSBase64BinaryMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final ChannelBindings cb = (ChannelBindings) xmlObject;
 
         if (cb.getType() != null) {
             domElement.setAttributeNS(null, ChannelBindings.TYPE_ATTRIB_NAME, cb.getType());
         }
 
-        if (cb.isSOAP11MustUnderstandXSBoolean() != null) {
+        final XSBooleanValue mustUnderstand = cb.isSOAP11MustUnderstandXSBoolean();
+        if (mustUnderstand != null) {
             XMLObjectSupport.marshallAttribute(ChannelBindings.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
-                    cb.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
+                    mustUnderstand.toString(), domElement, false);
         }
         
         if (cb.getSOAP11Actor() != null) {

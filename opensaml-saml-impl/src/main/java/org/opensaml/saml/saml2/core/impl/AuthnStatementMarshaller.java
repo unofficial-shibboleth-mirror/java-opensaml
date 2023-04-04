@@ -21,6 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -30,27 +34,29 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.xml.AttributeSupport;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.AuthnStatement}.
+ * A thread-safe Marshaller for {@link AuthnStatement}.
  */
 public class AuthnStatementMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AuthnStatement authnStatement = (AuthnStatement) samlObject;
+        final AuthnStatement authnStatement = (AuthnStatement) xmlObject;
 
-        if (authnStatement.getAuthnInstant() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, AuthnStatement.AUTHN_INSTANT_ATTRIB_QNAME,
-                    authnStatement.getAuthnInstant());
+        Instant i = authnStatement.getAuthnInstant();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, AuthnStatement.AUTHN_INSTANT_ATTRIB_QNAME, i);
         }
 
         if (authnStatement.getSessionIndex() != null) {
             domElement.setAttributeNS(null, AuthnStatement.SESSION_INDEX_ATTRIB_NAME, authnStatement.getSessionIndex());
         }
 
-        if (authnStatement.getSessionNotOnOrAfter() != null) {
+        i = authnStatement.getSessionNotOnOrAfter();
+        if (i != null) {
             AttributeSupport.appendDateTimeAttribute(domElement, AuthnStatement.SESSION_NOT_ON_OR_AFTER_ATTRIB_QNAME,
-                    authnStatement.getSessionNotOnOrAfter());
+                    i);
         }
     }
     

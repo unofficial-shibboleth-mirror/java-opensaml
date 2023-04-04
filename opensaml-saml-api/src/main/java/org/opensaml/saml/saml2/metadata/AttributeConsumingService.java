@@ -60,14 +60,14 @@ public interface AttributeConsumingService extends SAMLObject {
      * 
      * @return the index for this service
      */
-    int getIndex();
+    @Nullable Integer getIndex();
 
     /**
      * Sets the index for this service.
      * 
      * @param index the index for this service
      */
-    void setIndex(int index);
+    void setIndex(@Nullable final Integer index);
 
     /**
      * Checks if this is the default service for the service provider.

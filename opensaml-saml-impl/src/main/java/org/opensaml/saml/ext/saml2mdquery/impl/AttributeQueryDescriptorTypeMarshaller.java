@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
+import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
+
 /**
- * Marshaller for {@link org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType} objects.
+ * Marshaller for {@link AttributeQueryDescriptorType} objects.
  */
 public class AttributeQueryDescriptorTypeMarshaller extends QueryDescriptorTypeMarshaller {
 

@@ -17,35 +17,12 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
-import org.w3c.dom.Element;
+import org.opensaml.saml.saml2.core.Extensions;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.Extensions} objects.
+ * A thread-safe Marshaller for {@link Extensions} objects.
  */
 public class ExtensionsMarshaller extends AbstractSAMLObjectMarshaller {
 
-    /**
-     * Constructor.
-     */
-    public ExtensionsMarshaller() {
-        super();
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
-        // no attributes
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected void marshallElementContent(final XMLObject xmlObject, final Element domElement)
-            throws MarshallingException {
-        // no content
-    }
 }

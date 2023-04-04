@@ -21,6 +21,11 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import java.time.Duration;
+import java.time.Instant;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -38,9 +43,10 @@ import net.shibboleth.shared.xml.AttributeSupport;
 public class AffiliationDescriptorMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AffiliationDescriptor descriptor = (AffiliationDescriptor) samlElement;
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) xmlObject;
 
         // Set affiliationOwnerID
         if (descriptor.getOwnerID() != null) {
@@ -53,22 +59,23 @@ public class AffiliationDescriptorMarshaller extends AbstractSAMLObjectMarshalle
         }
 
         // Set the validUntil attribute
-        if (descriptor.getValidUntil() != null) {
-            AttributeSupport.appendDateTimeAttribute(domElement, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_QNAME,
-                    descriptor.getValidUntil());
+        final Instant i = descriptor.getValidUntil();
+        if (i != null) {
+            AttributeSupport.appendDateTimeAttribute(domElement, TimeBoundSAMLObject.VALID_UNTIL_ATTRIB_QNAME, i);
         }
 
         // Set the cacheDuration attribute
-        if (descriptor.getCacheDuration() != null) {
-            AttributeSupport.appendDurationAttribute(domElement, CacheableSAMLObject.CACHE_DURATION_ATTRIB_QNAME,
-                    descriptor.getCacheDuration());
+        final Duration d = descriptor.getCacheDuration();
+        if (d != null) {
+            AttributeSupport.appendDurationAttribute(domElement, CacheableSAMLObject.CACHE_DURATION_ATTRIB_QNAME, d);
         }
 
         marshallUnknownAttributes(descriptor, domElement);
     }
 
     /** {@inheritDoc} */
-    protected void marshallAttributeIDness(final XMLObject xmlObject, final Element domElement)
+    @Override
+    protected void marshallAttributeIDness(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         
         XMLObjectSupport.marshallAttributeIDness(null, AffiliationDescriptor.ID_ATTRIB_NAME, domElement, true);

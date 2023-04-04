@@ -25,6 +25,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -40,7 +42,7 @@ import org.opensaml.saml.saml2.metadata.ServiceName;
 public class AttributeConsumingServiceImpl extends AbstractXMLObject implements AttributeConsumingService {
 
     /** Index of this service. */
-    private int index;
+    private Integer index;
 
     /** isDefault attribute of this service. */
     private XSBooleanValue isDefault;
@@ -70,16 +72,13 @@ public class AttributeConsumingServiceImpl extends AbstractXMLObject implements 
     }
 
     /** {@inheritDoc} */
-    public int getIndex() {
+    public Integer getIndex() {
         return index;
     }
 
     /** {@inheritDoc} */
-    public void setIndex(final int theIndex) {
-        if (this.index != theIndex) {
-            releaseThisandParentDOM();
-            this.index = theIndex;
-        }
+    public void setIndex(@Nullable final Integer theIndex) {
+        index = prepareForAssignment(index, theIndex);
     }
     
     /** {@inheritDoc} */

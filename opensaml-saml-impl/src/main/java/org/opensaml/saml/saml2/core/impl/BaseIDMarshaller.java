@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,14 +30,16 @@ import org.opensaml.saml.saml2.core.BaseID;
 import org.w3c.dom.Element;
 
 /**
- * A thread-safe Marshaller for {@link org.opensaml.saml.saml2.core.BaseID} objects.
+ * A thread-safe Marshaller for {@link BaseID} objects.
  */
 public abstract class BaseIDMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final BaseID baseID = (BaseID) samlObject;
+        final BaseID baseID = (BaseID) xmlObject;
+
         if (baseID.getNameQualifier() != null) {
             domElement.setAttributeNS(null, BaseID.NAME_QUALIFIER_ATTRIB_NAME, baseID.getNameQualifier());
         }
@@ -44,4 +48,5 @@ public abstract class BaseIDMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, BaseID.SP_NAME_QUALIFIER_ATTRIB_NAME, baseID.getSPNameQualifier());
         }
     }
+
 }

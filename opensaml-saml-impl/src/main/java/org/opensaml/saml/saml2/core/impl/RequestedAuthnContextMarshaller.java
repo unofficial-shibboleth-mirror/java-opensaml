@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,18 +30,20 @@ import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.RequestedAuthnContext} objects.
+ * A thread safe Marshaller for {@link RequestedAuthnContext} objects.
  */
 public class RequestedAuthnContextMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final RequestedAuthnContext rac = (RequestedAuthnContext) samlObject;
+        final RequestedAuthnContext rac = (RequestedAuthnContext) xmlObject;
 
-        if (rac.getComparison() != null) {
-            domElement.setAttributeNS(null, RequestedAuthnContext.COMPARISON_ATTRIB_NAME, rac.getComparison()
-                    .toString());
+        final var comp = rac.getComparison();
+        if (comp != null) {
+            domElement.setAttributeNS(null, RequestedAuthnContext.COMPARISON_ATTRIB_NAME, comp.toString());
         }
     }
+
 }

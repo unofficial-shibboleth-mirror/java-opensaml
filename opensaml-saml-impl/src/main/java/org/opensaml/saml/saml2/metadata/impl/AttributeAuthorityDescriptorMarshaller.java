@@ -21,8 +21,10 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
+
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor}s.
+ * A thread safe Marshaller for {@link AttributeAuthorityDescriptor}.
  */
 public class AttributeAuthorityDescriptorMarshaller extends RoleDescriptorMarshaller {
 

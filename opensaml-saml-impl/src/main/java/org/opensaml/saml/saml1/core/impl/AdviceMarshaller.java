@@ -18,9 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.saml1.core.Advice;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.Advice} objects.
+ * A thread safe Marshaller for {@link Advice} objects.
  */
 public class AdviceMarshaller extends AbstractSAMLObjectMarshaller {
 

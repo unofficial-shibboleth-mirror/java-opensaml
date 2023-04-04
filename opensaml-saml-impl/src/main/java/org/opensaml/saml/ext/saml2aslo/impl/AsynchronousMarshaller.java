@@ -22,10 +22,11 @@
 package org.opensaml.saml.ext.saml2aslo.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.ext.saml2aslo.Asynchronous;
 
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.ext.saml2aslo.Asynchronous} objects.
+ * A thread safe Marshaller for {@link Asynchronous} objects.
  */
 public class AsynchronousMarshaller extends AbstractSAMLObjectMarshaller {
 

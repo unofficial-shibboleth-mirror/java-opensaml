@@ -17,8 +17,11 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.ecp.Request;
@@ -30,20 +33,26 @@ import org.w3c.dom.Element;
 public class RequestMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final Request request = (Request) xmlObject;
         
         if (request.getProviderName() != null) {
             domElement.setAttributeNS(null, Request.PROVIDER_NAME_ATTRIB_NAME, request.getProviderName());
         }
-        if (request.isPassiveXSBoolean() != null) {
-            domElement.setAttributeNS(null, Request.IS_PASSIVE_NAME_ATTRIB_NAME,
-                    request.isPassiveXSBoolean().toString());
+        
+        XSBooleanValue flag = request.isPassiveXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, Request.IS_PASSIVE_NAME_ATTRIB_NAME, flag.toString());
         }
-        if (request.isSOAP11MustUnderstandXSBoolean() != null) {
-            XMLObjectSupport.marshallAttribute(Request.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
-                    request.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
+        
+        flag = request.isSOAP11MustUnderstandXSBoolean();
+        if (flag != null) {
+            XMLObjectSupport.marshallAttribute(Request.SOAP11_MUST_UNDERSTAND_ATTR_NAME, flag.toString(), domElement,
+                    false);
         }
+        
         if (request.getSOAP11Actor() != null) {
             XMLObjectSupport.marshallAttribute(Request.SOAP11_ACTOR_ATTR_NAME, 
                     request.getSOAP11Actor(), domElement, false);

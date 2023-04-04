@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
@@ -29,13 +31,14 @@ import org.w3c.dom.Element;
 public class NameIdentifierMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final NameIdentifier nameIdentifier = (NameIdentifier) samlElement;
+        final NameIdentifier nameIdentifier = (NameIdentifier) xmlObject;
 
         if (nameIdentifier.getNameQualifier() != null) {
-            domElement
-                    .setAttributeNS(null, NameIdentifier.NAMEQUALIFIER_ATTRIB_NAME, nameIdentifier.getNameQualifier());
+            domElement.setAttributeNS(null, NameIdentifier.NAMEQUALIFIER_ATTRIB_NAME,
+                    nameIdentifier.getNameQualifier());
         }
 
         if (nameIdentifier.getFormat() != null) {

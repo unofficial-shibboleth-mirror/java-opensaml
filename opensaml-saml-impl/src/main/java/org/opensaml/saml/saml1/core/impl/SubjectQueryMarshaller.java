@@ -22,9 +22,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.saml1.core.SubjectQuery;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.SubjectQuery} objects.
+ * A thread safe Marshaller for {@link SubjectQuery} objects.
  */
 public abstract class SubjectQueryMarshaller extends AbstractSAMLObjectMarshaller {
 

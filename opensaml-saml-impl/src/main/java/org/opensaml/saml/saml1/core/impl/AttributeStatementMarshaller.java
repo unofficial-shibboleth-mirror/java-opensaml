@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import org.opensaml.saml.saml1.core.AttributeStatement;
+
 /**
- * A thread safe Unmarshaller for {@link org.opensaml.saml.saml1.core.AttributeStatement} objects.
+ * A thread safe Marshaller for {@link AttributeStatement} objects.
  */
 public class AttributeStatementMarshaller extends SubjectStatementMarshaller {
 

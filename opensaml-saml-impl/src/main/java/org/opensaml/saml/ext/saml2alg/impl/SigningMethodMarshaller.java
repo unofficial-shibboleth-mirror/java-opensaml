@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.ext.saml2alg.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -24,26 +26,28 @@ import org.opensaml.saml.ext.saml2alg.SigningMethod;
 import org.w3c.dom.Element;
 
 /**
- * SigningMethod marshaller.
+ * Marshaller for {@link SigningMethod}.
  */
 public class SigningMethodMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject xmlObject, final Element domElement) throws MarshallingException {
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
         final SigningMethod signingMethod = (SigningMethod) xmlObject;
         
         if (signingMethod.getAlgorithm() != null) {
             domElement.setAttributeNS(null, SigningMethod.ALGORITHM_ATTRIB_NAME, signingMethod.getAlgorithm());
         }
         
-        if (signingMethod.getMinKeySize() != null) {
-            domElement.setAttributeNS(null, SigningMethod.MIN_KEY_SIZE_ATTRIB_NAME, 
-                    signingMethod.getMinKeySize().toString());
+        Integer size = signingMethod.getMinKeySize();
+        if (size != null) {
+            domElement.setAttributeNS(null, SigningMethod.MIN_KEY_SIZE_ATTRIB_NAME, size.toString());
         }
         
-        if (signingMethod.getMaxKeySize() != null) {
-            domElement.setAttributeNS(null, SigningMethod.MAX_KEY_SIZE_ATTRIB_NAME, 
-                    signingMethod.getMaxKeySize().toString());
+        size = signingMethod.getMaxKeySize();
+        if (size != null) {
+            domElement.setAttributeNS(null, SigningMethod.MAX_KEY_SIZE_ATTRIB_NAME, size.toString());
         }
     }
 

@@ -22,9 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
+import org.opensaml.saml.saml2.core.AudienceRestriction;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.AudienceRestriction} objects.
+ * A thread safe Marshaller for {@link AudienceRestriction} objects.
  */
 public class AudienceRestrictionMarshaller extends AbstractSAMLObjectMarshaller {
 

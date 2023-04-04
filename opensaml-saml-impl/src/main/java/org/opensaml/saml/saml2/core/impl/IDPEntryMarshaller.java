@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,14 +30,15 @@ import org.opensaml.saml.saml2.core.IDPEntry;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.IDPEntry} objects.
+ * A thread safe Marshaller for {@link IDPEntry} objects.
  */
 public class IDPEntryMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final IDPEntry entry = (IDPEntry) samlObject;
+        final IDPEntry entry = (IDPEntry) xmlObject;
 
         if (entry.getProviderID() != null) {
             domElement.setAttributeNS(null, IDPEntry.PROVIDER_ID_ATTRIB_NAME, entry.getProviderID());
@@ -47,4 +50,5 @@ public class IDPEntryMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, IDPEntry.LOC_ATTRIB_NAME, entry.getLoc());
         }
     }
+
 }

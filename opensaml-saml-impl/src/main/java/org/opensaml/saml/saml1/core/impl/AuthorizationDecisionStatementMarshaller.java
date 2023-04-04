@@ -17,31 +17,36 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
+import org.opensaml.saml.saml1.core.DecisionTypeEnumeration;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml1.core.AuthorizationDecisionStatement} objects.
+ * A thread safe Marshaller for {@link AuthorizationDecisionStatement} objects.
  */
 public class AuthorizationDecisionStatementMarshaller extends SubjectStatementMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         final AuthorizationDecisionStatement authorizationDecisionStatement;
 
-        authorizationDecisionStatement = (AuthorizationDecisionStatement) samlElement;
+        authorizationDecisionStatement = (AuthorizationDecisionStatement) xmlObject;
 
         if (authorizationDecisionStatement.getResource() != null) {
             domElement.setAttributeNS(null, AuthorizationDecisionStatement.RESOURCE_ATTRIB_NAME,
                     authorizationDecisionStatement.getResource());
         }
 
-        if (authorizationDecisionStatement.getDecision() != null) {
-            domElement.setAttributeNS(null, AuthorizationDecisionStatement.DECISION_ATTRIB_NAME,
-                    authorizationDecisionStatement.getDecision().toString());
+        final DecisionTypeEnumeration decision = authorizationDecisionStatement.getDecision();
+        if (decision != null) {
+            domElement.setAttributeNS(null, AuthorizationDecisionStatement.DECISION_ATTRIB_NAME, decision.toString());
         }
     }
+    
 }

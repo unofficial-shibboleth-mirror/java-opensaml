@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
@@ -28,19 +30,22 @@ import org.opensaml.saml.saml2.metadata.ContactPerson;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe marshaller for {@link org.opensaml.saml.saml2.metadata.ContactPerson} objects.
+ * A thread safe marshaller for {@link ContactPerson} objects.
  */
 public class ContactPersonMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final ContactPerson person = (ContactPerson) samlObject;
+        final ContactPerson person = (ContactPerson) xmlObject;
 
-        if (person.getType() != null) {
-            domElement.setAttributeNS(null, ContactPerson.CONTACT_TYPE_ATTRIB_NAME, person.getType().toString());
+        final var type = person.getType();
+        if (type != null) {
+            domElement.setAttributeNS(null, ContactPerson.CONTACT_TYPE_ATTRIB_NAME, type.toString());
         }
 
         marshallUnknownAttributes(person, domElement);
     }
+
 }

@@ -17,30 +17,34 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.metadata.Endpoint} objects.
+ * A thread safe Marshaller for {@link Endpoint} objects.
  */
 public class EndpointMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    public void marshallAttributes(final XMLObject samlElement, final Element domElement) {
-        final Endpoint endpoint = (Endpoint) samlElement;
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
+            throws MarshallingException {
+        final Endpoint endpoint = (Endpoint) xmlObject;
 
         if (endpoint.getBinding() != null) {
-            domElement.setAttributeNS(null, Endpoint.BINDING_ATTRIB_NAME, endpoint.getBinding().toString());
+            domElement.setAttributeNS(null, Endpoint.BINDING_ATTRIB_NAME, endpoint.getBinding());
         }
         if (endpoint.getLocation() != null) {
-            domElement.setAttributeNS(null, Endpoint.LOCATION_ATTRIB_NAME, endpoint.getLocation().toString());
+            domElement.setAttributeNS(null, Endpoint.LOCATION_ATTRIB_NAME, endpoint.getLocation());
         }
 
         if (endpoint.getResponseLocation() != null) {
-            domElement.setAttributeNS(null, Endpoint.RESPONSE_LOCATION_ATTRIB_NAME, endpoint.getResponseLocation()
-                    .toString());
+            domElement.setAttributeNS(null, Endpoint.RESPONSE_LOCATION_ATTRIB_NAME, endpoint.getResponseLocation());
         }
 
         marshallUnknownAttributes(endpoint, domElement);

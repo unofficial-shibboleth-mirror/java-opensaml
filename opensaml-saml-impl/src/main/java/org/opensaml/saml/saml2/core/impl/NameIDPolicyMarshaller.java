@@ -21,21 +21,25 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 import org.w3c.dom.Element;
 
 /**
- * A thread safe Marshaller for {@link org.opensaml.saml.saml2.core.NameIDPolicy} objects.
+ * A thread safe Marshaller for {@link NameIDPolicy} objects.
  */
 public class NameIDPolicyMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final NameIDPolicy policy = (NameIDPolicy) samlObject;
+        final NameIDPolicy policy = (NameIDPolicy) xmlObject;
 
         if (policy.getFormat() != null) {
             domElement.setAttributeNS(null, NameIDPolicy.FORMAT_ATTRIB_NAME, policy.getFormat());
@@ -45,9 +49,10 @@ public class NameIDPolicyMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, NameIDPolicy.SP_NAME_QUALIFIER_ATTRIB_NAME, policy.getSPNameQualifier());
         }
 
-        if (policy.getAllowCreateXSBoolean() != null) {
-            domElement.setAttributeNS(null, NameIDPolicy.ALLOW_CREATE_ATTRIB_NAME, policy.getAllowCreateXSBoolean()
-                    .toString());
+        final XSBooleanValue flag = policy.getAllowCreateXSBoolean();
+        if (flag != null) {
+            domElement.setAttributeNS(null, NameIDPolicy.ALLOW_CREATE_ATTRIB_NAME, flag.toString());
         }
     }
+
 }

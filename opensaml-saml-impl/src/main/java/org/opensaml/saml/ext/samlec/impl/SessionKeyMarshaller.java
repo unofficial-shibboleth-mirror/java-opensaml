@@ -21,13 +21,15 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.AbstractSAMLObjectMarshaller;
 import org.opensaml.saml.ext.samlec.SessionKey;
 import org.w3c.dom.Element;
-
 
 /**
  * A thread-safe Marshaller for {@link SessionKey} objects.
@@ -35,13 +37,15 @@ import org.w3c.dom.Element;
 public class SessionKeyMarshaller extends AbstractSAMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final SessionKey key = (SessionKey) samlObject;
+        final SessionKey key = (SessionKey) xmlObject;
 
-        if (key.isSOAP11MustUnderstandXSBoolean() != null) {
+        final XSBooleanValue mustUnderstand = key.isSOAP11MustUnderstandXSBoolean();
+        if (mustUnderstand != null) {
             XMLObjectSupport.marshallAttribute(SessionKey.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
-                    key.isSOAP11MustUnderstandXSBoolean().toString(), domElement, false);
+                    mustUnderstand.toString(), domElement, false);
         }
         
         if (key.getSOAP11Actor() != null) {
@@ -53,4 +57,5 @@ public class SessionKeyMarshaller extends AbstractSAMLObjectMarshaller {
             domElement.setAttributeNS(null, SessionKey.ALGORITHM_ATTRIB_NAME, key.getAlgorithm());
         }
     }
+
 }

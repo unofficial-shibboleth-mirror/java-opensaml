@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSURIMarshaller;
@@ -29,9 +31,10 @@ import org.w3c.dom.Element;
 public class AdditionalMetadataLocationMarshaller extends XSURIMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlElement, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final AdditionalMetadataLocation aml = (AdditionalMetadataLocation) samlElement;
+        final AdditionalMetadataLocation aml = (AdditionalMetadataLocation) xmlObject;
 
         if (aml.getNamespaceURI() != null) {
             domElement.setAttributeNS(null, AdditionalMetadataLocation.NAMESPACE_ATTRIB_NAME, aml.getNamespaceURI());
@@ -39,7 +42,8 @@ public class AdditionalMetadataLocationMarshaller extends XSURIMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallElementContent(@Nonnull final XMLObject samlObject, @Nonnull final Element domElement)
             throws MarshallingException {
         
         final AdditionalMetadataLocation aml = (AdditionalMetadataLocation) samlObject;

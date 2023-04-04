@@ -21,6 +21,8 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.schema.impl.XSStringMarshaller;
@@ -33,9 +35,10 @@ import org.w3c.dom.Element;
 public class ActionMarshaller extends XSStringMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(final XMLObject samlObject, final Element domElement)
+    @Override
+    protected void marshallAttributes(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
-        final Action action = (Action) samlObject;
+        final Action action = (Action) xmlObject;
 
         if (action.getNamespace() != null) {
             domElement.setAttributeNS(null, Action.NAMEPSACE_ATTRIB_NAME, action.getNamespace());
