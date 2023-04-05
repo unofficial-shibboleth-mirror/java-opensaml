@@ -17,9 +17,10 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -33,14 +34,19 @@ import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.opensaml.saml.ext.saml2mdui.PrivacyStatementURL;
 import org.opensaml.saml.ext.saml2mdui.UIInfo;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.UIInfo}.
- * @author Rod Widdowson
+ * Concrete implementation of {@link UIInfo}.
  */
+@SuppressWarnings("unchecked")
 public class UIInfoImpl extends AbstractXMLObject implements UIInfo {
     
     /** Children of the UIInfo. */
-    private final IndexedXMLObjectChildrenList<XMLObject> uiInfoChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> uiInfoChildren;
     
     /**
      * Constructor.
@@ -48,67 +54,56 @@ public class UIInfoImpl extends AbstractXMLObject implements UIInfo {
      * @param elementLocalName elementLocalName
      * @param namespacePrefix namespacePrefix
      */
-    protected UIInfoImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected UIInfoImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         uiInfoChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getXMLObjects() {
         return uiInfoChildren;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getXMLObjects(final QName typeOrName) {
+    @Nonnull @Live public List<XMLObject> getXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) uiInfoChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<Description> getDescriptions() {
+    @Nonnull @Live public List<Description> getDescriptions() {
         return (List<Description>) uiInfoChildren.subList(Description.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<DisplayName> getDisplayNames() {
+    @Nonnull @Live public List<DisplayName> getDisplayNames() {
         return (List<DisplayName>) uiInfoChildren.subList(DisplayName.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<Keywords> getKeywords() {
+    @Nonnull @Live public List<Keywords> getKeywords() {
         return (List<Keywords>) uiInfoChildren.subList(Keywords.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<InformationURL> getInformationURLs() {
+    @Nonnull @Live public List<InformationURL> getInformationURLs() {
         return (List<InformationURL>) uiInfoChildren.subList(InformationURL.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<Logo> getLogos() {
+    @Nonnull @Live public List<Logo> getLogos() {
         return (List<Logo>) uiInfoChildren.subList(Logo.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<PrivacyStatementURL> getPrivacyStatementURLs() {
+    @Nonnull @Live public List<PrivacyStatementURL> getPrivacyStatementURLs() {
         return (List<PrivacyStatementURL>) uiInfoChildren.subList(PrivacyStatementURL.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        
-        children.addAll(uiInfoChildren);
-        return children;
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(uiInfoChildren);
     }
 
 }

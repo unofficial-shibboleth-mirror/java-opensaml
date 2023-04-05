@@ -18,12 +18,17 @@
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.ext.saml2mdrpi.Publication;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * A concrete {@link Publication}.
@@ -31,13 +36,13 @@ import org.opensaml.saml.ext.saml2mdrpi.Publication;
 public class PublicationImpl extends AbstractXMLObject implements Publication {
 
     /** The publisher. */
-    private String publisher;
+    @Nullable private String publisher;
 
     /** The creation instant. */
-    private Instant creationInstant;
+    @Nullable private Instant creationInstant;
 
     /** The publicationId. */
-    private String publicationId;
+    @Nullable private String publicationId;
 
     /**
      * Constructor.
@@ -46,44 +51,45 @@ public class PublicationImpl extends AbstractXMLObject implements Publication {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected PublicationImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected PublicationImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
 
     /** {@inheritDoc} */
-    public String getPublisher() {
+    @Nullable public String getPublisher() {
         return publisher;
     }
 
     /** {@inheritDoc} */
-    public void setPublisher(final String thePublisher) {
+    public void setPublisher(@Nullable final String thePublisher) {
         publisher = prepareForAssignment(publisher, thePublisher);
     }
 
     /** {@inheritDoc} */
-    public Instant getCreationInstant() {
+    @Nullable public Instant getCreationInstant() {
         return creationInstant;
     }
 
     /** {@inheritDoc} */
-    public void setCreationInstant(final Instant dateTime) {
+    public void setCreationInstant(@Nullable final Instant dateTime) {
         creationInstant = prepareForAssignment(creationInstant, dateTime);
     }
 
     /** {@inheritDoc} */
-    public String getPublicationId() {
+    @Nullable public String getPublicationId() {
         return publicationId;
     }
 
     /** {@inheritDoc} */
-    public void setPublicationId(final String id) {
+    public void setPublicationId(@Nullable final String id) {
         publicationId = prepareForAssignment(publicationId, id);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.<XMLObject>emptyList();
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

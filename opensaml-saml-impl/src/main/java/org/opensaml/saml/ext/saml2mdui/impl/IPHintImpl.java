@@ -17,11 +17,14 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.ext.saml2mdui.IPHint;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.IPHint}.
+ * Concrete implementation of {@link IPHint}.
  */
 public class IPHintImpl extends XSStringImpl implements IPHint {
 
@@ -32,7 +35,8 @@ public class IPHintImpl extends XSStringImpl implements IPHint {
      * @param elementLocalName the elementLocalName
      * @param namespacePrefix the namespacePrefix
      */
-    protected IPHintImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected IPHintImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

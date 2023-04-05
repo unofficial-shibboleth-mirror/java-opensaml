@@ -21,6 +21,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -28,16 +31,19 @@ import org.opensaml.saml.ext.saml2mdquery.QueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.impl.RoleDescriptorImpl;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Concrete implementation of {@link QueryDescriptorType}.
  */
 public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl implements QueryDescriptorType {
 
     /** WantAssertionSigned attribute value. */
-    private XSBooleanValue wantAssertionsSigned;
+    @Nullable private XSBooleanValue wantAssertionsSigned;
     
     /** Supported NameID formats. */
-    private XMLObjectChildrenList<NameIDFormat> nameIDFormats;
+    @Nonnull private final XMLObjectChildrenList<NameIDFormat> nameIDFormats;
     
     /**
      * Constructor.
@@ -46,16 +52,15 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected QueryDescriptorTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected QueryDescriptorTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         nameIDFormats = new XMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
-    @Override
-    public Boolean getWantAssertionsSigned() {
+    @Nullable public Boolean getWantAssertionsSigned() {
         if (wantAssertionsSigned != null) {
             return wantAssertionsSigned.getValue();
         }
@@ -63,8 +68,7 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setWantAssertionsSigned(final Boolean newWantAssertionsSigned) {
+    public void setWantAssertionsSigned(@Nullable final Boolean newWantAssertionsSigned) {
         if (newWantAssertionsSigned != null) {
             wantAssertionsSigned = prepareForAssignment(wantAssertionsSigned, 
                     new XSBooleanValue(newWantAssertionsSigned, false));
@@ -74,26 +78,23 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
     }
 
     /** {@inheritDoc} */
-    @Override
-    public XSBooleanValue getWantAssertionsSignedXSBoolean(){
+    @Nullable public XSBooleanValue getWantAssertionsSignedXSBoolean(){
         return wantAssertionsSigned;
     }
     
     /** {@inheritDoc} */
-    @Override
-    public void setWantAssertionsSigned(final XSBooleanValue wantAssertionSigned){
-        this.wantAssertionsSigned = prepareForAssignment(this.wantAssertionsSigned, wantAssertionSigned);
+    public void setWantAssertionsSigned(@Nullable final XSBooleanValue newWantAssertionsSigned){
+        wantAssertionsSigned = prepareForAssignment(wantAssertionsSigned, newWantAssertionsSigned);
     }
     
     /** {@inheritDoc} */
-    @Override
-    public List<NameIDFormat> getNameIDFormat(){
+    @Nonnull @NotLive @Unmodifiable public List<NameIDFormat> getNameIDFormat(){
         return nameIDFormats;
     }
     
     /** {@inheritDoc} */
     @Override
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(super.getOrderedChildren());
@@ -101,4 +102,5 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
         
         return Collections.unmodifiableList(children);
     }
+
 }

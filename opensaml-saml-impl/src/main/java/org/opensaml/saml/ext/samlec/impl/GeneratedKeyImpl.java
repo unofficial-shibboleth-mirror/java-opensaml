@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.samlec.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.core.xml.schema.impl.XSBase64BinaryImpl;
 import org.opensaml.saml.ext.samlec.GeneratedKey;
@@ -29,10 +32,10 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public class GeneratedKeyImpl extends XSBase64BinaryImpl implements GeneratedKey {
 
     /** soap11:actor attribute. */
-    private String soap11Actor;
+    @Nullable private String soap11Actor;
     
     /** soap11:mustUnderstand. */
-    private XSBooleanValue soap11MustUnderstand;
+    @Nullable private XSBooleanValue soap11MustUnderstand;
     
     /**
      * Constructor.
@@ -41,12 +44,13 @@ public class GeneratedKeyImpl extends XSBase64BinaryImpl implements GeneratedKey
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected GeneratedKeyImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected GeneratedKeyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Boolean isSOAP11MustUnderstand() {
+    @Nullable public Boolean isSOAP11MustUnderstand() {
         if (soap11MustUnderstand != null) {
             return soap11MustUnderstand.getValue();
         }
@@ -54,12 +58,12 @@ public class GeneratedKeyImpl extends XSBase64BinaryImpl implements GeneratedKey
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
+    @Nullable public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
         return soap11MustUnderstand;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final Boolean newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final Boolean newMustUnderstand) {
         if (newMustUnderstand != null) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, 
                     new XSBooleanValue(newMustUnderstand, true));
@@ -71,20 +75,21 @@ public class GeneratedKeyImpl extends XSBase64BinaryImpl implements GeneratedKey
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final XSBooleanValue newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final XSBooleanValue newMustUnderstand) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, newMustUnderstand);
             manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     soap11MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
-    public String getSOAP11Actor() {
+    @Nullable public String getSOAP11Actor() {
         return soap11Actor;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11Actor(final String newActor) {
+    public void setSOAP11Actor(@Nullable final String newActor) {
         soap11Actor = prepareForAssignment(soap11Actor, newActor);
         manageQualifiedAttributeNamespace(ActorBearing.SOAP11_ACTOR_ATTR_NAME, soap11Actor != null);
     }
+
 }

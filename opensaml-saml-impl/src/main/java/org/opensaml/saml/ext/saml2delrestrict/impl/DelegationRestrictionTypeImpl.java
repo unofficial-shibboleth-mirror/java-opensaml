@@ -17,9 +17,10 @@
 
 package org.opensaml.saml.ext.saml2delrestrict.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,13 +28,18 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.ext.saml2delrestrict.Delegate;
 import org.opensaml.saml.ext.saml2delrestrict.DelegationRestrictionType;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Implementation of {@link DelegationRestrictionType}.
  */
 public class DelegationRestrictionTypeImpl extends AbstractXMLObject implements DelegationRestrictionType {
     
     /** Delegate child elements. */
-    private XMLObjectChildrenList<Delegate> delegates;
+    @Nonnull private final XMLObjectChildrenList<Delegate> delegates;
     
     /**
      * Constructor.
@@ -42,22 +48,20 @@ public class DelegationRestrictionTypeImpl extends AbstractXMLObject implements 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected DelegationRestrictionTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected DelegationRestrictionTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         delegates = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Delegate> getDelegates() {
+    @Nonnull @Live public List<Delegate> getDelegates() {
         return delegates;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(delegates);
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(delegates);
     }
 
 }

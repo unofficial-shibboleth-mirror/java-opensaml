@@ -18,8 +18,10 @@
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -28,19 +30,24 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationInfo;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationPolicy;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete Implementation of {@link RegistrationInfo}.
  */
 public class RegistrationInfoImpl extends AbstractXMLObject implements RegistrationInfo {
 
     /** The policies. */
-    private XMLObjectChildrenList<RegistrationPolicy> registrationPolicies;
+    @Nonnull private final XMLObjectChildrenList<RegistrationPolicy> registrationPolicies;
 
     /** The authority. */
-    private String registrationAuthority;
+    @Nullable private String registrationAuthority;
 
     /** The registration instant. */
-    private Instant registrationInstant;
+    @Nullable private Instant registrationInstant;
 
     /**
      * Constructor.
@@ -49,48 +56,40 @@ public class RegistrationInfoImpl extends AbstractXMLObject implements Registrat
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RegistrationInfoImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RegistrationInfoImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         registrationPolicies = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getRegistrationAuthority() {
+    @Nullable public String getRegistrationAuthority() {
         return registrationAuthority;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setRegistrationAuthority(final String authority) {
+    public void setRegistrationAuthority(@Nullable final String authority) {
         registrationAuthority = prepareForAssignment(registrationAuthority, authority);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Instant getRegistrationInstant() {
+    @Nullable public Instant getRegistrationInstant() {
         return registrationInstant;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setRegistrationInstant(final Instant dateTime) {
+    public void setRegistrationInstant(@Nullable final Instant dateTime) {
         registrationInstant = prepareForAssignment(registrationInstant, dateTime);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<RegistrationPolicy> getRegistrationPolicies() {
+    @Nonnull @Live public List<RegistrationPolicy> getRegistrationPolicies() {
         return registrationPolicies;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(registrationPolicies);
-        return children;
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(registrationPolicies);
     }
     
 }

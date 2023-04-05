@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,6 +29,11 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.ext.saml2mdrpi.Publication;
 import org.opensaml.saml.ext.saml2mdrpi.PublicationPath;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 
 /**
  * A concrete {@link PublicationPath}.
@@ -34,7 +41,7 @@ import org.opensaml.saml.ext.saml2mdrpi.PublicationPath;
 public class PublicationPathImpl extends AbstractXMLObject implements PublicationPath {
 
     /** The policies. */
-    private XMLObjectChildrenList<Publication> publications;
+    @Nonnull private final XMLObjectChildrenList<Publication> publications;
 
     /**
      * Constructor.
@@ -43,23 +50,20 @@ public class PublicationPathImpl extends AbstractXMLObject implements Publicatio
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected PublicationPathImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected PublicationPathImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         publications = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<Publication> getPublications() {
+    @Nonnull @Live public List<Publication> getPublications() {
         return publications;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(publications);
-        return children;
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(publications);
     }
+
 }

@@ -18,9 +18,10 @@
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -29,13 +30,18 @@ import org.opensaml.saml.ext.saml2mdquery.AttributeQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.AttributeConsumingService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link AttributeQueryDescriptorType}.
  */
 public class AttributeQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl implements AttributeQueryDescriptorType {
 
     /** Attribute consuming endpoints. */
-    private XMLObjectChildrenList<AttributeConsumingService> attributeConsumingServices;
+    @Nonnull private final XMLObjectChildrenList<AttributeConsumingService> attributeConsumingServices;
 
     /**
      * Constructor.
@@ -44,35 +50,40 @@ public class AttributeQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl im
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AttributeQueryDescriptorTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AttributeQueryDescriptorTypeImpl(@Nullable final String namespaceURI,
+            @Nonnull final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
 
         attributeConsumingServices = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<AttributeConsumingService> getAttributeConsumingServices() {
+    @Nonnull @Live public List<AttributeConsumingService> getAttributeConsumingServices() {
         return attributeConsumingServices;
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints() {
-        return new ArrayList<>();
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints() {
+        return CollectionSupport.emptyList();
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints(final QName type) {
-        return null;
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints(@Nonnull final QName type) {
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superChildren = super.getOrderedChildren();
+        if (superChildren != null) {
+            children.addAll(superChildren);
+        }
         children.addAll(attributeConsumingServices);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

@@ -18,8 +18,10 @@
 package org.opensaml.saml.ext.samlec.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -31,6 +33,11 @@ import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 
 /**
  * Concrete implementation of {@link SessionKey}.
@@ -38,19 +45,19 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 public class SessionKeyImpl extends AbstractXMLObject implements SessionKey {
 
     /** soap11:actor attribute. */
-    private String soap11Actor;
+    @Nullable private String soap11Actor;
     
     /** soap11:mustUnderstand. */
-    private XSBooleanValue soap11MustUnderstand;
+    @Nullable private XSBooleanValue soap11MustUnderstand;
 
     /** Algorithm attribute. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** EncType children. */
-    private XMLObjectChildrenList<EncType> encTypes;
+    @Nonnull private final XMLObjectChildrenList<EncType> encTypes;
 
     /** KeyInfo child. */
-    private KeyInfo keyInfo;
+    @Nullable private KeyInfo keyInfo;
     
     /**
      * Constructor.
@@ -59,15 +66,15 @@ public class SessionKeyImpl extends AbstractXMLObject implements SessionKey {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SessionKeyImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected SessionKeyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         
         encTypes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Boolean isSOAP11MustUnderstand() {
+    @Nullable public Boolean isSOAP11MustUnderstand() {
         if (soap11MustUnderstand != null) {
             return soap11MustUnderstand.getValue();
         }
@@ -75,14 +82,12 @@ public class SessionKeyImpl extends AbstractXMLObject implements SessionKey {
     }
 
     /** {@inheritDoc} */
-    @Override
-    public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
+    @Nullable public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
         return soap11MustUnderstand;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setSOAP11MustUnderstand(final Boolean newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final Boolean newMustUnderstand) {
         if (newMustUnderstand != null) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, 
                     new XSBooleanValue(newMustUnderstand, true));
@@ -94,59 +99,50 @@ public class SessionKeyImpl extends AbstractXMLObject implements SessionKey {
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setSOAP11MustUnderstand(final XSBooleanValue newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final XSBooleanValue newMustUnderstand) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, newMustUnderstand);
             manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     soap11MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
-    @Override
     public String getSOAP11Actor() {
         return soap11Actor;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setSOAP11Actor(final String newActor) {
+    public void setSOAP11Actor(@Nullable final String newActor) {
         soap11Actor = prepareForAssignment(soap11Actor, newActor);
         manageQualifiedAttributeNamespace(ActorBearing.SOAP11_ACTOR_ATTR_NAME, soap11Actor != null);
     }
     
     /** {@inheritDoc} */
-    @Override
-    public String getAlgorithm() {
+    @Nullable public String getAlgorithm() {
         return algorithm;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setAlgorithm(final String newAlgorithm) {
+    public void setAlgorithm(@Nullable final String newAlgorithm) {
         algorithm = prepareForAssignment(algorithm, newAlgorithm);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<EncType> getEncTypes() {
+    @Nonnull @Live public List<EncType> getEncTypes() {
         return encTypes;
     }
     
     /** {@inheritDoc} */
-    @Override
-    public KeyInfo getKeyInfo() {
+    @Nullable public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setKeyInfo(final KeyInfo newKeyInfo) {
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo) {
         keyInfo = prepareForAssignment(keyInfo, newKeyInfo);
     }
     
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(encTypes);
@@ -155,6 +151,7 @@ public class SessionKeyImpl extends AbstractXMLObject implements SessionKey {
             children.add(keyInfo);
         }
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

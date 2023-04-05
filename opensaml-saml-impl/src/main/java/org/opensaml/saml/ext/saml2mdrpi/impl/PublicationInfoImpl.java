@@ -18,8 +18,10 @@
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -28,22 +30,27 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.ext.saml2mdrpi.PublicationInfo;
 import org.opensaml.saml.ext.saml2mdrpi.UsagePolicy;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete {@link PublicationInfo}.
  */
 public class PublicationInfoImpl extends AbstractXMLObject implements PublicationInfo {
 
     /** The policies. */
-    private XMLObjectChildrenList<UsagePolicy> usagePolicies;
+    @Nonnull private final XMLObjectChildrenList<UsagePolicy> usagePolicies;
 
     /** The publisher. */
-    private String publisher;
+    @Nullable private String publisher;
 
     /** The creation instant. */
-    private Instant creationInstant;
+    @Nullable private Instant creationInstant;
 
     /** The publicationId. */
-    private String publicationId;
+    @Nullable private String publicationId;
 
     /**
      * Constructor.
@@ -52,60 +59,50 @@ public class PublicationInfoImpl extends AbstractXMLObject implements Publicatio
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected PublicationInfoImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected PublicationInfoImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         usagePolicies = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getPublisher() {
+    @Nullable public String getPublisher() {
         return publisher;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setPublisher(final String thePublisher) {
+    public void setPublisher(@Nullable final String thePublisher) {
         publisher = prepareForAssignment(publisher, thePublisher);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Instant getCreationInstant() {
+    @Nullable public Instant getCreationInstant() {
         return creationInstant;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setCreationInstant(final Instant dateTime) {
+    public void setCreationInstant(@Nullable final Instant dateTime) {
         creationInstant = prepareForAssignment(creationInstant, dateTime);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getPublicationId() {
+    @Nullable public String getPublicationId() {
         return publicationId;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setPublicationId(final String id) {
+    public void setPublicationId(@Nullable final String id) {
         publicationId = prepareForAssignment(publicationId, id);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<UsagePolicy> getUsagePolicies() {
+    @Nonnull @Live public List<UsagePolicy> getUsagePolicies() {
         return usagePolicies;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(usagePolicies);
-        return children;
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(usagePolicies);
     }
 
 }

@@ -63,7 +63,6 @@ public class RequestedAttributesImpl extends AbstractXMLObject implements Reques
 
     /** {@inheritDoc} */
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
-        
         return CollectionSupport.copyToList(requestedAttributes);
     }
 

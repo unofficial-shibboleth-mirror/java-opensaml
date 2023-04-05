@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.ext.saml2mdui.GeolocationHint;
 
@@ -32,8 +35,8 @@ public class GeolocationHintImpl extends XSURIImpl implements GeolocationHint {
      * @param elementLocalName the elementLocalName
      * @param namespacePrefix the namespacePrefix
      */
-    protected GeolocationHintImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected GeolocationHintImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdrpi.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationPolicy;
 import org.opensaml.saml.saml2.metadata.impl.LocalizedURIImpl;
 
@@ -32,8 +35,8 @@ public class RegistrationPolicyImpl extends LocalizedURIImpl implements Registra
      * @param elementLocalName elementLocalName
      * @param namespacePrefix namespacePrefix
      */
-    protected RegistrationPolicyImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RegistrationPolicyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

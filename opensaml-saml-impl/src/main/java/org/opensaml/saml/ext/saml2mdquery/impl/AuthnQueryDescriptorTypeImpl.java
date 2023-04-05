@@ -17,13 +17,18 @@
 
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.saml.ext.saml2mdquery.AuthnQueryDescriptorType;
 import org.opensaml.saml.saml2.metadata.Endpoint;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link AuthnQueryDescriptorType}.
@@ -37,18 +42,19 @@ public class AuthnQueryDescriptorTypeImpl extends QueryDescriptorTypeImpl implem
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnQueryDescriptorTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthnQueryDescriptorTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints() {
-        return new ArrayList<>();
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints() {
+        return CollectionSupport.emptyList();
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints(final QName type) {
-        return null;
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints(@Nonnull final QName type) {
+        return CollectionSupport.emptyList();
     }
+
 }

@@ -28,8 +28,7 @@ import org.opensaml.saml.ext.idpdisco.DiscoveryResponse;
 import org.opensaml.saml.saml2.metadata.impl.IndexedEndpointImpl;
 
 /**
- * This plugs into the standard opensaml2 parser framework to allow us to get use <code> DiscoverResponse </code>
- * elements in our extensions.
+ * Implementation of {@link DiscoveryResponse}.
  */
 public class DiscoveryResponseImpl extends IndexedEndpointImpl implements DiscoveryResponse {
     
@@ -44,4 +43,5 @@ public class DiscoveryResponseImpl extends IndexedEndpointImpl implements Discov
             @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

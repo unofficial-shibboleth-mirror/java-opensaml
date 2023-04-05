@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.ext.saml2mdui.Logo;
 import org.opensaml.saml.saml2.metadata.impl.LocalizedURIImpl;
 
@@ -27,10 +30,10 @@ import org.opensaml.saml.saml2.metadata.impl.LocalizedURIImpl;
 public class LogoImpl extends LocalizedURIImpl implements Logo {
 
     /** X-Dimension of the logo. */
-    private Integer width;
+    @Nullable private Integer width;
 
     /** Y-Dimension of the logo. */
-    private Integer height;
+    @Nullable private Integer height;
 
     /**
      * Constructor.
@@ -39,28 +42,28 @@ public class LogoImpl extends LocalizedURIImpl implements Logo {
      * @param elementLocalName elementLocalName
      * @param namespacePrefix namespacePrefix
      */
-    protected LogoImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected LogoImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-
     /** {@inheritDoc} */
-    public Integer getHeight() {
+    @Nullable public Integer getHeight() {
         return height;
     }
 
     /** {@inheritDoc} */
-    public void setHeight(final Integer newHeight) {
+    public void setHeight(@Nullable final Integer newHeight) {
          height = prepareForAssignment(height, newHeight);
     }
 
     /** {@inheritDoc} */
-    public Integer getWidth() {
+    @Nullable public Integer getWidth() {
         return width;
     }
 
     /** {@inheritDoc} */
-    public void setWidth(final Integer newWidth) {
+    public void setWidth(@Nullable final Integer newWidth) {
         width = prepareForAssignment(width, newWidth);
     }
 
@@ -74,8 +77,8 @@ public class LogoImpl extends LocalizedURIImpl implements Logo {
     @Override
     public int hashCode() {
         int hash = super.hashCode();
-        hash = hash * 31 + height;
-        hash = hash * 31 + width;
+        hash = hash * 31 + (height != null ? height : 0);
+        hash = hash * 31 + (width != null ? width : 0);
         return hash;
     }
 

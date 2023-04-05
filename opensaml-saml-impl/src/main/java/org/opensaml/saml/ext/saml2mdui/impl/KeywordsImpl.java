@@ -17,11 +17,10 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.LangBearing;
@@ -30,15 +29,21 @@ import org.opensaml.saml.ext.saml2mdui.Keywords;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete Implementation of  {@link org.opensaml.saml.ext.saml2mdui.Keywords}.
+ * Concrete implementation of {@link Keywords}.
  */
 public class KeywordsImpl extends AbstractXMLObject implements Keywords {
 
     /** The language. */
-    private String lang;
+    @Nullable private String lang;
+    
     /** The data. */
-    @Nonnull private List<String> data = Collections.emptyList();
+    @Nullable private List<String> data;
+    
     /**
      * Constructor.
      *
@@ -46,35 +51,30 @@ public class KeywordsImpl extends AbstractXMLObject implements Keywords {
      * @param elementLocalName the local name
      * @param namespacePrefix the prefix
      */
-    protected KeywordsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected KeywordsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
-   
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return null;
-    }
-
-    /** {@inheritDoc} */
-    public String getXMLLang() {
+    @Nullable public String getXMLLang() {
         return lang;
     }
 
     /** {@inheritDoc} */
-    public void setXMLLang(final String newLang) {
+    public void setXMLLang(@Nullable final String newLang) {
         final boolean hasValue = newLang != null && !Strings.isNullOrEmpty(newLang);
         lang = prepareForAssignment(lang, newLang);
         manageQualifiedAttributeNamespace(LangBearing.XML_LANG_ATTR_NAME, hasValue);
     }
 
     /** {@inheritDoc} */
-    public List<String> getKeywords() {
+    @Nullable @Live public List<String> getKeywords() {
         return data;
     }
 
     /** {@inheritDoc} */
-    public void setKeywords(final List<String> val) {
+    public void setKeywords(@Nullable final List<String> val) {
         data = prepareForAssignment(data, val);
     }
 
@@ -82,9 +82,11 @@ public class KeywordsImpl extends AbstractXMLObject implements Keywords {
      * {@inheritDoc}
      */
     public int hashCode() {
-        int hash = lang == null ? 12 :lang.hashCode();
-        for (final String s: data) {
-            hash = hash * 31 + s.hashCode();
+        int hash = lang != null ? lang.hashCode() : 12;
+        if (data != null) {
+            for (final String s : data) {
+                hash = hash * 31 + s.hashCode();
+            }
         }
         return hash; 
     }
@@ -96,32 +98,24 @@ public class KeywordsImpl extends AbstractXMLObject implements Keywords {
         }
         final Keywords other = (Keywords) obj;
 
-        if (lang == null) {
-            if (other.getXMLLang() != null) {
-                return false;
-            }
-        } else if (!lang.equals(other.getXMLLang())) {
+        if (lang != null && !lang.equals(other.getXMLLang())) {
+            return false;
+        } else if (other.getXMLLang() != null) {
             return false;
         }
 
-        List<String> otherList = other.getKeywords();
-        if (otherList == null) {
-            otherList = Collections.emptyList();
+        final List<String> ourList = getKeywords();
+        final List<String> otherList = other.getKeywords();
+        if (ourList == null) {
+            return otherList == null;
         }
+        
+        return ourList.equals(otherList);
+    }
 
-        if (otherList.size() != data.size()) {
-            return false;
-        }
-
-        final Iterator<String> me = data.iterator();
-        final Iterator<String> him = otherList.iterator();
-
-        while (me.hasNext()) {
-            if (!me.next().equals(him.next())) {
-                return false;
-            }
-        }
-        return true;
+    /** {@inheritDoc} */
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

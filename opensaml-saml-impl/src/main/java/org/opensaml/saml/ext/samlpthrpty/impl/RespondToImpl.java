@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.ext.samlpthrpty.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.ext.samlpthrpty.RespondTo;
 import org.opensaml.saml.saml2.core.impl.AbstractNameIDType;
 
@@ -32,7 +35,9 @@ public class RespondToImpl extends AbstractNameIDType implements RespondTo {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RespondToImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected RespondToImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

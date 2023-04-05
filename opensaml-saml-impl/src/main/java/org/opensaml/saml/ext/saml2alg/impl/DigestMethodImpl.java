@@ -29,16 +29,20 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.ext.saml2alg.DigestMethod;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Implementation of {@link DigestMethod}.
  */
 public class DigestMethodImpl extends AbstractXMLObject implements DigestMethod {
     
     /** Wildcard child elements. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
 
     /**
      * Constructor.
@@ -66,17 +70,18 @@ public class DigestMethodImpl extends AbstractXMLObject implements DigestMethod 
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         return Collections.unmodifiableList(unknownChildren);
     }
 

@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.ext.saml2alg.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -29,22 +28,27 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.ext.saml2alg.SigningMethod;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Implementation of {@link SigningMethod}.
  */
 public class SigningMethodImpl extends AbstractXMLObject implements SigningMethod {
     
     /** Wildcard child elements. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
     
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** MinKeySize attribute value. */
-    private Integer minKeySize;
+    @Nullable private Integer minKeySize;
 
     /** MaxKeySize attribute value. */
-    private Integer maxKeySize;
+    @Nullable private Integer maxKeySize;
     
     /**
      * Constructor.
@@ -92,18 +96,19 @@ public class SigningMethodImpl extends AbstractXMLObject implements SigningMetho
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownChildren);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
 
 }

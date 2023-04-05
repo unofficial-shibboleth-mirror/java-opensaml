@@ -20,6 +20,9 @@ package org.opensaml.saml.ext.saml2mdattr.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
@@ -30,11 +33,15 @@ import org.opensaml.saml.saml2.core.Attribute;
 
 import com.google.common.base.Predicates;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /** Concrete implementation of {@link EntityAttributes}. */
 public class EntityAttributesImpl extends AbstractXMLObject implements EntityAttributes {
 
     /** Extension data. */
-    private final IndexedXMLObjectChildrenList<SAMLObject> attributeInfo;
+    @Nonnull private final IndexedXMLObjectChildrenList<SAMLObject> attributeInfo;
 
     /**
      * Constructor.
@@ -43,29 +50,31 @@ public class EntityAttributesImpl extends AbstractXMLObject implements EntityAtt
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EntityAttributesImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EntityAttributesImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributeInfo = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Attribute> getAttributes() {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<Attribute> getAttributes() {
         return (List<Attribute>) attributeInfo.subList(Attribute.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<Assertion> getAssertions() {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<Assertion> getAssertions() {
         return (List<Assertion>) attributeInfo.subList(Assertion.DEFAULT_ELEMENT_NAME);
     }
     
     /** {@inheritDoc} */
-    public List<SAMLObject> getEntityAttributesChildren() {
+    @Nonnull @Live public List<SAMLObject> getEntityAttributesChildren() {
         return attributeInfo;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
 
         if (attributeInfo.size() == 0) {
             return null;
@@ -76,4 +85,5 @@ public class EntityAttributesImpl extends AbstractXMLObject implements EntityAtt
                 .filter(Predicates.or(Assertion.class::isInstance, Attribute.class::isInstance))
                 .collect(Collectors.toUnmodifiableList());
     }
+
 }

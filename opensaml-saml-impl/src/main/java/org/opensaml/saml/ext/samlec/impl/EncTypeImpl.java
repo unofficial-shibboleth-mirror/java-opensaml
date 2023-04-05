@@ -18,6 +18,10 @@
 package org.opensaml.saml.ext.samlec.impl;
 
 import org.opensaml.saml.ext.samlec.EncType;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 
 /**
@@ -32,7 +36,9 @@ public class EncTypeImpl extends XSStringImpl implements EncType {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EncTypeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected EncTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

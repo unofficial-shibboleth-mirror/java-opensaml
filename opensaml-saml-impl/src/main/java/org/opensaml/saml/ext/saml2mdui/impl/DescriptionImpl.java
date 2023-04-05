@@ -17,11 +17,14 @@
 
 package org.opensaml.saml.ext.saml2mdui.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.ext.saml2mdui.Description;
 import org.opensaml.saml.saml2.metadata.impl.LocalizedNameImpl;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.ext.saml2mdui.Description}.
+ * Concrete implementation of {@link Description}.
  */
 public class DescriptionImpl extends LocalizedNameImpl implements Description {
 
@@ -32,7 +35,8 @@ public class DescriptionImpl extends LocalizedNameImpl implements Description {
      * @param elementLocalName the elementLocalName
      * @param namespacePrefix the namespacePrefix
      */
-    protected DescriptionImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected DescriptionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
