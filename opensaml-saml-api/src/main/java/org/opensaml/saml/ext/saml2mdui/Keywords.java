@@ -28,6 +28,8 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * DisplayName.
@@ -60,7 +62,7 @@ public interface Keywords extends SAMLObject, LangBearing  {
      * 
      * @return the keywords
      */
-    @Nullable List<String> getKeywords();
+    @Nullable @NotLive @Unmodifiable List<String> getKeywords();
     
     /**
      * Sets the keywords.

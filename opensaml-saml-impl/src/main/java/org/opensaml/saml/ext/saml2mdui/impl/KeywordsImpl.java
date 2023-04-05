@@ -29,9 +29,9 @@ import org.opensaml.saml.ext.saml2mdui.Keywords;
 
 import com.google.common.base.Strings;
 
-import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link Keywords}.
@@ -69,13 +69,17 @@ public class KeywordsImpl extends AbstractXMLObject implements Keywords {
     }
 
     /** {@inheritDoc} */
-    @Nullable @Live public List<String> getKeywords() {
+    @Nullable @NotLive @Unmodifiable public List<String> getKeywords() {
         return data;
     }
 
     /** {@inheritDoc} */
     public void setKeywords(@Nullable final List<String> val) {
-        data = prepareForAssignment(data, val);
+        if (val != null) {
+            data = prepareForAssignment(data, CollectionSupport.copyToList(val));
+        } else {
+            data = prepareForAssignment(data, null);
+        }
     }
 
     /**
