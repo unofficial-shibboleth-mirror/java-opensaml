@@ -100,7 +100,7 @@ public class KeywordsImpl extends AbstractXMLObject implements Keywords {
 
         if (lang != null && !lang.equals(other.getXMLLang())) {
             return false;
-        } else if (other.getXMLLang() != null) {
+        } else if (lang == null && other.getXMLLang() != null) {
             return false;
         }
 
