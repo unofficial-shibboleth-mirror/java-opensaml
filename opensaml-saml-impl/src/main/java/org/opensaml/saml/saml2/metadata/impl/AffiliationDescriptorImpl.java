@@ -26,6 +26,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -34,37 +37,41 @@ import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.AffiliateMember;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
+import org.opensaml.xmlsec.signature.Signature;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AffiliationDescriptor}.
+ * Concrete implementation of {@link AffiliationDescriptor}.
  */
 public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implements AffiliationDescriptor {
 
     /** ID of the owner of this affiliation. */
-    private String ownerID;
+    @Nullable private String ownerID;
     
     /** ID attribute. */
-    private String id;
+    @Nullable private String id;
 
     /** validUntil attribute. */
-    private Instant validUntil;
+    @Nullable private Instant validUntil;
 
     /** cacheDurection attribute. */
-    private Duration cacheDuration;
+    @Nullable private Duration cacheDuration;
 
     /** Extensions child. */
-    private Extensions extensions;
+    @Nullable private Extensions extensions;
     
     /** "anyAttribute" attributes. */
-    private final AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /** Members of this affiliation. */
-    private final XMLObjectChildrenList<AffiliateMember> members;
+    @Nonnull private final XMLObjectChildrenList<AffiliateMember> members;
 
     /** Key descriptors for this role. */
-    private final XMLObjectChildrenList<KeyDescriptor> keyDescriptors;
+    @Nonnull private final XMLObjectChildrenList<KeyDescriptor> keyDescriptors;
 
     /**
      * Constructor.
@@ -73,8 +80,8 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
      * @param elementLocalName localname
      * @param namespacePrefix prefix
      */
-    protected AffiliationDescriptorImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AffiliationDescriptorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         members = new XMLObjectChildrenList<>(this);
@@ -82,12 +89,12 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
 
     /** {@inheritDoc} */
-    public String getOwnerID() {
+    @Nullable public String getOwnerID() {
         return ownerID;
     }
 
     /** {@inheritDoc} */
-    public void setOwnerID(final String newOwnerID) {
+    public void setOwnerID(@Nullable final String newOwnerID) {
         if (newOwnerID != null && newOwnerID.length() > 1024) {
             throw new IllegalArgumentException("Owner ID can not exceed 1024 characters in length");
         }
@@ -95,12 +102,12 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
     
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
     
     /** {@inheritDoc} */
-    public void setID(final String newID) {
+    public void setID(@Nullable final String newID) {
         final String oldID = id;
         this.id = prepareForAssignment(id, newID);
         registerOwnID(oldID, id);
@@ -116,71 +123,71 @@ public class AffiliationDescriptorImpl extends AbstractSignableSAMLObject implem
     }
 
     /** {@inheritDoc} */
-    public Instant getValidUntil() {
+    @Nullable public Instant getValidUntil() {
         return validUntil;
     }
 
     /** {@inheritDoc} */
-    public void setValidUntil(final Instant theValidUntil) {
+    public void setValidUntil(@Nullable final Instant theValidUntil) {
         validUntil = prepareForAssignment(validUntil, theValidUntil);
     }
 
     /** {@inheritDoc} */
-    public Duration getCacheDuration() {
+    @Nullable public Duration getCacheDuration() {
         return cacheDuration;
     }
 
     /** {@inheritDoc} */
-    public void setCacheDuration(final Duration duration) {
+    public void setCacheDuration(@Nullable final Duration duration) {
         cacheDuration = prepareForAssignment(cacheDuration, duration);
     }
 
     /** {@inheritDoc} */
-    public Extensions getExtensions() {
+    @Nullable public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(final Extensions theExtensions) {
+    public void setExtensions(@Nullable final Extensions theExtensions) {
         extensions = prepareForAssignment(extensions, theExtensions);
     }
 
     /** {@inheritDoc} */
-    public List<AffiliateMember> getMembers() {
+    @Nonnull @Live public List<AffiliateMember> getMembers() {
         return members;
     }
 
     /** {@inheritDoc} */
-    public List<KeyDescriptor> getKeyDescriptors() {
+    @Nonnull @Live public List<KeyDescriptor> getKeyDescriptors() {
         return keyDescriptors;
     }
     
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
     
     /** {@inheritDoc} */
     @Override
-    public String getSignatureReferenceID(){
+    @Nullable public String getSignatureReferenceID() {
         return id;
     }
 
     /** {@inheritDoc} */
     @Override
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if(getSignature() != null){
-            children.add(getSignature());
+        final Signature sig = getSignature();
+        if (sig != null) {
+            children.add(sig);
         }
         
-        if (getExtensions() != null) {
-            children.add(getExtensions());
+        if (extensions != null) {
+            children.add(extensions);
         }
 
         children.addAll(getMembers());
-
         children.addAll(getKeyDescriptors());
 
         return CollectionSupport.copyToList(children);

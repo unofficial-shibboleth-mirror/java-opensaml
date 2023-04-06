@@ -23,12 +23,18 @@ package org.opensaml.saml.saml2.ecp.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.ecp.RequestAuthenticated;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 
 /**
@@ -37,10 +43,10 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public class RequestAuthenticatedImpl extends AbstractXMLObject implements RequestAuthenticated {
 
     /** soap11:actor attribute. */
-    private String soap11Actor;
+    @Nullable private String soap11Actor;
     
     /** soap11:mustUnderstand. */
-    private XSBooleanValue soap11MustUnderstand;
+    @Nullable private XSBooleanValue soap11MustUnderstand;
     
     /**
      * Constructor.
@@ -49,13 +55,13 @@ public class RequestAuthenticatedImpl extends AbstractXMLObject implements Reque
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RequestAuthenticatedImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RequestAuthenticatedImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Boolean isSOAP11MustUnderstand() {
+    @Nullable public Boolean isSOAP11MustUnderstand() {
         if (soap11MustUnderstand != null) {
             return soap11MustUnderstand.getValue();
         }
@@ -63,12 +69,12 @@ public class RequestAuthenticatedImpl extends AbstractXMLObject implements Reque
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
+    @Nullable public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
         return soap11MustUnderstand;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final Boolean newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final Boolean newMustUnderstand) {
         if (newMustUnderstand != null) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, 
                     new XSBooleanValue(newMustUnderstand, true));
@@ -80,26 +86,27 @@ public class RequestAuthenticatedImpl extends AbstractXMLObject implements Reque
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final XSBooleanValue newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final XSBooleanValue newMustUnderstand) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, newMustUnderstand);
             manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     soap11MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
-    public String getSOAP11Actor() {
+    @Nullable public String getSOAP11Actor() {
         return soap11Actor;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11Actor(final String newActor) {
+    public void setSOAP11Actor(@Nullable final String newActor) {
         soap11Actor = prepareForAssignment(soap11Actor, newActor);
         manageQualifiedAttributeNamespace(ActorBearing.SOAP11_ACTOR_ATTR_NAME, soap11Actor != null);
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
+    
 }

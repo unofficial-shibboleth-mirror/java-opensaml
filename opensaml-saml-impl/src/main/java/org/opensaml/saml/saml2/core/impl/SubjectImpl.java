@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -30,22 +32,27 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.Subject}.
+ * Concrete implementation of {@link Subject}.
  */
 public class SubjectImpl extends AbstractXMLObject implements Subject {
 
     /** BaseID child element. */
-    private BaseID baseID;
+    @Nullable private BaseID baseID;
 
     /** NameID child element. */
-    private NameID nameID;
+    @Nullable private NameID nameID;
 
     /** EncryptedID child element. */
-    private EncryptedID encryptedID;
+    @Nullable private EncryptedID encryptedID;
 
     /** Subject Confirmations of the Subject. */
-    private final XMLObjectChildrenList<SubjectConfirmation> subjectConfirmations;
+    @Nonnull private final XMLObjectChildrenList<SubjectConfirmation> subjectConfirmations;
 
     /**
      * Constructor.
@@ -54,48 +61,49 @@ public class SubjectImpl extends AbstractXMLObject implements Subject {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected SubjectImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         subjectConfirmations = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public BaseID getBaseID() {
+    @Nullable public BaseID getBaseID() {
         return baseID;
     }
 
     /** {@inheritDoc} */
-    public void setBaseID(final BaseID newBaseID) {
+    public void setBaseID(@Nullable final BaseID newBaseID) {
         baseID = prepareForAssignment(baseID, newBaseID);
     }
 
     /** {@inheritDoc} */
-    public NameID getNameID() {
+    @Nullable public NameID getNameID() {
         return nameID;
     }
 
     /** {@inheritDoc} */
-    public void setNameID(final NameID newNameID) {
+    public void setNameID(@Nullable final NameID newNameID) {
         nameID = prepareForAssignment(nameID, newNameID);
     }
 
     /** {@inheritDoc} */
-    public EncryptedID getEncryptedID() {
+    @Nullable public EncryptedID getEncryptedID() {
         return this.encryptedID;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptedID(final EncryptedID newEncryptedID) {
+    public void setEncryptedID(@Nullable final EncryptedID newEncryptedID) {
         this.encryptedID = prepareForAssignment(this.encryptedID, newEncryptedID);
     }
 
     /** {@inheritDoc} */
-    public List<SubjectConfirmation> getSubjectConfirmations() {
+    @Nonnull @Live public List<SubjectConfirmation> getSubjectConfirmations() {
         return subjectConfirmations;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (baseID != null) {
@@ -112,6 +120,7 @@ public class SubjectImpl extends AbstractXMLObject implements Subject {
 
         children.addAll(subjectConfirmations);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

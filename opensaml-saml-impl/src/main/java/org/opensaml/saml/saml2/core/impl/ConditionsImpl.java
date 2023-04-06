@@ -22,10 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -38,19 +38,25 @@ import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.OneTimeUse;
 import org.opensaml.saml.saml2.core.ProxyRestriction;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.Conditions}.
+ * Concrete implementation of {@link Conditions}.
  */
+@SuppressWarnings("unchecked")
 public class ConditionsImpl extends AbstractXMLObject implements Conditions {
 
     /** A Condition. */
-    private final IndexedXMLObjectChildrenList<Condition> conditions;
+    @Nonnull private final IndexedXMLObjectChildrenList<Condition> conditions;
 
     /** Not Before conditions. */
-    private Instant notBefore;
+    @Nullable private Instant notBefore;
 
     /** Not On Or After conditions. */
-    private Instant notOnOrAfter;
+    @Nullable private Instant notOnOrAfter;
 
     /**
      * Constructor.
@@ -59,30 +65,31 @@ public class ConditionsImpl extends AbstractXMLObject implements Conditions {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ConditionsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ConditionsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         conditions = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Condition> getConditions() {
+    @Nonnull @Live public List<Condition> getConditions() {
         return conditions;
     }
 
     /** {@inheritDoc} */
-    public List<Condition> getConditions(QName typeOrName) {
+    @Nonnull @Live public List<Condition> getConditions(@Nonnull final QName typeOrName) {
         return (List<Condition>) conditions.subList(typeOrName);
     }
     
     /** {@inheritDoc} */
-    public List<AudienceRestriction> getAudienceRestrictions() {
+    @Nonnull @Live public List<AudienceRestriction> getAudienceRestrictions() {
         final QName conditionQName = new QName(SAMLConstants.SAML20_NS, AudienceRestriction.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
         return (List<AudienceRestriction>) conditions.subList(conditionQName);
     }
 
     /** {@inheritDoc} */
-    public OneTimeUse getOneTimeUse() {
+    @Nullable public OneTimeUse getOneTimeUse() {
         final QName conditionQName = new QName(SAMLConstants.SAML20_NS, OneTimeUse.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
         final List<OneTimeUse> list = (List<OneTimeUse>) conditions.subList(conditionQName);
@@ -94,7 +101,7 @@ public class ConditionsImpl extends AbstractXMLObject implements Conditions {
     }
 
     /** {@inheritDoc} */
-    public ProxyRestriction getProxyRestriction() {
+    @Nullable public ProxyRestriction getProxyRestriction() {
         final QName conditionQName = new QName(SAMLConstants.SAML20_NS, ProxyRestriction.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
         final List<ProxyRestriction> list = (List<ProxyRestriction>) conditions.subList(conditionQName);
@@ -106,32 +113,28 @@ public class ConditionsImpl extends AbstractXMLObject implements Conditions {
     }
 
     /** {@inheritDoc} */
-    public Instant getNotBefore() {
+    @Nullable public Instant getNotBefore() {
         return notBefore;
     }
 
     /** {@inheritDoc} */
-    public void setNotBefore(final Instant newNotBefore) {
+    public void setNotBefore(@Nullable final Instant newNotBefore) {
         this.notBefore = prepareForAssignment(this.notBefore, newNotBefore);
     }
 
     /** {@inheritDoc} */
-    public Instant getNotOnOrAfter() {
+    @Nullable public Instant getNotOnOrAfter() {
         return notOnOrAfter;
     }
 
     /** {@inheritDoc} */
-    public void setNotOnOrAfter(final Instant newNotOnOrAfter) {
+    public void setNotOnOrAfter(@Nullable final Instant newNotOnOrAfter) {
         this.notOnOrAfter = prepareForAssignment(this.notOnOrAfter, newNotOnOrAfter);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.addAll(conditions);
-
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(conditions);
     }
 
 }

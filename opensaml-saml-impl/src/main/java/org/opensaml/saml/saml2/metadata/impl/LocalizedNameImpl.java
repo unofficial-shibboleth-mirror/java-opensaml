@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.LangBearing;
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.metadata.LocalizedName;
@@ -24,12 +27,12 @@ import org.opensaml.saml.saml2.metadata.LocalizedName;
 import com.google.common.base.Strings;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.LocalizedName}.
+ * Concrete implementation of {@link LocalizedName}.
  */
 public class LocalizedNameImpl extends XSStringImpl implements LocalizedName {
 
     /** Language. */
-    private String language;
+    @Nullable private String language;
 
     /**
      * Constructor.
@@ -38,29 +41,29 @@ public class LocalizedNameImpl extends XSStringImpl implements LocalizedName {
      * @param elementLocalName the elementLocalName
      * @param namespacePrefix the namespacePrefix
      */
-    protected LocalizedNameImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected LocalizedNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getXMLLang() {
+    @Nullable public String getXMLLang() {
         return language;
     }
 
     /** {@inheritDoc} */
-    public void setXMLLang(final String newLang) {
+    public void setXMLLang(@Nullable final String newLang) {
         final boolean hasValue = newLang != null && !Strings.isNullOrEmpty(newLang);
         language = prepareForAssignment(language, newLang);
         manageQualifiedAttributeNamespace(LangBearing.XML_LANG_ATTR_NAME, hasValue);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
+    @Override
     public int hashCode() {
         int hash = super.hashCode();
-        hash = hash * 31 + language.hashCode();
+        hash = hash * 31 + (language != null ? language.hashCode() : 0);
         return hash;
     }
+
 }

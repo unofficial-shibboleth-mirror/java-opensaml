@@ -21,10 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.metadata.ServiceName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ServiceName}.
+ * Concrete implementation of {@link ServiceName}.
  */
 public class ServiceNameImpl extends LocalizedNameImpl implements ServiceName {
 
@@ -35,7 +38,8 @@ public class ServiceNameImpl extends LocalizedNameImpl implements ServiceName {
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected ServiceNameImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ServiceNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

@@ -15,16 +15,14 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-
 package org.opensaml.saml.saml2.core.impl;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.AbstractSignableSAMLObject;
@@ -33,38 +31,43 @@ import org.opensaml.saml.saml2.core.Extensions;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusResponseType;
+import org.opensaml.xmlsec.signature.Signature;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.StatusResponseType}.
+ * Concrete implementation of {@link StatusResponseType}.
  */
 public abstract class StatusResponseTypeImpl extends AbstractSignableSAMLObject implements StatusResponseType {
 
     /** SAML Version attribute. */
-    private SAMLVersion version;
+    @Nullable private SAMLVersion version;
     
     /** ID attribute. */
-    private String id;
+    @Nullable private String id;
 
     /** InResponseTo attribute. */
-    private String inResponseTo;
+    @Nullable private String inResponseTo;
 
     /** IssueInstant attribute. */
-    private Instant issueInstant;
+    @Nullable private Instant issueInstant;
 
     /** Destination attribute. */
-    private String destination;
+    @Nullable private String destination;
 
     /** Consent attribute. */
-    private String consent;
+    @Nullable private String consent;
 
     /** Issuer child element. */
-    private Issuer issuer;
+    @Nullable private Issuer issuer;
 
     /** Extensions child element. */
-    private Extensions extensions;
+    @Nullable private Extensions extensions;
 
     /** Status child element. */
-    private Status status;
+    @Nullable private Status status;
 
     /**
      * Constructor.
@@ -73,126 +76,131 @@ public abstract class StatusResponseTypeImpl extends AbstractSignableSAMLObject 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected StatusResponseTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected StatusResponseTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         version = SAMLVersion.VERSION_20;
     }
 
     /** {@inheritDoc} */
-    public SAMLVersion getVersion() {
+    @Nullable public SAMLVersion getVersion() {
         return version;
     }
 
     /** {@inheritDoc} */
-    public void setVersion(final SAMLVersion newVersion) {
+    public void setVersion(@Nullable final SAMLVersion newVersion) {
         version = prepareForAssignment(version, newVersion);
     }
     
     /** {@inheritDoc} */
-    public String getID() {
-        return this.id;
-    }
-
-    /** {@inheritDoc} */
-    public void setID(final String newID) {
-        final String oldID = this.id;
-        this.id = prepareForAssignment(this.id, newID);
-        registerOwnID(oldID, this.id);
-    }
-
-    /** {@inheritDoc} */
-    public String getInResponseTo() {
-        return this.inResponseTo;
-    }
-
-    /** {@inheritDoc} */
-    public void setInResponseTo(final String newInResponseTo) {
-        this.inResponseTo = prepareForAssignment(this.inResponseTo, newInResponseTo);
-    }
-
-    /** {@inheritDoc} */
-    public Instant getIssueInstant() {
-        return issueInstant;
-    }
-
-    /** {@inheritDoc} */
-    public void setIssueInstant(final Instant newIssueInstant) {
-        issueInstant = prepareForAssignment(issueInstant, newIssueInstant);
-    }
-
-    /** {@inheritDoc} */
-    public String getDestination() {
-        return this.destination;
-    }
-
-    /** {@inheritDoc} */
-    public void setDestination(final String newDestination) {
-        this.destination = prepareForAssignment(this.destination, newDestination);
-    }
-
-    /** {@inheritDoc} */
-    public String getConsent() {
-        return this.consent;
-    }
-
-    /** {@inheritDoc} */
-    public void setConsent(final String newConsent) {
-        this.consent = prepareForAssignment(this.consent, newConsent);
-    }
-
-    /** {@inheritDoc} */
-    public Issuer getIssuer() {
-        return this.issuer;
-    }
-
-    /** {@inheritDoc} */
-    public void setIssuer(final Issuer newIssuer) {
-        this.issuer = prepareForAssignment(this.issuer, newIssuer);
-    }
-
-    /** {@inheritDoc} */
-    public Extensions getExtensions() {
-        return this.extensions;
-    }
-
-    /** {@inheritDoc} */
-    public void setExtensions(final Extensions newExtensions) {
-        this.extensions = prepareForAssignment(this.extensions, newExtensions);
-    }
-
-    /** {@inheritDoc} */
-    public Status getStatus() {
-        return this.status;
-    }
-
-    /** {@inheritDoc} */
-    public void setStatus(final Status newStatus) {
-        this.status = prepareForAssignment(this.status, newStatus);
-    }
-    
-    /** {@inheritDoc} */
-    public String getSignatureReferenceID(){
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    public void setID(@Nullable final String newID) {
+        final String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public String getInResponseTo() {
+        return inResponseTo;
+    }
+
+    /** {@inheritDoc} */
+    public void setInResponseTo(@Nullable final String newInResponseTo) {
+        inResponseTo = prepareForAssignment(inResponseTo, newInResponseTo);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Instant getIssueInstant() {
+        return issueInstant;
+    }
+
+    /** {@inheritDoc} */
+    public void setIssueInstant(@Nullable final Instant newIssueInstant) {
+        issueInstant = prepareForAssignment(issueInstant, newIssueInstant);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public String getDestination() {
+        return destination;
+    }
+
+    /** {@inheritDoc} */
+    public void setDestination(@Nullable final String newDestination) {
+        destination = prepareForAssignment(destination, newDestination);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public String getConsent() {
+        return consent;
+    }
+
+    /** {@inheritDoc} */
+    public void setConsent(@Nullable final String newConsent) {
+        consent = prepareForAssignment(consent, newConsent);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Issuer getIssuer() {
+        return issuer;
+    }
+
+    /** {@inheritDoc} */
+    public void setIssuer(@Nullable final Issuer newIssuer) {
+        issuer = prepareForAssignment(issuer, newIssuer);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Extensions getExtensions() {
+        return extensions;
+    }
+
+    /** {@inheritDoc} */
+    public void setExtensions(@Nullable final Extensions newExtensions) {
+        extensions = prepareForAssignment(extensions, newExtensions);
+    }
+
+    /** {@inheritDoc} */
+    @Nullable public Status getStatus() {
+        return status;
+    }
+
+    /** {@inheritDoc} */
+    public void setStatus(@Nullable final Status newStatus) {
+        status = prepareForAssignment(status, newStatus);
+    }
+    
+    /** {@inheritDoc} */
+    @Nullable public String getSignatureReferenceID(){
+        return id;
+    }
+
+    /** {@inheritDoc} */
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (issuer != null){
+        if (issuer != null) {
             children.add(issuer);
         }
-        if(getSignature() != null){
-            children.add(getSignature());
+        
+        final Signature sig = getSignature();
+        if (sig != null) {
+            children.add(sig);
         }
-        if (extensions != null){
+        
+        if (extensions != null) {
             children.add(extensions);
         }
-        if (status != null){
+        
+        if (status != null) {
             children.add(status);
         }
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

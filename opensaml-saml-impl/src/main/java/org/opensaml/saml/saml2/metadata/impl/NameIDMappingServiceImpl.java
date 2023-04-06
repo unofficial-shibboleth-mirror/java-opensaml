@@ -21,10 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.metadata.NameIDMappingService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.NameIDMappingService}.
+ * Concrete implementation of {@link NameIDMappingService}.
  */
 public class NameIDMappingServiceImpl extends EndpointImpl implements NameIDMappingService {
 
@@ -36,8 +39,9 @@ public class NameIDMappingServiceImpl extends EndpointImpl implements NameIDMapp
      * @param namespacePrefix the prefix for the given namespace
 
      */
-    protected NameIDMappingServiceImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected NameIDMappingServiceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

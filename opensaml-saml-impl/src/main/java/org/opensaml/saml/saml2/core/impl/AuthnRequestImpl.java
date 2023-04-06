@@ -22,8 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
@@ -34,46 +36,50 @@ import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 import org.opensaml.saml.saml2.core.Scoping;
 import org.opensaml.saml.saml2.core.Subject;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthnRequest}.
+ * A concrete implementation of {@link AuthnRequest}.
  */
 public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRequest {
 
     /** Subject child element. */
-    private Subject subject;
+    @Nullable private Subject subject;
 
     /** NameIDPolicy child element. */
-    private NameIDPolicy nameIDPolicy;
+    @Nullable private NameIDPolicy nameIDPolicy;
 
     /** Conditions child element. */
-    private Conditions conditions;
+    @Nullable private Conditions conditions;
 
     /** RequestedAuthnContext child element. */
-    private RequestedAuthnContext requestedAuthnContext;
+    @Nullable private RequestedAuthnContext requestedAuthnContext;
 
     /** Scoping child element. */
-    private Scoping scoping;
+    @Nullable private Scoping scoping;
 
     /** ForeceAuthn attribute. */
-    private XSBooleanValue forceAuthn;
+    @Nullable private XSBooleanValue forceAuthn;
 
     /** IsPassive attribute. */
-    private XSBooleanValue isPassive;
+    @Nullable private XSBooleanValue isPassive;
 
     /** ProtocolBinding attribute. */
-    private String protocolBinding;
+    @Nullable private String protocolBinding;
 
     /** AssertionConsumerServiceIndex attribute. */
-    private Integer assertionConsumerServiceIndex;
+    @Nullable private Integer assertionConsumerServiceIndex;
 
     /** AssertionConsumerServiceURL attribute. */
-    private String assertionConsumerServiceURL;
+    @Nullable private String assertionConsumerServiceURL;
 
     /** AttributeConsumingServiceIndex attribute. */
-    private Integer attributeConsumingServiceIndex;
+    @Nullable private Integer attributeConsumingServiceIndex;
 
     /** ProviderName attribute. */
-    private String providerName;
+    @Nullable private String providerName;
 
     /**
      * Constructor.
@@ -82,12 +88,13 @@ public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRe
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnRequestImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AuthnRequestImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Boolean isForceAuthn() {
+    @Nullable public Boolean isForceAuthn() {
         if (forceAuthn != null) {
             return forceAuthn.getValue();
         }
@@ -96,12 +103,12 @@ public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRe
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isForceAuthnXSBoolean() {
+    @Nullable public XSBooleanValue isForceAuthnXSBoolean() {
         return forceAuthn;
     }
 
     /** {@inheritDoc} */
-    public void setForceAuthn(final Boolean newForceAuth) {
+    public void setForceAuthn(@Nullable final Boolean newForceAuth) {
         if (newForceAuth != null) {
             forceAuthn = prepareForAssignment(forceAuthn, new XSBooleanValue(newForceAuth, false));
         } else {
@@ -110,12 +117,12 @@ public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRe
     }
 
     /** {@inheritDoc} */
-    public void setForceAuthn(final XSBooleanValue newForceAuthn) {
-        forceAuthn = prepareForAssignment(this.forceAuthn, newForceAuthn);
+    public void setForceAuthn(@Nullable final XSBooleanValue newForceAuthn) {
+        forceAuthn = prepareForAssignment(forceAuthn, newForceAuthn);
     }
 
     /** {@inheritDoc} */
-    public Boolean isPassive() {
+    @Nullable public Boolean isPassive() {
         if (isPassive != null) {
             return isPassive.getValue();
         }
@@ -124,12 +131,12 @@ public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRe
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isPassiveXSBoolean() {
+    @Nullable public XSBooleanValue isPassiveXSBoolean() {
         return isPassive;
     }
 
     /** {@inheritDoc} */
-    public void setIsPassive(final Boolean newIsPassive) {
+    public void setIsPassive(@Nullable final Boolean newIsPassive) {
         if (newIsPassive != null) {
             isPassive = prepareForAssignment(isPassive, new XSBooleanValue(newIsPassive, false));
         } else {
@@ -138,119 +145,121 @@ public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRe
     }
 
     /** {@inheritDoc} */
-    public void setIsPassive(final XSBooleanValue newIsPassive) {
-        this.isPassive = prepareForAssignment(this.isPassive, newIsPassive);
+    public void setIsPassive(@Nullable final XSBooleanValue newIsPassive) {
+        isPassive = prepareForAssignment(isPassive, newIsPassive);
     }
 
     /** {@inheritDoc} */
-    public String getProtocolBinding() {
-        return this.protocolBinding;
+    @Nullable public String getProtocolBinding() {
+        return protocolBinding;
     }
 
     /** {@inheritDoc} */
-    public void setProtocolBinding(final String newProtocolBinding) {
-        this.protocolBinding = prepareForAssignment(this.protocolBinding, newProtocolBinding);
+    public void setProtocolBinding(@Nullable final String newProtocolBinding) {
+        protocolBinding = prepareForAssignment(protocolBinding, newProtocolBinding);
     }
 
     /** {@inheritDoc} */
-    public Integer getAssertionConsumerServiceIndex() {
+    @Nullable public Integer getAssertionConsumerServiceIndex() {
         return assertionConsumerServiceIndex;
     }
 
     /** {@inheritDoc} */
-    public void setAssertionConsumerServiceIndex(final Integer newAssertionConsumerServiceIndex) {
-        this.assertionConsumerServiceIndex = prepareForAssignment(this.assertionConsumerServiceIndex,
+    public void setAssertionConsumerServiceIndex(@Nullable final Integer newAssertionConsumerServiceIndex) {
+        assertionConsumerServiceIndex = prepareForAssignment(assertionConsumerServiceIndex,
                 newAssertionConsumerServiceIndex);
     }
 
     /** {@inheritDoc} */
-    public String getAssertionConsumerServiceURL() {
-        return this.assertionConsumerServiceURL;
+    @Nullable public String getAssertionConsumerServiceURL() {
+        return assertionConsumerServiceURL;
     }
 
     /** {@inheritDoc} */
-    public void setAssertionConsumerServiceURL(final String newAssertionConsumerServiceURL) {
-        this.assertionConsumerServiceURL = prepareForAssignment(this.assertionConsumerServiceURL,
+    public void setAssertionConsumerServiceURL(@Nullable final String newAssertionConsumerServiceURL) {
+        assertionConsumerServiceURL = prepareForAssignment(assertionConsumerServiceURL,
                 newAssertionConsumerServiceURL);
     }
 
     /** {@inheritDoc} */
-    public Integer getAttributeConsumingServiceIndex() {
-        return this.attributeConsumingServiceIndex;
+    @Nullable public Integer getAttributeConsumingServiceIndex() {
+        return attributeConsumingServiceIndex;
     }
 
     /** {@inheritDoc} */
-    public void setAttributeConsumingServiceIndex(final Integer newAttributeConsumingServiceIndex) {
-        this.attributeConsumingServiceIndex = prepareForAssignment(this.attributeConsumingServiceIndex,
+    public void setAttributeConsumingServiceIndex(@Nullable final Integer newAttributeConsumingServiceIndex) {
+        attributeConsumingServiceIndex = prepareForAssignment(attributeConsumingServiceIndex,
                 newAttributeConsumingServiceIndex);
     }
 
     /** {@inheritDoc} */
-    public String getProviderName() {
-        return this.providerName;
+    @Nullable public String getProviderName() {
+        return providerName;
     }
 
     /** {@inheritDoc} */
-    public void setProviderName(final String newProviderName) {
-        this.providerName = prepareForAssignment(this.providerName, newProviderName);
+    public void setProviderName(@Nullable final String newProviderName) {
+        providerName = prepareForAssignment(providerName, newProviderName);
     }
 
     /** {@inheritDoc} */
-    public Subject getSubject() {
-        return this.subject;
+    @Nullable public Subject getSubject() {
+        return subject;
     }
 
     /** {@inheritDoc} */
-    public void setSubject(final Subject newSubject) {
-        this.subject = prepareForAssignment(this.subject, newSubject);
+    public void setSubject(@Nullable final Subject newSubject) {
+        subject = prepareForAssignment(subject, newSubject);
     }
 
     /** {@inheritDoc} */
-    public NameIDPolicy getNameIDPolicy() {
-        return this.nameIDPolicy;
+    @Nullable public NameIDPolicy getNameIDPolicy() {
+        return nameIDPolicy;
     }
 
     /** {@inheritDoc} */
-    public void setNameIDPolicy(final NameIDPolicy newNameIDPolicy) {
-        this.nameIDPolicy = prepareForAssignment(this.nameIDPolicy, newNameIDPolicy);
+    public void setNameIDPolicy(@Nullable final NameIDPolicy newNameIDPolicy) {
+        nameIDPolicy = prepareForAssignment(nameIDPolicy, newNameIDPolicy);
     }
 
     /** {@inheritDoc} */
-    public Conditions getConditions() {
-        return this.conditions;
+    @Nullable  public Conditions getConditions() {
+        return conditions;
     }
 
     /** {@inheritDoc} */
-    public void setConditions(final Conditions newConditions) {
-        this.conditions = prepareForAssignment(this.conditions, newConditions);
+    public void setConditions(@Nullable final Conditions newConditions) {
+        conditions = prepareForAssignment(conditions, newConditions);
     }
 
     /** {@inheritDoc} */
-    public RequestedAuthnContext getRequestedAuthnContext() {
-        return this.requestedAuthnContext;
+    @Nullable public RequestedAuthnContext getRequestedAuthnContext() {
+        return requestedAuthnContext;
     }
 
     /** {@inheritDoc} */
-    public void setRequestedAuthnContext(final RequestedAuthnContext newRequestedAuthnContext) {
-        this.requestedAuthnContext = prepareForAssignment(this.requestedAuthnContext, newRequestedAuthnContext);
+    public void setRequestedAuthnContext(@Nullable final RequestedAuthnContext newRequestedAuthnContext) {
+        requestedAuthnContext = prepareForAssignment(requestedAuthnContext, newRequestedAuthnContext);
     }
 
     /** {@inheritDoc} */
-    public Scoping getScoping() {
-        return this.scoping;
+    @Nullable public Scoping getScoping() {
+        return scoping;
     }
 
     /** {@inheritDoc} */
-    public void setScoping(final Scoping newScoping) {
-        this.scoping = prepareForAssignment(this.scoping, newScoping);
+    public void setScoping(@Nullable final Scoping newScoping) {
+        scoping = prepareForAssignment(scoping, newScoping);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
 
         if (subject != null) {
@@ -273,10 +282,7 @@ public class AuthnRequestImpl extends RequestAbstractTypeImpl implements AuthnRe
             children.add(scoping);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

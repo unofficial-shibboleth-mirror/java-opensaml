@@ -54,7 +54,7 @@ public class ResponseTest extends XMLObjectBaseTestCase {
         try {
             InputStream in = ResponseTest.class.getResourceAsStream(fullResponsePath);
             Document responseDoc = parserPool.parse(in);
-            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
                     responseDoc.getDocumentElement());
 
             Response response = (Response) unmarshaller.unmarshall(responseDoc.getDocumentElement());

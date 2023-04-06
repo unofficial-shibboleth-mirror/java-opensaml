@@ -21,24 +21,29 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.StatusCode;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.StatusCode}.
+ * Concrete implementation of {@link StatusCode}.
  */
 public class StatusCodeImpl extends AbstractXMLObject implements StatusCode {
 
     /** Value attribute URI. */
-    private String value;
+    @Nullable private String value;
 
     /** Nested secondary StatusCode child element. */
-    private StatusCode childStatusCode;
+    @Nullable private StatusCode childStatusCode;
 
     /**
      * Constructor.
@@ -47,38 +52,39 @@ public class StatusCodeImpl extends AbstractXMLObject implements StatusCode {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected StatusCodeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected StatusCodeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public StatusCode getStatusCode() {
+    @Nullable public StatusCode getStatusCode() {
         return childStatusCode;
     }
 
     /** {@inheritDoc} */
-    public void setStatusCode(final StatusCode newStatusCode) {
-        this.childStatusCode = prepareForAssignment(this.childStatusCode, newStatusCode);
+    public void setStatusCode(@Nullable final StatusCode newStatusCode) {
+        childStatusCode = prepareForAssignment(childStatusCode, newStatusCode);
     }
 
     /** {@inheritDoc} */
-    public String getValue() {
+    @Nullable public String getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final String newValue) {
-        this.value = prepareForAssignment(this.value, newValue);
+    public void setValue(@Nullable final String newValue) {
+        value = prepareForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        
         if (childStatusCode != null) {
-            final ArrayList<XMLObject> children = new ArrayList<>();
-            children.add(childStatusCode);
-            return Collections.unmodifiableList(children);
-        } else {
-            return null;
+            return CollectionSupport.singletonList(childStatusCode);
         }
+        
+        return null;
     }
+
 }

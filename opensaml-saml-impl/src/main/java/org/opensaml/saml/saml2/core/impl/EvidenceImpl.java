@@ -21,9 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -35,13 +36,19 @@ import org.opensaml.saml.saml2.core.EncryptedAssertion;
 import org.opensaml.saml.saml2.core.Evidence;
 import org.opensaml.saml.saml2.core.Evidentiary;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.Evidence}.
+ * A concrete implementation of {@link Evidence}.
  */
+@SuppressWarnings("unchecked")
 public class EvidenceImpl extends AbstractXMLObject implements Evidence {
 
     /** Assertion of the Evidence. */
-    private final IndexedXMLObjectChildrenList<Evidentiary> evidence;
+    @Nonnull private final IndexedXMLObjectChildrenList<Evidentiary> evidence;
 
     /**
      * Constructor.
@@ -50,46 +57,40 @@ public class EvidenceImpl extends AbstractXMLObject implements Evidence {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EvidenceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected EvidenceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         evidence = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Evidentiary> getEvidence() {
+    @Nonnull @Live public List<Evidentiary> getEvidence() {
         return evidence;
     }
 
     /** {@inheritDoc} */
-    public List<AssertionIDRef> getAssertionIDReferences() {
+    @Nonnull @Live public List<AssertionIDRef> getAssertionIDReferences() {
         return (List<AssertionIDRef>) evidence.subList(AssertionIDRef.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<AssertionURIRef> getAssertionURIReferences() {
+    @Nonnull @Live public List<AssertionURIRef> getAssertionURIReferences() {
         return (List<AssertionURIRef>) evidence.subList(AssertionURIRef.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<Assertion> getAssertions() {
+    @Nonnull @Live public List<Assertion> getAssertions() {
         return (List<Assertion>) evidence.subList(Assertion.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<EncryptedAssertion> getEncryptedAssertions() {
+    @Nonnull @Live public List<EncryptedAssertion> getEncryptedAssertions() {
         return (List<EncryptedAssertion>) evidence.subList(EncryptedAssertion.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        if (evidence.size() == 0) {
-            return null;
-        }
-
-        children.addAll(evidence);
-
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(evidence);
     }
+
 }

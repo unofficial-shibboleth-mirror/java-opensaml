@@ -22,23 +22,29 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.AuthnQuery;
 import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.AuthnQuery}.
+ * Concrete implementation of {@link AuthnQuery}.
  */
 public class AuthnQueryImpl extends SubjectQueryImpl implements AuthnQuery {
 
     /** SessionIndex attribute. */
-    private String sessionIndex;
+    @Nullable private String sessionIndex;
 
     /** RequestedAuthnContext child element. */
-    private RequestedAuthnContext requestedAuthnContext;
+    @Nullable private RequestedAuthnContext requestedAuthnContext;
 
     /**
      * Constructor.
@@ -47,46 +53,46 @@ public class AuthnQueryImpl extends SubjectQueryImpl implements AuthnQuery {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnQueryImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AuthnQueryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getSessionIndex() {
-        return this.sessionIndex;
+    @Nullable public String getSessionIndex() {
+        return sessionIndex;
     }
 
     /** {@inheritDoc} */
-    public void setSessionIndex(final String newSessionIndex) {
-        this.sessionIndex = prepareForAssignment(this.sessionIndex, newSessionIndex);
+    public void setSessionIndex(@Nullable final String newSessionIndex) {
+        sessionIndex = prepareForAssignment(sessionIndex, newSessionIndex);
     }
 
     /** {@inheritDoc} */
-    public RequestedAuthnContext getRequestedAuthnContext() {
-        return this.requestedAuthnContext;
+    @Nullable public RequestedAuthnContext getRequestedAuthnContext() {
+        return requestedAuthnContext;
     }
 
     /** {@inheritDoc} */
-    public void setRequestedAuthnContext(final RequestedAuthnContext newRequestedAuthnContext) {
-        this.requestedAuthnContext = prepareForAssignment(this.requestedAuthnContext, newRequestedAuthnContext);
+    public void setRequestedAuthnContext(@Nullable final RequestedAuthnContext newRequestedAuthnContext) {
+        requestedAuthnContext = prepareForAssignment(requestedAuthnContext, newRequestedAuthnContext);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
 
         if (requestedAuthnContext != null) {
             children.add(requestedAuthnContext);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

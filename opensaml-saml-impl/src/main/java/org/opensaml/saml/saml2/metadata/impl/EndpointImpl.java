@@ -17,9 +17,10 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -28,25 +29,30 @@ import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.metadata.Endpoint}.
+ * A concrete implementation of {@link Endpoint}.
  */
 public abstract class EndpointImpl extends AbstractXMLObject implements Endpoint {
 
     /** Binding URI. */
-    private String bindingId;
+    @Nullable private String bindingId;
 
     /** Endpoint location URI. */
-    private String location;
+    @Nullable private String location;
 
     /** Response location URI. */
-    private String responseLocation;
+    @Nullable private String responseLocation;
 
     /** "anyAttribute" attributes. */
-    private final AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /** child "any" elements. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -55,65 +61,66 @@ public abstract class EndpointImpl extends AbstractXMLObject implements Endpoint
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EndpointImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected EndpointImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getBinding() {
+    @Nullable public String getBinding() {
         return bindingId;
     }
 
     /** {@inheritDoc} */
-    public void setBinding(final String binding) {
+    public void setBinding(@Nullable final String binding) {
         bindingId = prepareForAssignment(bindingId, binding);
     }
 
     /** {@inheritDoc} */
-    public String getLocation() {
+    @Nullable public String getLocation() {
         return location;
     }
 
     /** {@inheritDoc} */
-    public void setLocation(final String theLocation) {
+    public void setLocation(@Nullable final String theLocation) {
         this.location = prepareForAssignment(this.location, theLocation);
     }
 
     /** {@inheritDoc} */
-    public String getResponseLocation() {
+    @Nullable public String getResponseLocation() {
         return responseLocation;
     }
 
     /** {@inheritDoc} */
-    public void setResponseLocation(final String theLocation) {
+    public void setResponseLocation(@Nullable final String theLocation) {
         responseLocation = prepareForAssignment(responseLocation, theLocation);
     }
 
     /**
      * {@inheritDoc}
      */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
-    /**
-     * {@inheritDoc}
-     */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownChildren);
+    /** {@inheritDoc} */
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
+    
 }

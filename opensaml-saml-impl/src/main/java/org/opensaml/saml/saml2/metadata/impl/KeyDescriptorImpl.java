@@ -20,6 +20,9 @@ package org.opensaml.saml.saml2.metadata.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -28,21 +31,24 @@ import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.KeyDescriptor}.
+ * Concrete implementation of {@link KeyDescriptor}.
  */
 public class KeyDescriptorImpl extends AbstractXMLObject implements KeyDescriptor {
 
     /** Key usage type. */
-    private UsageType keyUseType;
+    @Nullable private UsageType keyUseType;
 
     /** Key information. */
-    private KeyInfo keyInfo;
+    @Nullable private KeyInfo keyInfo;
 
     /** Encryption methods supported by the entity. */
-    private final XMLObjectChildrenList<EncryptionMethod> encryptionMethods;
+    @Nonnull private final XMLObjectChildrenList<EncryptionMethod> encryptionMethods;
 
     /**
      * Constructor.
@@ -51,20 +57,20 @@ public class KeyDescriptorImpl extends AbstractXMLObject implements KeyDescripto
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected KeyDescriptorImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected KeyDescriptorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         encryptionMethods = new XMLObjectChildrenList<>(this);
         keyUseType = UsageType.UNSPECIFIED;
     }
 
     /** {@inheritDoc} */
-    public UsageType getUse() {
+    @Nullable public UsageType getUse() {
         return keyUseType;
     }
 
     /** {@inheritDoc} */
-    public void setUse(final UsageType newType) {
+    public void setUse(@Nullable final UsageType newType) {
         if (newType != null) {
             keyUseType = prepareForAssignment(keyUseType, newType);
         } else {
@@ -73,22 +79,22 @@ public class KeyDescriptorImpl extends AbstractXMLObject implements KeyDescripto
     }
 
     /** {@inheritDoc} */
-    public KeyInfo getKeyInfo() {
+    @Nullable public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
     /** {@inheritDoc} */
-    public void setKeyInfo(final KeyInfo newKeyInfo) {
+    public void setKeyInfo(@Nullable final KeyInfo newKeyInfo) {
         keyInfo = prepareForAssignment(keyInfo, newKeyInfo);
     }
 
     /** {@inheritDoc} */
-    public List<EncryptionMethod> getEncryptionMethods() {
+    @Nonnull @Live public List<EncryptionMethod> getEncryptionMethods() {
         return encryptionMethods;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (keyInfo != null) {
@@ -99,4 +105,5 @@ public class KeyDescriptorImpl extends AbstractXMLObject implements KeyDescripto
 
         return CollectionSupport.copyToList(children);
     }
+
 }

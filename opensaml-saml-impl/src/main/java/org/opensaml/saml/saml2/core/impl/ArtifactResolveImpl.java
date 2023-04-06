@@ -22,20 +22,26 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Artifact;
 import org.opensaml.saml.saml2.core.ArtifactResolve;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.ArtifactResolve}.
+ * Concrete implementation of {@link ArtifactResolve}.
  */
 public class ArtifactResolveImpl extends RequestAbstractTypeImpl implements ArtifactResolve {
 
     /** Artifact child element. */
-    private Artifact artifact;
+    @Nullable private Artifact artifact;
 
     /**
      * Constructor.
@@ -44,37 +50,36 @@ public class ArtifactResolveImpl extends RequestAbstractTypeImpl implements Arti
      * @param elementLocalName element name
      * @param namespacePrefix namespace prefix
      */
-    protected ArtifactResolveImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected ArtifactResolveImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Artifact getArtifact() {
+    @Nullable public Artifact getArtifact() {
         return this.artifact;
     }
 
     /** {@inheritDoc} */
-    public void setArtifact(final Artifact newArtifact) {
+    public void setArtifact(@Nullable final Artifact newArtifact) {
         this.artifact = prepareForAssignment(this.artifact, newArtifact);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
 
         if (artifact != null) {
             children.add(artifact);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

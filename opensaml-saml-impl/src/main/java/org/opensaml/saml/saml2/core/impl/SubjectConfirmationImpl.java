@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -29,25 +31,29 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.SubjectConfirmation}.
+ * Concrete implementation of {@link SubjectConfirmation}.
  */
 public class SubjectConfirmationImpl extends AbstractXMLObject implements SubjectConfirmation {
 
     /** BaseID child element. */
-    private BaseID baseID;
+    @Nullable private BaseID baseID;
 
     /** NameID child element. */
-    private NameID nameID;
+    @Nullable private NameID nameID;
 
     /** EncryptedID child element. */
-    private EncryptedID encryptedID;
+    @Nullable private EncryptedID encryptedID;
     
     /** SubjectConfirmationData of the Confirmation. */
-    private SubjectConfirmationData subjectConfirmationData;
+    @Nullable private SubjectConfirmationData subjectConfirmationData;
 
     /** Method of the Confirmation. */
-    private String method;
+    @Nullable private String method;
 
     /**
      * Constructor.
@@ -56,64 +62,64 @@ public class SubjectConfirmationImpl extends AbstractXMLObject implements Subjec
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectConfirmationImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected SubjectConfirmationImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public BaseID getBaseID() {
+    @Nullable public BaseID getBaseID() {
         return baseID;
     }
 
     /** {@inheritDoc} */
-    public void setBaseID(final BaseID newBaseID) {
+    public void setBaseID(@Nullable final BaseID newBaseID) {
         baseID = prepareForAssignment(baseID, newBaseID);
     }
 
     /** {@inheritDoc} */
-    public NameID getNameID() {
+    @Nullable public NameID getNameID() {
         return nameID;
     }
 
     /** {@inheritDoc} */
-    public void setNameID(final NameID newNameID) {
+    public void setNameID(@Nullable final NameID newNameID) {
         nameID = prepareForAssignment(nameID, newNameID);
     }
 
     /** {@inheritDoc} */
-    public EncryptedID getEncryptedID() {
+    @Nullable public EncryptedID getEncryptedID() {
         return this.encryptedID;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptedID(final EncryptedID newEncryptedID) {
+    public void setEncryptedID(@Nullable final EncryptedID newEncryptedID) {
         this.encryptedID = prepareForAssignment(this.encryptedID, newEncryptedID);
     }
 
     /** {@inheritDoc} */
-    public SubjectConfirmationData getSubjectConfirmationData() {
+    @Nullable public SubjectConfirmationData getSubjectConfirmationData() {
         return subjectConfirmationData;
     }
 
     /** {@inheritDoc} */
-    public void setSubjectConfirmationData(final SubjectConfirmationData newSubjectConfirmationData) {
+    public void setSubjectConfirmationData(@Nullable final SubjectConfirmationData newSubjectConfirmationData) {
         this.subjectConfirmationData = prepareForAssignment(this.subjectConfirmationData, newSubjectConfirmationData);
 
     }
 
     /** {@inheritDoc} */
-    public String getMethod() {
+    @Nullable public String getMethod() {
         return method;
     }
 
     /** {@inheritDoc} */
-    public void setMethod(final String newMethod) {
+    public void setMethod(@Nullable final String newMethod) {
         this.method = prepareForAssignment(this.method, newMethod);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (baseID != null) {
@@ -128,8 +134,11 @@ public class SubjectConfirmationImpl extends AbstractXMLObject implements Subjec
             children.add(encryptedID);
         }
 
-        children.add(subjectConfirmationData);
+        if (subjectConfirmationData != null) {
+            children.add(subjectConfirmationData);
+        }
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

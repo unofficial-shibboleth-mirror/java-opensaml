@@ -21,10 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.OrganizationDisplayName}.
+ * Concrete implementation of {@link OrganizationDisplayName}.
  */
 public class OrganizationDisplayNameImpl extends LocalizedNameImpl implements OrganizationDisplayName {
 
@@ -35,8 +38,9 @@ public class OrganizationDisplayNameImpl extends LocalizedNameImpl implements Or
      * @param elementLocalName the name
      * @param namespacePrefix the prefix
      */
-    protected OrganizationDisplayNameImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected OrganizationDisplayNameImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

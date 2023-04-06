@@ -23,24 +23,30 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.NameIDPolicy}.
+ * Concrete implementation of {@link NameIDPolicy}.
  */
 public class NameIDPolicyImpl extends AbstractXMLObject implements NameIDPolicy {
 
     /** NameID Format URI. */
-    private String format;
+    @Nullable private String format;
 
     /** NameID Format URI. */
-    private String spNameQualifier;
+    @Nullable private String spNameQualifier;
 
     /** NameID Format URI. */
-    private XSBooleanValue allowCreate;
+    @Nullable private XSBooleanValue allowCreate;
 
     /**
      * Constructor.
@@ -49,34 +55,35 @@ public class NameIDPolicyImpl extends AbstractXMLObject implements NameIDPolicy 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected NameIDPolicyImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected NameIDPolicyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getFormat() {
+    @Nullable public String getFormat() {
         return format;
     }
 
     /** {@inheritDoc} */
-    public void setFormat(final String newFormat) {
+    public void setFormat(@Nullable final String newFormat) {
         format = prepareForAssignment(format, newFormat);
 
     }
 
     /** {@inheritDoc} */
-    public String getSPNameQualifier() {
+    @Nullable public String getSPNameQualifier() {
         return spNameQualifier;
     }
 
     /** {@inheritDoc} */
-    public void setSPNameQualifier(final String newSPNameQualifier) {
+    public void setSPNameQualifier(@Nullable final String newSPNameQualifier) {
         spNameQualifier = prepareForAssignment(spNameQualifier, newSPNameQualifier);
 
     }
     
     /** {@inheritDoc} */
-    public Boolean getAllowCreate(){
+    @Nullable public Boolean getAllowCreate() {
         if(allowCreate != null){
             return allowCreate.getValue();
         }
@@ -85,12 +92,12 @@ public class NameIDPolicyImpl extends AbstractXMLObject implements NameIDPolicy 
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue getAllowCreateXSBoolean() {
+    @Nullable public XSBooleanValue getAllowCreateXSBoolean() {
         return allowCreate;
     }
 
     /** {@inheritDoc} */
-    public void setAllowCreate(final Boolean newAllowCreate){
+    public void setAllowCreate(@Nullable final Boolean newAllowCreate){
         if(newAllowCreate != null){
             allowCreate = prepareForAssignment(allowCreate, new XSBooleanValue(newAllowCreate, false));
         }else{
@@ -99,14 +106,15 @@ public class NameIDPolicyImpl extends AbstractXMLObject implements NameIDPolicy 
     }
     
     /** {@inheritDoc} */
-    public void setAllowCreate(final XSBooleanValue newAllowCreate) {
+    public void setAllowCreate(@Nullable final XSBooleanValue newAllowCreate) {
         allowCreate = prepareForAssignment(allowCreate, newAllowCreate);
 
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
+    
 }

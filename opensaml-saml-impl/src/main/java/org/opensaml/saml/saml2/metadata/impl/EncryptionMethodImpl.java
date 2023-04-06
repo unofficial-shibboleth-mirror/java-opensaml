@@ -21,10 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.EncryptionMethod}.
+ * Concrete implementation of {@link EncryptionMethod}.
  */
 public class EncryptionMethodImpl extends org.opensaml.xmlsec.encryption.impl.EncryptionMethodImpl implements
         EncryptionMethod {
@@ -36,8 +39,8 @@ public class EncryptionMethodImpl extends org.opensaml.xmlsec.encryption.impl.En
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected EncryptionMethodImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EncryptionMethodImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

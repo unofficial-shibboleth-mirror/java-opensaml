@@ -101,6 +101,7 @@ public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl imp
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(actions.size() + 2);
 

@@ -22,8 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -31,19 +33,24 @@ import org.opensaml.saml.saml2.core.Action;
 import org.opensaml.saml.saml2.core.AuthzDecisionQuery;
 import org.opensaml.saml.saml2.core.Evidence;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.AuthzDecisionQuery}.
+ * Concrete implementation of {@link AuthzDecisionQuery}.
  */
 public class AuthzDecisionQueryImpl extends SubjectQueryImpl implements AuthzDecisionQuery {
 
     /** Resource attribute value. */
-    private String resource;
+    @Nullable private String resource;
 
     /** Evidence child element. */
-    private Evidence evidence;
+    @Nullable private Evidence evidence;
 
     /** Action child elements. */
-    private final XMLObjectChildrenList<Action> actions;
+    @Nonnull private final XMLObjectChildrenList<Action> actions;
 
     /**
      * Constructor.
@@ -52,53 +59,54 @@ public class AuthzDecisionQueryImpl extends SubjectQueryImpl implements AuthzDec
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthzDecisionQueryImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthzDecisionQueryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         actions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getResource() {
+    @Nullable public String getResource() {
         return this.resource;
     }
 
     /** {@inheritDoc} */
-    public void setResource(final String newResource) {
+    public void setResource(@Nullable final String newResource) {
         this.resource = prepareForAssignment(this.resource, newResource);
     }
 
     /** {@inheritDoc} */
-    public List<Action> getActions() {
+    @Nonnull @Live public List<Action> getActions() {
         return actions;
     }
 
     /** {@inheritDoc} */
-    public Evidence getEvidence() {
+    @Nullable public Evidence getEvidence() {
         return this.evidence;
     }
 
     /** {@inheritDoc} */
-    public void setEvidence(final Evidence newEvidence) {
+    public void setEvidence(@Nullable final Evidence newEvidence) {
         this.evidence = prepareForAssignment(this.evidence, newEvidence);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
+
         children.addAll(actions);
+        
         if (evidence != null) {
             children.add(evidence);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

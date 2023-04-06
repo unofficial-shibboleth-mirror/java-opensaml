@@ -109,14 +109,14 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
      */
     protected void assertXMLEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
-        Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
+        final Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         if (marshaller == null) {
             Assert.fail("Unable to locate marshaller for " + xmlObject.getElementQName()
                     + " can not perform equality check assertion");
         }
 
         try {
-            Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
+            final Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
             if (log.isDebugEnabled()) {
                 log.debug("Marshalled DOM was " + SerializeSupport.nodeToString(generatedDOM));
             }
@@ -125,7 +125,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
                     .checkForIdentical()
                     .build();
             Assert.assertFalse(diff.hasDifferences(), failMessage);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Assert.fail("Marshalling failed with the following error: " + e);
         }
     }

@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 
@@ -37,7 +40,8 @@ public class NameIDFormatImpl extends XSURIImpl implements NameIDFormat {
      * @param namespacePrefix the prefix for the given namespace
 
      */
-    protected NameIDFormatImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected NameIDFormatImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     

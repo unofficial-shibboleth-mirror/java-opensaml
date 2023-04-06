@@ -22,9 +22,10 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -35,21 +36,24 @@ import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.PDPDescriptor;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.PDPDescriptor}.
+ * Concrete implementation of {@link PDPDescriptor}.
  */
 public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescriptor {
 
     /** AuthzService children. */
-    private final XMLObjectChildrenList<AuthzService> authzServices;
+    @Nonnull private final XMLObjectChildrenList<AuthzService> authzServices;
 
     /** AssertionIDRequestService children. */
-    private final XMLObjectChildrenList<AssertionIDRequestService> assertionIDRequestServices;
+    @Nonnull private final XMLObjectChildrenList<AssertionIDRequestService> assertionIDRequestServices;
 
     /** NameIDFormat children. */
-    private final XMLObjectChildrenList<NameIDFormat> nameIDFormats;
+    @Nonnull private final XMLObjectChildrenList<NameIDFormat> nameIDFormats;
 
     /**
      * Constructor.
@@ -58,8 +62,8 @@ public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescript
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected PDPDescriptorImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected PDPDescriptorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         authzServices = new XMLObjectChildrenList<>(this);
         assertionIDRequestServices = new XMLObjectChildrenList<>(this);
@@ -67,48 +71,54 @@ public class PDPDescriptorImpl extends RoleDescriptorImpl implements PDPDescript
     }
 
     /** {@inheritDoc} */
-    public List<AuthzService> getAuthzServices() {
+    @Nonnull @Live public List<AuthzService> getAuthzServices() {
         return authzServices;
     }
 
     /** {@inheritDoc} */
-    public List<AssertionIDRequestService> getAssertionIDRequestServices() {
+    @Nonnull @Live public List<AssertionIDRequestService> getAssertionIDRequestServices() {
         return assertionIDRequestServices;
     }
 
     /** {@inheritDoc} */
-    public List<NameIDFormat> getNameIDFormats() {
+    @Nonnull @Live public List<NameIDFormat> getNameIDFormats() {
         return nameIDFormats;
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints() {
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints() {
         final List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(authzServices);
         endpoints.addAll(assertionIDRequestServices);
-        return Collections.unmodifiableList(endpoints);
+        return CollectionSupport.copyToList(endpoints);
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints(final QName type) {
-        if(type.equals(AuthzService.DEFAULT_ELEMENT_NAME)){
-            return Collections.unmodifiableList(new ArrayList<Endpoint>(authzServices));
-        }else if(type.equals(AssertionIDRequestService.DEFAULT_ELEMENT_NAME)){
-            return Collections.unmodifiableList(new ArrayList<Endpoint>(assertionIDRequestServices));
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints(@Nonnull final QName type) {
+        if (type.equals(AuthzService.DEFAULT_ELEMENT_NAME)) {
+            return CollectionSupport.copyToList(authzServices);
+        } else if(type.equals(AssertionIDRequestService.DEFAULT_ELEMENT_NAME)) {
+            return CollectionSupport.copyToList(assertionIDRequestServices);
         }
         
-        return null;
+        return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.addAll(super.getOrderedChildren());
+        final List<XMLObject> parentChildren = super.getOrderedChildren();
+        if (parentChildren != null) {
+            children.addAll(parentChildren);
+        }
+
         children.addAll(authzServices);
         children.addAll(assertionIDRequestServices);
         children.addAll(nameIDFormats);
 
         return CollectionSupport.copyToList(children);
     }
+
 }

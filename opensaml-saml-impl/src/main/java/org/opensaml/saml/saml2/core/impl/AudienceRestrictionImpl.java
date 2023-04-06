@@ -21,9 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -31,13 +32,18 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.AudienceRestriction}.
+ * Concrete implementation of {@link AudienceRestriction}.
  */
 public class AudienceRestrictionImpl extends AbstractXMLObject implements AudienceRestriction {
 
     /** List of the audiences. */
-    private final XMLObjectChildrenList<Audience> audience;
+    @Nonnull private final XMLObjectChildrenList<Audience> audiences;
 
     /**
      * Constructor.
@@ -46,23 +52,20 @@ public class AudienceRestrictionImpl extends AbstractXMLObject implements Audien
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AudienceRestrictionImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AudienceRestrictionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
-        audience = new XMLObjectChildrenList<>(this);
+        audiences = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Audience> getAudiences() {
-        return audience;
+    @Nonnull @Live public List<Audience> getAudiences() {
+        return audiences;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.addAll(audience);
-
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(audiences);
     }
+
 }

@@ -23,26 +23,32 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.IDPEntry;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.IDPEntry}.
+ * Concrete implementation of {@link IDPEntry}.
  */
 public class IDPEntryImpl extends AbstractXMLObject implements IDPEntry {
 
     /** The unique identifier of the IdP. */
-    private String providerID;
+    @Nullable private String providerID;
 
     /** Human-readable name for the IdP. */
-    private String name;
+    @Nullable private String name;
 
     /**
      * URI reference representing the location of a profile-specific endpoint supporting the authentication request
      * protocol.
      */
-    private String loc;
+    @Nullable private String loc;
 
     /**
      * Constructor.
@@ -51,46 +57,48 @@ public class IDPEntryImpl extends AbstractXMLObject implements IDPEntry {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected IDPEntryImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected IDPEntryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getProviderID() {
-        return this.providerID;
+    @Nullable public String getProviderID() {
+        return providerID;
     }
 
     /** {@inheritDoc} */
-    public void setProviderID(final String newProviderID) {
-        this.providerID = prepareForAssignment(this.providerID, newProviderID);
-
-    }
-
-    /** {@inheritDoc} */
-    public String getName() {
-        return this.name;
-    }
-
-    /** {@inheritDoc} */
-    public void setName(final String newName) {
-        this.name = prepareForAssignment(this.name, newName);
+    public void setProviderID(@Nullable final String newProviderID) {
+        providerID = prepareForAssignment(providerID, newProviderID);
 
     }
 
     /** {@inheritDoc} */
-    public String getLoc() {
-        return this.loc;
+    @Nullable public String getName() {
+        return name;
     }
 
     /** {@inheritDoc} */
-    public void setLoc(final String newLoc) {
-        this.loc = prepareForAssignment(this.loc, newLoc);
+    public void setName(@Nullable final String newName) {
+        name = prepareForAssignment(name, newName);
 
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable public String getLoc() {
+        return loc;
+    }
+
+    /** {@inheritDoc} */
+    public void setLoc(@Nullable final String newLoc) {
+        loc = prepareForAssignment(loc, newLoc);
+
+    }
+
+    /** {@inheritDoc} */
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
+
 }

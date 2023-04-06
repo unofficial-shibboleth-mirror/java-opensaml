@@ -60,6 +60,7 @@ public class AttributeStatementImpl extends SubjectStatementImpl implements Attr
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(attributes.size() + 1);
 

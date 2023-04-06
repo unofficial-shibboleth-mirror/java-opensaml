@@ -22,21 +22,28 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml2.core.AssertionIDRef;
 import org.opensaml.saml.saml2.core.AssertionIDRequest;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AssertionIDRequest}.
+ * A concrete implementation of {@link AssertionIDRequest}.
  */
 public class AssertionIDRequestImpl extends RequestAbstractTypeImpl implements AssertionIDRequest {
 
     /** List of AssertionIDRef child elements. */
-    private final XMLObjectChildrenList<AssertionIDRef> assertionIDRefs;
+    @Nonnull private final XMLObjectChildrenList<AssertionIDRef> assertionIDRefs;
 
     /**
      * Constructor.
@@ -45,30 +52,30 @@ public class AssertionIDRequestImpl extends RequestAbstractTypeImpl implements A
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AssertionIDRequestImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AssertionIDRequestImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         assertionIDRefs = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<AssertionIDRef> getAssertionIDRefs() {
+    @Nonnull @Live public List<AssertionIDRef> getAssertionIDRefs() {
         return assertionIDRefs;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
+
         children.addAll(assertionIDRefs);
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

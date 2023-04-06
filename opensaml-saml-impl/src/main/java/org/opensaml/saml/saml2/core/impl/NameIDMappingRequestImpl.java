@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.BaseID;
@@ -28,22 +30,26 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDMappingRequest;
 import org.opensaml.saml.saml2.core.NameIDPolicy;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.NameIDMappingRequest}.
+ * A concrete implementation of {@link NameIDMappingRequest}.
  */
 public class NameIDMappingRequestImpl extends RequestAbstractTypeImpl implements NameIDMappingRequest {
 
     /** BaseID child element. */
-    private BaseID baseID;
+    @Nullable private BaseID baseID;
 
     /** NameID child element. */
-    private NameID nameID;
+    @Nullable private NameID nameID;
 
     /** EncryptedID child element. */
-    private EncryptedID encryptedID;
+    @Nullable private EncryptedID encryptedID;
 
     /** NameIDPolicy child element. */
-    private NameIDPolicy nameIDPolicy;
+    @Nullable private NameIDPolicy nameIDPolicy;
 
     /**
      * Constructor.
@@ -52,57 +58,59 @@ public class NameIDMappingRequestImpl extends RequestAbstractTypeImpl implements
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected NameIDMappingRequestImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected NameIDMappingRequestImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public BaseID getBaseID() {
+    @Nullable public BaseID getBaseID() {
         return baseID;
     }
 
     /** {@inheritDoc} */
-    public void setBaseID(final BaseID newBaseID) {
+    public void setBaseID(@Nullable final BaseID newBaseID) {
         baseID = prepareForAssignment(baseID, newBaseID);
     }
 
     /** {@inheritDoc} */
-    public NameID getNameID() {
+    @Nullable public NameID getNameID() {
         return nameID;
     }
 
     /** {@inheritDoc} */
-    public void setNameID(final NameID newNameID) {
+    public void setNameID(@Nullable final NameID newNameID) {
         nameID = prepareForAssignment(nameID, newNameID);
     }
 
     /** {@inheritDoc} */
-    public EncryptedID getEncryptedID() {
-        return this.encryptedID;
+    @Nullable public EncryptedID getEncryptedID() {
+        return encryptedID;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptedID(final EncryptedID newEncryptedID) {
-        this.encryptedID = prepareForAssignment(this.encryptedID, newEncryptedID);
+    public void setEncryptedID(@Nullable final EncryptedID newEncryptedID) {
+        encryptedID = prepareForAssignment(encryptedID, newEncryptedID);
     }
 
     /** {@inheritDoc} */
-    public NameIDPolicy getNameIDPolicy() {
-        return this.nameIDPolicy;
+    @Nullable public NameIDPolicy getNameIDPolicy() {
+        return nameIDPolicy;
     }
 
     /** {@inheritDoc} */
-    public void setNameIDPolicy(final NameIDPolicy newNameIDPolicy) {
-        this.nameIDPolicy = prepareForAssignment(this.nameIDPolicy, newNameIDPolicy);
+    public void setNameIDPolicy(@Nullable final NameIDPolicy newNameIDPolicy) {
+        nameIDPolicy = prepareForAssignment(nameIDPolicy, newNameIDPolicy);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
 
         if (baseID != null) {
@@ -121,10 +129,7 @@ public class NameIDMappingRequestImpl extends RequestAbstractTypeImpl implements
             children.add(nameIDPolicy);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

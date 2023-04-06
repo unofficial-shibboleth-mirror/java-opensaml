@@ -17,9 +17,10 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -27,13 +28,18 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.saml2.metadata.Extensions;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Implementation of {@link org.opensaml.saml.saml2.metadata.Extensions}.
  */
 public class ExtensionsImpl extends AbstractXMLObject implements Extensions {
 
     /** "any" children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -42,7 +48,8 @@ public class ExtensionsImpl extends AbstractXMLObject implements Extensions {
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected ExtensionsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ExtensionsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
@@ -50,17 +57,19 @@ public class ExtensionsImpl extends AbstractXMLObject implements Extensions {
     /**
      * {@inheritDoc}
      */
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownChildren);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownChildren);
     }
+
 }

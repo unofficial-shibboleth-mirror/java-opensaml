@@ -17,6 +17,7 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
@@ -37,8 +38,8 @@ public class AdditionalMetadataLocationImpl extends XSURIImpl implements Additio
      * @param elementLocalName the local name
      * @param namespacePrefix the prefix name space
      */
-    protected AdditionalMetadataLocationImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AdditionalMetadataLocationImpl(@Nullable final String namespaceURI,
+            @Nonnull final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

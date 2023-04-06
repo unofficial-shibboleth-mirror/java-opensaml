@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.metadata.Company;
 
@@ -36,7 +39,8 @@ public class CompanyImpl extends XSStringImpl implements Company {
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected CompanyImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected CompanyImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

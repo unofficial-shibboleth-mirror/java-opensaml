@@ -17,25 +17,28 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.NameIDType;
 
 /**
- * Abstract implementation of {@link org.opensaml.saml.saml2.core.NameIDType}.
+ * Abstract implementation of {@link NameIDType}.
  */
 public class AbstractNameIDType extends XSStringImpl implements NameIDType {
     
     /** Name Qualifier of the Name ID. */
-    private String nameQualifier;
+    @Nullable private String nameQualifier;
 
     /** SP Name Qualifier of the Name ID. */
-    private String spNameQualifier;
+    @Nullable private String spNameQualifier;
 
     /** Format of the Name ID. */
-    private String format;
+    @Nullable private String format;
 
     /** SP ProvidedID of the NameID. */
-    private String spProvidedID;
+    @Nullable private String spProvidedID;
 
     /**
      * Constructor.
@@ -44,48 +47,48 @@ public class AbstractNameIDType extends XSStringImpl implements NameIDType {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AbstractNameIDType(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AbstractNameIDType(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
     /** {@inheritDoc} */
-    public String getNameQualifier() {
+    @Nullable public String getNameQualifier() {
         return nameQualifier;
     }
 
     /** {@inheritDoc} */
-    public void setNameQualifier(final String newNameQualifier) {
+    public void setNameQualifier(@Nullable final String newNameQualifier) {
         this.nameQualifier = prepareForAssignment(this.nameQualifier, newNameQualifier);
     }
 
     /** {@inheritDoc} */
-    public String getSPNameQualifier() {
+    @Nullable public String getSPNameQualifier() {
         return spNameQualifier;
     }
 
     /** {@inheritDoc} */
-    public void setSPNameQualifier(final String newSPNameQualifier) {
+    public void setSPNameQualifier(@Nullable final String newSPNameQualifier) {
         this.spNameQualifier = prepareForAssignment(this.spNameQualifier, newSPNameQualifier);
     }
 
     /** {@inheritDoc} */
-    public String getFormat() {
+    @Nullable public String getFormat() {
         return format;
     }
 
     /** {@inheritDoc} */
-    public void setFormat(final String newFormat) {
+    public void setFormat(@Nullable final String newFormat) {
         this.format = prepareForAssignment(this.format, newFormat);
     }
 
     /** {@inheritDoc} */
-    public String getSPProvidedID() {
+    @Nullable public String getSPProvidedID() {
         return spProvidedID;
     }
 
     /** {@inheritDoc} */
-    public void setSPProvidedID(final String newSPProvidedID) {
+    public void setSPProvidedID(@Nullable final String newSPProvidedID) {
         this.spProvidedID = prepareForAssignment(this.spProvidedID, newSPProvidedID);
     }
     

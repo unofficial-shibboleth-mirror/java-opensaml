@@ -23,12 +23,18 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Terminate;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.Terminate}.
+ * Concrete implementation of {@link Terminate}.
  */
 public class TerminateImpl extends AbstractXMLObject implements Terminate {
 
@@ -39,13 +45,15 @@ public class TerminateImpl extends AbstractXMLObject implements Terminate {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected TerminateImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected TerminateImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
+
 }

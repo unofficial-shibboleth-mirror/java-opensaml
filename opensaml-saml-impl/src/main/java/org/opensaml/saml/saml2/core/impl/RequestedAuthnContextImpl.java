@@ -22,8 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -33,16 +35,21 @@ import org.opensaml.saml.saml2.core.AuthnContextComparisonTypeEnumeration;
 import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.RequestedAuthnContext}.
+ * Concrete implementation of {@link RequestedAuthnContext}.
  */
 public class RequestedAuthnContextImpl extends AbstractXMLObject implements RequestedAuthnContext {
 
     /** AuthnContextClassRef child elements. */
-    private final XMLObjectChildrenList<AuthnContextClassRef> authnContextClassRefs;
+    @Nonnull private final XMLObjectChildrenList<AuthnContextClassRef> authnContextClassRefs;
 
     /** AuthnContextDeclRef child elements. */
-    private final XMLObjectChildrenList<AuthnContextDeclRef> authnContextDeclRefs;
+    @Nonnull private final XMLObjectChildrenList<AuthnContextDeclRef> authnContextDeclRefs;
 
     /** Comparison attribute. */
     private AuthnContextComparisonTypeEnumeration comparison;
@@ -54,44 +61,41 @@ public class RequestedAuthnContextImpl extends AbstractXMLObject implements Requ
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RequestedAuthnContextImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RequestedAuthnContextImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         authnContextClassRefs = new XMLObjectChildrenList<>(this);
         authnContextDeclRefs = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public AuthnContextComparisonTypeEnumeration getComparison() {
+    @Nullable public AuthnContextComparisonTypeEnumeration getComparison() {
         return this.comparison;
     }
 
     /** {@inheritDoc} */
-    public void setComparison(final AuthnContextComparisonTypeEnumeration newComparison) {
+    public void setComparison(@Nullable final AuthnContextComparisonTypeEnumeration newComparison) {
         this.comparison = prepareForAssignment(this.comparison, newComparison);
     }
 
     /** {@inheritDoc} */
-    public List<AuthnContextClassRef> getAuthnContextClassRefs() {
+    @Nonnull @Live public List<AuthnContextClassRef> getAuthnContextClassRefs() {
         return this.authnContextClassRefs;
     }
 
     /** {@inheritDoc} */
-    public List<AuthnContextDeclRef> getAuthnContextDeclRefs() {
+    @Nonnull @Live public List<AuthnContextDeclRef> getAuthnContextDeclRefs() {
         return this.authnContextDeclRefs;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(authnContextClassRefs);
         children.addAll(authnContextDeclRefs);
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

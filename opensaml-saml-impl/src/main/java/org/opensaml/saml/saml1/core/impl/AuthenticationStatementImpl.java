@@ -101,6 +101,7 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(authorityBindings.size() + 2);
 

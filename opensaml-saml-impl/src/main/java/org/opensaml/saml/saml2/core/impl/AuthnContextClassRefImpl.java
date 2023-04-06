@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 
-import net.shibboleth.shared.annotation.constraint.NotEmpty;
 
 /**
  * A concrete implementation of {@link AuthnContextClassRef}.
@@ -41,8 +40,8 @@ public class AuthnContextClassRefImpl extends XSURIImpl implements AuthnContextC
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnContextClassRefImpl(@Nullable final String namespaceURI,
-            @Nonnull @NotEmpty final String elementLocalName, @Nullable final String namespacePrefix) {
+    protected AuthnContextClassRefImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     

@@ -22,39 +22,46 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.saml.common.AbstractSignableSAMLObject;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml2.metadata.Extensions;
+import org.opensaml.xmlsec.signature.Signature;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.EntitiesDescriptor}.
+ * Concrete implementation of {@link EntitiesDescriptor}.
  */
 public class EntitiesDescriptorImpl extends AbstractSignableSAMLObject implements EntitiesDescriptor {
 
     /** Name of this descriptor group. */
-    private String name;
+    @Nullable private String name;
 
     /** ID attribute. */
-    private String id;
+    @Nullable private String id;
 
     /** validUntil attribute. */
-    private Instant validUntil;
+    @Nullable private Instant validUntil;
 
     /** cacheDurection attribute. */
-    private Duration cacheDuration;
+    @Nullable private Duration cacheDuration;
 
     /** Extensions child. */
-    private Extensions extensions;
+    @Nullable private Extensions extensions;
 
     /** Ordered set of child Entity/Entities Descriptors. */
-    private final IndexedXMLObjectChildrenList<SAMLObject> orderedDescriptors;
+    @Nonnull private final IndexedXMLObjectChildrenList<SAMLObject> orderedDescriptors;
 
     /**
      * Constructor.
@@ -63,32 +70,32 @@ public class EntitiesDescriptorImpl extends AbstractSignableSAMLObject implement
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EntitiesDescriptorImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EntitiesDescriptorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         orderedDescriptors = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getName() {
+    @Nullable public String getName() {
         return name;
     }
 
     /** {@inheritDoc} */
-    public void setName(final String newName) {
-        this.name = prepareForAssignment(this.name, newName);
+    public void setName(@Nullable final String newName) {
+        name = prepareForAssignment(name, newName);
     }
 
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
-        final String oldID = this.id;
-        this.id = prepareForAssignment(this.id, newID);
-        registerOwnID(oldID, this.id);
+    public void setID(@Nullable final String newID) {
+        final String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
@@ -101,42 +108,44 @@ public class EntitiesDescriptorImpl extends AbstractSignableSAMLObject implement
     }
 
     /** {@inheritDoc} */
-    public Instant getValidUntil() {
+    @Nullable public Instant getValidUntil() {
         return validUntil;
     }
 
     /** {@inheritDoc} */
-    public void setValidUntil(final Instant newValidUntil) {
+    public void setValidUntil(@Nullable final Instant newValidUntil) {
         validUntil = prepareForAssignment(validUntil, newValidUntil);
     }
 
     /** {@inheritDoc} */
-    public Duration getCacheDuration() {
+    @Nullable public Duration getCacheDuration() {
         return cacheDuration;
     }
 
     /** {@inheritDoc} */
-    public void setCacheDuration(final Duration duration) {
+    public void setCacheDuration(@Nullable final Duration duration) {
         cacheDuration = prepareForAssignment(cacheDuration, duration);
     }
 
     /** {@inheritDoc} */
-    public Extensions getExtensions() {
+    @Nullable public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(final Extensions newExtensions) {
+    public void setExtensions(@Nullable final Extensions newExtensions) {
         extensions = prepareForAssignment(extensions, newExtensions);
     }
 
     /** {@inheritDoc} */
-    public List<EntitiesDescriptor> getEntitiesDescriptors() {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<EntitiesDescriptor> getEntitiesDescriptors() {
         return (List<EntitiesDescriptor>) orderedDescriptors.subList(EntitiesDescriptor.ELEMENT_QNAME);
     }
 
     /** {@inheritDoc} */
-    public List<EntityDescriptor> getEntityDescriptors() {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<EntityDescriptor> getEntityDescriptors() {
         return (List<EntityDescriptor>) orderedDescriptors.subList(EntityDescriptor.ELEMENT_QNAME);
     }
     
@@ -146,19 +155,21 @@ public class EntitiesDescriptorImpl extends AbstractSignableSAMLObject implement
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if(getSignature() != null){
-            children.add(getSignature());
+        final Signature sig = getSignature();
+        if (sig != null) {
+            children.add(sig);
         }
         
-        if (getExtensions() != null) {
-            children.add(getExtensions());
+        if (extensions != null) {
+            children.add(extensions);
         }
         
         children.addAll(orderedDescriptors);
 
         return CollectionSupport.copyToList(children);
     }
+    
 }

@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml2.ecp.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -30,28 +32,32 @@ import org.opensaml.saml.saml2.ecp.Request;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  *  A concrete implementation of {@link Request}.
  */
 public class RequestImpl extends AbstractXMLObject implements Request {
     
     /** IDPList child element. */
-    private IDPList idpList;
+    @Nullable private IDPList idpList;
     
     /** Issuer child element. */
-    private Issuer issuer;
+    @Nullable private Issuer issuer;
     
     /** ProviderName attribute. */
-    private String providerName;
+    @Nullable private String providerName;
     
     /** IsPassive attribute value. */
-    private XSBooleanValue isPassive;
+    @Nullable private XSBooleanValue isPassive;
     
     /** soap11:actor attribute. */
-    private String soap11Actor;
+    @Nullable private String soap11Actor;
     
     /** soap11:mustUnderstand. */
-    private XSBooleanValue soap11MustUnderstand;
+    @Nullable private XSBooleanValue soap11MustUnderstand;
     
     /**
      * Constructor.
@@ -60,42 +66,43 @@ public class RequestImpl extends AbstractXMLObject implements Request {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RequestImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected RequestImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public IDPList getIDPList() {
+    @Nullable public IDPList getIDPList() {
         return idpList;
     }
     
     /** {@inheritDoc} */
-    public void setIDPList(final IDPList newIDPList) {
+    public void setIDPList(@Nullable final IDPList newIDPList) {
         idpList = prepareForAssignment(idpList, newIDPList);
     }
 
     /** {@inheritDoc} */
-    public Issuer getIssuer() {
+    @Nullable public Issuer getIssuer() {
         return issuer;
     }
     
     /** {@inheritDoc} */
-    public void setIssuer(final Issuer newIssuer) {
+    public void setIssuer(@Nullable final Issuer newIssuer) {
         issuer = prepareForAssignment(issuer, newIssuer);
     }
 
     /** {@inheritDoc} */
-    public String getProviderName() {
+    @Nullable public String getProviderName() {
         return providerName;
     }
 
     /** {@inheritDoc} */
-    public void setProviderName(final String newProviderName) {
+    public void setProviderName(@Nullable final String newProviderName) {
         providerName = prepareForAssignment(providerName, newProviderName);
     }
 
     /** {@inheritDoc} */
-    public Boolean isPassive() {
+    @Nullable public Boolean isPassive() {
         if (isPassive != null) {
             return isPassive.getValue();
         }
@@ -104,12 +111,12 @@ public class RequestImpl extends AbstractXMLObject implements Request {
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isPassiveXSBoolean() {
+    @Nullable public XSBooleanValue isPassiveXSBoolean() {
         return isPassive;
     }
 
     /** {@inheritDoc} */
-    public void setPassive(final Boolean newIsPassive) {
+    public void setPassive(@Nullable final Boolean newIsPassive) {
         if (newIsPassive != null) {
             isPassive = prepareForAssignment(isPassive, new XSBooleanValue(newIsPassive, false));
         } else {
@@ -118,12 +125,12 @@ public class RequestImpl extends AbstractXMLObject implements Request {
     }
 
     /** {@inheritDoc} */
-    public void setPassive(final XSBooleanValue newIsPassive) {
+    public void setPassive(@Nullable final XSBooleanValue newIsPassive) {
         this.isPassive = prepareForAssignment(this.isPassive, newIsPassive);
     }
     
     /** {@inheritDoc} */
-    public Boolean isSOAP11MustUnderstand() {
+    @Nullable public Boolean isSOAP11MustUnderstand() {
         if (soap11MustUnderstand != null) {
             return soap11MustUnderstand.getValue();
         }
@@ -131,12 +138,12 @@ public class RequestImpl extends AbstractXMLObject implements Request {
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
+    @Nullable public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
         return soap11MustUnderstand;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final Boolean newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final Boolean newMustUnderstand) {
         if (newMustUnderstand != null) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, 
                     new XSBooleanValue(newMustUnderstand, true));
@@ -148,33 +155,36 @@ public class RequestImpl extends AbstractXMLObject implements Request {
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final XSBooleanValue newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final XSBooleanValue newMustUnderstand) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, newMustUnderstand);
             manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     soap11MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
-    public String getSOAP11Actor() {
+    @Nullable public String getSOAP11Actor() {
         return soap11Actor;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11Actor(final String newActor) {
+    public void setSOAP11Actor(@Nullable final String newActor) {
         soap11Actor = prepareForAssignment(soap11Actor, newActor);
         manageQualifiedAttributeNamespace(ActorBearing.SOAP11_ACTOR_ATTR_NAME, soap11Actor != null);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
-        if (issuer!=null) {
+        
+        if (issuer != null) {
             children.add(issuer);
         }
-        if (idpList!=null) {
+        
+        if (idpList != null) {
             children.add(idpList);
         }
-        return Collections.unmodifiableList(children);
+        
+        return CollectionSupport.copyToList(children);
     }
 
 }

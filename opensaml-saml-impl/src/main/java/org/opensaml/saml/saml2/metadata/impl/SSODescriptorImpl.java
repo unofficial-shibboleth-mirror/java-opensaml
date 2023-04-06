@@ -22,9 +22,10 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -37,24 +38,27 @@ import org.opensaml.saml.saml2.metadata.NameIDFormat;
 import org.opensaml.saml.saml2.metadata.SSODescriptor;
 import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SSODescriptor}.
+ * Concrete implementation of {@link SSODescriptor}.
  */
 public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SSODescriptor {
 
     /** Supported artifact resolutions services. */
-    private final XMLObjectChildrenList<ArtifactResolutionService> artifactResolutionServices;
+    @Nonnull private final XMLObjectChildrenList<ArtifactResolutionService> artifactResolutionServices;
 
     /** Logout services for this SSO entity. */
-    private final XMLObjectChildrenList<SingleLogoutService> singleLogoutServices;
+    @Nonnull private final XMLObjectChildrenList<SingleLogoutService> singleLogoutServices;
 
     /** Manage NameID services for this entity. */
-    private final XMLObjectChildrenList<ManageNameIDService> manageNameIDServices;
+    @Nonnull private final XMLObjectChildrenList<ManageNameIDService> manageNameIDServices;
 
     /** NameID formats supported by this entity. */
-    private final XMLObjectChildrenList<NameIDFormat> nameIDFormats;
+    @Nonnull private final XMLObjectChildrenList<NameIDFormat> nameIDFormats;
     
     /**
      * Constructor.
@@ -63,8 +67,8 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SSODescriptorImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected SSODescriptorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         artifactResolutionServices = new XMLObjectChildrenList<>(this);
         singleLogoutServices = new XMLObjectChildrenList<>(this);
@@ -73,54 +77,55 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
     }
 
     /** {@inheritDoc} */
-    public List<ArtifactResolutionService> getArtifactResolutionServices() {
+    @Nonnull @Live public List<ArtifactResolutionService> getArtifactResolutionServices() {
         return artifactResolutionServices;
     }
     
     /** {@inheritDoc} */
-    public ArtifactResolutionService getDefaultArtifactResolutionService(){
+    @Nullable public ArtifactResolutionService getDefaultArtifactResolutionService() {
         return SAML2MetadataSupport.getDefaultIndexedEndpoint(artifactResolutionServices);
     }
     
     /** {@inheritDoc} */
-    public List<SingleLogoutService> getSingleLogoutServices() {
+    @Nonnull @Live public List<SingleLogoutService> getSingleLogoutServices() {
         return singleLogoutServices;
     }
 
     /** {@inheritDoc} */
-    public List<ManageNameIDService> getManageNameIDServices() {
+    @Nonnull @Live public List<ManageNameIDService> getManageNameIDServices() {
         return manageNameIDServices;
     }
 
     /** {@inheritDoc} */
-    public List<NameIDFormat> getNameIDFormats() {
+    @Nonnull @Live public List<NameIDFormat> getNameIDFormats() {
         return nameIDFormats;
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints() {
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints() {
         final List<Endpoint> endpoints = new ArrayList<>();
         endpoints.addAll(artifactResolutionServices);
         endpoints.addAll(singleLogoutServices);
         endpoints.addAll(manageNameIDServices);
-        return Collections.unmodifiableList(endpoints);
+        return CollectionSupport.copyToList(endpoints);
     }
     
     /** {@inheritDoc} */
-    public List<Endpoint> getEndpoints(final QName type) {
+    @Nonnull @NotLive @Unmodifiable public List<Endpoint> getEndpoints(@Nonnull final QName type) {
         if(type.equals(ArtifactResolutionService.DEFAULT_ELEMENT_NAME)){
-            return Collections.unmodifiableList(new ArrayList<Endpoint>(artifactResolutionServices));
+            return CollectionSupport.copyToList(artifactResolutionServices);
         }else if(type.equals(SingleLogoutService.DEFAULT_ELEMENT_NAME)){
-            return Collections.unmodifiableList(new ArrayList<Endpoint>(singleLogoutServices));
+            return CollectionSupport.copyToList(singleLogoutServices);
         }else if(type.equals(ManageNameIDService.DEFAULT_ELEMENT_NAME)){
-            return Collections.unmodifiableList(new ArrayList<Endpoint>(manageNameIDServices));
+            return CollectionSupport.copyToList(manageNameIDServices);
         }
         
         return CollectionSupport.emptyList();
     }
     
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         final List<XMLObject> parentChildren = super.getOrderedChildren();
@@ -134,4 +139,5 @@ public abstract class SSODescriptorImpl extends RoleDescriptorImpl implements SS
         
         return CollectionSupport.copyToList(children);
     }
+    
 }

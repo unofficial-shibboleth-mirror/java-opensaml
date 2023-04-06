@@ -74,6 +74,7 @@ public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>(1 + assertions.size());
 

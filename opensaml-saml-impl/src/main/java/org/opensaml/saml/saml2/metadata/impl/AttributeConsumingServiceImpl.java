@@ -22,9 +22,9 @@
 package org.opensaml.saml.saml2.metadata.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -36,25 +36,30 @@ import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 import org.opensaml.saml.saml2.metadata.ServiceDescription;
 import org.opensaml.saml.saml2.metadata.ServiceName;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AttributeConsumingService}.
+ * Concrete implementation of {@link AttributeConsumingService}.
  */
 public class AttributeConsumingServiceImpl extends AbstractXMLObject implements AttributeConsumingService {
 
     /** Index of this service. */
-    private Integer index;
+    @Nullable private Integer index;
 
     /** isDefault attribute of this service. */
-    private XSBooleanValue isDefault;
+    @Nullable private XSBooleanValue isDefault;
 
     /** ServiceName children. */
-    private final XMLObjectChildrenList<ServiceName> serviceNames;
+    @Nonnull private final XMLObjectChildrenList<ServiceName> serviceNames;
 
     /** ServiceDescription children. */
-    private final XMLObjectChildrenList<ServiceDescription> serviceDescriptions;
+    @Nonnull private final XMLObjectChildrenList<ServiceDescription> serviceDescriptions;
 
     /** RequestedAttribute children. */
-    private final XMLObjectChildrenList<RequestedAttribute> requestedAttributes;
+    @Nonnull private final XMLObjectChildrenList<RequestedAttribute> requestedAttributes;
     
     /**
      * Constructor.
@@ -63,8 +68,8 @@ public class AttributeConsumingServiceImpl extends AbstractXMLObject implements 
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected AttributeConsumingServiceImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AttributeConsumingServiceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         serviceNames = new XMLObjectChildrenList<>(this);
         serviceDescriptions = new XMLObjectChildrenList<>(this);
@@ -72,7 +77,7 @@ public class AttributeConsumingServiceImpl extends AbstractXMLObject implements 
     }
 
     /** {@inheritDoc} */
-    public Integer getIndex() {
+    @Nullable public Integer getIndex() {
         return index;
     }
 
@@ -82,7 +87,7 @@ public class AttributeConsumingServiceImpl extends AbstractXMLObject implements 
     }
     
     /** {@inheritDoc} */
-    public Boolean isDefault(){
+    @Nullable public Boolean isDefault(){
         if(isDefault != null){
             return isDefault.getValue();
         }
@@ -91,12 +96,12 @@ public class AttributeConsumingServiceImpl extends AbstractXMLObject implements 
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isDefaultXSBoolean() {
+    @Nullable public XSBooleanValue isDefaultXSBoolean() {
         return isDefault;
     }
     
     /** {@inheritDoc} */
-    public void setIsDefault(final Boolean newIsDefault){
+    public void setIsDefault(@Nullable final Boolean newIsDefault){
         if(newIsDefault != null){
             isDefault = prepareForAssignment(isDefault, new XSBooleanValue(newIsDefault, false));
         }else{
@@ -105,33 +110,34 @@ public class AttributeConsumingServiceImpl extends AbstractXMLObject implements 
     }
 
     /** {@inheritDoc} */
-    public void setIsDefault(final XSBooleanValue newIsDefault) {
+    public void setIsDefault(@Nullable final XSBooleanValue newIsDefault) {
         isDefault = prepareForAssignment(isDefault, newIsDefault);
     }
 
     /** {@inheritDoc} */
-    public List<ServiceName> getNames() {
+    @Nonnull @Live public List<ServiceName> getNames() {
         return serviceNames;
     }
 
     /** {@inheritDoc} */
-    public List<ServiceDescription> getDescriptions() {
+    @Nonnull @Live public List<ServiceDescription> getDescriptions() {
         return serviceDescriptions;
     }
 
     /** {@inheritDoc} */
-    public List<RequestedAttribute> getRequestedAttributes() {
+    @Nonnull @Live public List<RequestedAttribute> getRequestedAttributes() {
         return requestedAttributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(serviceNames);
         children.addAll(serviceDescriptions);
         children.addAll(requestedAttributes);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

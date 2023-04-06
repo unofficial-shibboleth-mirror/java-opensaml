@@ -85,7 +85,7 @@ public interface ResponseAbstractType extends SignableSAMLObject {
     void setID(@Nullable final String id);
 
     /**
-     * Sets the SAML version for this message.
+     * Gets the SAML version for this message.
      * 
      * @return SAML version for this message
      */

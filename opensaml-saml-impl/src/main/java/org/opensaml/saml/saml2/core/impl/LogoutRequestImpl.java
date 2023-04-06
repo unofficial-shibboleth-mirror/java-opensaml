@@ -19,8 +19,10 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -30,29 +32,33 @@ import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.SessionIndex;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.LogoutRequest}.
+ * A concrete implementation of {@link LogoutRequest}.
  */
 public class LogoutRequestImpl extends RequestAbstractTypeImpl implements LogoutRequest {
 
     /** Reason attribute. */
-    private String reason;
+    @Nullable private String reason;
 
     /** NotOnOrAfter attribute. */
-    private Instant notOnOrAfter;
+    @Nullable private Instant notOnOrAfter;
 
     /** BaseID child element. */
-    private BaseID baseID;
+    @Nullable private BaseID baseID;
 
     /** NameID child element. */
-    private NameID nameID;
+    @Nullable private NameID nameID;
     
     /** EncryptedID child element. */
-    private EncryptedID encryptedID;
-
+    @Nullable private EncryptedID encryptedID;
 
     /** SessionIndex child elements. */
-    private final XMLObjectChildrenList<SessionIndex> sessionIndexes;
+    @Nonnull private final XMLObjectChildrenList<SessionIndex> sessionIndexes;
 
     /**
      * Constructor.
@@ -61,73 +67,75 @@ public class LogoutRequestImpl extends RequestAbstractTypeImpl implements Logout
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected LogoutRequestImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected LogoutRequestImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         sessionIndexes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getReason() {
-        return this.reason;
+    @Nullable public String getReason() {
+        return reason;
     }
 
     /** {@inheritDoc} */
-    public void setReason(final String newReason) {
-        this.reason = prepareForAssignment(this.reason, newReason);
+    public void setReason(@Nullable final String newReason) {
+        reason = prepareForAssignment(reason, newReason);
     }
 
     /** {@inheritDoc} */
-    public Instant getNotOnOrAfter() {
-        return this.notOnOrAfter;
+    @Nullable public Instant getNotOnOrAfter() {
+        return notOnOrAfter;
     }
 
     /** {@inheritDoc} */
-    public void setNotOnOrAfter(final Instant newNotOnOrAfter) {
-        this.notOnOrAfter = prepareForAssignment(this.notOnOrAfter, newNotOnOrAfter);
+    public void setNotOnOrAfter(@Nullable final Instant newNotOnOrAfter) {
+        notOnOrAfter = prepareForAssignment(notOnOrAfter, newNotOnOrAfter);
     }
 
     /** {@inheritDoc} */
-    public BaseID getBaseID() {
+    @Nullable public BaseID getBaseID() {
         return baseID;
     }
 
     /** {@inheritDoc} */
-    public void setBaseID(final BaseID newBaseID) {
+    public void setBaseID(@Nullable final BaseID newBaseID) {
         baseID = prepareForAssignment(baseID, newBaseID);
     }
 
     /** {@inheritDoc} */
-    public NameID getNameID() {
+    @Nullable public NameID getNameID() {
         return nameID;
     }
 
     /** {@inheritDoc} */
-    public void setNameID(final NameID newNameID) {
+    public void setNameID(@Nullable final NameID newNameID) {
         nameID = prepareForAssignment(nameID, newNameID);
     }
 
     /** {@inheritDoc} */
-    public EncryptedID getEncryptedID() {
-        return this.encryptedID;
+    @Nullable public EncryptedID getEncryptedID() {
+        return encryptedID;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptedID(final EncryptedID newEncryptedID) {
-        this.encryptedID = prepareForAssignment(this.encryptedID, newEncryptedID);
+    public void setEncryptedID(@Nullable final EncryptedID newEncryptedID) {
+        encryptedID = prepareForAssignment(encryptedID, newEncryptedID);
     }
 
     /** {@inheritDoc} */
-    public List<SessionIndex> getSessionIndexes() {
+    @Nonnull @Live public List<SessionIndex> getSessionIndexes() {
         return sessionIndexes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
 
         if (baseID != null) {
@@ -144,10 +152,7 @@ public class LogoutRequestImpl extends RequestAbstractTypeImpl implements Logout
 
         children.addAll(sessionIndexes);
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

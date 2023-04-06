@@ -73,6 +73,7 @@ public class AttributeQueryImpl extends SubjectQueryImpl implements AttributeQue
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(attributeDesignators.size() + 1);
         

@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.EmailAddress;
 
@@ -36,7 +39,8 @@ public class EmailAddressImpl extends XSURIImpl implements EmailAddress {
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected EmailAddressImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected EmailAddressImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     

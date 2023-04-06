@@ -17,10 +17,13 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.EncryptedAssertion}.
+ * A concrete implementation of {@link EncryptedAssertion}.
  */
 public class EncryptedAssertionImpl extends EncryptedElementTypeImpl implements EncryptedAssertion {
 
@@ -31,8 +34,8 @@ public class EncryptedAssertionImpl extends EncryptedElementTypeImpl implements 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EncryptedAssertionImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EncryptedAssertionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 

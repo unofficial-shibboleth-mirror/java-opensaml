@@ -24,6 +24,9 @@ package org.opensaml.saml.saml2.metadata.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
@@ -37,36 +40,39 @@ import org.opensaml.saml.saml2.metadata.GivenName;
 import org.opensaml.saml.saml2.metadata.SurName;
 import org.opensaml.saml.saml2.metadata.TelephoneNumber;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.ContactPerson}.
+ * Concrete implementation of {@link ContactPerson}.
  */
 public class ContactPersonImpl extends AbstractXMLObject implements ContactPerson {
 
     /** Contact person type. */
-    private ContactPersonTypeEnumeration type;
+    @Nullable private ContactPersonTypeEnumeration type;
 
     /** Extensions child object. */
-    private Extensions extensions;
+    @Nullable private Extensions extensions;
 
     /** Company child element. */
-    private Company company;
+    @Nullable private Company company;
 
     /** GivenName child objectobject. */
-    private GivenName givenName;
+    @Nullable private GivenName givenName;
 
     /** SurName child object. */
-    private SurName surName;
+    @Nullable private SurName surName;
     
     /** "anyAttribute" attributes. */
-    private final AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /** Child email address. */
-    private final XMLObjectChildrenList<EmailAddress> emailAddresses;
+    @Nonnull private final XMLObjectChildrenList<EmailAddress> emailAddresses;
 
     /** Child telephone numbers. */
-    private final XMLObjectChildrenList<TelephoneNumber> telephoneNumbers;
+    @Nonnull private final XMLObjectChildrenList<TelephoneNumber> telephoneNumbers;
 
     /**
      * Constructor.
@@ -75,8 +81,8 @@ public class ContactPersonImpl extends AbstractXMLObject implements ContactPerso
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected ContactPersonImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected ContactPersonImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         emailAddresses = new XMLObjectChildrenList<>(this);
@@ -84,86 +90,72 @@ public class ContactPersonImpl extends AbstractXMLObject implements ContactPerso
     }
 
     /** {@inheritDoc} */
-    @Override
-    public ContactPersonTypeEnumeration getType() {
+    @Nullable public ContactPersonTypeEnumeration getType() {
         return type;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setType(final ContactPersonTypeEnumeration theType) {
-        this.type = prepareForAssignment(this.type, theType);
+    public void setType(@Nullable final ContactPersonTypeEnumeration theType) {
+        type = prepareForAssignment(type, theType);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Extensions getExtensions() {
+    @Nullable public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setExtensions(final Extensions theExtensions) {
-        this.extensions = prepareForAssignment(this.extensions, theExtensions);
+    public void setExtensions(@Nullable final Extensions theExtensions) {
+        extensions = prepareForAssignment(extensions, theExtensions);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Company getCompany() {
+    @Nullable public Company getCompany() {
         return company;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setCompany(final Company theCompany) {
-        this.company = prepareForAssignment(this.company, theCompany);
+    public void setCompany(@Nullable final Company theCompany) {
+        company = prepareForAssignment(company, theCompany);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public GivenName getGivenName() {
+    @Nullable public GivenName getGivenName() {
         return givenName;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setGivenName(final GivenName name) {
+    public void setGivenName(@Nullable final GivenName name) {
         givenName = prepareForAssignment(givenName, name);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public SurName getSurName() {
+    @Nullable public SurName getSurName() {
         return surName;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setSurName(final SurName name) {
+    public void setSurName(@Nullable final SurName name) {
         surName = prepareForAssignment(surName, name);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<EmailAddress> getEmailAddresses() {
+    @Nonnull @Live public List<EmailAddress> getEmailAddresses() {
         return emailAddresses;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<TelephoneNumber> getTelephoneNumbers() {
+    @Nonnull @Live public List<TelephoneNumber> getTelephoneNumbers() {
         return telephoneNumbers;
     }
     
     /** {@inheritDoc} */
-    @Override
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (extensions != null) {
@@ -187,4 +179,5 @@ public class ContactPersonImpl extends AbstractXMLObject implements ContactPerso
 
         return CollectionSupport.copyToList(children);
     }
+    
 }

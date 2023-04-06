@@ -21,10 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.metadata.AuthnQueryService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.AuthnQueryService}.
+ * Concrete implementation of {@link AuthnQueryService}.
  */
 public class AuthnQueryServiceImpl extends EndpointImpl implements AuthnQueryService {
 
@@ -35,8 +38,9 @@ public class AuthnQueryServiceImpl extends EndpointImpl implements AuthnQuerySer
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected AuthnQueryServiceImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthnQueryServiceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
+
 }

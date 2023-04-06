@@ -21,9 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -32,13 +33,19 @@ import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.EncryptedAttribute;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AttributeStatement}.
+ * A concrete implementation of {@link AttributeStatement}.
  */
+@SuppressWarnings("unchecked")
 public class AttributeStatementImpl extends AbstractXMLObject implements AttributeStatement {
 
     /** Attributes and EncryptedAttributes in this statement. */
-    private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
 
     /**
      * Constructor.
@@ -47,29 +54,26 @@ public class AttributeStatementImpl extends AbstractXMLObject implements Attribu
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AttributeStatementImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AttributeStatementImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Attribute> getAttributes() {
+    @Nonnull @Live public List<Attribute> getAttributes() {
         return (List<Attribute>) indexedChildren.subList(Attribute.DEFAULT_ELEMENT_NAME);
     }
     
 
     /** {@inheritDoc} */
-    public List<EncryptedAttribute> getEncryptedAttributes() {
+    @Nonnull @Live public List<EncryptedAttribute> getEncryptedAttributes() {
         return (List<EncryptedAttribute>) indexedChildren.subList(EncryptedAttribute.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.addAll(indexedChildren);
-        
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(indexedChildren);
     }
+    
 }

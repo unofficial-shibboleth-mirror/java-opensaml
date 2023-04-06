@@ -15,15 +15,13 @@
  * limitations under the License.
  */
 
-/**
- * 
- */
-
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -34,22 +32,27 @@ import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnContextDecl;
 import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implemenation of {@link org.opensaml.saml.saml2.core.AuthnContext}.
+ * A concrete implemenation of {@link AuthnContext}.
  */
 public class AuthnContextImpl extends AbstractXMLObject implements AuthnContext {
 
     /** URI of the Context Class. */
-    private AuthnContextClassRef authnContextClassRef;
+    @Nullable private AuthnContextClassRef authnContextClassRef;
 
     /** Declaration of the Authentication Context. */
-    private AuthnContextDecl authnContextDecl;
+    @Nullable private AuthnContextDecl authnContextDecl;
 
     /** URI of the Declaration of the Authentication Context. */
-    private AuthnContextDeclRef authnContextDeclRef;
+    @Nullable private AuthnContextDeclRef authnContextDeclRef;
 
     /** List of the Authenticating Authorities. */
-    private final XMLObjectChildrenList<AuthenticatingAuthority> authenticatingAuthority;
+    @Nonnull private final XMLObjectChildrenList<AuthenticatingAuthority> authenticatingAuthority;
 
     /**
      * Constructor.
@@ -58,55 +61,66 @@ public class AuthnContextImpl extends AbstractXMLObject implements AuthnContext 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnContextImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AuthnContextImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         authenticatingAuthority = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public AuthnContextClassRef getAuthnContextClassRef() {
+    @Nullable public AuthnContextClassRef getAuthnContextClassRef() {
         return authnContextClassRef;
     }
 
     /** {@inheritDoc} */
-    public void setAuthnContextClassRef(final AuthnContextClassRef newAuthnContextClassRef) {
-        this.authnContextClassRef = prepareForAssignment(this.authnContextClassRef, newAuthnContextClassRef);
+    public void setAuthnContextClassRef(@Nullable final AuthnContextClassRef newAuthnContextClassRef) {
+        authnContextClassRef = prepareForAssignment(authnContextClassRef, newAuthnContextClassRef);
     }
 
     /** {@inheritDoc} */
-    public AuthnContextDecl getAuthContextDecl() {
+    @Nullable public AuthnContextDecl getAuthContextDecl() {
         return authnContextDecl;
     }
 
     /** {@inheritDoc} */
-    public void setAuthnContextDecl(final AuthnContextDecl newAuthnContextDecl) {
-        this.authnContextDecl = prepareForAssignment(this.authnContextDecl, newAuthnContextDecl);
+    public void setAuthnContextDecl(@Nullable final AuthnContextDecl newAuthnContextDecl) {
+        authnContextDecl = prepareForAssignment(authnContextDecl, newAuthnContextDecl);
     }
 
     /** {@inheritDoc} */
-    public AuthnContextDeclRef getAuthnContextDeclRef() {
+    @Nullable public AuthnContextDeclRef getAuthnContextDeclRef() {
         return authnContextDeclRef;
     }
 
     /** {@inheritDoc} */
-    public void setAuthnContextDeclRef(final AuthnContextDeclRef newAuthnContextDeclRef) {
-        this.authnContextDeclRef = prepareForAssignment(this.authnContextDeclRef, newAuthnContextDeclRef);
+    public void setAuthnContextDeclRef(@Nullable final AuthnContextDeclRef newAuthnContextDeclRef) {
+        authnContextDeclRef = prepareForAssignment(authnContextDeclRef, newAuthnContextDeclRef);
     }
 
     /** {@inheritDoc} */
-    public List<AuthenticatingAuthority> getAuthenticatingAuthorities() {
+    @Nonnull @Live public List<AuthenticatingAuthority> getAuthenticatingAuthorities() {
         return authenticatingAuthority;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(authnContextClassRef);
-        children.add(authnContextDecl);
-        children.add(authnContextDeclRef);
+        if (authnContextClassRef != null) {
+            children.add(authnContextClassRef);
+        }
+        
+        if (authnContextDecl != null) {
+            children.add(authnContextDecl);
+        } 
+        
+        if (authnContextDeclRef != null) {
+            children.add(authnContextDeclRef);
+        }
+        
         children.addAll(authenticatingAuthority);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

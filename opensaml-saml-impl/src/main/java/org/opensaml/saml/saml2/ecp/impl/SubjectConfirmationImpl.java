@@ -17,9 +17,10 @@
 
 package org.opensaml.saml.saml2.ecp.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -29,6 +30,10 @@ import org.opensaml.saml.saml2.ecp.SubjectConfirmation;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.soap11.MustUnderstandBearing;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 
 /**
  * Concrete implementation of {@link SubjectConfirmation}.
@@ -36,16 +41,16 @@ import org.opensaml.soap.soap11.MustUnderstandBearing;
 public class SubjectConfirmationImpl extends AbstractXMLObject implements SubjectConfirmation {
 
     /** soap11:actor attribute. */
-    private String soap11Actor;
+    @Nullable private String soap11Actor;
     
     /** soap11:mustUnderstand. */
-    private XSBooleanValue soap11MustUnderstand;
+    @Nullable private XSBooleanValue soap11MustUnderstand;
 
     /** Method of the Confirmation. */
-    private String method;
+    @Nullable private String method;
 
     /** SubjectConfirmationData of the Confirmation. */
-    private SubjectConfirmationData subjectConfirmationData;
+    @Nullable private SubjectConfirmationData subjectConfirmationData;
 
     /**
      * Constructor.
@@ -54,13 +59,13 @@ public class SubjectConfirmationImpl extends AbstractXMLObject implements Subjec
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectConfirmationImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected SubjectConfirmationImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Boolean isSOAP11MustUnderstand() {
+    @Nullable public Boolean isSOAP11MustUnderstand() {
         if (soap11MustUnderstand != null) {
             return soap11MustUnderstand.getValue();
         }
@@ -68,12 +73,12 @@ public class SubjectConfirmationImpl extends AbstractXMLObject implements Subjec
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
+    @Nullable public XSBooleanValue isSOAP11MustUnderstandXSBoolean() {
         return soap11MustUnderstand;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final Boolean newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final Boolean newMustUnderstand) {
         if (newMustUnderstand != null) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, 
                     new XSBooleanValue(newMustUnderstand, true));
@@ -85,52 +90,52 @@ public class SubjectConfirmationImpl extends AbstractXMLObject implements Subjec
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11MustUnderstand(final XSBooleanValue newMustUnderstand) {
+    public void setSOAP11MustUnderstand(@Nullable final XSBooleanValue newMustUnderstand) {
             soap11MustUnderstand = prepareForAssignment(soap11MustUnderstand, newMustUnderstand);
             manageQualifiedAttributeNamespace(MustUnderstandBearing.SOAP11_MUST_UNDERSTAND_ATTR_NAME, 
                     soap11MustUnderstand != null);
     }
 
     /** {@inheritDoc} */
-    public String getSOAP11Actor() {
+    @Nullable public String getSOAP11Actor() {
         return soap11Actor;
     }
 
     /** {@inheritDoc} */
-    public void setSOAP11Actor(final String newActor) {
+    public void setSOAP11Actor(@Nullable final String newActor) {
         soap11Actor = prepareForAssignment(soap11Actor, newActor);
         manageQualifiedAttributeNamespace(ActorBearing.SOAP11_ACTOR_ATTR_NAME, soap11Actor != null);
     }
     
     /** {@inheritDoc} */
-    public String getMethod() {
+    @Nullable public String getMethod() {
         return method;
     }
 
     /** {@inheritDoc} */
-    public void setMethod(final String newMethod) {
+    public void setMethod(@Nullable final String newMethod) {
         method = prepareForAssignment(method, newMethod);
     }
 
     /** {@inheritDoc} */
-    public SubjectConfirmationData getSubjectConfirmationData() {
+    @Nullable public SubjectConfirmationData getSubjectConfirmationData() {
         return subjectConfirmationData;
     }
 
     /** {@inheritDoc} */
-    public void setSubjectConfirmationData(final SubjectConfirmationData newSubjectConfirmationData) {
+    public void setSubjectConfirmationData(@Nullable final SubjectConfirmationData newSubjectConfirmationData) {
         subjectConfirmationData = prepareForAssignment(subjectConfirmationData, newSubjectConfirmationData);
 
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        
         if (subjectConfirmationData != null) {
-            children.add(subjectConfirmationData);
+            return CollectionSupport.singletonList(subjectConfirmationData);
         }
 
-        return Collections.unmodifiableList(children);
+        return null;
     }
+
 }

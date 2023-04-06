@@ -21,17 +21,20 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.XSBooleanValue;
 import org.opensaml.saml.saml2.core.impl.AttributeImpl;
 import org.opensaml.saml.saml2.metadata.RequestedAttribute;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.RequestedAttribute}.
+ * Concrete implementation of {@link RequestedAttribute}.
  */
 public class RequestedAttributeImpl extends AttributeImpl implements RequestedAttribute {
 
     /** isRequired attribute. */
-    private XSBooleanValue isRequired;
+    @Nullable private XSBooleanValue isRequired;
 
     /**
      * Constructor.
@@ -40,13 +43,13 @@ public class RequestedAttributeImpl extends AttributeImpl implements RequestedAt
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RequestedAttributeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RequestedAttributeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
     
     /** {@inheritDoc} */
-    public Boolean isRequired(){
+    @Nullable public Boolean isRequired(){
         if(isRequired != null){
             return isRequired.getValue();
         }
@@ -55,12 +58,12 @@ public class RequestedAttributeImpl extends AttributeImpl implements RequestedAt
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isRequiredXSBoolean() {
+    @Nullable public XSBooleanValue isRequiredXSBoolean() {
         return isRequired;
     }
     
     /** {@inheritDoc} */
-    public void setIsRequired(final Boolean newIsRequired){
+    public void setIsRequired(@Nullable final Boolean newIsRequired){
         if(newIsRequired != null){
             isRequired = prepareForAssignment(isRequired, new XSBooleanValue(newIsRequired, false));
         }else{
@@ -69,7 +72,7 @@ public class RequestedAttributeImpl extends AttributeImpl implements RequestedAt
     }
 
     /** {@inheritDoc} */
-    public void setIsRequired(final XSBooleanValue newIsRequired) {
+    public void setIsRequired(@Nullable final XSBooleanValue newIsRequired) {
         isRequired = prepareForAssignment(isRequired, newIsRequired);
 
     }

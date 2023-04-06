@@ -22,8 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -32,19 +34,23 @@ import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.StatusDetail;
 import org.opensaml.saml.saml2.core.StatusMessage;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.Status}.
+ * Concrete implementation of {@link Status}.
  */
 public class StatusImpl extends AbstractXMLObject implements Status {
 
     /** StatusCode element. */
-    private StatusCode statusCode;
+    @Nullable private StatusCode statusCode;
 
     /** StatusMessage element. */
-    private StatusMessage statusMessage;
+    @Nullable private StatusMessage statusMessage;
 
     /** StatusDetail element. */
-    private StatusDetail statusDetail;
+    @Nullable private StatusDetail statusDetail;
 
     /**
      * Constructor.
@@ -53,52 +59,59 @@ public class StatusImpl extends AbstractXMLObject implements Status {
      * @param elementLocalName element name
      * @param namespacePrefix namespace prefix
      */
-    protected StatusImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected StatusImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public StatusCode getStatusCode() {
+    @Nullable public StatusCode getStatusCode() {
         return this.statusCode;
     }
 
     /** {@inheritDoc} */
-    public void setStatusCode(final StatusCode newStatusCode) {
+    public void setStatusCode(@Nullable final StatusCode newStatusCode) {
         this.statusCode = prepareForAssignment(this.statusCode, newStatusCode);
 
     }
 
     /** {@inheritDoc} */
-    public StatusMessage getStatusMessage() {
+    @Nullable public StatusMessage getStatusMessage() {
         return this.statusMessage;
     }
 
     /** {@inheritDoc} */
-    public void setStatusMessage(final StatusMessage newStatusMessage) {
+    public void setStatusMessage(@Nullable final StatusMessage newStatusMessage) {
         this.statusMessage = prepareForAssignment(this.getStatusMessage(), newStatusMessage);
     }
 
     /** {@inheritDoc} */
-    public StatusDetail getStatusDetail() {
+    @Nullable public StatusDetail getStatusDetail() {
         return this.statusDetail;
     }
 
     /** {@inheritDoc} */
-    public void setStatusDetail(final StatusDetail newStatusDetail) {
+    public void setStatusDetail(@Nullable final StatusDetail newStatusDetail) {
         this.statusDetail = prepareForAssignment(this.statusDetail, newStatusDetail);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(statusCode);
+        if (statusCode != null) {
+            children.add(statusCode);
+        }
+        
         if (statusMessage != null) {
             children.add(statusMessage);
         }
+        
         if (statusDetail != null) {
             children.add(statusDetail);
         }
-        return Collections.unmodifiableList(children);
+        
+        return CollectionSupport.copyToList(children);
     }
+
 }

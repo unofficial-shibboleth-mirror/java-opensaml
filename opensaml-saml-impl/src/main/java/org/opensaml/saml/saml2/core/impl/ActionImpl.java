@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml2.core.Action;
 
@@ -30,7 +33,7 @@ import org.opensaml.saml.saml2.core.Action;
 public class ActionImpl extends XSStringImpl implements Action {
 
     /** URI of the Namespace of this Action. */
-    private String namespace;
+    @Nullable private String namespace;
 
     /**
      * Constructor.
@@ -39,18 +42,19 @@ public class ActionImpl extends XSStringImpl implements Action {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ActionImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ActionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getNamespace() {
+    @Nullable public String getNamespace() {
         return namespace;
     }
 
     /** {@inheritDoc} */
-    public void setNamespace(final String newNamespace) {
-        this.namespace = prepareForAssignment(this.namespace, newNamespace);
+    public void setNamespace(@Nullable final String newNamespace) {
+        namespace = prepareForAssignment(namespace, newNamespace);
     }
 
 }

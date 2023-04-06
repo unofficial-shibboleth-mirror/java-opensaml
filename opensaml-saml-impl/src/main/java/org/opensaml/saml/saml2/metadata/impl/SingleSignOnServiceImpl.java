@@ -21,10 +21,13 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.metadata.SingleSignOnService;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.SingleSignOnService}.
+ * Concrete implementation of {@link SingleSignOnService}.
  */
 public class SingleSignOnServiceImpl extends EndpointImpl implements SingleSignOnService {
 
@@ -35,8 +38,9 @@ public class SingleSignOnServiceImpl extends EndpointImpl implements SingleSignO
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SingleSignOnServiceImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected SingleSignOnServiceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
+    
 }

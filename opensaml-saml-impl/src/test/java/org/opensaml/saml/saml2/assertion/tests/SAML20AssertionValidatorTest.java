@@ -74,6 +74,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 
@@ -728,7 +730,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         }
 
         /** {@inheritDoc} */
-        public List<XMLObject> getOrderedChildren() {
+        @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
             return null;
         }
         
@@ -747,7 +749,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         }
 
         /** {@inheritDoc} */
-        public List<XMLObject> getOrderedChildren() {
+        @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
             return null;
         }
         

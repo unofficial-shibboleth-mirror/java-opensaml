@@ -18,24 +18,30 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDMappingResponse;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.NameIDMappingResponse}.
+ * Concrete implementation of {@link NameIDMappingResponse}.
  */
 public class NameIDMappingResponseImpl extends StatusResponseTypeImpl implements NameIDMappingResponse {
 
     /** NameID child element. */
-    private NameID nameID;
+    @Nullable private NameID nameID;
 
     /** EncryptedID child element. */
-    private EncryptedID encryptedID;
+    @Nullable private EncryptedID encryptedID;
 
     /**
      * Constructor.
@@ -44,37 +50,39 @@ public class NameIDMappingResponseImpl extends StatusResponseTypeImpl implements
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected NameIDMappingResponseImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected NameIDMappingResponseImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public NameID getNameID() {
+    @Nullable public NameID getNameID() {
         return this.nameID;
     }
 
     /** {@inheritDoc} */
-    public void setNameID(final NameID newNameID) {
+    public void setNameID(@Nullable final NameID newNameID) {
         this.nameID = prepareForAssignment(this.nameID, newNameID);
     }
 
     /** {@inheritDoc} */
-    public EncryptedID getEncryptedID() {
+    @Nullable public EncryptedID getEncryptedID() {
         return this.encryptedID;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptedID(final EncryptedID newEncryptedID) {
+    public void setEncryptedID(@Nullable final EncryptedID newEncryptedID) {
         this.encryptedID = prepareForAssignment(this.encryptedID, newEncryptedID);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
 
         if (nameID != null) {
@@ -85,10 +93,7 @@ public class NameIDMappingResponseImpl extends StatusResponseTypeImpl implements
             children.add(encryptedID);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

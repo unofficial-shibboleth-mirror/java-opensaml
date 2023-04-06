@@ -22,8 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -32,19 +34,24 @@ import org.opensaml.saml.saml2.core.IDPList;
 import org.opensaml.saml.saml2.core.RequesterID;
 import org.opensaml.saml.saml2.core.Scoping;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.Scoping}.
+ * Concrete implementation of {@link Scoping}.
  */
 public class ScopingImpl extends AbstractXMLObject implements Scoping {
 
     /** IDPList child element. */
-    private IDPList idpList;
+    @Nullable private IDPList idpList;
 
     /** List of RequesterID child elements. */
-    private final XMLObjectChildrenList<RequesterID> requesterIDs;
+    @Nonnull private final XMLObjectChildrenList<RequesterID> requesterIDs;
 
     /** ProxyCount attribute. */
-    private Integer proxyCount;
+    @Nullable private Integer proxyCount;
 
     /**
      * Constructor.
@@ -53,39 +60,40 @@ public class ScopingImpl extends AbstractXMLObject implements Scoping {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ScopingImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ScopingImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         requesterIDs = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public Integer getProxyCount() {
+    @Nullable public Integer getProxyCount() {
         return this.proxyCount;
     }
 
     /** {@inheritDoc} */
-    public void setProxyCount(final Integer newProxyCount) {
+    public void setProxyCount(@Nullable final Integer newProxyCount) {
         this.proxyCount = prepareForAssignment(this.proxyCount, newProxyCount);
     }
 
     /** {@inheritDoc} */
-    public IDPList getIDPList() {
+    @Nullable public IDPList getIDPList() {
         return idpList;
     }
 
     /** {@inheritDoc} */
-    public void setIDPList(final IDPList newIDPList) {
+    public void setIDPList(@Nullable final IDPList newIDPList) {
         this.idpList = prepareForAssignment(this.idpList, newIDPList);
 
     }
 
     /** {@inheritDoc} */
-    public List<RequesterID> getRequesterIDs() {
+    @Nonnull @Live public List<RequesterID> getRequesterIDs() {
         return requesterIDs;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (idpList != null) {
@@ -94,10 +102,7 @@ public class ScopingImpl extends AbstractXMLObject implements Scoping {
 
         children.addAll(requesterIDs);
 
-        if (children.size() > 0) {
-            return Collections.unmodifiableList(children);
-        } else {
-            return null;
-        }
+        return CollectionSupport.copyToList(children);
     }
+    
 }

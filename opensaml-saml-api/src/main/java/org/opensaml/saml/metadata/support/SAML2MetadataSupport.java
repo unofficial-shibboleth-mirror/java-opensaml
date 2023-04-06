@@ -20,6 +20,7 @@ package org.opensaml.saml.metadata.support;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.saml.saml2.metadata.IndexedEndpoint;
 import org.slf4j.Logger;
@@ -55,7 +56,7 @@ public final class SAML2MetadataSupport {
      * @param <T> the subtype of IndexedType
      * 
      */
-    public static <T extends IndexedEndpoint> T getDefaultIndexedEndpoint(final List<T> candidates) {
+    @Nullable public static <T extends IndexedEndpoint> T getDefaultIndexedEndpoint(final List<T> candidates) {
         LOG.debug("Selecting default IndexedEndpoint");
         
         if (candidates == null || candidates.isEmpty()) {

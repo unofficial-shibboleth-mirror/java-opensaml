@@ -21,10 +21,10 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -36,13 +36,19 @@ import org.opensaml.saml.saml2.core.AssertionIDRef;
 import org.opensaml.saml.saml2.core.AssertionURIRef;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.Advice}.
+ * A concrete implementation of {@link Advice}.
  */
+@SuppressWarnings("unchecked")
 public class AdviceImpl extends AbstractXMLObject implements Advice {
 
     /** Children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> indexedChildren;
 
     /**
      * Constructor.
@@ -51,47 +57,45 @@ public class AdviceImpl extends AbstractXMLObject implements Advice {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AdviceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AdviceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         indexedChildren = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getChildren() {
+    @Nonnull @Live public List<XMLObject> getChildren() {
         return indexedChildren;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getChildren(final QName typeOrName) {
+    @Nonnull @Live public List<XMLObject> getChildren(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) indexedChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<AssertionIDRef> getAssertionIDReferences() {
+    @Nonnull @Live public List<AssertionIDRef> getAssertionIDReferences() {
         return (List<AssertionIDRef>) indexedChildren.subList(AssertionIDRef.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<AssertionURIRef> getAssertionURIReferences() {
+    @Nonnull @Live public List<AssertionURIRef> getAssertionURIReferences() {
         return (List<AssertionURIRef>) indexedChildren.subList(AssertionURIRef.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<Assertion> getAssertions() {
+    @Nonnull @Live public List<Assertion> getAssertions() {
         return (List<Assertion>) indexedChildren.subList(Assertion.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<EncryptedAssertion> getEncryptedAssertions() {
+    @Nonnull @Live public List<EncryptedAssertion> getEncryptedAssertions() {
         return (List<EncryptedAssertion>) indexedChildren.subList(EncryptedAssertion.DEFAULT_ELEMENT_NAME);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.addAll(indexedChildren);
-
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(indexedChildren);
     }
+
 }

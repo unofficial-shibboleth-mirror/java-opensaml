@@ -19,20 +19,26 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.BaseID;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.BaseID}.
+ * Concrete implementation of {@link BaseID}.
  */
 public abstract class BaseIDImpl extends AbstractXMLObject implements BaseID {
 
     /** Name Qualifier of BaseID. */
-    private String nameQualifier;
+    @Nullable private String nameQualifier;
 
     /** SP Name Qualifier of Base. */
-    private String spNameQualfier;
+    @Nullable private String spNameQualfier;
 
     /**
      * Constructor.
@@ -41,32 +47,34 @@ public abstract class BaseIDImpl extends AbstractXMLObject implements BaseID {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected BaseIDImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected BaseIDImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getNameQualifier() {
+    @Nullable public String getNameQualifier() {
         return nameQualifier;
     }
 
     /** {@inheritDoc} */
-    public void setNameQualifier(final String newNameQualifier) {
-        this.nameQualifier = prepareForAssignment(this.nameQualifier, newNameQualifier);
+    public void setNameQualifier(@Nullable final String newNameQualifier) {
+        nameQualifier = prepareForAssignment(nameQualifier, newNameQualifier);
     }
 
     /** {@inheritDoc} */
-    public String getSPNameQualifier() {
+    @Nullable public String getSPNameQualifier() {
         return spNameQualfier;
     }
 
     /** {@inheritDoc} */
-    public void setSPNameQualifier(final String newSPNameQualifier) {
-        this.spNameQualfier = prepareForAssignment(this.spNameQualfier, newSPNameQualifier);
+    public void setSPNameQualifier(@Nullable final String newSPNameQualifier) {
+        spNameQualfier = prepareForAssignment(spNameQualfier, newSPNameQualifier);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         return null;
     }
+
 }

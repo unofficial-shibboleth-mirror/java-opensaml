@@ -21,8 +21,6 @@
 
 package org.opensaml.saml.saml2.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -34,10 +32,13 @@ import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml2.core.Audience;
 import org.opensaml.saml.saml2.core.ProxyRestriction;
 
-import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.ProxyRestriction}.
+ * Concrete implementation of {@link ProxyRestriction}.
  */
 public class ProxyRestrictionImpl extends AbstractXMLObject implements ProxyRestriction {
 
@@ -54,14 +55,14 @@ public class ProxyRestrictionImpl extends AbstractXMLObject implements ProxyRest
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ProxyRestrictionImpl(@Nullable @NotEmpty final String namespaceURI,
-            @Nonnull @NotEmpty final String elementLocalName, @Nullable @NotEmpty final String namespacePrefix) {
+    protected ProxyRestrictionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         audiences = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    @Nullable public List<Audience> getAudiences() {
+    @Nonnull @Live public List<Audience> getAudiences() {
         return audiences;
     }
 
@@ -80,11 +81,8 @@ public class ProxyRestrictionImpl extends AbstractXMLObject implements ProxyRest
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>();
-
-        children.addAll(audiences);
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(audiences);
     }
     
 }

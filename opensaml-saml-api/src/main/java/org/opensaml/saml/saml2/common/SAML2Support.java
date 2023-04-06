@@ -90,24 +90,21 @@ public final class SAML2Support {
         Instant earliestExpiration = candidateTime;
 
         // Test duration based times
-        if (xmlObject instanceof CacheableSAMLObject) {
-            earliestExpiration = getEarliestExpirationFromCacheable((CacheableSAMLObject)xmlObject, earliestExpiration, 
-                    now);
+        if (xmlObject instanceof CacheableSAMLObject cacheable) {
+            earliestExpiration = getEarliestExpirationFromCacheable(cacheable, earliestExpiration, now);
         }
 
         // Test instant based times
-        if (xmlObject instanceof TimeBoundSAMLObject) {
-            earliestExpiration = getEarliestExpirationFromTimeBound((TimeBoundSAMLObject)xmlObject, earliestExpiration);
+        if (xmlObject instanceof TimeBoundSAMLObject timebound) {
+            earliestExpiration = getEarliestExpirationFromTimeBound(timebound, earliestExpiration);
         }
 
         // Inspect children
         if (xmlObject != null) {
             final List<XMLObject> children = xmlObject.getOrderedChildren();
-            if (children != null) {
+            if (children != null && !children.isEmpty()) {
                 for (final XMLObject child : children) {
-                    if (child != null) {
-                        earliestExpiration = getEarliestExpiration(child, earliestExpiration, now);
-                    }
+                    earliestExpiration = getEarliestExpiration(child, earliestExpiration, now);
                 }
             }
         }

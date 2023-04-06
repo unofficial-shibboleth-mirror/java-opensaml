@@ -253,6 +253,8 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
         final List<XMLObject> childXMLObjects = xmlObject.getOrderedChildren();
         if (childXMLObjects != null && childXMLObjects.size() > 0) {
             for (final XMLObject childXMLObject : childXMLObjects) {
+                // TODO: this can be removed iff we clean the remaining XACML implementation classes
+                // to stop emitting nulls.
                 if (childXMLObject == null) {
                     continue;
                 }

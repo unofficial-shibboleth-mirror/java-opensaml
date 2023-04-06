@@ -89,6 +89,7 @@ public class AuthorizationDecisionQueryImpl extends SubjectQueryImpl implements 
     }
 
     /** {@inheritDoc} */
+    @Override
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(actions.size() + 2);
         

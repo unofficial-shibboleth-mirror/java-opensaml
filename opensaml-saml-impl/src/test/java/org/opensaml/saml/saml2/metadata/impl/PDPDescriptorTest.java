@@ -109,7 +109,7 @@ public class PDPDescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertEquals(descriptor.getEndpoints(AssertionIDRequestService.DEFAULT_ELEMENT_NAME).size(), 2,
                 "AssertionIDRequestService count");
         
-        Assert.assertNull(descriptor.getEndpoints(PDPDescriptor.DEFAULT_ELEMENT_NAME));
+        Assert.assertTrue(descriptor.getEndpoints(PDPDescriptor.DEFAULT_ELEMENT_NAME).isEmpty());
         
         Assert.assertEquals(descriptor.getEndpoints().size(), 5, "EndPoints");
         Assert.assertEquals(descriptor.getNameIDFormats().size(), 1, "NameIDFormat count");

@@ -73,7 +73,7 @@ public class AttributeAuthorityDescriptorTest extends XMLObjectProviderBaseTestC
         Assert.assertEquals(descriptor.getEndpoints(qname).size(), 1);
         qname = new QName(SAMLConstants.SAML20MD_NS, AssertionIDRequestService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         Assert.assertEquals(descriptor.getEndpoints(qname).size(), 2);
-        Assert.assertNull(descriptor.getEndpoints(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME));
+        Assert.assertTrue(descriptor.getEndpoints(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME).isEmpty());
 }
 
     /** {@inheritDoc} */

@@ -24,6 +24,9 @@ package org.opensaml.saml.saml2.metadata.impl;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.AttributeMap;
@@ -34,27 +37,30 @@ import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
 import org.opensaml.saml.saml2.metadata.OrganizationName;
 import org.opensaml.saml.saml2.metadata.OrganizationURL;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.metadata.Organization}.
+ * Concrete implementation of {@link Organization}.
  */
 public class OrganizationImpl extends AbstractXMLObject implements Organization {
 
     /** element extensions. */
-    private Extensions extensions;
+    @Nullable private Extensions extensions;
 
     /** OrganizationName children. */
-    private final XMLObjectChildrenList<OrganizationName> names;
+    @Nonnull private final XMLObjectChildrenList<OrganizationName> names;
 
     /** OrganizationDisplayName children. */
-    private final XMLObjectChildrenList<OrganizationDisplayName> displayNames;
+    @Nonnull private final XMLObjectChildrenList<OrganizationDisplayName> displayNames;
 
     /** OrganizationURL children. */
-    private final XMLObjectChildrenList<OrganizationURL> urls;
+    @Nonnull private final XMLObjectChildrenList<OrganizationURL> urls;
     
     /** "anyAttribute" attributes. */
-    private final AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /**
      * Constructor.
@@ -63,7 +69,8 @@ public class OrganizationImpl extends AbstractXMLObject implements Organization 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected OrganizationImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected OrganizationImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         names = new XMLObjectChildrenList<>(this);
         displayNames = new XMLObjectChildrenList<>(this);
@@ -72,44 +79,37 @@ public class OrganizationImpl extends AbstractXMLObject implements Organization 
     }
 
     /** {@inheritDoc} */
-    @Override
-    public Extensions getExtensions() {
+    @Nullable public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public void setExtensions(final Extensions newExtensions) {
+    public void setExtensions(@Nullable final Extensions newExtensions) {
         this.extensions = prepareForAssignment(this.extensions, newExtensions);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<OrganizationName> getOrganizationNames() {
+    @Nonnull @Live public List<OrganizationName> getOrganizationNames() {
         return names;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<OrganizationDisplayName> getDisplayNames() {
+    @Nonnull @Live public List<OrganizationDisplayName> getDisplayNames() {
         return displayNames;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<OrganizationURL> getURLs() {
+    @Nonnull @Live public List<OrganizationURL> getURLs() {
         return urls;
     }
     
-    /** {@inheritDoc} */
-    @Override
-    public AttributeMap getUnknownAttributes() {
+    /** {@inheritDoc} */    @Override
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (extensions != null) {
@@ -122,4 +122,5 @@ public class OrganizationImpl extends AbstractXMLObject implements Organization 
 
         return CollectionSupport.copyToList(children);
     }
+    
 }

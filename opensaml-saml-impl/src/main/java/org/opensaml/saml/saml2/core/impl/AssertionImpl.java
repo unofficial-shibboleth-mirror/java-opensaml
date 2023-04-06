@@ -23,9 +23,10 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -42,35 +43,42 @@ import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.Statement;
 import org.opensaml.saml.saml2.core.Subject;
+import org.opensaml.xmlsec.signature.Signature;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.Assertion}.
+ * A concrete implementation of {@link Assertion}.
  */
+@SuppressWarnings("unchecked")
 public class AssertionImpl extends AbstractSignableSAMLObject implements Assertion {
 
     /** SAML Version of the assertion. */
-    private SAMLVersion version;
+    @Nullable private SAMLVersion version;
 
     /** Issue Instant of the assertion. */
-    private Instant issueInstant;
+    @Nullable private Instant issueInstant;
 
     /** ID of the assertion. */
-    private String id;
+    @Nullable private String id;
 
     /** Issuer of the assertion. */
-    private Issuer issuer;
+    @Nullable private Issuer issuer;
 
     /** Subject of the assertion. */
-    private Subject subject;
+    @Nullable private Subject subject;
 
     /** Conditions of the assertion. */
-    private Conditions conditions;
+    @Nullable private Conditions conditions;
 
     /** Advice of the assertion. */
-    private Advice advice;
+    @Nullable private Advice advice;
 
     /** Statements of the assertion. */
-    private final IndexedXMLObjectChildrenList<Statement> statements;
+    @Nonnull private final IndexedXMLObjectChildrenList<Statement> statements;
 
     /**
      * Constructor.
@@ -79,131 +87,132 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AssertionImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AssertionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         version = SAMLVersion.VERSION_20;
         statements = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public SAMLVersion getVersion() {
+    @Nullable public SAMLVersion getVersion() {
         return version;
     }
 
     /** {@inheritDoc} */
-    public void setVersion(final SAMLVersion newVersion) {
+    public void setVersion(@Nullable final SAMLVersion newVersion) {
         version = prepareForAssignment(version, newVersion);
     }
 
     /** {@inheritDoc} */
-    public Instant getIssueInstant() {
+    @Nullable public Instant getIssueInstant() {
         return issueInstant;
     }
 
     /** {@inheritDoc} */
-    public void setIssueInstant(final Instant newIssueInstance) {
+    public void setIssueInstant(@Nullable final Instant newIssueInstance) {
         issueInstant = prepareForAssignment(issueInstant, newIssueInstance);
     }
 
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
+    public void setID(@Nullable final String newID) {
         final String oldID = id;
         id = prepareForAssignment(id, newID);
         registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
-    public Issuer getIssuer() {
+    @Nullable public Issuer getIssuer() {
         return issuer;
     }
 
     /** {@inheritDoc} */
-    public void setIssuer(final Issuer newIssuer) {
+    public void setIssuer(@Nullable final Issuer newIssuer) {
         issuer = prepareForAssignment(issuer, newIssuer);
     }
 
     /** {@inheritDoc} */
-    public Subject getSubject() {
+    @Nullable public Subject getSubject() {
         return subject;
     }
 
     /** {@inheritDoc} */
-    public void setSubject(final Subject newSubject) {
+    public void setSubject(@Nullable final Subject newSubject) {
         subject = prepareForAssignment(subject, newSubject);
     }
 
     /** {@inheritDoc} */
-    public Conditions getConditions() {
+    @Nullable public Conditions getConditions() {
         return conditions;
     }
 
     /** {@inheritDoc} */
-    public void setConditions(final Conditions newConditions) {
+    public void setConditions(@Nullable final Conditions newConditions) {
         conditions = prepareForAssignment(conditions, newConditions);
     }
 
     /** {@inheritDoc} */
-    public Advice getAdvice() {
+    @Nullable public Advice getAdvice() {
         return advice;
     }
 
     /** {@inheritDoc} */
-    public void setAdvice(final Advice newAdvice) {
+    public void setAdvice(@Nullable final Advice newAdvice) {
         advice = prepareForAssignment(advice, newAdvice);
     }
 
     /** {@inheritDoc} */
-    public List<Statement> getStatements() {
+    @Nonnull @Live public List<Statement> getStatements() {
         return statements;
     }
 
     /** {@inheritDoc} */
-    public List<Statement> getStatements(final QName typeOrName) {
+    @Nonnull @Live public List<Statement> getStatements(@Nonnull final QName typeOrName) {
         return (List<Statement>) statements.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<AuthnStatement> getAuthnStatements() {
+    @Nonnull @Live public List<AuthnStatement> getAuthnStatements() {
         final QName statementQName = new QName(SAMLConstants.SAML20_NS, AuthnStatement.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
         return (List<AuthnStatement>) statements.subList(statementQName);
     }
 
     /** {@inheritDoc} */
-    public List<AuthzDecisionStatement> getAuthzDecisionStatements() {
+    @Nonnull @Live public List<AuthzDecisionStatement> getAuthzDecisionStatements() {
         final QName statementQName = new QName(SAMLConstants.SAML20_NS,
-                AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME,
-                SAMLConstants.SAML20_PREFIX);
+                AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         return (List<AuthzDecisionStatement>) statements.subList(statementQName);
     }
 
     /** {@inheritDoc} */
-    public List<AttributeStatement> getAttributeStatements() {
+    @Nonnull @Live public List<AttributeStatement> getAttributeStatements() {
         final QName statementQName = new QName(SAMLConstants.SAML20_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
         return (List<AttributeStatement>) statements.subList(statementQName);
     }
     
     /** {@inheritDoc} */
-    public String getSignatureReferenceID(){
+    @Nullable public String getSignatureReferenceID(){
         return id;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (issuer != null) {
             children.add(issuer);
         }
         
-        if (getSignature() != null){
-            children.add(getSignature());
+        final Signature sig = getSignature();
+        if (sig != null){
+            children.add(sig);
         }
         
         if (subject != null) {
@@ -220,6 +229,7 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
         
         children.addAll(statements);
 
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

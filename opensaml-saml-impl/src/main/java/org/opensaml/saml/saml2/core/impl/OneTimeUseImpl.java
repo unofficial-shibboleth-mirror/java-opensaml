@@ -23,12 +23,18 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.OneTimeUse;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.OneTimeUse}.
+ * Concrete implementation of {@link OneTimeUse}.
  */
 public class OneTimeUseImpl extends AbstractXMLObject implements OneTimeUse {
 
@@ -39,12 +45,14 @@ public class OneTimeUseImpl extends AbstractXMLObject implements OneTimeUse {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected OneTimeUseImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected OneTimeUseImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         return null;
     }
+
 }

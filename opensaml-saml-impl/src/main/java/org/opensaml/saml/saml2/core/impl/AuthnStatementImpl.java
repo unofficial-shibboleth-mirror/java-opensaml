@@ -23,8 +23,10 @@ package org.opensaml.saml.saml2.core.impl;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -32,25 +34,29 @@ import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.SubjectLocality;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthnStatement}.
+ * A concrete implementation of {@link AuthnStatement}.
  */
 public class AuthnStatementImpl extends AbstractXMLObject implements AuthnStatement {
 
     /** Subject Locality of the Authentication Statement. */
-    private SubjectLocality subjectLocality;
+    @Nullable private SubjectLocality subjectLocality;
 
     /** Authentication Context of the Authentication Statement. */
-    private AuthnContext authnContext;
+    @Nullable private AuthnContext authnContext;
 
     /** Time of the authentication. */
-    private Instant authnInstant;
+    @Nullable private Instant authnInstant;
 
     /** Index of the session. */
-    private String sessionIndex;
+    @Nullable private String sessionIndex;
 
     /** Time at which the session ends. */
-    private Instant sessionNotOnOrAfter;
+    @Nullable private Instant sessionNotOnOrAfter;
 
     /**
      * Constructor.
@@ -59,68 +65,74 @@ public class AuthnStatementImpl extends AbstractXMLObject implements AuthnStatem
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthnStatementImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthnStatementImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public SubjectLocality getSubjectLocality() {
+    @Nullable public SubjectLocality getSubjectLocality() {
         return subjectLocality;
     }
 
     /** {@inheritDoc} */
-    public void setSubjectLocality(final SubjectLocality newSubjectLocality) {
-        this.subjectLocality = prepareForAssignment(this.subjectLocality, newSubjectLocality);
+    public void setSubjectLocality(@Nullable final SubjectLocality newSubjectLocality) {
+        subjectLocality = prepareForAssignment(subjectLocality, newSubjectLocality);
     }
 
     /** {@inheritDoc} */
-    public AuthnContext getAuthnContext() {
+    @Nullable public AuthnContext getAuthnContext() {
         return authnContext;
     }
 
     /** {@inheritDoc} */
-    public void setAuthnContext(final AuthnContext newAuthnContext) {
-        this.authnContext = prepareForAssignment(this.authnContext, newAuthnContext);
+    public void setAuthnContext(@Nullable final AuthnContext newAuthnContext) {
+        authnContext = prepareForAssignment(authnContext, newAuthnContext);
     }
 
     /** {@inheritDoc} */
-    public Instant getAuthnInstant() {
+    @Nullable public Instant getAuthnInstant() {
         return authnInstant;
     }
 
     /** {@inheritDoc} */
-    public void setAuthnInstant(final Instant newAuthnInstant) {
-        this.authnInstant = prepareForAssignment(this.authnInstant, newAuthnInstant);
+    public void setAuthnInstant(@Nullable final Instant newAuthnInstant) {
+        authnInstant = prepareForAssignment(authnInstant, newAuthnInstant);
     }
 
     /** {@inheritDoc} */
-    public String getSessionIndex() {
+    @Nullable public String getSessionIndex() {
         return sessionIndex;
     }
 
     /** {@inheritDoc} */
-    public void setSessionIndex(final String newSessionIndex) {
-        this.sessionIndex = prepareForAssignment(this.sessionIndex, newSessionIndex);
+    public void setSessionIndex(@Nullable final String newSessionIndex) {
+        sessionIndex = prepareForAssignment(sessionIndex, newSessionIndex);
     }
 
     /** {@inheritDoc} */
-    public Instant getSessionNotOnOrAfter() {
+    @Nullable public Instant getSessionNotOnOrAfter() {
         return sessionNotOnOrAfter;
     }
 
     /** {@inheritDoc} */
-    public void setSessionNotOnOrAfter(final Instant newSessionNotOnOrAfter) {
-        this.sessionNotOnOrAfter = prepareForAssignment(this.sessionNotOnOrAfter, newSessionNotOnOrAfter);
+    public void setSessionNotOnOrAfter(@Nullable final Instant newSessionNotOnOrAfter) {
+        sessionNotOnOrAfter = prepareForAssignment(sessionNotOnOrAfter, newSessionNotOnOrAfter);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        children.add(subjectLocality);
-        children.add(authnContext);
-
-        return Collections.unmodifiableList(children);
+        if (subjectLocality != null) {
+            children.add(subjectLocality);
+        }
+        
+        if (authnContext != null) {
+            children.add(authnContext);
+        }
+        
+        return CollectionSupport.copyToList(children);
     }
+    
 }

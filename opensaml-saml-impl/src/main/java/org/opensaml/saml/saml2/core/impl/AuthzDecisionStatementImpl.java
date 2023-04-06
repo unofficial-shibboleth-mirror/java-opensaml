@@ -22,8 +22,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -33,22 +35,27 @@ import org.opensaml.saml.saml2.core.AuthzDecisionStatement;
 import org.opensaml.saml.saml2.core.DecisionTypeEnumeration;
 import org.opensaml.saml.saml2.core.Evidence;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.AuthzDecisionStatement}.
+ * A concrete implementation of {@link AuthzDecisionStatement}.
  */
 public class AuthzDecisionStatementImpl extends AbstractXMLObject implements AuthzDecisionStatement {
 
     /** URI of the resource to which authorization is sought. */
-    private String resource;
+    @Nullable private String resource;
 
     /** Decision of the authorization request. */
-    private DecisionTypeEnumeration decision;
+    @Nullable private DecisionTypeEnumeration decision;
 
     /** Actions authorized to be performed. */
-    private final XMLObjectChildrenList<Action> actions;
+    @Nonnull private final XMLObjectChildrenList<Action> actions;
 
     /** SAML assertion the authority relied on when making the authorization decision. */
-    private Evidence evidence;
+    @Nullable private Evidence evidence;
 
     /**
      * Constructor.
@@ -57,53 +64,58 @@ public class AuthzDecisionStatementImpl extends AbstractXMLObject implements Aut
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthzDecisionStatementImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthzDecisionStatementImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         actions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getResource() {
+    @Nullable public String getResource() {
         return resource;
     }
 
     /** {@inheritDoc} */
-    public void setResource(final String newResourceURI) {
-        this.resource = prepareForAssignment(this.resource, newResourceURI, false);
+    public void setResource(@Nullable final String newResourceURI) {
+        resource = prepareForAssignment(resource, newResourceURI, false);
     }
 
     /** {@inheritDoc} */
-    public DecisionTypeEnumeration getDecision() {
+    @Nullable public DecisionTypeEnumeration getDecision() {
         return decision;
     }
 
     /** {@inheritDoc} */
-    public void setDecision(final DecisionTypeEnumeration newDecision) {
-        this.decision = prepareForAssignment(this.decision, newDecision);
+    public void setDecision(@Nullable final DecisionTypeEnumeration newDecision) {
+        decision = prepareForAssignment(decision, newDecision);
     }
 
     /** {@inheritDoc} */
-    public List<Action> getActions() {
+    @Nonnull @Live public List<Action> getActions() {
         return actions;
     }
 
     /** {@inheritDoc} */
-    public Evidence getEvidence() {
+    @Nullable public Evidence getEvidence() {
         return evidence;
     }
 
     /** {@inheritDoc} */
-    public void setEvidence(final Evidence newEvidence) {
-        this.evidence = prepareForAssignment(this.evidence, newEvidence);
+    public void setEvidence(@Nullable final Evidence newEvidence) {
+        evidence = prepareForAssignment(evidence, newEvidence);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         children.addAll(actions);
-        children.add(evidence);
-        return Collections.unmodifiableList(children);
+        
+        if (evidence != null) {
+            children.add(evidence);
+        }
+        
+        return CollectionSupport.copyToList(children);
     }
+    
 }

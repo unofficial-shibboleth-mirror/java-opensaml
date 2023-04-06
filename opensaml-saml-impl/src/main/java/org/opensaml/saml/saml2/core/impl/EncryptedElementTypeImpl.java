@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -28,16 +30,21 @@ import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A concrete implementation of {@link org.opensaml.saml.saml2.core.EncryptedElementType}.
+ * A concrete implementation of {@link EncryptedElementType}.
  */
 public class EncryptedElementTypeImpl extends AbstractXMLObject implements EncryptedElementType {
     
     /** EncryptedData child element. */
-    private EncryptedData encryptedData;
+    @Nullable private EncryptedData encryptedData;
     
     /** EncryptedKey children. */
-    private final XMLObjectChildrenList<EncryptedKey> encryptedKeys;
+    @Nonnull private final XMLObjectChildrenList<EncryptedKey> encryptedKeys;
 
     /**
      * Constructor.
@@ -46,29 +53,29 @@ public class EncryptedElementTypeImpl extends AbstractXMLObject implements Encry
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EncryptedElementTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected EncryptedElementTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         encryptedKeys = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public EncryptedData getEncryptedData() {
-        return this.encryptedData;
+    @Nullable public EncryptedData getEncryptedData() {
+        return encryptedData;
     }
 
     /** {@inheritDoc} */
-    public void setEncryptedData(final EncryptedData newEncryptedData) {
-        this.encryptedData = prepareForAssignment(this.encryptedData, newEncryptedData);
+    public void setEncryptedData(@Nullable final EncryptedData newEncryptedData) {
+        encryptedData = prepareForAssignment(encryptedData, newEncryptedData);
     }
 
     /** {@inheritDoc} */
-    public List<EncryptedKey> getEncryptedKeys() {
-        return this.encryptedKeys;
+    @Nonnull @Live public List<EncryptedKey> getEncryptedKeys() {
+        return encryptedKeys;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (encryptedData != null) {
@@ -77,11 +84,7 @@ public class EncryptedElementTypeImpl extends AbstractXMLObject implements Encry
         
         children.addAll(encryptedKeys);
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

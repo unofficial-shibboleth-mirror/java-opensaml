@@ -163,7 +163,7 @@ public class AuthnAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase 
                 expectedAuthnQueryServices, "Endpoints(AuthnQueryService) count");
         Assert.assertEquals(authnAuthorityObj.getEndpoints(AssertionIDRequestService.DEFAULT_ELEMENT_NAME).size(),
                 expectedAssertionIdRequestServices, "Endpoints(AssertionIdRequestService) count");
-        Assert.assertNull(authnAuthorityObj.getEndpoints(EntityDescriptor.DEFAULT_ELEMENT_NAME));
+        Assert.assertTrue(authnAuthorityObj.getEndpoints(EntityDescriptor.DEFAULT_ELEMENT_NAME).isEmpty());
     }
 
     /** {@inheritDoc} */

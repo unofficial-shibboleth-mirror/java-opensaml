@@ -22,15 +22,21 @@
 package org.opensaml.saml.saml2.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectQuery;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml2.core.SubjectQuery}.
+ * Concrete implementation of {@link SubjectQuery}.
  */
 public abstract class SubjectQueryImpl extends RequestAbstractTypeImpl implements SubjectQuery {
 
@@ -44,38 +50,38 @@ public abstract class SubjectQueryImpl extends RequestAbstractTypeImpl implement
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectQueryImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected SubjectQueryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Subject getSubject() {
-        return this.subject;
+    @Nullable public Subject getSubject() {
+        return subject;
     }
 
     /**
      * {@inheritDoc}
      */
-    public void setSubject(final Subject newSubject) {
-        this.subject = prepareForAssignment(this.subject, newSubject);
+    public void setSubject(@Nullable final Subject newSubject) {
+        subject = prepareForAssignment(subject, newSubject);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Override
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
+
         if (subject != null) {
             children.add(subject);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

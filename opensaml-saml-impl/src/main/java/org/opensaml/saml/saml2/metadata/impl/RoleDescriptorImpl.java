@@ -21,9 +21,15 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -37,39 +43,40 @@ import org.opensaml.saml.saml2.metadata.ContactPerson;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.Organization;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
+import org.opensaml.xmlsec.signature.Signature;
 
-/** Concrete implementation of {@link org.opensaml.saml.saml2.metadata.RoleDescriptor}. */
+/** Concrete implementation of {@link RoleDescriptor}. */
 public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject implements RoleDescriptor {
 
     /** ID attribute. */
-    private String id;
+    @Nullable private String id;
 
     /** validUntil attribute. */
-    private Instant validUntil;
+    @Nullable private Instant validUntil;
 
     /** cacheDurection attribute. */
-    private Duration cacheDuration;
+    @Nullable private Duration cacheDuration;
 
     /** Set of supported protocols. */
-    private final List<String> supportedProtocols;
+    @Nonnull private final List<String> supportedProtocols;
 
     /** Error URL. */
-    private String errorURL;
+    @Nullable private String errorURL;
 
     /** Extensions child. */
-    private Extensions extensions;
+    @Nullable private Extensions extensions;
 
     /** Organization administering this role. */
-    private Organization organization;
+    @Nullable private Organization organization;
 
     /** "anyAttribute" attributes. */
-    private final AttributeMap unknownAttributes;
+    @Nonnull private final AttributeMap unknownAttributes;
 
     /** Contact persons for this role. */
-    private final XMLObjectChildrenList<ContactPerson> contactPersons;
+    @Nonnull private final XMLObjectChildrenList<ContactPerson> contactPersons;
 
     /** Key descriptors for this role. */
-    private final XMLObjectChildrenList<KeyDescriptor> keyDescriptors;
+    @Nonnull private final XMLObjectChildrenList<KeyDescriptor> keyDescriptors;
 
     /**
      * Constructor.
@@ -78,8 +85,8 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RoleDescriptorImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RoleDescriptorImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         unknownAttributes = new AttributeMap(this);
         supportedProtocols = new LazyList<>();
@@ -88,15 +95,15 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
-        final String oldID = this.id;
-        this.id = prepareForAssignment(this.id, newID);
-        registerOwnID(oldID, this.id);
+    public void setID(@Nullable final String newID) {
+        final String oldID = id;
+        id = prepareForAssignment(id, newID);
+        registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
@@ -109,37 +116,37 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
-    public Instant getValidUntil() {
+    @Nullable public Instant getValidUntil() {
         return validUntil;
     }
 
     /** {@inheritDoc} */
-    public void setValidUntil(final Instant dt) {
+    public void setValidUntil(@Nullable final Instant dt) {
         validUntil = prepareForAssignment(validUntil, dt);
     }
 
     /** {@inheritDoc} */
-    public Duration getCacheDuration() {
+    @Nullable public Duration getCacheDuration() {
         return cacheDuration;
     }
 
     /** {@inheritDoc} */
-    public void setCacheDuration(final Duration duration) {
+    public void setCacheDuration(@Nullable final Duration duration) {
         cacheDuration = prepareForAssignment(cacheDuration, duration);
     }
 
     /** {@inheritDoc} */
-    public List<String> getSupportedProtocols() {
-        return Collections.unmodifiableList(supportedProtocols);
+    @Nonnull @NotLive @Unmodifiable public List<String> getSupportedProtocols() {
+        return CollectionSupport.copyToList(supportedProtocols);
     }
 
     /** {@inheritDoc} */
-    public boolean isSupportedProtocol(final String protocol) {
+    public boolean isSupportedProtocol(@Nonnull @NotEmpty final String protocol) {
         return supportedProtocols.contains(protocol);
     }
 
     /** {@inheritDoc} */
-    public void addSupportedProtocol(final String protocol) {
+    public void addSupportedProtocol(@Nonnull @NotEmpty final String protocol) {
         final String trimmed = StringSupport.trimOrNull(protocol);
         if (trimmed != null && !supportedProtocols.contains(trimmed)) {
             releaseThisandParentDOM();
@@ -148,7 +155,7 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
-    public void removeSupportedProtocol(final String protocol) {
+    public void removeSupportedProtocol(@Nonnull @NotEmpty final String protocol) {
         final String trimmed = StringSupport.trimOrNull(protocol);
         if (trimmed != null && supportedProtocols.contains(trimmed)) {
             releaseThisandParentDOM();
@@ -157,8 +164,9 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
-    public void removeSupportedProtocols(final Collection<String> protocols) {
+    public void removeSupportedProtocols(@Nonnull final Collection<String> protocols) {
         for (final String protocol : protocols) {
+            assert protocol != null;
             removeSupportedProtocol(protocol);
         }
     }
@@ -169,63 +177,62 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
     }
 
     /** {@inheritDoc} */
-    public String getErrorURL() {
+    @Nullable public String getErrorURL() {
         return errorURL;
     }
 
     /** {@inheritDoc} */
-    public void setErrorURL(final String url) {
+    public void setErrorURL(@Nullable final String url) {
         errorURL = prepareForAssignment(errorURL, url);
     }
 
     /** {@inheritDoc} */
-    public Extensions getExtensions() {
+    @Nullable public Extensions getExtensions() {
         return extensions;
     }
 
     /** {@inheritDoc} */
-    public void setExtensions(final Extensions ext) {
+    public void setExtensions(@Nullable final Extensions ext) {
         extensions = prepareForAssignment(extensions, ext);
     }
 
     /** {@inheritDoc} */
-    public Organization getOrganization() {
+    @Nullable public Organization getOrganization() {
         return organization;
     }
 
     /** {@inheritDoc} */
-    public void setOrganization(final Organization org) {
+    public void setOrganization(@Nullable final Organization org) {
         organization = prepareForAssignment(organization, org);
     }
 
     /** {@inheritDoc} */
-    public List<ContactPerson> getContactPersons() {
+    @Nonnull @Live public List<ContactPerson> getContactPersons() {
         return contactPersons;
     }
 
     /** {@inheritDoc} */
-    public List<KeyDescriptor> getKeyDescriptors() {
+    @Nonnull @Live public List<KeyDescriptor> getKeyDescriptors() {
         return keyDescriptors;
     }
 
     /** {@inheritDoc} */
-    public AttributeMap getUnknownAttributes() {
+    @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getSignatureReferenceID() {
+    @Nullable public String getSignatureReferenceID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
-        if (getSignature() != null) {
-            children.add(getSignature());
+        final Signature sig = getSignature();
+        if (sig != null) {
+            children.add(sig);
         }
 
         if (extensions != null) {
@@ -242,4 +249,5 @@ public abstract class RoleDescriptorImpl extends AbstractSignableSAMLObject impl
 
         return CollectionSupport.copyToList(children);
     }
+    
 }

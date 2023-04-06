@@ -21,6 +21,9 @@
 
 package org.opensaml.saml.saml2.metadata.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSURIImpl;
 import org.opensaml.saml.saml2.metadata.AttributeProfile;
 
@@ -36,8 +39,8 @@ public class AttributeProfileImpl extends XSURIImpl implements AttributeProfile 
      * @param elementLocalName local name
      * @param namespacePrefix prefix
      */
-    protected AttributeProfileImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AttributeProfileImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
