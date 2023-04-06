@@ -49,7 +49,9 @@ public class ConditionsUnmarshaller extends AbstractSAMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(final XMLObject samlObject, final Attr attribute) throws UnmarshallingException {
+    @Override
+    protected void processAttribute(@Nonnull final XMLObject samlObject, @Nonnull final Attr attribute)
+            throws UnmarshallingException {
 
         final Conditions conditions = (Conditions) samlObject;
 

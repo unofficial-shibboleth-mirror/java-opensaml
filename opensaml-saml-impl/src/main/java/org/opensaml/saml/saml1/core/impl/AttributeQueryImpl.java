@@ -18,24 +18,31 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml1.core.AttributeDesignator;
 import org.opensaml.saml.saml1.core.AttributeQuery;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeQuery} interface.
+ * Concrete implementation of the {@link AttributeQuery} interface.
  */
 public class AttributeQueryImpl extends SubjectQueryImpl implements AttributeQuery {
 
     /** Contains the resource attribute. */
-    private String resource;
+    @Nullable private String resource;
 
     /** Contains all the child AttributeDesignators. */
-    private final XMLObjectChildrenList<AttributeDesignator> attributeDesignators;
+    @Nonnull private final XMLObjectChildrenList<AttributeDesignator> attributeDesignators;
 
     /**
      * Constructor.
@@ -44,36 +51,39 @@ public class AttributeQueryImpl extends SubjectQueryImpl implements AttributeQue
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AttributeQueryImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AttributeQueryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributeDesignators = new XMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
-    public String getResource() {
+    @Nullable public String getResource() {
         return resource;
     }
 
     /** {@inheritDoc} */
-    public void setResource(final String res) {
+    public void setResource(@Nullable final String res) {
         resource = prepareForAssignment(resource, res);
     }
 
     /** {@inheritDoc} */
-    public List<AttributeDesignator> getAttributeDesignators() {
+    @Nonnull @Live public List<AttributeDesignator> getAttributeDesignators() {
         return attributeDesignators;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(attributeDesignators.size() + 1);
         
-        if (super.getOrderedChildren() != null) {
-            list.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            list.addAll(superKids);
         }
         
         list.addAll(attributeDesignators);
-        return Collections.unmodifiableList(list);
+        
+        return CollectionSupport.copyToList(list);
     }
+
 }

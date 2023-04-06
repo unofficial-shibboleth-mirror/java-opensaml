@@ -32,12 +32,12 @@ import org.opensaml.saml.saml1.core.RequestAbstractType;
 import org.opensaml.saml.saml1.core.RespondWith;
 import org.opensaml.xmlsec.signature.Signature;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Element;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.DOMTypeSupport;
 
 /**

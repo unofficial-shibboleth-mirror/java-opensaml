@@ -17,22 +17,27 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectQuery;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete (but abstract) implementation of {@link org.opensaml.saml.saml1.core.SubjectQuery} abstract type.
+ * Abstract implementation of {@link SubjectQuery} type.
  */
 public abstract class SubjectQueryImpl extends AbstractXMLObject implements SubjectQuery {
 
     /** Contains the Subject subelement. */
-    private Subject subject;
+    @Nullable private Subject subject;
     
     /**
      * Constructor.
@@ -41,28 +46,29 @@ public abstract class SubjectQueryImpl extends AbstractXMLObject implements Subj
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectQueryImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected SubjectQueryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public Subject getSubject() {
+    @Nullable public Subject getSubject() {
         return subject;
     }
 
     /** {@inheritDoc} */
-    public void setSubject(final Subject sub) {
+    public void setSubject(@Nullable final Subject sub) {
         subject = prepareForAssignment(subject, sub);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        if (subject == null) {
-            return null;
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        
+        if (subject != null) {
+            return CollectionSupport.singletonList(subject);
         }
         
-        final List<XMLObject> children = new ArrayList<>();
-        children.add(subject);
-        return Collections.unmodifiableList(children);
+        return null;
     }
+    
 }

@@ -18,21 +18,28 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml1.core.Attribute;
 import org.opensaml.saml.saml1.core.AttributeStatement;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AttributeStatement} Interface.
+ * A Concrete implementation of the {@link AttributeStatement} Interface.
  */
 public class AttributeStatementImpl extends SubjectStatementImpl implements AttributeStatement {
 
     /** Contains the Attributes (in order). */
-    private final XMLObjectChildrenList<Attribute> attributes;
+    @Nonnull private final XMLObjectChildrenList<Attribute> attributes;
 
     /**
      * Constructor.
@@ -41,31 +48,29 @@ public class AttributeStatementImpl extends SubjectStatementImpl implements Attr
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AttributeStatementImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AttributeStatementImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributes = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Attribute> getAttributes() {
+    @Nonnull @Live public List<Attribute> getAttributes() {
         return attributes;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(attributes.size() + 1);
 
-        if (super.getOrderedChildren() != null) {
-            list.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            list.addAll(superKids);
         }
 
         list.addAll(attributes);
 
-        if (list.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(list);
+        return CollectionSupport.copyToList(list);
     }
+
 }

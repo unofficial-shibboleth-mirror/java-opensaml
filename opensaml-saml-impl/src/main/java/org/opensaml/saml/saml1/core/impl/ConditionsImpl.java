@@ -18,11 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -34,19 +33,25 @@ import org.opensaml.saml.saml1.core.Condition;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * This is a concrete implementation of the {@link org.opensaml.saml.saml1.core.Conditions} interface.
+ * This is a concrete implementation of the {@link Conditions} interface.
  */
+@SuppressWarnings("unchecked")
 public class ConditionsImpl extends AbstractXMLObject implements Conditions {
 
     /** Value saved in the NotBefore attribute. */
-    private Instant notBefore;
+    @Nullable private Instant notBefore;
 
     /** Value saved in the NotOnOrAfter attribute. */
-    private Instant notOnOrAfter;
+    @Nullable private Instant notOnOrAfter;
 
     /** Set containing all the Conditions. */
-    private final IndexedXMLObjectChildrenList<Condition> conditions;
+    @Nonnull private final IndexedXMLObjectChildrenList<Condition> conditions;
 
     /**
      * Constructor.
@@ -55,60 +60,57 @@ public class ConditionsImpl extends AbstractXMLObject implements Conditions {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ConditionsImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ConditionsImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         conditions = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public Instant getNotBefore() {
+    @Nullable public Instant getNotBefore() {
         return notBefore;
     }
 
     /** {@inheritDoc} */
-    public void setNotBefore(final Instant dt) {
+    public void setNotBefore(@Nullable final Instant dt) {
         notBefore = prepareForAssignment(notBefore, dt);
     }
 
     /** {@inheritDoc} */
-    public Instant getNotOnOrAfter() {
+    @Nullable public Instant getNotOnOrAfter() {
         return notOnOrAfter;
     }
 
     /** {@inheritDoc} */
-    public void setNotOnOrAfter(final Instant dt) {
+    public void setNotOnOrAfter(@Nullable final Instant dt) {
         notOnOrAfter = prepareForAssignment(notOnOrAfter, dt);
     }
 
     /** {@inheritDoc} */
-    public List<Condition> getConditions() {
+    @Nonnull @Live public List<Condition> getConditions() {
         return conditions;
     }
 
     /** {@inheritDoc} */
-    public List<Condition> getConditions(@Nonnull final QName typeOrName) {
+    @Nonnull @Live public List<Condition> getConditions(@Nonnull final QName typeOrName) {
         return (List<Condition>) conditions.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<AudienceRestrictionCondition> getAudienceRestrictionConditions() {
+    @Nonnull @Live public List<AudienceRestrictionCondition> getAudienceRestrictionConditions() {
         final QName qname = new QName(SAMLConstants.SAML1_NS, AudienceRestrictionCondition.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<AudienceRestrictionCondition>) conditions.subList(qname);
     }
 
     /** {@inheritDoc} */
-    public List<DoNotCacheCondition> getDoNotCacheConditions() {
+    @Nonnull @Live public List<DoNotCacheCondition> getDoNotCacheConditions() {
         final QName qname = new QName(SAMLConstants.SAML1_NS, DoNotCacheCondition.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<DoNotCacheCondition>) conditions.subList(qname);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        if (conditions.size() == 0) {
-            return null;
-        }
-        final ArrayList<XMLObject> children = new ArrayList<>();
-        children.addAll(conditions);
-        return Collections.unmodifiableList(children);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(conditions);
     }
+
 }

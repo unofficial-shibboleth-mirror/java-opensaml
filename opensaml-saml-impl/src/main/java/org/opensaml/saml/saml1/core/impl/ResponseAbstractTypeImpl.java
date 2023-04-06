@@ -18,34 +18,40 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.AbstractSignableSAMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
+import org.opensaml.xmlsec.signature.Signature;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
- * Abstract implementation of {@link org.opensaml.saml.saml1.core.ResponseAbstractType} Object.
+ * Abstract implementation of {@link ResponseAbstractType} Object.
  */
 public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObject implements ResponseAbstractType {
 
     /** Contains the ID. */
-    private String id;
+    @Nullable private String id;
 
     /** Message version. */
-    private SAMLVersion version;
+    @Nullable private SAMLVersion version;
 
     /** Contents of the InResponseTo attribute. */
-    private String inResponseTo;
+    @Nullable private String inResponseTo;
 
     /** Contents of the IssueInstant attribute. */
-    private Instant issueInstant;
+    @Nullable private Instant issueInstant;
 
     /** Contents of the Recipient attribute. */
-    private String recipient;
+    @Nullable private String recipient;
 
     /**
      * Constructor.
@@ -54,78 +60,78 @@ public abstract class ResponseAbstractTypeImpl extends AbstractSignableSAMLObjec
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ResponseAbstractTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected ResponseAbstractTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         version = SAMLVersion.VERSION_11;
     }
 
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
+    public void setID(@Nullable final String newID) {
         final String oldID = id;
         id = prepareForAssignment(id, newID);
         registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
-    public String getInResponseTo() {
+    @Nullable public String getInResponseTo() {
         return inResponseTo;
     }
 
     /** {@inheritDoc} */
-    public void setInResponseTo(final String to) {
+    public void setInResponseTo(@Nullable final String to) {
         inResponseTo = prepareForAssignment(inResponseTo, to);
     }
 
     /** {@inheritDoc} */
-    public SAMLVersion getVersion() {
+    @Nullable public SAMLVersion getVersion() {
         return version;
     }
     
     /** {@inheritDoc} */
-    public void setVersion(final SAMLVersion newVersion) {
+    public void setVersion(@Nullable final SAMLVersion newVersion) {
         version = prepareForAssignment(version, newVersion);
     }
 
     /** {@inheritDoc} */
-    public Instant getIssueInstant() {
-
+    @Nullable public Instant getIssueInstant() {
         return issueInstant;
     }
 
     /** {@inheritDoc} */
-    public void setIssueInstant(final Instant date) {
+    public void setIssueInstant(@Nullable final Instant date) {
         issueInstant = prepareForAssignment(issueInstant, date);
     }
 
     /** {@inheritDoc} */
-    public String getRecipient() {
+    @Nullable public String getRecipient() {
         return recipient;
     }
 
     /** {@inheritDoc} */
-    public void setRecipient(final String recip) {
+    public void setRecipient(@Nullable final String recip) {
         recipient = prepareForAssignment(recipient, recip);
     }
     
     /** {@inheritDoc} */
-    public String getSignatureReferenceID(){
+    @Nullable public String getSignatureReferenceID(){
         return id;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final List<XMLObject> children = new ArrayList<>();
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         
-        if(getSignature() != null){
-            children.add(getSignature());
+        final Signature sig = getSignature();
+        if (sig != null) {
+            return CollectionSupport.singletonList(sig);
         }
         
-        return Collections.unmodifiableList(children);
+        return null;
     }
+
 }

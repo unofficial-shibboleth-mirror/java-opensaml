@@ -17,20 +17,27 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.saml.saml1.core.Attribute;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.Attribute} Interface.
+ * A Concrete implementation of the {@link Attribute} Interface.
  */
 public class AttributeImpl extends AttributeDesignatorImpl implements Attribute {
 
     /** Contains the AttributeValues. */
-    private final XMLObjectChildrenList<XMLObject> attributeValues;
+    @Nonnull private final XMLObjectChildrenList<XMLObject> attributeValues;
 
     /**
      * Constructor.
@@ -39,18 +46,20 @@ public class AttributeImpl extends AttributeDesignatorImpl implements Attribute 
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AttributeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AttributeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         attributeValues = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getAttributeValues() {
+    @Nonnull @Live public List<XMLObject> getAttributeValues() {
         return attributeValues;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(attributeValues);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(attributeValues);
     }
+
 }

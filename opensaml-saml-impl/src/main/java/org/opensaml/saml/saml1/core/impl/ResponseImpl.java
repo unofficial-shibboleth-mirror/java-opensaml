@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -27,16 +29,21 @@ import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Implementation of the {@link org.opensaml.saml.saml1.core.Response} Object.
+ * Implementation of the {@link Response} Object.
  */
 public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
 
     /** Status associated with this element. */
-    private Status status;
+    @Nullable private Status status;
 
     /** List of all the Assertions. */
-    private final XMLObjectChildrenList<Assertion> assertions;
+    @Nonnull private final XMLObjectChildrenList<Assertion> assertions;
 
     /**
      * Constructor.
@@ -45,32 +52,34 @@ public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected ResponseImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected ResponseImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         assertions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<Assertion> getAssertions() {
+    @Nonnull @Live public List<Assertion> getAssertions() {
         return assertions;
     }
 
     /** {@inheritDoc} */
-    public Status getStatus() {
+    @Nullable public Status getStatus() {
         return status;
     }
 
     /** {@inheritDoc} */
-    public void setStatus(final Status s) {
+    public void setStatus(@Nullable final Status s) {
         status = prepareForAssignment(status, s);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>(1 + assertions.size());
 
-        if (super.getOrderedChildren() != null) {
-            children.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            children.addAll(superKids);
         }
 
         if (status != null) {
@@ -79,10 +88,7 @@ public class ResponseImpl extends ResponseAbstractTypeImpl implements Response {
 
         children.addAll(assertions);
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

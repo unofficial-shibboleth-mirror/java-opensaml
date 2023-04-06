@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -27,16 +29,20 @@ import org.opensaml.saml.saml1.core.NameIdentifier;
 import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectConfirmation;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Complete implementation of {@link org.opensaml.saml.saml1.core.Subject}.
+ * Complete implementation of {@link Subject}.
  */
 public class SubjectImpl extends AbstractXMLObject implements Subject {
 
     /** Contains the NameIdentifier inside the Subject. */
-    private NameIdentifier nameIdentifier;
+    @Nullable private NameIdentifier nameIdentifier;
 
     /** Contains the SubjectConfirmation inside the Subject. */
-    private SubjectConfirmation subjectConfirmation;
+    @Nullable private SubjectConfirmation subjectConfirmation;
 
     /**
      * Constructor.
@@ -45,32 +51,33 @@ public class SubjectImpl extends AbstractXMLObject implements Subject {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected SubjectImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public NameIdentifier getNameIdentifier() {
+    @Nullable public NameIdentifier getNameIdentifier() {
         return nameIdentifier;
     }
 
     /** {@inheritDoc} */
-    public void setNameIdentifier(final NameIdentifier name) {
+    public void setNameIdentifier(@Nullable final NameIdentifier name) {
         nameIdentifier = prepareForAssignment(nameIdentifier, name);
     }
 
     /** {@inheritDoc} */
-    public SubjectConfirmation getSubjectConfirmation() {
+    @Nullable public SubjectConfirmation getSubjectConfirmation() {
         return subjectConfirmation;
     }
 
     /** {@inheritDoc} */
-    public void setSubjectConfirmation(final SubjectConfirmation conf) {
+    public void setSubjectConfirmation(@Nullable final SubjectConfirmation conf) {
         subjectConfirmation = prepareForAssignment(subjectConfirmation, conf);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
 
         final List<XMLObject> list = new ArrayList<>(2);
 
@@ -81,10 +88,8 @@ public class SubjectImpl extends AbstractXMLObject implements Subject {
         if (subjectConfirmation != null) {
             list.add(subjectConfirmation);
         }
-        if (list.size() == 0) {
-            return null;
-        }
 
-        return Collections.unmodifiableList(list);
+        return CollectionSupport.copyToList(list);
     }
+    
 }

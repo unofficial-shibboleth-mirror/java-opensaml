@@ -19,11 +19,16 @@ package org.opensaml.saml.saml1.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml1.core.RespondWith;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 /**
  * Implementation of {@link RespondWith}.
@@ -31,7 +36,7 @@ import org.opensaml.saml.saml1.core.RespondWith;
 public class RespondWithImpl extends AbstractXMLObject implements RespondWith {
 
     /** Value of this element. */
-    private QName value;
+    @Nullable private QName value;
 
     /**
      * Constructor.
@@ -40,22 +45,24 @@ public class RespondWithImpl extends AbstractXMLObject implements RespondWith {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RespondWithImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected RespondWithImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public QName getValue() {
+    @Nullable public QName getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final QName newValue) {
+    public void setValue(@Nullable final QName newValue) {
         value = prepareElementContentForAssignment(value, newValue);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         return null;
     }
+
 }

@@ -92,14 +92,14 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
      * 
      * @return the stored MajorVersion
      */
-    int getMajorVersion();
+    @Nullable Integer getMajorVersion();
 
     /**
      * Get the MinorVersion attribute.
      * 
      * @return the stored MinorVersion
      */
-    int getMinorVersion();
+    @Nullable Integer getMinorVersion();
 
     /**
      * Set the SAML version of this assertion.

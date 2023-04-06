@@ -19,9 +19,10 @@ package org.opensaml.saml.saml1.core.impl;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
@@ -37,32 +38,39 @@ import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.Statement;
 import org.opensaml.saml.saml1.core.SubjectStatement;
+import org.opensaml.xmlsec.signature.Signature;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * This class implements the SAML 1 <code> Assertion </code> statement.
  */
+@SuppressWarnings("unchecked")
 public class AssertionImpl extends AbstractSignableSAMLObject implements Assertion {
 
     /** The <code> AssertionID </code> attrribute. */
-    private String id;
+    @Nullable private String id;
     
     /** SAML version of this assertion. */
-    private SAMLVersion version;
+    @Nullable private SAMLVersion version;
     
     /** Object version of the <code> Issuer </code> attribute. */
-    private String issuer;
+    @Nullable private String issuer;
 
     /** Object version of the <code> IssueInstant </code> attribute. */
-    private Instant issueInstant;
+    @Nullable private Instant issueInstant;
 
     /** (Possibly null) Singleton object version of the <code> Conditions </code> element. */
-    private Conditions conditions;
+    @Nullable private Conditions conditions;
 
     /** (Possibly null) Singleton object version of the <code> Advice </code> element. */
-    private Advice advice;
+    @Nullable private Advice advice;
 
     /** Object representation of all the <code>Statement</code> elements. */
-    private final IndexedXMLObjectChildrenList<Statement> statements;
+    @Nonnull private final IndexedXMLObjectChildrenList<Statement> statements;
     
     /**
      * Constructor.
@@ -71,122 +79,123 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AssertionImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AssertionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         statements = new IndexedXMLObjectChildrenList<>(this);
         version = SAMLVersion.VERSION_11;
     }
     
     /** {@inheritDoc} */
-    public int getMajorVersion(){
-        return version.getMajorVersion();
+    @Nullable public Integer getMajorVersion(){
+        return version != null ? version.getMajorVersion() : null;
     }
     
     /** {@inheritDoc} */
-    public int getMinorVersion() {
-        return version.getMinorVersion();
+    @Nullable public Integer getMinorVersion() {
+        return version != null ? version.getMinorVersion() : null;
     }
     
     /** {@inheritDoc} */
-    public void setVersion(final SAMLVersion newVersion){
+    public void setVersion(@Nullable final SAMLVersion newVersion){
         version = prepareForAssignment(version, newVersion);
     }
 
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
+    public void setID(@Nullable final String newID) {
         final String oldID = id;
         id = prepareForAssignment(id, newID);   
         registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
-    public String getIssuer() {
+    @Nullable public String getIssuer() {
         return this.issuer;
     }
 
     /** {@inheritDoc} */
-    public void setIssuer(final String iss) {
+    public void setIssuer(@Nullable final String iss) {
         issuer = prepareForAssignment(issuer, iss);
     }
 
     /** {@inheritDoc} */
-    public Instant getIssueInstant() {
+    @Nullable public Instant getIssueInstant() {
         return this.issueInstant;
     }
 
     /** {@inheritDoc} */
-    public void setIssueInstant(final Instant instant) {
+    public void setIssueInstant(@Nullable final Instant instant) {
         issueInstant = prepareForAssignment(issueInstant, instant);
     }
 
     /** {@inheritDoc} */
-    public Conditions getConditions() {
+    @Nullable public Conditions getConditions() {
         return conditions;
     }
 
     /** {@inheritDoc} */
-    public void setConditions(final Conditions c) {
+    public void setConditions(@Nullable final Conditions c) {
         conditions = prepareForAssignment(conditions, c);
     }
 
     /** {@inheritDoc} */
-    public Advice getAdvice() {
+    @Nullable public Advice getAdvice() {
         return advice;
     }
 
     /** {@inheritDoc} */
-    public void setAdvice(final Advice adv) {
+    public void setAdvice(@Nullable final Advice adv) {
         advice = prepareForAssignment(advice, adv);
     }
 
     /** {@inheritDoc} */
-    public List<Statement> getStatements() {
+    @Nonnull @Live public List<Statement> getStatements() {
         return statements;
     }
 
     /** {@inheritDoc} */
-    public List<Statement> getStatements(final QName typeOrName) {
+    @Nonnull @Live public List<Statement> getStatements(@Nonnull final QName typeOrName) {
         return (List<Statement>) statements.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    public List<SubjectStatement> getSubjectStatements() {
+    @Nonnull @Live public List<SubjectStatement> getSubjectStatements() {
         final QName statementQName = new QName(SAMLConstants.SAML1_NS, SubjectStatement.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<SubjectStatement>) statements.subList(statementQName);
     }
 
     /** {@inheritDoc} */
-    public List<AuthenticationStatement> getAuthenticationStatements() {
+    @Nonnull @Live public List<AuthenticationStatement> getAuthenticationStatements() {
         final QName statementQName =
                 new QName(SAMLConstants.SAML1_NS, AuthenticationStatement.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<AuthenticationStatement>) statements.subList(statementQName);
     }
 
     /** {@inheritDoc} */
-    public List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements() {
+    @Nonnull @Live public List<AttributeStatement> getAttributeStatements() {
+        final QName statementQName = new QName(SAMLConstants.SAML1_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME);
+        return (List<AttributeStatement>) statements.subList(statementQName);
+    }
+
+    /** {@inheritDoc} */
+    @Nonnull @Live public List<AuthorizationDecisionStatement> getAuthorizationDecisionStatements() {
         final QName statementQName =
                 new QName(SAMLConstants.SAML1_NS, AuthorizationDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<AuthorizationDecisionStatement>) statements.subList(statementQName);
     }
 
     /** {@inheritDoc} */
-    public List<AttributeStatement> getAttributeStatements() {
-        final QName statementQName = new QName(SAMLConstants.SAML1_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME);
-        return (List<AttributeStatement>) statements.subList(statementQName);
-    }
-    
-    /** {@inheritDoc} */
-    public String getSignatureReferenceID(){
+    @Nullable public String getSignatureReferenceID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
 
         final ArrayList<XMLObject> children = new ArrayList<>();
 
@@ -200,13 +209,12 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
 
         children.addAll(statements);
         
-        if(getSignature() != null){
-            children.add(getSignature());
+        final Signature sig = getSignature();
+        if (sig != null) {
+            children.add(sig);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

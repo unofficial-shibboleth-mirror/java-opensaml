@@ -18,9 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -31,16 +32,22 @@ import org.opensaml.saml.saml1.core.Advice;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml1.core.Advice}.
+ * Concrete implementation of {@link Advice}.
  */
+@SuppressWarnings("unchecked")
 public class AdviceImpl extends AbstractXMLObject implements Advice {
 
     /** Contains all the SAML objects we have added. */
-    private final IndexedXMLObjectChildrenList<XMLObject> assertionChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> assertionChildren;
     
     /** "any" children. */
-    private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
+    @Nonnull private final IndexedXMLObjectChildrenList<XMLObject> unknownChildren;
 
     /**
      * Constructor.
@@ -49,15 +56,15 @@ public class AdviceImpl extends AbstractXMLObject implements Advice {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AdviceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected AdviceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         assertionChildren = new IndexedXMLObjectChildrenList<>(this);
         unknownChildren = new IndexedXMLObjectChildrenList<>(this);
     }
     
     /** {@inheritDoc} */
-    @Override
-    public List<AssertionIDReference> getAssertionIDReferences() {
+    @Nonnull @Live public List<AssertionIDReference> getAssertionIDReferences() {
         //
         // The cast in the line below is unsafe. (it's checking against the erasure of l - which is List.
         // We are, however guaranteed by sublist that although l is 'just' a List it
@@ -70,33 +77,30 @@ public class AdviceImpl extends AbstractXMLObject implements Advice {
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<Assertion> getAssertions() {
+    @Nonnull @Live public List<Assertion> getAssertions() {
         // See Comment for getAssertionIDReference as to why this unsafe casting is OK
         final QName assertionQname = new QName(SAMLConstants.SAML1_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<Assertion>) assertionChildren.subList(assertionQname);
     }
     
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownChildren;
     }
     
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getUnknownXMLObjects(final QName typeOrName) {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownChildren.subList(typeOrName);
     }
 
     /** {@inheritDoc} */
-    @Override
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         children.addAll(assertionChildren);
         children.addAll(unknownChildren);
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+
 }

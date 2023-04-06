@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.schema.impl.XSStringImpl;
 import org.opensaml.saml.saml1.core.NameIdentifier;
 
@@ -26,10 +29,10 @@ import org.opensaml.saml.saml1.core.NameIdentifier;
 public class NameIdentifierImpl extends XSStringImpl implements NameIdentifier {
 
     /** Contents of the NameQualifierAttribute. */
-    private String nameQualifier;
+    @Nullable private String nameQualifier;
 
     /** Contents of the Format. */
-    private String format;
+    @Nullable private String format;
 
     /**
      * Constructor.
@@ -38,28 +41,28 @@ public class NameIdentifierImpl extends XSStringImpl implements NameIdentifier {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected NameIdentifierImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected NameIdentifierImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getNameQualifier() {
+    @Nullable public String getNameQualifier() {
         return nameQualifier;
     }
 
     /** {@inheritDoc} */
-    public String getFormat() {
+    @Nullable public String getFormat() {
         return this.format;
     }
     
     /** {@inheritDoc} */
-    public void setNameQualifier(final String qualifier) {
+    public void setNameQualifier(@Nullable final String qualifier) {
         nameQualifier = prepareForAssignment(nameQualifier, qualifier);
     }
 
     /** {@inheritDoc} */
-    public void setFormat(final String fmt) {
+    public void setFormat(@Nullable final String fmt) {
         format = prepareForAssignment(format, fmt);
     }
 

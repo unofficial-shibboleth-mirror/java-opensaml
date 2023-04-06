@@ -19,8 +19,10 @@ package org.opensaml.saml.saml1.core.impl;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -28,6 +30,12 @@ import org.opensaml.saml.common.AbstractSignableSAMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.RequestAbstractType;
 import org.opensaml.saml.saml1.core.RespondWith;
+import org.opensaml.xmlsec.signature.Signature;
+
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Implementation of {@link org.opensaml.saml.saml1.core.RequestAbstractType}.
@@ -35,16 +43,16 @@ import org.opensaml.saml.saml1.core.RespondWith;
 public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject implements RequestAbstractType {
 
     /** Contains the ID. */
-    private String id;
+    @Nullable private String id;
 
     /** Contains the IssueInstant. */
-    private Instant issueInstant;
+    @Nullable private Instant issueInstant;
 
     /** Version of this SAML message. */
-    private SAMLVersion version;
+    @Nullable private SAMLVersion version;
 
     /** Contains the respondWiths. */
-    private final XMLObjectChildrenList<RespondWith> respondWiths;
+    @Nonnull private final XMLObjectChildrenList<RespondWith> respondWiths;
 
     /**
      * Constructor.
@@ -53,65 +61,67 @@ public abstract class RequestAbstractTypeImpl extends AbstractSignableSAMLObject
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RequestAbstractTypeImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected RequestAbstractTypeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         version = SAMLVersion.VERSION_11;
         respondWiths = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getID() {
+    @Nullable public String getID() {
         return id;
     }
 
     /** {@inheritDoc} */
-    public void setID(final String newID) {
+    public void setID(@Nullable final String newID) {
         final String oldID = id;
         id = prepareForAssignment(id, newID);
         registerOwnID(oldID, id);
     }
 
     /** {@inheritDoc} */
-    public SAMLVersion getVersion() {
+    @Nullable public SAMLVersion getVersion() {
         return version;
     }
 
     /** {@inheritDoc} */
-    public void setVersion(final SAMLVersion newVersion) {
+    public void setVersion(@Nullable final SAMLVersion newVersion) {
         version = prepareForAssignment(version, newVersion);
     }
 
     /** {@inheritDoc} */
-    public Instant getIssueInstant() {
+    @Nullable public Instant getIssueInstant() {
         return issueInstant;
     }
 
     /** {@inheritDoc} */
-    public void setIssueInstant(final Instant instant) {
-        this.issueInstant = prepareForAssignment(this.issueInstant, instant);
+    public void setIssueInstant(@Nullable final Instant instant) {
+        issueInstant = prepareForAssignment(issueInstant, instant);
     }
 
     /** {@inheritDoc} */
-    public List<RespondWith> getRespondWiths() {
+    @Nonnull @Live public List<RespondWith> getRespondWiths() {
         return respondWiths;
     }
     
     /** {@inheritDoc} */
-    public String getSignatureReferenceID(){
+    @Nullable public String getSignatureReferenceID(){
         return id;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> children = new ArrayList<>();
 
         children.addAll(respondWiths);
         
-        if(getSignature() != null){
-            children.add(getSignature());
+        final Signature sig = getSignature();
+        if (sig != null) {
+            children.add(sig);
         }
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

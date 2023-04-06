@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -28,22 +30,27 @@ import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml.saml1.core.DecisionTypeEnumeration;
 import org.opensaml.saml.saml1.core.Evidence;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * A concrete implementation of {@link org.opensaml.saml.saml1.core.AuthorizationDecisionStatement}.
  */
 public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl implements AuthorizationDecisionStatement {
 
     /** Contains the Resource attribute. */
-    private String resource;
+    @Nullable private String resource;
 
     /** Contains the Decision attribute. */
-    private DecisionTypeEnumeration decision;
+    @Nullable private DecisionTypeEnumeration decision;
 
     /** Contains the list of Action elements. */
-    private final XMLObjectChildrenList<Action> actions;
+    @Nonnull private final XMLObjectChildrenList<Action> actions;
 
     /** Contains the (single) Evidence element. */
-    private Evidence evidence;
+    @Nullable private Evidence evidence;
 
     /**
      * Constructor.
@@ -52,61 +59,63 @@ public class AuthorizationDecisionStatementImpl extends SubjectStatementImpl imp
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthorizationDecisionStatementImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthorizationDecisionStatementImpl(@Nullable final String namespaceURI,
+            @Nonnull final String elementLocalName, @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         actions = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getResource() {
+    @Nullable public String getResource() {
         return resource;
     }
 
     /** {@inheritDoc} */
-    public void setResource(final String res) {
+    public void setResource(@Nullable final String res) {
         resource = prepareForAssignment(resource, res);
     }
 
     /** {@inheritDoc} */
-    public DecisionTypeEnumeration getDecision() {
+    @Nullable public DecisionTypeEnumeration getDecision() {
         return decision;
     }
 
     /** {@inheritDoc} */
-    public void setDecision(final DecisionTypeEnumeration dec) {
+    public void setDecision(@Nullable final DecisionTypeEnumeration dec) {
         decision = prepareForAssignment(decision, dec);
     }
 
     /** {@inheritDoc} */
-    public List<Action> getActions() {
+    @Nonnull @Live public List<Action> getActions() {
         return actions;
     }
 
     /** {@inheritDoc} */
-    public Evidence getEvidence() {
+    @Nullable public Evidence getEvidence() {
         return evidence;
     }
 
     /** {@inheritDoc} */
-    public void setEvidence(final Evidence ev) {
+    public void setEvidence(@Nullable final Evidence ev) {
         evidence = prepareForAssignment(evidence, ev);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(actions.size() + 2);
 
-        if (super.getOrderedChildren() != null) {
-            list.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            list.addAll(superKids);
         }
+        
         list.addAll(actions);
+        
         if (evidence != null) {
             list.add(evidence);
         }
-        if (list.size() == 0) {
-            return null;
-        }
-        return Collections.unmodifiableList(list);
+
+        return CollectionSupport.copyToList(list);
     }
+    
 }

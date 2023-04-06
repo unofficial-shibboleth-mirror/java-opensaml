@@ -17,26 +17,30 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml1.core.StatusCode;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml1.core.StatusCode} Object.
+ * Concrete implementation of {@link StatusCode}.
  */
 public class StatusCodeImpl extends AbstractXMLObject implements StatusCode {
 
     /** Contents of the Value attribute. */
-    private QName value;
+    @Nullable private QName value;
 
     /** The child StatusCode sub element. */
-    private StatusCode childStatusCode;
+    @Nullable private StatusCode childStatusCode;
 
     /**
      * Constructor.
@@ -45,38 +49,39 @@ public class StatusCodeImpl extends AbstractXMLObject implements StatusCode {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected StatusCodeImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected StatusCodeImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public QName getValue() {
+    @Nullable public QName getValue() {
         return value;
     }
 
     /** {@inheritDoc} */
-    public void setValue(final QName newValue) {
-        this.value = prepareAttributeValueForAssignment(StatusCode.VALUE_ATTRIB_NAME, this.value, newValue);
+    public void setValue(@Nullable final QName newValue) {
+        value = prepareAttributeValueForAssignment(StatusCode.VALUE_ATTRIB_NAME, value, newValue);
     }
 
     /** {@inheritDoc} */
-    public StatusCode getStatusCode() {
+    @Nullable public StatusCode getStatusCode() {
         return childStatusCode;
     }
 
     /** {@inheritDoc} */
-    public void setStatusCode(final StatusCode statusCode) {
+    public void setStatusCode(@Nullable final StatusCode statusCode) {
         childStatusCode = prepareForAssignment(childStatusCode, statusCode);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        
         if (childStatusCode != null) {
-            final ArrayList<XMLObject> contents = new ArrayList<>(1);
-            contents.add(childStatusCode);
-            return Collections.unmodifiableList(contents);
-        } else {
-            return null;
+            return CollectionSupport.singletonList(childStatusCode);
         }
+        
+        return null;
     }
+
 }

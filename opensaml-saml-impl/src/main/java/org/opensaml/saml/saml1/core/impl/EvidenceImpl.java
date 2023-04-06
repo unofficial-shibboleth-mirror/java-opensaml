@@ -17,10 +17,10 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.AbstractXMLObject;
@@ -32,13 +32,19 @@ import org.opensaml.saml.saml1.core.AssertionIDReference;
 import org.opensaml.saml.saml1.core.Evidence;
 import org.opensaml.saml.saml1.core.Evidentiary;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of the {@link org.opensaml.saml.saml1.core.Evidence} interface.
+ * Concrete implementation of the {@link Evidence} interface.
  */
+@SuppressWarnings("unchecked")
 public class EvidenceImpl extends AbstractXMLObject implements Evidence {
 
     /** The Evidentiary child elements. */
-    private final IndexedXMLObjectChildrenList<Evidentiary> evidence;
+    @Nonnull private final IndexedXMLObjectChildrenList<Evidentiary> evidence;
 
     /**
      * Constructor.
@@ -47,37 +53,32 @@ public class EvidenceImpl extends AbstractXMLObject implements Evidence {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected EvidenceImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected EvidenceImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         evidence = new IndexedXMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<AssertionIDReference> getAssertionIDReferences() {
+    @Nonnull @Live public List<AssertionIDReference> getAssertionIDReferences() {
         final QName qname = new QName(SAMLConstants.SAML1_NS, AssertionIDReference.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<AssertionIDReference>) evidence.subList(qname);
     }
 
     /** {@inheritDoc} */
-    public List<Assertion> getAssertions() {
+    @Nonnull @Live public List<Assertion> getAssertions() {
         final QName qname = new QName(SAMLConstants.SAML1_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME);
         return (List<Assertion>) evidence.subList(qname);
     }
 
     /** {@inheritDoc} */
-    public List<Evidentiary> getEvidence() {
+    @Nonnull @Live public List<Evidentiary> getEvidence() {
         return evidence;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        if (evidence.size() == 0) {
-            return null;
-        }
-
-        final ArrayList<XMLObject> list = new ArrayList<>();
-        list.addAll(evidence);
-
-        return Collections.unmodifiableList(list);
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(evidence);
     }
+    
 }

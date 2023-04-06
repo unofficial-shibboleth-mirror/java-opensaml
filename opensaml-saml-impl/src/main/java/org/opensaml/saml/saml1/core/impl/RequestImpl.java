@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -32,19 +34,24 @@ import org.opensaml.saml.saml1.core.Query;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.core.SubjectQuery;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of {@link org.opensaml.saml.saml1.core.Request}.
+ * Concrete implementation of {@link Request}.
  */
 public class RequestImpl extends RequestAbstractTypeImpl implements Request {
 
     /** Saves the query (one of Query, SubjectQuery, AuthenticationQuery, AttributeQuery, AuthorizationDecisionQuery. */
-    private Query query;
+    @Nullable private Query query;
 
     /** The List of AssertionIDReferences. */
-    private final XMLObjectChildrenList<AssertionIDReference> assertionIDReferences;
+    @Nonnull private final XMLObjectChildrenList<AssertionIDReference> assertionIDReferences;
 
     /** The List of AssertionArtifacts. */
-    private final XMLObjectChildrenList<AssertionArtifact> assertionArtifacts;
+    @Nonnull private final XMLObjectChildrenList<AssertionArtifact> assertionArtifacts;
 
     /**
      * Constructor.
@@ -53,74 +60,69 @@ public class RequestImpl extends RequestAbstractTypeImpl implements Request {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected RequestImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected RequestImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         assertionIDReferences = new XMLObjectChildrenList<>(this);
         assertionArtifacts = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public Query getQuery() {
+    @Nullable public Query getQuery() {
         return query;
     }
 
     /** {@inheritDoc} */
-    public SubjectQuery getSubjectQuery() {
+    @Nullable public SubjectQuery getSubjectQuery() {
         return query instanceof SubjectQuery ? (SubjectQuery) query : null;
     }
 
     /** {@inheritDoc} */
-    public AttributeQuery getAttributeQuery() {
+    @Nullable public AttributeQuery getAttributeQuery() {
         return query instanceof AttributeQuery ? (AttributeQuery) query : null;
     }
 
     /** {@inheritDoc} */
-    public AuthenticationQuery getAuthenticationQuery() {
+    @Nullable public AuthenticationQuery getAuthenticationQuery() {
         return query instanceof AuthenticationQuery ? (AuthenticationQuery) query : null;
     }
 
     /** {@inheritDoc} */
-    public AuthorizationDecisionQuery getAuthorizationDecisionQuery() {
+    @Nullable public AuthorizationDecisionQuery getAuthorizationDecisionQuery() {
         return query instanceof AuthorizationDecisionQuery ? (AuthorizationDecisionQuery) query : null;
     }
 
     /** {@inheritDoc} */
-    public void setQuery(final Query q) {
+    public void setQuery(@Nullable final Query q) {
         query = prepareForAssignment(query, q);
     }
 
     /** {@inheritDoc} */
-    public List<AssertionIDReference> getAssertionIDReferences() {
+    @Nonnull @Live public List<AssertionIDReference> getAssertionIDReferences() {
         return assertionIDReferences;
     }
 
     /** {@inheritDoc} */
-    public List<AssertionArtifact> getAssertionArtifacts() {
+    @Nonnull @Live public List<AssertionArtifact> getAssertionArtifacts() {
         return assertionArtifacts;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
 
         final List<XMLObject> list = new ArrayList<>();
 
-        if (super.getOrderedChildren() != null) {
-            list.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            list.addAll(superKids);
         }
         if (query != null) {
             list.add(query);
         }
-        if (assertionIDReferences.size() != 0) {
-            list.addAll(assertionIDReferences);
-        }
-        if (assertionArtifacts.size() != 0) {
-            list.addAll(assertionArtifacts);
-        }
+        list.addAll(assertionIDReferences);
+        list.addAll(assertionArtifacts);
 
-        if (list.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(list);
+        return CollectionSupport.copyToList(list);
     }
+    
 }

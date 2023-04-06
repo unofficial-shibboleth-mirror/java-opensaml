@@ -17,15 +17,13 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml1.core.AuthenticationQuery;
 
 /**
- * Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationQuery} interface.
+ * Concrete implementation of the {@link AuthenticationQuery} interface.
  */
 public class AuthenticationQueryImpl extends SubjectQueryImpl implements AuthenticationQuery {
 
@@ -39,33 +37,19 @@ public class AuthenticationQueryImpl extends SubjectQueryImpl implements Authent
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthenticationQueryImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthenticationQueryImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getAuthenticationMethod() {
+    @Nullable public String getAuthenticationMethod() {
         return authenticationMethod;
     }
 
     /** {@inheritDoc} */
-    public void setAuthenticationMethod(final String method) {
+    public void setAuthenticationMethod(@Nullable final String method) {
         authenticationMethod = prepareForAssignment(authenticationMethod, method);
     }
 
-    /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final List<XMLObject> list = new ArrayList<>();
-
-        if (super.getOrderedChildren() != null) {
-            list.addAll(super.getOrderedChildren());
-        }
-
-        if (list.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(list);
-    }
 }

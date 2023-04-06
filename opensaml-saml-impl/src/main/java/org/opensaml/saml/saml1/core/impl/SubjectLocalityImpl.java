@@ -19,20 +19,26 @@ package org.opensaml.saml.saml1.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml1.core.SubjectLocality;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * A concrete implementation of the {@link org.opensaml.saml.saml1.core.SubjectLocality} interface.
+ * A concrete implementation of the {@link SubjectLocality} interface.
  */
 public class SubjectLocalityImpl extends AbstractXMLObject implements SubjectLocality {
 
     /** The ipAddress. */
-    private String ipAddress;
+    @Nullable private String ipAddress;
 
     /** The DNS Address. */
-    private String dnsAddress;
+    @Nullable private String dnsAddress;
 
     /**
      * Constructor.
@@ -41,34 +47,34 @@ public class SubjectLocalityImpl extends AbstractXMLObject implements SubjectLoc
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectLocalityImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected SubjectLocalityImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public String getIPAddress() {
+    @Nullable public String getIPAddress() {
         return ipAddress;
     }
 
     /** {@inheritDoc} */
-    public void setIPAddress(final String address) {
+    public void setIPAddress(@Nullable final String address) {
         ipAddress = prepareForAssignment(ipAddress, address);
     }
 
     /** {@inheritDoc} */
-    public String getDNSAddress() {
+    @Nullable public String getDNSAddress() {
         return dnsAddress;
     }
 
     /** {@inheritDoc} */
-    public void setDNSAddress(final String address) {
+    public void setDNSAddress(@Nullable final String address) {
         dnsAddress = prepareForAssignment(dnsAddress, address);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        // No children
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         return null;
     }
+
 }

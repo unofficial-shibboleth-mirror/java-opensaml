@@ -19,12 +19,18 @@ package org.opensaml.saml.saml1.core.impl;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
- * Concrete Implementation of a {@link org.opensaml.saml.saml1.core.DoNotCacheCondition} Objects.
+ * Concrete implementation of {@link DoNotCacheCondition}.
  */
 public class DoNotCacheConditionImpl extends AbstractXMLObject implements DoNotCacheCondition {
 
@@ -35,13 +41,14 @@ public class DoNotCacheConditionImpl extends AbstractXMLObject implements DoNotC
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected DoNotCacheConditionImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected DoNotCacheConditionImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         return null;
     }
+
 }

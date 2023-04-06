@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -28,19 +30,23 @@ import org.opensaml.saml.saml1.core.StatusCode;
 import org.opensaml.saml.saml1.core.StatusDetail;
 import org.opensaml.saml.saml1.core.StatusMessage;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete Implementation {@link org.opensaml.saml.saml1.core.Status}.
  */
 public class StatusImpl extends AbstractXMLObject implements Status {
 
     /** Representation of the StatusMessage element. */
-    private StatusMessage statusMessage;
+    @Nullable private StatusMessage statusMessage;
 
     /** Representation of the StatusCode element. */
-    private StatusCode statusCode;
+    @Nullable private StatusCode statusCode;
 
     /** Representation of the StatusDetail element. */
-    private StatusDetail statusDetail;
+    @Nullable private StatusDetail statusDetail;
 
     /**
      * Constructor.
@@ -49,42 +55,43 @@ public class StatusImpl extends AbstractXMLObject implements Status {
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected StatusImpl(final String namespaceURI, final String elementLocalName, final String namespacePrefix) {
+    protected StatusImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
     }
 
     /** {@inheritDoc} */
-    public StatusMessage getStatusMessage() {
+    @Nullable public StatusMessage getStatusMessage() {
         return statusMessage;
     }
 
     /** {@inheritDoc} */
-    public void setStatusMessage(final StatusMessage message) {
+    public void setStatusMessage(@Nullable final StatusMessage message) {
         statusMessage = prepareForAssignment(statusMessage, message);
     }
 
     /** {@inheritDoc} */
-    public StatusCode getStatusCode() {
+    @Nullable public StatusCode getStatusCode() {
         return statusCode;
     }
 
     /** {@inheritDoc} */
-    public void setStatusCode(final StatusCode code) {
+    public void setStatusCode(@Nullable final StatusCode code) {
         statusCode = prepareForAssignment(statusCode, code);
     }
 
     /** {@inheritDoc} */
-    public StatusDetail getStatusDetail() {
+    @Nullable public StatusDetail getStatusDetail() {
         return statusDetail;
     }
 
     /** {@inheritDoc} */
-    public void setStatusDetail(final StatusDetail detail) {
+    public void setStatusDetail(@Nullable final StatusDetail detail) {
         statusDetail = prepareForAssignment(statusDetail, detail);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>(3);
 
         if (statusCode != null) {
@@ -99,10 +106,7 @@ public class StatusImpl extends AbstractXMLObject implements Status {
             children.add(statusDetail);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
+    
 }

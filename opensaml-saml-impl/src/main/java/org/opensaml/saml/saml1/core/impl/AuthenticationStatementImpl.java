@@ -19,8 +19,10 @@ package org.opensaml.saml.saml1.core.impl;
 
 import java.time.Instant;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
@@ -28,22 +30,27 @@ import org.opensaml.saml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml.saml1.core.AuthorityBinding;
 import org.opensaml.saml.saml1.core.SubjectLocality;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * A Concrete implementation of the {@link org.opensaml.saml.saml1.core.AuthenticationStatement} Interface.
+ * A Concrete implementation of the {@link AuthenticationStatement} Interface.
  */
 public class AuthenticationStatementImpl extends SubjectStatementImpl implements AuthenticationStatement {
 
     /** Contains the AuthenticationMethod attribute contents. */
-    private String authenticationMethod;
+    @Nullable private String authenticationMethod;
 
     /** Contains the AuthenticationMethod attribute contents. */
-    private Instant authenticationInstant;
+    @Nullable private Instant authenticationInstant;
 
     /** Contains the SubjectLocality subelement. */
-    private SubjectLocality subjectLocality;
+    @Nullable private SubjectLocality subjectLocality;
 
     /** Contains the AuthorityBinding subelements. */
-    private final XMLObjectChildrenList<AuthorityBinding> authorityBindings;
+    @Nonnull private final XMLObjectChildrenList<AuthorityBinding> authorityBindings;
 
     /**
      * Constructor.
@@ -52,57 +59,54 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected AuthenticationStatementImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected AuthenticationStatementImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         authorityBindings = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public String getAuthenticationMethod() {
+    @Nullable public String getAuthenticationMethod() {
         return authenticationMethod;
     }
 
     /** {@inheritDoc} */
-    public void setAuthenticationMethod(final String method) {
+    public void setAuthenticationMethod(@Nullable final String method) {
         authenticationMethod = prepareForAssignment(authenticationMethod, method);
     }
 
     /** {@inheritDoc} */
-    public Instant getAuthenticationInstant() {
+    @Nullable public Instant getAuthenticationInstant() {
         return authenticationInstant;
     }
 
     /** {@inheritDoc} */
-    public void setAuthenticationInstant(final Instant instant) {
+    public void setAuthenticationInstant(@Nullable final Instant instant) {
         authenticationInstant = prepareForAssignment(authenticationInstant, instant);
     }
 
-    //
-    // Elements
-    //
-
     /** {@inheritDoc} */
-    public SubjectLocality getSubjectLocality() {
+    @Nullable public SubjectLocality getSubjectLocality() {
         return subjectLocality;
     }
 
     /** {@inheritDoc} */
-    public void setSubjectLocality(final SubjectLocality locality) {
+    public void setSubjectLocality(@Nullable final SubjectLocality locality) {
         subjectLocality = prepareForAssignment(subjectLocality, locality);
     }
 
     /** {@inheritDoc} */
-    public List<AuthorityBinding> getAuthorityBindings() {
+    @Nonnull @Live public List<AuthorityBinding> getAuthorityBindings() {
         return authorityBindings;
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
         final List<XMLObject> list = new ArrayList<>(authorityBindings.size() + 2);
 
-        if (super.getOrderedChildren() != null) {
-            list.addAll(super.getOrderedChildren());
+        final List<XMLObject> superKids = super.getOrderedChildren();
+        if (superKids != null) {
+            list.addAll(superKids);
         }
 
         if (subjectLocality != null) {
@@ -111,10 +115,7 @@ public class AuthenticationStatementImpl extends SubjectStatementImpl implements
 
         list.addAll(authorityBindings);
 
-        if (list.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(list);
+        return CollectionSupport.copyToList(list);
     }
+    
 }

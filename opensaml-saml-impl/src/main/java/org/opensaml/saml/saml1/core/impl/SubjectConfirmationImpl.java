@@ -18,8 +18,10 @@
 package org.opensaml.saml.saml1.core.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
@@ -28,19 +30,24 @@ import org.opensaml.saml.saml1.core.ConfirmationMethod;
 import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
- * Concrete implementation of a <code> SubjectConfirmation </code> object.
+ * Concrete implementation of {@link SubjectConfirmation}.
  */
 public class SubjectConfirmationImpl extends AbstractXMLObject implements SubjectConfirmation {
 
     /** Contains the list of ConfirmationMethods. */
-    private final XMLObjectChildrenList<ConfirmationMethod> confirmationMethods;
+    @Nonnull private final XMLObjectChildrenList<ConfirmationMethod> confirmationMethods;
 
     /** Contains the SubjectConfirmationData element. */
-    private XMLObject subjectConfirmationData;
+    @Nullable private XMLObject subjectConfirmationData;
 
     /** Contains the KeyInfo element. */
-    private KeyInfo keyInfo;
+    @Nullable private KeyInfo keyInfo;
 
     /**
      * Constructor.
@@ -49,39 +56,39 @@ public class SubjectConfirmationImpl extends AbstractXMLObject implements Subjec
      * @param elementLocalName the local name of the XML element this Object represents
      * @param namespacePrefix the prefix for the given namespace
      */
-    protected SubjectConfirmationImpl(final String namespaceURI, final String elementLocalName,
-            final String namespacePrefix) {
+    protected SubjectConfirmationImpl(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+            @Nullable final String namespacePrefix) {
         super(namespaceURI, elementLocalName, namespacePrefix);
         confirmationMethods = new XMLObjectChildrenList<>(this);
     }
 
     /** {@inheritDoc} */
-    public List<ConfirmationMethod> getConfirmationMethods() {
+    @Nonnull @Live public List<ConfirmationMethod> getConfirmationMethods() {
         return confirmationMethods;
     }
-
+    
     /** {@inheritDoc} */
-    public void setSubjectConfirmationData(final XMLObject data) {
+    @Nullable public XMLObject getSubjectConfirmationData() {
+        return subjectConfirmationData;
+    }
+    
+    /** {@inheritDoc} */
+    public void setSubjectConfirmationData(@Nullable final XMLObject data) {
         subjectConfirmationData = prepareForAssignment(subjectConfirmationData, data);
     }
 
     /** {@inheritDoc} */
-    public XMLObject getSubjectConfirmationData() {
-        return subjectConfirmationData;
-    }
-
-    /** {@inheritDoc} */
-    public KeyInfo getKeyInfo() {
+    @Nullable public KeyInfo getKeyInfo() {
         return keyInfo;
     }
 
     /** {@inheritDoc} */
-    public void setKeyInfo(final KeyInfo info) {
+    public void setKeyInfo(@Nullable final KeyInfo info) {
         keyInfo = prepareForAssignment(keyInfo, info);
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
 
         final List<XMLObject> list = new ArrayList<>(confirmationMethods.size() + 1);
 
@@ -91,13 +98,11 @@ public class SubjectConfirmationImpl extends AbstractXMLObject implements Subjec
             list.add(subjectConfirmationData);
         }
 
-        if(keyInfo != null){
+        if (keyInfo != null) {
             list.add(keyInfo);
         }
 
-        if (list.size() == 0) {
-            return null;
-        }
-        return Collections.unmodifiableList(list);
+        return CollectionSupport.copyToList(list);
     }
+    
 }
