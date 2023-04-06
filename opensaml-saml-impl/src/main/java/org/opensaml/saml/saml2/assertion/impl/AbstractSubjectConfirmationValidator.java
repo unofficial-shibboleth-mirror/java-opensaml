@@ -32,9 +32,10 @@ import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.assertion.SubjectConfirmationValidator;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
+import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.ObjectSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -100,11 +101,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public abstract class AbstractSubjectConfirmationValidator implements SubjectConfirmationValidator {
 
     /** Class logger. */
-    private Logger log = LoggerFactory.getLogger(AbstractSubjectConfirmationValidator.class);
-
-    /** Constructor. */
-    public AbstractSubjectConfirmationValidator() {
-    }
+    @Nonnull private Logger log = LoggerFactory.getLogger(AbstractSubjectConfirmationValidator.class);
 
     /** {@inheritDoc} */
     // Checkstyle: CyclomaticComplexity OFF
@@ -118,28 +115,29 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         final boolean notOnOrAfterRequired = isNotOnOrAfterRequired(context);
         final boolean notBeforeRequired = isNotBeforeRequired(context);
 
-        if (confirmation.getSubjectConfirmationData() != null) {
-            ValidationResult result = validateNotBefore(confirmation, assertion, context, notBeforeRequired);
+        final SubjectConfirmationData confirmationData = confirmation.getSubjectConfirmationData();
+        if (confirmationData != null) {
+            ValidationResult result = validateNotBefore(confirmationData, assertion, context, notBeforeRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
 
-            result = validateNotOnOrAfter(confirmation, assertion, context, notOnOrAfterRequired);
+            result = validateNotOnOrAfter(confirmationData, assertion, context, notOnOrAfterRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
 
-            result = validateRecipient(confirmation, assertion, context, recipientRequired);
+            result = validateRecipient(confirmationData, assertion, context, recipientRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
 
-            result = validateAddress(confirmation, assertion, context, addressRequired);
+            result = validateAddress(confirmationData, assertion, context, addressRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
             
-            result = validateInResponseTo(confirmation, assertion, context, inResponseToRequired);
+            result = validateInResponseTo(confirmationData, assertion, context, inResponseToRequired);
             if (result != ValidationResult.VALID) {
                 return result;
             }
@@ -165,10 +163,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * @return true if required, false if not
      */
     protected boolean isAddressRequired(final ValidationContext context) {
-        return ObjectSupport.firstNonNull(
+        final Boolean flag = ObjectSupport.firstNonNull(
                 (Boolean) context.getStaticParameters().get(
                         SAML2AssertionValidationParameters.SC_ADDRESS_REQUIRED),
                 Boolean.FALSE);
+        return flag != null ? flag : false;
     }
 
     /**
@@ -179,10 +178,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * @return true if required, false if not
      */
     protected boolean isRecipientRequired(final ValidationContext context) {
-        return ObjectSupport.firstNonNull(
+        final Boolean flag = ObjectSupport.firstNonNull(
                 (Boolean) context.getStaticParameters().get(
                         SAML2AssertionValidationParameters.SC_RECIPIENT_REQUIRED),
                 Boolean.FALSE);
+        return flag != null ? flag : false;
     }
 
     /**
@@ -193,10 +193,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * @return true if required, false if not
      */
     protected boolean isNotBeforeRequired(final ValidationContext context) {
-        return ObjectSupport.firstNonNull(
+        final Boolean flag = ObjectSupport.firstNonNull(
                 (Boolean) context.getStaticParameters().get(
                         SAML2AssertionValidationParameters.SC_NOT_BEFORE_REQUIRED),
                 Boolean.FALSE);
+        return flag != null ? flag : false;
     }
 
     /**
@@ -207,10 +208,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * @return true if required, false if not
      */
     protected boolean isNotOnOrAfterRequired(final ValidationContext context) {
-        return ObjectSupport.firstNonNull(
+        final Boolean flag = ObjectSupport.firstNonNull(
                 (Boolean) context.getStaticParameters().get(
                         SAML2AssertionValidationParameters.SC_NOT_ON_OR_AFTER_REQUIRED),
                 Boolean.FALSE);
+        return flag != null ? flag : false;
     }
 
     /**
@@ -221,18 +223,17 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * @return true if required, false if not
      */
     protected boolean isInResponseToRequired(final ValidationContext context) {
-        return ObjectSupport.firstNonNull(
+        final Boolean flag = ObjectSupport.firstNonNull(
                 (Boolean) context.getStaticParameters().get(
                         SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED),
                 Boolean.FALSE);
+        return flag != null ? flag : false;
     }
 
     /**
-     * Validates the <code>InResponseTo</code> condition of the
-     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData}, if any is present.
+     * Validates the <code>InResponseTo</code> condition of the {@link SubjectConfirmationData}, if any is present.
      * 
-     * @param confirmation confirmation method, with {@link org.opensaml.saml.saml2.core.SubjectConfirmationData},
-     *  being validated
+     * @param confirmationData confirmation data being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
      * @param required whether the InResponseTo value is required
@@ -241,12 +242,12 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the NotBefore
      */
-    protected ValidationResult validateInResponseTo(@Nonnull final SubjectConfirmation confirmation,
+    @Nonnull protected ValidationResult validateInResponseTo(@Nonnull final SubjectConfirmationData confirmationData,
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required)
                     throws AssertionValidationException {
         
         final String inResponseTo = 
-                StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getInResponseTo());
+                StringSupport.trimOrNull(confirmationData.getInResponseTo());
         if (inResponseTo == null) {
             if (required) {
                 log.warn("SubjectConfirmationData/@InResponseTo was missing and was required");
@@ -291,11 +292,9 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     }
 
     /**
-     * Validates the <code>NotBefore</code> condition of the
-     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData}, if any is present.
+     * Validates the <code>NotBefore</code> condition of the {@link SubjectConfirmationData}, if any is present.
      * 
-     * @param confirmation confirmation method, with {@link org.opensaml.saml.saml2.core.SubjectConfirmationData},
-     *  being validated
+     * @param confirmationData confirmation data being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
      * @param required whether the NotBefore value is required
@@ -304,11 +303,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the NotBefore
      */
-    @Nonnull protected ValidationResult validateNotBefore(@Nonnull final SubjectConfirmation confirmation, 
+    @Nonnull protected ValidationResult validateNotBefore(@Nonnull final SubjectConfirmationData confirmationData, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context,
             final boolean required) throws AssertionValidationException {
         
-        final Instant notBefore = confirmation.getSubjectConfirmationData().getNotBefore();
+        final Instant notBefore = confirmationData.getNotBefore();
         if (notBefore == null) {
             if (required) {
                 log.warn("SubjectConfirmationData/@NotBefore was missing and was required");
@@ -334,11 +333,9 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     }
 
     /**
-     * Validates the <code>NotOnOrAfter</code> condition of the
-     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData}, if any is present.
+     * Validates the <code>NotOnOrAfter</code> condition of the {@link SubjectConfirmationData}, if any is present.
      * 
-     * @param confirmation confirmation method, with {@link org.opensaml.saml.saml2.core.SubjectConfirmationData},
-     *  being validated
+     * @param confirmationData confirmation data being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
      * @param required whether the NotOnOrAfter value is required
@@ -347,11 +344,11 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the NotOnOrAFter
      */
-    @Nonnull protected ValidationResult validateNotOnOrAfter(@Nonnull final SubjectConfirmation confirmation, 
+    @Nonnull protected ValidationResult validateNotOnOrAfter(@Nonnull final SubjectConfirmationData confirmationData, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required) 
                     throws AssertionValidationException {
         
-        final Instant notOnOrAfter = confirmation.getSubjectConfirmationData().getNotOnOrAfter();
+        final Instant notOnOrAfter = confirmationData.getNotOnOrAfter();
         if (notOnOrAfter == null) {
             if (required) {
                 log.warn("SubjectConfirmationData/@NotOnOrAfter was missing and was required");
@@ -377,10 +374,9 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     }
 
     /**
-     * Validates the <code>Recipient</code> condition of the
-     * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData}, if any is present.
+     * Validates the <code>Recipient</code> condition of the {@link SubjectConfirmationData}, if any is present.
      * 
-     * @param confirmation confirmation method being validated
+     * @param confirmationData confirmation data being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
      * @param required whether the Recipient value is required
@@ -389,12 +385,12 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the recipient
      */
-    @Nonnull protected ValidationResult validateRecipient(@Nonnull final SubjectConfirmation confirmation, 
+    @Nonnull protected ValidationResult validateRecipient(@Nonnull final SubjectConfirmationData confirmationData, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required)
                     throws AssertionValidationException {
         
         final String recipient = 
-                StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getRecipient());
+                StringSupport.trimOrNull(confirmationData.getRecipient());
         if (recipient == null) {
             if (required) {
                 log.warn("SubjectConfirmationData/@Recipient was missing and was required");
@@ -441,10 +437,9 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
     }
 
     /**
-     * Validates the <code>Address</code> condition of the {@link org.opensaml.saml.saml2.core.SubjectConfirmationData},
-     * if any is present.
+     * Validates the <code>Address</code> condition of the {@link SubjectConfirmationData}, if any is present.
      * 
-     * @param confirmation confirmation method being validated
+     * @param confirmationData confirmation data being validated
      * @param assertion assertion bearing the confirmation method
      * @param context current validation context
      * @param required whether the Address value is required
@@ -453,7 +448,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
      * 
      * @throws AssertionValidationException thrown if there is a problem determining the validity of the address
      */
-    @Nonnull protected ValidationResult validateAddress(@Nonnull final SubjectConfirmation confirmation, 
+    @Nonnull protected ValidationResult validateAddress(@Nonnull final SubjectConfirmationData confirmationData, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context, final boolean required) 
                     throws AssertionValidationException {
 
@@ -465,7 +460,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             return ValidationResult.VALID;
         }
 
-        final String address = StringSupport.trimOrNull(confirmation.getSubjectConfirmationData().getAddress());
+        final String address = StringSupport.trimOrNull(confirmationData.getAddress());
         if (address == null) {
             if (required) {
                 log.warn("SubjectConfirmationData/@Address was missing and was required");

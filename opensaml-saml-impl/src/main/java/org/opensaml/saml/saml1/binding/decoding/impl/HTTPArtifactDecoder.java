@@ -29,10 +29,10 @@ import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -76,6 +76,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
     protected void doDecode() throws MessageDecodingException {
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
+        assert request != null;
         
         decodeTarget(messageContext, request);
         processArtifacts(messageContext, request);
@@ -93,7 +94,7 @@ public class HTTPArtifactDecoder extends BaseHttpServletRequestXMLMessageDecoder
      * 
      * @throws MessageDecodingException thrown if there is a problem decoding the TARGET parameter.
      */
-    protected void decodeTarget(final MessageContext messageContext, final HttpServletRequest request) 
+    protected void decodeTarget(@Nonnull final MessageContext messageContext, @Nonnull final HttpServletRequest request)
             throws MessageDecodingException {
         final String target = StringSupport.trim(request.getParameter("TARGET"));
         if (target == null) {

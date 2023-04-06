@@ -67,11 +67,12 @@ public class ProxyRestrictionConditionValidator implements ConditionValidator {
     @Nonnull public ValidationResult validate(@Nonnull final Condition condition, @Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
-        if ((condition instanceof ProxyRestriction) 
+        if (condition instanceof ProxyRestriction 
                 || Objects.equals(condition.getElementQName(), ProxyRestriction.DEFAULT_ELEMENT_NAME)) {
             // Proxy restriction information is a 'condition of use' type condition so we always return valid.
             return ValidationResult.VALID;
         }
         return ValidationResult.INDETERMINATE;
     }
+
 }

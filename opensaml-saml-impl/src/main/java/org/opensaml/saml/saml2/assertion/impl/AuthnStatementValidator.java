@@ -35,8 +35,8 @@ import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.Statement;
 import org.opensaml.saml.saml2.core.SubjectLocality;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -72,15 +72,15 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class AuthnStatementValidator implements StatementValidator {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AuthnStatementValidator.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AuthnStatementValidator.class);
 
     /** {@inheritDoc} */
-    public QName getServicedStatement() {
+    @Nonnull public QName getServicedStatement() {
         return AuthnStatement.DEFAULT_ELEMENT_NAME;
     }
 
     /** {@inheritDoc} */
-    public ValidationResult validate(@Nonnull final Statement statement, @Nonnull final Assertion assertion,
+    @Nonnull public ValidationResult validate(@Nonnull final Statement statement, @Nonnull final Assertion assertion,
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
         if (!(statement instanceof AuthnStatement)) {
@@ -126,7 +126,7 @@ public class AuthnStatementValidator implements StatementValidator {
      * 
      * @throws AssertionValidationException if there is a fatal error during evaluation
      */
-    protected ValidationResult validateAuthnInstant(@Nonnull final AuthnStatement authnStatement, 
+    @Nonnull protected ValidationResult validateAuthnInstant(@Nonnull final AuthnStatement authnStatement, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
                     throws AssertionValidationException {
         
@@ -169,7 +169,7 @@ public class AuthnStatementValidator implements StatementValidator {
      * 
      * @throws AssertionValidationException if there is a fatal error during evaluation
      */
-    protected ValidationResult validateSubjectLocality(@Nonnull final AuthnStatement authnStatement, 
+    @Nonnull protected ValidationResult validateSubjectLocality(@Nonnull final AuthnStatement authnStatement, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
                     throws AssertionValidationException {
         
@@ -210,7 +210,7 @@ public class AuthnStatementValidator implements StatementValidator {
      * 
      * @throws AssertionValidationException if there is a fatal error during evaluation
      */
-    protected ValidationResult validateAuthnContext(@Nonnull final AuthnStatement authnStatement,
+    @Nonnull protected ValidationResult validateAuthnContext(@Nonnull final AuthnStatement authnStatement,
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
                     throws AssertionValidationException {
         // Default is no-op.

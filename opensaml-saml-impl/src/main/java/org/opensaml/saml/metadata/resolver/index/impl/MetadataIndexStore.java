@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.index.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -27,11 +26,9 @@ import javax.annotation.Nonnull;
 
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 
-import com.google.common.collect.ImmutableSet;
-
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -44,7 +41,7 @@ import net.shibboleth.shared.logic.Constraint;
 public class MetadataIndexStore<T> {
     
     /** The indexed storage of data. */
-    @Nonnull private Map<MetadataIndexKey, Set<T>> index;
+    @Nonnull private final Map<MetadataIndexKey, Set<T>> index;
     
     /**
      * Constructor.
@@ -58,9 +55,8 @@ public class MetadataIndexStore<T> {
      * 
      * @return the set of all currently indexed keys
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> getKeys() {
-        return ImmutableSet.copyOf(index.keySet());
+    @Nonnull @Unmodifiable @NotLive public Set<MetadataIndexKey> getKeys() {
+        return CollectionSupport.copyToSet(index.keySet());
     }
     
     /**
@@ -69,14 +65,13 @@ public class MetadataIndexStore<T> {
      * @param key the index key to lookup
      * @return the set of data items indexed under that key
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive 
-    public Set<T> lookup(@Nonnull final MetadataIndexKey key) {
+    @Nonnull @Unmodifiable @NotLive public Set<T> lookup(@Nonnull final MetadataIndexKey key) {
         Constraint.isNotNull(key, "IndexKey was null");
         final Set<T> items = index.get(key);
         if (items == null) {
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
-        return ImmutableSet.copyOf(items);
+        return CollectionSupport.copyToSet(items);
     }
     
     /**
@@ -85,7 +80,7 @@ public class MetadataIndexStore<T> {
      * @param key the index key
      * @param item the data item to index
      */
-    public void add(final MetadataIndexKey key, final T item) {
+    public void add(@Nonnull final MetadataIndexKey key, @Nonnull final T item) {
         Constraint.isNotNull(key, "IndexKey was null");
         Constraint.isNotNull(item, "The indexed data element was null");
         Set<T> items = index.get(key);
@@ -102,7 +97,7 @@ public class MetadataIndexStore<T> {
      * @param key the index key
      * @param item the data item to index
      */
-    public void remove(final MetadataIndexKey key, final T item) {
+    public void remove(@Nonnull final MetadataIndexKey key, @Nonnull final T item) {
         Constraint.isNotNull(key, "IndexKey was null");
         Constraint.isNotNull(item, "The indexed data element was null");
         final Set<T> items = index.get(key);
@@ -117,7 +112,7 @@ public class MetadataIndexStore<T> {
      * 
      * @param key the index key
      */
-    public void clear(final MetadataIndexKey key) {
+    public void clear(@Nonnull final MetadataIndexKey key) {
         Constraint.isNotNull(key, "IndexKey was null");
         index.remove(key);
     }

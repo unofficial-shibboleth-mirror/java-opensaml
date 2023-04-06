@@ -175,6 +175,7 @@ public class PredicateFilter implements MetadataFilter {
             final Iterator<EntitiesDescriptor> entitiesDescriptorsItr = entitiesDescriptors.iterator();
             while (entitiesDescriptorsItr.hasNext()) {
                 final EntitiesDescriptor entitiesDescriptor = entitiesDescriptorsItr.next();
+                assert entitiesDescriptor != null;
                 filterEntitiesDescriptor(entitiesDescriptor);
                 if (getRemoveEmptyEntitiesDescriptors()) {
                     // Remove the EntitiesDescriptor if empty.

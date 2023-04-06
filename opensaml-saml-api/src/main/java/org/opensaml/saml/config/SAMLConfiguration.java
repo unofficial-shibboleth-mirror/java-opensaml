@@ -27,7 +27,6 @@ import javax.annotation.Nullable;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -55,7 +54,7 @@ public class SAMLConfiguration {
     
     /** The list of schemes allowed to appear in binding URLs when encoding a message. 
      * Defaults to 'http' and 'https'. */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive private List<String> allowedBindingURLSchemes;
+    @Nonnull @Unmodifiable @NotLive private List<String> allowedBindingURLSchemes;
     
 
     /**
@@ -115,7 +114,7 @@ public class SAMLConfiguration {
      * 
      * @return list of URL schemes allowed to appear in a message
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getAllowedBindingURLSchemes() {
+    @Nonnull @Unmodifiable @NotLive public List<String> getAllowedBindingURLSchemes() {
         return allowedBindingURLSchemes;
     }
 

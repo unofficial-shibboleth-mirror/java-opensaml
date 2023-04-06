@@ -67,7 +67,7 @@ public class DelegationRestrictionConditionValidator implements ConditionValidat
     @Nonnull public ValidationResult validate(@Nonnull final Condition condition, @Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
-        if ((condition instanceof DelegationRestrictionType) 
+        if (condition instanceof DelegationRestrictionType 
                 || Objects.equals(condition.getSchemaType(), DelegationRestrictionType.TYPE_NAME)) {
             // Delegation restriction information is a 'condition of use' type condition so we always return valid.
             return ValidationResult.VALID;

@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.saml1.binding.encoding.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.common.binding.encoding.SAMLMessageEncoder;
 import org.opensaml.saml.common.xml.SAMLConstants;
 
@@ -28,13 +31,13 @@ public class HTTPSOAP11Encoder extends org.opensaml.soap.soap11.encoder.http.imp
     
     /** {@inheritDoc} */
     @Override
-    protected String getSOAPAction() {
+    @Nullable protected String getSOAPAction() {
         return "http://www.oasis-open.org/committees/security";
     }
 
     /** {@inheritDoc} */
     @Override
-    public String getBindingURI() {
+    @Nonnull public String getBindingURI() {
         return SAMLConstants.SAML1_SOAP11_BINDING_URI;
     }
 

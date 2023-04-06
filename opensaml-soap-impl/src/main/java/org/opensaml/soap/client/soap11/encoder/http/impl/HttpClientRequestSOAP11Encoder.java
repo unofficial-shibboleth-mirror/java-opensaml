@@ -220,7 +220,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
      * 
      * @return a SOAPAction HTTP header URI value
      */
-    protected String getSOAPAction() {
+    @Nullable protected String getSOAPAction() {
         final Envelope env = getSOAPEnvelope();
         if (env == null) {
             return null;

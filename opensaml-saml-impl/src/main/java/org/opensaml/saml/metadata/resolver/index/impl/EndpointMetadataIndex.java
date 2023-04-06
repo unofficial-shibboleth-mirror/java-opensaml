@@ -133,6 +133,7 @@ public class EndpointMetadataIndex implements MetadataIndex {
     public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet) {
         Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
         final EntityRoleCriterion roleCrit = criteriaSet.get(EntityRoleCriterion.class);
+        @SuppressWarnings("unchecked")
         final EndpointCriterion<Endpoint> endpointCrit = criteriaSet.get(EndpointCriterion.class);
         if (roleCrit != null && endpointCrit != null) {
             final HashSet<MetadataIndexKey> result = new HashSet<>();

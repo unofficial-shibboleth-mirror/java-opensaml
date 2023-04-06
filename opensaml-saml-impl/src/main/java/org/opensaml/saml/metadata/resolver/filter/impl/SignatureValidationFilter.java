@@ -370,6 +370,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         final Iterator<EntitiesDescriptor> entitiesIter = entitiesDescriptor.getEntitiesDescriptors().iterator();
         while(entitiesIter.hasNext()) {
             final EntitiesDescriptor entitiesChild = entitiesIter.next();
+            assert entitiesChild != null;
             final String childName = getGroupName(entitiesChild);
             log.trace("Processing EntitiesDescriptor member: {}", childName);
             try {
@@ -403,7 +404,7 @@ public class SignatureValidationFilter implements MetadataFilter {
      *                         or if an error occurs during the signature verification process
      */
     protected void verifySignature(@Nonnull final SignableXMLObject signedMetadata,
-            @Nonnull @NotEmpty final String metadataEntryName, final boolean isEntityGroup) throws FilterException {
+            @Nullable @NotEmpty final String metadataEntryName, final boolean isEntityGroup) throws FilterException {
         
         log.debug("Verifying signature on metadata entry: {}", metadataEntryName);
         
@@ -416,7 +417,7 @@ public class SignatureValidationFilter implements MetadataFilter {
         
         performPreValidation(signature, metadataEntryName);
         
-        final CriteriaSet criteriaSet = buildCriteriaSet(signedMetadata, metadataEntryName, isEntityGroup);
+        final CriteriaSet criteriaSet = buildCriteriaSet(signedMetadata, isEntityGroup);
         
         try {
             if (getSignatureTrustEngine().validate(signature, criteriaSet)) {
@@ -446,7 +447,7 @@ public class SignatureValidationFilter implements MetadataFilter {
      * @throws FilterException thrown if the signature element fails pre-validation
      */
     protected void performPreValidation(@Nonnull final Signature signature,
-            @Nonnull @NotEmpty final String metadataEntryName) throws FilterException {
+            @Nullable @NotEmpty final String metadataEntryName) throws FilterException {
         final var prevalidator = getSignaturePrevalidator();
         if (prevalidator != null) {
             try {
@@ -463,17 +464,11 @@ public class SignatureValidationFilter implements MetadataFilter {
      * Build the criteria set which will be used as input to the configured trust engine.
      * 
      * @param signedMetadata the metadata element whose signature is being verified
-     * @param metadataEntryName the EntityDescriptor entityID, EntitiesDescriptor Name,
-     *                          AffiliationDescriptor affiliationOwnerID, 
-     *                          or RoleDescriptor {@link #getRoleIDToken(String, RoleDescriptor)}
-     *                          corresponding to the element whose signature is being evaluated.
-     *                          This is used exclusively for logging/debugging purposes and
-     *                          should not be used operationally (e.g. for building the criteria set).
      * @param isEntityGroup flag indicating whether the signed object is a metadata group (EntitiesDescriptor)
      * @return the newly constructed criteria set
      */
     @Nonnull protected CriteriaSet buildCriteriaSet(@Nonnull final SignableXMLObject signedMetadata,
-            @Nonnull @NotEmpty final String metadataEntryName, final boolean isEntityGroup) {
+            final boolean isEntityGroup) {
         
         final CriteriaSet newCriteriaSet = new CriteriaSet();
         
@@ -505,10 +500,10 @@ public class SignatureValidationFilter implements MetadataFilter {
      * 
      * @return the constructed role ID token.
      */
-    @Nonnull protected String getRoleIDToken(@Nonnull @NotEmpty final String entityID,
+    @Nonnull protected String getRoleIDToken(@Nullable @NotEmpty final String entityID,
             @Nonnull final RoleDescriptor role) {
         final String roleName = role.getElementQName().getLocalPart();
-        return "[Role: " + entityID + "::" + roleName + "]";
+        return "[Role: " + (entityID != null ? entityID : "(unnamed)") + "::" + roleName + "]";
     }
 
     /**

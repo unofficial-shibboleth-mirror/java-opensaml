@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.assertion.AssertionValidationException;
@@ -47,7 +48,6 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyValue;
 import org.opensaml.xmlsec.signature.X509Data;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Validates a Holder of Key subject confirmation.
@@ -108,13 +108,14 @@ import org.slf4j.LoggerFactory;
 public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConfirmationValidator {
 
     /** Class logger. */
-    private Logger log = LoggerFactory.getLogger(HolderOfKeySubjectConfirmationValidator.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(HolderOfKeySubjectConfirmationValidator.class);
 
     /** {@inheritDoc} */
     @Nonnull public String getServicedMethod() {
         return SubjectConfirmation.METHOD_HOLDER_OF_KEY;
     }
 
+// Checkstyle: CyclomaticComplexity|ReturnCount OFF
     /** {@inheritDoc} */
     @Nonnull protected ValidationResult doValidate(@Nonnull final SubjectConfirmation confirmation, 
             @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) 
@@ -124,8 +125,13 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
             return ValidationResult.INDETERMINATE;
         }
         
+        final SubjectConfirmationData confirmationData = confirmation.getSubjectConfirmationData();
+        if (confirmationData == null) {
+            return ValidationResult.INDETERMINATE;
+        }
+        
         log.debug("Attempting holder-of-key subject confirmation");
-        if (!isValidConfirmationDataType(confirmation)) {
+        if (!isValidConfirmationDataType(confirmationData)) {
             final String msg = String.format(
                     "Subject confirmation data is not of type '%s'", KeyInfoConfirmationDataType.TYPE_NAME);
             log.debug(msg);
@@ -133,7 +139,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
             return ValidationResult.INVALID;
         }
 
-        final List<KeyInfo> possibleKeys = getSubjectConfirmationKeyInformation(confirmation, assertion, context);
+        final List<KeyInfo> possibleKeys = getSubjectConfirmationKeyInformation(confirmationData, assertion, context);
         if (possibleKeys.isEmpty()) {
             final String msg = String.format(
                     "No key information for holder of key subject confirmation in assertion '%s'", assertion.getID());
@@ -158,6 +164,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         }
 
         for (final KeyInfo keyInfo : possibleKeys) {
+            assert keyInfo != null;
             if (matchesKeyValue(keyCertPair.getFirst(), keyInfo)) {
                 log.debug("Successfully matched public key in subject confirmation data to supplied key param");
                 context.getDynamicParameters().put(SAML2AssertionValidationParameters.SC_HOK_CONFIRMED_KEYINFO,
@@ -173,20 +180,21 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
 
         return ValidationResult.INVALID;
     }
+// Checkstyle: CyclomaticComplexity|ReturnCount ON
 
     /**
      * Checks to see whether the schema type of the subject confirmation data, if present, is the required
      * {@link KeyInfoConfirmationDataType#TYPE_NAME}.
      * 
-     * @param confirmation subject confirmation bearing the confirmation data to be checked
+     * @param confirmationData subject confirmation data to be checked
      * 
      * @return true if the confirmation data's schema type is correct, false otherwise
      * 
      * @throws AssertionValidationException thrown if there is a problem validating the confirmation data type
      */
-    protected boolean isValidConfirmationDataType(@Nonnull final SubjectConfirmation confirmation) 
+    protected boolean isValidConfirmationDataType(@Nonnull final SubjectConfirmationData confirmationData) 
             throws AssertionValidationException {
-        final QName confirmationDataSchemaType = confirmation.getSubjectConfirmationData().getSchemaType();
+        final QName confirmationDataSchemaType = confirmationData.getSchemaType();
         if (confirmationDataSchemaType != null
                 && !confirmationDataSchemaType.equals(KeyInfoConfirmationDataType.TYPE_NAME)) {
             log.debug("SubjectConfirmationData xsi:type was non-null and did not match {}",
@@ -248,7 +256,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
     /**
      * Extracts the {@link KeyInfo}s from the given subject confirmation data.
      * 
-     * @param confirmation subject confirmation data
+     * @param confirmationData subject confirmation data
      * @param assertion assertion bearing the subject to be confirmed
      * @param context current message processing context
      * 
@@ -258,11 +266,9 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      *
      */
     @Nonnull protected List<KeyInfo> getSubjectConfirmationKeyInformation(
-            @Nonnull final SubjectConfirmation confirmation, @Nonnull final Assertion assertion, 
+            @Nonnull final SubjectConfirmationData confirmationData, @Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
-        final SubjectConfirmationData confirmationData = confirmation.getSubjectConfirmationData();
-
         final List<KeyInfo> keyInfos = new LazyList<>();
         for (final XMLObject object : confirmationData.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME)) {
             if (object != null) {
@@ -327,9 +333,9 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      * 
      * @return true if the public key in the certificate matches one of the key values, false otherwise
      */
-    protected boolean matchesKeyValue(@Nonnull final PublicKey key, @Nullable final List<KeyValue> keyValues)  {
+    protected boolean matchesKeyValue(@Nonnull final PublicKey key, @Nonnull final List<KeyValue> keyValues)  {
         
-        if (keyValues == null || keyValues.isEmpty()) {
+        if (keyValues.isEmpty()) {
             log.debug("KeyInfo contained no KeyValue children");
             return false;
         }
@@ -338,6 +344,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         
         for (final KeyValue keyValue : keyValues) {
             try {
+                assert keyValue != null;
                 final PublicKey kiPublicKey = KeyInfoSupport.getKey(keyValue);
                 if (Objects.equals(key, kiPublicKey)) {
                     log.debug("Matched KeyValue PublicKey");
@@ -367,9 +374,9 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      * @return true if the public key in the certificate matches one of the DER-encoded key values, false otherwise
      */
     protected boolean matchesDEREncodedKeyValue(@Nonnull final PublicKey key, 
-            @Nullable final List<DEREncodedKeyValue> derEncodedKeyValues)  {
+            @Nonnull final List<DEREncodedKeyValue> derEncodedKeyValues)  {
         
-        if (derEncodedKeyValues == null || derEncodedKeyValues.isEmpty()) {
+        if (derEncodedKeyValues.isEmpty()) {
             log.debug("KeyInfo contained no DEREncodedKeyValue children");
             return false;
         }
@@ -379,6 +386,7 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         
         for (final DEREncodedKeyValue derEncodedKeyValue : derEncodedKeyValues) {
             try {
+                assert derEncodedKeyValue != null;
                 final PublicKey kiPublicKey = KeyInfoSupport.getKey(derEncodedKeyValue);
                 if (Objects.equals(key, kiPublicKey)) {
                     log.debug("Matched DEREncodedKeyValue PublicKey");

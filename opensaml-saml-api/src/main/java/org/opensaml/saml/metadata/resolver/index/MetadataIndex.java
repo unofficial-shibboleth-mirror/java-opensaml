@@ -22,7 +22,6 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -49,7 +48,7 @@ public interface MetadataIndex {
      * @return the set of index keys generated from the criteria.  May be null or empty, 
      *         but will not contain null elements.
      */
-    @Nullable @NonnullElements @Unmodifiable @NotLive 
+    @Nullable @Unmodifiable @NotLive 
     public Set<MetadataIndexKey> generateKeys(@Nonnull final EntityDescriptor descriptor);
     
     /**
@@ -65,7 +64,7 @@ public interface MetadataIndex {
      * @return the set of index keys generated from the criteria.  May be null or empty, 
      *         but will not contain null elements.
      */
-    @Nullable @NonnullElements @Unmodifiable @NotLive 
+    @Nullable @Unmodifiable @NotLive 
     public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet);
 
 }

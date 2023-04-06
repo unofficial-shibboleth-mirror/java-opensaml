@@ -64,7 +64,6 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
     @Nonnull private Function<MessageContext, AuthnRequest> authnRequestLookupStrategy;
 
     /** {@link AttributeConsumingService} index - if specified. */
-    
     @Nullable private Integer index;
 
     /** {@link RequestedAttribute} list - if specified. */
@@ -109,7 +108,6 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         }
 
         final AuthnRequest authn = authnRequestLookupStrategy.apply(messageContext);
-
         if (authn != null) {
             index = authn.getAttributeConsumingServiceIndex();
             requestedAttributes = getRequestedAttributes(messageContext, authn);
@@ -121,6 +119,7 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
                 index = null;
             }
         }
+        
         return true;
     }
 
@@ -148,8 +147,10 @@ public class SAMLAddAttributeConsumingServiceHandler extends AbstractMessageHand
         AttributeConsumingService acs = null;
         if (null != index) {
             log.debug("{} Request specified AttributeConsumingService index {}", getLogPrefix(), index);
+            assert ssoDescriptor != null;
             for (final AttributeConsumingService acsEntry : ssoDescriptor.getAttributeConsumingServices()) {
-                if (index.intValue() == acsEntry.getIndex()) {
+                assert index != null;
+                if (index.equals(acsEntry.getIndex())) {
                     acs = acsEntry;
                     break;
                 }

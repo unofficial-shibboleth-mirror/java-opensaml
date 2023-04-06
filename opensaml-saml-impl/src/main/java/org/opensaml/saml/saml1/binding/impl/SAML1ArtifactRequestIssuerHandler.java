@@ -24,6 +24,7 @@ import javax.annotation.Nonnull;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
@@ -33,7 +34,7 @@ import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMap
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml1.core.Request;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 
 /**
  * SAML {@link org.opensaml.messaging.handler.MessageHandler} that addresses the SAML 1.x
@@ -70,7 +71,6 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler {
         }
     }
     
-// Checkstyle: ReturnCount OFF
     /** {@inheritDoc} */
     @Override
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
@@ -81,12 +81,18 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler {
         }
         
         final Request request = (Request) messageContext.getMessage();
+        assert request != null;
         if (request.getAssertionArtifacts().isEmpty()) {
             log.trace("{} Request did not contain any artifacts", getLogPrefix());
             return;
         }
         
         final String artifact = request.getAssertionArtifacts().get(0).getValue();
+        if (artifact == null) {
+            log.trace("{} Request did not contain any artifacts", getLogPrefix());
+            return;
+        }
+        
         try {
             final SAMLArtifactMapEntry entry = artifactMap.get(artifact);
             if (entry == null) {
@@ -101,6 +107,5 @@ public class SAML1ArtifactRequestIssuerHandler extends AbstractMessageHandler {
             log.error("{} Error resolving first artifact in request: {}", getLogPrefix(), artifact, e);
         }
     }
-// Checkstyle: ReturnCount ON
     
 }

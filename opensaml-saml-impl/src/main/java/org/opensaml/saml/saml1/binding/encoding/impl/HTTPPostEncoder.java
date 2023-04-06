@@ -22,6 +22,7 @@ import java.io.UnsupportedEncodingException;
 import java.io.Writer;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
@@ -32,13 +33,14 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.codec.HTMLEncoder;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -53,22 +55,21 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
     @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml1-post-binding.vm";
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPPostEncoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPPostEncoder.class);
 
     /** Velocity engine used to evaluate the template when performing POST encoding. */
-    private VelocityEngine velocityEngine;
+    @NonnullAfterInit private VelocityEngine velocityEngine;
 
     /** ID of the velocity template used when performing POST encoding. */
-    private String velocityTemplateId;
+    @NonnullAfterInit private String velocityTemplateId;
     
     /** Constructor. */
     public HTTPPostEncoder() {
-        super();
         setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
     }
 
     /** {@inheritDoc} */
-    public String getBindingURI() {
+    @Nonnull public String getBindingURI() {
         return SAMLConstants.SAML1_POST_BINDING_URI;
     }
 
@@ -77,7 +78,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * 
      * @return return the VelocityEngine instance
      */
-    public VelocityEngine getVelocityEngine() {
+    @NonnullAfterInit public VelocityEngine getVelocityEngine() {
         return velocityEngine;
     }
 
@@ -86,7 +87,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * 
      * @param newVelocityEngine the new VelocityEngine instane
      */
-    public void setVelocityEngine(final VelocityEngine newVelocityEngine) {
+    public void setVelocityEngine(@Nullable final VelocityEngine newVelocityEngine) {
         checkSetterPreconditions();
         velocityEngine = newVelocityEngine;
     }
@@ -98,7 +99,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * 
      * @return return the Velocity template id
      */
-    public String getVelocityTemplateId() {
+    @NonnullAfterInit public String getVelocityTemplateId() {
         return velocityTemplateId;
     }
 
@@ -109,16 +110,9 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * 
      * @param newVelocityTemplateId the new Velocity template id
      */
-    public void setVelocityTemplateId(final String newVelocityTemplateId) {
+    public void setVelocityTemplateId(@Nullable final String newVelocityTemplateId) {
         checkSetterPreconditions();
         velocityTemplateId = newVelocityTemplateId;
-    }
-
-    /** {@inheritDoc} */
-    protected void doDestroy() {
-        velocityEngine = null;
-        velocityTemplateId = null;
-        super.doDestroy();
     }
 
     /** {@inheritDoc} */
@@ -153,13 +147,14 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
      * 
      * @throws MessageEncodingException thrown if there is a problem encoding the message
      */
-    protected void postEncode(final MessageContext messageContext, final String endpointURL) 
+    protected void postEncode(@Nonnull final MessageContext messageContext, @Nonnull final String endpointURL) 
             throws MessageEncodingException {
         log.debug("Invoking velocity template to create POST body");
 
         try {
             final VelocityContext context = new VelocityContext();
-            final Object message = messageContext.getMessage();
+            final XMLObject message = (XMLObject) messageContext.getMessage();
+            assert message != null;
 
             final String encodedEndpointURL = HTMLEncoder.encodeForHTMLAttribute(endpointURL);
             log.debug("Encoding action url of '{}' with encoded value '{}'", endpointURL, encodedEndpointURL);
@@ -167,7 +162,7 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             context.put("binding", getBindingURI());
 
             log.debug("Marshalling and Base64 encoding SAML message");
-            final String messageXML = SerializeSupport.nodeToString(marshallMessage((XMLObject) message));
+            final String messageXML = SerializeSupport.nodeToString(marshallMessage(message));
             final String encodedMessage = Base64Support.encode(messageXML.getBytes("UTF-8"), Base64Support.UNCHUNKED);
             context.put("SAMLResponse", encodedMessage);
 
@@ -179,7 +174,8 @@ public class HTTPPostEncoder extends BaseSAML1MessageEncoder {
             }
             
             final HttpServletResponse response = getHttpServletResponse();
-
+            assert response != null;
+            
             HttpServletSupport.addNoCacheHeaders(response);
             HttpServletSupport.setUTF8Encoding(response);
             HttpServletSupport.setContentType(response, "text/html");

@@ -136,6 +136,7 @@ public class NameIDFormatFilter extends AbstractInitializableComponent implement
         for (final Map.Entry<Predicate<EntityDescriptor>,Collection<String>> entry : applyMap.asMap().entrySet()) {
             if (!entry.getValue().isEmpty() && entry.getKey().test(descriptor)) {
                 for (final RoleDescriptor role : descriptor.getRoleDescriptors()) {
+                    assert role != null;
                     filterRoleDescriptor(role, entry.getValue());
                 }
             }

@@ -166,6 +166,7 @@ public class EntityAttributesFilter extends AbstractInitializableComponent imple
                 
                 final EntityAttributes entityAttributes =
                         (EntityAttributes) entityAttributesCollection.iterator().next();
+                assert entityAttributes != null;
                 entry.getValue().forEach(a -> addEntityAttribute(descriptor, entityAttributes, a));
             }
         }

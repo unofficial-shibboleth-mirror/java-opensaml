@@ -99,10 +99,12 @@ public class SAMLMDClientCertAuthSecurityHandler extends BaseClientCertAuthSecur
                     entityContextClass.getName());
             final AbstractAuthenticatableSAMLEntityContext entityContext = 
                     messageContext.ensureSubcontext(entityContextClass);
-            criteriaSet.add(new EntityRoleCriterion(Constraint.isNotNull(entityContext.getRole(), "SAML entity role was null")));
+            criteriaSet.add(new EntityRoleCriterion(
+                    Constraint.isNotNull(entityContext.getRole(), "SAML entity role was null")));
             
             final SAMLProtocolContext protocolContext = messageContext.ensureSubcontext(SAMLProtocolContext.class);
-            criteriaSet.add(new ProtocolCriterion(Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null")));
+            criteriaSet.add(new ProtocolCriterion(
+                    Constraint.isNotNull(protocolContext.getProtocol(), "SAML protocol was null")));
         } catch (final ConstraintViolationException e) {
             throw new MessageHandlerException(e);
         }

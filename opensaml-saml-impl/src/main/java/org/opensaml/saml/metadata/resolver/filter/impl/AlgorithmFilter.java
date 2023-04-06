@@ -51,7 +51,6 @@ import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.slf4j.Logger;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
@@ -296,7 +295,11 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * 
      * @param uri input method
      */
-    private void checkDigestMethod(@Nonnull @NotEmpty final String uri) {
+    private void checkDigestMethod(@Nullable @NotEmpty final String uri) {
+        if (uri == null) {
+            return;
+        }
+        
         final AlgorithmRegistry local = registry;
         if (local != null) {
             if (!local.getRegisteredURIsByType(AlgorithmType.MessageDigest).contains(uri)) {
@@ -312,7 +315,11 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * 
      * @param uri input method
      */
-    private void checkSigningMethod(@Nonnull @NotEmpty final String uri) {
+    private void checkSigningMethod(@Nullable @NotEmpty final String uri) {
+        if (uri == null) {
+            return;
+        }
+
         final AlgorithmRegistry local = registry;
         if (local != null) {
             if (!local.getRegisteredURIsByType(AlgorithmType.Signature).contains(uri) &&
@@ -329,7 +336,11 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      * 
      * @param uri input method
      */
-    private void checkEncryptionMethod(@Nonnull @NotEmpty final String uri) {
+    private void checkEncryptionMethod(@Nullable @NotEmpty final String uri) {
+        if (uri == null) {
+            return;
+        }
+
         final AlgorithmRegistry local = registry;
         if (local != null) {
             if (!local.getRegisteredURIsByType(AlgorithmType.BlockEncryption).contains(uri) &&

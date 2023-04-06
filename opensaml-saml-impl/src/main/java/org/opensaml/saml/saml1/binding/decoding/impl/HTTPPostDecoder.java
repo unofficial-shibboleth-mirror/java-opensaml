@@ -33,12 +33,12 @@ import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * SAML 1.X HTTP POST message decoder.
@@ -78,7 +78,8 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder imp
     protected void doDecode() throws MessageDecodingException {
         final MessageContext messageContext = new MessageContext();
         final HttpServletRequest request = getHttpServletRequest();
-
+        assert request != null;
+        
         if (!"POST".equalsIgnoreCase(request.getMethod())) {
             throw new MessageDecodingException("This message decoder only supports the HTTP POST method");
         }
@@ -89,7 +90,10 @@ public class HTTPPostDecoder extends BaseHttpServletRequestXMLMessageDecoder imp
         
         try {            
             final String base64Message = request.getParameter("SAMLResponse");
-            final byte[] decodedBytes = Base64Support.decode(base64Message);   
+            if (base64Message == null) {
+                throw new MessageDecodingException("Missing SAMLResponse parameter");
+            }
+            final byte[] decodedBytes = Base64Support.decode(base64Message);
             
             final SAMLObject inboundMessage = (SAMLObject) unmarshallMessage(new ByteArrayInputStream(decodedBytes));
             messageContext.setMessage(inboundMessage);

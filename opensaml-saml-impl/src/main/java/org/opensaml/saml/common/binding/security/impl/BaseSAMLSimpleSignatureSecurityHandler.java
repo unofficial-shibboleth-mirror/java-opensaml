@@ -155,7 +155,8 @@ public abstract class BaseSAMLSimpleSignatureSecurityHandler extends AbstractMes
         
         final SecurityParametersContext secParams = messageContext.getSubcontext(SecurityParametersContext.class);
         signatureValidationParameters = secParams != null ? secParams.getSignatureValidationParameters() : null;
-        trustEngine = signatureValidationParameters != null ? signatureValidationParameters.getSignatureTrustEngine() : null;
+        trustEngine = signatureValidationParameters != null
+                ? signatureValidationParameters.getSignatureTrustEngine() : null;
         if (trustEngine == null) {
             throw new MessageHandlerException("No SignatureTrustEngine was available from the MessageContext");
         }

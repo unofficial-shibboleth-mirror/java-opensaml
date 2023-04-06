@@ -184,6 +184,7 @@ public class EntityRoleFilter implements MetadataFilter {
             List<RoleDescriptor> entityRoles;
             while (entityDescriptorsItr.hasNext()) {
                 entityDescriptor = entityDescriptorsItr.next();
+                assert entityDescriptor != null;
                 filterEntityDescriptor(entityDescriptor);
                 if (getRemoveRolelessEntityDescriptors() && entityDescriptor.getAffiliationDescriptor() == null) {
                     entityRoles = entityDescriptor.getRoleDescriptors();
@@ -205,6 +206,7 @@ public class EntityRoleFilter implements MetadataFilter {
             EntitiesDescriptor entitiesDescriptor;
             while (entitiesDescriptorsItr.hasNext()) {
                 entitiesDescriptor = entitiesDescriptorsItr.next();
+                assert entitiesDescriptor != null;
                 filterEntitiesDescriptor(entitiesDescriptor);
                 if (getRemoveEmptyEntitiesDescriptors()) {
                     // Remove the EntitiesDescriptor if does not contain any EntitiesDescriptors or EntityDescriptors

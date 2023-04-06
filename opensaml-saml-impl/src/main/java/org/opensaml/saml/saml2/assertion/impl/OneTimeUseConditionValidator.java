@@ -28,6 +28,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.saml.common.assertion.AssertionValidationException;
@@ -37,10 +38,10 @@ import org.opensaml.saml.saml2.assertion.ConditionValidator;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.OneTimeUse;
 import org.opensaml.storage.ReplayCache;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * {@link ConditionValidator} used for {@link OneTimeUse} conditions.
@@ -76,7 +77,7 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
     @Nonnull private final ReplayCache replayCache;
     
     /** Time for disposal of value from cache. */
-    @Nonnull private Duration replayCacheExpires;
+    @Nonnull private final Duration replayCacheExpires;
 
     /**
      * Constructor.
@@ -87,14 +88,15 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
      */
     public OneTimeUseConditionValidator(@Nonnull final ReplayCache replay, @Nullable final Duration expires) {
         replayCache = Constraint.isNotNull(replay, "Replay cache was null");
-        replayCacheExpires = expires;
         
-        if (replayCacheExpires == null) {
+        if (expires == null) {
             replayCacheExpires = Duration.ofHours(8);
-        } else if (replayCacheExpires.isNegative()) {
+        } else if (expires.isNegative()) {
+            replayCacheExpires = Duration.ofHours(8);
             log.warn("Supplied value for replay cache expires '{}' was negative, using default expiration", 
                     replayCacheExpires);
-            replayCacheExpires = Duration.ofHours(8);
+        } else {
+            replayCacheExpires = expires;
         }
     }
 
@@ -189,9 +191,11 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
      */
     @Nonnull protected String getCacheValue(@Nonnull final Assertion assertion) throws AssertionValidationException {
         String issuer = null;
-        if (assertion.getIssuer() != null && assertion.getIssuer().getValue() != null) {
-            issuer = StringSupport.trimOrNull(assertion.getIssuer().getValue());
+        final Issuer issuerObject = assertion.getIssuer();
+        if (issuerObject != null) {
+            issuer = StringSupport.trimOrNull(issuerObject.getValue());
         }
+        
         if (issuer == null) {
             issuer = "NoIssuer";
         }

@@ -49,14 +49,15 @@ import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SSODescriptor;
 import org.opensaml.security.crypto.JCAConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -81,7 +82,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
      * </ul>
      */
     public SAMLArtifactMetadataIndex() {
-        this(Arrays.asList(
+        this(CollectionSupport.listOf(
                 new EntityIDToSHA1SourceIDIndexingFunction(),
                 new SourceIDExtensionIndexingFunction(),
                 new SourceLocationIndexingFunction()
@@ -95,7 +96,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
      */
     public SAMLArtifactMetadataIndex(
             @Nonnull final List<Function<EntityDescriptor, Set<MetadataIndexKey>>> descriptorIndexingFunctions) {
-        indexingFunctions = List.copyOf(
+        indexingFunctions = CollectionSupport.copyToList(
                 Constraint.isNotNull(descriptorIndexingFunctions,
                         "EntityDescriptor indexing functions list may not be null"));
         Constraint.isNotEmpty(indexingFunctions, "EntityDescriptor indexing functions list may not be empty");
@@ -146,10 +147,10 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
         implements Function<EntityDescriptor, Set<MetadataIndexKey>> {
         
         /** Logger. */
-        private Logger log = LoggerFactory.getLogger(EntityIDToSHA1SourceIDIndexingFunction.class);
+        @Nonnull private Logger log = LoggerFactory.getLogger(EntityIDToSHA1SourceIDIndexingFunction.class);
 
         /** {@inheritDoc} */
-        public Set<MetadataIndexKey> apply(@Nonnull final EntityDescriptor descriptor) {
+        @Nullable public Set<MetadataIndexKey> apply(@Nullable final EntityDescriptor descriptor) {
             if (descriptor == null) {
                 return null;
             }
@@ -161,6 +162,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
             try {
                 final MessageDigest sha1Digester = MessageDigest.getInstance(JCAConstants.DIGEST_SHA1);
                 final byte[] sourceID = sha1Digester.digest(entityID.getBytes("UTF-8"));
+                assert sourceID != null;
                 final ArtifactSourceIDMetadataIndexKey key = new ArtifactSourceIDMetadataIndexKey(sourceID);
                 log.trace("For entityID '{}' produced artifact SourceID index key: {}", entityID, key);
                 return Collections.<MetadataIndexKey>singleton(key);
@@ -187,10 +189,10 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
         implements Function<EntityDescriptor, Set<MetadataIndexKey>> {
         
         /** Logger. */
-        private Logger log = LoggerFactory.getLogger(SourceIDExtensionIndexingFunction.class);
+        @Nonnull private Logger log = LoggerFactory.getLogger(SourceIDExtensionIndexingFunction.class);
 
         /** {@inheritDoc} */
-        public Set<MetadataIndexKey> apply(@Nonnull final EntityDescriptor descriptor) {
+        @Nullable public Set<MetadataIndexKey> apply(@Nullable final EntityDescriptor descriptor) {
             if (descriptor == null) {
                 return null;
             }
@@ -213,6 +215,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
                             if (extSourceIDHex != null) {
                                 try {
                                     final byte[] sourceID = Hex.decodeHex(extSourceIDHex.toCharArray());
+                                    assert sourceID != null;
                                     final ArtifactSourceIDMetadataIndexKey key = 
                                             new ArtifactSourceIDMetadataIndexKey(sourceID);
                                     log.trace("For SourceID extension value '{}' produced index key: {}", 
@@ -242,10 +245,10 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
     public static class SourceLocationIndexingFunction implements Function<EntityDescriptor, Set<MetadataIndexKey>> {
         
         /** Logger. */
-        private Logger log = LoggerFactory.getLogger(SourceLocationIndexingFunction.class);
+        @Nonnull private Logger log = LoggerFactory.getLogger(SourceLocationIndexingFunction.class);
 
         /** {@inheritDoc} */
-        public Set<MetadataIndexKey> apply(@Nonnull final EntityDescriptor descriptor) {
+        @Nullable public Set<MetadataIndexKey> apply(@Nullable final EntityDescriptor descriptor) {
             if (descriptor == null) {
                 return null;
             }
@@ -253,21 +256,23 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
             final LazySet<MetadataIndexKey> results = new LazySet<>();
             
             for (final RoleDescriptor roleDescriptor : descriptor.getRoleDescriptors()) {
-                if (roleDescriptor instanceof SSODescriptor) {
-                    final List<ArtifactResolutionService> arsList = 
-                            ((SSODescriptor)roleDescriptor).getArtifactResolutionServices();
-                    if (arsList != null && !arsList.isEmpty()) {
+                if (roleDescriptor instanceof SSODescriptor sso) {
+                    final List<ArtifactResolutionService> arsList = sso.getArtifactResolutionServices();
+                    if (!arsList.isEmpty()) {
                         final QName role = descriptor.getSchemaType() != null ? roleDescriptor.getSchemaType() 
                                 : roleDescriptor.getElementQName();
                         log.trace("Processing ArtifactResolutionService locations for entityID '{}' with role '{}'", 
                                 descriptor.getEntityID(), role);
                         
                         for (final ArtifactResolutionService ars : arsList) {
-                            final ArtifactSourceLocationMetadataIndexKey key = 
-                                    new ArtifactSourceLocationMetadataIndexKey(ars.getLocation());
-                            log.trace("For entityID '{}' produced artifact source location index key: {}",
-                                    descriptor.getEntityID(), key);
-                            results.add(key);
+                            final String location = ars.getLocation();
+                            if (location != null) {
+                                final ArtifactSourceLocationMetadataIndexKey key =
+                                        new ArtifactSourceLocationMetadataIndexKey(location);
+                                log.trace("For entityID '{}' produced artifact source location index key: {}",
+                                        descriptor.getEntityID(), key);
+                                results.add(key);
+                            }
                         }
                     }
                 }
@@ -341,7 +346,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
     protected static class ArtifactSourceLocationMetadataIndexKey implements MetadataIndexKey {
         
         /** Logger. */
-        private Logger log = LoggerFactory.getLogger(ArtifactSourceLocationMetadataIndexKey.class);
+        @Nonnull private Logger log = LoggerFactory.getLogger(ArtifactSourceLocationMetadataIndexKey.class);
         
         /** The location. */
         @Nonnull private final String location;

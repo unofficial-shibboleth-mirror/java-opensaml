@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.index.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Optional;
@@ -32,13 +31,14 @@ import org.opensaml.saml.metadata.resolver.index.MetadataIndex;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -52,13 +52,13 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class MetadataIndexManager<T> {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(MetadataIndexManager.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(MetadataIndexManager.class);
     
     /** Storage for secondary indexes. */
-    private Map<MetadataIndex, MetadataIndexStore<T>> indexes;
+    @Nonnull private final Map<MetadataIndex, MetadataIndexStore<T>> indexes;
     
     /** Function to extract the data item to be indexed from an EntityDescriptor. */
-    private Function<EntityDescriptor,T> entityDescriptorFunction;
+    @Nonnull private final Function<EntityDescriptor,T> entityDescriptorFunction;
     
     /**
      * Constructor.
@@ -88,9 +88,8 @@ public class MetadataIndexManager<T> {
      * 
      * @return the set of all current indexes
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndex> getIndexes() {
-        return Set.copyOf(indexes.keySet());
+    @Nonnull @Unmodifiable @NotLive public Set<MetadataIndex> getIndexes() {
+        return CollectionSupport.copyToSet(indexes.keySet());
     }
     
     /**
@@ -124,8 +123,10 @@ public class MetadataIndexManager<T> {
             if (keys != null && !keys.isEmpty()) {
                 final LazySet<T> indexResult = new LazySet<>();
                 final MetadataIndexStore<T> indexStore = getStore(index);
-                for (final MetadataIndexKey key : keys) {
-                    indexResult.addAll(indexStore.lookup(key));
+                if (indexStore != null) {
+                    for (final MetadataIndexKey key : keys) {
+                        indexResult.addAll(indexStore.lookup(key));
+                    }
                 }
                 log.trace("MetadataIndex '{}' produced results: {}", index, indexResult);
                 if (items.isEmpty()) {
@@ -138,7 +139,7 @@ public class MetadataIndexManager<T> {
                             + "terminating early and returning empty result set", index);
                     // Return present+empty here to indicate there were applicable indexes for the criteria,
                     // but no indexed data.
-                    return Optional.of(Collections.<T>emptySet());
+                    return Optional.of(CollectionSupport.emptySet());
                 }
             }
         }
@@ -167,10 +168,12 @@ public class MetadataIndexManager<T> {
                 final Set<MetadataIndexKey> keys = index.generateKeys(descriptor);
                 if (keys != null && !keys.isEmpty()) {
                     final MetadataIndexStore<T> store = getStore(index);
-                    for (final MetadataIndexKey key : keys) {
-                        log.trace("Indexing metadata: index '{}', key '{}', data item '{}'", 
-                                index, key, item);
-                        store.add(key, item);
+                    if (store != null) {
+                        for (final MetadataIndexKey key : keys) {
+                            log.trace("Indexing metadata: index '{}', key '{}', data item '{}'", 
+                                    index, key, item);
+                            store.add(key, item);
+                        }
                     }
                 }
             }
@@ -191,10 +194,12 @@ public class MetadataIndexManager<T> {
                 final Set<MetadataIndexKey> keys = index.generateKeys(descriptor);
                 if (keys != null && !keys.isEmpty()) {
                     final MetadataIndexStore<T> store = getStore(index);
-                    for (final MetadataIndexKey key : keys) {
-                        log.trace("De-indexing metadata: index '{}', key '{}', data item '{}'", 
-                                index, key, item);
-                        store.remove(key, item);
+                    if (store != null) {
+                        for (final MetadataIndexKey key : keys) {
+                            log.trace("De-indexing metadata: index '{}', key '{}', data item '{}'", 
+                                    index, key, item);
+                            store.remove(key, item);
+                        }
                     }
                 }
             }

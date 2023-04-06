@@ -38,7 +38,7 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
     /**
      * {@inheritDoc}
      */
-    @Nullable public HttpServletResponse getHttpServletResponse() {
+    @NonnullAfterInit public HttpServletResponse getHttpServletResponse() {
         if (httpServletResponseSupplier != null) {
             return httpServletResponseSupplier.get();
         }

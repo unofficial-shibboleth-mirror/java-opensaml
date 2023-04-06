@@ -35,11 +35,11 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml1.binding.artifact.SAML1Artifact;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilder;
+import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactBuilderFactory;
 import org.opensaml.saml.saml1.binding.artifact.SAML1ArtifactType0001;
 import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.Response;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
@@ -50,6 +50,7 @@ import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * SAML 1.X HTTP Artifact message encoder.
@@ -72,7 +73,7 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
 
     /** {@inheritDoc} */
     @Override
-    public String getBindingURI() {
+    @Nonnull public String getBindingURI() {
         return SAMLConstants.SAML1_ARTIFACT_BINDING_URI;
     }
     
@@ -104,14 +105,6 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
         if (artifactMap == null) {
             throw new ComponentInitializationException("SAMLArtifactMap cannot be null");
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
-        artifactMap = null;
-        
-        super.doDestroy();
     }
 
     // Checkstyle: CyclomaticComplexity|MethodLength OFF
@@ -152,15 +145,23 @@ public class HTTPArtifactEncoder extends BaseSAML1MessageEncoder {
         final SAML1ArtifactBuilder<?> artifactBuilder;
         final byte[] artifactType = getSAMLArtifactType(messageContext);
         if (artifactType != null) {
-            artifactBuilder = SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory()
-                    .getArtifactBuilder(artifactType);
+            final SAML1ArtifactBuilderFactory artifactBuilderFactory =
+                    SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory();
+            artifactBuilder = artifactBuilderFactory != null
+                    ? artifactBuilderFactory.getArtifactBuilder(artifactType) : null;
         } else {
-            artifactBuilder = SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory()
-                    .getArtifactBuilder(defaultArtifactType);
+            final SAML1ArtifactBuilderFactory artifactBuilderFactory =
+                    SAMLConfigurationSupport.getSAML1ArtifactBuilderFactory();
+            artifactBuilder = artifactBuilderFactory != null
+                    ? artifactBuilderFactory.getArtifactBuilder(defaultArtifactType) : null;
             storeSAMLArtifactType(messageContext, defaultArtifactType);
         }
-
+        if (artifactBuilder == null) {
+            throw new MessageEncodingException("Unable to obtain SAML1ArtifactBuilder");
+        }
+        
         for (final Assertion assertion : samlResponse.getAssertions()) {
+            assert assertion != null;
             final SAML1Artifact artifact = artifactBuilder.buildArtifact(messageContext, assertion);
             if (artifact == null) {
                 log.error("Unable to build artifact for message to relying party {}", requester);
