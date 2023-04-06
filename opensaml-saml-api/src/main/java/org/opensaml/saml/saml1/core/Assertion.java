@@ -90,17 +90,36 @@ public interface Assertion extends SignableSAMLObject, Evidentiary {
     /**
      * Get the MajorVersion attribute.
      * 
+     * <p>Deprecated, use {@link #getVersion()}.</p>
+     * 
      * @return the stored MajorVersion
+     * 
+     * @deprecated
      */
+    @Deprecated(since="5.0.0", forRemoval=true)
     @Nullable Integer getMajorVersion();
 
     /**
      * Get the MinorVersion attribute.
      * 
+     * <p>Deprecated, use {@link #getVersion()}.</p>
+     * 
      * @return the stored MinorVersion
+     * 
+     * @deprecated
      */
+    @Deprecated(since="5.0.0", forRemoval=true)
     @Nullable Integer getMinorVersion();
 
+    /**
+     * Gets the SAML version for this message.
+     * 
+     * @return SAML version for this message
+     * 
+     * @since 5.0.0
+     */
+    @Nullable SAMLVersion getVersion();
+    
     /**
      * Set the SAML version of this assertion.
      * 

@@ -97,6 +97,11 @@ public class AssertionImpl extends AbstractSignableSAMLObject implements Asserti
     }
     
     /** {@inheritDoc} */
+    @Nullable public SAMLVersion getVersion() {
+        return version;
+    }
+    
+    /** {@inheritDoc} */
     public void setVersion(@Nullable final SAMLVersion newVersion){
         version = prepareForAssignment(version, newVersion);
     }
