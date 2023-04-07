@@ -47,7 +47,6 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
-import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.net.URISupport;
 import net.shibboleth.shared.net.URLBuilder;
@@ -64,44 +63,43 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
      * @throws Exception if something goes wrong
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testResponseEncoding() throws Exception {
-        SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
-                .getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
-        StatusCode statusCode = statusCodeBuilder.buildObject();
+        final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
+                .<StatusCode>ensureBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
+        final StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
 
-        SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
-                .getBuilder(Status.DEFAULT_ELEMENT_NAME);
-        Status responseStatus = statusBuilder.buildObject();
+        final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
+                .<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
+        final Status responseStatus = statusBuilder.buildObject();
         responseStatus.setStatusCode(statusCode);
 
-        SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
-                .getBuilder(Response.DEFAULT_ELEMENT_NAME);
-        Response samlMessage = responseBuilder.buildObject();
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
+                .<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
+        final Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
         samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
         samlMessage.setStatus(responseStatus);
 
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
-                .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
-        Endpoint samlEndpoint = endpointBuilder.buildObject();
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+                .<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
         
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
-        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
         handler.invoke(messageContext);
         
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
         
-        HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
+        final HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
         encoder.setHttpServletResponseSupplier(new ConstantSupplier<>(response));
         
@@ -112,13 +110,14 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         
-        Assert.assertNotNull(response.getRedirectedUrl());
-        URLBuilder urlBuilder = new URLBuilder(response.getRedirectedUrl());
+        final String redirectedUrl = response.getRedirectedUrl();
+        assert redirectedUrl != null;
+        final URLBuilder urlBuilder = new URLBuilder(redirectedUrl);
         Assert.assertEquals(urlBuilder.getScheme(), "http");
         Assert.assertEquals(urlBuilder.getHost(), "example.org");
         Assert.assertEquals(urlBuilder.getPath(), "/response");
         
-        Map<String,String> queryParams = URISupport.buildQueryMap(urlBuilder.getQueryParams());
+        final Map<String,String> queryParams = URISupport.buildQueryMap(urlBuilder.getQueryParams());
         Assert.assertFalse(queryParams.containsKey("Signature"));
         Assert.assertFalse(queryParams.containsKey("SigAlg"));
         Assert.assertTrue(queryParams.containsKey("RelayState"));
@@ -141,44 +140,43 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
      * @throws Exception if something goes wrong
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testResponseEncodingWithEndpointQueryParams() throws Exception {
-        SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
-                .getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
-        StatusCode statusCode = statusCodeBuilder.buildObject();
+        final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
+                .<StatusCode>ensureBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
+        final StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
 
-        SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
-                .getBuilder(Status.DEFAULT_ELEMENT_NAME);
-        Status responseStatus = statusBuilder.buildObject();
+        final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
+                .<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
+        final Status responseStatus = statusBuilder.buildObject();
         responseStatus.setStatusCode(statusCode);
 
-        SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
-                .getBuilder(Response.DEFAULT_ELEMENT_NAME);
-        Response samlMessage = responseBuilder.buildObject();
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
+                .<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
+        final Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
         samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
         samlMessage.setStatus(responseStatus);
 
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
-                .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
-        Endpoint samlEndpoint = endpointBuilder.buildObject();
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+                .<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response?foo=bar&abc=123");
         
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
-        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
         handler.invoke(messageContext);
         
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
         
-        HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
+        final HTTPRedirectDeflateEncoder encoder = new HTTPRedirectDeflateEncoder();
         encoder.setMessageContext(messageContext);
         encoder.setHttpServletResponseSupplier(new ConstantSupplier<>(response));
         
@@ -189,8 +187,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         
-        Assert.assertNotNull(response.getRedirectedUrl());
-        URLBuilder urlBuilder = new URLBuilder(response.getRedirectedUrl());
+        final String redirectedUrl = response.getRedirectedUrl();
+        assert redirectedUrl != null;
+        final URLBuilder urlBuilder = new URLBuilder(redirectedUrl);
         Assert.assertEquals(urlBuilder.getScheme(), "http");
         Assert.assertEquals(urlBuilder.getHost(), "example.org");
         Assert.assertEquals(urlBuilder.getPath(), "/response");
@@ -222,28 +221,27 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
      * @throws Exception if something goes wrong
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testResponseEncodingWithDisallowedEndpointQueryParams() throws Exception {
-        SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
-                .getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
+                .<StatusCode>ensureBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
         StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
 
-        SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
-                .getBuilder(Status.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
+                .<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
         Status responseStatus = statusBuilder.buildObject();
         responseStatus.setStatusCode(statusCode);
 
-        SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
-                .getBuilder(Response.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
+                .<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
         Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
         samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
         samlMessage.setStatus(responseStatus);
 
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
-                .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+                .<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response?foo=bar&abc=123&SAMLEncoding=blah&SAMLRequest=blah&SAMLResponse=blah&RelayState=blah&SigAlg=blah&Signature=blah");
@@ -251,8 +249,8 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         MessageContext messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
         SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
         handler.invoke(messageContext);
@@ -270,8 +268,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals("UTF-8", response.getCharacterEncoding(), "Unexpected character encoding");
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         
-        Assert.assertNotNull(response.getRedirectedUrl());
-        URLBuilder urlBuilder = new URLBuilder(response.getRedirectedUrl());
+        final String redirectedUrl = response.getRedirectedUrl();
+        assert redirectedUrl != null;
+        final URLBuilder urlBuilder = new URLBuilder(redirectedUrl);
         Assert.assertEquals(urlBuilder.getScheme(), "http");
         Assert.assertEquals(urlBuilder.getHost(), "example.org");
         Assert.assertEquals(urlBuilder.getPath(), "/response");
@@ -309,26 +308,26 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
     @Test
     @SuppressWarnings("unchecked")
     public void testResponseEncodingWithSimpleSign() throws Exception {
-        SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
-                .getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
+                .<StatusCode>ensureBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
         StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
 
-        SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
-                .getBuilder(Status.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
+                .<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
         Status responseStatus = statusBuilder.buildObject();
         responseStatus.setStatusCode(statusCode);
 
-        SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
-                .getBuilder(Response.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
+                .<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
         Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
         samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
         samlMessage.setStatus(responseStatus);
 
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
-                .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+                .<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
@@ -336,14 +335,14 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         MessageContext messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         
         SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
         signingParameters.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
+        messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(signingParameters);
         
         SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
         handler.invoke(messageContext);
@@ -358,8 +357,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        Assert.assertNotNull(response.getRedirectedUrl());
-        URLBuilder urlBuilder = new URLBuilder(response.getRedirectedUrl());
+        final String redirectedUrl = response.getRedirectedUrl();
+        assert redirectedUrl != null;
+        final URLBuilder urlBuilder = new URLBuilder(redirectedUrl);
         Assert.assertEquals(urlBuilder.getScheme(), "http");
         Assert.assertEquals(urlBuilder.getHost(), "example.org");
         Assert.assertEquals(urlBuilder.getPath(), "/response");
@@ -392,30 +392,29 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
      * @throws Exception if something goes wrong
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void OSJ271() throws Exception {
         // First we generate the signature with a redirect URL that does not have query params.
         
-        SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
-                .getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
+                .<StatusCode>ensureBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
         StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
 
-        SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
-                .getBuilder(Status.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
+                .<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
         Status responseStatus = statusBuilder.buildObject();
         responseStatus.setStatusCode(statusCode);
 
-        SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
-                .getBuilder(Response.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
+                .<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
         Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
         samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
         samlMessage.setStatus(responseStatus);
 
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
-                .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+                .<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
@@ -423,14 +422,14 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         MessageContext messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
         
         SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate()));
         signingParameters.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
+        messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(signingParameters);
         
         // NOTE: So that we can get an exact signature comparison without and with query params, we do not invoke
         // the SAMLOutboundDestinationHandler, which would change the data being signed. Not correct vis-a-vis actual 
@@ -446,8 +445,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        Assert.assertNotNull(response.getRedirectedUrl());
-        URLBuilder urlBuilder = new URLBuilder(response.getRedirectedUrl());
+        String redirectedUrl = response.getRedirectedUrl();
+        assert redirectedUrl != null;
+        URLBuilder urlBuilder = new URLBuilder(redirectedUrl);
         Assert.assertEquals(urlBuilder.getScheme(), "http");
         Assert.assertEquals(urlBuilder.getHost(), "example.org");
         Assert.assertEquals(urlBuilder.getPath(), "/response");
@@ -481,10 +481,10 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+        .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
+        messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(signingParameters);
         
         final MockHttpServletResponse response2 = new MockHttpServletResponse();
         
@@ -496,8 +496,9 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         encoder.prepareContext();
         encoder.encode();
         
-        Assert.assertNotNull(response2.getRedirectedUrl());
-        urlBuilder = new URLBuilder(response2.getRedirectedUrl());
+        redirectedUrl = response.getRedirectedUrl();
+        assert redirectedUrl != null;
+        urlBuilder = new URLBuilder(redirectedUrl);
         Assert.assertEquals(urlBuilder.getScheme(), "http");
         Assert.assertEquals(urlBuilder.getHost(), "example.org");
         Assert.assertEquals(urlBuilder.getPath(), "/response");
@@ -530,4 +531,5 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(signatureWithoutParams, signatureWithParams);
         
     }
+
 }

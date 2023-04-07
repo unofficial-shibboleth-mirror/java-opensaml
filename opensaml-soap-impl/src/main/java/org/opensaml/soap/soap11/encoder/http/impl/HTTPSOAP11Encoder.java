@@ -39,10 +39,10 @@ import org.opensaml.soap.soap11.FaultCode;
 import org.opensaml.soap.soap11.Header;
 import org.opensaml.soap.wsaddressing.Action;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import jakarta.servlet.http.HttpServletResponse;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -52,13 +52,13 @@ import net.shibboleth.shared.xml.SerializeSupport;
 public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Encoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Encoder.class);
     
     /** SOAP Envelope builder. */
-    private SOAPObjectBuilder<Envelope> envBuilder;
+    @Nonnull private SOAPObjectBuilder<Envelope> envBuilder;
     
     /** SOAP Body builder. */
-    private SOAPObjectBuilder<Body> bodyBuilder;
+    @Nonnull private SOAPObjectBuilder<Body> bodyBuilder;
     
     /** Constructor. */
     public HTTPSOAP11Encoder() {
@@ -213,7 +213,7 @@ public class HTTPSOAP11Encoder extends BaseHttpServletResponseXMLMessageEncoder 
      * 
      * @return a SOAPAction HTTP header URI value
      */
-    protected String getSOAPAction() {
+    @Nullable protected String getSOAPAction() {
         final Envelope env = getSOAPEnvelope();
         final Header header = env != null ? env.getHeader() : null;
         if (header == null) {

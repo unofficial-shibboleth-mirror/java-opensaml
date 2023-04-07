@@ -34,6 +34,7 @@ import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
+import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.testng.Assert;
@@ -52,41 +53,40 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
      * @throws Exception if something goes wrong
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void testResponseEncoding() throws Exception {
-        SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
-                .getBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
-        StatusCode statusCode = statusCodeBuilder.buildObject();
+        final SAMLObjectBuilder<StatusCode> statusCodeBuilder = (SAMLObjectBuilder<StatusCode>) builderFactory
+                .<StatusCode>ensureBuilder(StatusCode.DEFAULT_ELEMENT_NAME);
+        final StatusCode statusCode = statusCodeBuilder.buildObject();
         statusCode.setValue(StatusCode.SUCCESS);
 
-        SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
-                .getBuilder(Status.DEFAULT_ELEMENT_NAME);
-        Status responseStatus = statusBuilder.buildObject();
+        final SAMLObjectBuilder<Status> statusBuilder = (SAMLObjectBuilder<Status>) builderFactory
+                .<Status>ensureBuilder(Status.DEFAULT_ELEMENT_NAME);
+        final Status responseStatus = statusBuilder.buildObject();
         responseStatus.setStatusCode(statusCode);
 
-        SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
-                .getBuilder(Response.DEFAULT_ELEMENT_NAME);
-        Response samlMessage = responseBuilder.buildObject();
+        final SAMLObjectBuilder<Response> responseBuilder = (SAMLObjectBuilder<Response>) builderFactory
+                .<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
+        final Response samlMessage = responseBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setVersion(SAMLVersion.VERSION_20);
         samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
         samlMessage.setStatus(responseStatus);
 
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
-                .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
+                .<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
         
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();
         
-        HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
+        final HTTPSOAP11Encoder encoder = new HTTPSOAP11Encoder();
         encoder.setMessageContext(messageContext);
         encoder.setHttpServletResponseSupplier(new ConstantSupplier<>(response));
         
@@ -99,15 +99,16 @@ public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(response.getHeader("Cache-control"), "no-cache, no-store", "Unexpected cache controls");
         Assert.assertEquals(response.getHeader("SOAPAction"), "http://www.oasis-open.org/committees/security");
         
-        try (ByteArrayInputStream inputStream = new ByteArrayInputStream(response.getContentAsByteArray())) {
+        try (final ByteArrayInputStream inputStream = new ByteArrayInputStream(response.getContentAsByteArray())) {
             XMLObject xmlObject = XMLObjectSupport.unmarshallFromInputStream(parserPool, inputStream);
             Assert.assertNotNull(xmlObject);
             Assert.assertTrue(xmlObject instanceof Envelope);
             Envelope envelope = (Envelope) xmlObject;
             Assert.assertNull(envelope.getHeader());
-            Assert.assertNotNull(envelope.getBody());
-            Assert.assertEquals(envelope.getBody().getUnknownXMLObjects().size(), 1);
-            Response outboundResponse = (Response) envelope.getBody().getUnknownXMLObjects().get(0);
+            final Body body = envelope.getBody();
+            assert body != null;
+            Assert.assertEquals(body.getUnknownXMLObjects().size(), 1);
+            Response outboundResponse = (Response) body.getUnknownXMLObjects().get(0);
             outboundResponse.releaseDOM();
             outboundResponse.releaseChildrenDOM(true);
             outboundResponse.setParent(null);

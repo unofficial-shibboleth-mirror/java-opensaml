@@ -69,7 +69,8 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
                 + "xuczpzYW1scD0idXJuOm9hc2lzOm5hbWVzOnRjOlNBTUw6Mi4wOnByb3RvY29sIi8+");
         
         decoder.decode();
-        MessageContext messageContext = decoder.getMessageContext();
+        final MessageContext messageContext = decoder.getMessageContext();
+        assert messageContext != null;
 
         Assert.assertTrue(messageContext.getMessage() instanceof RequestAbstractType);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
@@ -107,7 +108,8 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
                 + "2FtbHA6UmVzcG9uc2U+");
 
         decoder.decode();
-        MessageContext messageContext = decoder.getMessageContext();
+        final MessageContext messageContext = decoder.getMessageContext();
+        assert messageContext != null;
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);

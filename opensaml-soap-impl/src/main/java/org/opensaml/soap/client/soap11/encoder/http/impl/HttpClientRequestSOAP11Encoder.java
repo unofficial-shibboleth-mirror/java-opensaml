@@ -237,7 +237,7 @@ public class HttpClientRequestSOAP11Encoder extends BaseHttpClientRequestXMLMess
     }
     
     /** {@inheritDoc} */
-    protected XMLObject getMessageToLog() {
+    @Nullable protected XMLObject getMessageToLog() {
         return getMessageContext().ensureSubcontext(SOAP11Context.class).getEnvelope();
     }
 

@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.binding.encoding.impl;
 import java.io.UnsupportedEncodingException;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.apache.velocity.VelocityContext;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -32,13 +33,11 @@ import org.opensaml.saml.common.messaging.SAMLMessageSecuritySupport;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
@@ -46,6 +45,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -57,7 +57,7 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     @Nonnull @NotEmpty public static final String DEFAULT_TEMPLATE_ID = "/templates/saml2-post-simplesign-binding.vm";
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPPostSimpleSignEncoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPPostSimpleSignEncoder.class);
     
     /** Constructor. */
     public HTTPPostSimpleSignEncoder() {
@@ -65,20 +65,23 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
     }
 
     /** {@inheritDoc} */
-    public String getBindingURI() {
+    @Nonnull @NotEmpty public String getBindingURI() {
         return SAMLConstants.SAML2_POST_SIMPLE_SIGN_BINDING_URI;
     }
 
     /** {@inheritDoc} */
-    protected void populateVelocityContext(final VelocityContext velocityContext, final MessageContext messageContext,
-            final String endpointURL) throws MessageEncodingException {
+    protected void populateVelocityContext(@Nonnull final VelocityContext velocityContext,
+            @Nonnull final MessageContext messageContext, @Nonnull @NotEmpty final String endpointURL)
+                    throws MessageEncodingException {
 
         super.populateVelocityContext(velocityContext, messageContext, endpointURL);
 
         final SignatureSigningParameters signingParameters = 
                 SAMLMessageSecuritySupport.getContextSigningParameters(messageContext);
         
-        if (signingParameters == null || signingParameters.getSigningCredential() == null) {
+        final Credential signingCredential = signingParameters != null
+                ? signingParameters.getSigningCredential() : null;
+        if (signingParameters == null || signingCredential == null) {
             log.debug("No signing credential was supplied, skipping HTTP-Post simple signing");
             return;
         }
@@ -87,13 +90,12 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         velocityContext.put("SigAlg", sigAlgURI);
 
         final String formControlData = buildFormDataToSign(velocityContext, messageContext, sigAlgURI);
-        velocityContext.put("Signature", generateSignature(signingParameters.getSigningCredential(), 
-                sigAlgURI, formControlData));
+        velocityContext.put("Signature", generateSignature(signingCredential, sigAlgURI, formControlData));
 
         
         final KeyInfoGenerator kiGenerator = signingParameters.getKeyInfoGenerator();
         if (kiGenerator != null) {
-            final String kiBase64 = buildKeyInfo(signingParameters.getSigningCredential(), kiGenerator);
+            final String kiBase64 = buildKeyInfo(signingCredential, kiGenerator);
             if (!Strings.isNullOrEmpty(kiBase64)) {
                 velocityContext.put("KeyInfo", kiBase64);
             }
@@ -108,8 +110,8 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * @throws MessageEncodingException thrown if there is an error generating or marshalling the KeyInfo
      * @return the marshalled, serialized and base64-encoded KeyInfo, or null if none was generated
      */
-    protected String buildKeyInfo(final Credential signingCredential, final KeyInfoGenerator kiGenerator)
-            throws MessageEncodingException {
+    @Nullable protected String buildKeyInfo(@Nonnull final Credential signingCredential,
+            @Nonnull final KeyInfoGenerator kiGenerator) throws MessageEncodingException {
 
         try {
             final KeyInfo keyInfo = kiGenerator.generate(signingCredential);
@@ -149,7 +151,8 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * 
      * @return the form control data string for signature computation
      */
-    protected String buildFormDataToSign(final VelocityContext velocityContext, final MessageContext messageContext,
+    @Nonnull protected String buildFormDataToSign(@Nonnull final VelocityContext velocityContext,
+            @Nonnull final MessageContext messageContext,
             final String sigAlgURI) throws MessageEncodingException {
         final StringBuilder builder = new StringBuilder();
 
@@ -164,7 +167,9 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
         } else {
             msgB64 = (String) velocityContext.get("SAMLResponse");
         }
-       
+        // One or the other is populated...
+        assert msgB64 != null;
+      
         String msg = null;
         try {
             msg = new String(Base64Support.decode(msgB64), "UTF-8");
@@ -203,11 +208,12 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * @throws MessageEncodingException thrown if the algorithm URI is not supplied explicitly and 
      *          could not be derived from the supplied credential
      */
-    protected String getSignatureAlgorithmURI(final SignatureSigningParameters signingParameters)
+    @Nonnull protected String getSignatureAlgorithmURI(final SignatureSigningParameters signingParameters)
             throws MessageEncodingException {
         
-        if (signingParameters.getSignatureAlgorithm() != null) {
-            return signingParameters.getSignatureAlgorithm();
+        final String alg = signingParameters.getSignatureAlgorithm();
+        if (alg != null) {
+            return alg;
         }
 
         throw new MessageEncodingException("The signing algorithm URI could not be determined");
@@ -224,13 +230,11 @@ public class HTTPPostSimpleSignEncoder extends HTTPPostEncoder {
      * 
      * @throws MessageEncodingException there is an error computing the signature
      */
-    protected String generateSignature(final Credential signingCredential, final String algorithmURI,
-            final String formData)
+    @Nonnull protected String generateSignature(@Nonnull final Credential signingCredential,
+            @Nonnull final String algorithmURI, final String formData)
             throws MessageEncodingException {
 
-        log.debug(String.format(
-                "Generating signature with key type '%s', algorithm URI '%s' over form control string '%s'",
-                CredentialSupport.extractSigningKey(signingCredential).getAlgorithm(), algorithmURI, formData));
+        log.debug("Generating signature with algorithm URI '{}' over form control string '{}'", algorithmURI, formData);
 
         String b64Signature = null;
         try {

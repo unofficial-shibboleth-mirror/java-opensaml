@@ -37,7 +37,7 @@ public abstract class AbstractHttpServletRequestMessageDecoder extends AbstractM
     @NonnullAfterInit private NonnullSupplier<HttpServletRequest> httpServletRequestSupplier;
 
     /** {@inheritDoc} */
-    @Nullable public HttpServletRequest getHttpServletRequest() {
+    @NonnullAfterInit public HttpServletRequest getHttpServletRequest() {
         if (httpServletRequestSupplier != null) {
             return httpServletRequestSupplier.get();
         }

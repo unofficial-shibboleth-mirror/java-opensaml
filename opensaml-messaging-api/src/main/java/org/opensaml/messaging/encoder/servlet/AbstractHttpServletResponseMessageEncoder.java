@@ -70,4 +70,5 @@ public abstract class AbstractHttpServletResponseMessageEncoder extends Abstract
             throw new ComponentInitializationException("HTTP servlet response cannot be null");
         }
     }
+
 }

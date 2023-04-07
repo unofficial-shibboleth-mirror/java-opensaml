@@ -52,6 +52,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test class for SAML 1 HTTP Post encoding.
  */
+@SuppressWarnings("javadoc")
 public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
 
     /** Velocity template engine. */
@@ -67,33 +68,32 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testEncoding() throws Exception {
-        SAMLObjectBuilder<Response> requestBuilder = (SAMLObjectBuilder<Response>) builderFactory
-                .getBuilder(Response.DEFAULT_ELEMENT_NAME);
-        Response samlMessage = requestBuilder.buildObject();
+        final SAMLObjectBuilder<Response> requestBuilder =
+                (SAMLObjectBuilder<Response>) builderFactory.<Response>ensureBuilder(Response.DEFAULT_ELEMENT_NAME);
+        final Response samlMessage = requestBuilder.buildObject();
         samlMessage.setID("foo");
         samlMessage.setIssueInstant(Instant.ofEpochMilli(0));
         samlMessage.setVersion(SAMLVersion.VERSION_11);
 
-        SAMLObjectBuilder<Endpoint> endpointBuilder = (SAMLObjectBuilder<Endpoint>) builderFactory
-                .getBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
-        Endpoint samlEndpoint = endpointBuilder.buildObject();
+        final SAMLObjectBuilder<Endpoint> endpointBuilder =
+                (SAMLObjectBuilder<Endpoint>) builderFactory.<Endpoint>ensureBuilder(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
+        final Endpoint samlEndpoint = endpointBuilder.buildObject();
         samlEndpoint.setLocation("http://example.org");
         samlEndpoint.setResponseLocation("http://example.org/response");
 
-        MessageContext messageContext = new MessageContext();
+        final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(samlMessage);
         SAMLBindingSupport.setRelayState(messageContext, "relay");
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
-        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
         handler.invoke(messageContext);
         
-        MockHttpServletResponse response = new MockHttpServletResponse();
+        final MockHttpServletResponse response = new MockHttpServletResponse();
         
-        HTTPPostEncoder encoder = new HTTPPostEncoder();
+        final HTTPPostEncoder encoder = new HTTPPostEncoder();
         encoder.setMessageContext(messageContext);
         encoder.setHttpServletResponseSupplier(new ConstantSupplier<>(response));
         
@@ -122,40 +122,42 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         }
         Assert.assertTrue(sawDocType);
         
-        Element head = webDoc.selectFirst("html > head");
-        Assert.assertNotNull(head);
-        Element metaCharSet = head.selectFirst("meta[charset]");
-        Assert.assertNotNull(metaCharSet);
+        final Element head = webDoc.selectFirst("html > head");
+        assert head != null;
+        final Element metaCharSet = head.selectFirst("meta[charset]");
+        assert metaCharSet != null;
         Assert.assertEquals(metaCharSet.attr("charset").toLowerCase(), "utf-8");
         
-        Element body = webDoc.selectFirst("html > body");
-        Assert.assertNotNull(body);
+        final Element body = webDoc.selectFirst("html > body");
+        assert body != null;
         Assert.assertEquals(body.attr("onload"), "document.forms[0].submit()");
         
-        Element form = body.selectFirst("form");
-        Assert.assertNotNull(form);
+        final Element form = body.selectFirst("form");
+        assert form != null;
         Assert.assertEquals(form.attr("method").toLowerCase(), "post");
         Assert.assertEquals(form.attr("action"), "http://example.org/response");
         
-        Element relayState = form.selectFirst("input[name=TARGET]");
-        Assert.assertNotNull(relayState);
+        final Element relayState = form.selectFirst("input[name=TARGET]");
+        assert relayState != null;
         Assert.assertEquals(relayState.val(), "relay");
         
-        Element noscriptMsg = body.selectFirst("noscript > p");
-        Assert.assertNotNull(noscriptMsg);
+        final Element noscriptMsg = body.selectFirst("noscript > p");
+        assert noscriptMsg != null;
         Assert.assertTrue(noscriptMsg.text().contains("Since your browser does not support JavaScript"));
         
-        Element samlResponse = form.selectFirst("input[name=SAMLResponse]");
-        Assert.assertNotNull(samlResponse);
+        final Element samlResponse = form.selectFirst("input[name=SAMLResponse]");
+        assert samlResponse != null;
         Assert.assertNotNull(samlResponse.val());
         try (ByteArrayInputStream inputStream = new ByteArrayInputStream(Base64Support.decode(samlResponse.val()))) {
-            XMLObject xmlObject = XMLObjectSupport.unmarshallFromInputStream(parserPool, inputStream);
+            final XMLObject xmlObject = XMLObjectSupport.unmarshallFromInputStream(parserPool, inputStream);
             Assert.assertTrue(xmlObject instanceof Response);
-            assertXMLEquals(xmlObject.getDOM().getOwnerDocument(), samlMessage);
+            final org.w3c.dom.Element xmlDOM = xmlObject.getDOM();
+            assert xmlDOM != null;
+            assertXMLEquals(xmlDOM.getOwnerDocument(), samlMessage);
         }
         
-        Element submit = body.selectFirst("noscript > div > input[type=submit]");
-        Assert.assertNotNull(submit);
+        final Element submit = body.selectFirst("noscript > div > input[type=submit]");
+        assert submit != null;
         Assert.assertEquals(submit.val(), "Continue");
     }
 }

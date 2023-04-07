@@ -46,8 +46,8 @@ public final class XMLSigningUtil {
      * @return the computed signature or MAC value
      * @throws SecurityException throw if the computation process results in an error
      */
-    public static byte[] signWithURI(@Nonnull final Credential signingCredential, @Nonnull final String algorithmURI,
-            @Nonnull final byte[] input) throws SecurityException {
+    @Nonnull public static byte[] signWithURI(@Nonnull final Credential signingCredential,
+            @Nonnull final String algorithmURI, @Nonnull final byte[] input) throws SecurityException {
 
         final String jcaAlgorithmID = AlgorithmSupport.getAlgorithmID(algorithmURI);
         if (jcaAlgorithmID == null) {

@@ -343,7 +343,7 @@ public class SAMLSOAPClientContextBuilder<InboundMessageType extends SAMLObject,
      * 
      * @throws MessageException if any required data is not supplied and can not be derived from other supplied data
      */
-    public InOutOperationContext build() throws MessageException {
+    @Nonnull public InOutOperationContext build() throws MessageException {
         if (getOutboundMessage() == null) {
             errorMissingData("Outbound message");
         }

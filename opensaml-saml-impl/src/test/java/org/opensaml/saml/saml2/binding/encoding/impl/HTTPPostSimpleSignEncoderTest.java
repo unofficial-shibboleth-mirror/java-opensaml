@@ -65,6 +65,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test case for {@link HTTPPostEncoder}.
  */
+@SuppressWarnings("javadoc")
 public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
 
     /** Velocity template engine. */
@@ -86,7 +87,7 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testResponseEncoding() throws Exception {
-        SAMLObjectBuilder<StatusCode> statusCodeBuilder =
+        final SAMLObjectBuilder<StatusCode> statusCodeBuilder =
                 (SAMLObjectBuilder<StatusCode>) builderFactory.<StatusCode>ensureBuilder(
                         StatusCode.DEFAULT_ELEMENT_NAME);
         StatusCode statusCode = statusCodeBuilder.buildObject();

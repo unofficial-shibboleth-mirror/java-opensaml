@@ -17,6 +17,8 @@
 
 package org.opensaml.saml.saml1.binding.decoding.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -27,6 +29,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.w3c.dom.Element;
 
 import net.shibboleth.shared.testing.ConstantSupplier;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -66,14 +69,16 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         httpRequest.setContent(requestContent.getBytes());
         
         decoder.decode();
-        MessageContext messageContext = decoder.getMessageContext();
+        final MessageContext messageContext = decoder.getMessageContext();
+        assert messageContext != null;
 
-        Assert.assertNotNull(messageContext.getSubcontext(SOAP11Context.class).getEnvelope());
+        Assert.assertNotNull(messageContext.ensureSubcontext(SOAP11Context.class).getEnvelope());
         Assert.assertTrue(messageContext.getMessage() instanceof Request);
     }
     
-    protected String encodeMessage(XMLObject message) throws MarshallingException {
-        marshallerFactory.getMarshaller(message).marshall(message);
-        return SerializeSupport.nodeToString(message.getDOM());
+    protected String encodeMessage(@Nonnull final XMLObject message) throws MarshallingException {
+        final Element dom = marshallerFactory.ensureMarshaller(message).marshall(message);
+        return SerializeSupport.nodeToString(dom);
     }
+
 }

@@ -39,9 +39,9 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.config.SAMLConfigurationSupport;
 import org.opensaml.saml.saml2.binding.artifact.SAML2Artifact;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilder;
+import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactBuilderFactory;
 import org.opensaml.saml.saml2.binding.artifact.SAML2ArtifactType0004;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletResponse;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
@@ -53,6 +53,7 @@ import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.URLBuilder;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -84,12 +85,11 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
     /** Constructor. */
     public HTTPArtifactEncoder() {
         defaultArtifactType = SAML2ArtifactType0004.TYPE_CODE;
-        setVelocityTemplateId(DEFAULT_TEMPLATE_ID);
+        velocityTemplateId = DEFAULT_TEMPLATE_ID;
     }
 
     /** {@inheritDoc} */
-    @Override
-    public String getBindingURI() {
+    @Nonnull @NotEmpty public String getBindingURI() {
         return SAMLConstants.SAML2_ARTIFACT_BINDING_URI;
     }
     
@@ -195,22 +195,8 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
 
     /** {@inheritDoc} */
     @Override
-    protected void doDestroy() {
-        velocityEngine = null;
-        velocityTemplateId = null;
-        artifactMap = null;
-        
-        super.doDestroy();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected void doEncode() throws MessageEncodingException {
-        final HttpServletResponse response = getHttpServletResponse();
-        if (response == null) {
-            throw new MessageEncodingException("HttpServletResponse was null");
-        }
-        response.setCharacterEncoding("UTF-8");
+        getHttpServletResponse().setCharacterEncoding("UTF-8");
 
         if (postEncoding) {
             postEncode();
@@ -229,6 +215,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         log.debug("Performing HTTP POST SAML 2 artifact encoding");
         
         final MessageContext messageContext = getMessageContext();
+        assert messageContext != null;
 
         log.debug("Creating velocity context");
         final VelocityContext context = new VelocityContext();
@@ -256,6 +243,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
             log.debug("Invoking velocity template");
             final HttpServletResponse response = getHttpServletResponse();
             try (final OutputStreamWriter outWriter = new OutputStreamWriter(response.getOutputStream())) {
+                assert velocityEngine != null;
                 velocityEngine.mergeTemplate(velocityTemplateId, "UTF-8", context, outWriter);
                 outWriter.flush();
             }
@@ -274,8 +262,10 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         log.debug("Performing HTTP GET SAML 2 artifact encoding");
 
         final MessageContext messageContext = getMessageContext();
+        assert messageContext != null;
         
         final String endpointUrl = getEndpointURL(messageContext).toString();
+        assert endpointUrl != null;
         
         final URLBuilder urlBuilder;
         try {
@@ -288,10 +278,6 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         queryParams.clear();
 
         final SAML2Artifact artifact = buildArtifact(messageContext);
-        if (artifact == null) {
-            log.error("Unable to build artifact for message to relying party");
-            throw new MessageEncodingException("Unable to build artifact for message to relying party");
-        }
         try {
             queryParams.add(new Pair<>("SAMLart", 
                     Base64Support.encode(artifact.getArtifactBytes(), Base64Support.UNCHUNKED)));
@@ -313,6 +299,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         }
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * Builds the SAML 2 artifact for the outgoing message.
      * 
@@ -340,12 +327,15 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
         final SAML2ArtifactBuilder<?> artifactBuilder;
         final byte[] artifactType = getSAMLArtifactType(messageContext);
         if (artifactType != null) {
-            artifactBuilder = SAMLConfigurationSupport.getSAML2ArtifactBuilderFactory()
-                    .getArtifactBuilder(artifactType);
+            final SAML2ArtifactBuilderFactory factory = SAMLConfigurationSupport.getSAML2ArtifactBuilderFactory();
+            artifactBuilder = factory != null ? factory.getArtifactBuilder(artifactType) : null;
         } else {
-            artifactBuilder = SAMLConfigurationSupport.getSAML2ArtifactBuilderFactory()
-                    .getArtifactBuilder(defaultArtifactType);
+            final SAML2ArtifactBuilderFactory factory = SAMLConfigurationSupport.getSAML2ArtifactBuilderFactory();
+            artifactBuilder = factory != null ? factory.getArtifactBuilder(defaultArtifactType) : null;
             storeSAMLArtifactType(messageContext, defaultArtifactType);
+        }
+        if (artifactBuilder == null) {
+            throw new MessageEncodingException("Unable to obtain SAML2ArtifactBuilder");
         }
 
         final SAML2Artifact artifact = artifactBuilder.buildArtifact(messageContext);
@@ -366,6 +356,7 @@ public class HTTPArtifactEncoder extends BaseSAML2MessageEncoder {
 
         return artifact;
     }
+// Checkstyle: CyclomaticComplexity ON
     
     /**
      * Get the outbound message issuer.

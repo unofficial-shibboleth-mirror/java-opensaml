@@ -20,6 +20,8 @@ package org.opensaml.saml.saml1.binding.decoding.impl;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
@@ -30,6 +32,7 @@ import org.springframework.mock.web.MockHttpServletRequest;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+import org.w3c.dom.Element;
 
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
@@ -69,8 +72,9 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testDecode() throws Exception {
-        Response samlResponse = (Response) unmarshallElement("/org/opensaml/saml/saml1/binding/Response.xml");
-
+        final Response samlResponse = (Response) unmarshallElement("/org/opensaml/saml/saml1/binding/Response.xml");
+        assert samlResponse != null;
+        
         String deliveredEndpointURL = samlResponse.getRecipient();
 
         httpRequest.setParameter("SAMLResponse", encodeMessage(samlResponse));
@@ -78,7 +82,8 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         populateRequestURL(httpRequest, deliveredEndpointURL);
 
         decoder.decode();
-        MessageContext messageContext = decoder.getMessageContext();
+        final MessageContext messageContext = decoder.getMessageContext();
+        assert messageContext != null;
 
         Assert.assertTrue(messageContext.getMessage() instanceof Response);
         Assert.assertEquals(SAMLBindingSupport.getRelayState(messageContext), expectedRelayValue);
@@ -110,6 +115,7 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         } catch (MalformedURLException e) {
             Assert.fail("Malformed URL: " + e.getMessage());
         }
+        assert url != null;
         request.setScheme(url.getProtocol());
         request.setServerName(url.getHost());
         if (url.getPort() != -1) {
@@ -125,10 +131,11 @@ public class HTTPPostDecoderTest extends XMLObjectBaseTestCase {
         request.setQueryString(url.getQuery());
     }
 
-    protected String encodeMessage(SAMLObject message) throws Exception {
-        marshallerFactory.getMarshaller(message).marshall(message);
-        String messageStr = SerializeSupport.nodeToString(message.getDOM());
+    protected String encodeMessage(@Nonnull SAMLObject message) throws Exception {
+        final Element dom = marshallerFactory.ensureMarshaller(message).marshall(message);
+        String messageStr = SerializeSupport.nodeToString(dom);
 
         return Base64Support.encode(messageStr.getBytes("UTF-8"), Base64Support.UNCHUNKED);
     }
+
 }

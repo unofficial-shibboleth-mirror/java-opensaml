@@ -36,13 +36,13 @@ import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
 import org.opensaml.saml.common.messaging.context.SAMLBindingContext;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -129,7 +129,7 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXMLMessage
      * 
      * @throws MessageDecodingException thrown if the message can not be decoded
      */
-    protected InputStream decodeMessage(final String message) throws MessageDecodingException {
+    @Nonnull protected InputStream decodeMessage(@Nonnull final String message) throws MessageDecodingException {
         log.debug("Base64 decoding and inflating SAML message");
 
         try {
@@ -146,7 +146,7 @@ public class HTTPRedirectDeflateDecoder extends BaseHttpServletRequestXMLMessage
      * 
      * @param messageContext the current message context
      */
-    protected void populateBindingContext(final MessageContext messageContext) {
+    protected void populateBindingContext(@Nonnull final MessageContext messageContext) {
         final SAMLBindingContext bindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         bindingContext.setBindingUri(getBindingURI());
         bindingContext.setBindingDescriptor(bindingDescriptor);
