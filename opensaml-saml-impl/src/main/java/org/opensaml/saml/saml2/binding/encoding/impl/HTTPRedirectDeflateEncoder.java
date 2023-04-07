@@ -42,7 +42,6 @@ import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
-import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.crypto.XMLSigningUtil;
 import org.slf4j.Logger;
