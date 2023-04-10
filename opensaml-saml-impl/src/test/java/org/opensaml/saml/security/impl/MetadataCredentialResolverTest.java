@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.codec.EncodingException;
@@ -41,11 +42,13 @@ import org.opensaml.saml.metadata.resolver.impl.DOMMetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.PredicateRoleDescriptorResolver;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.Extensions;
 import org.opensaml.saml.saml2.metadata.IDPSSODescriptor;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialContextSet;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.crypto.KeySupport;
@@ -167,9 +170,9 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         idpRSACert = X509Support.decodeCertificate(idpRSACertBase64);
         X509Support.decodeCertificate(keyAuthorityCertBase64);
         
-        Document mdDoc = parserPool.parse(MetadataCredentialResolverTest.class.getResourceAsStream(mdFileName));
+        final Document mdDoc = parserPool.parse(MetadataCredentialResolverTest.class.getResourceAsStream(mdFileName));
         
-        DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
+        final DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setId("test");
         mdProvider.initialize();
         
@@ -207,9 +210,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 3, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
                     Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
@@ -247,9 +252,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     Assert.fail("Credential with invalid usage was resolved");
                     break;
@@ -286,9 +293,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
                     Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
@@ -324,9 +333,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
                     Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
@@ -364,9 +375,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
                     Assert.assertEquals(x509Cred.getEntityCertificate(), idpDSACert, "Unexpected value for certificate");
@@ -402,8 +415,10 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
-            switch(credential.getUsageType()) {
+        for (final Credential credential : resolved) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     Assert.fail("Credential was resolved from invalid protocol or usage");
                     break;
@@ -439,9 +454,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     Assert.fail("Credential was resolved from invalid protocol");
                     break;
@@ -477,9 +494,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     Assert.fail("Credential was resolved from invalid protocol or usage");
                     break;
@@ -515,9 +534,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of credentials resolved");
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     Assert.fail("Credential was resolved from invalid protocol or usage");
                     break;
@@ -608,9 +629,11 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
         
         Assert.assertEquals(resolved.size(), 2);
         
-        for (Credential credential : resolved) {
+        for (final Credential credential : resolved) {
             X509Credential x509Cred;
-            switch(credential.getUsageType()) {
+            final UsageType usage = credential.getUsageType();
+            assert usage != null;
+            switch(usage) {
                 case SIGNING:
                     x509Cred = (X509Credential) credential;
                     Assert.assertEquals(x509Cred.getEntityCertificate(), idpRSACert, "Unexpected value for certificate");
@@ -672,26 +695,33 @@ public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
      * @param role the expected type of role from the context role descriptor data
      * @param checkEntitiesDesc whether to check for and validate an EntitiesDescriptor grandparent
      */
-    private void checkContextAndID(Credential credential, String entityID, QName role, boolean checkEntitiesDesc) {
+    private void checkContextAndID(@Nonnull final Credential credential, @Nonnull String entityID, @Nonnull QName role,
+            boolean checkEntitiesDesc) {
         Assert.assertEquals(credential.getEntityId(), entityID, "Unexpected value found for credential entityID");
         
-        SAMLMDCredentialContext mdContext = credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
-        Assert.assertNotNull(mdContext, "SAMLMDCredentialContext was not available");
+        final CredentialContextSet contextSet = credential.getCredentialContextSet();
+        assert contextSet != null;
+        SAMLMDCredentialContext mdContext = contextSet.get(SAMLMDCredentialContext.class);
+        assert mdContext != null;
         
         Assert.assertNotNull(mdContext.getRoleDescriptor());
-        RoleDescriptor contextRole = mdContext.getRoleDescriptor();
+        final RoleDescriptor contextRole = mdContext.getRoleDescriptor();
+        assert contextRole != null;
         Assert.assertEquals(contextRole.getElementQName(), role, "Unexpected value for context role descriptor");
         
         Assert.assertTrue(contextRole.getParent() instanceof EntityDescriptor);
-        EntityDescriptor entityDescriptor = (EntityDescriptor) mdContext.getRoleDescriptor().getParent();
+        final EntityDescriptor entityDescriptor = (EntityDescriptor) contextRole.getParent();
+        assert entityDescriptor != null;
         Assert.assertEquals(entityDescriptor.getEntityID(), entityID, "Unexpected value for entity descriptor entity ID");
         
         if (checkEntitiesDesc) {
             Assert.assertTrue(entityDescriptor.getParent() instanceof EntitiesDescriptor);
-            EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) entityDescriptor.getParent();
+            final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) entityDescriptor.getParent();
+            assert entitiesDescriptor != null;
             
-            Assert.assertNotNull(entitiesDescriptor.getExtensions());
-            Assert.assertNotNull(entitiesDescriptor.getExtensions().getUnknownXMLObjects().get(0));
+            final Extensions exts = entitiesDescriptor.getExtensions();
+            assert exts != null;
+            Assert.assertNotNull(exts.getUnknownXMLObjects().get(0));
         }
     }
 

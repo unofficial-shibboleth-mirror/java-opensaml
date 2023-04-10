@@ -18,15 +18,16 @@
 package org.opensaml.saml.security.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -42,7 +43,6 @@ import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.impl.BasicEncryptionConfiguration;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Iterables;
 
@@ -93,29 +93,37 @@ public class InlineSelfEncryptionParametersStrategy
     /** {@inheritDoc} */
     @Nullable
     public List<EncryptionParameters> apply(@Nullable final Pair<ProfileRequestContext, EncryptionParameters> input) {
-        if (input == null || input.getFirst() == null) {
+        
+        final ProfileRequestContext profileRequestContext = input != null ? input.getFirst() : null;
+        if (profileRequestContext == null) {
             log.debug("Input Pair or ProfileRequestContext was null, skipping");
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         
-        final List<Credential> credentials = resolveCredentials(input.getFirst());
+        final List<Credential> credentials = resolveCredentials(profileRequestContext);
         if (credentials.isEmpty()) {
             log.debug("No self-encryption credentials were resolved, skipping further processing");
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         log.debug("Resolved {} self-encryption credentials", credentials.size());
         
-        final List<EncryptionConfiguration> baseConfigs = resolveBaseConfigurations(input.getFirst());
+        final List<EncryptionConfiguration> baseConfigs = resolveBaseConfigurations(profileRequestContext);
         log.debug("Resolved {} base EncryptionConfigurations", baseConfigs.size());
         
         final ArrayList<EncryptionParameters> encParams = new ArrayList<>();
-        
+
+        final EncryptionParameters requestParams = input != null ? input.getSecond() : null;
+
         for (final Credential cred : credentials) {
+            assert cred != null;
+            
             final BasicEncryptionConfiguration selfConfig = new BasicEncryptionConfiguration();
-            selfConfig.setKeyTransportEncryptionCredentials(Collections.singletonList(cred));
-            if (input.getSecond() != null && input.getSecond().getDataEncryptionAlgorithm() != null) {
-                selfConfig.setDataEncryptionAlgorithms(Collections.singletonList(
-                        input.getSecond().getDataEncryptionAlgorithm()));
+            selfConfig.setKeyTransportEncryptionCredentials(CollectionSupport.singletonList(cred));
+            if (requestParams != null) {
+                final String dataEncAlg = requestParams.getDataEncryptionAlgorithm();
+                if (dataEncAlg != null) {
+                    selfConfig.setDataEncryptionAlgorithms(CollectionSupport.singletonList(dataEncAlg));
+                }
             }
             
             final ArrayList<EncryptionConfiguration> configs = new ArrayList<>();
@@ -152,7 +160,7 @@ public class InlineSelfEncryptionParametersStrategy
             return credentials;
         } catch (final ResolverException e) {
             log.error("Error resolving IdP encryption credentials", e);
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
     }
 
@@ -168,6 +176,7 @@ public class InlineSelfEncryptionParametersStrategy
         List<EncryptionConfiguration> baseConfigs = null;
         if (configurationLookupStrategy != null) {
             log.debug("Self-encryption EncryptionConfiguration lookup strategy was non-null");
+            assert configurationLookupStrategy != null;
             baseConfigs = configurationLookupStrategy.apply(profileRequestContext);
         } else {
             log.debug("Self-encryption EncryptionConfiguration lookup strategy was null");
@@ -176,7 +185,7 @@ public class InlineSelfEncryptionParametersStrategy
             return baseConfigs;
         }
         log.debug("No self-encryption EncryptionConfigurations were resolved, returning global configuration");
-        return Collections.singletonList(SecurityConfigurationSupport.getGlobalEncryptionConfiguration());
+        return CollectionSupport.singletonList(SecurityConfigurationSupport.getGlobalEncryptionConfiguration());
     }
     
 }

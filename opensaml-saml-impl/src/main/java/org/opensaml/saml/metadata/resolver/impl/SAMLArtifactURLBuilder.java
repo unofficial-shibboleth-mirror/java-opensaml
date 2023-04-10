@@ -18,6 +18,7 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.saml.common.binding.artifact.SAMLSourceIDArtifact;
 import org.opensaml.saml.criterion.ArtifactCriterion;
@@ -33,17 +34,18 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class SAMLArtifactURLBuilder implements MetadataQueryProtocolURLBuilder {
     
     /** Hex encoder. */
-    private static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
+    @Nonnull private static final BaseEncoding HEX = BaseEncoding.base16().lowerCase();
 
     /** {@inheritDoc} */
-    public String buildURL(@Nonnull final String baseURL, @Nonnull final CriteriaSet criteria) {
-        if (!criteria.contains(ArtifactCriterion.class)) {
+    public String buildURL(@Nonnull final String baseURL, @Nullable final CriteriaSet criteria) {
+        
+        final ArtifactCriterion artifactCriterion = criteria != null ? criteria.get(ArtifactCriterion.class) : null;
+        if (artifactCriterion == null) {
             return null;
         }
-        final ArtifactCriterion artifactCriterion = criteria.get(ArtifactCriterion.class);
         
-        if (artifactCriterion.getArtifact() instanceof SAMLSourceIDArtifact) {
-            return buildFromSourceID(baseURL, (SAMLSourceIDArtifact)artifactCriterion.getArtifact());
+        if (artifactCriterion.getArtifact() instanceof SAMLSourceIDArtifact art) {
+            return buildFromSourceID(baseURL, art);
         }
         
         return null;

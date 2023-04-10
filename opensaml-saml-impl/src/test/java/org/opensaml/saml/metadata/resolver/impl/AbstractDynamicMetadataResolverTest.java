@@ -34,6 +34,8 @@ import java.util.Timer;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
@@ -78,9 +80,11 @@ import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
+@SuppressWarnings("javadoc")
 public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     
     private Map<String, EntityDescriptor> sourceMap;
@@ -169,7 +173,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         resolver = new MockDynamicResolver(sourceMap);
         resolver.setId("test123");
         resolver.setActivationCondition(prc -> {return allowActivation;});
-        resolver.setParserPool(XMLObjectProviderRegistrySupport.getParserPool());
+        resolver.setParserPool(Constraint.isNotNull(XMLObjectProviderRegistrySupport.getParserPool(), "ParserPool missing"));
         
         allowActivation = true;
     }
@@ -349,7 +353,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         EntityDescriptor result = resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1)));
         
-        Assert.assertNotNull(result);
+        assert result != null;
         Assert.assertNull(result.getDOM());
     }
     
@@ -493,7 +497,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         for (final String entityID : List.of(id1, id2, id3)) {
             EntityDescriptor ed = resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
-            Assert.assertNotNull(ed);
+            assert ed != null;
             Assert.assertEquals(ed.getEntityID(), entityID);
             Assert.assertNull(ed.getDOM());
         }
@@ -699,7 +703,8 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
             originSourceMap = map;
         }
 
-        protected XMLObject fetchFromOriginSource(CriteriaSet criteria) throws IOException {
+        protected XMLObject fetchFromOriginSource(@Nullable CriteriaSet criteria) throws IOException {
+            
             if (criteria.contains(EntityIdCriterion.class)) {
                 return originSourceMap.get(criteria.get(EntityIdCriterion.class).getEntityId());
             } else if (secondaryLookup && criteria.contains(SimpleStringCriterion.class)) {

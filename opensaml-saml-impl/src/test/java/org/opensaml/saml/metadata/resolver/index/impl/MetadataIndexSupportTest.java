@@ -22,16 +22,11 @@ import java.net.MalformedURLException;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
-
+@SuppressWarnings("javadoc")
 public class MetadataIndexSupportTest {
     
     @Test
     public void testCanonicalizeLocationURI() throws MalformedURLException {
-        try {
-            MetadataIndexSupport.canonicalizeLocationURI(null);
-            Assert.fail("Should have failed on null/empty input");
-        } catch (MalformedURLException e) {
-        }
         try {
             MetadataIndexSupport.canonicalizeLocationURI("");
             Assert.fail("Should have failed on null/empty input");
@@ -65,5 +60,4 @@ public class MetadataIndexSupportTest {
         Assert.assertNull(MetadataIndexSupport.trimURLPathSegment("/"));
     }
     
-
 }

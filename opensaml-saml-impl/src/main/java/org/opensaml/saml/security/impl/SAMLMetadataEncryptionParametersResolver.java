@@ -18,6 +18,7 @@
 package org.opensaml.saml.security.impl;
 
 import java.security.Key;
+import java.security.PublicKey;
 import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
@@ -29,10 +30,11 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -42,6 +44,7 @@ import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.security.SAMLMetadataKeyAgreementEncryptionConfiguration;
 import org.opensaml.saml.security.SAMLMetadataKeyAgreementEncryptionConfiguration.KeyWrap;
 import org.opensaml.security.credential.Credential;
+import org.opensaml.security.credential.CredentialContextSet;
 import org.opensaml.security.credential.CredentialSupport;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
@@ -52,6 +55,7 @@ import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.agreement.KeyAgreementSupport;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
+import org.opensaml.xmlsec.encryption.KeySize;
 import org.opensaml.xmlsec.encryption.MGF;
 import org.opensaml.xmlsec.encryption.OAEPparams;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
@@ -60,7 +64,6 @@ import org.opensaml.xmlsec.encryption.support.RSAOAEPParameters;
 import org.opensaml.xmlsec.impl.BasicEncryptionParametersResolver;
 import org.opensaml.xmlsec.signature.DigestMethod;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A specialization of {@link BasicEncryptionParametersResolver} which resolves
@@ -189,6 +192,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         // either, determined by both metadata and local configuration.
         try {
             for (final Credential credential : getMetadataCredentialResolver().resolve(mdCredResolverCriteria)) {
+                assert credential != null;
                 
                 if (log.isTraceEnabled()) {
                     final Key key = CredentialSupport.extractEncryptionKey(credential);
@@ -200,8 +204,9 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                     return;
                 }
                 
+                final CredentialContextSet credContextSet = credential.getCredentialContextSet();
                 final SAMLMDCredentialContext metadataCredContext = 
-                        credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
+                        credContextSet != null ? credContextSet.get(SAMLMDCredentialContext.class) : null;
                 
                 final Pair<String,EncryptionMethod> dataEncryptionAlgorithmAndMethod = resolveDataEncryptionAlgorithm(
                         criteria, includeExcludePredicate, metadataCredContext);
@@ -210,9 +215,12 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                         credential, criteria, includeExcludePredicate, 
                         dataEncryptionAlgorithmAndMethod.getFirst(), metadataCredContext);
                 if (keyTransportAlgorithmAndMethod.getFirst() == null) {
-                    log.debug("Unable to resolve key transport algorithm for credential with key type '{}', " 
-                            + "considering other credentials", 
-                            CredentialSupport.extractEncryptionKey(credential).getAlgorithm());
+                    if (log.isDebugEnabled()) {
+                        final Key key = CredentialSupport.extractEncryptionKey(credential); 
+                        log.debug("Unable to resolve key transport algorithm for credential with key type '{}', " 
+                                + "considering other credentials", 
+                                key != null ? key.getAlgorithm() : "n/a");
+                    }
                     continue;
                 }
                 
@@ -237,6 +245,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         super.resolveAndPopulateCredentialsAndAlgorithms(params, criteria, includeExcludePredicate);
     }
     
+// Checkstyle: CyclomaticComplexity OFF
     /**
      * 
      * Check for a credential type that implies a key agreement operation, and process if so indicated.
@@ -262,8 +271,9 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         final SAMLMetadataKeyAgreementEncryptionConfiguration config =
                 getEffectiveKeyAgreementConfiguration(criteria, credential);
         if (config == null) {
+            final PublicKey pkey = credential.getPublicKey();
             log.warn("Unable to get effective KeyAgreementEncryptionConfiguration for credential with key type: {}",
-                    credential.getPublicKey().getAlgorithm());
+                    pkey != null ? pkey.getAlgorithm() : "n/a");
             return false;
         }
         
@@ -273,25 +283,29 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         final List<String> criteriaDataEncryptionAlgorithms = getEffectiveDataEncryptionAlgorithms(criteria, 
                 includeExcludePredicate);
         
+        final CredentialContextSet credContextSet = credential.getCredentialContextSet();
         final SAMLMDCredentialContext metadataCredContext = 
-                credential.getCredentialContextSet().get(SAMLMDCredentialContext.class);
+                credContextSet != null ? credContextSet.get(SAMLMDCredentialContext.class) : null;
         
         List<String> metadataKeyWrapAlgorithms = Collections.emptyList();
         List<String> metadataDataEncryptionAlgorithms = Collections.emptyList(); 
         if (metadataCredContext != null) {
-            final List<String> metadataAlgorithms = metadataCredContext.getEncryptionMethods().stream()
-                    .map(EncryptionMethod::getAlgorithm)
-                    .filter(Objects::nonNull)
-                    .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), includeExcludePredicate))
-                    .collect(Collectors.toList());
-            
-            metadataKeyWrapAlgorithms = metadataAlgorithms.stream()
-                    .filter(AlgorithmSupport::isSymmetricKeyWrap)
-                    .collect(Collectors.toList());
-            
-            metadataDataEncryptionAlgorithms = metadataAlgorithms.stream()
-                    .filter(AlgorithmSupport::isBlockEncryption)
-                    .collect(Collectors.toList());
+            final List<EncryptionMethod> methods = metadataCredContext.getEncryptionMethods();
+            if (methods != null) {
+                final List<String> metadataAlgorithms = methods.stream()
+                        .map(EncryptionMethod::getAlgorithm)
+                        .filter(Objects::nonNull)
+                        .filter(PredicateSupport.and(getAlgorithmRuntimeSupportedPredicate(), includeExcludePredicate))
+                        .collect(Collectors.toList());
+                
+                metadataKeyWrapAlgorithms = metadataAlgorithms.stream()
+                        .filter(AlgorithmSupport::isSymmetricKeyWrap)
+                        .collect(Collectors.toList());
+                
+                metadataDataEncryptionAlgorithms = metadataAlgorithms.stream()
+                        .filter(AlgorithmSupport::isBlockEncryption)
+                        .collect(Collectors.toList());
+            }
         }
         
         log.debug("Evaling useKeyWrap: # key wrap algos '{}', # direct data algos '{}', config '{}'",
@@ -311,8 +325,9 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         return checkAndProcessKeyAgreement(params, criteria, credential,
                 concatLists(metadataDataEncryptionAlgorithms, criteriaDataEncryptionAlgorithms),
                 useKeyWrap ? concatLists(metadataKeyWrapAlgorithms, criteriaKeyTransportAlgorithms)
-                        : Collections.emptyList());
+                        : CollectionSupport.emptyList());
     }
+// Checkstyle: CyclomaticComplexity ON
     
     /**
      * Get the effective {@link SAMLMetadataKeyAgreementEncryptionConfiguration} to use with the specified credential.
@@ -336,10 +351,21 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         config.setAlgorithm(baseConfig.getAlgorithm());
         config.setParameters(baseConfig.getParameters());
         
-        final String keyType = credential.getPublicKey().getAlgorithm();
+        final PublicKey pkey = credential.getPublicKey();
+        if (pkey == null) {
+            log.warn("Key agreement public key was null");
+            return null;
+        }
+        final String keyType = pkey.getAlgorithm();
         
-        final List<EncryptionConfiguration> encConfigs = criteria.get(EncryptionConfigurationCriterion.class)
-                .getConfigurations();
+        final EncryptionConfigurationCriterion encryptionConfigCriterion =
+                criteria.get(EncryptionConfigurationCriterion.class);
+        if (encryptionConfigCriterion == null) {
+            log.warn("EncryptionConfigurationCriterion was absent");
+            return null;
+        }
+        
+        final List<EncryptionConfiguration> encConfigs = encryptionConfigCriterion.getConfigurations();
         
         config.setMetadataUseKeyWrap(
                 encConfigs.stream()
@@ -364,7 +390,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * @return the concatenation of the supplied lists
      */
     @SafeVarargs
-    private List<String> concatLists(@Nonnull final List<String> ... lists) {
+    @Nonnull private List<String> concatLists(@Nonnull final List<String> ... lists) {
         return Stream.of(lists)
                 .filter(Objects::nonNull)
                 .flatMap(x -> x.stream())
@@ -397,7 +423,8 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
              @Nonnull final Predicate<String> includeExcludePredicate, 
              @Nullable final EncryptionMethod encryptionMethod) {
          
-         if (!AlgorithmSupport.isRSAOAEP(params.getKeyTransportEncryptionAlgorithm())) {
+         final String alg = params.getKeyTransportEncryptionAlgorithm();
+         if (alg == null || !AlgorithmSupport.isRSAOAEP(alg)) {
              return;
          }
          
@@ -406,16 +433,17 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
              return;
          }
          
-         if (params.getRSAOAEPParameters() == null) {
-             params.setRSAOAEPParameters(new RSAOAEPParameters());
+         RSAOAEPParameters oaepParams = params.getRSAOAEPParameters();
+         if (oaepParams == null) {
+             oaepParams = new RSAOAEPParameters();
+             params.setRSAOAEPParameters(oaepParams);
          }
          
-         populateRSAOAEPParamsFromEncryptionMethod(params.getRSAOAEPParameters(), encryptionMethod, 
-                 includeExcludePredicate);
+         populateRSAOAEPParamsFromEncryptionMethod(oaepParams, encryptionMethod, includeExcludePredicate);
         
-         if (params.getRSAOAEPParameters().isComplete()) {
+         if (oaepParams.isComplete()) {
              return;
-         } else if (params.getRSAOAEPParameters().isEmpty()) {
+         } else if (oaepParams.isEmpty()) {
              super.resolveAndPopulateRSAOAEPParams(params, criteria, includeExcludePredicate);
          } else {
              if (isMergeMetadataRSAOAEPParametersWithConfig()) {
@@ -423,7 +451,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
              }
          }
     }
-    //CheckStyle: ReturnCount ON
+//CheckStyle: ReturnCount ON
 
     /**
      * Extract {@link DigestMethod}, {@link MGF} and {@link OAEPparams} data present on the supplied
@@ -440,7 +468,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * @param includeExcludePredicate the include/exclude predicate with which to evaluate the 
      *          candidate data encryption and key transport algorithm URIs
      */
-     // Checkstyle: CyclomaticComplexity OFF -- more readable not split up
+// Checkstyle: CyclomaticComplexity OFF -- more readable not split up
     protected void populateRSAOAEPParamsFromEncryptionMethod(@Nonnull final RSAOAEPParameters params, 
             @Nonnull final EncryptionMethod encryptionMethod, 
             @Nonnull final Predicate<String> includeExcludePredicate) {
@@ -477,7 +505,6 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         }
         
     }
-    // Checkstyle:CyclomaticComplexity ON
 
     /**
      * Determine the key transport algorithm URI to use with the specified credential, also returning the associated
@@ -505,27 +532,31 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         if (metadataCredContext != null) {
             final KeyTransportAlgorithmPredicate keyTransportPredicate =
                         resolveKeyTransportAlgorithmPredicate(criteria);
-            for (final EncryptionMethod encryptionMethod : metadataCredContext.getEncryptionMethods()) {
-                final String algorithm = encryptionMethod.getAlgorithm();
-                log.trace("Evaluating SAML metadata EncryptionMethod algorithm for key transport: {}", algorithm);
-                if (isKeyTransportAlgorithm(algorithm) 
-                        && includeExcludePredicate.test(algorithm) 
-                        && getAlgorithmRuntimeSupportedPredicate().test(algorithm)
-                        && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)
-                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, includeExcludePredicate)) {
-                    
-                    boolean accepted = true;
-                    if (keyTransportPredicate != null) {
-                        accepted = keyTransportPredicate.test(new KeyTransportAlgorithmPredicate.SelectionInput(
-                                algorithm, dataEncryptionAlgorithm, keyTransportCredential));
+            final List<EncryptionMethod> methods = metadataCredContext.getEncryptionMethods();
+            if (methods != null) {
+                for (final EncryptionMethod encryptionMethod : methods) {
+                    final String algorithm = encryptionMethod.getAlgorithm();
+                    log.trace("Evaluating SAML metadata EncryptionMethod algorithm for key transport: {}", algorithm);
+                    if (algorithm != null
+                            && isKeyTransportAlgorithm(algorithm) 
+                            && includeExcludePredicate.test(algorithm) 
+                            && getAlgorithmRuntimeSupportedPredicate().test(algorithm)
+                            && credentialSupportsEncryptionMethod(keyTransportCredential, encryptionMethod)
+                            && evaluateEncryptionMethodChildren(encryptionMethod, criteria, includeExcludePredicate)) {
+                        
+                        boolean accepted = true;
+                        if (keyTransportPredicate != null) {
+                            accepted = keyTransportPredicate.test(new KeyTransportAlgorithmPredicate.SelectionInput(
+                                    algorithm, dataEncryptionAlgorithm, keyTransportCredential));
+                        }
+                        
+                        if (accepted) {
+                            log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
+                                    algorithm);
+                            return new Pair<>(algorithm, encryptionMethod);
+                        }
+                        
                     }
-                    
-                    if (accepted) {
-                        log.debug("Resolved key transport algorithm URI from SAML metadata EncryptionMethod: {}",
-                                algorithm);
-                        return new Pair<>(algorithm, encryptionMethod);
-                    }
-                    
                 }
             }
         }
@@ -538,6 +569,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                         dataEncryptionAlgorithm),
                 null);
     }
+// Checkstyle:CyclomaticComplexity ON
 
     /**
      * Determine the data encryption algorithm URI to use, also returning the associated
@@ -560,16 +592,19 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
             @Nullable final SAMLMDCredentialContext metadataCredContext) {
         
         if (metadataCredContext != null) {
-            for (final EncryptionMethod encryptionMethod : metadataCredContext.getEncryptionMethods()) {
-                final String algorithm = encryptionMethod.getAlgorithm();
-                log.trace("Evaluating SAML metadata EncryptionMethod algorithm for data encryption: {}", algorithm);
-                if (isDataEncryptionAlgorithm(algorithm) 
-                        && includeExcludePredicate.test(algorithm)
-                        && getAlgorithmRuntimeSupportedPredicate().test(algorithm)
-                        && evaluateEncryptionMethodChildren(encryptionMethod, criteria, includeExcludePredicate)) {
-                    log.debug("Resolved data encryption algorithm URI from SAML metadata EncryptionMethod: {}",
-                            algorithm);
-                    return new Pair<>(algorithm, encryptionMethod);
+            final List<EncryptionMethod> methods = metadataCredContext.getEncryptionMethods();
+            if (methods != null) {
+                for (final EncryptionMethod encryptionMethod : methods) {
+                    final String algorithm = encryptionMethod.getAlgorithm();
+                    log.trace("Evaluating SAML metadata EncryptionMethod algorithm for data encryption: {}", algorithm);
+                    if (isDataEncryptionAlgorithm(algorithm) 
+                            && includeExcludePredicate.test(algorithm)
+                            && getAlgorithmRuntimeSupportedPredicate().test(algorithm)
+                            && evaluateEncryptionMethodChildren(encryptionMethod, criteria, includeExcludePredicate)) {
+                        log.debug("Resolved data encryption algorithm URI from SAML metadata EncryptionMethod: {}",
+                                algorithm);
+                        return new Pair<>(algorithm, encryptionMethod);
+                    }
                 }
             }
         }
@@ -596,7 +631,12 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
     protected boolean evaluateEncryptionMethodChildren(@Nonnull final EncryptionMethod encryptionMethod, 
             @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
-        switch(encryptionMethod.getAlgorithm()) {
+        final String alg = encryptionMethod.getAlgorithm();
+        if (alg == null) {
+            return false;
+        }
+        
+        switch(alg) {
             
             case EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP:
             case EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11:
@@ -663,12 +703,15 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
      * @return true if credential may be used with the supplied encryption method, false otherwise
      */
     protected boolean credentialSupportsEncryptionMethod(@Nonnull final Credential credential, 
-            @Nonnull @NotEmpty final EncryptionMethod encryptionMethod) {
-        if (!credentialSupportsAlgorithm(credential, encryptionMethod.getAlgorithm())) {
+            @Nonnull final EncryptionMethod encryptionMethod) {
+        
+        final String alg = encryptionMethod.getAlgorithm();
+        if (alg == null || !credentialSupportsAlgorithm(credential, alg)) {
             return false;
         }
         
-        if (encryptionMethod.getKeySize() != null && encryptionMethod.getKeySize().getValue() != null) {
+        final KeySize keySize = encryptionMethod.getKeySize(); 
+        if (keySize != null && keySize.getValue() != null) {
             final Key encryptionKey = CredentialSupport.extractEncryptionKey(credential);
             if (encryptionKey == null) {
                 log.warn("Could not extract encryption key from credential. Failing evaluation");
@@ -681,7 +724,7 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
                 return false;
             }
         
-            if (! keyLength.equals(encryptionMethod.getKeySize().getValue())) {
+            if (!keyLength.equals(keySize.getValue())) {
                 return false;
             }
         }

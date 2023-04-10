@@ -53,6 +53,7 @@ import org.w3c.dom.Document;
 /**
  * Unit tests for {@link SignatureValidationFilter}.
  */
+@SuppressWarnings("javadoc")
 public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestCase {
     
     private final String switchMDFileValid = "/org/opensaml/saml/saml2/metadata/provider/metadata.aaitest_signed.xml";
@@ -119,7 +120,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
 
     @Test
     public void testValidSWITCHStandalone() throws UnmarshallingException {
-        XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentValid
+        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentValid
                 .getDocumentElement()).unmarshall(switchMDDocumentValid.getDocumentElement());
         
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
@@ -132,7 +133,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
     
     @Test(expectedExceptions=FilterException.class)
     public void testSWITCHStandaloneBlacklistedSignatureAlgorithm() throws UnmarshallingException, FilterException {
-        XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentValid
+        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentValid
                 .getDocumentElement()).unmarshall(switchMDDocumentValid.getDocumentElement());
         
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
@@ -147,7 +148,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
     
     @Test
     public void testInvalidSWITCHStandalone() throws UnmarshallingException {
-        XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentInvalid
+        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentInvalid
                 .getDocumentElement()).unmarshall(switchMDDocumentInvalid.getDocumentElement());
         
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
@@ -162,7 +163,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
     @Test
     public void testInvalidSWITCHStandaloneWithRootSkip() throws UnmarshallingException {
         // Goal here is to test the root signature skip (indicated by filter context data) by using a known invalid root signature.
-        XMLObject xmlObject = unmarshallerFactory.getUnmarshaller(switchMDDocumentInvalid
+        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentInvalid
                 .getDocumentElement()).unmarshall(switchMDDocumentInvalid.getDocumentElement());
 
         MetadataSource metadataSource = new MetadataSource();
@@ -186,7 +187,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileValid));
         XMLObject xmlObject = 
-            unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
+            unmarshallerFactory.ensureUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
         EntityDescriptor ed = (EntityDescriptor) xmlObject;
         Assert.assertTrue(ed.isSigned());
@@ -209,7 +210,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         
         Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
         XMLObject xmlObject = 
-            unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
+            unmarshallerFactory.ensureUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
         EntityDescriptor ed = (EntityDescriptor) xmlObject;
         Assert.assertTrue(ed.isSigned());
@@ -234,7 +235,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
 
         Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
         XMLObject xmlObject =
-            unmarshallerFactory.getUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
+            unmarshallerFactory.ensureUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
         EntityDescriptor ed = (EntityDescriptor) xmlObject;
         Assert.assertTrue(ed.isSigned());

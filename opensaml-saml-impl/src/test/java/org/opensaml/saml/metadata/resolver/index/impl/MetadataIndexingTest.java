@@ -47,6 +47,7 @@ import net.shibboleth.shared.resolver.ResolverException;
  * Test metadata indexing implemented in {@link AbstractBatchMetadataResolver}, using
  * {@link FilesystemMetadataResolver}.
  */
+@SuppressWarnings("javadoc")
 public class MetadataIndexingTest extends XMLObjectBaseTestCase {
     
     private FilesystemMetadataResolver metadataProvider;
@@ -106,7 +107,7 @@ public class MetadataIndexingTest extends XMLObjectBaseTestCase {
         criteriaSet.clear();
         criteriaSet.add(new ArtifactCriterion(new SAML2ArtifactType0004(new byte[] {0, 0} , artifactSourceID, messageHandle)));
         descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -127,7 +128,7 @@ public class MetadataIndexingTest extends XMLObjectBaseTestCase {
         criteriaSet.clear();
         criteriaSet.add(new SimpleStringCriterion(entityID.toUpperCase()));
         descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     

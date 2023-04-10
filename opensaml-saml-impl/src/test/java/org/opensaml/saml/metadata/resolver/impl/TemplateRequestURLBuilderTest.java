@@ -19,7 +19,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.util.function.Function;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.apache.velocity.app.VelocityEngine;
@@ -29,6 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class TemplateRequestURLBuilderTest {
     
     private VelocityEngine engine;
@@ -77,10 +77,10 @@ public class TemplateRequestURLBuilderTest {
         Assert.assertEquals(function.apply(new CriteriaSet(new EntityIdCriterion("http://example.org/idp"))), "HTTP://EXAMPLE.ORG/IDP");
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullEntityID() {
         function = new TemplateRequestURLBuilder(engine, "http://metadata.example.org/?entity=${entityID}", EncodingStyle.form);
-        function.apply(null);
+        Assert.assertNull(function.apply(null));
     }
 
 

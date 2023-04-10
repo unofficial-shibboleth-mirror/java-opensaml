@@ -17,6 +17,9 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.saml.metadata.resolver.impl.MetadataQueryProtocolRequestURLBuilder.MetadataQueryProtocolURLBuilder;
 import org.opensaml.saml.metadata.resolver.index.impl.SimpleStringCriterion;
@@ -25,9 +28,9 @@ import org.testng.annotations.Test;
 
 import com.google.common.collect.Lists;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
+@SuppressWarnings("javadoc")
 public class MetadataQueryProtocolRequestURLBuilderTest {
     
     private MetadataQueryProtocolRequestURLBuilder function;
@@ -46,10 +49,10 @@ public class MetadataQueryProtocolRequestURLBuilderTest {
         Assert.assertEquals(function.apply(new CriteriaSet(new EntityIdCriterion("http://example.org/idp"))), "http://metadata.example.org/service/entities/http:%2F%2Fexample.org%2Fidp");
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullCriteria() {
         function = new MetadataQueryProtocolRequestURLBuilder("http://metadata.example.org/service/");
-        function.apply(null);
+        Assert.assertNull(function.apply(null));
     }
     
     @Test
@@ -74,12 +77,12 @@ public class MetadataQueryProtocolRequestURLBuilderTest {
         
         private String suffix;
         
-        public MockURLBuilder(String s) {
+        public MockURLBuilder(@Nullable String s) {
             suffix = s;
         }
 
         /** {@inheritDoc} */
-        public String buildURL(String baseURL, CriteriaSet criteria) {
+        public String buildURL(@Nonnull String baseURL, @Nullable CriteriaSet criteria) {
             if (suffix == null) {
                 return null;
             }

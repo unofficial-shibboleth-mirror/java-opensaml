@@ -19,6 +19,9 @@ package org.opensaml.saml.metadata.resolver.impl;
 
 import java.io.ByteArrayOutputStream;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.core5.http.ContentType;
 import org.apache.hc.core5.http.HttpStatus;
@@ -37,10 +40,12 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.shared.resolver.ResolverException;
 
+@SuppressWarnings("javadoc")
 public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     private MockDynamicHTTPMetadataResolver resolver;
@@ -108,7 +113,7 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
         CriteriaSet criteriaSet = new CriteriaSet(new RequestURLCriterion(requestURL));
         
         EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -156,13 +161,15 @@ public class AbstractDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCa
     
     public static class MockDynamicHTTPMetadataResolver extends AbstractDynamicHTTPMetadataResolver {
         
-        public MockDynamicHTTPMetadataResolver(HttpClient client) {
+        public MockDynamicHTTPMetadataResolver(@Nonnull HttpClient client) {
             super(null, client);
         }
 
         /** {@inheritDoc} */
-        protected String buildRequestURL(CriteriaSet criteria) {
-            return criteria.get(RequestURLCriterion.class).requestURL;
+        @Nonnull protected String buildRequestURL(@Nullable CriteriaSet criteria) {
+            assert criteria != null;
+            return Constraint.isNotNull(
+                    criteria.get(RequestURLCriterion.class), "RequestURLCriterion was absent").requestURL;
         }
         
     }

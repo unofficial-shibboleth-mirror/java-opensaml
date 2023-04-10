@@ -27,9 +27,9 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /**
@@ -50,7 +50,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(FilesystemMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(FilesystemMetadataResolver.class);
 
     /** The metadata file. */
     @Nonnull private File metadataFile;
@@ -58,27 +58,26 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
     /**
      * Constructor.
      * 
-     * @param metadata the metadata file
+     * @param file the metadata file
      * 
      * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataResolver(@Nonnull final File metadata) throws ResolverException {
-        super();
-        setMetadataFile(metadata);
+    public FilesystemMetadataResolver(@Nonnull final File file) throws ResolverException {
+        metadataFile = Constraint.isNotNull(file, "Metadata file cannot be null");
     }
 
     /**
      * Constructor.
      * 
-     * @param metadata the metadata file
+     * @param file the metadata file
      * @param backgroundTaskTimer timer used to refresh metadata in the background
      * 
      * @throws ResolverException  this exception is no longer thrown
      */
-    public FilesystemMetadataResolver(@Nullable final Timer backgroundTaskTimer, @Nonnull final File metadata)
+    public FilesystemMetadataResolver(@Nullable final Timer backgroundTaskTimer, @Nonnull final File file)
             throws ResolverException {
         super(backgroundTaskTimer);
-        setMetadataFile(metadata);
+        metadataFile = Constraint.isNotNull(file, "Metadata file cannot be null");
     }
 
     /**
@@ -93,28 +92,21 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
 
         metadataFile = Constraint.isNotNull(file, "Metadata file cannot be null");
     }
-
-    /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
-        metadataFile = null;
-          
-        super.doDestroy();
-    }
     
     /** {@inheritDoc} */
     @Override
-    protected String getMetadataIdentifier() {
+    @Nonnull protected String getMetadataIdentifier() {
         return metadataFile.getAbsolutePath();
     }
 
     /** {@inheritDoc} */
     @Override
-    protected byte[] fetchMetadata() throws ResolverException {
+    @Nullable protected byte[] fetchMetadata() throws ResolverException {
         try {
             validateMetadataFile(metadataFile);
             final Instant metadataUpdateTime = Instant.ofEpochMilli(metadataFile.lastModified());
             if (getLastRefresh() == null || getLastUpdate() == null || metadataUpdateTime.isAfter(getLastUpdate())) {
+                // This closes the stream....
                 return inputstreamToByteArray(new FileInputStream(metadataFile));
             }
 

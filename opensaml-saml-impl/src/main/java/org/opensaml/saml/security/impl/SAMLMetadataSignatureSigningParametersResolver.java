@@ -26,6 +26,7 @@ import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.xml.XMLObject;
@@ -41,7 +42,6 @@ import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.impl.BasicSignatureSigningParametersResolver;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * A specialization of {@link BasicSignatureSigningParametersResolver} which also supports input of SAML metadata, 
@@ -66,13 +66,13 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
     protected void resolveAndPopulateCredentialAndSignatureAlgorithm(@Nonnull final SignatureSigningParameters params, 
             @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
-        if (!criteria.contains(RoleDescriptorCriterion.class)) {
+        final RoleDescriptorCriterion roleCrit = criteria.get(RoleDescriptorCriterion.class);
+        if (roleCrit == null) {
             super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, includeExcludePredicate);
             return;
         }
         
-        final List<XMLObject> signingMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
-                SigningMethod.DEFAULT_ELEMENT_NAME);
+        final List<XMLObject> signingMethods = getExtensions(roleCrit.getRole(), SigningMethod.DEFAULT_ELEMENT_NAME);
         
         if (signingMethods == null || signingMethods.isEmpty()) {
             super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, includeExcludePredicate);
@@ -94,12 +94,13 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             }
             
             for (final Credential credential : credentials) {
+                assert credential != null;
                 
                 if (log.isTraceEnabled()) {
                     final Key key = CredentialSupport.extractSigningKey(credential);
                     log.trace("Evaluating credential of type: {}, with length: {}", 
                             key != null ? key.getAlgorithm() : "n/a",
-                            KeySupport.getKeyLength(key));
+                            key != null ? KeySupport.getKeyLength(key) : "n/a");
                 }
                 
                 if (credentialSupportsSigningMethod(credential, signingMethod)) {
@@ -119,7 +120,6 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         
         super.resolveAndPopulateCredentialAndSignatureAlgorithm(params, criteria, includeExcludePredicate);
     }
-// Checkstyle: ReturnCount|CyclomaticComplexity ON
 
     /**
      * Evaluate whether the specified credential is supported for use with the specified {@link SigningMethod}.
@@ -130,11 +130,16 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
      */
     protected boolean credentialSupportsSigningMethod(@Nonnull final Credential credential, 
             @Nonnull @NotEmpty final SigningMethod signingMethod) {
-        if (!credentialSupportsAlgorithm(credential, signingMethod.getAlgorithm())) {
+        
+        final String signAlg = signingMethod.getAlgorithm();
+        if (signAlg == null || !credentialSupportsAlgorithm(credential, signAlg)) {
             return false;
         }
         
-        if (signingMethod.getMinKeySize() != null  || signingMethod.getMaxKeySize() != null) {
+        final Integer minSize = signingMethod.getMinKeySize();
+        final Integer maxSize = signingMethod.getMaxKeySize();
+        
+        if (minSize != null  || maxSize != null) {
             final Key signingKey = CredentialSupport.extractSigningKey(credential);
             if (signingKey == null) {
                 log.warn("Could not extract signing key from credential. Failing evaluation");
@@ -147,12 +152,12 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
                 return false;
             }
             
-            if (signingMethod.getMinKeySize() != null && keyLength < signingMethod.getMinKeySize()) {
+            if (minSize != null && keyLength < minSize) {
                 log.trace("Candidate signing credential does not meet minKeySize requirement");
                 return false;
             }
             
-            if (signingMethod.getMaxKeySize() != null && keyLength > signingMethod.getMaxKeySize()) {
+            if (maxSize != null && keyLength > maxSize) {
                 log.trace("Candidate signing credential does not meet maxKeySize requirement");
                 return false;
             }
@@ -160,17 +165,20 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
         
         return true;
     }
+// Checkstyle: ReturnCount|CyclomaticComplexity ON
 
     /** {@inheritDoc} */
     @Override
     @Nullable protected String resolveReferenceDigestMethod(@Nonnull final CriteriaSet criteria, 
             @Nonnull final Predicate<String> includeExcludePredicate) {
-        if (!criteria.contains(RoleDescriptorCriterion.class)) {
+        
+        final RoleDescriptorCriterion roleCrit = criteria.get(RoleDescriptorCriterion.class);
+        
+        if (roleCrit == null) {
             return super.resolveReferenceDigestMethod(criteria, includeExcludePredicate);
         }
         
-        final List<XMLObject> digestMethods = getExtensions(criteria.get(RoleDescriptorCriterion.class).getRole(),
-                DigestMethod.DEFAULT_ELEMENT_NAME);
+        final List<XMLObject> digestMethods = getExtensions(roleCrit.getRole(), DigestMethod.DEFAULT_ELEMENT_NAME);
         
         if (digestMethods == null || digestMethods.isEmpty()) {
             return super.resolveReferenceDigestMethod(criteria, includeExcludePredicate);
@@ -218,8 +226,8 @@ public class SAMLMetadataSignatureSigningParametersResolver extends BasicSignatu
             }
         }
         
-        if (roleDescriptor.getParent() instanceof EntityDescriptor) {
-            extensions = ((EntityDescriptor)roleDescriptor.getParent()).getExtensions();
+        if (roleDescriptor.getParent() instanceof EntityDescriptor entity) {
+            extensions = entity.getExtensions();
             if (extensions != null) {
                 result = extensions.getUnknownXMLObjects(extensionName);
                 if (!result.isEmpty()) {

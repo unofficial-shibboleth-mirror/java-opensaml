@@ -59,6 +59,7 @@ import org.testng.annotations.Test;
 import org.testng.collections.Lists;
 import org.w3c.dom.Element;
 
+@SuppressWarnings("javadoc")
 public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
     
     private static final String DATA_PATH = "/org/opensaml/saml/metadata/resolver/filter/impl/";
@@ -102,6 +103,7 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
             Assert.fail("Not a signable SAML object");
         }
         SignableSAMLObject signableSAML = (SignableSAMLObject) unsignedObject;
+        assert signableSAML != null;
         
         SignatureSigningParameters params = new SignatureSigningParameters();
         params.setSigningCredential(signingCredential);
@@ -124,7 +126,7 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
         Signer.signObject(signature);
         
         // Unmarshall a new tree around the signed DOM to avoid any XMLSignature weirdness
-        return unmarshallerFactory.getUnmarshaller(dom).unmarshall(dom);
+        return unmarshallerFactory.ensureUnmarshaller(dom).unmarshall(dom);
     }
 
     private SignatureTrustEngine buildTrustEngine() {

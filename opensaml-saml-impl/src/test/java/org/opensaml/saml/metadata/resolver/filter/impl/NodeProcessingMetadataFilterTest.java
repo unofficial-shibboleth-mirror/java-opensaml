@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
+@SuppressWarnings("javadoc")
 public class NodeProcessingMetadataFilterTest extends XMLObjectBaseTestCase {
     
     private FilesystemMetadataResolver metadataProvider;

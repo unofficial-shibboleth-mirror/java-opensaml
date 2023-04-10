@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Optional;
 import java.util.Set;
@@ -37,14 +36,15 @@ import org.opensaml.saml.saml2.common.TimeBoundSAMLObject;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -56,13 +56,13 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
         implements BatchMetadataResolver, IterableMetadataSource {
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(AbstractBatchMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractBatchMetadataResolver.class);
     
     /** Flag indicating whether to cache the original source metadata document. */
     private boolean cacheSourceMetadata;
     
     /** The set of indexes configured. */
-    private Set<MetadataIndex> indexes;
+    @Nonnull private Set<MetadataIndex> indexes;
     
     /** Flag indicating whether resolution may be performed solely by applying predicates to the
      * entire metadata collection. Defaults to false. */
@@ -70,7 +70,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     
     /** Constructor. */
     public AbstractBatchMetadataResolver() {
-        indexes = Collections.emptySet();
+        indexes = CollectionSupport.emptySet();
         
         setCacheSourceMetadata(true);
     }
@@ -78,7 +78,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     /** {@inheritDoc} */
     @Override public Iterator<EntityDescriptor> iterator() {
         checkComponentActive();
-        return Collections.unmodifiableList(getBackingStore().getOrderedDescriptors()).iterator();
+        return CollectionSupport.copyToList(ensureBackingStore().getOrderedDescriptors()).iterator();
     }
 
     /**
@@ -117,9 +117,9 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     public void setIndexes(@Nullable final Set<MetadataIndex> newIndexes) {
         checkSetterPreconditions();
         if (newIndexes == null) {
-            indexes = Collections.emptySet();
+            indexes = CollectionSupport.emptySet();
         } else {
-            indexes = Set.copyOf(newIndexes);
+            indexes = CollectionSupport.copyToSet(newIndexes);
         }
     }
 
@@ -146,7 +146,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
 
     /** {@inheritDoc} */
     @Nullable public Instant getRootValidUntil() {
-        final XMLObject cached = getBackingStore().getCachedOriginalMetadata();
+        final XMLObject cached = ensureBackingStore().getCachedOriginalMetadata();
         if (cached != null && cached instanceof TimeBoundSAMLObject) {
             return ((TimeBoundSAMLObject)cached).getValidUntil();
         }
@@ -155,7 +155,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
 
     /** {@inheritDoc} */
     @Nullable public Boolean isRootValid() {
-        final XMLObject cached = getBackingStore().getCachedOriginalMetadata();
+        final XMLObject cached = ensureBackingStore().getCachedOriginalMetadata();
         if (cached == null) {
             return null;
         }
@@ -163,10 +163,12 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     }
 
     /** {@inheritDoc} */
-    @Override @Nonnull protected Iterable<EntityDescriptor> doResolve(final CriteriaSet criteria) throws ResolverException {
+    @Override
+    @Nonnull protected Iterable<EntityDescriptor> doResolve(@Nullable final CriteriaSet criteria)
+            throws ResolverException {
         checkComponentActive();
         
-        final EntityIdCriterion entityIdCriterion = criteria.get(EntityIdCriterion.class);
+        final EntityIdCriterion entityIdCriterion = criteria != null ? criteria.get(EntityIdCriterion.class) : null;
         if (entityIdCriterion != null) {
             final Iterable<EntityDescriptor> entityIdcandidates = lookupEntityID(entityIdCriterion.getEntityId());
             if (log.isDebugEnabled()) {
@@ -195,7 +197,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
             return predicateFilterCandidates(this, criteria, true);
         } else {
             log.debug("{} Resolved no secondary indexed candidates, returning empty result", getLogPrefix());
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         
     }
@@ -212,8 +214,8 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      *          and the wrapped set contains the indexed data, which may be empty.
      */
     @Nonnull @NonnullElements 
-    protected Optional<Set<EntityDescriptor>> lookupByIndexes(@Nonnull final CriteriaSet criteria) {
-        return getBackingStore().getSecondaryIndexManager().lookupIndexedItems(criteria);
+    protected Optional<Set<EntityDescriptor>> lookupByIndexes(@Nullable final CriteriaSet criteria) {
+        return ensureBackingStore().getSecondaryIndexManager().lookupIndexedItems(criteria);
     }
     
     /** {@inheritDoc} */
@@ -230,8 +232,8 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
     }
     
     /** {@inheritDoc} */
-    @Override @Nonnull protected BatchEntityBackingStore getBackingStore() {
-        return (BatchEntityBackingStore) super.getBackingStore();
+    @Override @Nonnull protected BatchEntityBackingStore ensureBackingStore() {
+        return (BatchEntityBackingStore) super.ensureBackingStore();
     }
     
     /** {@inheritDoc} */
@@ -254,7 +256,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @return the current effective cached metadata document
      */
     @Nullable protected XMLObject getCachedOriginalMetadata() {
-       return getBackingStore().getCachedOriginalMetadata(); 
+       return ensureBackingStore().getCachedOriginalMetadata(); 
     }
     
     /**
@@ -268,7 +270,7 @@ public abstract class AbstractBatchMetadataResolver extends AbstractMetadataReso
      * @return the current effective cached metadata document
      */
     @Nullable protected XMLObject getCachedFilteredMetadata() {
-       return getBackingStore().getCachedFilteredMetadata(); 
+       return ensureBackingStore().getCachedFilteredMetadata(); 
     }
 
     /**

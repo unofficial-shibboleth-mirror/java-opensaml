@@ -20,11 +20,11 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -37,10 +37,12 @@ import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolverTest;
 import org.opensaml.saml.saml2.core.NameIDType;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.NameIDFormat;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Predicate<EntityDescriptor> {
     
     private FilesystemMetadataResolver metadataProvider;
@@ -69,7 +71,7 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
     @Test
     public void test() throws ComponentInitializationException, ResolverException {
         
-        metadataFilter.setRules(Collections.singletonMap(this, formats));
+        metadataFilter.setRules(CollectionSupport.singletonMap(this, formats));
         metadataFilter.initialize();
         
         metadataProvider.setMetadataFilter(metadataFilter);
@@ -78,22 +80,26 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
 
         EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
+        assert entity != null;
         
-        final List<NameIDFormat> attachedFormats = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS).getNameIDFormats();
+        SPSSODescriptor role = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS);
+        assert role != null;
+        final List<NameIDFormat> attachedFormats = role.getNameIDFormats();
         Assert.assertEquals(attachedFormats.stream().map(NameIDFormat::getURI).collect(Collectors.toUnmodifiableList()),
                 List.of(NameIDType.PERSISTENT, NameIDType.EMAIL));
                 
         key = new EntityIdCriterion("https://cms.psu.edu/Shibboleth");
         entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
-        Assert.assertEquals(entity.getSPSSODescriptor(SAMLConstants.SAML11P_NS).getNameIDFormats().size(), 1);
+        assert entity != null;
+        role = entity.getSPSSODescriptor(SAMLConstants.SAML11P_NS);
+        assert role != null;
+        Assert.assertEquals(role.getNameIDFormats().size(), 1);
     }
 
     @Test
     public void testWithRemoval() throws ComponentInitializationException, ResolverException {
         
-        metadataFilter.setRules(Collections.singletonMap(this, formats));
+        metadataFilter.setRules(CollectionSupport.singletonMap(this, formats));
         metadataFilter.setRemoveExistingFormats(true);
         metadataFilter.initialize();
         
@@ -101,15 +107,17 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
         metadataProvider.setId("test");
         metadataProvider.initialize();
 
-        EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
-        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
-        Assert.assertEquals(entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS).getNameIDFormats().size(), 2);
+        final EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
+        final EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
+        assert entity != null;
+        final SPSSODescriptor role = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS);
+        assert role != null;
+        Assert.assertEquals(role.getNameIDFormats().size(), 2);
     }
 
     /** {@inheritDoc} */
     public boolean test(EntityDescriptor input) {
-        return input.getEntityID().equals("https://carmenwiki.osu.edu/shibboleth");
+        return "https://carmenwiki.osu.edu/shibboleth".equals(input.getEntityID());
     }
 
 }

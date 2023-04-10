@@ -130,11 +130,11 @@ public class EndpointMetadataIndex implements MetadataIndex {
 
     /** {@inheritDoc} */
     @Nullable @NonnullElements @Unmodifiable @NotLive
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet) {
-        Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
-        final EntityRoleCriterion roleCrit = criteriaSet.get(EntityRoleCriterion.class);
-        @SuppressWarnings("unchecked")
-        final EndpointCriterion<Endpoint> endpointCrit = criteriaSet.get(EndpointCriterion.class);
+    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
+        final EntityRoleCriterion roleCrit = criteriaSet != null ? criteriaSet.get(EntityRoleCriterion.class) : null;
+        final EndpointCriterion<Endpoint> endpointCrit =
+            criteriaSet != null ? criteriaSet.get(EndpointCriterion.class) : null;
+        
         if (roleCrit != null && endpointCrit != null) {
             final HashSet<MetadataIndexKey> result = new HashSet<>();
             result.addAll(processCriteria(criteriaSet, roleCrit.getRole(), endpointCrit.getEndpoint()));
@@ -151,7 +151,7 @@ public class EndpointMetadataIndex implements MetadataIndex {
      * @param endpoint the endpoint to process
      * @return the set of metadata index keys for the endpoint
      */
-    @Nonnull private Set<MetadataIndexKey> processCriteria(@Nonnull final CriteriaSet criteriaSet, 
+    @Nonnull private Set<MetadataIndexKey> processCriteria(@Nullable final CriteriaSet criteriaSet, 
             @Nonnull final QName roleType, @Nonnull final Endpoint endpoint) {
         
         final HashSet<MetadataIndexKey> result = new HashSet<>();
@@ -186,10 +186,11 @@ public class EndpointMetadataIndex implements MetadataIndex {
      * @param location the location to process
      * @return the variants of the location to be indexed 
      */
-    @Nonnull private Set<String> processLocation(@Nonnull final CriteriaSet criteriaSet,
+    @Nonnull private Set<String> processLocation(@Nullable final CriteriaSet criteriaSet,
             @Nonnull final String location) {
         boolean generateStartsWithVariants = false;
-        final StartsWithLocationCriterion startsWithCrit = criteriaSet.get(StartsWithLocationCriterion.class);
+        final StartsWithLocationCriterion startsWithCrit =
+                criteriaSet != null ? criteriaSet.get(StartsWithLocationCriterion.class) : null;
         if (startsWithCrit != null) {
             generateStartsWithVariants = startsWithCrit.isMatchStartsWith();
         }

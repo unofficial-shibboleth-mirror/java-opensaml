@@ -28,6 +28,7 @@ import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class BasicDynamicTrustedNamesStrategyTest extends XMLObjectBaseTestCase {
     
     private BasicDynamicTrustedNamesStrategy strategy = new BasicDynamicTrustedNamesStrategy();

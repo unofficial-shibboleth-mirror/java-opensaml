@@ -38,8 +38,9 @@ import org.apache.hc.core5.http.io.entity.EntityUtils;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /**
@@ -62,16 +63,16 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPMetadataResolver.class);
 
     /** HTTP Client used to pull the metadata. */
-    private HttpClient httpClient;
+    @Nonnull private HttpClient httpClient;
 
     /** URL to the Metadata. */
-    private URI metadataURI;
+    @Nonnull private URI metadataURI;
 
     /** The ETag provided when the currently cached metadata was fetched. */
-    private String cachedMetadataETag;
+    @Nullable private String cachedMetadataETag;
 
     /** The Last-Modified information provided when the currently cached metadata was fetched. */
-    private String cachedMetadataLastModified;
+    @Nullable private String cachedMetadataLastModified;
 
     /** Optional HttpClient security parameters.*/
     @Nullable private HttpClientSecurityParameters httpClientSecurityParameters;
@@ -84,7 +85,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @throws ResolverException thrown if the HTTP client is null or the metadata URL provided is invalid
      */
-    public HTTPMetadataResolver(final HttpClient client, final String metadataURL) throws ResolverException {
+    public HTTPMetadataResolver(@Nonnull final HttpClient client, final String metadataURL) throws ResolverException {
         this(null, client, metadataURL);
     }
 
@@ -97,14 +98,11 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @throws ResolverException thrown if the HTTP client is null or the metadata URL provided is invalid
      */
-    public HTTPMetadataResolver(final Timer backgroundTaskTimer, final HttpClient client, final String metadataURL)
-            throws ResolverException {
+    public HTTPMetadataResolver(final Timer backgroundTaskTimer, @Nonnull final HttpClient client,
+            final String metadataURL) throws ResolverException {
         super(backgroundTaskTimer);
 
-        if (client == null) {
-            throw new ResolverException("HTTP client may not be null");
-        }
-        httpClient = client;
+        httpClient = Constraint.isNotNull(client, "HttpClient cannot be null");
 
         try {
             metadataURI = new URI(metadataURL);
@@ -118,7 +116,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @return the URL to fetch the metadata
      */
-    public String getMetadataURI() {
+    @Nonnull public String getMetadataURI() {
         return metadataURI.toASCIIString();
     }
         
@@ -175,19 +173,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** {@inheritDoc} */
     @Override
-    protected void doDestroy() {
-        httpClient = null;
-        httpClientSecurityParameters = null;
-        metadataURI = null;
-        cachedMetadataETag = null;
-        cachedMetadataLastModified = null;
-
-        super.doDestroy();
-    }
-
-    /** {@inheritDoc} */
-    @Override
-    protected String getMetadataIdentifier() {
+    @Nonnull protected String getMetadataIdentifier() {
         return metadataURI.toString();
     }
 
@@ -200,7 +186,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * @throws ResolverException thrown if there is a problem retrieving the metadata from the remote server
      */
     @Override
-    protected byte[] fetchMetadata() throws ResolverException {
+    @Nullable protected byte[] fetchMetadata() throws ResolverException {
         final HttpGet httpGet = buildHttpGet();
         final HttpClientContext context = buildHttpClientContext(httpGet);
         ClassicHttpResponse response = null;
@@ -253,7 +239,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @return the constructed HttpGet instance
      */
-    protected HttpGet buildHttpGet() {
+    @Nonnull protected HttpGet buildHttpGet() {
         final HttpGet getMethod = new HttpGet(getMetadataURI());
 
         if (cachedMetadataETag != null) {
@@ -273,9 +259,9 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @return a new instance of {@link HttpClientContext}
      */
-    protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
-        // TODO Really request should be @Nonnull, change when we remove deprecated buildHttpClientContext()
+    @Nonnull protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
         final HttpClientContext context = HttpClientContext.create();
+        assert context != null;
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, true);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(context, request);
@@ -288,7 +274,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @param response GetMethod containing a valid HTTP response
      */
-    protected void processConditionalRetrievalHeaders(final ClassicHttpResponse response) {
+    protected void processConditionalRetrievalHeaders(@Nonnull final ClassicHttpResponse response) {
         Header httpHeader = response.getFirstHeader("ETag");
         if (httpHeader != null) {
             cachedMetadataETag = httpHeader.getValue();
@@ -309,7 +295,8 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
      * 
      * @throws ResolverException thrown if there is a problem getting the raw metadata bytes from the response
      */
-    protected byte[] getMetadataBytesFromResponse(final ClassicHttpResponse response) throws ResolverException {
+    @Nonnull protected byte[] getMetadataBytesFromResponse(@Nonnull final ClassicHttpResponse response)
+            throws ResolverException {
         log.debug("{} Attempting to extract metadata from response to request for metadata from '{}'", 
                 getLogPrefix(), getMetadataURI());
         try {

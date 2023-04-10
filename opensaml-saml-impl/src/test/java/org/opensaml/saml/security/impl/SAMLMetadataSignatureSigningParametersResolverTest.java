@@ -55,6 +55,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjectBaseTestCase {
     
     private SAMLMetadataSignatureSigningParametersResolver resolver;
@@ -145,9 +146,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     public void testBasicRSA() throws ResolverException {
         config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
         Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -162,9 +163,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, null));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
         Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -179,9 +180,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addEntityDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, null));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
         Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -196,9 +197,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addRoleDescriptorExtension(roleDesc, buildDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
         Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
@@ -213,9 +214,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addEntityDescriptorExtension(roleDesc, buildDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
         Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
@@ -234,9 +235,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1, null, null));
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, null));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
         Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -253,9 +254,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addRoleDescriptorExtension(roleDesc, buildDigestMethod(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred2048);
         Assert.assertEquals(params.getSignatureAlgorithm(), defaultRSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -275,9 +276,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
             addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, null));
             addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256, null, null));
             
-            SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+            final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
             
-            Assert.assertNotNull(params);
+            assert params != null;
             Assert.assertEquals(params.getSigningCredential(), ecCred);
             Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_ECDSA_SHA256);
             Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -293,9 +294,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1, null, null));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), dsaCred);
         Assert.assertEquals(params.getSignatureAlgorithm(), defaultDSAAlgo);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -310,9 +311,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, 4096, null));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred4096);
         Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -327,9 +328,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, 1024));
         
-        SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
+        final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
-        Assert.assertNotNull(params);
+        assert params != null;
         Assert.assertEquals(params.getSigningCredential(), rsaCred1024);
         Assert.assertEquals(params.getSignatureAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(params.getSignatureReferenceDigestMethod(), defaultReferenceDigest);
@@ -425,6 +426,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     private void addEntityDescriptorExtension(RoleDescriptor roleDescriptor, XMLObject extension) {
         EntityDescriptor entityDescriptor = (EntityDescriptor) roleDescriptor.getParent();
+        assert entityDescriptor != null;
         Extensions extensions = entityDescriptor.getExtensions();
         if (extensions == null) {
             extensions = buildExtensions();

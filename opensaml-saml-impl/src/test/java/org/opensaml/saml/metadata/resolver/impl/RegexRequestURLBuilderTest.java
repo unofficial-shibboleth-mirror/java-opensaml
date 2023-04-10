@@ -23,6 +23,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
+@SuppressWarnings("javadoc")
 public class RegexRequestURLBuilderTest {
     
     private RegexRequestURLBuilder function;

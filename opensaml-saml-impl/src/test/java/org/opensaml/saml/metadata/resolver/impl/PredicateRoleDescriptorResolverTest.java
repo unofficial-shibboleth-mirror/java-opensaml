@@ -41,15 +41,13 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testNoEntitiesResolveSingle() throws ResolverException, ComponentInitializationException {
         PredicateRoleDescriptorResolver roleResolver = 
-                new PredicateRoleDescriptorResolver(new StaticMetadataResolver(Lists.<EntityDescriptor>newArrayList()));
+                new PredicateRoleDescriptorResolver(new StaticMetadataResolver(Lists.newArrayList()));
         roleResolver.initialize();
         
         RoleDescriptor roleDescriptor = roleResolver.resolveSingle(new CriteriaSet(
@@ -60,7 +58,7 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testNoEntitiesResolveMulti() throws ResolverException, ComponentInitializationException {
         PredicateRoleDescriptorResolver roleResolver = 
-                new PredicateRoleDescriptorResolver(new StaticMetadataResolver(Lists.<EntityDescriptor>newArrayList()));
+                new PredicateRoleDescriptorResolver(new StaticMetadataResolver(Lists.newArrayList()));
         roleResolver.initialize();
         
         Iterable<RoleDescriptor> roleDescriptors = roleResolver.resolve(new CriteriaSet(
@@ -77,7 +75,7 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
         
         RoleDescriptor roleDescriptor = roleResolver.resolveSingle(new CriteriaSet(
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME)));
-        Assert.assertNotNull(roleDescriptor, "Resolved RoleDescriptor was null");
+        assert roleDescriptor != null;
         Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
                 "Saw incorrect role type");
     }
@@ -147,7 +145,7 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
                 new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         
-        Assert.assertNotNull(roleDescriptor, "Resolved RoleDescriptor was null");
+        assert roleDescriptor != null;
         Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
                 "Saw incorrect role type");
         Assert.assertTrue(roleDescriptor.getSupportedProtocols().contains(SAMLConstants.SAML20P_NS),
@@ -246,7 +244,7 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME),
                 new ProtocolCriterion(SAMLConstants.SAML20P_NS)));
         
-        Assert.assertNotNull(roleDescriptor, "Resolved RoleDescriptor was null");
+        assert roleDescriptor != null;
         Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
                 "Saw incorrect role type");
         Assert.assertTrue(roleDescriptor.getSupportedProtocols().contains(SAMLConstants.SAML20P_NS),
@@ -284,7 +282,7 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
         
         RoleDescriptor roleDescriptor = roleResolver.resolveSingle(new CriteriaSet(
                 new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME)));
-        Assert.assertNotNull(roleDescriptor, "Resolved RoleDescriptor was null");
+        assert roleDescriptor != null;
         Assert.assertEquals(SPSSODescriptor.DEFAULT_ELEMENT_NAME, roleDescriptor.getElementQName(),
                 "Saw incorrect role type");
     }
@@ -394,21 +392,21 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
 
     public static class StaticMetadataResolver implements MetadataResolver {
         
-        private List<EntityDescriptor> entityDescriptors;
+        @Nonnull private List<EntityDescriptor> entityDescriptors;
         
-        public StaticMetadataResolver(List<EntityDescriptor> descriptors) {
+        public StaticMetadataResolver(@Nonnull final List<EntityDescriptor> descriptors) {
             entityDescriptors = descriptors;
         }
             
         @Nullable public String getId() { return "foo"; }
 
         @Nullable
-        public EntityDescriptor resolveSingle(CriteriaSet criteria) throws ResolverException {
+        public EntityDescriptor resolveSingle(@Nullable CriteriaSet criteria) throws ResolverException {
             return entityDescriptors.get(0);
         }
 
         @Nonnull
-        public Iterable<EntityDescriptor> resolve(CriteriaSet criteria) throws ResolverException {
+        public Iterable<EntityDescriptor> resolve(@Nullable CriteriaSet criteria) throws ResolverException {
             return entityDescriptors;
         }
 
@@ -422,7 +420,7 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
             return null;
         }
 
-        public void setMetadataFilter(MetadataFilter newFilter) { }
+        public void setMetadataFilter(@Nullable final MetadataFilter newFilter) { }
     }
     
     public static class BooleanPredicateCriterion implements EvaluableRoleDescriptorCriterion {

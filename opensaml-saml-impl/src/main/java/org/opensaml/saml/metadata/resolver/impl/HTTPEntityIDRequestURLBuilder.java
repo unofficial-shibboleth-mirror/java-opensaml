@@ -22,12 +22,11 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Function which examines an entity ID from supplied criteria and returns it as a metadata request URL 
@@ -40,15 +39,13 @@ public class HTTPEntityIDRequestURLBuilder implements Function<CriteriaSet, Stri
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nullable final CriteriaSet criteria) {
-        Constraint.isNotNull(criteria, "Criteria was null");
-        if (!criteria.contains(EntityIdCriterion.class)) {
+        
+        final EntityIdCriterion criterion = criteria != null ? criteria.get(EntityIdCriterion.class) : null;
+        if (criterion == null) {
             log.trace("Criteria did not contain entity ID, unable to build request URL");
             return null;
         }
-        final String entityID = criteria.get(EntityIdCriterion.class).getEntityId();
-        
-        Constraint.isNotNull(entityID, "Entity ID was null");
-        
+        final String entityID = criterion.getEntityId();
         if (entityID.toLowerCase().startsWith("http:") || entityID.toLowerCase().startsWith("https:")) {
             log.debug("Saw entityID with HTTP/HTTPS URL syntax, returning the entityID itself as request URL");
             return entityID;
@@ -56,6 +53,5 @@ public class HTTPEntityIDRequestURLBuilder implements Function<CriteriaSet, Stri
         log.debug("EntityID was not an HTTP or HTTPS URL, could not construct request URL on that basis");
         return null;
     }
-
 
 }

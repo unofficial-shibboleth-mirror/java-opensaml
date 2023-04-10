@@ -20,7 +20,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
-import org.opensaml.saml.common.binding.artifact.SAMLArtifact;
 import org.opensaml.saml.common.binding.artifact.SAMLSourceIDArtifact;
 import org.opensaml.saml.criterion.ArtifactCriterion;
 
@@ -51,7 +50,7 @@ public class DefaultLocalDynamicSourceKeyGenerator extends EntityIDDigestGenerat
      *
      */
     public DefaultLocalDynamicSourceKeyGenerator() {
-        super();
+        
     }
 
     /**
@@ -76,10 +75,10 @@ public class DefaultLocalDynamicSourceKeyGenerator extends EntityIDDigestGenerat
             return super.apply(criteria);
         }
         
-        if (criteria.contains(ArtifactCriterion.class)) {
-            final SAMLArtifact artifact = criteria.get(ArtifactCriterion.class).getArtifact();
-            if (artifact instanceof SAMLSourceIDArtifact) {
-                return buildKey(HEX.encode(((SAMLSourceIDArtifact)artifact).getSourceID()));
+        final ArtifactCriterion artifactCriterion = criteria.get(ArtifactCriterion.class);
+        if (artifactCriterion != null) {
+            if (artifactCriterion.getArtifact() instanceof SAMLSourceIDArtifact art) {
+                return buildKey(HEX.encode(art.getSourceID()));
             }
         }
         

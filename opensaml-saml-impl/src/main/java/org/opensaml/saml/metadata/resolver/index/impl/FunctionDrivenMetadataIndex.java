@@ -58,7 +58,7 @@ public class FunctionDrivenMetadataIndex implements MetadataIndex {
 
     /** {@inheritDoc} */
     @Nullable @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet) {
+    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
         Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
         return criteriaStrategy.apply(criteriaSet);
     }

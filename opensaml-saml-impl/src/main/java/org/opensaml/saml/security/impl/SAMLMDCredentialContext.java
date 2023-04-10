@@ -19,10 +19,16 @@ package org.opensaml.saml.security.impl;
 
 import java.util.List;
 
+import javax.annotation.Nullable;
+
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.saml2.metadata.KeyDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.security.credential.CredentialContext;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * A credential context for credentials resolved from a {@link org.opensaml.xmlsec.signature.KeyInfo} that was found in
@@ -31,13 +37,13 @@ import org.opensaml.security.credential.CredentialContext;
 public class SAMLMDCredentialContext implements CredentialContext {
 
     /** Key descriptor which contained the KeyInfo used. */
-    private KeyDescriptor keyDescriptor;
+    @Nullable private KeyDescriptor keyDescriptor;
 
     /** Role in which credential was resolved. */
-    private RoleDescriptor role;
+    @Nullable private RoleDescriptor role;
 
     /** Encryption methods associated with the credential. */
-    private List<EncryptionMethod> encMethods;
+    @Nullable private List<EncryptionMethod> encMethods;
 
     /**
      * Constructor.
@@ -48,7 +54,7 @@ public class SAMLMDCredentialContext implements CredentialContext {
         keyDescriptor = descriptor;
         if (descriptor != null) {
             // KeyDescriptor / EncryptionMethod
-            encMethods = descriptor.getEncryptionMethods();
+            encMethods = CollectionSupport.copyToList(descriptor.getEncryptionMethods());
             // KeyDescriptor -> RoleDescriptor
             role = (RoleDescriptor) descriptor.getParent();
         }
@@ -59,7 +65,7 @@ public class SAMLMDCredentialContext implements CredentialContext {
      * 
      * @return key descriptor
      */
-    public KeyDescriptor getKeyDescriptor() {
+    @Nullable public KeyDescriptor getKeyDescriptor() {
         return keyDescriptor;
     }
 
@@ -68,7 +74,7 @@ public class SAMLMDCredentialContext implements CredentialContext {
      * 
      * @return a list of SAML metadata encryption method associated with this context
      */
-    public List<EncryptionMethod> getEncryptionMethods() {
+    @Nullable @NotLive @Unmodifiable public List<EncryptionMethod> getEncryptionMethods() {
         return encMethods;
     }
 
@@ -77,7 +83,7 @@ public class SAMLMDCredentialContext implements CredentialContext {
      * 
      * @return role descriptor
      */
-    public RoleDescriptor getRoleDescriptor() {
+    @Nullable public RoleDescriptor getRoleDescriptor() {
         return role;
     }
 

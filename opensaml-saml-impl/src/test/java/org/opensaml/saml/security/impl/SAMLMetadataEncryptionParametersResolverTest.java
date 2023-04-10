@@ -26,16 +26,17 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import javax.annotation.Nullable;
+import javax.crypto.SecretKey;
 
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -62,6 +63,7 @@ import org.opensaml.security.testing.SecurityProviderTestSupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.KeyTransportAlgorithmPredicate;
 import org.opensaml.xmlsec.agreement.KeyAgreementCredential;
+import org.opensaml.xmlsec.agreement.KeyAgreementParameter;
 import org.opensaml.xmlsec.algorithm.AlgorithmRegistry;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.config.GlobalAlgorithmRegistryInitializer;
@@ -89,6 +91,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseTestCase {
     
     private MetadataCredentialResolver mdCredResolver;
@@ -158,7 +161,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         config3 = new BasicEncryptionConfiguration();
         
         // Set these as defaults on the last config in the chain, just so don't have to set in every test.
-        config3.setDataEncryptionAlgorithms(List.of(
+        config3.setDataEncryptionAlgorithms(CollectionSupport.listOf(
                 defaultAES128DataAlgo,
                 defaultAES192DataAlgo,
                 defaultAES256DataAlgo,
@@ -167,7 +170,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192_GCM,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM
                 ));
-        config3.setKeyTransportEncryptionAlgorithms(List.of(
+        config3.setKeyTransportEncryptionAlgorithms(CollectionSupport.listOf(
                 defaultRSAKeyTransportAlgo, 
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15,
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11,
@@ -185,7 +188,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         concatKDF.setPartyUInfo("00");
         concatKDF.setPartyVInfo("00");
         ecConfig.setParameters(Set.of(concatKDF));
-        config3.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
+        config3.setKeyAgreementConfigurations(CollectionSupport.singletonMap("EC", ecConfig));
         
         BasicKeyInfoGeneratorFactory basicFactory1 = new BasicKeyInfoGeneratorFactory();
         X509KeyInfoGeneratorFactory x509Factory1 = new X509KeyInfoGeneratorFactory();
@@ -218,10 +221,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     public void testBasic() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -229,8 +234,9 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
         
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertTrue(params.getRSAOAEPParameters().isEmpty());
+        final RSAOAEPParameters oaep = params.getRSAOAEPParameters();
+        assert oaep != null;
+        Assert.assertTrue(oaep.isEmpty());
     }
     
     @Test
@@ -238,10 +244,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
         config3.setRSAOAEPParameters(new RSAOAEPParameters(EncryptionConstants.ALGO_ID_DIGEST_SHA256, null, "oaep-params-3"));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -249,23 +257,26 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNull(params.getDataKeyInfoGenerator());
         
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-        Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "oaep-params-3");
+        final RSAOAEPParameters oaep = params.getRSAOAEPParameters();
+        assert oaep != null;
+        Assert.assertEquals(oaep.getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        Assert.assertNull(oaep.getMaskGenerationFunction());
+        Assert.assertEquals(oaep.getOAEPParams(), "oaep-params-3");
     }
     
     @Test
     public void testWithAlgorithmOverrides() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
         
-        config2.setDataEncryptionAlgorithms(Collections.singletonList(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
-        config2.setKeyTransportEncryptionAlgorithms(Collections.singletonList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
+        config2.setDataEncryptionAlgorithms(CollectionSupport.singletonList(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
+        config2.setKeyTransportEncryptionAlgorithms(CollectionSupport.singletonList(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -280,10 +291,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         config1.setExcludedAlgorithms(List.of(defaultRSAKeyTransportAlgo, defaultAES128DataAlgo, defaultAES192DataAlgo));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -298,10 +311,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         config1.setIncludedAlgorithms(List.of(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256, EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -316,17 +331,21 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         resolver.setAutoGenerateDataEncryptionCredential(true);
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
-        Assert.assertNotNull(params.getDataEncryptionCredential());
-        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
+        final Credential dataEncCred = params.getDataEncryptionCredential();
+        assert dataEncCred != null;
+        final SecretKey skey = dataEncCred.getSecretKey();
+        assert skey != null;
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
-        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
     }
     
@@ -337,10 +356,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256));
         roleDesc.getKeyDescriptors().add(keyDescriptor);
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -365,23 +386,29 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         keyDescriptor.getEncryptionMethods().clear();
         keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         Assert.assertNull(params.getRSAOAEPParameters());
         
-        // Should resolve empty instance
+        // Should resolve empty instance (need to rebuild credential again to avoid test contamination).
         rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        keyDescriptor.getEncryptionMethods().clear();
+        keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
         keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+        roleDesc.getKeyDescriptors().clear();
+        roleDesc.getKeyDescriptors().add(keyDescriptor);
+
         params = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertTrue(params.getRSAOAEPParameters().isEmpty());
+        assert params != null;
+
+        RSAOAEPParameters oaep = params.getRSAOAEPParameters();
+        assert oaep != null;
+        Assert.assertTrue(oaep.isEmpty());
         
         
         // Load BouncyCastle so can really test RSA OAEP 1.1 stuff.
-        AlgorithmRegistry originalRegistry = AlgorithmSupport.getGlobalAlgorithmRegistry();
-        Assert.assertNotNull(originalRegistry);
+        AlgorithmRegistry originalRegistry = AlgorithmSupport.ensureGlobalAlgorithmRegistry();
         providerSupport.loadBC();
         new GlobalAlgorithmRegistryInitializer().init();
-        resolver.setAlgorithmRegistry(AlgorithmSupport.getGlobalAlgorithmRegistry());
+        resolver.setAlgorithmRegistry(AlgorithmSupport.ensureGlobalAlgorithmRegistry());
         
         try {
             // Should resolve digest from metadata
@@ -389,13 +416,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
             digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
             digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
             rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
-            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
             keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            roleDesc.getKeyDescriptors().clear();
+            roleDesc.getKeyDescriptors().add(keyDescriptor);
             params = resolver.resolveSingle(criteriaSet);
-            Assert.assertNotNull(params.getRSAOAEPParameters());
-            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-            Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-            Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+            assert params != null;
+            oaep = params.getRSAOAEPParameters();
+            assert oaep != null;
+            Assert.assertEquals(oaep.getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertNull(oaep.getMaskGenerationFunction());
+            Assert.assertNull(oaep.getOAEPParams());
             
             // Should resolve all values from metadata
             rsaEncryptionMethod = buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP11);
@@ -408,13 +439,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
             oaepParams = buildXMLObject(OAEPparams.DEFAULT_ELEMENT_NAME);
             oaepParams.setValue("oaep-params-md");
             rsaEncryptionMethod.setOAEPparams(oaepParams);
-            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
             keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            roleDesc.getKeyDescriptors().clear();
+            roleDesc.getKeyDescriptors().add(keyDescriptor);
             params = resolver.resolveSingle(criteriaSet);
-            Assert.assertNotNull(params.getRSAOAEPParameters());
-            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-            Assert.assertEquals(params.getRSAOAEPParameters().getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA256);
-            Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "oaep-params-md");
+            assert params != null;
+            oaep = params.getRSAOAEPParameters();
+            assert oaep != null;
+            Assert.assertEquals(oaep.getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertEquals(oaep.getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA256);
+            Assert.assertEquals(oaep.getOAEPParams(), "oaep-params-md");
             
             // Should resolve digest from metadata, should NOT resolve OAEPParms from config by default
             config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, null, "oaep-params-3"));
@@ -422,13 +457,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
             digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
             digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
             rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
-            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
             keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            roleDesc.getKeyDescriptors().clear();
+            roleDesc.getKeyDescriptors().add(keyDescriptor);
             params = resolver.resolveSingle(criteriaSet);
-            Assert.assertNotNull(params.getRSAOAEPParameters());
-            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-            Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-            Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+            assert params != null;
+            oaep = params.getRSAOAEPParameters();
+            assert oaep != null;
+            Assert.assertEquals(oaep.getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertNull(oaep.getMaskGenerationFunction());
+            Assert.assertNull(oaep.getOAEPParams());
             
             // Should resolve digest from metadata, should resolve OAEPParms from config3
             config3.setRSAOAEPParameters(new RSAOAEPParameters(SignatureConstants.ALGO_ID_DIGEST_SHA1, null, "oaep-params-3"));
@@ -437,13 +476,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
             digestMethod = buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
             digestMethod.setAlgorithm(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
             rsaEncryptionMethod.getUnknownXMLObjects().add(digestMethod);
-            keyDescriptor.getEncryptionMethods().clear();
+            keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
             keyDescriptor.getEncryptionMethods().add(rsaEncryptionMethod);
+            roleDesc.getKeyDescriptors().clear();
+            roleDesc.getKeyDescriptors().add(keyDescriptor);
             params = resolver.resolveSingle(criteriaSet);
-            Assert.assertNotNull(params.getRSAOAEPParameters());
-            Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-            Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-            Assert.assertEquals(params.getRSAOAEPParameters().getOAEPParams(), "oaep-params-3");
+            assert params != null;
+            oaep = params.getRSAOAEPParameters();
+            assert oaep != null;
+            Assert.assertEquals(oaep.getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+            Assert.assertNull(oaep.getMaskGenerationFunction());
+            Assert.assertEquals(oaep.getOAEPParams(), "oaep-params-3");
         
         } finally {
             providerSupport.unloadBC();
@@ -470,6 +513,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         // Without the predicate, for control
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         
@@ -477,18 +521,22 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         // Explicit preference with predicate, mapping # 1
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256);
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15);
         
-        // Change algo ordering
-        keyDescriptor.getEncryptionMethods().clear();
+        // Change algo ordering (but don't depend on the underlying credential context to be live).
+        keyDescriptor = buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey());
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15));
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP));
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
         keyDescriptor.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128));
+        roleDesc.getKeyDescriptors().clear();
+        roleDesc.getKeyDescriptors().add(keyDescriptor);
         
         // Explicit preference with predicate, mapping # 2
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192);
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         
@@ -503,10 +551,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         config1.setExcludedAlgorithms(List.of(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15, EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -524,10 +574,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         config1.setIncludedAlgorithms(List.of(EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP, EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -561,16 +613,20 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         config1.setExcludedAlgorithms(List.of(SignatureConstants.ALGO_ID_DIGEST_SHA1));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
-        Assert.assertNotNull(params.getRSAOAEPParameters());
-        Assert.assertEquals(params.getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
-        Assert.assertNull(params.getRSAOAEPParameters().getMaskGenerationFunction());
-        Assert.assertNull(params.getRSAOAEPParameters().getOAEPParams());
+        
+        final RSAOAEPParameters oaep = params.getRSAOAEPParameters();
+        assert oaep != null;
+        Assert.assertEquals(oaep.getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        Assert.assertNull(oaep.getMaskGenerationFunction());
+        Assert.assertNull(oaep.getOAEPParams());
         
         Assert.assertNull(params.getDataEncryptionCredential());
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
@@ -582,18 +638,22 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         KeyDescriptor kd = buildKeyDescriptor(ecCred1KeyName, UsageType.ENCRYPTION, ecCred1.getPublicKey());
         roleDesc.getKeyDescriptors().add(kd);
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNull(params.getKeyTransportEncryptionCredential());
         Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
         Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNotNull(params.getDataEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
-        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        
+        final Credential dataEncCred = params.getDataEncryptionCredential();
+        assert dataEncCred != null;
+        final SecretKey skey = dataEncCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
@@ -608,14 +668,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         ecConfig.setMetadataUseKeyWrap(KeyWrap.Always);
         config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
-        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        SecretKey skey = keyTransportCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
@@ -634,17 +697,22 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         ecConfig.setMetadataUseKeyWrap(KeyWrap.Never);
         config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNull(params.getKeyTransportEncryptionCredential());
         Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
         Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNotNull(params.getDataEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
-        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+
+        final Credential dataEncCred = params.getDataEncryptionCredential();
+        assert dataEncCred != null;
+        final SecretKey skey = dataEncCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
@@ -659,14 +727,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         ecConfig.setMetadataUseKeyWrap(KeyWrap.IfNotIndicated);
         config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
-        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        SecretKey skey = keyTransportCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
@@ -682,18 +753,21 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM));
         roleDesc.getKeyDescriptors().add(kd);
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNull(params.getKeyTransportEncryptionCredential());
         Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
         Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNotNull(params.getDataEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
-        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        final Credential dataEncCred = params.getDataEncryptionCredential();
+        assert dataEncCred != null;
+        final SecretKey skey = dataEncCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(256));
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
@@ -709,14 +783,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         ecConfig.setMetadataUseKeyWrap(KeyWrap.Always);
         config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
-        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        SecretKey skey = keyTransportCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES128);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
@@ -733,13 +810,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
         roleDesc.getKeyDescriptors().add(kd);
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
-        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        SecretKey skey = keyTransportCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(256));
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
@@ -759,7 +840,8 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         ecConfig.setMetadataUseKeyWrap(KeyWrap.Never);
         config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         Assert.assertNull(params.getKeyTransportEncryptionCredential());
         Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
@@ -767,9 +849,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         Assert.assertNotNull(params.getDataEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
-        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        final Credential dataEncCred = params.getDataEncryptionCredential();
+        assert dataEncCred != null;
+        final SecretKey skey = dataEncCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
@@ -782,13 +867,17 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
         roleDesc.getKeyDescriptors().add(kd);
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
-        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        SecretKey skey = keyTransportCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(256));
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
@@ -806,21 +895,27 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         
         resolver.setAutoGenerateDataEncryptionCredential(true);
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
         Assert.assertNotNull(params.getKeyTransportEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getKeyTransportEncryptionCredential()));
-        Assert.assertNotNull(params.getKeyTransportEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getKeyTransportEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        SecretKey skey = keyTransportCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(256));
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYWRAP_AES256);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getKeyTransportKeyInfoGenerator()));
         
-        Assert.assertNotNull(params.getDataEncryptionCredential());
-        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(128));
+        final Credential dataEncCred = params.getDataEncryptionCredential();
+        assert dataEncCred != null;
+        skey = dataEncCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(128));
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), defaultAES128DataAlgo);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
     }
@@ -836,18 +931,20 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         ecConfig.setParameters(Set.of(kdf));
         config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         Assert.assertNull(params.getKeyTransportEncryptionCredential());
         Assert.assertNull(params.getKeyTransportEncryptionAlgorithm());
         Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
         
         Assert.assertNotNull(params.getDataEncryptionCredential());
         Assert.assertTrue(KeyAgreementCredential.class.isInstance(params.getDataEncryptionCredential()));
-        Assert.assertNotNull(params.getDataEncryptionCredential().getSecretKey());
-        Assert.assertEquals(params.getDataEncryptionCredential().getSecretKey().getAlgorithm(), "AES");
-        Assert.assertEquals(KeySupport.getKeyLength(params.getDataEncryptionCredential().getSecretKey()), Integer.valueOf(256));
+        final Credential dataEncCred = params.getDataEncryptionCredential();
+        assert dataEncCred != null;
+        final SecretKey skey = dataEncCred.getSecretKey();
+        assert skey != null;
+        Assert.assertEquals(skey.getAlgorithm(), "AES");
+        Assert.assertEquals(KeySupport.getKeyLength(skey), Integer.valueOf(256));
         Assert.assertEquals(params.getDataEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES256_GCM);
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
         Assert.assertTrue(KeyAgreementKeyInfoGenerator.class.isInstance(params.getDataKeyInfoGenerator()));
@@ -859,28 +956,30 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     
     @Test
     public void testGetEffectiveKeyAgreementConfiguration() {
-        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig1 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        final SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig1 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
         ecConfig1.setMetadataUseKeyWrap(KeyWrap.Always);
         config1.setKeyAgreementConfigurations(Map.of("EC", ecConfig1));
         
-        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig2 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        final SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig2 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
         ecConfig2.setAlgorithm(EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         ecConfig2.setParameters(Set.of(new PBKDF2()));
         ecConfig2.setMetadataUseKeyWrap(KeyWrap.IfNotIndicated);
         config2.setKeyAgreementConfigurations(Map.of("EC", ecConfig2));
         
-        SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig3 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
+        final SAMLMetadataKeyAgreementEncryptionConfiguration ecConfig3 = new SAMLMetadataKeyAgreementEncryptionConfiguration();
         ecConfig3.setAlgorithm("SomeAlgo");
         ecConfig3.setParameters(Set.of(new ConcatKDF()));
         ecConfig3.setMetadataUseKeyWrap(KeyWrap.Default);
         config3.setKeyAgreementConfigurations(Map.of("EC", ecConfig3));
         
-        SAMLMetadataKeyAgreementEncryptionConfiguration config = resolver.getEffectiveKeyAgreementConfiguration(criteriaSet, ecCred1);
-        
+        final SAMLMetadataKeyAgreementEncryptionConfiguration config = resolver.getEffectiveKeyAgreementConfiguration(criteriaSet, ecCred1);
+        assert config != null;
         Assert.assertEquals(config.getAlgorithm(), EncryptionConstants.ALGO_ID_KEYAGREEMENT_ECDH_ES);
         Assert.assertEquals(config.getMetadataUseKeyWrap(), KeyWrap.Always);
-        Assert.assertEquals(config.getParameters().size(), 1);
-        Assert.assertTrue(PBKDF2.class.isInstance(config.getParameters().iterator().next()));
+        final Collection<KeyAgreementParameter> agreementParams = config.getParameters();
+        assert agreementParams != null;
+        Assert.assertEquals(agreementParams.size(), 1);
+        Assert.assertTrue(PBKDF2.class.isInstance(agreementParams.iterator().next()));
     }
     
     @Test
@@ -896,12 +995,14 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertEquals(resolver.getDefaultKeyAgreemenUseKeyWrap(), KeyWrap.Default);
         
         SAMLMetadataKeyAgreementEncryptionConfiguration config = resolver.getEffectiveKeyAgreementConfiguration(criteria, ecCred1);
+        assert config != null;
         Assert.assertEquals(config.getMetadataUseKeyWrap(), KeyWrap.Default);
         
         resolver.setDefaultKeyAgreementUseKeyWrap(KeyWrap.Always);
         Assert.assertEquals(resolver.getDefaultKeyAgreemenUseKeyWrap(), KeyWrap.Always);
         
         config = resolver.getEffectiveKeyAgreementConfiguration(criteria, ecCred1);
+        assert config != null;
         Assert.assertEquals(config.getMetadataUseKeyWrap(), KeyWrap.Always);
     }
     
@@ -910,10 +1011,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(dsaCred1KeyName, UsageType.SIGNING, dsaCred1.getPublicKey()));
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, UsageType.ENCRYPTION, rsaCred1.getPublicKey()));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -944,10 +1047,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
     public void testRSACredWithUnspecifiedUse() throws ResolverException {
         roleDesc.getKeyDescriptors().add(buildKeyDescriptor(rsaCred1KeyName, null, rsaCred1.getPublicKey()));
         
-        EncryptionParameters params = resolver.resolveSingle(criteriaSet);
-        
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -967,6 +1072,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         defaultKeyTransportKeyInfoGeneratorManager.setUseDefaultManager(true);
         
         EncryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
@@ -975,6 +1081,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         defaultKeyTransportKeyInfoGeneratorManager.setUseDefaultManager(false);
         
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         Assert.assertNull(params.getDataKeyInfoGenerator());
         Assert.assertNull(params.getKeyTransportKeyInfoGenerator());
@@ -985,6 +1092,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         defaultKeyTransportKeyInfoGeneratorManager.registerFactory("testKeyInfoProfile", new BasicKeyInfoGeneratorFactory());
         
         params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
         
         Assert.assertNotNull(params.getDataKeyInfoGenerator());
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
@@ -1003,9 +1111,12 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
         Assert.assertTrue(iterator.hasNext());
         
         EncryptionParameters params = iterator.next();
+        assert params != null;
         
-        Assert.assertNotNull(params);
-        Assert.assertEquals(params.getKeyTransportEncryptionCredential().getPublicKey(), rsaCred1.getPublicKey());
+        final Credential keyTransportCred = params.getKeyTransportEncryptionCredential();
+        assert keyTransportCred != null;
+        Assert.assertEquals(keyTransportCred.getPublicKey(), rsaCred1.getPublicKey());
+
         Assert.assertEquals(params.getKeyTransportEncryptionAlgorithm(), defaultRSAKeyTransportAlgo);
         Assert.assertNotNull(params.getKeyTransportKeyInfoGenerator());
         
@@ -1119,7 +1230,7 @@ public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseT
             algoMap = map;
         }
         
-        public boolean test(@Nullable SelectionInput input) {
+        public boolean test(SelectionInput input) {
             return this.algoMap.get(input.getDataEncryptionAlgorithm()).equals(input.getKeyTransportAlgorithm());
         }
     }

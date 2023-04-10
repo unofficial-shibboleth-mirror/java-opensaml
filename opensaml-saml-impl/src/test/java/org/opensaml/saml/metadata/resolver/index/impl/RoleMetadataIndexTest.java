@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -37,12 +38,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
     
     private RoleMetadataIndex metadataIndex;
@@ -85,19 +84,23 @@ public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
         Set<MetadataIndexKey> keys = null;
         
         keys = metadataIndex.generateKeys(idp);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keyIDP));
         
         keys = metadataIndex.generateKeys(sp);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keySP));
         
         keys = metadataIndex.generateKeys(idpAndSp);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 2);
         Assert.assertTrue(keys.contains(keyIDP));
         Assert.assertTrue(keys.contains(keySP));
         
         keys = metadataIndex.generateKeys(custom);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keyCustom));
     }
@@ -110,18 +113,21 @@ public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
         criteriaSet.clear();
         criteriaSet.add(new EntityRoleCriterion(IDPSSODescriptor.DEFAULT_ELEMENT_NAME));
         keys = metadataIndex.generateKeys(criteriaSet);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keyIDP));
         
         criteriaSet.clear();
         criteriaSet.add(new EntityRoleCriterion(SPSSODescriptor.DEFAULT_ELEMENT_NAME));
         keys = metadataIndex.generateKeys(criteriaSet);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keySP));
         
         criteriaSet.clear();
         criteriaSet.add(new EntityRoleCriterion(MyCustomRoleType.TYPE_NAME));
         keys = metadataIndex.generateKeys(criteriaSet);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keyCustom));
     }
@@ -130,18 +136,19 @@ public class RoleMetadataIndexTest extends XMLObjectBaseTestCase {
         
         @Nonnull public static final QName TYPE_NAME = new QName("urn:test:metadata", "MyCustomRoleType", "custom");
 
-        protected MyCustomRoleType(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        protected MyCustomRoleType(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+                @Nullable final String namespacePrefix) {
             super(namespaceURI, elementLocalName, namespacePrefix);
         }
 
         /** {@inheritDoc} */
-        public List<Endpoint> getEndpoints() {
-            return null;
+        @Nonnull public List<Endpoint> getEndpoints() {
+            return CollectionSupport.emptyList();
         }
 
         /** {@inheritDoc} */
-        public List<Endpoint> getEndpoints(QName type) {
-            return null;
+        @Nonnull public List<Endpoint> getEndpoints(@Nonnull final QName type) {
+            return CollectionSupport.emptyList();
         }
         
     }

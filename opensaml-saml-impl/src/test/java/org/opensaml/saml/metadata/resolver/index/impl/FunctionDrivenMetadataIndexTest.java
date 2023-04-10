@@ -30,10 +30,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class FunctionDrivenMetadataIndexTest extends OpenSAMLInitBaseTestCase {
     
     private FunctionDrivenMetadataIndex metadataIndex;
@@ -47,21 +44,21 @@ public class FunctionDrivenMetadataIndexTest extends OpenSAMLInitBaseTestCase {
         
         a = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         a.setEntityID("urn:test:a");
-        keyA = new SimpleStringMetadataIndexKey(a.getEntityID().toUpperCase());
+        keyA = new SimpleStringMetadataIndexKey("urn:test:a".toUpperCase());
         
         b = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         b.setEntityID("urn:test:b");
-        new SimpleStringMetadataIndexKey(b.getEntityID().toUpperCase());
+        new SimpleStringMetadataIndexKey("urn:test:b".toUpperCase());
         
         c = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         c.setEntityID("urn:test:c");
-        new SimpleStringMetadataIndexKey(c.getEntityID().toUpperCase());
+        new SimpleStringMetadataIndexKey("urn:test:c".toUpperCase());
     }
     
     @Test
     public void testGenerateKeysFromDescriptor() {
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(a);
-        
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(a);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keyA));
     }
@@ -72,8 +69,8 @@ public class FunctionDrivenMetadataIndexTest extends OpenSAMLInitBaseTestCase {
         
         criteriaSet.add(new SimpleStringCriterion("URN:TEST:A"));
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(criteriaSet);
-        
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(criteriaSet);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(keyA));
     }

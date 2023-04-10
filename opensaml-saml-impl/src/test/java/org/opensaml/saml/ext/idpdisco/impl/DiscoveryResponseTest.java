@@ -59,8 +59,8 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DiscoveryResponse service = (DiscoveryResponse) unmarshallElement(singleElementFile);
-
+        final DiscoveryResponse service = (DiscoveryResponse) unmarshallElement(singleElementFile);
+        assert service != null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getIndex(), expectedIndex, "Index was not expected value");
@@ -69,8 +69,8 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        DiscoveryResponse service = (DiscoveryResponse) unmarshallElement(singleElementOptionalAttributesFile);
-
+        final DiscoveryResponse service = (DiscoveryResponse) unmarshallElement(singleElementOptionalAttributesFile);
+        assert service != null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getIndex(), expectedIndex, "Index was not expected value");
@@ -81,7 +81,7 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DiscoveryResponse service = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
+        final DiscoveryResponse service = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
 
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -93,7 +93,7 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        DiscoveryResponse service = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
+        final DiscoveryResponse service = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
 
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -109,7 +109,7 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
      */
     @Test
     public void testXSBooleanAttributes() {
-        DiscoveryResponse acs = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
+        final DiscoveryResponse acs = (DiscoveryResponse) buildXMLObject(DiscoveryResponse.DEFAULT_ELEMENT_NAME);
 
         // isDefault attribute
         acs.setIsDefault(Boolean.TRUE);

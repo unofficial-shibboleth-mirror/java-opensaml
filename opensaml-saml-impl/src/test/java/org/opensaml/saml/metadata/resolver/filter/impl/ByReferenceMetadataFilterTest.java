@@ -22,8 +22,6 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.function.Predicate;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
@@ -33,15 +31,18 @@ import org.opensaml.saml.metadata.resolver.MetadataResolver;
 import org.opensaml.saml.metadata.resolver.impl.FilesystemMetadataResolver;
 import org.opensaml.saml.saml2.core.NameIDType;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
+import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /** Unit test for {@link ByReferenceMetadataFilter}. */
+@SuppressWarnings("javadoc")
 public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase implements Predicate<EntityDescriptor> {
     
     protected MetadataResolver resolver;
@@ -75,10 +76,10 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
     @Test
     public void notApplicable() throws ComponentInitializationException, ResolverException {
         
-        nameIDFilter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<String>>singletonMap(this, formats));
+        nameIDFilter.setRules(CollectionSupport.singletonMap(this, formats));
         nameIDFilter.initialize();
         
-        refFilter.setFilterMappings(Collections.singletonMap("Foo", nameIDFilter));
+        refFilter.setFilterMappings(CollectionSupport.singletonMap("Foo", nameIDFilter));
         
         metadataProvider.initialize();
         
@@ -88,10 +89,10 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
     @Test
     public void applicable() throws ComponentInitializationException, ResolverException {
         
-        nameIDFilter.setRules(Collections.<Predicate<EntityDescriptor>,Collection<String>>singletonMap(this, formats));
+        nameIDFilter.setRules(CollectionSupport.singletonMap(this, formats));
         nameIDFilter.initialize();
         
-        refFilter.setFilterMappings(Collections.singletonMap(List.of("ICMD", "Foo"), nameIDFilter));
+        refFilter.setFilterMappings(CollectionSupport.singletonMap(CollectionSupport.listOf("ICMD", "Foo"), nameIDFilter));
         
         metadataProvider.initialize();
         
@@ -108,17 +109,21 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
     private void validate(final boolean applied) throws ResolverException {
         EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
-        Assert.assertEquals(entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS).getNameIDFormats().size(), applied ? 3 : 1);
+        assert entity != null;
+        SPSSODescriptor role = entity.getSPSSODescriptor(SAMLConstants.SAML20P_NS);
+        assert role != null;
+        Assert.assertEquals(role.getNameIDFormats().size(), applied ? 3 : 1);
         
         key = new EntityIdCriterion("https://cms.psu.edu/Shibboleth");
         entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
-        Assert.assertEquals(entity.getSPSSODescriptor(SAMLConstants.SAML11P_NS).getNameIDFormats().size(), 1);
+        assert entity != null;
+        role = entity.getSPSSODescriptor(SAMLConstants.SAML11P_NS);
+        assert role != null;
+        Assert.assertEquals(role.getNameIDFormats().size(), 1);
     }
     
     /** {@inheritDoc} */
     public boolean test(EntityDescriptor input) {
-        return input.getEntityID().equals("https://carmenwiki.osu.edu/shibboleth");
+        return "https://carmenwiki.osu.edu/shibboleth".equals(input.getEntityID());
     }
 }

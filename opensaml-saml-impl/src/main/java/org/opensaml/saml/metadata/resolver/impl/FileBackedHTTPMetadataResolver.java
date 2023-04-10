@@ -33,13 +33,13 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.data.impl.MetadataSource;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.google.common.io.Files;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /**
@@ -66,7 +66,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     @Nonnull private final Logger log = LoggerFactory.getLogger(FileBackedHTTPMetadataResolver.class);
 
     /** File containing the backup of the metadata. */
-    @Nullable private File metadataBackupFile;
+    @Nonnull private File metadataBackupFile;
     
     /** Flag used to track state of whether currently initializing or not. */
     private boolean initializing;
@@ -90,9 +90,8 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @throws ResolverException thrown if the URL is not a valid URL, the metadata can not be retrieved from
      *             the URL
      */
-    public FileBackedHTTPMetadataResolver(final HttpClient client, 
-                                          final String metadataURL, final String backupFilePath) 
-            throws ResolverException {
+    public FileBackedHTTPMetadataResolver(@Nonnull final HttpClient client, @Nonnull final String metadataURL,
+            @Nonnull final String backupFilePath) throws ResolverException {
         this(null, client, metadataURL, backupFilePath);
     }
 
@@ -107,14 +106,13 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @throws ResolverException thrown if the URL is not a valid URL, the metadata can not be retrieved from
      *             the URL
      */
-    public FileBackedHTTPMetadataResolver(final Timer backgroundTaskTimer, 
-                                          final HttpClient client, final String metadataURL,
-            final String backupFilePath) throws ResolverException {
+    public FileBackedHTTPMetadataResolver(@Nullable final Timer backgroundTaskTimer, @Nonnull final HttpClient client,
+            @Nonnull final String metadataURL, @Nonnull final String backupFilePath) throws ResolverException {
         super(backgroundTaskTimer, client, metadataURL);
         
         backupFileInitNextRefreshDelay = Duration.ofSeconds(5);
         
-        setBackupFile(backupFilePath);
+        metadataBackupFile = new File(backupFilePath);
     }
     
     /**
@@ -182,14 +180,6 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
 
     /** {@inheritDoc} */
     @Override
-    protected void doDestroy() {
-        metadataBackupFile = null;
-
-        super.doDestroy();
-    }
-
-    /** {@inheritDoc} */
-    @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
         try {
             validateBackupFile(metadataBackupFile);
@@ -218,11 +208,10 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * 
      * @throws ResolverException thrown if the backup file is not read/writable or creatable
      */
-    protected void setBackupFile(final String backupFilePath) throws ResolverException {
+    protected void setBackupFile(@Nonnull final String backupFilePath) throws ResolverException {
         checkSetterPreconditions();
 
-        final File backingFile = new File(backupFilePath);
-        metadataBackupFile = backingFile;
+        metadataBackupFile = new File(backupFilePath);
     }
 
     /**
@@ -232,7 +221,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
      * @param backupFile the file to evaluate
      * @throws ResolverException if file does not pass basic properties required of a metadata backup file
      */
-    protected void validateBackupFile(final File backupFile) throws ResolverException {
+    protected void validateBackupFile(@Nonnull final File backupFile) throws ResolverException {
         if (!backupFile.exists()) {
             try {
                 log.debug("{} Testing creation of backup file", getLogPrefix());
@@ -270,9 +259,10 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
         }
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
-    protected byte[] fetchMetadata() throws ResolverException {
+    @Nullable protected byte[] fetchMetadata() throws ResolverException {
         if (initializing && initializeFromBackupFile && metadataBackupFile.exists()) {
             log.debug("{} On initialization, detected existing backup file, attempting load from that: {}",
                         getLogPrefix(), metadataBackupFile.getAbsolutePath());
@@ -318,9 +308,10 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
             throw new ResolverException("Unable to read metadata from remote server and backup does not exist");
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
     /** {@inheritDoc} */
-    protected MetadataFilterContext newFilterContext() {
+    @Nonnull protected MetadataFilterContext newFilterContext() {
         final MetadataFilterContext context = super.newFilterContext();
         if (initializing && initializedFromBackupFile) {
             MetadataSource metadataSource = context.get(MetadataSource.class);
@@ -346,9 +337,9 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
 
     /** {@inheritDoc} */
     @Override
-    protected void postProcessMetadata(final byte[] metadataBytes, 
-                                       final Document metadataDom, final XMLObject originalMetadata, 
-            final XMLObject filteredMetadata) throws ResolverException {
+    protected void postProcessMetadata(@Nonnull final byte[] metadataBytes, @Nonnull final Document metadataDom,
+            @Nonnull final XMLObject originalMetadata, @Nullable final XMLObject filteredMetadata)
+                    throws ResolverException {
 
         final File staging = new File(metadataBackupFile.getAbsolutePath() + ".staging");
         try {
@@ -376,4 +367,5 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
             super.postProcessMetadata(metadataBytes, metadataDom, originalMetadata, filteredMetadata);
         }
     }
+    
 }

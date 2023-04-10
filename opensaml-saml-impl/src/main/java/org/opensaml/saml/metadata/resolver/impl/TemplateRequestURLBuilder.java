@@ -28,12 +28,12 @@ import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.net.UrlEscapers;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.velocity.Template;
@@ -72,16 +72,16 @@ public class TemplateRequestURLBuilder implements Function<CriteriaSet, String> 
     @Nonnull @NotEmpty public static final String CONTEXT_KEY_ENTITY_ID = "entityID";
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(TemplateRequestURLBuilder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(TemplateRequestURLBuilder.class);
     
     /** Velocity template instance used to render the request URL. */
-    private Template template;
+    @Nonnull private Template template;
     
     /** The template text, for logging purposes. */
-    private String templateText;
+    @Nonnull private String templateText;
     
     /** Function which transforms the entityID prior to substitution into the template. */
-    private Function<String, String> transformer;
+    @Nullable private Function<String, String> transformer;
     
     /** Enum value indicating whether and how to encode the entity ID value before substitution. */
     private EncodingStyle entityIDEncodingStyle;
@@ -139,9 +139,9 @@ public class TemplateRequestURLBuilder implements Function<CriteriaSet, String> 
         transformer = transform;
         
         if (charSet != null) {
-            template = Template.fromTemplate(engine, trimmedTemplate, charSet);
+            template = Template.fromTemplate(engine, templateText, charSet);
         } else {
-            template = Template.fromTemplate(engine, trimmedTemplate);
+            template = Template.fromTemplate(engine, templateText);
         }
         
         entityIDEncodingStyle = encodingStyle != null ? encodingStyle : EncodingStyle.none;
@@ -149,12 +149,14 @@ public class TemplateRequestURLBuilder implements Function<CriteriaSet, String> 
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nullable final CriteriaSet criteria) {
-        Constraint.isNotNull(criteria, "Criteria was null");
-        if (!criteria.contains(EntityIdCriterion.class)) {
-            log.trace("Criteria did not contain entity ID, unable to build request URL");
+        
+        final EntityIdCriterion criterion = criteria != null ? criteria.get(EntityIdCriterion.class) : null;
+        if (criterion == null) {
+            log.trace("CriteriaSet did not contain EntityIdCriterion, unable to build request URL");
             return null;
         }
-        String entityID = criteria.get(EntityIdCriterion.class).getEntityId();
+        
+        String entityID = criterion.getEntityId();
         
         log.debug("Saw input entityID '{}'", entityID);
         

@@ -90,7 +90,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testGetEntityDescriptor() throws ResolverException {
         final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     

@@ -746,7 +746,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
      *          
      * @return the selected algorithm URI
      */
-    @Nullable protected String resolveDataEncryptionAlgorithm(@Nonnull final Credential dataEncryptionCredential, 
+    @Nullable protected String resolveDataEncryptionAlgorithm(@Nullable final Credential dataEncryptionCredential, 
             @Nonnull final CriteriaSet criteria, @Nonnull final Predicate<String> includeExcludePredicate) {
         
         return resolveDataEncryptionAlgorithm(dataEncryptionCredential, getEffectiveDataEncryptionAlgorithms(criteria,

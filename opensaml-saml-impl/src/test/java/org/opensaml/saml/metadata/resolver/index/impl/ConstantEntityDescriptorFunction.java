@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
+@SuppressWarnings("javadoc")
 public class ConstantEntityDescriptorFunction implements Function<EntityDescriptor, Set<MetadataIndexKey>> {
     
     private String value;

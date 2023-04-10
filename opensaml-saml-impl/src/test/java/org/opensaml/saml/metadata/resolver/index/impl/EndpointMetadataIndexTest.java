@@ -49,9 +49,7 @@ import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
     
     private String entityID = "https://www.example.com/saml";
@@ -123,7 +121,7 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         endpoint.setLocation(location1);
         criteriaSet.add(new EndpointCriterion<>(endpoint));
         keys = metadataIndex.generateKeys(criteriaSet);
-        Assert.assertNotNull(keys);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(endpointKey1));
         
@@ -135,7 +133,7 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         endpoint.setResponseLocation(responseLocation1);
         criteriaSet.add(new EndpointCriterion<>(endpoint));
         keys = metadataIndex.generateKeys(criteriaSet);
-        Assert.assertNotNull(keys);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 2);
         Assert.assertTrue(keys.contains(endpointKey1));
         Assert.assertTrue(keys.contains(responseEndpointKey1));
@@ -148,7 +146,7 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         criteriaSet.add(new EndpointCriterion<>(endpoint));
         criteriaSet.add(new StartsWithLocationCriterion());
         keys = metadataIndex.generateKeys(criteriaSet);
-        Assert.assertNotNull(keys);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 10);
         Assert.assertTrue(keys.contains(new EndpointMetadataIndex.EndpointMetadataIndexKey(SPSSODescriptor.DEFAULT_ELEMENT_NAME, AssertionConsumerService.DEFAULT_ELEMENT_NAME, 
                 "https://www.example.com/cas/someEndpoint1/foo/bar/", false)));
@@ -180,8 +178,8 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
     public void testGenerateKeysFromDescriptorAlwaysFalseSelector() {
         EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex(Predicates.alwaysFalse());
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
-        
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 0);
     }
     
@@ -189,8 +187,8 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
     public void testGenerateKeysFromDescriptorDefaultCtor() {
         EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex();
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
-        
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 2);
         Assert.assertTrue(keys.contains(endpointKey1));
         Assert.assertTrue(keys.contains(endpointKey2));
@@ -202,8 +200,8 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         
         EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex();
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
-        
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 3);
         Assert.assertTrue(keys.contains(endpointKey1));
         Assert.assertTrue(keys.contains(endpointKey2));
@@ -216,8 +214,8 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         
         EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex();
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
-        
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 3);
         Assert.assertTrue(keys.contains(endpointKey1));
         Assert.assertTrue(keys.contains(endpointKey2));
@@ -232,8 +230,8 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         EndpointMetadataIndex metadataIndex = 
                 new EndpointMetadataIndex(new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints));
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
-        
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(endpointKey1));
     }

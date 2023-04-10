@@ -51,6 +51,7 @@ import net.shibboleth.shared.testing.RepositorySupport;
 /**
  * Test case for {@link FileBackedHTTPMetadataResolver}.
  */
+@SuppressWarnings("javadoc")
 public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     private HttpClientBuilder httpClientBuilder;

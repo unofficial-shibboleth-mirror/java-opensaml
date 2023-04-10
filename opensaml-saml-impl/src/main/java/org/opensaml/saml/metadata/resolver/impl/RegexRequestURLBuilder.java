@@ -26,12 +26,12 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Function which produces a URL by evaluating a supplied regular expression against the criteria entity ID, 
@@ -74,13 +74,13 @@ import org.slf4j.LoggerFactory;
 public class RegexRequestURLBuilder implements Function<CriteriaSet, String> {
     
     /** Logger. */
-    @Nullable private final Logger log = LoggerFactory.getLogger(RegexRequestURLBuilder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(RegexRequestURLBuilder.class);
     
     /** The compiled pattern. */
-    private Pattern pattern;
+    @Nonnull private final Pattern pattern;
     
     /** The replacement template. */
-    private String template;
+    @Nonnull private final String template;
    
     /**
      * Constructor.
@@ -107,12 +107,13 @@ public class RegexRequestURLBuilder implements Function<CriteriaSet, String> {
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nullable final CriteriaSet criteria) {
-        Constraint.isNotNull(criteria, "Criteria was null");
-        if (!criteria.contains(EntityIdCriterion.class)) {
+        
+        final EntityIdCriterion criterion = criteria != null ? criteria.get(EntityIdCriterion.class) : null;
+        if (criterion == null) {
             log.trace("Criteria did not contain entity ID, unable to build request URL");
             return null;
         }
-        final String entityID = criteria.get(EntityIdCriterion.class).getEntityId();
+        final String entityID = criterion.getEntityId();
         
         try {
             final Matcher matcher = pattern.matcher(entityID);

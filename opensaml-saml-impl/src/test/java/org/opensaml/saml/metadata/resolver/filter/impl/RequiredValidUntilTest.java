@@ -36,6 +36,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link RequiredValidUntilFilter}. */
+@SuppressWarnings("javadoc")
 public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
 
     private File metadataFile;

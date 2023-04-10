@@ -45,9 +45,8 @@ public class RoleMetadataIndex implements MetadataIndex {
 
     /** {@inheritDoc} */
     @Nullable @NonnullElements @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet) {
-        Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
-        final EntityRoleCriterion roleCrit = criteriaSet.get(EntityRoleCriterion.class);
+    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
+        final EntityRoleCriterion roleCrit = criteriaSet != null ? criteriaSet.get(EntityRoleCriterion.class) : null;
         if (roleCrit != null) {
             final HashSet<MetadataIndexKey> result = new HashSet<>();
             result.add(new RoleMetadataIndexKey(roleCrit.getRole()));

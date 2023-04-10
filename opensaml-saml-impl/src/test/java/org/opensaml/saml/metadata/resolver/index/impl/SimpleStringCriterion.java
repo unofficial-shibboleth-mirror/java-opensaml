@@ -26,6 +26,7 @@ import net.shibboleth.shared.resolver.Criterion;
 
 import com.google.common.base.MoreObjects;
 
+@SuppressWarnings("javadoc")
 public class SimpleStringCriterion implements Criterion {
     @Nonnull @NotEmpty private final String value;
 

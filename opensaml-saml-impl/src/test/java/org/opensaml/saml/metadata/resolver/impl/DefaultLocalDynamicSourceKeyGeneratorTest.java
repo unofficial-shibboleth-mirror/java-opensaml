@@ -35,9 +35,7 @@ import com.google.common.io.BaseEncoding;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DefaultLocalDynamicSourceKeyGeneratorTest {
     
     private String controlValue;

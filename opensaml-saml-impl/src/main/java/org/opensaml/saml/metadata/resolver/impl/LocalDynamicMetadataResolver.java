@@ -29,9 +29,9 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.persist.ConditionalLoadXMLObjectLoadSaveManager;
 import org.opensaml.core.xml.persist.XMLObjectLoadSaveManager;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -41,7 +41,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class LocalDynamicMetadataResolver extends AbstractDynamicMetadataResolver {
     
     /** Logger. */
-    @Nullable private Logger log = LoggerFactory.getLogger(LocalDynamicMetadataResolver.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(LocalDynamicMetadataResolver.class);
     
     /** The manager for the local store of metadata. */
     @Nonnull private XMLObjectLoadSaveManager<XMLObject> sourceManager;
@@ -94,14 +94,15 @@ public class LocalDynamicMetadataResolver extends AbstractDynamicMetadataResolve
         
         sourceManager = Constraint.isNotNull(manager, "Local source manager was null");
         
-        sourceKeyGenerator = keyGenerator;
-        if (sourceKeyGenerator == null) {
+        if (keyGenerator == null) {
             sourceKeyGenerator = new DefaultLocalDynamicSourceKeyGenerator();
+        } else {
+            sourceKeyGenerator = keyGenerator;
         }
     }
     
     /** {@inheritDoc} */
-    protected void removeByEntityID(final String entityID, final EntityBackingStore backingStore) {
+    protected void removeByEntityID(@Nonnull final String entityID, @Nonnull final EntityBackingStore backingStore) {
         if (sourceManager instanceof ConditionalLoadXMLObjectLoadSaveManager) {
             final String key = sourceKeyGenerator.apply(new CriteriaSet(new EntityIdCriterion(entityID)));
             if (key != null) {
@@ -114,7 +115,7 @@ public class LocalDynamicMetadataResolver extends AbstractDynamicMetadataResolve
 
     /** {@inheritDoc} */
     @Override
-    protected XMLObject fetchFromOriginSource(final CriteriaSet criteria) throws IOException {
+    protected XMLObject fetchFromOriginSource(@Nullable final CriteriaSet criteria) throws IOException {
         final String key = sourceKeyGenerator.apply(criteria);
         if (key != null) {
             log.trace("{} Attempting to load from local source manager with generated key '{}'", getLogPrefix(), key);

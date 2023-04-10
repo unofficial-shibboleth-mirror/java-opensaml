@@ -20,7 +20,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -50,7 +49,6 @@ import org.opensaml.saml.saml2.common.SAML2Support;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.google.common.base.Strings;
@@ -59,9 +57,12 @@ import com.google.common.collect.Iterables;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.ConstraintViolationException;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.CriterionPredicateRegistry;
@@ -71,8 +72,8 @@ import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.QNameSupport;
 
 /** An abstract, base, implementation of a metadata provider. */
-public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent implements
-        MetadataResolver {
+public abstract class AbstractMetadataResolver extends AbstractIdentifiableInitializableComponent
+        implements MetadataResolver {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
@@ -287,13 +288,15 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     }
     
     /** {@inheritDoc} */
-    @Nullable public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+    @Nonnull public Iterable<EntityDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
         if (activationCondition != null) {
-            final ProfileRequestContextCriterion prc = criteria.get(ProfileRequestContextCriterion.class);
+            final ProfileRequestContextCriterion prc =
+                    criteria != null ? criteria.get(ProfileRequestContextCriterion.class) : null;
+            assert activationCondition != null;
             if (!activationCondition.test(prc != null ? prc.getProfileRequestContext() : null)) {
                 log.info("{} Metadata resolver bypassed due to failed activation condition", getLogPrefix());
-                return null; 
+                return CollectionSupport.emptyList();
             }
         }
         
@@ -309,7 +312,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * 
      * @throws ResolverException if an error occurs
      */
-    @Nullable protected abstract Iterable<EntityDescriptor> doResolve(@Nullable final CriteriaSet criteria)
+    @Nonnull protected abstract Iterable<EntityDescriptor> doResolve(@Nullable final CriteriaSet criteria)
             throws ResolverException;
     
     /**
@@ -324,7 +327,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     /** {@inheritDoc} */
     @Override protected final void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
-
+        
         try {
             initMetadataResolver();
         } catch (final ComponentInitializationException e) {
@@ -336,18 +339,6 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
             log.error("{} Metadata resolver failed to properly initialize, fail-fast=false, "
                     + "continuing on in a degraded state", getLogPrefix(), e);
         }
-    }
-
-    /** {@inheritDoc} */
-    @Override protected void doDestroy() {
-        unmarshallerFactory = null;
-        mdFilter = null;
-        entityBackingStore = null;
-        parser = null;
-        criterionPredicateRegistry = null;
-        activationCondition = null;
-
-        super.doDestroy();
     }
 
     /**
@@ -414,9 +405,10 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @throws FilterException thrown if there is an error filtering the metadata
      */
     @Nullable protected XMLObject filterMetadata(@Nullable final XMLObject metadata) throws FilterException {
-        if (getMetadataFilter() != null) {
+        final MetadataFilter filter = getMetadataFilter();
+        if (filter != null) {
             log.debug("{} Applying metadata filter", getLogPrefix());
-            return getMetadataFilter().filter(metadata, newFilterContext());
+            return filter.filter(metadata, newFilterContext());
         }
         return metadata;
     }
@@ -488,7 +480,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
         if (Strings.isNullOrEmpty(entityID)) {
             log.debug("{} EntityDescriptor entityID was null or empty, skipping search for it", getLogPrefix());
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
 
         final List<EntityDescriptor> descriptors = lookupIndexedEntityID(entityID);
@@ -521,11 +513,11 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      */
     @Nonnull @NonnullElements protected List<EntityDescriptor> lookupIndexedEntityID(
             @Nonnull @NotEmpty final String entityID) {
-        final List<EntityDescriptor> descriptors = getBackingStore().getIndexedDescriptors().get(entityID);
+        final List<EntityDescriptor> descriptors = ensureBackingStore().getIndexedDescriptors().get(entityID);
         if (descriptors != null) {
             return new ArrayList<>(descriptors);
         }
-        return Collections.emptyList();
+        return CollectionSupport.emptyList();
     }
 
     /**
@@ -545,8 +537,20 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * 
      * @return the current effective entity backing store
      */
-    @Nonnull protected EntityBackingStore getBackingStore() {
+    @Nullable protected EntityBackingStore getBackingStore() {
         return entityBackingStore;
+    }
+
+    /**
+     * Get the EntityDescriptor backing store currently in use by the metadata resolver, raising
+     * a {@link ConstraintViolationException} if null.
+     * 
+     * @return the current effective entity backing store
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull protected EntityBackingStore ensureBackingStore() {
+        return Constraint.isNotNull(entityBackingStore, "EntityBackingStore was null at time of call");
     }
 
     /**
@@ -555,7 +559,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param newBackingStore the new entity backing store
      */
     protected void setBackingStore(@Nonnull final EntityBackingStore newBackingStore) {
-        entityBackingStore = Constraint.isNotNull(newBackingStore, "EntityBackingStore may not be null");
+        entityBackingStore = Constraint.isNotNull(newBackingStore, "EntityBackingStore cannot be null");
     }
 
     /**
@@ -617,11 +621,15 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     protected void preProcessEntitiesDescriptor(@Nonnull final EntitiesDescriptor entitiesDescriptor,
             final EntityBackingStore backingStore) {
 
-        for (final XMLObject child : entitiesDescriptor.getOrderedChildren()) {
-            if (child instanceof EntityDescriptor) {
-                preProcessEntityDescriptor((EntityDescriptor) child, backingStore);
-            } else if (child instanceof EntitiesDescriptor) {
-                preProcessEntitiesDescriptor((EntitiesDescriptor) child, backingStore);
+        // TODO: If order doesn't matter here, we should change to use the non-null getters of the specific child types.
+        final List<XMLObject> children = entitiesDescriptor.getOrderedChildren();
+        if (children != null) {
+            for (final XMLObject child : children) {
+                if (child instanceof EntityDescriptor) {
+                    preProcessEntityDescriptor((EntityDescriptor) child, backingStore);
+                } else if (child instanceof EntitiesDescriptor) {
+                    preProcessEntitiesDescriptor((EntitiesDescriptor) child, backingStore);
+                }
             }
         }
     }
@@ -639,13 +647,13 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * 
      * @throws ResolverException if there is a fatal error during resolution
      */
-    protected Iterable<EntityDescriptor> predicateFilterCandidates(@Nonnull final Iterable<EntityDescriptor> candidates,
-            @Nonnull final CriteriaSet criteria, final boolean onEmptyPredicatesReturnEmpty)
-                    throws ResolverException {
+    @Nonnull protected Iterable<EntityDescriptor> predicateFilterCandidates(
+            @Nonnull final Iterable<EntityDescriptor> candidates, @Nullable final CriteriaSet criteria,
+            final boolean onEmptyPredicatesReturnEmpty) throws ResolverException {
         
         if (!candidates.iterator().hasNext()) {
             log.debug("{} Candidates iteration was empty, nothing to filter via predicates", getLogPrefix());
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         
         log.debug("{} Attempting to filter candidate EntityDescriptors via resolved Predicates", getLogPrefix());
@@ -656,7 +664,8 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         log.trace("{} Resolved {} Predicates: {}", getLogPrefix(), predicates.size(), predicates);
         
         final boolean satisfyAny;
-        final SatisfyAnyCriterion satisfyAnyCriterion = criteria.get(SatisfyAnyCriterion.class);
+        final SatisfyAnyCriterion satisfyAnyCriterion =
+                criteria != null ? criteria.get(SatisfyAnyCriterion.class) : null;
         if (satisfyAnyCriterion  != null) {
             log.trace("{} CriteriaSet contained SatisfyAnyCriterion", getLogPrefix());
             satisfyAny = satisfyAnyCriterion.isSatisfyAny();
@@ -685,6 +694,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         if (logPrefix == null) {
             logPrefix = String.format("%s %s:", getClass().getSimpleName(), getId());
         }
+        assert logPrefix != null;
         return logPrefix;
     }
 
@@ -694,10 +704,10 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     protected class EntityBackingStore {
 
         /** Index of entity IDs to their descriptors. */
-        private Map<String, List<EntityDescriptor>> indexedDescriptors;
+        @Nonnull private final Map<String, List<EntityDescriptor>> indexedDescriptors;
 
         /** Ordered list of entity descriptors. */
-        private List<EntityDescriptor> orderedDescriptors;
+        @Nonnull private final List<EntityDescriptor> orderedDescriptors;
 
         /** Constructor. */
         protected EntityBackingStore() {

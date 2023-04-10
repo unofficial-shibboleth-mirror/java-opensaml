@@ -28,9 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class MetadataIndexStoreTest extends OpenSAMLInitBaseTestCase {
     
     private MetadataIndexStore<EntityDescriptor> store;

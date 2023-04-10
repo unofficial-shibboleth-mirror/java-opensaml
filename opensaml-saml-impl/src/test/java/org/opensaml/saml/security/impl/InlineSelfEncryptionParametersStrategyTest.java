@@ -45,11 +45,10 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class InlineSelfEncryptionParametersStrategyTest extends OpenSAMLInitBaseTestCase {
     
     private Credential cred1, cred2;
@@ -80,10 +79,9 @@ public class InlineSelfEncryptionParametersStrategyTest extends OpenSAMLInitBase
     
     @Test
     public void testNoCreds() {
-        InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver);
-        List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
-        
-        Assert.assertNotNull(encParameters);
+        final InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver);
+        final List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
+        assert encParameters != null;
         Assert.assertTrue(encParameters.isEmpty());
     }
     
@@ -91,15 +89,18 @@ public class InlineSelfEncryptionParametersStrategyTest extends OpenSAMLInitBase
     public void testSingleCred() {
         resolverCreds.add(cred1);
         
-        InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver);
-        List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
+        final InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver);
+        final List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
         
-        Assert.assertNotNull(encParameters);
+        assert encParameters != null;
         Assert.assertEquals(encParameters.size(), 1);
         Assert.assertSame(encParameters.get(0).getKeyTransportEncryptionCredential(), cred1);
         Assert.assertEquals(encParameters.get(0).getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        Assert.assertEquals(encParameters.get(0).getRSAOAEPParameters().getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA1);
-        Assert.assertEquals(encParameters.get(0).getRSAOAEPParameters().getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA1);
+        
+        final RSAOAEPParameters oaep = encParameters.get(0).getRSAOAEPParameters();
+        assert oaep != null;
+        Assert.assertEquals(oaep.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        Assert.assertEquals(oaep.getMaskGenerationFunction(), EncryptionConstants.ALGO_ID_MGF1_SHA1);
     }
     
     @Test
@@ -107,41 +108,51 @@ public class InlineSelfEncryptionParametersStrategyTest extends OpenSAMLInitBase
         resolverCreds.add(cred1);
         resolverCreds.add(cred2);
         
-        InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver);
-        List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
+        final InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver);
+        final List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
         
-        Assert.assertNotNull(encParameters);
+        assert encParameters != null;
         Assert.assertEquals(encParameters.size(), 2);
         Assert.assertSame(encParameters.get(0).getKeyTransportEncryptionCredential(), cred1);
         Assert.assertEquals(encParameters.get(0).getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        Assert.assertEquals(encParameters.get(0).getRSAOAEPParameters().getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        
+        final RSAOAEPParameters oaep1 = encParameters.get(0).getRSAOAEPParameters();
+        assert oaep1 != null;
+        Assert.assertEquals(oaep1.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        
         Assert.assertSame(encParameters.get(1).getKeyTransportEncryptionCredential(), cred2);
         Assert.assertEquals(encParameters.get(1).getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        Assert.assertEquals(encParameters.get(1).getRSAOAEPParameters().getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA1);
+        
+        final RSAOAEPParameters oaep2 = encParameters.get(0).getRSAOAEPParameters();
+        assert oaep2 != null;
+        Assert.assertEquals(oaep2.getDigestMethod(), SignatureConstants.ALGO_ID_DIGEST_SHA1);
     }
     
     @Test
     public void testConfigLookup() {
         resolverCreds.add(cred1);
         
-        Function<ProfileRequestContext, List<EncryptionConfiguration>> configStrategy = new Function<>() {
+        final Function<ProfileRequestContext, List<EncryptionConfiguration>> configStrategy = new Function<>() {
             public List<EncryptionConfiguration> apply(@Nullable ProfileRequestContext input) {
-                BasicEncryptionConfiguration selfConfig = new BasicEncryptionConfiguration();
-                RSAOAEPParameters rsaParams = new RSAOAEPParameters();
+                final BasicEncryptionConfiguration selfConfig = new BasicEncryptionConfiguration();
+                final RSAOAEPParameters rsaParams = new RSAOAEPParameters();
                 rsaParams.setDigestMethod(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
                 selfConfig.setRSAOAEPParameters(rsaParams);
                 selfConfig.setRSAOAEPParametersMerge(true);
-                return List.of(selfConfig, SecurityConfigurationSupport.getGlobalEncryptionConfiguration());
+                return CollectionSupport.listOf(selfConfig, SecurityConfigurationSupport.getGlobalEncryptionConfiguration());
         }};
         
-        InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver, configStrategy);
-        List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
+        final InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver, configStrategy);
+        final List<EncryptionParameters> encParameters = strategy.apply(new Pair<ProfileRequestContext, EncryptionParameters>(prc, null));
         
-        Assert.assertNotNull(encParameters);
+        assert encParameters != null;
         Assert.assertEquals(encParameters.size(), 1);
         Assert.assertSame(encParameters.get(0).getKeyTransportEncryptionCredential(), cred1);
         Assert.assertEquals(encParameters.get(0).getKeyTransportEncryptionAlgorithm(), EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP);
-        Assert.assertEquals(encParameters.get(0).getRSAOAEPParameters().getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
+        
+        final RSAOAEPParameters oaep = encParameters.get(0).getRSAOAEPParameters();
+        assert oaep != null;
+        Assert.assertEquals(oaep.getDigestMethod(), EncryptionConstants.ALGO_ID_DIGEST_SHA256);
     }
     
 

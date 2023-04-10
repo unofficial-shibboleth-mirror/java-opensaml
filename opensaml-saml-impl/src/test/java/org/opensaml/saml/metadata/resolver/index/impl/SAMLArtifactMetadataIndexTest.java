@@ -49,10 +49,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
     
     private SAMLArtifactMetadataIndex metadataIndex;
@@ -119,7 +116,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testGenerateKeysFromDescriptorEntityIDOnly() {
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(entityIDSourceIDKey));
@@ -134,7 +132,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
         roleDescriptor1.getArtifactResolutionServices().add(ars1);
         descriptor.getRoleDescriptors().add(roleDescriptor1);
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 2);
         Assert.assertTrue(keys.contains(entityIDSourceIDKey));
@@ -157,7 +156,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
         roleDescriptor2.getArtifactResolutionServices().add(ars2);
         descriptor.getRoleDescriptors().add(roleDescriptor2);
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 3);
         Assert.assertTrue(keys.contains(entityIDSourceIDKey));
@@ -173,7 +173,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
         roleDescriptor1.setExtensions(extensions1);
         descriptor.getRoleDescriptors().add(roleDescriptor1);
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 2);
         Assert.assertTrue(keys.contains(entityIDSourceIDKey));
@@ -195,7 +196,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
         roleDescriptor2.setExtensions(extensions2);
         descriptor.getRoleDescriptors().add(roleDescriptor2);
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 4);
         Assert.assertTrue(keys.contains(entityIDSourceIDKey));
@@ -218,7 +220,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
         
         descriptor.getRoleDescriptors().add(roleDescriptor1);
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 3);
         Assert.assertTrue(keys.contains(entityIDSourceIDKey));
@@ -232,7 +235,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
         
         criteriaSet.add(new ArtifactCriterion(sourceIDArtifact));
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(criteriaSet);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(criteriaSet);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(entityIDSourceIDKey));
@@ -244,7 +248,8 @@ public class SAMLArtifactMetadataIndexTest extends XMLObjectBaseTestCase {
         
         criteriaSet.add(new ArtifactCriterion(sourceLocationArtifact1));
         
-        Set<MetadataIndexKey> keys = metadataIndex.generateKeys(criteriaSet);
+        final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(criteriaSet);
+        assert keys != null;
         
         Assert.assertEquals(keys.size(), 1);
         Assert.assertTrue(keys.contains(sourceLocationKey1));

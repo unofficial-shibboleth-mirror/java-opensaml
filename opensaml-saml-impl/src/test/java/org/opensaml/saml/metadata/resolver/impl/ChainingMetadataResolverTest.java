@@ -38,6 +38,7 @@ import com.google.common.base.Predicates;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
+@SuppressWarnings("javadoc")
 public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private ChainingMetadataResolver metadataProvider;
@@ -94,11 +95,11 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider.initialize();
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
 
         EntityDescriptor descriptor2 = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID2)));
-        Assert.assertNotNull(descriptor2, "Retrieved entity descriptor was null");
+        assert descriptor2 != null;
         Assert.assertEquals(descriptor2.getEntityID(), entityID2, "Entity's ID does not match requested ID");
     }
 

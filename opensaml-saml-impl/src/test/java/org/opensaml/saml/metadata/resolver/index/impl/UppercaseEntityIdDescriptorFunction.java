@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.index.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -28,15 +27,24 @@ import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
+@SuppressWarnings("javadoc")
 public class UppercaseEntityIdDescriptorFunction implements Function<EntityDescriptor, Set<MetadataIndexKey>> {
     
     @Nullable public Set<MetadataIndexKey> apply(@Nullable EntityDescriptor input) {
         if (input == null) {
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
+        
+        final String entityID = input.getEntityID();
+        if (entityID == null) {
+            return CollectionSupport.emptySet();
+        }
+        
         HashSet<MetadataIndexKey> result = new HashSet<>();
         if (input != null) {
-            result.add(new SimpleStringMetadataIndexKey(input.getEntityID().toUpperCase()));
+            result.add(new SimpleStringMetadataIndexKey(entityID.toUpperCase()));
         }
         return result;
     }

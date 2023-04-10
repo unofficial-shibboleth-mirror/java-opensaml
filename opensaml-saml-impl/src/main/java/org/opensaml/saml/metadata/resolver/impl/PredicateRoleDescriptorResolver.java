@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.UUID;
@@ -39,16 +38,17 @@ import org.opensaml.saml.saml2.common.IsTimeboundSAMLObjectValidPredicate;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractIdentifiedInitializableComponent;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.CriterionPredicateRegistry;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -73,23 +73,23 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
         implements RoleDescriptorResolver {
     
     /** Predicate for evaluating whether a TimeboundSAMLObject is valid. */
-    private static final Predicate<XMLObject> IS_VALID_PREDICATE = new IsTimeboundSAMLObjectValidPredicate();
+    @Nonnull private static final Predicate<XMLObject> IS_VALID_PREDICATE = new IsTimeboundSAMLObjectValidPredicate();
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(PredicateRoleDescriptorResolver.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(PredicateRoleDescriptorResolver.class);
     
     /** Whether metadata is required to be valid. */
     private boolean requireValidMetadata;
  
     /** Resolver of EntityDescriptors. */
-    private MetadataResolver entityDescriptorResolver;
+    @Nonnull private MetadataResolver entityDescriptorResolver;
     
     /** Flag which determines whether predicates used in filtering are connected by 
      * a logical 'OR' (true) or by logical 'AND' (false). Defaults to false. */
     private boolean satisfyAnyPredicates;
     
     /** Registry used in resolving predicates from criteria. */
-    private CriterionPredicateRegistry<RoleDescriptor> criterionPredicateRegistry;
+    @Nullable private CriterionPredicateRegistry<RoleDescriptor> criterionPredicateRegistry;
     
     /** Flag which determines whether the default predicate registry will be used if no one is supplied explicitly.
      * Defaults to true. */
@@ -232,8 +232,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     }
     
     /** {@inheritDoc} */
-    @Override
-    @Nullable public RoleDescriptor resolveSingle(final CriteriaSet criteria) throws ResolverException {
+    @Nullable public RoleDescriptor resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
         final Iterable<RoleDescriptor> iterable = resolve(criteria);
         if (iterable != null) {
@@ -246,14 +245,13 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nonnull public Iterable<RoleDescriptor> resolve(final CriteriaSet criteria) throws ResolverException {
+    @Nonnull public Iterable<RoleDescriptor> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
         checkComponentActive();
         
         final Iterable<EntityDescriptor> entityDescriptorsSource = entityDescriptorResolver.resolve(criteria);
         if (!entityDescriptorsSource.iterator().hasNext()) {
             log.debug("Resolved no EntityDescriptors via underlying MetadataResolver, returning empty collection");
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         
         if (log.isDebugEnabled()) {
@@ -261,7 +259,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
         }
         
         final Predicate<? super RoleDescriptor> predicate = isRequireValidMetadata() ? IS_VALID_PREDICATE 
-                : Predicates.<XMLObject>alwaysTrue();
+                : PredicateSupport.alwaysTrue();
             
         if (haveRoleCriteria(criteria)) {
             final Iterable<RoleDescriptor> candidates =
@@ -280,7 +278,7 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
             return predicateFilterCandidates(Iterables.filter(candidates, predicate::test), criteria, true);
         } else {
             log.debug("Found no role criteria and predicate-only resolution is disabled, returning empty collection");
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         
     }
@@ -292,8 +290,8 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * 
      * @return true if have role criteria, false otherwise
      */
-    protected boolean haveRoleCriteria(@Nonnull final CriteriaSet criteria) {
-        return criteria.contains(EntityRoleCriterion.class);
+    protected boolean haveRoleCriteria(@Nullable final CriteriaSet criteria) {
+        return criteria != null && criteria.contains(EntityRoleCriterion.class);
     }
 
     /**
@@ -310,11 +308,13 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @return the role descriptors corresponding to the input entity role and protocol
      */
     protected Iterable<RoleDescriptor> getCandidatesByRoleAndProtocol(
-            @Nonnull final Iterable<EntityDescriptor> entityDescriptors, @Nonnull final CriteriaSet criteria) {
+            @Nonnull final Iterable<EntityDescriptor> entityDescriptors, @Nullable final CriteriaSet criteria) {
         
-        final EntityRoleCriterion roleCriterion = Constraint.isNotNull(criteria.get(EntityRoleCriterion.class), 
-                "EntityRoleCriterion was not supplied");
+        final EntityRoleCriterion roleCriterion =
+                Constraint.isNotNull(criteria != null ? criteria.get(EntityRoleCriterion.class) : null,
+                        "EntityRoleCriterion was not supplied");
         
+        assert criteria != null;
         final ProtocolCriterion protocolCriterion = criteria.get(ProtocolCriterion.class);
         
         final ArrayList<Iterable<RoleDescriptor>> aggregate = new ArrayList<>();
@@ -360,12 +360,12 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
      * @throws ResolverException if there is a fatal error during resolution
      */
     protected Iterable<RoleDescriptor> predicateFilterCandidates(@Nonnull final Iterable<RoleDescriptor> candidates,
-            @Nonnull final CriteriaSet criteria, final boolean onEmptyPredicatesReturnEmpty)
+            @Nullable final CriteriaSet criteria, final boolean onEmptyPredicatesReturnEmpty)
                     throws ResolverException {
         
         if (!candidates.iterator().hasNext()) {
             log.debug("Candidates iteration was empty, nothing to filter via predicates");
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         
         log.debug("Attempting to filter candidate RoleDescriptors via resolved Predicates");
@@ -376,7 +376,8 @@ public class PredicateRoleDescriptorResolver extends AbstractIdentifiedInitializ
         log.trace("Resolved {} Predicates: {}", predicates.size(), predicates);
         
         final boolean satisfyAny;
-        final SatisfyAnyCriterion satisfyAnyCriterion = criteria.get(SatisfyAnyCriterion.class);
+        final SatisfyAnyCriterion satisfyAnyCriterion =
+                criteria != null ? criteria.get(SatisfyAnyCriterion.class) : null;
         if (satisfyAnyCriterion  != null) {
             log.trace("CriteriaSet contained SatisfyAnyCriterion");
             satisfyAny = satisfyAnyCriterion.isSatisfyAny();

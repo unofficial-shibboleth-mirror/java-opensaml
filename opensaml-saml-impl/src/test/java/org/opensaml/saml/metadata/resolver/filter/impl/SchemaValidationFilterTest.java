@@ -31,6 +31,7 @@ import net.shibboleth.shared.spring.resource.ResourceHelper;
 /**
  * Unit tests for {@link SchemaValidationFilter}.
  */
+@SuppressWarnings("javadoc")
 public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
 
     @Test

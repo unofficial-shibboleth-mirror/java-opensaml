@@ -116,21 +116,19 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
     }
 
     /** {@inheritDoc} */
-    @Nullable public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet) {
-        Constraint.isNotNull(criteriaSet, "CriteriaSet was null");
-        final ArtifactCriterion artifactCrit = criteriaSet.get(ArtifactCriterion.class);
+    @Nullable public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet) {
+        final ArtifactCriterion artifactCrit = criteriaSet != null ? criteriaSet.get(ArtifactCriterion.class) : null;
         if (artifactCrit != null) {
             final LazySet<MetadataIndexKey> results = new LazySet<>();
             
             final SAMLArtifact artifact = artifactCrit.getArtifact();
             
-            if (artifact instanceof SAMLSourceIDArtifact) {
-                results.add(new ArtifactSourceIDMetadataIndexKey(((SAMLSourceIDArtifact)artifact).getSourceID()));
+            if (artifact instanceof SAMLSourceIDArtifact art) {
+                results.add(new ArtifactSourceIDMetadataIndexKey(art.getSourceID()));
             }
             
-            if (artifact instanceof SAMLSourceLocationArtifact) {
-                results.add(new ArtifactSourceLocationMetadataIndexKey(
-                        ((SAMLSourceLocationArtifact)artifact).getSourceLocation()));
+            if (artifact instanceof SAMLSourceLocationArtifact art) {
+                results.add(new ArtifactSourceLocationMetadataIndexKey(art.getSourceLocation()));
             }
             
             return results;

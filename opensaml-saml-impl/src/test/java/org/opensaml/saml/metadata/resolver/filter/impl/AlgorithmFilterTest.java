@@ -22,11 +22,11 @@ import static org.testng.Assert.*;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -49,6 +49,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predicate<EntityDescriptor> {
     
     private FilesystemMetadataResolver metadataProvider;
@@ -108,7 +109,7 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
         final Collection<XMLObject> algs = List.of(digest1, digest2, signing1, signing2, enc1, digest3, signing3, enc2, enc3);
         
         final AlgorithmFilter filter = new AlgorithmFilter();
-        filter.setRules(Collections.singletonMap(this, algs));
+        filter.setRules(CollectionSupport.singletonMap(this, algs));
         filter.initialize();
         
         metadataProvider.setMetadataFilter(filter);
@@ -117,9 +118,9 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
 
         EntityIdCriterion crit = new EntityIdCriterion("https://foo.example.org/sp");
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(crit));
-        assertNotNull(entity);
+        assert entity != null;
         final Extensions exts = entity.getExtensions();
-        assertNotNull(exts);
+        assert exts != null;
         
         List<XMLObject> extElements = exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME);
         assertEquals(extElements.size(), 3);
@@ -160,7 +161,7 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
 
     /** {@inheritDoc} */
     public boolean test(final EntityDescriptor input) {
-        return input.getEntityID().equals("https://foo.example.org/sp");
+        return input != null && "https://foo.example.org/sp".equals(input.getEntityID());
     }
 
 }

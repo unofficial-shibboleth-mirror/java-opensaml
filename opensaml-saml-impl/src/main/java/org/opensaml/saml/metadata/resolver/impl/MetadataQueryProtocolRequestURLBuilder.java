@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
@@ -33,7 +32,9 @@ import com.google.common.net.UrlEscapers;
 import net.shibboleth.shared.annotation.ParameterName;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -55,19 +56,19 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public class MetadataQueryProtocolRequestURLBuilder implements Function<CriteriaSet, String> {
     
     /** Logger. */
-    private final Logger log = LoggerFactory.getLogger(MetadataQueryProtocolRequestURLBuilder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(MetadataQueryProtocolRequestURLBuilder.class);
     
     /** The request base URL per the specification. */
-    private String base;
+    @Nonnull @NotEmpty private String base;
     
     /** Function which transforms the entityID prior to substitution into the URL. */
-    private Function<String, String> transformer;
+    @Nullable private Function<String, String> transformer;
     
     /** Path escaper for escaping the input value inserted into the URL path. */
-    private Escaper pathEscaper = UrlEscapers.urlPathSegmentEscaper();
+    @Nonnull private final Escaper pathEscaper = UrlEscapers.urlPathSegmentEscaper();
     
     /** List of secondary URL builders. */
-    private List<MetadataQueryProtocolURLBuilder> urlBuilders;
+    @Nullable private List<MetadataQueryProtocolURLBuilder> urlBuilders;
     
     /**
      * Constructor.
@@ -127,16 +128,17 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
         transformer = transform;
         
         if (secondaryURLBuilders != null) {
-            urlBuilders = List.copyOf(secondaryURLBuilders);
+            urlBuilders = CollectionSupport.copyToList(secondaryURLBuilders);
         }
     }
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nullable final CriteriaSet criteria) {
-        Constraint.isNotNull(criteria, "Criteria was null");
-        if (criteria.contains(EntityIdCriterion.class)) {
+        final EntityIdCriterion criterion = criteria != null ? criteria.get(EntityIdCriterion.class) : null;
+
+        if (criterion != null) {
             log.debug("Criteria contained entity ID, building on that basis");
-            return buildFromEntityID(criteria.get(EntityIdCriterion.class).getEntityId());
+            return buildFromEntityID(criterion.getEntityId());
         } else if (urlBuilders != null) {
             log.debug("Criteria did not contain entity ID, attempting to build using secondary URL builders");
             return buildFromSecondaryLookups(criteria);
@@ -175,7 +177,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
      * @param criteria the criteria
      * @return the request URL, or null
      */
-    private String buildFromSecondaryLookups(@Nonnull final CriteriaSet criteria) {
+    private String buildFromSecondaryLookups(@Nullable final CriteriaSet criteria) {
         if (urlBuilders != null) {
             for (final MetadataQueryProtocolURLBuilder builder : urlBuilders) {
                 final String url = builder.buildURL(base, criteria);
@@ -203,7 +205,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
          * @return a URL based on the supplied inputs, or null if the implementation did not support
          *     or understand any of the supplied criteria 
          */
-        @Nullable public String buildURL(@Nonnull final String baseURL, @Nonnull final CriteriaSet criteria);
+        @Nullable public String buildURL(@Nonnull final String baseURL, @Nullable final CriteriaSet criteria);
         
     }
 

@@ -36,6 +36,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
+@SuppressWarnings("javadoc")
 public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private DOMMetadataResolver metadataProvider;
@@ -73,7 +74,7 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
         allowActivation = true;
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
 
         allowActivation = false;
@@ -94,7 +95,7 @@ public class DOMMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setParserPool(parserPool);
             metadataProvider.setId("test");
             metadataProvider.initialize();
-        } catch (ComponentInitializationException e) {
+        } catch (final ComponentInitializationException e) {
             Assert.fail("DOM metadata provider init failed due to filter exception and fail fast = false");
         }
         

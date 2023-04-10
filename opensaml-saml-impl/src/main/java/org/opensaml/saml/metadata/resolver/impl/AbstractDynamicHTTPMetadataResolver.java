@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.Timer;
@@ -43,7 +42,6 @@ import org.opensaml.core.xml.util.XMLObjectSource;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.slf4j.MDC;
 
 import com.google.common.base.Strings;
@@ -54,10 +52,12 @@ import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.net.MediaTypeSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -207,7 +207,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     public void setSupportedContentTypes(@Nullable final List<String> types) {
         checkSetterPreconditions();
         if (types == null) {
-            supportedContentTypes = Collections.emptyList();
+            supportedContentTypes = CollectionSupport.emptyList();
         } else {
             supportedContentTypes = StringSupport.normalizeStringCollection(types)
                     .stream()
@@ -233,28 +233,15 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
                 supportedMediaTypes.add(MediaType.parse(contentType));
             }
         } else {
-            supportedMediaTypes = Collections.emptySet();
+            supportedMediaTypes = CollectionSupport.emptySet();
         }
         
         log.debug("{} Supported content types are: {}", getLogPrefix(), getSupportedContentTypes());
     }
     
-   /** {@inheritDoc} */
-    @Override
-    protected void doDestroy() {
-        httpClient = null;
-        httpClientSecurityParameters = null;
-        
-        supportedContentTypes = null;
-        supportedContentTypesValue = null;
-        supportedMediaTypes = null;
-        
-        super.doDestroy();
-    }
-    
     /** {@inheritDoc} */
     @Override
-    @Nullable protected XMLObject fetchFromOriginSource(@Nonnull final CriteriaSet criteria) 
+    @Nullable protected XMLObject fetchFromOriginSource(@Nullable final CriteriaSet criteria) 
             throws IOException {
             
         final ClassicHttpRequest request = buildHttpRequest(criteria);
@@ -281,7 +268,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param criteria the input criteria set
      * @return the newly constructed request, or null if it can not be built from the supplied criteria
      */
-    @Nullable protected ClassicHttpRequest buildHttpRequest(@Nonnull final CriteriaSet criteria) {
+    @Nullable protected ClassicHttpRequest buildHttpRequest(@Nullable final CriteriaSet criteria) {
         final String url = buildRequestURL(criteria);
         log.debug("{} Built request URL of: {}", getLogPrefix(), url);
         
@@ -307,7 +294,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * @param criteria the input criteria set
      * @return the request URL, or null if it can not be built based on the supplied criteria
      */
-    @Nullable protected abstract String buildRequestURL(@Nonnull final CriteriaSet criteria);
+    @Nullable protected abstract String buildRequestURL(@Nullable final CriteriaSet criteria);
         
     /**
      * Build the {@link HttpClientContext} instance which will be used to invoke the {@link HttpClient} request.
@@ -316,8 +303,9 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
      * 
      * @return a new instance of {@link HttpClientContext}
      */
-    protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
+    @Nonnull protected HttpClientContext buildHttpClientContext(@Nonnull final ClassicHttpRequest request) {
         final HttpClientContext context = HttpClientContext.create();
+        assert context != null;
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, true);
         HttpClientSecuritySupport.addDefaultTLSTrustEngineCriteria(context, request);
@@ -332,7 +320,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
 
         /** {@inheritDoc} */
         @Override
-        public XMLObject handleResponse(@Nonnull final ClassicHttpResponse response) throws IOException {
+        public XMLObject handleResponse(final ClassicHttpResponse response) throws IOException {
             
             final int httpStatusCode = response.getCode();
             
@@ -362,7 +350,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             try {
                 final InputStream ins = response.getEntity().getContent();
                 final byte[] source = ByteStreams.toByteArray(ins);
-                try (ByteArrayInputStream bais = new ByteArrayInputStream(source)) {
+                try (final ByteArrayInputStream bais = new ByteArrayInputStream(source)) {
                     final XMLObject xmlObject = unmarshallMetadata(bais);
                     xmlObject.getObjectMetadata().put(new XMLObjectSource(source));
                     return xmlObject;
@@ -380,7 +368,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
          * @param response the received response
          * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
          */
-        protected void validateHttpResponse(@Nonnull final ClassicHttpResponse response) throws ResolverException {
+        protected void validateHttpResponse(final ClassicHttpResponse response) throws ResolverException {
             if (!getSupportedMediaTypes().isEmpty()) {
                 final String contentType = StringSupport.trimOrNull(response.getEntity().getContentType());
                 log.debug("{} Saw raw Content-Type from response header '{}'", getLogPrefix(), contentType);

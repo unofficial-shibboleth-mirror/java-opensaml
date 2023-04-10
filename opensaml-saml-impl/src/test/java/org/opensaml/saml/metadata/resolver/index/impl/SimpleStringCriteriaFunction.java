@@ -29,6 +29,7 @@ import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
+@SuppressWarnings("javadoc")
 public class SimpleStringCriteriaFunction implements Function<CriteriaSet, Set<MetadataIndexKey>> {
     
     @Nullable public Set<MetadataIndexKey> apply(@Nullable CriteriaSet input) {

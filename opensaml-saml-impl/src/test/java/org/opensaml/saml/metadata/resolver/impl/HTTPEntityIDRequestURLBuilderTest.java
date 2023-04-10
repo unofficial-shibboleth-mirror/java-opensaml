@@ -17,13 +17,13 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class HTTPEntityIDRequestURLBuilderTest {
     
     private HTTPEntityIDRequestURLBuilder function = new HTTPEntityIDRequestURLBuilder();
@@ -46,9 +46,9 @@ public class HTTPEntityIDRequestURLBuilderTest {
         Assert.assertNull(function.apply(new CriteriaSet()));
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
+    @Test
     public void testNullEntityID() {
-        function.apply(null);
+        Assert.assertNull(function.apply(null));
     }
 
 }

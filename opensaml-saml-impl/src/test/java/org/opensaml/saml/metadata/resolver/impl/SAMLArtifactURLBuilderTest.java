@@ -36,9 +36,7 @@ import com.google.common.io.BaseEncoding;
 
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class SAMLArtifactURLBuilderTest {
     
     private SAMLArtifactURLBuilder builder = new SAMLArtifactURLBuilder();

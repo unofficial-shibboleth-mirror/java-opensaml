@@ -74,25 +74,33 @@ public class EntityIDDigestGenerator implements Function<CriteriaSet, String> {
         suffix = StringSupport.trimOrNull(keySuffix);
         separator = StringSupport.trimOrNull(valueSeparator);
         
-        digester = valueDigester;
-        if (digester == null) {
+        if (valueDigester != null) {
+            digester = valueDigester;
+        } else {
             try {
                 digester = new StringDigester(JCAConstants.DIGEST_SHA1, OutputFormat.HEX_LOWER);
             } catch (final NoSuchAlgorithmException e) {
                 // this can't really happen b/c SHA-1 is required to be supported on all JREs.
+                throw new RuntimeException("No SHA-1 support in runtime");
             }
         }
     }
 
     /** {@inheritDoc} */
     @Nullable public String apply(@Nullable final CriteriaSet criteria) {
-        if (criteria == null || !criteria.contains(EntityIdCriterion.class)) {
+        
+        final EntityIdCriterion criterion = criteria != null ? criteria.get(EntityIdCriterion.class) : null;
+        if (criterion == null) {
             return null;
         }
         
-        final String digested = digester.apply(criteria.get(EntityIdCriterion.class).getEntityId());
+        final String digested = digester.apply(criterion.getEntityId());
         
-        return buildKey(digested);
+        if (digested != null) {
+            return buildKey(digested);
+        }
+        
+        return null;
     }
     
     /**

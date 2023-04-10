@@ -43,6 +43,7 @@ import net.shibboleth.shared.resolver.ResolverException;
  * Test metadata predicate-based filtering code implemented in {@link AbstractMetadataResolver} 
  * and {@link AbstractBatchMetadataResolver}, using {@link FilesystemMetadataResolver}.
  */
+@SuppressWarnings("javadoc")
 public class PredicateFilteringTest extends XMLObjectBaseTestCase {
     
     private FilesystemMetadataResolver metadataProvider;

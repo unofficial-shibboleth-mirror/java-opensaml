@@ -45,6 +45,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.testing.RepositorySupport;
 import net.shibboleth.shared.testing.VelocityEngine;
 
+@SuppressWarnings("javadoc")
 public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     private FunctionDrivenDynamicHTTPMetadataResolver resolver;

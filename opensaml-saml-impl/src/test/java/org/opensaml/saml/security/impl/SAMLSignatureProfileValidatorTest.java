@@ -18,8 +18,14 @@
 package org.opensaml.saml.security.impl;
 
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.logic.Constraint;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
+
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.saml.common.SignableSAMLObject;
 import org.opensaml.xmlsec.signature.Signature;
@@ -29,6 +35,7 @@ import org.opensaml.xmlsec.signature.support.SignatureException;
 /**
  * Test the SAML XML Signature profile validator.
  */
+@SuppressWarnings("javadoc")
 public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
     
     private SAMLSignatureProfileValidator validator;
@@ -107,9 +114,10 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
      * @param filename file containing a signed SignableSAMLObject as its document element.
      * @return the signature from the indicated element
      */
-    protected Signature getSignature(String filename) {
+    @Nonnull protected Signature getSignature(@Nonnull String filename) {
         SignableSAMLObject signableObj = (SignableSAMLObject) unmarshallElement(filename);
-        return signableObj.getSignature();
+        assert signableObj != null;
+        return Constraint.isNotNull(signableObj.getSignature(), "Signature was null");
     }
     
     /**
@@ -119,10 +127,10 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
      * @param message failure message if the validation does not pass
      * @param validateTarget the XMLObject to validate
      */
-    protected void assertValidationPass(String message, Signature validateTarget) {
+    protected void assertValidationPass(@Nonnull String message, @Nonnull Signature validateTarget) {
        try {
            validator.validate(validateTarget);
-       } catch (SignatureException e) {
+       } catch (final SignatureException e) {
            Assert.fail(message + " : Expected success, but validation failure raised ValidationException: " + e.getMessage());
        }
     }
@@ -134,13 +142,12 @@ public class SAMLSignatureProfileValidatorTest extends XMLObjectBaseTestCase {
      * @param message failure message if the validation does not fail
      * @param validateTarget XMLObject to validate
      */
-    protected void assertValidationFail(String message, Signature validateTarget) {
+    protected void assertValidationFail(@Nonnull String message, @Nonnull Signature validateTarget) {
        try {
            validator.validate(validateTarget);
            Assert.fail(message + " : Validation success, expected failure to raise ValidationException");
-       } catch (SignatureException e) {
+       } catch (final SignatureException e) {
        }
     }
     
-
 }

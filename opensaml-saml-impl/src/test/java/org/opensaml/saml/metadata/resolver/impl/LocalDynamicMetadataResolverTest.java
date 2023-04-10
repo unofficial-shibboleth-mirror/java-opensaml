@@ -39,13 +39,13 @@ import com.google.common.util.concurrent.Uninterruptibles;
 import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.codec.StringDigester.OutputFormat;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /**
  * Unit test for {@link LocalDynamicMetadataResolver}.
  */
+@SuppressWarnings("javadoc")
 public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     
     private LocalDynamicMetadataResolver resolver;
@@ -177,11 +177,6 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         sourceManager.save(entityID1, entity1);
         
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID1))), entity1);
-    }
-    
-    @Test(expectedExceptions=ConstraintViolationException.class)
-    public void testCtorMissingManager() {
-        resolver = new LocalDynamicMetadataResolver(null);
     }
     
 }

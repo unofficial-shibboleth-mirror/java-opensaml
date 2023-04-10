@@ -36,6 +36,7 @@ import org.testng.annotations.Test;
 import com.google.common.base.Predicates;
 import com.google.common.io.Files;
 
+@SuppressWarnings("javadoc")
 public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
 
     private FilesystemMetadataResolver metadataProvider;

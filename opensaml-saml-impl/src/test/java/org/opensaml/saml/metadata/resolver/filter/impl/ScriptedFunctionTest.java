@@ -35,9 +35,6 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.resource.Resource;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
 
-/**
- *
- */
 @SuppressWarnings("javadoc")
 public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
     
@@ -54,6 +51,7 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
     @Test public void inlineScript() throws ScriptException {
         
         final Set<String> s = ScriptedTrustedNamesFunction.inlineScript(SCRIPT_8).apply(makeObject());
+        assert s != null;
         Assert.assertEquals(s.size(), 1);
         Assert.assertTrue(s.contains("String"));
    }
@@ -62,7 +60,7 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
     @Test public void fileScript() throws ScriptException, IOException {
         final Resource r = ResourceHelper.of(new ClassPathResource(FILE_8));
         final Set<String> result = ScriptedTrustedNamesFunction.resourceScript(r).apply(makeObject());
-
+        assert result != null;
         Assert.assertEquals(result.size(), 1);
         Assert.assertTrue(result.contains("String"));
     }
@@ -73,7 +71,9 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
         what.setCustomObject(Collections.singleton("String"));
         
         final Set<String> s = what.apply(makeObject());
+        assert s != null;
         Assert.assertEquals(s.size(), 1);
         Assert.assertTrue(s.contains("String"));
    }
+
 }

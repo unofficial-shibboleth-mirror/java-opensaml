@@ -65,6 +65,6 @@ public interface MetadataIndex {
      *         but will not contain null elements.
      */
     @Nullable @Unmodifiable @NotLive 
-    public Set<MetadataIndexKey> generateKeys(@Nonnull final CriteriaSet criteriaSet);
+    public Set<MetadataIndexKey> generateKeys(@Nullable final CriteriaSet criteriaSet);
 
 }

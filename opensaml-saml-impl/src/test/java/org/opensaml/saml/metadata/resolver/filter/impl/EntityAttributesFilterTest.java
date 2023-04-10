@@ -24,6 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -46,6 +47,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements Predicate<EntityDescriptor> {
     
     private SAMLObjectBuilder<Attribute> tagBuilder;
@@ -92,7 +94,7 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         final Collection<Attribute> tags = List.of(tag, tag2);
         
         final EntityAttributesFilter filter = new EntityAttributesFilter();
-        filter.setRules(Collections.singletonMap(this, tags));
+        filter.setRules(CollectionSupport.singletonMap(this, tags));
         filter.initialize();
         
         metadataProvider.setMetadataFilter(filter);
@@ -101,9 +103,9 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
 
         EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
+        assert entity != null;
         Extensions exts = entity.getExtensions();
-        Assert.assertNotNull(exts);
+        assert exts != null;
         Collection<XMLObject> extElements = exts.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME);
         Assert.assertFalse(extElements.isEmpty());
         EntityAttributes extTags = (EntityAttributes) extElements.iterator().next();
@@ -116,7 +118,7 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         
         key = new EntityIdCriterion("https://cms.psu.edu/Shibboleth");
         entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
+        assert entity != null;
         exts = entity.getExtensions();
         Assert.assertNull(exts);
     }
@@ -132,7 +134,7 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         final Collection<Attribute> tags = Collections.singletonList(tag);
         
         final EntityAttributesFilter filter = new EntityAttributesFilter();
-        filter.setRules(Collections.singletonMap(this, tags));
+        filter.setRules(CollectionSupport.singletonMap(this, tags));
         filter.setAttributeFilter(input -> "foo".equals(input.getName()));
         filter.initialize();
         
@@ -142,9 +144,9 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
 
         EntityIdCriterion key = new EntityIdCriterion("https://carmenwiki.osu.edu/shibboleth");
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(key));
-        Assert.assertNotNull(entity);
+        assert entity != null;
         Extensions exts = entity.getExtensions();
-        Assert.assertNotNull(exts);
+        assert exts != null;
         Collection<XMLObject> extElements = exts.getUnknownXMLObjects(EntityAttributes.DEFAULT_ELEMENT_NAME);
         Assert.assertFalse(extElements.isEmpty());
         EntityAttributes extTags = (EntityAttributes) extElements.iterator().next();
@@ -155,7 +157,7 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
 
     /** {@inheritDoc} */
     public boolean test(final EntityDescriptor input) {
-        return input.getEntityID().equals("https://carmenwiki.osu.edu/shibboleth");
+        return "https://carmenwiki.osu.edu/shibboleth".equals(input.getEntityID());
     }
 
 }

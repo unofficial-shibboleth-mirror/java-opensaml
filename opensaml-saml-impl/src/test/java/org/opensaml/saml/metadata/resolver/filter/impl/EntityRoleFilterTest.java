@@ -40,6 +40,7 @@ import net.shibboleth.shared.testing.RepositorySupport;
 /**
  * Unit tests for {@link EntityRoleFilter}.
  */
+@SuppressWarnings("javadoc")
 public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
     
     private HttpClient httpClient;

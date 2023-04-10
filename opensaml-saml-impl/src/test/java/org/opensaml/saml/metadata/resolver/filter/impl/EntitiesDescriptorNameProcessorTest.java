@@ -78,23 +78,27 @@ public class EntitiesDescriptorNameProcessorTest extends XMLObjectBaseTestCase {
         List<EntityGroupName> groups = null;
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
+        assert entityDescriptor != null;
         groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 1);
         Assert.assertTrue(groups.contains(groupTop));
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub1.example.org")));
+        assert entityDescriptor != null;
         groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 2);
         Assert.assertTrue(groups.contains(groupTop));
         Assert.assertTrue(groups.contains(groupSub1));
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub2.example.org")));
+        assert entityDescriptor != null;
         groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 2);
         Assert.assertTrue(groups.contains(groupTop));
         Assert.assertTrue(groups.contains(groupSub2));
         
         entityDescriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub2a.example.org")));
+        assert entityDescriptor != null;
         groups = entityDescriptor.getObjectMetadata().get(EntityGroupName.class);
         Assert.assertEquals(groups.size(), 3);
         Assert.assertTrue(groups.contains(groupTop));

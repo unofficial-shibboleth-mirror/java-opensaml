@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 /**
  * Unit tests for {@link PredicateFilter}.
  */
+@SuppressWarnings("javadoc")
 public class PredicateFilterTest extends XMLObjectBaseTestCase {
 
     private ResourceBackedMetadataResolver metadataProvider;
@@ -59,21 +60,21 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    public void testBlacklist() throws Exception {
+    public void testDenyList() throws Exception {
         
-        final String whitelisted = "urn:mace:incommon:dartmouth.edu";
-        final String blacklisted = "urn:mace:incommon:osu.edu";
+        final String allowed = "urn:mace:incommon:dartmouth.edu";
+        final String denied = "urn:mace:incommon:osu.edu";
         final String osu = "urn:mace:incommon:osu.edu";
 
-        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(blacklisted));
+        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(denied));
         
         metadataProvider.setMetadataFilter(new PredicateFilter(Direction.EXCLUDE, condition));
         metadataProvider.initialize();
         
-        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(blacklisted)));
+        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(denied)));
         Assert.assertNull(entity);
         
-        entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(whitelisted)));
+        entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(allowed)));
         Assert.assertNotNull(entity);
         
         singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.EXCLUDE, condition));
@@ -85,21 +86,21 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    public void testWhitelist() throws Exception {
+    public void testAllowList() throws Exception {
         
-        final String whitelisted = "urn:mace:incommon:dartmouth.edu";
-        final String blacklisted = "urn:mace:incommon:osu.edu";
+        final String allowed = "urn:mace:incommon:dartmouth.edu";
+        final String denied = "urn:mace:incommon:osu.edu";
         final String osu = "urn:mace:incommon:osu.edu";
 
-        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(whitelisted));
+        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(allowed));
         
         metadataProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE, condition));
         metadataProvider.initialize();
         
-        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(blacklisted)));
+        EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(denied)));
         Assert.assertNull(entity);
         
-        entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(whitelisted)));
+        entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(allowed)));
         Assert.assertNotNull(entity);
         
         singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE,  new EntityIdPredicate(Collections.singletonList(osu))));

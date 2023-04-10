@@ -37,9 +37,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
     
     private EntityDescriptor a, b, c;
@@ -58,18 +56,18 @@ public class MetadataIndexManagerTest extends XMLObjectBaseTestCase {
         a = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         a.setEntityID("urn:test:a");
         a.getRoleDescriptors().add((RoleDescriptor) XMLObjectSupport.buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME));
-        critAEntity = new SimpleStringCriterion(a.getEntityID().toUpperCase());
+        critAEntity = new SimpleStringCriterion("urn:test:a".toUpperCase());
         
         b = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         b.setEntityID("urn:test:b");
         b.getRoleDescriptors().add((RoleDescriptor) XMLObjectSupport.buildXMLObject(IDPSSODescriptor.DEFAULT_ELEMENT_NAME));
         b.getRoleDescriptors().add((RoleDescriptor) XMLObjectSupport.buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME));
-        critBEntity = new SimpleStringCriterion(b.getEntityID().toUpperCase());
+        critBEntity = new SimpleStringCriterion("urn:test:b".toUpperCase());
         
         c = (EntityDescriptor) XMLObjectSupport.buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         c.setEntityID("urn:test:c");
         c.getRoleDescriptors().add((RoleDescriptor) XMLObjectSupport.buildXMLObject(IDPSSODescriptor.DEFAULT_ELEMENT_NAME));
-        critCEntity = new SimpleStringCriterion(c.getEntityID().toUpperCase());
+        critCEntity = new SimpleStringCriterion("urn:test:c".toUpperCase());
         
         criteriaSet = new CriteriaSet();
         

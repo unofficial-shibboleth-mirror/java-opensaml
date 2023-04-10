@@ -17,15 +17,18 @@
 
 package org.opensaml.saml.metadata.resolver.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A <code>MetadataProvider</code> implementation that retrieves metadata from a DOM <code>Element</code> as
@@ -37,26 +40,18 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(DOMMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(DOMMetadataResolver.class);
 
     /** Root metadata element exposed by this provider. */
-    private Element metadataElement;
+    @Nonnull private Element metadataElement;
 
     /**
      * Constructor.
      * 
      * @param mdElement the metadata element
      */
-    public DOMMetadataResolver(final Element mdElement) {
-        super();
-        metadataElement = mdElement;
-    }
-
-    /** {@inheritDoc} */
-    @Override protected void doDestroy() {
-        metadataElement = null;
-   
-        super.doDestroy();
+    public DOMMetadataResolver(@Nonnull final Element mdElement) {
+        metadataElement = Constraint.isNotNull(mdElement, "DOM Element cannot be null");
     }
     
     /** {@inheritDoc} */
@@ -64,7 +59,7 @@ public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
         super.initMetadataResolver();
         
         try {
-            final Unmarshaller unmarshaller = getUnmarshallerFactory().getUnmarshaller(metadataElement);
+            final Unmarshaller unmarshaller = getUnmarshallerFactory().ensureUnmarshaller(metadataElement);
             final XMLObject metadataTemp = unmarshaller.unmarshall(metadataElement);
             final BatchEntityBackingStore newBackingStore = preProcessNewMetadata(metadataTemp);
             releaseMetadataDOM(metadataTemp);
@@ -79,4 +74,5 @@ public class DOMMetadataResolver extends AbstractBatchMetadataResolver {
             throw new ComponentInitializationException(errorMsg, e);
         }
     }
+
 }

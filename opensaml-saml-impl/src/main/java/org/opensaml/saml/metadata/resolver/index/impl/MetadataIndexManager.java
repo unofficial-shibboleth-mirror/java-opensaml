@@ -116,7 +116,7 @@ public class MetadataIndexManager<T> {
      *          and the wrapped set contains the indexed data, which may be empty.
      */
     @Nonnull @NonnullElements
-    public Optional<Set<T>> lookupIndexedItems(@Nonnull final CriteriaSet criteria) {
+    public Optional<Set<T>> lookupIndexedItems(@Nullable final CriteriaSet criteria) {
         final Set<T> items = new HashSet<>();
         for (final MetadataIndex index : indexes.keySet()) {
             final Set<MetadataIndexKey> keys = index.generateKeys(criteria);
