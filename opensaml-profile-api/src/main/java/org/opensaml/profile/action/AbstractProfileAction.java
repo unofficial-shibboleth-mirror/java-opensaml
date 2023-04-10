@@ -50,6 +50,9 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
     /** Current HTTP response, if available. */
     @Nullable private  NonnullSupplier<HttpServletResponse> httpServletResponseSupplier;
 
+    /** Has {@link #doPreExecute(ProfileRequestContext)} been called?. Only ever set to true */
+    private boolean preExecuted;
+
     /**
      * Get the current HTTP request if available.
      * 
@@ -133,6 +136,7 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
         // error object using the Java 7 API.
 
         if (doPreExecute(profileRequestContext)) {
+            preExecuted = true;
             try {
                 doExecute(profileRequestContext);
             } catch (final Throwable t) {
@@ -238,6 +242,19 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
     protected void doPostExecute(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final Exception e) {
         doPostExecute(profileRequestContext);
+    }
+
+    /**
+     * Has the {@link #doPreExecute(ProfileRequestContext)} method been entirely called?
+     *
+     * Note the unsynchronized access.  The underlying field is only ever set true, so if true is
+     * returned it is correct, if false is returned is is not safe to make any assumptions (even if
+     * there was an call in flight.
+     *
+     * @since 5.0.0
+     */
+    protected boolean isPreExecuteCalled() {
+        return preExecuted;
     }
 
     /**
