@@ -164,10 +164,10 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         messageContext = new MessageContext();
         messageContext.setMessage(buildInboundSAMLMessage());
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
-        messageContext.getSubcontext(ClientTLSSecurityParametersContext.class, true).setValidationParameters(params);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(issuer);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.ensureSubcontext(SAMLProtocolContext.class).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.ensureSubcontext(ClientTLSSecurityParametersContext.class).setValidationParameters(params);
     }
     
     /**
@@ -181,10 +181,10 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), issuer, 
+        Assert.assertEquals(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
         //TODO this may change
-        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
@@ -205,15 +205,15 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         
         messageContext.removeSubcontext(SAMLPeerEntityContext.class);
         Assert.assertNull(messageContext.getSubcontext(SAMLPeerEntityContext.class));
-        messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.ensureSubcontext(SAMLPresenterEntityContext.class).setEntityId(issuer);
+        messageContext.ensureSubcontext(SAMLPresenterEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
         
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).getEntityId(), issuer, 
+        Assert.assertEquals(messageContext.ensureSubcontext(SAMLPresenterEntityContext.class).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
         //TODO this may change
-        Assert.assertTrue(messageContext.getSubcontext(SAMLPresenterEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.ensureSubcontext(SAMLPresenterEntityContext.class).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
@@ -247,14 +247,14 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         req.setQuery(query);
         messageContext.setMessage(req);
         
-        messageContext.getSubcontext(SAMLPeerEntityContext.class).setEntityId(null);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(null);
         
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), 
+        Assert.assertEquals(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).getEntityId(), 
                 issuer, "Unexpected value for Issuer found");
         //TODO this may change
-        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
@@ -271,17 +271,17 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
         validX509Cred.setEntityId("SomeCoolIssuer");
         trustedCredentials.add(validX509Cred);
         
-        messageContext.getSubcontext(SAMLPeerEntityContext.class).setEntityId(null);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(null);
         
         
         handler.invoke(messageContext);
         
         // Note that entityID for this test will be that contained in the SAML message,
         // since it's dynamically resolved by the context.
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), 
+        Assert.assertEquals(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).getEntityId(), 
                 "SomeCoolIssuer", "Unexpected value for Issuer found");
         //TODO this may change
-        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
     
@@ -292,8 +292,9 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoTrustEngine() throws MessageHandlerException {
-        messageContext.getSubcontext(ClientTLSSecurityParametersContext.class).getValidationParameters()
-            .setX509TrustEngine(null);
+        final var params = messageContext.ensureSubcontext(ClientTLSSecurityParametersContext.class).getValidationParameters();
+        assert params != null;
+        params.setX509TrustEngine(null);
         
         trustedCredentials.add(validX509Cred);
         
@@ -307,8 +308,9 @@ public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCa
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testNoNameOptions() throws MessageHandlerException {
-        messageContext.getSubcontext(ClientTLSSecurityParametersContext.class).getValidationParameters()
-            .setCertificateNameOptions(null);
+        final var params = messageContext.ensureSubcontext(ClientTLSSecurityParametersContext.class).getValidationParameters();
+        assert params != null;
+        params.setCertificateNameOptions(null);
         
         trustedCredentials.add(validX509Cred);
         

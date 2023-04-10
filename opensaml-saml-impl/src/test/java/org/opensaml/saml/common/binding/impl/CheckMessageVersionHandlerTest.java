@@ -21,7 +21,7 @@ import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.saml.common.SAMLVersion;
-import org.opensaml.saml.saml1.core.RequestAbstractType;
+import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.opensaml.saml.saml2.core.AttributeQuery;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link CheckMessageVersionHandler} unit test. */
+@SuppressWarnings("javadoc")
 public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
 
     @Test(expectedExceptions = MessageHandlerException.class)
@@ -106,8 +107,9 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
     @Test(expectedExceptions = MessageHandlerException.class)
     public void testSaml2MessageFail() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
-        messageCtx.setMessage(SAML1ActionTestingSupport.buildAttributeQueryRequest(null));
-        ((RequestAbstractType) messageCtx.getMessage()).setVersion(SAMLVersion.VERSION_20);
+        final Request req = SAML1ActionTestingSupport.buildAttributeQueryRequest(null);
+        messageCtx.setMessage(req);
+        req.setVersion(SAMLVersion.VERSION_20);
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
         
@@ -143,8 +145,9 @@ public class CheckMessageVersionHandlerTest extends OpenSAMLInitBaseTestCase {
     @Test(expectedExceptions = MessageHandlerException.class)
     public void testSaml1MessageFail() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
-        messageCtx.setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
-        ((AttributeQuery) messageCtx.getMessage()).setVersion(SAMLVersion.VERSION_11);
+        final AttributeQuery req = SAML2ActionTestingSupport.buildAttributeQueryRequest(null);
+        messageCtx.setMessage(req);
+        req.setVersion(SAMLVersion.VERSION_11);
 
         final CheckMessageVersionHandler handler = new CheckMessageVersionHandler();
         

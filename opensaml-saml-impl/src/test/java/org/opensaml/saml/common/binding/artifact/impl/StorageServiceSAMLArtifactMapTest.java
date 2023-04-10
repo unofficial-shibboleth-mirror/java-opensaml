@@ -20,6 +20,8 @@ package org.opensaml.saml.common.binding.artifact.impl;
 import java.io.IOException;
 import java.time.Duration;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.common.SAMLObject;
@@ -35,14 +37,15 @@ import org.xmlunit.diff.Diff;
 /**
  * Test the storage-backed SAML artifact map implementation.
  */
+@SuppressWarnings("javadoc")
 public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
     private MemoryStorageService storageService;
     private StorageServiceSAMLArtifactMap artifactMap;
 
-    private String artifact = "the-artifact";
-    private String issuerId = "urn:test:issuer";
-    private String rpId = "urn:test:rp";
+    @Nonnull private final String artifact = "the-artifact";
+    @Nonnull private final String issuerId = "urn:test:issuer";
+    @Nonnull private final String rpId = "urn:test:rp";
 
     private SAMLObject samlObject;
     private Element origElement;
@@ -74,7 +77,7 @@ public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(artifactMap.contains(artifact));
 
         final SAMLArtifactMapEntry entry = artifactMap.get(artifact);
-        Assert.assertNotNull(entry);
+        assert entry != null;
 
         Assert.assertEquals(entry.getArtifact(), artifact, "Invalid value for artifact");
         Assert.assertEquals(entry.getIssuerId(), issuerId, "Invalid value for issuer ID");
@@ -82,8 +85,7 @@ public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
         // Test SAMLObject reconstitution
         final SAMLObject retrievedObject = entry.getSamlMessage();
-        final Element newElement =
-                marshallerFactory.getMarshaller(retrievedObject).marshall(retrievedObject);
+        final Element newElement = marshallerFactory.ensureMarshaller(retrievedObject).marshall(retrievedObject);
         
         final Diff diff = DiffBuilder.compare(origElement).withTest(newElement).checkForIdentical().ignoreWhitespace().build();
         Assert.assertFalse(diff.hasDifferences(), diff.toString());

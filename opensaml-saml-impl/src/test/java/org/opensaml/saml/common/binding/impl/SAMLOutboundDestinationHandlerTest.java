@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 /**
  * Test the {@link SAMLOutboundDestinationHandler}.
  */
+@SuppressWarnings("javadoc")
 public class SAMLOutboundDestinationHandlerTest extends XMLObjectBaseTestCase {
     
     private SAMLOutboundDestinationHandler handler;
@@ -47,8 +48,8 @@ public class SAMLOutboundDestinationHandlerTest extends XMLObjectBaseTestCase {
         
         handler = new SAMLOutboundDestinationHandler();
         messageContext = new MessageContext();
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).
-            getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).
+            ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
     }
     
     @Test

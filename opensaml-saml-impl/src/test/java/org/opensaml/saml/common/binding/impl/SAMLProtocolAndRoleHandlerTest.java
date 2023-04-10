@@ -32,9 +32,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class SAMLProtocolAndRoleHandlerTest {
     
     private SAMLProtocolAndRoleHandler handler;
@@ -54,11 +52,13 @@ public class SAMLProtocolAndRoleHandlerTest {
 
         handler.invoke(messageContext);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLProtocolContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLProtocolContext.class).getProtocol(), SAMLConstants.SAML20P_NS);
+        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class); 
+        assert protocolCtx != null;
+        Assert.assertEquals(protocolCtx.getProtocol(), SAMLConstants.SAML20P_NS);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLPeerEntityContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class).getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        final SAMLPresenterEntityContext presenterCtx = messageContext.getSubcontext(SAMLPresenterEntityContext.class);
+        assert presenterCtx != null;
+        Assert.assertEquals(presenterCtx.getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
     }
 
     @Test
@@ -70,11 +70,13 @@ public class SAMLProtocolAndRoleHandlerTest {
 
         handler.invoke(messageContext);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLProtocolContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLProtocolContext.class).getProtocol(), SAMLConstants.SAML20P_NS);
+        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class); 
+        assert protocolCtx != null;
+        Assert.assertEquals(protocolCtx.getProtocol(), SAMLConstants.SAML20P_NS);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLPresenterEntityContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPresenterEntityContext.class).getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        final SAMLPresenterEntityContext presenterCtx = messageContext.getSubcontext(SAMLPresenterEntityContext.class);
+        assert presenterCtx != null;
+        Assert.assertEquals(presenterCtx.getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
     }
     
     @Test
@@ -83,16 +85,18 @@ public class SAMLProtocolAndRoleHandlerTest {
         handler.initialize();
         
         final InOutOperationContext opContext = new InOutOperationContext(messageContext, new MessageContext());
-        opContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS); 
-        opContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        opContext.ensureSubcontext(SAMLProtocolContext.class).setProtocol(SAMLConstants.SAML20P_NS); 
+        opContext.ensureSubcontext(SAMLPeerEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
 
         handler.invoke(messageContext);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLProtocolContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLProtocolContext.class).getProtocol(), SAMLConstants.SAML20P_NS);
+        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class); 
+        assert protocolCtx != null;
+        Assert.assertEquals(protocolCtx.getProtocol(), SAMLConstants.SAML20P_NS);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLPeerEntityContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class).getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        final SAMLPresenterEntityContext presenterCtx = messageContext.getSubcontext(SAMLPresenterEntityContext.class);
+        assert presenterCtx != null;
+        Assert.assertEquals(presenterCtx.getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
     }
     
     @Test
@@ -102,16 +106,18 @@ public class SAMLProtocolAndRoleHandlerTest {
         handler.initialize();
         
         final InOutOperationContext opContext = new InOutOperationContext(messageContext, new MessageContext());
-        opContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS); 
-        opContext.getSubcontext(SAMLPresenterEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        opContext.ensureSubcontext(SAMLProtocolContext.class).setProtocol(SAMLConstants.SAML20P_NS); 
+        opContext.ensureSubcontext(SAMLPresenterEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
 
         handler.invoke(messageContext);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLProtocolContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLProtocolContext.class).getProtocol(), SAMLConstants.SAML20P_NS);
+        final SAMLProtocolContext protocolCtx = messageContext.getSubcontext(SAMLProtocolContext.class); 
+        assert protocolCtx != null;
+        Assert.assertEquals(protocolCtx.getProtocol(), SAMLConstants.SAML20P_NS);
 
-        Assert.assertNotNull(messageContext.getSubcontext(SAMLPresenterEntityContext.class));
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPresenterEntityContext.class).getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        final SAMLPresenterEntityContext presenterCtx = messageContext.getSubcontext(SAMLPresenterEntityContext.class);
+        assert presenterCtx != null;
+        Assert.assertEquals(presenterCtx.getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
     }
 
     @Test(expectedExceptions=ComponentInitializationException.class)
@@ -135,4 +141,5 @@ public class SAMLProtocolAndRoleHandlerTest {
         
         handler.invoke(messageContext);
     }
+
 }

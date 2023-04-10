@@ -39,13 +39,14 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 /**
  * test for {@link SAMLAddAttributeConsumingServiceHandler}.
  */
+@SuppressWarnings("javadoc")
 public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTestCase {
     
     private SPSSODescriptor withACS;
     private SPSSODescriptor noACS;
     
     private SAMLMetadataContext getMetadataContext(final MessageContext message) {
-        return message.ensureSubcontext(SAMLPeerEntityContext.class).getSubcontext(SAMLMetadataContext.class, true);
+        return message.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLMetadataContext.class);
     }
     
     private SAMLAddAttributeConsumingServiceHandler handler() throws ComponentInitializationException {
@@ -84,9 +85,10 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
         messageContext.setMessage(request);
         
         handler().invoke(messageContext);
-        final AttributeConsumingService acs = metadataContext.getSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        final AttributeConsumingService acs = metadataContext.ensureSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        assert acs != null;
         
-        Assert.assertTrue(acs.isDefault());
+        Assert.assertEquals(acs.isDefault(), true);
         Assert.assertEquals(acs.getIndex(), 3);
     }
 
@@ -101,9 +103,10 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
         messageContext.setMessage(request);
         
         handler().invoke(messageContext);
-        final AttributeConsumingService acs = metadataContext.getSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        final AttributeConsumingService acs = metadataContext.ensureSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        assert acs != null;
         
-        Assert.assertFalse(acs.isDefault());
+        Assert.assertEquals(acs.isDefault(), false);
         Assert.assertEquals(acs.getIndex(), 1);
     }
 
@@ -118,9 +121,10 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
         messageContext.setMessage(request);
         
         handler().invoke(messageContext);
-        final AttributeConsumingService acs = metadataContext.getSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        final AttributeConsumingService acs = metadataContext.ensureSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        assert acs != null;
         
-        Assert.assertTrue(acs.isDefault());
+        Assert.assertEquals(acs.isDefault(), true);
         Assert.assertEquals(acs.getIndex(), 3);
     }
 
@@ -146,9 +150,10 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
         messageContext.setMessage(request);
         
         handler().invoke(messageContext);
-        final AttributeConsumingService acs = metadataContext.getSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        final AttributeConsumingService acs = metadataContext.ensureSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        assert acs != null;
         
-        Assert.assertTrue(acs.isDefault());
+        Assert.assertEquals(acs.isDefault(), true);
         Assert.assertEquals(acs.getIndex(), 3);
     } 
 
@@ -167,9 +172,10 @@ public class SAMLAddAttributeConsumingServiceHandleTest extends XMLObjectBaseTes
         messageContext.setMessage(request);
         
         navigatedHandler.invoke(messageContext);
-        final AttributeConsumingService acs = metadataContext.getSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        final AttributeConsumingService acs = metadataContext.ensureSubcontext(AttributeConsumingServiceContext.class).getAttributeConsumingService();
+        assert acs != null;
         
-        Assert.assertFalse(acs.isDefault());
+        Assert.assertEquals(acs.isDefault(), false);
         Assert.assertEquals(acs.getIndex(), 1);
     }
     

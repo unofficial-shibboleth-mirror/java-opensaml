@@ -44,6 +44,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 /**
  * Tests for {@link SAMLOutboundProtocolMessageSigningHandler}.
  */
+@SuppressWarnings("javadoc")
 public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;
@@ -62,7 +63,7 @@ public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBase
         signingParameters.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         
         messageContext = new MessageContext();
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
+        messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(signingParameters);
         
         handler = new SAMLOutboundProtocolMessageSigningHandler();
         handler.setSignErrorResponses(false);

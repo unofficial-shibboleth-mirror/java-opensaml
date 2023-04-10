@@ -39,6 +39,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test the received endpoint check message handler.
  */
+@SuppressWarnings("javadoc")
 public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;
@@ -58,7 +59,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         
         httpRequest = new MockHttpServletRequest();
         
-        samlBindingContext = messageContext.getSubcontext(SAMLBindingContext.class, true);
+        samlBindingContext = messageContext.ensureSubcontext(SAMLBindingContext.class);
         samlBindingContext.setBindingUri(SAMLConstants.SAML2_REDIRECT_BINDING_URI);
         samlBindingContext.setHasBindingSignature(false);
         samlBindingContext.setIntendedDestinationEndpointURIRequired(false);
@@ -100,7 +101,8 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testEndpointMissingDestinationNotRequired() throws MessageHandlerException {
-        AuthnRequest authnRequest = (AuthnRequest) messageContext.getMessage();
+        final AuthnRequest authnRequest = (AuthnRequest) messageContext.getMessage();
+        assert authnRequest != null;
         authnRequest.setDestination(null);
         
         samlBindingContext.setIntendedDestinationEndpointURIRequired(false);
@@ -114,7 +116,8 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testEndpointMissingDestinationRequired() throws MessageHandlerException {
-        AuthnRequest authnRequest = (AuthnRequest) messageContext.getMessage();
+        final AuthnRequest authnRequest = (AuthnRequest) messageContext.getMessage();
+        assert authnRequest != null;
         authnRequest.setDestination(null);
         
         samlBindingContext.setIntendedDestinationEndpointURIRequired(true);
@@ -136,6 +139,7 @@ public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
         } catch (MalformedURLException e) {
             Assert.fail("Malformed URL: " + e.getMessage());
         }
+        assert url != null;
         request.setScheme(url.getProtocol());
         request.setServerName(url.getHost());
         if (url.getPort() != -1) {

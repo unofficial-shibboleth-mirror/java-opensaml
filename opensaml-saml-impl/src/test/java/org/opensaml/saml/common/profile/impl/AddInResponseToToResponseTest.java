@@ -38,6 +38,9 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;
     
+    /**
+     * Test set up.
+     */
     @BeforeMethod
     public void setUp() {
         prc = new RequestContextBuilder().setInboundMessage(
@@ -65,10 +68,12 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
      */
     @Test
     public void testNoRequestID() throws Exception {
-        ((RequestAbstractType) prc.getInboundMessageContext().getMessage()).setID(null);
+        final RequestAbstractType req = (RequestAbstractType) prc.ensureInboundMessageContext().getMessage();
+        assert req != null;
+        req.setID(null);
         
         final Response response = SAML1ActionTestingSupport.buildResponse();
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
         
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
         action.initialize();
@@ -81,7 +86,7 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
     @Test
     public void testSAML1Response() throws Exception {
         final Response response = SAML1ActionTestingSupport.buildResponse();
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
 
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
         action.initialize();
@@ -94,7 +99,7 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
     @Test
     public void testSAML2Response() throws Exception {
         final LogoutResponse response = SAML2ActionTestingSupport.buildLogoutResponse();
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
 
         final AddInResponseToToResponse action = new AddInResponseToToResponse();
         action.initialize();
@@ -103,4 +108,5 @@ public class AddInResponseToToResponseTest  extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertProceedEvent(prc);
         Assert.assertEquals(response.getInResponseTo(), SAML2ActionTestingSupport.REQUEST_ID);
     }
+
 }

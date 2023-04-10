@@ -23,13 +23,13 @@ import java.io.FileNotFoundException;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -46,7 +46,6 @@ import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
 import org.opensaml.saml.saml2.metadata.Endpoint;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
-import org.opensaml.saml.saml2.metadata.SingleLogoutService;
 import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
@@ -54,6 +53,7 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /** Test for {@link DefaultEndpointResolver}. */
+@SuppressWarnings("javadoc")
 public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
 
     private static final String LOCATION = "https://sp.example.org/ACS";
@@ -107,7 +107,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
     @Test
     public void testSignedRequestBadBinding() throws ResolverException {
         final CriteriaSet crits = new CriteriaSet(new EndpointCriterion<>(endpointCrit.getEndpoint(), true),
-                new BindingCriterion(Collections.emptyList()));
+                new BindingCriterion(CollectionSupport.emptyList()));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNull(ep);
     }
@@ -170,7 +170,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         final RoleDescriptorCriterion roleCrit =
                 new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
-                new BindingCriterion(Collections.singletonList(SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
+                new BindingCriterion(CollectionSupport.singletonList(SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
         Assert.assertNull(ep);
     }
@@ -206,7 +206,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
                 new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
-        Assert.assertNotNull(ep);
+        assert ep != null;
         Assert.assertEquals(ep.getBinding(), SAMLConstants.SAML2_POST_BINDING_URI);
         Assert.assertEquals(ep.getLocation(), LOCATION_POST);
         Assert.assertEquals(ep.getIndex(), Integer.valueOf(2));
@@ -226,7 +226,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
                 new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit);
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
-        Assert.assertNotNull(ep);
+        assert ep != null;
         Assert.assertEquals(ep.getBinding(), SAMLConstants.SAML2_ARTIFACT_BINDING_URI);
         Assert.assertEquals(ep.getLocation(), LOCATION_ART);
         Assert.assertEquals(ep.getIndex(), Integer.valueOf(4));
@@ -245,9 +245,9 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         final RoleDescriptorCriterion roleCrit =
                 new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
-                new BindingCriterion(Collections.singletonList(SAMLConstants.SAML2_POST_BINDING_URI)));
+                new BindingCriterion(CollectionSupport.singletonList(SAMLConstants.SAML2_POST_BINDING_URI)));
         final AssertionConsumerService ep = resolver.resolveSingle(crits);
-        Assert.assertNotNull(ep);
+        assert ep != null;
         Assert.assertEquals(ep.getBinding(), SAMLConstants.SAML2_POST_BINDING_URI);
         Assert.assertEquals(ep.getLocation(), LOCATION_POST.replace("POST2", "POST"));
         Assert.assertEquals(ep.getIndex(), Integer.valueOf(1));
@@ -273,7 +273,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(eps.size(), 4);
         Assert.assertEquals(
                 eps.stream().map(Endpoint::getBinding).collect(Collectors.toUnmodifiableList()),
-                List.of(SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
+                CollectionSupport.listOf(SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
                         SAMLConstants.SAML2_POST_BINDING_URI,
                         SAMLConstants.SAML2_POST_BINDING_URI,
                         SAMLConstants.SAML2_ARTIFACT_BINDING_URI));
@@ -292,7 +292,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         final RoleDescriptorCriterion roleCrit =
                 new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
-                new BindingCriterion(List.of(SAMLConstants.SAML2_POST_BINDING_URI, SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
+                new BindingCriterion(CollectionSupport.listOf(SAMLConstants.SAML2_POST_BINDING_URI, SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
         final List<AssertionConsumerService> eps = new ArrayList<>();
         for (final AssertionConsumerService ep : resolver.resolve(crits)) {
             eps.add(ep);
@@ -300,7 +300,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(eps.size(), 4);
         Assert.assertEquals(
                 eps.stream().map(Endpoint::getBinding).collect(Collectors.toUnmodifiableList()),
-                List.of(SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
+                CollectionSupport.listOf(SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
                         SAMLConstants.SAML2_POST_BINDING_URI,
                         SAMLConstants.SAML2_POST_BINDING_URI,
                         SAMLConstants.SAML2_ARTIFACT_BINDING_URI));
@@ -324,7 +324,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         final RoleDescriptorCriterion roleCrit =
                 new RoleDescriptorCriterion(loadMetadata("/org/opensaml/saml/common/binding/SPWithEndpoints.xml"));
         final CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit,
-                new BindingCriterion(List.of(SAMLConstants.SAML2_POST_BINDING_URI, SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
+                new BindingCriterion(CollectionSupport.listOf(SAMLConstants.SAML2_POST_BINDING_URI, SAMLConstants.SAML2_ARTIFACT_BINDING_URI)));
         final List<AssertionConsumerService> eps = new ArrayList<>();
         for (final AssertionConsumerService ep : overridden.resolve(crits)) {
             eps.add(ep);
@@ -332,7 +332,7 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(eps.size(), 4);
         Assert.assertEquals(
                 eps.stream().map(Endpoint::getBinding).collect(Collectors.toUnmodifiableList()),
-                List.of(SAMLConstants.SAML2_POST_BINDING_URI,
+                CollectionSupport.listOf(SAMLConstants.SAML2_POST_BINDING_URI,
                         SAMLConstants.SAML2_POST_BINDING_URI,
                         SAMLConstants.SAML2_ARTIFACT_BINDING_URI,
                         SAMLConstants.SAML2_ARTIFACT_BINDING_URI));
@@ -371,22 +371,22 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         
         CriteriaSet crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp.example.org/Foo"));
         AssertionConsumerService ep = resolver.resolveSingle(crits);
-        Assert.assertNotNull(ep);
+        assert ep != null;
         Assert.assertEquals(ep.getLocation(), "https://sp.example.org/POST");
         
         crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp2.example.org/Foo"));
         ep = resolver.resolveSingle(crits);
-        Assert.assertNotNull(ep);
+        assert ep != null;
         Assert.assertEquals(ep.getLocation(), "https://sp2.example.org/POST");
         
         crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp2.example.org/bar/Foo"));
         ep = resolver.resolveSingle(crits);
-        Assert.assertNotNull(ep);
+        assert ep != null;
         Assert.assertEquals(ep.getLocation(), "https://sp2.example.org/POST");
         
         crits = new CriteriaSet(endpointCrit, roleCrit, new BestMatchLocationCriterion("https://sp2.example.org/sub/Foo"));
         ep = resolver.resolveSingle(crits);
-        Assert.assertNotNull(ep);
+        assert ep != null;
         Assert.assertEquals(ep.getLocation(), "https://sp2.example.org/sub/POST");
     }
     
@@ -395,9 +395,9 @@ public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
         try {
             final URL url = getClass().getResource(path);
             Document doc = parserPool.parse(new FileInputStream(new File(url.toURI())));
-            final Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(doc.getDocumentElement());
+            final Unmarshaller unmarshaller = unmarshallerFactory.ensureUnmarshaller(doc.getDocumentElement());
             return (SPSSODescriptor) unmarshaller.unmarshall(doc.getDocumentElement());
-        } catch (FileNotFoundException | XMLParserException | URISyntaxException e) {
+        } catch (final FileNotFoundException | XMLParserException | URISyntaxException e) {
             throw new UnmarshallingException(e);
         }
     }

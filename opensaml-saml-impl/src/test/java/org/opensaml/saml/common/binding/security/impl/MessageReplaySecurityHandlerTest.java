@@ -53,8 +53,8 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
         
         messageID = "abc123";
 
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId("issuer");
-        messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageId(messageID);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId("issuer");
+        messageContext.ensureSubcontext(SAMLMessageInfoContext.class).setMessageId(messageID);
 
         storageService = new MemoryStorageService();
         storageService.setId("test");
@@ -99,7 +99,7 @@ public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
     public void testNoReplayDistinctIDs() throws MessageHandlerException {
         handler.invoke(messageContext);
 
-        messageContext.getSubcontext(SAMLMessageInfoContext.class).setMessageId("someOther" + messageID);
+        messageContext.ensureSubcontext(SAMLMessageInfoContext.class).setMessageId("someOther" + messageID);
         handler.invoke(messageContext);
     }
 

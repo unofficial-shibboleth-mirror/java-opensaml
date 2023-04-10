@@ -42,6 +42,11 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
     
     private AddNotBeforeConditionToAssertions action;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod
     public void setUp() throws ComponentInitializationException {
         prc = new RequestContextBuilder().setOutboundMessage(
@@ -75,7 +80,8 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
     public void testSingleAssertion() {
         final Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
 
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().getMessage();
+        assert response != null;
         response.getAssertions().add(assertion);
 
         action.execute(prc);
@@ -102,7 +108,8 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
         final Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
         assertion.setConditions(conditions);
 
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().getMessage();
+        assert response != null;
         response.getAssertions().add(assertion);
 
         action.execute(prc);
@@ -116,7 +123,8 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
     /** Test that the condition is properly added if there are multiple assertions in the response. */
     @Test
     public void testMultipleAssertion() {
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().getMessage();
+        assert response != null;
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
@@ -142,7 +150,7 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
         final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
         final org.opensaml.saml.saml2.core.Response response = SAML2ActionTestingSupport.buildResponse();
         
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
         response.getAssertions().add(assertion);
 
         action.execute(prc);

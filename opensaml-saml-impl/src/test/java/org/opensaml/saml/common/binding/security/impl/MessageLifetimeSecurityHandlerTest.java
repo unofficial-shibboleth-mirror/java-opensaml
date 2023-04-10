@@ -49,7 +49,7 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
         
         messageContext = new MessageContext();
         
-        messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageIssueInstant(now);
+        messageContext.ensureSubcontext(SAMLMessageInfoContext.class).setMessageIssueInstant(now);
         
         handler = new MessageLifetimeSecurityHandler();
         handler.setClockSkew(clockSkew);
@@ -74,7 +74,7 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidIssuedInFuture() throws MessageHandlerException {
-        messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageIssueInstant(now.plus(clockSkew).plusSeconds(5));
+        messageContext.ensureSubcontext(SAMLMessageInfoContext.class).setMessageIssueInstant(now.plus(clockSkew).plusSeconds(5));
         handler.invoke(messageContext);
     }
     
@@ -85,7 +85,7 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testValidIssuedInFutureWithinClockSkew() throws MessageHandlerException {
-        messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageIssueInstant(now.plus(clockSkew).minusSeconds(5));
+        messageContext.ensureSubcontext(SAMLMessageInfoContext.class).setMessageIssueInstant(now.plus(clockSkew).minusSeconds(5));
         handler.invoke(messageContext);
     }
     
@@ -96,7 +96,7 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testInvalidExpired() throws MessageHandlerException {
-        messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageIssueInstant(now.minus(messageLifetime.plus(clockSkew).plusSeconds(5)));
+        messageContext.ensureSubcontext(SAMLMessageInfoContext.class).setMessageIssueInstant(now.minus(messageLifetime.plus(clockSkew).plusSeconds(5)));
         handler.invoke(messageContext);
     }
     
@@ -107,7 +107,7 @@ public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testValidExpiredWithinClockSkew() throws MessageHandlerException {
-        messageContext.getSubcontext(SAMLMessageInfoContext.class, true).setMessageIssueInstant(now.minus(messageLifetime.plus(clockSkew).minusSeconds(5)));
+        messageContext.ensureSubcontext(SAMLMessageInfoContext.class).setMessageIssueInstant(now.minus(messageLifetime.plus(clockSkew).minusSeconds(5)));
         handler.invoke(messageContext);
     }
  

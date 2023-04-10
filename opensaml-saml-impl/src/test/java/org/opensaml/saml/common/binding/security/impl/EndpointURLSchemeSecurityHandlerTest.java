@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 /**
  * Test the security handler which evaluates message context endpoint URL schemes.
  */
+@SuppressWarnings("javadoc")
 public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     @Test
@@ -39,8 +40,7 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         
         final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(buildXMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME));
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
         EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
@@ -53,8 +53,7 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         
         final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(buildXMLObject(Response.DEFAULT_ELEMENT_NAME));
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
         EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
@@ -67,8 +66,7 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         
         final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(buildXMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME));
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
         EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
@@ -81,8 +79,7 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         
         final MessageContext messageContext = new MessageContext();
         messageContext.setMessage(buildXMLObject(Response.DEFAULT_ELEMENT_NAME));
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(endpoint);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
         EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);

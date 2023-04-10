@@ -19,6 +19,8 @@ package org.opensaml.saml.common.binding.artifact.impl;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
+
 import org.testng.annotations.Test;
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
@@ -36,11 +38,12 @@ import org.opensaml.saml.saml1.core.Response;
 /**
  * Test the storage-backed SAML artifact map entry factory.
  */
+@SuppressWarnings("javadoc")
 public class StorageServiceSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase {
 
-    private String artifact = "the-artifact";
-    private String issuerId = "urn:test:issuer";
-    private String rpId = "urn:test:rp";
+    @Nonnull private final String artifact = "the-artifact";
+    @Nonnull private final String issuerId = "urn:test:issuer";
+    @Nonnull private final String rpId = "urn:test:rp";
     
     private StorageServiceSAMLArtifactMapEntryFactory factory;
     private SAMLObject samlObject;

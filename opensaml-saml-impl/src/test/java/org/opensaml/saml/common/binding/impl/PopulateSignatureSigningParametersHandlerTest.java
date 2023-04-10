@@ -17,7 +17,8 @@
 
 package org.opensaml.saml.common.binding.impl;
 
-import java.util.Collections;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.messaging.context.MessageContext;
@@ -34,13 +35,13 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
-import net.shibboleth.shared.logic.Constraint;
-import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /** Unit test for {@link PopulateSignatureSigningParametersHandler}. */
+@SuppressWarnings("javadoc")
 public class PopulateSignatureSigningParametersHandlerTest extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;
@@ -57,14 +58,15 @@ public class PopulateSignatureSigningParametersHandlerTest extends OpenSAMLInitB
         handler.initialize();
     }
     
-    @Test(expectedExceptions=ConstraintViolationException.class)
     public void testNoContext() throws Exception {
         handler.setSignatureSigningParametersResolver(new MockResolver(false));
         handler.initialize();
         
         prc.setOutboundMessageContext(null);
         
-        handler.invoke(prc.getOutboundMessageContext());
+        handler.invoke(prc.ensureOutboundMessageContext());
+        Assert.assertNull(prc.ensureOutboundMessageContext().ensureSubcontext(
+                SecurityParametersContext.class).getSignatureSigningParameters());
     }
     
     @Test(expectedExceptions=MessageHandlerException.class)
@@ -72,7 +74,7 @@ public class PopulateSignatureSigningParametersHandlerTest extends OpenSAMLInitB
         handler.setSignatureSigningParametersResolver(new MockResolver(true));
         handler.initialize();
         
-        handler.invoke(prc.getOutboundMessageContext());
+        handler.invoke(prc.ensureOutboundMessageContext());
     }    
 
     @Test
@@ -80,8 +82,8 @@ public class PopulateSignatureSigningParametersHandlerTest extends OpenSAMLInitB
         handler.setSignatureSigningParametersResolver(new MockResolver(false));
         handler.initialize();
         
-        handler.invoke(prc.getOutboundMessageContext());
-        Assert.assertNotNull(prc.getOutboundMessageContext().getSubcontext(
+        handler.invoke(prc.ensureOutboundMessageContext());
+        Assert.assertNotNull(prc.ensureOutboundMessageContext().ensureSubcontext(
                 SecurityParametersContext.class).getSignatureSigningParameters());
     }    
 
@@ -98,9 +100,9 @@ public class PopulateSignatureSigningParametersHandlerTest extends OpenSAMLInitB
         
         prc.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(new SignatureSigningParameters());
         
-        handler.invoke(prc.getOutboundMessageContext());
-        Assert.assertSame(prc.getSubcontext(SecurityParametersContext.class).getSignatureSigningParameters(),
-                prc.getOutboundMessageContext().getSubcontext(SecurityParametersContext.class).getSignatureSigningParameters());
+        handler.invoke(prc.ensureOutboundMessageContext());
+        Assert.assertSame(prc.ensureSubcontext(SecurityParametersContext.class).getSignatureSigningParameters(),
+                prc.ensureOutboundMessageContext().ensureSubcontext(SecurityParametersContext.class).getSignatureSigningParameters());
     }    
     
     private class MockResolver implements SignatureSigningParametersResolver {
@@ -112,19 +114,20 @@ public class PopulateSignatureSigningParametersHandlerTest extends OpenSAMLInitB
         }
         
         /** {@inheritDoc} */
-        @Override
-        public Iterable<SignatureSigningParameters> resolve(CriteriaSet criteria) throws ResolverException {
-            return Collections.singletonList(resolveSingle(criteria));
+        @Nonnull public Iterable<SignatureSigningParameters> resolve(@Nullable final CriteriaSet criteria) throws ResolverException {
+            final SignatureSigningParameters params = resolveSingle(criteria);
+            return params != null ? CollectionSupport.singletonList(params) : CollectionSupport.emptyList();
         }
 
         /** {@inheritDoc} */
-        @Override
-        public SignatureSigningParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
+        @Nullable public SignatureSigningParameters resolveSingle(@Nullable final CriteriaSet criteria) throws ResolverException {
             if (throwException) {
                 throw new ResolverException();
             }
             
-            Constraint.isNotNull(criteria.get(SignatureSigningConfigurationCriterion.class), "Criterion was null");
+            if (criteria == null || criteria.get(SignatureSigningConfigurationCriterion.class) == null) {
+                return null;
+            }
             return new SignatureSigningParameters();
         }
         

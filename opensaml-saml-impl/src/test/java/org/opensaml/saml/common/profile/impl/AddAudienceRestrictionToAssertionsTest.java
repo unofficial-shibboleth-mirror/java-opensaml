@@ -22,6 +22,8 @@ import net.shibboleth.shared.logic.FunctionSupport;
 
 import java.util.List;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.profile.action.EventIds;
@@ -43,11 +45,16 @@ import org.testng.annotations.Test;
 /** {@link AddAudienceRestrictionToAssertions} unit test. */
 public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCase {
 
-    private static final String AUDIENCE1 = "foo";
-    private static final String AUDIENCE2 = "foo2";
+    @Nonnull private static final String AUDIENCE1 = "foo";
+    @Nonnull private static final String AUDIENCE2 = "foo2";
     
     private AddAudienceRestrictionToAssertions action;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod public void setUp() throws ComponentInitializationException {
         action = new AddAudienceRestrictionToAssertions();
         action.setAudienceRestrictionsLookupStrategy(FunctionSupport.constant(List.of(AUDIENCE1, AUDIENCE2)));
@@ -99,9 +106,10 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
-        final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
+        final Conditions c2 = assertion.getConditions();
+        assert c2 != null;
+        Assert.assertEquals(c2.getAudienceRestrictionConditions().size(), 1);
+        final AudienceRestrictionCondition audcond = c2.getAudienceRestrictionConditions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
         Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
         Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
@@ -130,9 +138,10 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
-        final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
+        final Conditions c2 = assertion.getConditions();
+        assert c2 != null;
+        Assert.assertEquals(c2.getAudienceRestrictionConditions().size(), 1);
+        final AudienceRestrictionCondition audcond = c2.getAudienceRestrictionConditions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
         Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
         Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
@@ -166,9 +175,10 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
-        final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
+        final Conditions c2 = assertion.getConditions();
+        assert c2 != null;
+        Assert.assertEquals(c2.getAudienceRestrictionConditions().size(), 1);
+        final AudienceRestrictionCondition audcond = c2.getAudienceRestrictionConditions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
         Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
         Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
@@ -194,9 +204,10 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getConditions());
-            Assert.assertEquals(assertion.getConditions().getAudienceRestrictionConditions().size(), 1);
-            final AudienceRestrictionCondition audcond = assertion.getConditions().getAudienceRestrictionConditions().get(0);
+            final Conditions c2 = assertion.getConditions();
+            assert c2 != null;
+            Assert.assertEquals(c2.getAudienceRestrictionConditions().size(), 1);
+            final AudienceRestrictionCondition audcond = c2.getAudienceRestrictionConditions().get(0);
             Assert.assertEquals(audcond.getAudiences().size(), 2);
             Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
             Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);
@@ -222,9 +233,10 @@ public class AddAudienceRestrictionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertEquals(assertion.getConditions().getAudienceRestrictions().size(), 1);
-        final AudienceRestriction audcond = assertion.getConditions().getAudienceRestrictions().get(0);
+        final org.opensaml.saml.saml2.core.Conditions c2 = assertion.getConditions();
+        assert c2 != null;
+        Assert.assertEquals(c2.getAudienceRestrictions().size(), 1);
+        final AudienceRestriction audcond = c2.getAudienceRestrictions().get(0);
         Assert.assertEquals(audcond.getAudiences().size(), 2);
         Assert.assertEquals(audcond.getAudiences().get(0).getURI(), AUDIENCE1);
         Assert.assertEquals(audcond.getAudiences().get(1).getURI(), AUDIENCE2);

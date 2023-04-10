@@ -30,9 +30,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class InResponseToSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private InOutOperationContext opContext;
@@ -48,54 +46,54 @@ public class InResponseToSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testSAML2Match() throws MessageHandlerException {
-        ArtifactResolve request = buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);
+        final ArtifactResolve request = buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);
         request.setID("abc123");
-        opContext.getOutboundMessageContext().setMessage(request);
+        opContext.ensureOutboundMessageContext().setMessage(request);
         
-        ArtifactResponse response = buildXMLObject(ArtifactResponse.DEFAULT_ELEMENT_NAME);
+        final ArtifactResponse response = buildXMLObject(ArtifactResponse.DEFAULT_ELEMENT_NAME);
         response.setInResponseTo("abc123");
-        opContext.getInboundMessageContext().setMessage(response);
+        opContext.ensureInboundMessageContext().setMessage(response);
         
-        handler.invoke(opContext.getInboundMessageContext());
+        handler.invoke(opContext.ensureInboundMessageContext());
     }
 
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testSAML2NonMatch() throws MessageHandlerException {
-        ArtifactResolve request = buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);
+        final ArtifactResolve request = buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);
         request.setID("abc123");
-        opContext.getOutboundMessageContext().setMessage(request);
+        opContext.ensureOutboundMessageContext().setMessage(request);
         
-        ArtifactResponse response = buildXMLObject(ArtifactResponse.DEFAULT_ELEMENT_NAME);
+        final ArtifactResponse response = buildXMLObject(ArtifactResponse.DEFAULT_ELEMENT_NAME);
         response.setInResponseTo("xyz456");
-        opContext.getInboundMessageContext().setMessage(response);
+        opContext.ensureInboundMessageContext().setMessage(response);
         
-        handler.invoke(opContext.getInboundMessageContext());
+        handler.invoke(opContext.ensureInboundMessageContext());
     }
 
     @Test
     public void testSAML1Match() throws MessageHandlerException {
-        Request request = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        final Request request = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
         request.setID("abc123");
-        opContext.getOutboundMessageContext().setMessage(request);
+        opContext.ensureOutboundMessageContext().setMessage(request);
         
-        Response response = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
+        final Response response = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         response.setInResponseTo("abc123");
-        opContext.getInboundMessageContext().setMessage(response);
+        opContext.ensureInboundMessageContext().setMessage(response);
         
-        handler.invoke(opContext.getInboundMessageContext());
+        handler.invoke(opContext.ensureInboundMessageContext());
     }
 
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testSAML1NonMatch() throws MessageHandlerException {
-        Request request = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        final Request request = buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
         request.setID("abc123");
-        opContext.getOutboundMessageContext().setMessage(request);
+        opContext.ensureOutboundMessageContext().setMessage(request);
         
-        Response response = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
+        final Response response = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         response.setInResponseTo("xyz456");
-        opContext.getInboundMessageContext().setMessage(response);
+        opContext.ensureInboundMessageContext().setMessage(response);
         
-        handler.invoke(opContext.getInboundMessageContext());   
+        handler.invoke(opContext.ensureInboundMessageContext());   
     }
 
 }
