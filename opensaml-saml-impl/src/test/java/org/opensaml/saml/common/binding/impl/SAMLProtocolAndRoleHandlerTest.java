@@ -56,7 +56,7 @@ public class SAMLProtocolAndRoleHandlerTest {
         assert protocolCtx != null;
         Assert.assertEquals(protocolCtx.getProtocol(), SAMLConstants.SAML20P_NS);
 
-        final SAMLPresenterEntityContext presenterCtx = messageContext.getSubcontext(SAMLPresenterEntityContext.class);
+        final SAMLPeerEntityContext presenterCtx = messageContext.getSubcontext(SAMLPeerEntityContext.class);
         assert presenterCtx != null;
         Assert.assertEquals(presenterCtx.getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
     }
@@ -94,7 +94,7 @@ public class SAMLProtocolAndRoleHandlerTest {
         assert protocolCtx != null;
         Assert.assertEquals(protocolCtx.getProtocol(), SAMLConstants.SAML20P_NS);
 
-        final SAMLPresenterEntityContext presenterCtx = messageContext.getSubcontext(SAMLPresenterEntityContext.class);
+        final SAMLPeerEntityContext presenterCtx = messageContext.getSubcontext(SAMLPeerEntityContext.class);
         assert presenterCtx != null;
         Assert.assertEquals(presenterCtx.getRole(), SPSSODescriptor.DEFAULT_ELEMENT_NAME);
     }
