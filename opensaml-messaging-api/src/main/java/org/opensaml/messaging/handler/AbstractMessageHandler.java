@@ -43,6 +43,9 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
     /** Condition dictating whether to run or not. */
     @Nonnull private Predicate<MessageContext> activationCondition;
     
+    /** Has {@link #doPostInvoke(MessageContext)} been called?. Only ever set to true */
+    private boolean preInvokeCalled;
+
     /** Constructor. */
     public AbstractMessageHandler() {
         activationCondition = PredicateSupport.alwaysTrue();
@@ -87,6 +90,7 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
         // error object using the Java 7 API.
 
         if (doPreInvoke(messageContext)) {
+            preInvokeCalled = true;
             try {
                 doInvoke(messageContext);
             } catch (final MessageHandlerException e) {
@@ -194,6 +198,20 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
     protected void doPostInvoke(@Nonnull final MessageContext messageContext, @Nonnull final Exception e) {
         doPostInvoke(messageContext);
     }
+
+    /**
+     * Has the {@link #doPreInvoke(MessageContext)} method been entirely called?
+     *
+     * Note the unsynchronized access.  The underlying field is only ever set true, so if true is
+     * returned it is correct, if false is returned is is not safe to make any assumptions (even if
+     * there was an call in flight.
+     *
+     * @since 5.0.0
+     */
+    protected boolean isPreInvokeCalled() {
+        return preInvokeCalled;
+    }
+
 
     /**
      * Return a prefix for logging messages for this component.
