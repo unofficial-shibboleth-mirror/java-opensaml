@@ -180,6 +180,14 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
 
     /** {@inheritDoc} */
     @Override
+    protected void doDestroy() {
+        metadataBackupFile = null;
+
+        super.doDestroy();
+    }
+
+    /** {@inheritDoc} */
+    @Override
     protected void initMetadataResolver() throws ComponentInitializationException {
         try {
             validateBackupFile(metadataBackupFile);

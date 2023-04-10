@@ -239,6 +239,19 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
         log.debug("{} Supported content types are: {}", getLogPrefix(), getSupportedContentTypes());
     }
     
+   /** {@inheritDoc} */
+    @Override
+    protected void doDestroy() {
+        httpClient = null;
+        httpClientSecurityParameters = null;
+        
+        supportedContentTypes = null;
+        supportedContentTypesValue = null;
+        supportedMediaTypes = null;
+        
+        super.doDestroy();
+    }
+    
     /** {@inheritDoc} */
     @Override
     @Nullable protected XMLObject fetchFromOriginSource(@Nullable final CriteriaSet criteria) 

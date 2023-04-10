@@ -21,10 +21,13 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.Timer;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.shared.resource.Resource;
 
@@ -36,10 +39,10 @@ import net.shibboleth.shared.resource.Resource;
 public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(ResourceBackedMetadataResolver.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(ResourceBackedMetadataResolver.class);
 
     /** Resource from which metadata is read. */
-    private Resource metadataResource;
+    @Nonnull private Resource metadataResource;
 
     /**
      * Constructor.
@@ -49,8 +52,8 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
      * 
      * @throws IOException thrown if there is a problem retrieving information about the resource
      */
-    public ResourceBackedMetadataResolver(@ParameterName(name="timer") final Timer timer,
-            @ParameterName(name="resource") final Resource resource) throws IOException {
+    public ResourceBackedMetadataResolver(@ParameterName(name="timer") @Nullable final Timer timer,
+            @ParameterName(name="resource") @Nonnull final Resource resource) throws IOException {
         super(timer);
 
         if (!resource.exists()) {
@@ -66,7 +69,8 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
      * 
      * @throws IOException thrown if there is a problem retrieving information about the resource
      */
-    public ResourceBackedMetadataResolver(@ParameterName(name="resource") final Resource resource) throws IOException {
+    public ResourceBackedMetadataResolver(@ParameterName(name="resource") @Nonnull final Resource resource)
+            throws IOException {
 
         if (!resource.exists()) {
             throw new IOException("Resource " + resource.getDescription() + " does not exist.");
@@ -84,13 +88,13 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
     
     /** {@inheritDoc} */
     @Override
-    protected String getMetadataIdentifier() {
+    @Nonnull protected String getMetadataIdentifier() {
         return metadataResource.getDescription();
     }
 
     /** {@inheritDoc} */
     @Override
-    protected byte[] fetchMetadata() throws ResolverException {
+    @Nullable protected byte[] fetchMetadata() throws ResolverException {
         try {
             final Instant metadataUpdateTime = Instant.ofEpochMilli(metadataResource.lastModified());
             log.debug("{} Resource {} was last modified {}", 
@@ -106,4 +110,5 @@ public class ResourceBackedMetadataResolver extends AbstractReloadingMetadataRes
             throw new ResolverException(errorMsg, e);
         }
     }
+    
 }

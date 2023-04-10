@@ -173,7 +173,19 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull protected String getMetadataIdentifier() {
+    protected void doDestroy() {
+        httpClient = null;
+        httpClientSecurityParameters = null;
+        metadataURI = null;
+        cachedMetadataETag = null;
+        cachedMetadataLastModified = null;
+
+        super.doDestroy();
+    }
+
+    /** {@inheritDoc} */
+    @Override
+    protected String getMetadataIdentifier() {
         return metadataURI.toString();
     }
 

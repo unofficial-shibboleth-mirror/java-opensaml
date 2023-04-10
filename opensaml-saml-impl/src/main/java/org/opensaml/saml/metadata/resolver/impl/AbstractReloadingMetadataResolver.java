@@ -302,6 +302,14 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             taskTimer.cancel();
         }
         
+        expirationTime = null;
+        lastRefresh = null;
+        lastUpdate = null;
+        nextRefresh = null;
+        wasLastRefreshSuccess = null;
+        lastSuccessfulRefresh = null;
+        lastFailureCause = null;
+        
         super.doDestroy();
     }
 

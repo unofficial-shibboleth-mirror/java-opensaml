@@ -92,6 +92,14 @@ public class FilesystemMetadataResolver extends AbstractReloadingMetadataResolve
 
         metadataFile = Constraint.isNotNull(file, "Metadata file cannot be null");
     }
+
+    /** {@inheritDoc} */
+    @Override
+    protected void doDestroy() {
+        metadataFile = null;
+          
+        super.doDestroy();
+    }
     
     /** {@inheritDoc} */
     @Override
