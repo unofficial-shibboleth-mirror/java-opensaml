@@ -89,7 +89,7 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     
     private Assertion assertion;
     
-    @Nonnull Assertion getAssertion() {
+    @Nonnull protected Assertion getAssertion() {
         return Constraint.isNotNull(assertion, "Assertion was null");
     }
     
