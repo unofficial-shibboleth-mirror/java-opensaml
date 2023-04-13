@@ -26,6 +26,7 @@ import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
+import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
@@ -72,7 +73,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     public void testDecodeToEnvelope() throws ComponentInitializationException, MessageDecodingException, IOException {
         httpRequest.setContent(getServletRequestContent("/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
         
-        decoder.setBodyHandler(new TestEnvelopeBodyHandler());
+        final MessageHandler handler = new TestEnvelopeBodyHandler();
+        handler.initialize();
+        decoder.setBodyHandler(handler);
         decoder.initialize();
         
         decoder.decode();
@@ -94,7 +97,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
     public void testDecodeToPayload() throws ComponentInitializationException, MessageDecodingException, IOException {
         httpRequest.setContent(getServletRequestContent("/org/opensaml/soap/soap11/SOAPNoHeaders.xml"));
         
-        decoder.setBodyHandler(new TestPayloadBodyHandler());
+        final MessageHandler handler = new TestPayloadBodyHandler();
+        handler.initialize();
+        decoder.setBodyHandler(handler);
         decoder.initialize();
         
         decoder.decode();
@@ -118,7 +123,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         httpRequest.setContentType(null);
         
-        decoder.setBodyHandler(new TestEnvelopeBodyHandler());
+        final MessageHandler handler = new TestEnvelopeBodyHandler();
+        handler.initialize();
+        decoder.setBodyHandler(handler);
         decoder.initialize();
         
         decoder.decode();
@@ -137,7 +144,9 @@ public class HTTPSOAP11DecoderTest extends XMLObjectBaseTestCase {
         
         httpRequest.setContentType("application/x-www-form-urlencoded");
         
-        decoder.setBodyHandler(new TestEnvelopeBodyHandler());
+        final MessageHandler handler = new TestEnvelopeBodyHandler();
+        handler.initialize();
+        decoder.setBodyHandler(handler);
         decoder.initialize();
         
         decoder.decode();

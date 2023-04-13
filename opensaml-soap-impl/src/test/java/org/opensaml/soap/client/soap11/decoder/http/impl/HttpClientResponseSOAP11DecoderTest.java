@@ -38,12 +38,14 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
 import org.opensaml.messaging.handler.AbstractMessageHandler;
+import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.common.SOAP11FaultDecodingException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Body;
 import org.opensaml.soap.soap11.Envelope;
 import org.opensaml.soap.soap11.Fault;
+import org.opensaml.soap.soap11.decoder.http.impl.HTTPSOAP11DecoderTest.TestEnvelopeBodyHandler;
 import org.opensaml.soap.util.SOAPSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
@@ -69,7 +71,9 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         body.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
         final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
         
-        decoder.setBodyHandler(new TestPayloadBodyHandler());
+        final MessageHandler handler = new TestPayloadBodyHandler();
+        handler.initialize();
+        decoder.setBodyHandler(handler);
         decoder.setHttpResponse(httpResponse);
         decoder.initialize();
         
@@ -94,7 +98,9 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         body.getUnknownXMLObjects().add(buildXMLObject(simpleXMLObjectQName));
         final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_OK, envelope);
         
-        decoder.setBodyHandler(new TestEnvelopeBodyHandler());
+        final MessageHandler handler = new TestEnvelopeBodyHandler();
+        handler.initialize();
+        decoder.setBodyHandler(handler);
         decoder.setHttpResponse(httpResponse);
         decoder.initialize();
         
@@ -121,7 +127,9 @@ public class HttpClientResponseSOAP11DecoderTest extends XMLObjectBaseTestCase {
         body.getUnknownXMLObjects().add(fault);
         final ClassicHttpResponse httpResponse = buildResponse(HttpStatus.SC_INTERNAL_SERVER_ERROR, envelope);
         
-        decoder.setBodyHandler(new TestPayloadBodyHandler());
+        final MessageHandler handler = new TestPayloadBodyHandler();
+        handler.initialize();
+        decoder.setBodyHandler(handler);
         decoder.setHttpResponse(httpResponse);
         decoder.initialize();
         
