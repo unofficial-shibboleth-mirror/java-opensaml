@@ -109,7 +109,8 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
             .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
-        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         MockHttpServletResponse response = new MockHttpServletResponse();
@@ -182,7 +183,6 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testRequestEncoding() throws Exception {
         SAMLObjectBuilder<AuthnRequest> requestBuilder =
                 (SAMLObjectBuilder<AuthnRequest>) builderFactory.<AuthnRequest>ensureBuilder(AuthnRequest.DEFAULT_ELEMENT_NAME);
@@ -203,7 +203,8 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
             .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
-        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         MockHttpServletResponse response = new MockHttpServletResponse();

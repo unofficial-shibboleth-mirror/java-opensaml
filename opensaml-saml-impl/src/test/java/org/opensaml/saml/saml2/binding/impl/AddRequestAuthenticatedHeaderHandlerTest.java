@@ -55,7 +55,7 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
                 SOAPMessagingSupport.getHeaderBlock(messageCtx, RequestAuthenticated.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
         
-        messageCtx.getSubcontext(ECPContext.class, true).setRequestAuthenticated(false);
+        messageCtx.ensureSubcontext(ECPContext.class).setRequestAuthenticated(false);
         
         handler.invoke(messageCtx);
         
@@ -72,7 +72,7 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
-        messageCtx.getSubcontext(ECPContext.class, true).setRequestAuthenticated(true);
+        messageCtx.ensureSubcontext(ECPContext.class).setRequestAuthenticated(true);
 
         final AddRequestAuthenticatedHeaderHandler handler = new AddRequestAuthenticatedHeaderHandler();
         handler.initialize();
@@ -88,11 +88,11 @@ public class AddRequestAuthenticatedHeaderHandlerTest extends OpenSAMLInitBaseTe
      */
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
-        messageCtx.getSubcontext(ECPContext.class, true).setRequestAuthenticated(true);
+        messageCtx.ensureSubcontext(ECPContext.class).setRequestAuthenticated(true);
 
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.ensureSubcontext(SOAP11Context.class).setEnvelope(env);
         
         final AddRequestAuthenticatedHeaderHandler handler = new AddRequestAuthenticatedHeaderHandler();
         handler.initialize();

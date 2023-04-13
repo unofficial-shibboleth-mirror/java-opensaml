@@ -76,9 +76,9 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
         final Endpoint ep = XMLObjectProviderRegistrySupport.getBuilderFactory().<AssertionConsumerService>ensureBuilder(
                 AssertionConsumerService.DEFAULT_ELEMENT_NAME).buildObject(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         ep.setLocation("foo");
-        messageCtx.getSubcontext(
-                SAMLPeerEntityContext.class, true).getSubcontext(
-                        SAMLEndpointContext.class, true).setEndpoint(ep);
+        messageCtx.ensureSubcontext(
+                SAMLPeerEntityContext.class).ensureSubcontext(
+                        SAMLEndpointContext.class).setEndpoint(ep);
 
         final AddECPResponseHeaderHandler handler = new AddECPResponseHeaderHandler();
         handler.initialize();
@@ -98,14 +98,14 @@ public class AddECPResponseHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
 
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildResponse());
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.ensureSubcontext(SOAP11Context.class).setEnvelope(env);
         
         final Endpoint ep = XMLObjectProviderRegistrySupport.getBuilderFactory().<AssertionConsumerService>ensureBuilder(
                 AssertionConsumerService.DEFAULT_ELEMENT_NAME).buildObject(AssertionConsumerService.DEFAULT_ELEMENT_NAME);
         ep.setLocation("foo");
-        messageCtx.getSubcontext(
-                SAMLPeerEntityContext.class, true).getSubcontext(
-                        SAMLEndpointContext.class, true).setEndpoint(ep);
+        messageCtx.ensureSubcontext(
+                SAMLPeerEntityContext.class).ensureSubcontext(
+                        SAMLEndpointContext.class).setEndpoint(ep);
         
         final AddECPResponseHeaderHandler handler = new AddECPResponseHeaderHandler();
         handler.initialize();

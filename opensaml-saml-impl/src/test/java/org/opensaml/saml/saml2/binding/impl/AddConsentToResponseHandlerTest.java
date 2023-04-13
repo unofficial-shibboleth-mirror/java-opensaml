@@ -57,13 +57,13 @@ public class AddConsentToResponseHandlerTest extends OpenSAMLInitBaseTestCase {
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildResponse());
-        messageCtx.getSubcontext(SAMLConsentContext.class, true).setConsent(StatusResponseType.EXPLICIT_CONSENT);
+        messageCtx.ensureSubcontext(SAMLConsentContext.class).setConsent(StatusResponseType.EXPLICIT_CONSENT);
         
         final AddConsentToResponseHandler handler = new AddConsentToResponseHandler();
         handler.initialize();
         
         handler.invoke(messageCtx);
-        Assert.assertEquals(((StatusResponseType) messageCtx.getMessage()).getConsent(), StatusResponseType.EXPLICIT_CONSENT);
+        Assert.assertEquals(((StatusResponseType) messageCtx.ensureMessage()).getConsent(), StatusResponseType.EXPLICIT_CONSENT);
     }
     
 }

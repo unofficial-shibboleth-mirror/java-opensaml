@@ -33,12 +33,14 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.Envelope;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.net.MediaType;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -64,17 +66,17 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
             CollectionSupport.singleton(MediaType.create("text", "xml"));
     
     /** Class logger. */
-    private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Decoder.class);
+    @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPSOAP11Decoder.class);
     
     /** Message handler to use in processing the message body. */
-    private MessageHandler bodyHandler;
+    @NonnullAfterInit private MessageHandler bodyHandler;
     
     /**
      * Get the configured body handler MessageHandler.
      * 
      * @return Returns the bodyHandler.
      */
-    public MessageHandler getBodyHandler() {
+    @NonnullAfterInit public MessageHandler getBodyHandler() {
         return bodyHandler;
     }
 
@@ -83,8 +85,8 @@ public class HTTPSOAP11Decoder extends BaseHttpServletRequestXMLMessageDecoder {
      * 
      * @param newBodyHandler The bodyHandler to set.
      */
-    public void setBodyHandler(final MessageHandler newBodyHandler) {
-        bodyHandler = newBodyHandler;
+    public void setBodyHandler(@Nonnull final MessageHandler newBodyHandler) {
+        bodyHandler = Constraint.isNotNull(newBodyHandler, "Body MessageHandler cannot be null");
     }
 
     /** {@inheritDoc} */

@@ -30,6 +30,7 @@ import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.codec.Base64Support;
 
 /**
@@ -37,6 +38,9 @@ import net.shibboleth.shared.codec.Base64Support;
  */
 public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
 
+    /** Session key to encode and include. */
+    @NonnullBeforeExec private byte[] sessionKey; 
+    
     /** {@inheritDoc} */
     @Override
     protected boolean doPreInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
@@ -46,7 +50,8 @@ public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
         }
 
         final ECPContext ctx = messageContext.getSubcontext(ECPContext.class);
-        if (ctx == null || ctx.getSessionKey() == null) {
+        sessionKey = ctx != null ? ctx.getSessionKey() : null;
+        if (sessionKey == null) {
             return false;
         }
         
@@ -61,8 +66,8 @@ public class AddGeneratedKeyHeaderHandler extends AbstractMessageHandler {
                         GeneratedKey.DEFAULT_ELEMENT_NAME);
         try {
             final GeneratedKey header = builder.buildObject();
-            header.setValue(Base64Support.encode(messageContext.getSubcontext(ECPContext.class).getSessionKey(),
-                    false));
+            assert sessionKey != null;
+            header.setValue(Base64Support.encode(sessionKey, false));
             SOAPSupport.addSOAP11ActorAttribute(header, ActorBearing.SOAP11_ACTOR_NEXT);      
             SOAPMessagingSupport.addHeaderBlock(messageContext, header);
         } catch (final Exception e) {

@@ -29,6 +29,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
+
 /**
  * Test the {@link SAMLOutboundDestinationHandler}.
  */
@@ -39,7 +41,7 @@ public class SAMLOutboundDestinationHandlerTest extends XMLObjectBaseTestCase {
     private MessageContext messageContext;
     
     @BeforeMethod
-    public void setUp() {
+    public void setUp() throws ComponentInitializationException {
         SAMLObjectBuilder<AssertionConsumerService> endpointBuilder =
                 (SAMLObjectBuilder<AssertionConsumerService>) builderFactory.<AssertionConsumerService>ensureBuilder(
                         AssertionConsumerService.DEFAULT_ELEMENT_NAME);
@@ -47,6 +49,7 @@ public class SAMLOutboundDestinationHandlerTest extends XMLObjectBaseTestCase {
         samlEndpoint.setLocation("http://example.org");
         
         handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         messageContext = new MessageContext();
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).
             ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);

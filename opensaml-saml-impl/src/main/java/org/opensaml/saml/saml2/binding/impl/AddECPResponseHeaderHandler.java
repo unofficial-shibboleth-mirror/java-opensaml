@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.binding.impl;
 import java.net.URI;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.MessageContext;
@@ -34,7 +33,9 @@ import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.opensaml.soap.util.SOAPSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * MessageHandler to add the ECP {@link Response} header to an outgoing SOAP envelope.
@@ -45,7 +46,7 @@ public class AddECPResponseHeaderHandler extends AbstractMessageHandler {
     @Nonnull private final Logger log = LoggerFactory.getLogger(AddECPResponseHeaderHandler.class);
     
     /** The location to record in the header. */
-    @Nullable private URI assertionConsumerURL;
+    @NonnullBeforeExec private URI assertionConsumerURL;
 
     /** {@inheritDoc} */
     @Override

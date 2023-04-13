@@ -95,6 +95,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
             .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
         final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();
@@ -172,6 +173,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
             .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
         final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();
@@ -253,6 +255,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
             .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
         final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();
@@ -344,6 +347,7 @@ public class HTTPRedirectDeflateEncoderTest extends XMLObjectBaseTestCase {
         messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(signingParameters);
         
         final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();

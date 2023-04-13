@@ -47,6 +47,11 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
     
     private AddGeneratedKeyHeaderHandler handler;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod public void setUp() throws ComponentInitializationException {
         messageCtx = new MessageContext();
         handler = new AddGeneratedKeyHeaderHandler();
@@ -66,7 +71,7 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
                 SOAPMessagingSupport.getHeaderBlock(messageCtx, GeneratedKey.DEFAULT_ELEMENT_NAME, null, true);
         Assert.assertTrue(headers.isEmpty());
         
-        messageCtx.getSubcontext(ECPContext.class, true);
+        messageCtx.ensureSubcontext(ECPContext.class);
         
         handler.invoke(messageCtx);
         
@@ -83,7 +88,7 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException, NoSuchAlgorithmException {
 
-        messageCtx.getSubcontext(ECPContext.class, true).setSessionKey(
+        messageCtx.ensureSubcontext(ECPContext.class).setSessionKey(
                 SecureRandom.getInstance("SHA1prng").generateSeed(16));
         
         handler.invoke(messageCtx);
@@ -100,11 +105,11 @@ public class AddGeneratedKeyHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
 
         final byte[] key = new byte[32];
         SecureRandom.getInstance("SHA1prng").nextBytes(key);
-        messageCtx.getSubcontext(ECPContext.class, true).setSessionKey(key);
+        messageCtx.ensureSubcontext(ECPContext.class).setSessionKey(key);
 
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.ensureSubcontext(SOAP11Context.class).setEnvelope(env);
         
         handler.invoke(messageCtx);
         

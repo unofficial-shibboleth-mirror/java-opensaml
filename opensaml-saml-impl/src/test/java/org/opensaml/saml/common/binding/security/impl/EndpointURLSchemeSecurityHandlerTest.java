@@ -25,13 +25,24 @@ import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.metadata.AssertionConsumerService;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.component.ComponentInitializationException;
 
 /**
  * Test the security handler which evaluates message context endpoint URL schemes.
  */
 @SuppressWarnings("javadoc")
 public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase {
+    
+    private EndpointURLSchemeSecurityHandler handler;
+    
+    @BeforeMethod
+    public void setUp() throws ComponentInitializationException {
+        handler = new EndpointURLSchemeSecurityHandler();
+        handler.initialize();
+    }
     
     @Test
     public void testValidRequestLocation() throws MessageHandlerException {
@@ -42,7 +53,6 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.setMessage(buildXMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME));
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
-        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
     
@@ -55,7 +65,6 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.setMessage(buildXMLObject(Response.DEFAULT_ELEMENT_NAME));
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
-        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
     
@@ -68,7 +77,6 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.setMessage(buildXMLObject(AuthnRequest.DEFAULT_ELEMENT_NAME));
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
-        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
     
@@ -81,7 +89,6 @@ public class EndpointURLSchemeSecurityHandlerTest extends XMLObjectBaseTestCase 
         messageContext.setMessage(buildXMLObject(Response.DEFAULT_ELEMENT_NAME));
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class).ensureSubcontext(SAMLEndpointContext.class).setEndpoint(endpoint);
         
-        EndpointURLSchemeSecurityHandler handler = new EndpointURLSchemeSecurityHandler();
         handler.invoke(messageContext);
     }
 

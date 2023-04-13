@@ -42,6 +42,9 @@ public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCas
     
     SAMLObjectBuilder<RequesterID> requesterIDBuilder;
     
+    /**
+     * Test set up.
+     */
     @BeforeClass public void setUp() {
         scopingBuilder = (SAMLObjectBuilder<Scoping>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<Scoping>ensureBuilder(
@@ -85,7 +88,7 @@ public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCas
         two.setURI("two");
         scoping.getRequesterIDs().addAll(Arrays.asList(one, two));
         
-        ((AuthnRequest) messageCtx.getMessage()).setScoping(scoping);
+        ((AuthnRequest) messageCtx.ensureMessage()).setScoping(scoping);
         
         final ExtractProxiedRequestersHandler handler = new ExtractProxiedRequestersHandler();
         handler.initialize();
@@ -93,7 +96,7 @@ public class ExtractProxiedRequestersHandlerTest extends OpenSAMLInitBaseTestCas
         handler.invoke(messageCtx);
         
         final ProxiedRequesterContext ctx = messageCtx.getSubcontext(ProxiedRequesterContext.class);
-        Assert.assertNotNull(ctx);
+        assert ctx != null;
         Assert.assertEquals(ctx.getRequesters().size(), 2);
         Assert.assertTrue(ctx.getRequesters().contains("one"));
         Assert.assertTrue(ctx.getRequesters().contains("two"));

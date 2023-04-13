@@ -121,7 +121,8 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
         messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
             .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
-        SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         MockHttpServletResponse response = new MockHttpServletResponse();

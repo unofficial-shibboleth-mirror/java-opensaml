@@ -89,6 +89,7 @@ public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
             .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
         final SAMLOutboundDestinationHandler handler = new SAMLOutboundDestinationHandler();
+        handler.initialize();
         handler.invoke(messageContext);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();

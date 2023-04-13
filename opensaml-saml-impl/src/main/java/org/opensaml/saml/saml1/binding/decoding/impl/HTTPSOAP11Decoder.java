@@ -22,6 +22,7 @@ import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.decoder.MessageDecodingException;
+import org.opensaml.messaging.handler.MessageHandler;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.binding.BindingDescriptor;
 import org.opensaml.saml.common.binding.decoding.SAMLMessageDecoder;
@@ -31,6 +32,7 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -44,13 +46,6 @@ public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.imp
 
     /** Optional {@link BindingDescriptor} to inject into {@link SAMLBindingContext} created. */
     @Nullable private BindingDescriptor bindingDescriptor;
-    
-    /**
-     * Constructor.
-     */
-    public HTTPSOAP11Decoder() {
-        setBodyHandler(new SAMLSOAPDecoderBodyHandler());
-    }
 
     /** {@inheritDoc} */
     @Nonnull @NotEmpty public String getBindingURI() {
@@ -73,6 +68,20 @@ public class HTTPSOAP11Decoder extends org.opensaml.soap.soap11.decoder.http.imp
      */
     public void setBindingDescriptor(@Nullable final BindingDescriptor descriptor) {
         bindingDescriptor = descriptor;
+    }
+    
+    /** {@inheritDoc} */
+    @Override
+    protected void doInitialize() throws ComponentInitializationException {
+        
+        // Need to set this before calling base class.
+        if (getBodyHandler() == null) {
+            final MessageHandler handler = new SAMLSOAPDecoderBodyHandler();
+            handler.initialize();
+            setBodyHandler(handler);
+        }
+        
+        super.doInitialize();
     }
     
     /** {@inheritDoc} */

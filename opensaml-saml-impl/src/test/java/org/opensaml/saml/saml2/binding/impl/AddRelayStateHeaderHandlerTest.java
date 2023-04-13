@@ -42,6 +42,11 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
     
     private AddRelayStateHeaderHandler handler;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod public void setUp() throws ComponentInitializationException {
         messageCtx = new MessageContext();
         handler = new AddRelayStateHeaderHandler();
@@ -71,7 +76,7 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testMissingEnvelope() throws MessageHandlerException {
 
-        messageCtx.getSubcontext(SAMLBindingContext.class, true).setRelayState("foo");
+        messageCtx.ensureSubcontext(SAMLBindingContext.class).setRelayState("foo");
         
         handler.invoke(messageCtx);
     }
@@ -85,9 +90,9 @@ public class AddRelayStateHeaderHandlerTest extends OpenSAMLInitBaseTestCase {
 
         final Envelope env = XMLObjectProviderRegistrySupport.getBuilderFactory().<Envelope>ensureBuilder(
                 Envelope.DEFAULT_ELEMENT_NAME).buildObject(Envelope.DEFAULT_ELEMENT_NAME);
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.ensureSubcontext(SOAP11Context.class).setEnvelope(env);
         
-        messageCtx.getSubcontext(SAMLBindingContext.class, true).setRelayState("foo");
+        messageCtx.ensureSubcontext(SAMLBindingContext.class).setRelayState("foo");
         
         handler.invoke(messageCtx);
         

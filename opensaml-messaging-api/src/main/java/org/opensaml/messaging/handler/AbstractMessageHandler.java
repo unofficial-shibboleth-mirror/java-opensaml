@@ -82,6 +82,7 @@ public abstract class AbstractMessageHandler extends AbstractInitializableCompon
     /** {@inheritDoc} */
     @Override public void invoke(@Nonnull final MessageContext messageContext)
             throws MessageHandlerException {
+        checkComponentActive();
         Constraint.isNotNull(messageContext, "Message context cannot be null");
 
         // The try/catch logic is designed to suppress a checked exception raised by

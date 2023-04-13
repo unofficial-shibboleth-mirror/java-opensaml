@@ -57,13 +57,13 @@ public class ExtractConsentFromRequestHandlerTest extends OpenSAMLInitBaseTestCa
     @Test public void testSuccess() throws MessageHandlerException, ComponentInitializationException {
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
-        ((RequestAbstractType) messageCtx.getMessage()).setConsent(RequestAbstractType.IMPLICIT_CONSENT);
+        ((RequestAbstractType) messageCtx.ensureMessage()).setConsent(RequestAbstractType.IMPLICIT_CONSENT);
         
         final ExtractConsentFromRequestHandler handler = new ExtractConsentFromRequestHandler();
         handler.initialize();
         
         handler.invoke(messageCtx);
-        Assert.assertEquals(messageCtx.getSubcontext(SAMLConsentContext.class).getConsent(),
+        Assert.assertEquals(messageCtx.ensureSubcontext(SAMLConsentContext.class).getConsent(),
                 StatusResponseType.IMPLICIT_CONSENT);
     }
     
