@@ -21,6 +21,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.FunctionSupport;
 
 import java.time.Duration;
+import java.time.Instant;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -45,6 +46,11 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
     
     private AddNotOnOrAfterConditionToAssertions action;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod
     public void setUp() throws ComponentInitializationException {
         prc = new RequestContextBuilder().setOutboundMessage(
@@ -79,7 +85,8 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
     public void testSingleAssertion() {
         final Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
 
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().getMessage();
+        assert response != null;
         response.getAssertions().add(assertion);
 
         action.execute(prc);
@@ -88,11 +95,14 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getNotOnOrAfter());
-        Assert.assertEquals(
-                assertion.getConditions().getNotOnOrAfter().minusMillis(response.getIssueInstant().toEpochMilli()).toEpochMilli(),
-                5 * 60 * 1000);
+        final Conditions c = response.getAssertions().get(0).getConditions();
+        assert c != null;
+        
+        final Instant i1 = c.getNotOnOrAfter();
+        final Instant i2 = response.getIssueInstant();
+        assert i1 != null;
+        assert i2 != null;
+        Assert.assertEquals(i1.minusMillis(i2.toEpochMilli()).toEpochMilli(), 5 * 60 * 1000);
     }
 
     /**
@@ -111,7 +121,8 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         final Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
         assertion.setConditions(conditions);
 
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().getMessage();
+        assert response != null;
         response.getAssertions().add(assertion);
 
         final AddNotOnOrAfterConditionToAssertions action = new AddNotOnOrAfterConditionToAssertions();
@@ -121,12 +132,14 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertSame(assertion.getConditions(), conditions);
-        Assert.assertNotNull(assertion.getConditions().getNotOnOrAfter());
-        Assert.assertEquals(
-                assertion.getConditions().getNotOnOrAfter().minusMillis(response.getIssueInstant().toEpochMilli()).toEpochMilli(),
-                10 * 60 * 1000);
+        final Conditions c = response.getAssertions().get(0).getConditions();
+        assert c != null;
+        Assert.assertSame(c, conditions);
+        final Instant i1 = c.getNotOnOrAfter();
+        final Instant i2 = response.getIssueInstant();
+        assert i1 != null;
+        assert i2 != null;
+        Assert.assertEquals(i1.minusMillis(i2.toEpochMilli()).toEpochMilli(), 10 * 60 * 1000);
     }
 
     /**
@@ -136,7 +149,8 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
      */
     @Test
     public void testMultipleAssertion() throws ComponentInitializationException {
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().getMessage();
+        assert response != null;
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
@@ -152,11 +166,13 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (final Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getConditions());
-            Assert.assertNotNull(assertion.getConditions().getNotOnOrAfter());
-            Assert.assertEquals(
-                    assertion.getConditions().getNotOnOrAfter().minusMillis(response.getIssueInstant().toEpochMilli()).toEpochMilli(),
-                    3 * 60 * 1000);
+            final Conditions c = assertion.getConditions();
+            assert c != null;
+            final Instant i1 = c.getNotOnOrAfter();
+            final Instant i2 = response.getIssueInstant();
+            assert i1 != null;
+            assert i2 != null;
+            Assert.assertEquals(i1.minusMillis(i2.toEpochMilli()).toEpochMilli(), 3 * 60 * 1000);
         }
     }
 
@@ -169,7 +185,7 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
         final org.opensaml.saml.saml2.core.Response response = SAML2ActionTestingSupport.buildResponse();
         response.getAssertions().add(assertion);
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -177,11 +193,13 @@ public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseT
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getNotOnOrAfter());
-        Assert.assertEquals(
-                assertion.getConditions().getNotOnOrAfter().minusMillis(response.getIssueInstant().toEpochMilli()).toEpochMilli(),
-                5 * 60 * 1000);
+        final var c = response.getAssertions().get(0).getConditions();
+        assert c != null;
+        final Instant i1 = c.getNotOnOrAfter();
+        final Instant i2 = response.getIssueInstant();
+        assert i1 != null;
+        assert i2 != null;
+        Assert.assertEquals(i1.minusMillis(i2.toEpochMilli()).toEpochMilli(), 5 * 60 * 1000);
     }
     
 }

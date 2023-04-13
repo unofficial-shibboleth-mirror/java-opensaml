@@ -45,10 +45,10 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SAMLObjectBuilder<SourceID> builder = (SAMLObjectBuilder<SourceID>)
+        final SAMLObjectBuilder<SourceID> builder = (SAMLObjectBuilder<SourceID>)
                 builderFactory.<SourceID>ensureBuilder(SourceID.DEFAULT_ELEMENT_NAME);
 
-        SourceID sourceID = builder.buildObject();
+        final SourceID sourceID = builder.buildObject();
         sourceID.setValue(expectedValue);
 
         assertXMLEquals(expectedDOM, sourceID);
@@ -57,9 +57,9 @@ public class SourceIDTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SourceID sourceID = (SourceID) unmarshallElement(singleElementFile);
+        final SourceID sourceID = (SourceID) unmarshallElement(singleElementFile);
 
-        Assert.assertNotNull(sourceID);
+        assert sourceID != null;
         Assert.assertEquals(sourceID.getValue(), expectedValue);
     }
 }

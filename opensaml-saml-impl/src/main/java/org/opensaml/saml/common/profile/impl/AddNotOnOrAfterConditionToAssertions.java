@@ -34,9 +34,10 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.profile.SAML1ActionSupport;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that adds the <code>NotBefore</code> attribute to every assertion in a SAML 1/2
@@ -60,11 +61,12 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
     @Nonnull private Duration defaultAssertionLifetime;
     
     /** Response to modify. */
-    @Nullable private SAMLObject response;
+    @NonnullBeforeExec private SAMLObject response;
 
     /** Constructor. */
     public AddNotOnOrAfterConditionToAssertions() {
-        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(new OutboundMessageContextLookup());
+        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(
+                new OutboundMessageContextLookup());
         
         defaultAssertionLifetime = Duration.ofMinutes(5);
     }
@@ -105,6 +107,11 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         log.debug("{} Attempting to add NotOnOrAfter condition to every Assertion in outgoing Response",
                 getLogPrefix());
 
@@ -115,13 +122,13 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
             return false;
         }
         
-        if (response instanceof org.opensaml.saml.saml1.core.Response) {
-            if (((org.opensaml.saml.saml1.core.Response) response).getAssertions().isEmpty()) {
+        if (response instanceof org.opensaml.saml.saml1.core.Response saml1) {
+            if (saml1.getAssertions().isEmpty()) {
                 log.debug("{} No assertions available, nothing to do", getLogPrefix());
                 return false;
             }
-        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
-            if (((org.opensaml.saml.saml2.core.Response) response).getAssertions().isEmpty()) {
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response saml2) {
+            if (saml2.getAssertions().isEmpty()) {
                 log.debug("{} No assertions available, nothing to do", getLogPrefix());
                 return false;
             }
@@ -131,35 +138,38 @@ public class AddNotOnOrAfterConditionToAssertions extends AbstractConditionalPro
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
-        final Duration lifetime = assertionLifetimeStrategy != null ?
-                assertionLifetimeStrategy.apply(profileRequestContext) : null;
+        Duration lifetime = assertionLifetimeStrategy != null
+                ? assertionLifetimeStrategy.apply(profileRequestContext) : null;
         if (lifetime == null) {
             log.debug("{} No assertion lifetime supplied, using default", getLogPrefix());
+            lifetime = defaultAssertionLifetime;
         }
         
-        if (response instanceof org.opensaml.saml.saml1.core.Response) {
-            for (final org.opensaml.saml.saml1.core.Assertion assertion :
-                    ((org.opensaml.saml.saml1.core.Response) response).getAssertions()) {
-
-                final Instant expiration =
-                        assertion.getIssueInstant().plus(lifetime != null ? lifetime : defaultAssertionLifetime);
+        if (response instanceof org.opensaml.saml.saml1.core.Response saml1) {
+            for (final var assertion : saml1.getAssertions()) {
+                Instant issueInstant = assertion.getIssueInstant();
+                if (issueInstant == null) {
+                    issueInstant = Instant.now();
+                }
+                final Instant expiration = issueInstant.plus(lifetime);
                 log.debug("{} Added NotOnOrAfter condition, indicating an expiration of {}, to Assertion {}",
                         new Object[] {getLogPrefix(), expiration, assertion.getID()});
                 SAML1ActionSupport.addConditionsToAssertion(this, assertion).setNotOnOrAfter(expiration);
             }
-        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
-            for (final org.opensaml.saml.saml2.core.Assertion assertion :
-                    ((org.opensaml.saml.saml2.core.Response) response).getAssertions()) {
-
-                final Instant expiration =
-                        assertion.getIssueInstant().plus(lifetime != null ? lifetime : defaultAssertionLifetime);
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response saml2) {
+            for (final var assertion : saml2.getAssertions()) {
+                Instant issueInstant = assertion.getIssueInstant();
+                if (issueInstant == null) {
+                    issueInstant = Instant.now();
+                }
+                final Instant expiration = issueInstant.plus(lifetime);
                 log.debug("{} Added NotOnOrAfter condition, indicating an expiration of {}, to Assertion {}",
                         new Object[] {getLogPrefix(), expiration, assertion.getID()});
                 SAML2ActionSupport.addConditionsToAssertion(this, assertion).setNotOnOrAfter(expiration);

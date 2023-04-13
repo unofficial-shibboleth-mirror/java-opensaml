@@ -20,7 +20,6 @@ package org.opensaml.saml.common.profile.impl;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
@@ -32,9 +31,10 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.saml1.profile.SAML1ActionSupport;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that adds the <code>NotBefore</code> attribute to every assertion in a SAML 1/2
@@ -52,11 +52,12 @@ public class AddNotBeforeConditionToAssertions extends AbstractConditionalProfil
     @Nonnull private Function<ProfileRequestContext,SAMLObject> responseLookupStrategy;
     
     /** Response to modify. */
-    @Nullable private SAMLObject response;
+    @NonnullBeforeExec private SAMLObject response;
     
     /** Constructor. */
     public AddNotBeforeConditionToAssertions() {
-        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(new OutboundMessageContextLookup());
+        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(
+                new OutboundMessageContextLookup());
     }
     
     /**
@@ -81,13 +82,13 @@ public class AddNotBeforeConditionToAssertions extends AbstractConditionalProfil
             return false;
         }
         
-        if (response instanceof org.opensaml.saml.saml1.core.Response) {
-            if (((org.opensaml.saml.saml1.core.Response) response).getAssertions().isEmpty()) {
+        if (response instanceof org.opensaml.saml.saml1.core.Response saml1) {
+            if (saml1.getAssertions().isEmpty()) {
                 log.debug("{} No assertions available, nothing to do", getLogPrefix());
                 return false;
             }
-        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
-            if (((org.opensaml.saml.saml2.core.Response) response).getAssertions().isEmpty()) {
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response saml2) {
+            if (saml2.getAssertions().isEmpty()) {
                 log.debug("{} No assertions available, nothing to do", getLogPrefix());
                 return false;
             }
@@ -104,19 +105,15 @@ public class AddNotBeforeConditionToAssertions extends AbstractConditionalProfil
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
-        if (response instanceof org.opensaml.saml.saml1.core.Response) {
-            for (final org.opensaml.saml.saml1.core.Assertion assertion :
-                    ((org.opensaml.saml.saml1.core.Response) response).getAssertions()) {
+        if (response instanceof org.opensaml.saml.saml1.core.Response saml1) {
+            for (final var assertion : saml1.getAssertions()) {
                 log.debug("{} Added NotBefore condition to Assertion {}", getLogPrefix(), assertion.getID());
-                SAML1ActionSupport.addConditionsToAssertion(this, assertion).setNotBefore(
-                        ((org.opensaml.saml.saml1.core.Response) response).getIssueInstant());
+                SAML1ActionSupport.addConditionsToAssertion(this, assertion).setNotBefore(saml1.getIssueInstant());
             }
-        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
-            for (final org.opensaml.saml.saml2.core.Assertion assertion :
-                    ((org.opensaml.saml.saml2.core.Response) response).getAssertions()) {
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response saml2) {
+            for (final var assertion : saml2.getAssertions()) {
                 log.debug("{} Added NotBefore condition to Assertion {}", getLogPrefix(), assertion.getID());
-                SAML2ActionSupport.addConditionsToAssertion(this, assertion).setNotBefore(
-                        ((org.opensaml.saml.saml2.core.Response) response).getIssueInstant());
+                SAML2ActionSupport.addConditionsToAssertion(this, assertion).setNotBefore(saml2.getIssueInstant());
             }
         }
     }

@@ -41,8 +41,11 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
         childElementsFile = "/org/opensaml/saml/saml2/ecp/impl/SubjectConfirmationChildElements.xml";
     }
 
+    /**
+     * Test set up.
+     */
     @BeforeMethod
-    protected void setUp() throws Exception {
+    protected void setUp() {
         expectedMethod = "conf method";
         expectedSOAP11Actor = "https://soap11actor.example.org";
         expectedSOAP11MustUnderstand = true;
@@ -52,6 +55,7 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(singleElementFile);
+        assert subjectConfirmation != null;
 
         String method = subjectConfirmation.getMethod();
         Assert.assertEquals(expectedMethod, method, "Method not as expected");
@@ -77,6 +81,7 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(childElementsFile);
+        assert subjectConfirmation != null;
 
         Assert.assertNotNull(subjectConfirmation.getSubjectConfirmationData(), "SubjectConfirmationData element not present");
     }

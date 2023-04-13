@@ -48,7 +48,7 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(singleElementFile);
+        final DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(singleElementFile);
 
         Assert.assertNotNull(drt);
     }
@@ -56,9 +56,8 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(childElementsFile);
-        
-        Assert.assertNotNull(drt);
+        final DelegationRestrictionType drt = (DelegationRestrictionType) unmarshallElement(childElementsFile);
+        assert drt != null;
         
         Assert.assertEquals(drt.getDelegates().size(), expectedDelegateChildren, "Incorrect # of Delegate Children");
     }
@@ -66,11 +65,11 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SAMLObjectBuilder<DelegationRestrictionType> builder = (SAMLObjectBuilder<DelegationRestrictionType>)
+        final SAMLObjectBuilder<DelegationRestrictionType> builder = (SAMLObjectBuilder<DelegationRestrictionType>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<DelegationRestrictionType>ensureBuilder(
                         DelegationRestrictionType.TYPE_NAME);
         
-        DelegationRestrictionType drt = builder.buildObject();
+        final DelegationRestrictionType drt = builder.buildObject();
 
         assertXMLEquals(expectedDOM, drt);
     }
@@ -79,11 +78,11 @@ public class DelegationRestrictionTypeTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        SAMLObjectBuilder<DelegationRestrictionType> builder = (SAMLObjectBuilder<DelegationRestrictionType>)
+        final SAMLObjectBuilder<DelegationRestrictionType> builder = (SAMLObjectBuilder<DelegationRestrictionType>)
                 XMLObjectProviderRegistrySupport.getBuilderFactory().<DelegationRestrictionType>ensureBuilder(
                         DelegationRestrictionType.TYPE_NAME);
         
-        DelegationRestrictionType drt = builder.buildObject();
+        final DelegationRestrictionType drt = builder.buildObject();
         
         drt.getDelegates().add((Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME));
         drt.getDelegates().add((Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME));

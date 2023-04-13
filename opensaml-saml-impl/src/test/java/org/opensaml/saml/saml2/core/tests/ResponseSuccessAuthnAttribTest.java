@@ -60,34 +60,58 @@ public class ResponseSuccessAuthnAttribTest extends BaseComplexSAMLObjectTestCas
     /** {@inheritDoc} */
     @Test
     public void testUnmarshall() {
-        Response response = (Response) unmarshallElement(elementFile);
+        final Response response = (Response) unmarshallElement(elementFile);
+        assert response != null;
         
-        Assert.assertNotNull(response, "Response was null");
         Assert.assertEquals(response.getID(), "_c7055387-af61-4fce-8b98-e2927324b306", "Response ID");
         Assert.assertEquals(response.getInResponseTo(), "_abcdef123456", "InResponseTo");
-        Assert.assertEquals(response.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Version");
+        Assert.assertEquals(response.getVersion(), SAMLVersion.VERSION_20, "Version");
         Assert.assertEquals(response.getIssueInstant(), Instant.parse("2006-01-26T13:35:05.000Z"), "IssueInstant");
-        Assert.assertEquals(response.getIssuer().getFormat(), NameIDType.ENTITY, "Issuer/@Format");
-        Assert.assertEquals(response.getStatus().getStatusCode().getValue(), StatusCode.SUCCESS, "Status/Statuscode/@Value");
         
-        Assertion assertion = response.getAssertions().get(0);
+        final Issuer issuer = response.getIssuer();
+        assert issuer != null;
+        Assert.assertEquals(issuer.getFormat(), NameIDType.ENTITY, "Issuer/@Format");
+        
+        final Status status = response.getStatus();
+        assert status != null;
+        final StatusCode code = status.getStatusCode();
+        assert code != null;
+        Assert.assertEquals(code.getValue(), StatusCode.SUCCESS, "Status/Statuscode/@Value");
+        
+        final Assertion assertion = response.getAssertions().get(0);
         Assert.assertNotNull(assertion, "Assertion[0] was null");
         Assert.assertEquals(assertion.getID(), "_a75adf55-01d7-40cc-929f-dbd8372ebdfc", "Assertion ID");
         Assert.assertEquals(assertion.getIssueInstant(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/@IssueInstant");
-        Assert.assertEquals(assertion.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Assertion/@Version");
-        Assert.assertEquals(assertion.getIssuer().getFormat(), NameIDType.ENTITY, "Assertion/Issuer/@Format");
-        Assert.assertEquals(assertion.getSubject().getNameID().getFormat(), NameIDType.TRANSIENT, "Assertion/Subject/NameID/@Format");
-        Assert.assertEquals(assertion.getSubject().getNameID().getValue(), "_820d2843-2342-8236-ad28-8ac94fb3e6a1", "Assertion/Subject/NameID contents");
-        SubjectConfirmation sc = assertion.getSubject().getSubjectConfirmations().get(0);
+        Assert.assertEquals(assertion.getVersion(), SAMLVersion.VERSION_20, "Assertion/@Version");
+        
+        final Issuer aissuer = assertion.getIssuer();
+        assert aissuer != null;
+        Assert.assertEquals(aissuer.getFormat(), NameIDType.ENTITY, "Assertion/Issuer/@Format");
+        
+        final Subject subject = assertion.getSubject();
+        assert subject != null;
+        final NameID nameID = subject.getNameID();
+        assert nameID != null;
+        Assert.assertEquals(nameID.getFormat(), NameIDType.TRANSIENT, "Assertion/Subject/NameID/@Format");
+        Assert.assertEquals(nameID.getValue(), "_820d2843-2342-8236-ad28-8ac94fb3e6a1", "Assertion/Subject/NameID contents");
+        
+        final SubjectConfirmation sc = subject.getSubjectConfirmations().get(0);
         Assert.assertEquals(sc.getMethod(), SubjectConfirmation.METHOD_BEARER, "Assertion/Subject/SubjectConfirmation/@Method");
-        Assert.assertEquals(assertion.getConditions().getNotBefore(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/Condition/@NotBefore");
-        Assert.assertEquals(assertion.getConditions().getNotOnOrAfter(), Instant.parse("2006-01-26T13:45:05.000Z"), "Assertion/Condition/@NotOnOrAfter");
-        Audience audience = assertion.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
+        
+        final Conditions cond = assertion.getConditions();
+        assert cond != null;
+        Assert.assertEquals(cond.getNotBefore(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/Condition/@NotBefore");
+        Assert.assertEquals(cond.getNotOnOrAfter(), Instant.parse("2006-01-26T13:45:05.000Z"), "Assertion/Condition/@NotOnOrAfter");
+        Audience audience = cond.getAudienceRestrictions().get(0).getAudiences().get(0);
         Assert.assertEquals(audience.getURI(), "https://sp.example.org", "Assertion/Conditions/AudienceRestriction/Audience contents");
         
-        AuthnStatement authnStatement = assertion.getAuthnStatements().get(0);
+        final AuthnStatement authnStatement = assertion.getAuthnStatements().get(0);
         Assert.assertEquals(authnStatement.getAuthnInstant(), Instant.parse("2006-01-26T13:35:05.000Z"), "Assertion/AuthnStatement/@AuthnInstant");
-        Assert.assertEquals(authnStatement.getAuthnContext().getAuthnContextClassRef().getURI(), AuthnContext.PPT_AUTHN_CTX, "Assertion/AuthnStatement/AuthnContext/AuthnContextClassRef contents");
+        final AuthnContext ac = authnStatement.getAuthnContext();
+        assert ac != null;
+        final AuthnContextClassRef acref = ac.getAuthnContextClassRef();
+        assert acref != null;
+        Assert.assertEquals(acref.getURI(), AuthnContext.PPT_AUTHN_CTX, "Assertion/AuthnStatement/AuthnContext/AuthnContextClassRef contents");
         
         AttributeStatement  attribStatement = assertion.getAttributeStatements().get(0);
         Attribute attrib = null;

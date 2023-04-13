@@ -114,20 +114,21 @@ public class DiscoveryResponseTest extends XMLObjectProviderBaseTestCase {
         // isDefault attribute
         acs.setIsDefault(Boolean.TRUE);
         Assert.assertEquals(acs.isDefault(), Boolean.TRUE, "Unexpected value for boolean attribute found");
-        Assert.assertNotNull(acs.isDefaultXSBoolean(), "XSBooleanValue was null");
-        Assert.assertEquals(acs
-                .isDefaultXSBoolean(), new XSBooleanValue(Boolean.TRUE, false), "XSBooleanValue was unexpected value");
-        Assert.assertEquals(acs.isDefaultXSBoolean().toString(), "true", "XSBooleanValue string was unexpected value");
+        XSBooleanValue xsbool = acs.isDefaultXSBoolean();
+        assert xsbool != null;
+        Assert.assertEquals(xsbool, new XSBooleanValue(Boolean.TRUE, false), "XSBooleanValue was unexpected value");
+        Assert.assertEquals(xsbool.toString(), "true", "XSBooleanValue string was unexpected value");
 
         acs.setIsDefault(Boolean.FALSE);
         Assert.assertEquals(acs.isDefault(), Boolean.FALSE, "Unexpected value for boolean attribute found");
-        Assert.assertNotNull(acs.isDefaultXSBoolean(), "XSBooleanValue was null");
-        Assert.assertEquals(acs
-                .isDefaultXSBoolean(), new XSBooleanValue(Boolean.FALSE, false), "XSBooleanValue was unexpected value");
-        Assert.assertEquals(acs.isDefaultXSBoolean().toString(), "false", "XSBooleanValue string was unexpected value");
+        xsbool = acs.isDefaultXSBoolean();
+        assert xsbool != null;
+        Assert.assertEquals(xsbool, new XSBooleanValue(Boolean.FALSE, false), "XSBooleanValue was unexpected value");
+        Assert.assertEquals(xsbool.toString(), "false", "XSBooleanValue string was unexpected value");
 
         acs.setIsDefault((Boolean) null);
         Assert.assertEquals(acs.isDefault(), Boolean.FALSE, "Unexpected default value for boolean attribute found");
         Assert.assertNull(acs.isDefaultXSBoolean(), "XSBooleanValue was not null");
     }
+
 }

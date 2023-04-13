@@ -38,11 +38,11 @@ import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.SignatureSigningParametersResolver;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that resolves and populates {@link SignatureSigningParameters} on a {@link SecurityParametersContext}
@@ -188,8 +188,8 @@ public class PopulateSignatureSigningParameters
         final PopulateSignatureSigningParametersHandler delegate = getDelegate();
         delegate.setNoResultIsError(noResultIsError);
         delegate.setSignatureSigningParametersResolver(resolver);
-        delegate.setConfigurationLookupStrategy(adapt(configurationLookupStrategy));
-        delegate.setSecurityParametersContextLookupStrategy(adapt(securityParametersContextLookupStrategy));
+        delegate.setConfigurationLookupStrategy(adaptRequired(configurationLookupStrategy));
+        delegate.setSecurityParametersContextLookupStrategy(adaptRequired(securityParametersContextLookupStrategy));
         delegate.setExistingParametersContextLookupStrategy(adapt(existingParametersContextLookupStrategy));
         delegate.setMetadataContextLookupStrategy(adapt(metadataContextLookupStrategy));
         delegate.initialize();

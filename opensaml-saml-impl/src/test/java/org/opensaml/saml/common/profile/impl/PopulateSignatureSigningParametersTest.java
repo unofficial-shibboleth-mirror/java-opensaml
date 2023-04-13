@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.common.profile.impl;
 
-import java.util.Collections;
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -81,7 +83,7 @@ public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTest
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertNotNull(prc.getOutboundMessageContext().getSubcontext(
+        Assert.assertNotNull(prc.ensureOutboundMessageContext().ensureSubcontext(
                 SecurityParametersContext.class).getSignatureSigningParameters());
     }    
 
@@ -98,8 +100,8 @@ public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTest
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertSame(prc.getSubcontext(SecurityParametersContext.class).getSignatureSigningParameters(),
-                prc.getOutboundMessageContext().getSubcontext(SecurityParametersContext.class).getSignatureSigningParameters());
+        Assert.assertSame(prc.ensureSubcontext(SecurityParametersContext.class).getSignatureSigningParameters(),
+                prc.ensureOutboundMessageContext().ensureSubcontext(SecurityParametersContext.class).getSignatureSigningParameters());
     }    
     
     private class MockResolver implements SignatureSigningParametersResolver {
@@ -111,18 +113,17 @@ public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTest
         }
         
         /** {@inheritDoc} */
-        @Override
-        public Iterable<SignatureSigningParameters> resolve(CriteriaSet criteria) throws ResolverException {
-            return Collections.singletonList(resolveSingle(criteria));
+        @Nonnull public Iterable<SignatureSigningParameters> resolve(@Nullable CriteriaSet criteria) throws ResolverException {
+            return CollectionSupport.singletonList(Constraint.isNotNull(resolveSingle(criteria), "Resolver was null"));
         }
 
         /** {@inheritDoc} */
-        @Override
-        public SignatureSigningParameters resolveSingle(CriteriaSet criteria) throws ResolverException {
+        @Nullable public SignatureSigningParameters resolveSingle(@Nullable CriteriaSet criteria) throws ResolverException {
             if (throwException) {
                 throw new ResolverException();
             }
             
+            assert criteria != null;
             Constraint.isNotNull(criteria.get(SignatureSigningConfigurationCriterion.class), "Criterion was null");
             return new SignatureSigningParameters();
         }

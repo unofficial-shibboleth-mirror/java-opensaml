@@ -23,6 +23,7 @@ import org.opensaml.saml.ext.saml2mdrpi.PublicationPath;
 import org.testng.Assert;
 
 
+@SuppressWarnings("javadoc")
 public class PublicationPathTest extends XMLObjectProviderBaseTestCase {
 
     private static String[] publishers = {"pub1", "pub2",};
@@ -38,7 +39,8 @@ public class PublicationPathTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        PublicationPath pPath = (PublicationPath) unmarshallElement(singleElementFile);
+        final PublicationPath pPath = (PublicationPath) unmarshallElement(singleElementFile);
+        assert pPath != null;
         Assert.assertEquals(pPath.getPublications().size(), 0);
     }
 
@@ -50,7 +52,8 @@ public class PublicationPathTest extends XMLObjectProviderBaseTestCase {
     }
 
     public void testChildElementsUnmarshall() {
-        PublicationPath pPath = (PublicationPath) unmarshallElement(childElementsFile);
+        final PublicationPath pPath = (PublicationPath) unmarshallElement(childElementsFile);
+        assert pPath != null;
         Assert.assertEquals(pPath.getPublications().size(), 2);
         Publication pub = pPath.getPublications().get(0);
         Assert.assertEquals(pub.getPublisher(), publishers[0]);
@@ -59,10 +62,10 @@ public class PublicationPathTest extends XMLObjectProviderBaseTestCase {
     }
 
     public void testChildElementsMarshall() {
-        PublicationPath pPath = (PublicationPath) buildXMLObject(PublicationPath.DEFAULT_ELEMENT_NAME);
+        final PublicationPath pPath = (PublicationPath) buildXMLObject(PublicationPath.DEFAULT_ELEMENT_NAME);
 
         for (int i = 0; i < 2; i++) {
-            Publication pub = (Publication) buildXMLObject(Publication.DEFAULT_ELEMENT_NAME);
+            final Publication pub = (Publication) buildXMLObject(Publication.DEFAULT_ELEMENT_NAME);
             pub.setPublisher(publishers[i]);
             pPath.getPublications().add(pub);
         }

@@ -41,7 +41,7 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         EntityAttributes attributes = (EntityAttributes) unmarshallElement(singleElementFile);
-        Assert.assertNotNull(attributes);
+        assert attributes != null;
         Assert.assertTrue(attributes.getAssertions().isEmpty());
         Assert.assertTrue(attributes.getAttributes().isEmpty());
     }
@@ -50,7 +50,7 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         EntityAttributes attributes = (EntityAttributes) unmarshallElement(childElementsFile);
-        Assert.assertNotNull(attributes);
+        assert attributes != null;
 
         Assert.assertEquals(attributes.getAssertions().size(), 2);
         Assert.assertEquals(attributes.getAttributes().size(), 3);
@@ -90,7 +90,10 @@ public class EntityAttributesTest extends XMLObjectProviderBaseTestCase {
         attributes.getAttributes().add(attrib2);
         attributes.getAttributes().add(attrib3);
 
-        Assert.assertEquals(attributes.getOrderedChildren().size(), 5);
+        final var children = attributes.getOrderedChildren();
+        assert children != null;
+        Assert.assertEquals(children.size(), 5);
         assertXMLEquals(expectedChildElementsDOM, attributes);
     }
+    
 }

@@ -58,7 +58,8 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DiscoHints hints = (DiscoHints) unmarshallElement(singleElementFile);
+        final DiscoHints hints = (DiscoHints) unmarshallElement(singleElementFile);
+        assert hints != null;
         //
         // Shut up warning
         //
@@ -68,7 +69,7 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DiscoHints hints = (DiscoHints) buildXMLObject(DiscoHints.DEFAULT_ELEMENT_NAME);
+        final DiscoHints hints = (DiscoHints) buildXMLObject(DiscoHints.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, hints);
     }
@@ -76,7 +77,8 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall(){
-        DiscoHints hints = (DiscoHints) unmarshallElement(childElementsFile);
+        final DiscoHints hints = (DiscoHints) unmarshallElement(childElementsFile);
+        assert hints != null;
         
         Assert.assertEquals(hints.getIPHints().size(), expectedIPHintCount, "<IPHint> count");
         Assert.assertEquals(hints.getDomainHints().size(), expectedDomainHintsCount, "<DomainHint> count");
@@ -87,7 +89,7 @@ public class DiscoHintsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall(){
-        DiscoHints hints = (DiscoHints) buildXMLObject(DiscoHints.DEFAULT_ELEMENT_NAME);
+        final DiscoHints hints = (DiscoHints) buildXMLObject(DiscoHints.DEFAULT_ELEMENT_NAME);
         
         hints.getDomainHints().add((DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME));
         

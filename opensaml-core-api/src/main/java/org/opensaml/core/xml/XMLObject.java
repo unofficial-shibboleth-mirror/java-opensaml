@@ -31,6 +31,7 @@ import org.w3c.dom.Element;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.LockableClassToInstanceMultiMap;
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 /**
  * A object that represents an XML element, usually of a specific schema type, that has been unmarshalled into this Java
@@ -52,6 +53,15 @@ public interface XMLObject {
      * @return the DOM representation of this XMLObject, or null
      */
     @Nullable public Element getDOM();
+
+    /**
+     * Gets the DOM representation of this XMLObject, if one exists, or raises a {@link ConstraintViolationException}.
+     * 
+     * @return the DOM representation of this XMLObject
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public Element ensureDOM();
 
     /**
      * Gets the QName for this element. This QName <strong>MUST</strong> contain the namespace URI, namespace prefix,

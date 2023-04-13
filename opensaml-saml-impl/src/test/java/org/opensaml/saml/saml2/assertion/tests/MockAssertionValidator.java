@@ -20,6 +20,8 @@ package org.opensaml.saml.saml2.assertion.tests;
 import java.util.Collections;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
@@ -29,6 +31,7 @@ import org.opensaml.saml.saml2.core.Assertion;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
 
+@SuppressWarnings("javadoc")
 public class MockAssertionValidator extends SAML20AssertionValidator {
     
     private Map<Assertion, Object> resultsMap;
@@ -39,7 +42,8 @@ public class MockAssertionValidator extends SAML20AssertionValidator {
     }
 
     /** {@inheritDoc} */
-    public ValidationResult validate(Assertion assertion, ValidationContext context) throws AssertionValidationException {
+    @Nonnull public ValidationResult validate(@Nonnull final Assertion assertion,
+            @Nonnull final ValidationContext context) throws AssertionValidationException {
         Object result = resultsMap.get(assertion);
         
         if (Throwable.class.isInstance(result)) {
@@ -73,7 +77,7 @@ public class MockAssertionValidator extends SAML20AssertionValidator {
             if (!ValidationResult.VALID.equals(pair.getFirst())) {
                 context.setValidationFailureMessage(pair.getSecond());
             }
-            return pair.getFirst();
+            return Constraint.isNotNull(pair.getFirst(), "ValidationResult was null");
         }
         
         throw new IllegalArgumentException(String.format("Invalid result type supplied in mock results map for Assertion '%s': %s",

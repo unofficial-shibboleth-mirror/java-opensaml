@@ -54,6 +54,7 @@ import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngin
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+@SuppressWarnings("javadoc")
 public class SignedAssertionTest extends XMLObjectBaseTestCase {
     
     /** Class logger. */
@@ -105,45 +106,47 @@ public class SignedAssertionTest extends XMLObjectBaseTestCase {
     @Test
     public void testAssertionSignature() 
         throws MarshallingException, SignatureException, UnmarshallingException, SecurityException {
-        Instant now = Instant.now();
+        final Instant now = Instant.now();
         
-        Assertion assertion = assertionBuilder.buildObject();
+        final Assertion assertion = assertionBuilder.buildObject();
         assertion.setVersion(SAMLVersion.VERSION_20);
         assertion.setID(idGenerator.generateIdentifier());
         assertion.setIssueInstant(now);
         
-        Issuer issuer = issuerBuilder.buildObject();
+        final Issuer issuer = issuerBuilder.buildObject();
         issuer.setValue("urn:example.org:issuer");
         assertion.setIssuer(issuer);
         
-        AuthnStatement authnStmt = authnStatementBuilder.buildObject();
+        final AuthnStatement authnStmt = authnStatementBuilder.buildObject();
         authnStmt.setAuthnInstant(now);
         assertion.getAuthnStatements().add(authnStmt);
         
-        Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
+        final Signature signature = signatureBuilder.buildObject(Signature.DEFAULT_ELEMENT_NAME);
         signature.setSigningCredential(goodCredential);
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA);
         assertion.setSignature(signature);
         
-        Marshaller marshaller = marshallerFactory.getMarshaller(assertion);
+        final Marshaller marshaller = marshallerFactory.ensureMarshaller(assertion);
         marshaller.marshall(assertion);
         Signer.signObject(signature);
         
         if (log.isDebugEnabled()) {
-            log.debug("Marshalled signed assertion: \n" + SerializeSupport.nodeToString(assertion.getDOM()));
+            log.debug("Marshalled signed assertion: \n" + SerializeSupport.nodeToString(assertion.ensureDOM()));
         }
         
         // Unmarshall new tree around DOM to avoid side effects and Apache xmlsec bug.
-        Assertion signedAssertion = 
-            (Assertion) unmarshallerFactory.getUnmarshaller(assertion.getDOM()).unmarshall(assertion.getDOM());
+        final Assertion signedAssertion = 
+            (Assertion) unmarshallerFactory.ensureUnmarshaller(assertion.ensureDOM()).unmarshall(assertion.ensureDOM());
         
-        StaticCredentialResolver credResolver = new StaticCredentialResolver(goodCredential);
-        KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
-        ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        final StaticCredentialResolver credResolver = new StaticCredentialResolver(goodCredential);
+        final KeyInfoCredentialResolver kiResolver = SAMLTestSupport.buildBasicInlineKeyInfoResolver();
+        final ExplicitKeySignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion("urn:example.org:issuer") );
-        Assert.assertTrue(trustEngine.validate(signedAssertion.getSignature(), criteriaSet),
-                "Assertion signature was not valid");
+        final CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion("urn:example.org:issuer") );
+        final Signature sig = signedAssertion.getSignature();
+        assert sig != null;
+        Assert.assertTrue(trustEngine.validate(sig, criteriaSet), "Assertion signature was not valid");
     }
+
 }

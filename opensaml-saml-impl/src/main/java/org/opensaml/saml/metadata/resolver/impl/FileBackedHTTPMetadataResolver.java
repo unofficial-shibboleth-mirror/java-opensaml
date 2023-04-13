@@ -37,6 +37,7 @@ import org.w3c.dom.Document;
 
 import com.google.common.io.Files;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -66,7 +67,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     @Nonnull private final Logger log = LoggerFactory.getLogger(FileBackedHTTPMetadataResolver.class);
 
     /** File containing the backup of the metadata. */
-    @Nonnull private File metadataBackupFile;
+    @NonnullAfterInit private File metadataBackupFile;
     
     /** Flag used to track state of whether currently initializing or not. */
     private boolean initializing;
@@ -181,6 +182,7 @@ public class FileBackedHTTPMetadataResolver extends HTTPMetadataResolver {
     /** {@inheritDoc} */
     @Override
     protected void doDestroy() {
+        // TODO: if we pull this, becomes Nonnull.
         metadataBackupFile = null;
 
         super.doDestroy();

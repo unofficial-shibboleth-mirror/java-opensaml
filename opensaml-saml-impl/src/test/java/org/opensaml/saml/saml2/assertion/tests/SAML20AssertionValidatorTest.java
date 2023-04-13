@@ -168,7 +168,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testNoSubjectConfirmations() throws AssertionValidationException {
-        getAssertion().getSubject().getSubjectConfirmations().clear();
+        getSubject().getSubjectConfirmations().clear();
         
         validator = getCurrentValidator();
         
@@ -199,7 +199,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
         Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
-                assertion.getSubject().getSubjectConfirmations().get(0));
+                getSubject().getSubjectConfirmations().get(0));
     }
     
     @Test
@@ -233,7 +233,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
         Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
-                assertion.getSubject().getSubjectConfirmations().get(0));
+                getSubject().getSubjectConfirmations().get(0));
     }
     
     @Test
@@ -254,7 +254,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
         Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
-                assertion.getSubject().getSubjectConfirmations().get(0));
+                getSubject().getSubjectConfirmations().get(0));
     }
     
     @Test
@@ -275,7 +275,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
         Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION),
-                assertion.getSubject().getSubjectConfirmations().get(0));
+                getSubject().getSubjectConfirmations().get(0));
     }
     
     @Test
@@ -340,7 +340,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         signAssertion(getAssertion(), cred1);
         
         SignatureTrustEngine failingEngine = new SignatureTrustEngine() {
-            public boolean validate(Signature token, CriteriaSet trustBasisCriteria) throws SecurityException {
+            public boolean validate(@Nonnull final Signature token, @Nullable final CriteriaSet trustBasisCriteria) throws SecurityException {
                 throw new SecurityException();
             }
             @Nullable public KeyInfoCredentialResolver getKeyInfoResolver() {
@@ -381,7 +381,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
         Assert.assertEquals(validator.validate(assertion, validationContext), ValidationResult.VALID);
         
         Assert.assertSame(validationContext.getDynamicParameters().get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION), 
-                assertion.getSubject().getSubjectConfirmations().get(0));
+                getSubject().getSubjectConfirmations().get(0));
     }
     
     @Test
@@ -404,8 +404,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testConditionsWithRequiredPresent() throws AssertionValidationException {
-        getAssertion().getConditions().getConditions().add(new MockCondition());
-        getAssertion().getConditions().getConditions().add(new MockCondition2());
+        getConditions().getConditions().add(new MockCondition());
+        getConditions().getConditions().add(new MockCondition2());
         
         conditionValidators.add(new MockConditionValidator());
         conditionValidators.add(new MockCondition2Validator());
@@ -426,7 +426,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testConditionsWithRequiredMissing() throws AssertionValidationException {
-        getAssertion().getConditions().getConditions().add(new MockCondition2());
+        getConditions().getConditions().add(new MockCondition2());
         
         conditionValidators.add(new MockConditionValidator());
         conditionValidators.add(new MockCondition2Validator());
@@ -447,8 +447,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testInvalidConditionsNotBefore() throws AssertionValidationException {
-        getAssertion().getConditions().setNotBefore(Instant.now().plus(30, ChronoUnit.MINUTES));
-        getAssertion().getConditions().setNotOnOrAfter(Instant.now().plus(60, ChronoUnit.MINUTES));
+        getConditions().setNotBefore(Instant.now().plus(30, ChronoUnit.MINUTES));
+        getConditions().setNotOnOrAfter(Instant.now().plus(60, ChronoUnit.MINUTES));
         
         validator = getCurrentValidator();
         
@@ -464,8 +464,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testInvalidConditionsNotOnOrAfter() throws AssertionValidationException {
-        getAssertion().getConditions().setNotBefore(Instant.now().minus(60, ChronoUnit.MINUTES));
-        getAssertion().getConditions().setNotOnOrAfter(Instant.now().minus(30, ChronoUnit.MINUTES));
+        getConditions().setNotBefore(Instant.now().minus(60, ChronoUnit.MINUTES));
+        getConditions().setNotOnOrAfter(Instant.now().minus(30, ChronoUnit.MINUTES));
         
         validator = getCurrentValidator();
         
@@ -491,7 +491,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
             }
         };
         conditionValidators.add(failingValidator);
-        getAssertion().getConditions().getConditions().add((Condition) buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME));
+        getConditions().getConditions().add((Condition) buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME));
         
         validator = getCurrentValidator();
         
@@ -507,7 +507,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testUnknownCondition() throws AssertionValidationException {
-        getAssertion().getConditions().getConditions().add((Condition) buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME));
+        getConditions().getConditions().add((Condition) buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME));
         
         validator = getCurrentValidator();
         
@@ -565,7 +565,7 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testInvalidIssuer() throws AssertionValidationException {
-        getAssertion().getIssuer().setValue("invalid");
+        getIssuer().setValue("invalid");
         
         validator = getCurrentValidator();
         
@@ -725,7 +725,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
             this(ELEMENT_NAME.getNamespaceURI(), ELEMENT_NAME.getLocalPart(), ELEMENT_NAME.getPrefix());
         }
 
-        protected MockCondition(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        protected MockCondition(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+                @Nonnull final String namespacePrefix) {
             super(namespaceURI, elementLocalName, namespacePrefix);
         }
 
@@ -744,7 +745,8 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
             this(ELEMENT_NAME.getNamespaceURI(), ELEMENT_NAME.getLocalPart(), ELEMENT_NAME.getPrefix());
         }
 
-        protected MockCondition2(String namespaceURI, String elementLocalName, String namespacePrefix) {
+        protected MockCondition2(@Nullable final String namespaceURI, @Nonnull final String elementLocalName,
+                @Nonnull final String namespacePrefix) {
             super(namespaceURI, elementLocalName, namespacePrefix);
         }
 
@@ -758,13 +760,14 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     public static class MockConditionValidator implements ConditionValidator {
         
         /** {@inheritDoc} */
-        public QName getServicedCondition() {
+        @Nonnull public QName getServicedCondition() {
             return MockCondition.ELEMENT_NAME;
         }
 
         /** {@inheritDoc} */
-        public ValidationResult validate(Condition condition, Assertion assertion, ValidationContext context)
-                throws AssertionValidationException {
+        @Nonnull public ValidationResult validate(@Nonnull final Condition condition,
+                @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
+                        throws AssertionValidationException {
             return ValidationResult.VALID;
         }
         
@@ -773,16 +776,16 @@ public class SAML20AssertionValidatorTest extends BaseAssertionValidationTest {
     public static class MockCondition2Validator implements ConditionValidator {
         
         /** {@inheritDoc} */
-        public QName getServicedCondition() {
+        @Nonnull public QName getServicedCondition() {
             return MockCondition2.ELEMENT_NAME;
         }
 
         /** {@inheritDoc} */
-        public ValidationResult validate(Condition condition, Assertion assertion, ValidationContext context)
-                throws AssertionValidationException {
+        @Nonnull public ValidationResult validate(@Nonnull final Condition condition,
+                @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
+                        throws AssertionValidationException {
             return ValidationResult.VALID;
         }
-        
     }
 
 }

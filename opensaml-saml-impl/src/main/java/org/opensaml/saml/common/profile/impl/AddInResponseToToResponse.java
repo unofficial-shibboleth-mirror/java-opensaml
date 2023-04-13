@@ -18,7 +18,6 @@
 package org.opensaml.saml.common.profile.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -39,10 +38,12 @@ import org.opensaml.saml.common.messaging.context.SAMLMessageInfoContext;
 import org.opensaml.saml.saml1.core.ResponseAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -66,14 +67,15 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
     @Nonnull private Function<ProfileRequestContext,String> requestIdLookupStrategy;
     
     /** Message to modify. */
-    @Nullable private SAMLObject response;
+    @NonnullBeforeExec private SAMLObject response;
     
     /** Request ID to populate from. */
-    @Nullable private String requestId;
+    @NonnullBeforeExec private String requestId;
     
     /** Constructor. */
     public AddInResponseToToResponse() {
-        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(new OutboundMessageContextLookup());
+        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(
+                new OutboundMessageContextLookup());
         requestIdLookupStrategy = new DefaultRequestIdLookupStrategy();
     }
     
@@ -100,6 +102,11 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        if (!super.doPreExecute(profileRequestContext) ) {
+            return false;
+        }
+        
         log.debug("{} Attempting to add InResponseTo to outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -115,7 +122,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
             return false;
         }
                 
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -146,7 +153,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
         
         /** Constructor. */
         public DefaultRequestIdLookupStrategy() {
-            suppressForBindings = Collections.emptySet();
+            suppressForBindings = CollectionSupport.emptySet();
         }
         
         /**
@@ -169,7 +176,7 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
         /** {@inheritDoc} */
         @Override
         @Nullable public String apply(@Nullable final ProfileRequestContext input) {
-            final MessageContext inMsgCtx = input.getInboundMessageContext();
+            final MessageContext inMsgCtx = input != null ? input.getInboundMessageContext() : null;
             if (inMsgCtx == null) {
                 log.debug("No inbound message context available");
                 return null;
@@ -186,11 +193,6 @@ public class AddInResponseToToResponse extends AbstractConditionalProfileAction 
             }
             
             final SAMLMessageInfoContext infoCtx = inMsgCtx.ensureSubcontext(SAMLMessageInfoContext.class);
-            if (infoCtx == null) {
-                log.debug("No inbound SAMLMessageInfoContext available");
-                return null;
-            }
-
             return infoCtx.getMessageId();
         }
     }

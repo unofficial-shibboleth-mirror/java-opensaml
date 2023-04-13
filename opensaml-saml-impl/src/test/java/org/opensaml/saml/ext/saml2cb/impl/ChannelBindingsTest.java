@@ -34,10 +34,18 @@ public class ChannelBindingsTest extends XMLObjectProviderBaseTestCase {
     
     private Boolean expectedSOAP11MustUnderstand;
     
+    /**
+     * Constructor.
+     */
     public ChannelBindingsTest() {
         singleElementFile = "/org/opensaml/saml/ext/saml2cb/impl/ChannelBindings.xml";
     }
  
+    /**
+     * Test set up.
+     * 
+     * @throws Exception
+     */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedContent = "YourChannelIsBound";
@@ -48,9 +56,8 @@ public class ChannelBindingsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ChannelBindings cb = (ChannelBindings) unmarshallElement(singleElementFile);
-        
-        Assert.assertNotNull(cb);
+        final ChannelBindings cb = (ChannelBindings) unmarshallElement(singleElementFile);
+        assert cb != null;
         
         Assert.assertEquals(expectedSOAP11MustUnderstand, cb.isSOAP11MustUnderstand(),
                 "SOAP mustUnderstand had unxpected value");
@@ -61,7 +68,7 @@ public class ChannelBindingsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ChannelBindings cb = (ChannelBindings) buildXMLObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
+        final ChannelBindings cb = (ChannelBindings) buildXMLObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
         
         cb.setSOAP11Actor(expectedSOAP11Actor);
         cb.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);

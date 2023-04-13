@@ -25,6 +25,7 @@ import org.opensaml.saml.ext.saml2mdrpi.UsagePolicy;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
 
     private static String expectedPublisher = "publisher";
@@ -44,14 +45,16 @@ public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PublicationInfo info = (PublicationInfo) unmarshallElement(singleElementFile);
+        final PublicationInfo info = (PublicationInfo) unmarshallElement(singleElementFile);
+        assert info != null;
         Assert.assertEquals(info.getPublisher(), expectedPublisher);
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        PublicationInfo info = (PublicationInfo) unmarshallElement(singleElementOptionalAttributesFile);
+        final PublicationInfo info = (PublicationInfo) unmarshallElement(singleElementOptionalAttributesFile);
+        assert info != null;
         Assert.assertEquals(info.getPublisher(), expectedPublisher);
         Assert.assertEquals(info.getPublicationId(), expectedPublicationId);
         Assert.assertEquals(info.getCreationInstant(), expectedCreationInstant);
@@ -60,7 +63,7 @@ public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PublicationInfo info = (PublicationInfo) buildXMLObject(PublicationInfo.DEFAULT_ELEMENT_NAME);
+        final PublicationInfo info = (PublicationInfo) buildXMLObject(PublicationInfo.DEFAULT_ELEMENT_NAME);
 
         info.setPublisher(expectedPublisher);
 
@@ -70,7 +73,7 @@ public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        PublicationInfo info = (PublicationInfo) buildXMLObject(PublicationInfo.DEFAULT_ELEMENT_NAME);
+        final PublicationInfo info = (PublicationInfo) buildXMLObject(PublicationInfo.DEFAULT_ELEMENT_NAME);
 
         info.setPublisher(expectedPublisher);
         info.setCreationInstant(expectedCreationInstant);
@@ -81,7 +84,8 @@ public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
     
     @Test
     public void testChildElementsUnmarshall() {
-        PublicationInfo info = (PublicationInfo) unmarshallElement(childElementsFile);
+        final PublicationInfo info = (PublicationInfo) unmarshallElement(childElementsFile);
+        assert info != null;
         Assert.assertEquals(info.getPublisher(), expectedPublisher);
         UsagePolicy policy = info.getUsagePolicies().get(0);
         Assert.assertEquals(policy.getXMLLang(), langs[0]);
@@ -93,12 +97,11 @@ public class PublicationInfoTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testChildElementsMarshall() {
-        PublicationInfo info = (PublicationInfo) buildXMLObject(PublicationInfo.DEFAULT_ELEMENT_NAME);
+        final PublicationInfo info = (PublicationInfo) buildXMLObject(PublicationInfo.DEFAULT_ELEMENT_NAME);
         info.setPublisher(expectedPublisher);
 
         for (int i = 0; i < 2; i++) {
-
-            UsagePolicy policy = (UsagePolicy) buildXMLObject(UsagePolicy.DEFAULT_ELEMENT_NAME);
+            final UsagePolicy policy = (UsagePolicy) buildXMLObject(UsagePolicy.DEFAULT_ELEMENT_NAME);
             policy.setURI(uris[i]);
             policy.setXMLLang(langs[i]);
             info.getUsagePolicies().add(policy);

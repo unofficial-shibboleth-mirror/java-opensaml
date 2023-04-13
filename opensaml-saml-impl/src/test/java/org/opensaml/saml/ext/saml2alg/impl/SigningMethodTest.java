@@ -37,8 +37,8 @@ public class SigningMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SigningMethod signingMethod = (SigningMethod) unmarshallElement(singleElementFile);
-        Assert.assertNotNull(signingMethod);
+        final SigningMethod signingMethod = (SigningMethod) unmarshallElement(singleElementFile);
+        assert signingMethod != null;
         Assert.assertEquals(signingMethod.getAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
     }
     
@@ -46,8 +46,8 @@ public class SigningMethodTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementOptionalAttributesUnmarshall() {
-        SigningMethod signingMethod = (SigningMethod) unmarshallElement(singleElementOptionalAttributesFile);
-        Assert.assertNotNull(signingMethod);
+        final SigningMethod signingMethod = (SigningMethod) unmarshallElement(singleElementOptionalAttributesFile);
+        assert signingMethod != null;
         Assert.assertEquals(signingMethod.getAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(signingMethod.getMinKeySize(), Integer.valueOf(2048));
         Assert.assertEquals(signingMethod.getMaxKeySize(), Integer.valueOf(4096));
@@ -56,8 +56,8 @@ public class SigningMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        SigningMethod signingMethod = (SigningMethod) unmarshallElement(childElementsFile);
-        Assert.assertNotNull(signingMethod);
+        final SigningMethod signingMethod = (SigningMethod) unmarshallElement(childElementsFile);
+        assert signingMethod != null;
         Assert.assertEquals(signingMethod.getAlgorithm(), SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         Assert.assertEquals(signingMethod.getUnknownXMLObjects().size(), 3);
     }
@@ -65,7 +65,7 @@ public class SigningMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SigningMethod signingMethod = (SigningMethod) buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
+        final SigningMethod signingMethod = (SigningMethod) buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
         signingMethod.setAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
 
         assertXMLEquals(expectedDOM, signingMethod);
@@ -74,7 +74,7 @@ public class SigningMethodTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementOptionalAttributesMarshall() {
-        SigningMethod signingMethod = (SigningMethod) buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
+        final SigningMethod signingMethod = (SigningMethod) buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
         signingMethod.setAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signingMethod.setMinKeySize(2048);
         signingMethod.setMaxKeySize(4096);
@@ -85,7 +85,7 @@ public class SigningMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        SigningMethod signingMethod = (SigningMethod) buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
+        final SigningMethod signingMethod = (SigningMethod) buildXMLObject(SigningMethod.DEFAULT_ELEMENT_NAME);
         signingMethod.setAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         
         signingMethod.getUnknownXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));

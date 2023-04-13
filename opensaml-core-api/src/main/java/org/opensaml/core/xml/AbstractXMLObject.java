@@ -110,6 +110,11 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
+    @Nonnull public Element ensureDOM() {
+        return Constraint.isNotNull(dom, "DOM was null");
+    }
+
+    /** {@inheritDoc} */
     @Nonnull public QName getElementQName() {
         return elementQname;
     }

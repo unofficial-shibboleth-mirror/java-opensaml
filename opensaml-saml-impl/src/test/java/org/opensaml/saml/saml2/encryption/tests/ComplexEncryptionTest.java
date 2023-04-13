@@ -36,6 +36,7 @@ import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.DataReference;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
@@ -106,7 +107,8 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSingleKEKInline() {
-        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        assert target != null;
         
         KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyNameRSA);
@@ -129,29 +131,34 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(encObject instanceof EncryptedAssertion, 
                 "Encrypted object was not an instance of the expected type");
         encTarget = (EncryptedAssertion) encObject;
+        assert encTarget != null;
         
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 1, 
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
+        KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 1, 
                 "Number of inline EncryptedKeys");
         Assert.assertEquals(encTarget.getEncryptedKeys().size(), 0, 
                 "Number of peer EncryptedKeys");
+        Assert.assertEquals(keyInfo.getRetrievalMethods().size(), 0,
+                "EncryptedData improperly contained a RetrievalMethod");
         
         
-        EncryptedKey encKey = encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0);
+        final EncryptedKey encKey = keyInfo.getEncryptedKeys().get(0);
         Assert.assertNotNull(encKey, "EncryptedKey was null");
         
-        Assert.assertEquals(encKey.getEncryptionMethod().getAlgorithm(), kekURIRSA, 
-                "Algorithm attribute");
-        Assert.assertNotNull(encKey.getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encKey.getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyNameRSA, 
+        final EncryptionMethod method = encKey.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), kekURIRSA, "Algorithm attribute");
+        keyInfo = encKey.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyNameRSA, 
                 "KeyName");
         
         Assert.assertFalse(Strings.isNullOrEmpty(encKey.getID()),
                 "EncryptedKey ID attribute was empty");
-        
-        EncryptedData encData = encTarget.getEncryptedData();
-        Assert.assertNotNull(encData.getKeyInfo(), "EncryptedData KeyInfo wasn't null");
-        Assert.assertEquals(encData.getKeyInfo().getRetrievalMethods().size(), 0,
-                "EncryptedData improperly contained a RetrievalMethod");
         
         Assert.assertNull(encKey.getReferenceList(), "EncryptedKey ReferenceList wasn't null");
         Assert.assertNull(encKey.getCarriedKeyName(), "EncryptedKey CarriedKeyName wasn't null");
@@ -162,8 +169,9 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testSingleKEKPeer() {
-        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
-        
+        final Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        assert target != null;
+
         KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyNameRSA);
         kekKeyInfoRSA.getKeyNames().add(keyName);
@@ -226,7 +234,8 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     /** Test encryption with multicast key encryption keys with key placement as peer. */
     @Test
     public void testMulticastKEKPeer() {
-        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        assert target != null;
         
         String multicastKeyNameValue = "MulticastDataEncryptionKeyName";
         KeyName keyName = (KeyName) buildXMLObject(KeyName.DEFAULT_ELEMENT_NAME);
@@ -315,7 +324,8 @@ public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that reuse is allowed with same key encryption parameters. */
     @Test
     public void testReuse() {
-        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        assert assertion != null;
         
         Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
         Attribute target2 = assertion.getAttributeStatements().get(0).getAttributes().get(1);

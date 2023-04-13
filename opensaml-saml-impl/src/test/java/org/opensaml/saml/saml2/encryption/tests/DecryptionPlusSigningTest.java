@@ -120,7 +120,8 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         String filename = "/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
         
-        Assertion assertion = (Assertion) unmarshallElement(filename);
+        final Assertion assertion = (Assertion) unmarshallElement(filename);
+        assert assertion != null;
         EncryptedAssertion encryptedAssertion = encrypter.encrypt(assertion);
         
         // Build Response container
@@ -145,12 +146,12 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         
         SignatureSupport.prepareSignatureParams(responseSignature, signingParams);
         
-        marshallerFactory.getMarshaller(response).marshall(response);
+        marshallerFactory.ensureMarshaller(response).marshall(response);
         
         Signer.signObject(responseSignature);
         
         // Marshall Response and re-parse, for good measure
-        Element marshalledResponse = marshallerFactory.getMarshaller(response).marshall(response);
+        Element marshalledResponse = marshallerFactory.ensureMarshaller(response).marshall(response);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         SerializeSupport.writeNode(marshalledResponse, baos);
         
@@ -161,11 +162,13 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         Element parsedResponse = parsedDoc.getDocumentElement();
         
         Response newResponse = 
-            (Response) unmarshallerFactory.getUnmarshaller(parsedResponse).unmarshall(parsedResponse);
+            (Response) unmarshallerFactory.ensureUnmarshaller(parsedResponse).unmarshall(parsedResponse);
         
         // Validate Response signature first time
         try {
-            SignatureValidator.validate(newResponse.getSignature(), signingCred);
+            final Signature sig = newResponse.getSignature();
+            assert sig != null;
+            SignatureValidator.validate(sig, signingCred);
         } catch (SignatureException e1) {
             Assert.fail("First Response signature validation failed");
         }
@@ -189,7 +192,9 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
         
         // Validate Response signature second time
         try {
-            SignatureValidator.validate(newResponse.getSignature(), signingCred);
+            final Signature sig = newResponse.getSignature();
+            assert sig != null;
+            SignatureValidator.validate(sig, signingCred);
         } catch (SignatureException e1) {
             Assert.fail("Second Response signature validation failed");
         }

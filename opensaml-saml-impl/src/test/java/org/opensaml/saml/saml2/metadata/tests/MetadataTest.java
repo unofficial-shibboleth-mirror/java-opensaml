@@ -56,7 +56,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(inCommonMDFile);
             Document inCommonMDDoc = parserPool.parse(in);
-            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
                     inCommonMDDoc.getDocumentElement());
 
             XMLObject inCommonMD = unmarshaller.unmarshall(inCommonMDDoc.getDocumentElement());
@@ -80,7 +80,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);
             Document switchMDDoc = parserPool.parse(in);
-            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
                     switchMDDoc.getDocumentElement());
 
             XMLObject switchMD = unmarshaller.unmarshall(switchMDDoc.getDocumentElement());
@@ -104,7 +104,7 @@ public class MetadataTest extends XMLObjectBaseTestCase {
         try {
             InputStream in = MetadataTest.class.getResourceAsStream(switchMDFile);
             Document ukFedDoc = parserPool.parse(in);            
-            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().getUnmarshaller(
+            Unmarshaller unmarshaller = XMLObjectProviderRegistrySupport.getUnmarshallerFactory().ensureUnmarshaller(
                     ukFedDoc.getDocumentElement());
             XMLObject ukFedMD = unmarshaller.unmarshall(ukFedDoc.getDocumentElement());
 

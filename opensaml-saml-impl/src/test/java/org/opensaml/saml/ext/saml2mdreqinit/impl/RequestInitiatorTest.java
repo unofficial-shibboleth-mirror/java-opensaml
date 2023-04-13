@@ -52,7 +52,8 @@ public class RequestInitiatorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnmarshall() {
-        RequestInitiator reqinit = (RequestInitiator) unmarshallElement(singleElementFile);
+        final RequestInitiator reqinit = (RequestInitiator) unmarshallElement(singleElementFile);
+        assert reqinit != null;
 
         Assert.assertEquals(reqinit.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(reqinit.getLocation(), expectedLocation, "Location was not expected value");
@@ -60,7 +61,7 @@ public class RequestInitiatorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementMarshall() {
-        RequestInitiator reqinit = (new RequestInitiatorBuilder()).buildObject();
+        final RequestInitiator reqinit = (new RequestInitiatorBuilder()).buildObject();
 
         reqinit.setBinding(expectedBinding);
         reqinit.setLocation(expectedLocation);

@@ -46,6 +46,8 @@ import org.opensaml.saml.saml2.core.AuthnContext;
 import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnStatement;
 import org.opensaml.saml.saml2.core.Conditions;
+import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.opensaml.saml.saml2.core.SubjectLocality;
@@ -65,7 +67,9 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.logic.Constraint;
 
+@SuppressWarnings("javadoc")
 public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     
     @Nonnull public static final Duration CLOCK_SKEW = Duration.ofMinutes(5);
@@ -85,23 +89,36 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
     
     private Assertion assertion;
     
-    protected Assertion getAssertion() {
-        return assertion;
+    @Nonnull Assertion getAssertion() {
+        return Constraint.isNotNull(assertion, "Assertion was null");
     }
     
+    @Nonnull protected Conditions getConditions() {
+        return Constraint.isNotNull(assertion.getConditions(), "Conditions was null");
+    }
+    
+    @Nonnull protected Subject getSubject() {
+        return Constraint.isNotNull(assertion.getSubject(), "Subject was null");
+    }
+
+    @Nonnull protected Issuer getIssuer() {
+        return Constraint.isNotNull(assertion.getIssuer(), "Issuer was null");
+    }
+
     @BeforeMethod
     protected void setUpBasicAssertion() {
         assertion = SAML2ActionTestingSupport.buildAssertion();
         assertion.setIssueInstant(Instant.now());
         assertion.setIssuer(SAML2ActionTestingSupport.buildIssuer(ISSUER));
-        assertion.setSubject(SAML2ActionTestingSupport.buildSubject(PRINCIPAL_NAME));
+        final Subject subject = SAML2ActionTestingSupport.buildSubject(PRINCIPAL_NAME);
+        assertion.setSubject(subject);
         assertion.setConditions(buildBasicConditions());
         
         SubjectConfirmation subjectConfirmation = buildXMLObject(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
         // Default to bearer with basic valid confirmation data, but the test can change as appropriate
         subjectConfirmation.setMethod(SubjectConfirmation.METHOD_BEARER);
         subjectConfirmation.setSubjectConfirmationData(buildBasicSubjectConfirmationData());
-        assertion.getSubject().getSubjectConfirmations().add(subjectConfirmation);
+        subject.getSubjectConfirmations().add(subjectConfirmation);
     }
     
     protected Conditions buildBasicConditions() {

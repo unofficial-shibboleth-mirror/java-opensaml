@@ -90,8 +90,9 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getNotBefore());
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getNotBefore());
     }
 
     /**
@@ -115,9 +116,10 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertSame(assertion.getConditions(), conditions);
-        Assert.assertNotNull(assertion.getConditions().getNotBefore());
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertSame(c, conditions);
+        Assert.assertNotNull(c.getNotBefore());
     }
 
     /** Test that the condition is properly added if there are multiple assertions in the response. */
@@ -136,8 +138,9 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (final Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getConditions());
-            Assert.assertNotNull(assertion.getConditions().getNotBefore());
+            final Conditions c = assertion.getConditions();
+            assert c != null;
+            Assert.assertNotNull(c.getNotBefore());
         }
     }
 
@@ -159,8 +162,9 @@ public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTest
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getNotBefore());
+        final var c = response.getAssertions().get(0).getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getNotBefore());
     }
 
 }

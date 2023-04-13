@@ -30,6 +30,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -64,6 +66,7 @@ import org.opensaml.xmlsec.EncryptionParametersResolver;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.opensaml.xmlsec.criterion.EncryptionConfigurationCriterion;
 import org.opensaml.xmlsec.derivation.impl.PBKDF2;
+import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
@@ -84,12 +87,11 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class ECDHTest extends XMLObjectBaseTestCase {
     
     private String targetFile;
@@ -190,7 +192,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
 
     @Test
     public void roundtripWithKeyWrapAndEncryptionMethods() throws Exception {
-        KeyDescriptor kd = buildKeyDescriptor(recipientCredKeyName, UsageType.ENCRYPTION, recipientCredPublic.getPublicKey());
+        final KeyDescriptor kd = buildKeyDescriptor(recipientCredKeyName, UsageType.ENCRYPTION, recipientCredPublic.getPublicKey());
         kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128_GCM));
         kd.getEncryptionMethods().add(buildEncryptionMethod(EncryptionConstants.ALGO_ID_KEYWRAP_AES256));
         roleDesc.getKeyDescriptors().add(kd);
@@ -242,10 +244,11 @@ public class ECDHTest extends XMLObjectBaseTestCase {
     
     private void testRoundtrip(String expectedDataAlgo, String expectedKEKAlgo, String expectedKDFAlgo, Encrypter.KeyPlacement keyPlacement) throws Exception {
         // Encrypt
-        Assertion assertionOrig = (Assertion) unmarshallElement(targetFile);
+        final Assertion assertionOrig = (Assertion) unmarshallElement(targetFile);
+        assert assertionOrig != null;
         
-        EncryptionParameters encParams = encParamsResolver.resolveSingle(encCriteria);
-        Assert.assertNotNull(encParams);
+        final EncryptionParameters encParams = encParamsResolver.resolveSingle(encCriteria);
+        assert encParams != null;
         
         DataEncryptionParameters dataEncParams = new DataEncryptionParameters(encParams);
         List<KeyEncryptionParameters> kekParams = encParams.getKeyTransportEncryptionCredential() != null ?
@@ -254,19 +257,25 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         encrypter = new Encrypter(dataEncParams, kekParams);
         encrypter.setKeyPlacement(keyPlacement);
         
-        EncryptedAssertion encryptedAssertionOrig = encrypter.encrypt(assertionOrig);
-        Assert.assertNotNull(encryptedAssertionOrig);
-        Assert.assertNotNull(encryptedAssertionOrig.getEncryptedData().getKeyInfo());
+        final EncryptedAssertion encryptedAssertionOrig = encrypter.encrypt(assertionOrig);
+        assert encryptedAssertionOrig != null;
+        final EncryptedData encData = encryptedAssertionOrig.getEncryptedData();
+        assert encData != null;
+        Assert.assertNotNull(encData.getKeyInfo());
         
         if (expectedDataAlgo != null) {
-            Assert.assertEquals(encryptedAssertionOrig.getEncryptedData().getEncryptionMethod().getAlgorithm(), expectedDataAlgo);
+            final var method = encData.getEncryptionMethod();
+            assert method != null;
+            Assert.assertEquals(method.getAlgorithm(), expectedDataAlgo);
         }
         
         EncryptedKey encryptedKey = null;
+        final KeyInfo dataKeyInfo = encData.getKeyInfo();
+        assert dataKeyInfo != null;
         switch(keyPlacement) {
             case INLINE:
-                encryptedKey = !encryptedAssertionOrig.getEncryptedData().getKeyInfo().getEncryptedKeys().isEmpty()
-                    ? encryptedAssertionOrig.getEncryptedData().getKeyInfo().getEncryptedKeys().get(0) : null;
+                encryptedKey = !dataKeyInfo.getEncryptedKeys().isEmpty()
+                    ? dataKeyInfo.getEncryptedKeys().get(0) : null;
                 break;
             case PEER:
                 encryptedKey = !encryptedAssertionOrig.getEncryptedKeys().isEmpty()
@@ -275,16 +284,20 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         };
             
         if (expectedKEKAlgo != null) {
-            Assert.assertNotNull(encryptedKey);
-            Assert.assertEquals(encryptedKey.getEncryptionMethod().getAlgorithm(), expectedKEKAlgo);
+            assert encryptedKey != null;
+            final var method = encryptedKey.getEncryptionMethod();
+            assert method != null;
+            Assert.assertEquals(method.getAlgorithm(), expectedKEKAlgo);
         }
         
         if (expectedKDFAlgo != null) {
             KeyDerivationMethod kdm = null;
             if (encryptedKey != null) {
-                kdm = (KeyDerivationMethod) encryptedKey.getKeyInfo().getAgreementMethods().get(0).getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0); 
+                final KeyInfo ki = encryptedKey.getKeyInfo();
+                assert ki != null;
+                kdm = (KeyDerivationMethod) ki.getAgreementMethods().get(0).getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0); 
             } else {
-                kdm = (KeyDerivationMethod) encryptedAssertionOrig.getEncryptedData().getKeyInfo().getAgreementMethods().get(0).getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0);
+                kdm = (KeyDerivationMethod) dataKeyInfo.getAgreementMethods().get(0).getUnknownXMLObjects(KeyDerivationMethod.DEFAULT_ELEMENT_NAME).get(0);
             }
             Assert.assertNotNull(kdm);
             Assert.assertEquals(kdm.getAlgorithm(), expectedKDFAlgo);
@@ -300,7 +313,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         
         ByteArrayInputStream bais = new ByteArrayInputStream(bytesEncrypted);
         EncryptedAssertion encryptedAssertion = (EncryptedAssertion) XMLObjectSupport.unmarshallFromInputStream(
-                XMLObjectProviderRegistrySupport.getParserPool(), bais);
+                Constraint.isNotNull(XMLObjectProviderRegistrySupport.getParserPool(), "ParserPool null"), bais);
         Assert.assertNotNull(encryptedAssertion);
         
         // Decrypt
@@ -311,10 +324,10 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         Assertion decryptedAssertion = decrypter.decrypt(encryptedAssertion);
         Assert.assertNotNull(decryptedAssertion);
         
-        assertXMLEquals(assertionOrig.getDOM().getOwnerDocument(), decryptedAssertion);
+        assertXMLEquals(assertionOrig.ensureDOM().getOwnerDocument(), decryptedAssertion);
     }
     
-    private RoleDescriptor buildRoleDescriptorSkeleton() {
+    @Nonnull private RoleDescriptor buildRoleDescriptorSkeleton() {
         EntityDescriptor entityDesc = buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
         entityDesc.setEntityID(targetEntityID);
         
@@ -324,7 +337,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         return spSSODesc;
     }
     
-    private KeyDescriptor buildKeyDescriptor(String keyName, UsageType use, Object ... contentItems) {
+    @Nonnull private KeyDescriptor buildKeyDescriptor(String keyName, UsageType use, Object ... contentItems) {
         KeyDescriptor keyDesc = buildXMLObject(KeyDescriptor.DEFAULT_ELEMENT_NAME);
         KeyInfo keyInfo = buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
         
@@ -359,7 +372,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         return keyDesc;
     }
     
-    private EncryptionMethod buildEncryptionMethod(String algorithm) {
+    @Nonnull private EncryptionMethod buildEncryptionMethod(String algorithm) {
        EncryptionMethod encMethod = buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME); 
        encMethod.setAlgorithm(algorithm);
        return encMethod;

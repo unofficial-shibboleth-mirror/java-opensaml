@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link SAML1ArtifactRequestIssuerHandler} unit test. */
+@SuppressWarnings("javadoc")
 public class SAML1ArtifactRequestIssuerHandlerTest extends OpenSAMLInitBaseTestCase {
 
     private BasicSAMLArtifactMap artifactMap;
@@ -82,8 +83,7 @@ public class SAML1ArtifactRequestIssuerHandlerTest extends OpenSAMLInitBaseTestC
         
         handler.invoke(mc);
         
-        final SAMLPeerEntityContext peerCtx = mc.getSubcontext(SAMLPeerEntityContext.class);
-        Assert.assertNotNull(peerCtx);
+        final SAMLPeerEntityContext peerCtx = mc.ensureSubcontext(SAMLPeerEntityContext.class);
         Assert.assertEquals(peerCtx.getEntityId(), "https://sp.example.org");
     }
     

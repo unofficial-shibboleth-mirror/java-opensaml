@@ -79,7 +79,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
 
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
-    @Nonnull private UnmarshallerFactory unmarshallerFactory;
+    @NonnullAfterInit private UnmarshallerFactory unmarshallerFactory;
 
     /** Whether metadata is required to be valid. */
     private boolean requireValidMetadata;
@@ -320,7 +320,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * 
      * @return the unmarshaller factory instance to use
      */
-    @Nonnull protected UnmarshallerFactory getUnmarshallerFactory() {
+    @NonnullAfterInit protected UnmarshallerFactory getUnmarshallerFactory() {
         return unmarshallerFactory;
     }
 
@@ -343,6 +343,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
 
     /** {@inheritDoc} */
     @Override protected void doDestroy() {
+        // TODO: if we pull this, unmarshallerFactory should be Nonnull.
         unmarshallerFactory = null;
         mdFilter = null;
         entityBackingStore = null;
@@ -631,7 +632,7 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      * @param backingStore the backing store instance to update
      */
     protected void preProcessEntitiesDescriptor(@Nonnull final EntitiesDescriptor entitiesDescriptor,
-            final EntityBackingStore backingStore) {
+            @Nonnull final EntityBackingStore backingStore) {
 
         // TODO: If order doesn't matter here, we should change to use the non-null getters of the specific child types.
         final List<XMLObject> children = entitiesDescriptor.getOrderedChildren();

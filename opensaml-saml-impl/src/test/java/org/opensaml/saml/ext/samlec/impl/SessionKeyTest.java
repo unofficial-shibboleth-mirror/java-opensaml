@@ -36,11 +36,17 @@ public class SessionKeyTest extends XMLObjectProviderBaseTestCase {
     
     private Boolean expectedSOAP11MustUnderstand;
     
+    /** Constructor. */
     public SessionKeyTest() {
         singleElementFile = "/org/opensaml/saml/ext/samlec/impl/SessionKey.xml";
         childElementsFile = "/org/opensaml/saml/ext/samlec/impl/SessionKeyChildElements.xml";
     }
  
+    /**
+     * Test set up.
+     * 
+     * @throws Exception
+     */
     @BeforeMethod
     protected void setUp() throws Exception {
         expectedAlg = "http://myalgorithm.example.com";
@@ -51,9 +57,8 @@ public class SessionKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SessionKey key = (SessionKey) unmarshallElement(singleElementFile);
-        
-        Assert.assertNotNull(key);
+        final SessionKey key = (SessionKey) unmarshallElement(singleElementFile);
+        assert key != null;
         
         Assert.assertEquals(expectedSOAP11MustUnderstand, key.isSOAP11MustUnderstand(),
                 "SOAP mustUnderstand had unxpected value");
@@ -64,9 +69,8 @@ public class SessionKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        SessionKey key = (SessionKey) unmarshallElement(childElementsFile);
-        
-        Assert.assertNotNull(key);
+        final SessionKey key = (SessionKey) unmarshallElement(childElementsFile);
+        assert key != null;
         
         Assert.assertEquals(expectedSOAP11MustUnderstand, key.isSOAP11MustUnderstand(),
                 "SOAP mustUnderstand had unxpected value");
@@ -77,7 +81,7 @@ public class SessionKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SessionKey key = (SessionKey) buildXMLObject(SessionKey.DEFAULT_ELEMENT_NAME);
+        final SessionKey key = (SessionKey) buildXMLObject(SessionKey.DEFAULT_ELEMENT_NAME);
         
         key.setSOAP11Actor(expectedSOAP11Actor);
         key.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);
@@ -89,7 +93,7 @@ public class SessionKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        SessionKey key = (SessionKey) buildXMLObject(SessionKey.DEFAULT_ELEMENT_NAME);
+        final SessionKey key = (SessionKey) buildXMLObject(SessionKey.DEFAULT_ELEMENT_NAME);
         
         key.setSOAP11Actor(expectedSOAP11Actor);
         key.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);

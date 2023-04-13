@@ -34,12 +34,18 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
     
     private Boolean expectedSOAP11MustUnderstand;
     
+    /**
+     * Constructor.
+     */
     public ResponseTest() {
         singleElementFile = "/org/opensaml/saml/saml2/ecp/impl/Response.xml";
     }
- 
+
+    /**
+     * Test set up.
+     */
     @BeforeMethod
-    protected void setUp() throws Exception {
+    protected void setUp() {
         expectedACSURL = "https://sp.example.org/acs";
         expectedSOAP11Actor = "https://soap11actor.example.org";
         expectedSOAP11MustUnderstand = true;
@@ -50,9 +56,9 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Response response = (Response) unmarshallElement(singleElementFile);
+        final Response response = (Response) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(response);
+        assert response != null;
         
         Assert.assertEquals(response.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
         Assert.assertEquals(response.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
@@ -62,7 +68,7 @@ public class ResponseTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Response response = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
+        final Response response = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         
         response.setSOAP11Actor(expectedSOAP11Actor);
         response.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);

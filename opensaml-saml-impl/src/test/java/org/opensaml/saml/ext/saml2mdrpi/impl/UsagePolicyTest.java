@@ -21,26 +21,27 @@ import org.testng.Assert;
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdrpi.UsagePolicy;
 
+@SuppressWarnings("javadoc")
 public class UsagePolicyTest extends XMLObjectProviderBaseTestCase {
 
     /**
      * Constructor.
      */
     public UsagePolicyTest() {
-        super();
         singleElementFile = "/org/opensaml/saml/ext/saml2mdrpi/UsagePolicy.xml";
     }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        UsagePolicy policy = (UsagePolicy) unmarshallElement(singleElementFile);
+        final UsagePolicy policy = (UsagePolicy) unmarshallElement(singleElementFile);
+        assert policy != null;
         Assert.assertEquals(policy.getXMLLang(), "en");
         Assert.assertEquals(policy.getURI(), "https://www.aai.dfn.de/en/join/");
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        UsagePolicy policy = (UsagePolicy) buildXMLObject(UsagePolicy.DEFAULT_ELEMENT_NAME);
+        final UsagePolicy policy = (UsagePolicy) buildXMLObject(UsagePolicy.DEFAULT_ELEMENT_NAME);
 
         policy.setURI("https://www.aai.dfn.de/en/join/");
         policy.setXMLLang("en");

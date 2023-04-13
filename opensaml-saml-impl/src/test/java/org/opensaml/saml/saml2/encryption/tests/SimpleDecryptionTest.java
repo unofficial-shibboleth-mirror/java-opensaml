@@ -97,7 +97,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         String filename = "/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
         
-        Assertion target = (Assertion) unmarshallElement(filename);
+        final Assertion target = (Assertion) unmarshallElement(filename);
+        assert target != null;
         EncryptedAssertion encryptedTarget = encrypter.encrypt(target);
         
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
@@ -126,7 +127,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         String filename = "/org/opensaml/saml/saml2/encryption/Assertion.xml";
         Document targetDOM = getDOM(filename);
         
-        Assertion target = (Assertion) unmarshallElement(filename);
+        final Assertion target = (Assertion) unmarshallElement(filename);
+        assert target != null;
         EncryptedID encryptedTarget = encrypter.encryptAsID(target);
         
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
@@ -155,7 +157,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         String filename = "/org/opensaml/saml/saml2/encryption/NameID.xml";
         Document targetDOM = getDOM(filename);
         
-        NameID target = (NameID) unmarshallElement(filename);
+        final NameID target = (NameID) unmarshallElement(filename);
+        assert target != null;
         EncryptedID encryptedTarget = encrypter.encrypt(target);
         
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
@@ -184,7 +187,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         String filename = "/org/opensaml/saml/saml2/encryption/NewID.xml";
         Document targetDOM = getDOM(filename);
         
-        NewID target = (NewID) unmarshallElement(filename);
+        final NewID target = (NewID) unmarshallElement(filename);
+        assert target != null;
         NewEncryptedID encryptedTarget = encrypter.encrypt(target);
         
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
@@ -213,7 +217,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         String filename = "/org/opensaml/saml/saml2/encryption/Attribute.xml";
         Document targetDOM = getDOM(filename);
         
-        Attribute target = (Attribute) unmarshallElement(filename);
+        final Attribute target = (Attribute) unmarshallElement(filename);
+        assert target != null;
         EncryptedAttribute encryptedTarget = encrypter.encrypt(target);
         
         Decrypter decrypter = new Decrypter(keyResolver, null, null);
@@ -249,7 +254,8 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         String filename = "/org/opensaml/saml/saml2/encryption/Assertion.xml";
         
-        Assertion target = (Assertion) unmarshallElement(filename);
+        final Assertion target = (Assertion) unmarshallElement(filename);
+        assert target != null;
         EncryptedAssertion encryptedTarget = encrypter.encrypt(target);
         
         Decrypter decrypter = new Decrypter(badEncResolver, null, null);

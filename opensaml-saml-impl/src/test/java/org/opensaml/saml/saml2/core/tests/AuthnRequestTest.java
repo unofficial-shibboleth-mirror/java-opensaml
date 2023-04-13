@@ -53,23 +53,34 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
     /** {@inheritDoc} */
     @Test
     public void testUnmarshall() {
-        AuthnRequest request = (AuthnRequest) unmarshallElement(elementFile);
+        final AuthnRequest request = (AuthnRequest) unmarshallElement(elementFile);
+        assert request != null;
         
-        Assert.assertNotNull(request, "AuthnRequest was null");
-        Assert.assertEquals(request.isForceAuthn().booleanValue(), true, "ForceAuthn");
+        Assert.assertEquals(request.isForceAuthn(), Boolean.TRUE, "ForceAuthn");
         Assert.assertEquals(request.getAssertionConsumerServiceURL(), "http://www.example.com/", "AssertionConsumerServiceURL");
-        Assert.assertEquals(request.getAttributeConsumingServiceIndex().intValue(), 0, "AttributeConsumingServiceIndex");
+        Assert.assertEquals(request.getAttributeConsumingServiceIndex(), 0, "AttributeConsumingServiceIndex");
         Assert.assertEquals(request.getProviderName(), "SomeProvider", "ProviderName");
         Assert.assertEquals(request.getID(), "abe567de6", "ID");
-        Assert.assertEquals(request.getVersion().toString(), SAMLVersion.VERSION_20.toString(), "Version");
+        Assert.assertEquals(request.getVersion(), SAMLVersion.VERSION_20, "Version");
         Assert.assertEquals(request.getIssueInstant(), Instant.parse("2005-01-31T12:00:00.000Z"), "IssueInstant");
         Assert.assertEquals(request.getDestination(), "http://www.example.com/", "Destination");
         Assert.assertEquals(request.getConsent(), RequestAbstractType.OBTAINED_CONSENT, "Consent");
-        Assert.assertEquals(request.getSubject().getNameID().getFormat(), NameIDType.EMAIL, "Subject/NameID/@NameIdFormat");
-        Assert.assertEquals(request.getSubject().getNameID().getValue(), "j.doe@company.com", "Subject/NameID contents");
-        Audience audience = request.getConditions().getAudienceRestrictions().get(0).getAudiences().get(0);
+        
+        final Subject subject = request.getSubject();
+        assert subject != null;
+        final NameID nameID = subject.getNameID();
+        assert nameID != null;
+        Assert.assertEquals(nameID.getFormat(), NameIDType.EMAIL, "Subject/NameID/@NameIdFormat");
+        Assert.assertEquals(nameID.getValue(), "j.doe@company.com", "Subject/NameID contents");
+        
+        final Conditions cond = request.getConditions();
+        assert cond != null;
+        final Audience audience = cond.getAudienceRestrictions().get(0).getAudiences().get(0);
         Assert.assertEquals(audience.getURI(), "urn:foo:sp.example.org", "Conditions/AudienceRestriction[1]/Audience[1] contents");
-        AuthnContextClassRef classRef = request.getRequestedAuthnContext().getAuthnContextClassRefs().get(0);
+        
+        final RequestedAuthnContext rac = request.getRequestedAuthnContext();
+        assert rac != null;
+        final AuthnContextClassRef classRef = rac.getAuthnContextClassRefs().get(0);
         Assert.assertEquals(classRef.getURI(), AuthnContext.PPT_AUTHN_CTX, "RequestedAuthnContext/AuthnContextClassRef[1] contents");
     }
 
@@ -114,7 +125,6 @@ public class AuthnRequestTest extends BaseComplexSAMLObjectTestCase {
         request.setConsent(RequestAbstractType.OBTAINED_CONSENT);
         
         assertXMLEquals("Marshalled AuthnRequest", expectedDOM, request);
-        
-        
     }
+
 }

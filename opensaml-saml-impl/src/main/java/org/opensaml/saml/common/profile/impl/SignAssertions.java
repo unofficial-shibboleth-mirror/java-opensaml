@@ -20,7 +20,6 @@ package org.opensaml.saml.common.profile.impl;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSupport;
@@ -39,10 +38,11 @@ import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -67,14 +67,15 @@ public class SignAssertions extends AbstractProfileAction {
     @Nonnull private Function<ProfileRequestContext,SecurityParametersContext> securityParametersLookupStrategy;
     
     /** The signature signing parameters. */
-    @Nullable private SignatureSigningParameters signatureSigningParameters;
+    @NonnullBeforeExec private SignatureSigningParameters signatureSigningParameters;
 
     /** The response containing the assertions to be signed. */
-    @Nullable private SAMLObject response;
+    @NonnullBeforeExec private SAMLObject response;
 
     /** Constructor. */
     public SignAssertions() {
-        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(new OutboundMessageContextLookup());
+        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(
+                new OutboundMessageContextLookup());
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class);
     }
     
@@ -116,18 +117,18 @@ public class SignAssertions extends AbstractProfileAction {
         }
 
         // Step down into ArtifactResponses.
-        if (response instanceof ArtifactResponse) {
+        if (response instanceof ArtifactResponse resp) {
             log.debug("{} Found ArtifactResponse, stepping down into enclosed message", getLogPrefix());
-            response = ((ArtifactResponse) response).getMessage();
+            response = resp.getMessage();
         }
         
-        if (response instanceof org.opensaml.saml.saml1.core.Response) {
-            if (((org.opensaml.saml.saml1.core.Response) response).getAssertions().isEmpty()) {
+        if (response instanceof org.opensaml.saml.saml1.core.Response saml1) {
+            if (saml1.getAssertions().isEmpty()) {
                 log.debug("{} No assertions available, nothing to do", getLogPrefix());
                 return false;
             }
-        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
-            if (((org.opensaml.saml.saml2.core.Response) response).getAssertions().isEmpty()) {
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response saml2) {
+            if (saml2.getAssertions().isEmpty()) {
                 log.debug("{} No assertions available, nothing to do", getLogPrefix());
                 return false;
             }
@@ -161,14 +162,14 @@ public class SignAssertions extends AbstractProfileAction {
                 logResponse("Response before signing:");
             }
 
-            if (response instanceof org.opensaml.saml.saml1.core.Response) {
-                for (final org.opensaml.saml.saml1.core.Assertion assertion :
-                        ((org.opensaml.saml.saml1.core.Response) response).getAssertions()) {
+            if (response instanceof org.opensaml.saml.saml1.core.Response saml1) {
+                for (final var assertion : saml1.getAssertions()) {
+                    assert assertion != null;
                     SignatureSupport.signObject(assertion, signatureSigningParameters);
                 }
-            } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
-                for (final org.opensaml.saml.saml2.core.Assertion assertion :
-                        ((org.opensaml.saml.saml2.core.Response) response).getAssertions()) {
+            } else if (response instanceof org.opensaml.saml.saml2.core.Response saml2) {
+                for (final var assertion : saml2.getAssertions()) {
+                    assert assertion != null;
                     SignatureSupport.signObject(assertion, signatureSigningParameters);
                 }
             }

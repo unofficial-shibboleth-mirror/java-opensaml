@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link VerifyChannelBindings} unit test. */
+@SuppressWarnings("javadoc")
 public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;
@@ -62,15 +63,15 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
         cb.setType("foo");
         cb.setValue("foo");
         
-        prc.getInboundMessageContext().getSubcontext(ChannelBindingsContext.class, true).getChannelBindings().add(cb);
-        prc.getInboundMessageContext().getSubcontext(SOAP11Context.class, true).getSubcontext(
-                ChannelBindingsContext.class, true).getChannelBindings().add(cb);
+        prc.ensureInboundMessageContext().ensureSubcontext(ChannelBindingsContext.class).getChannelBindings().add(cb);
+        prc.ensureInboundMessageContext().ensureSubcontext(SOAP11Context.class).ensureSubcontext(
+                ChannelBindingsContext.class).getChannelBindings().add(cb);
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final ChannelBindingsContext cbCtx = prc.getOutboundMessageContext().getSubcontext(ChannelBindingsContext.class);
-        Assert.assertNotNull(cbCtx);
+        final ChannelBindingsContext cbCtx = prc.ensureOutboundMessageContext().getSubcontext(ChannelBindingsContext.class);
+        assert cbCtx != null;
         Assert.assertEquals(cbCtx.getChannelBindings().size(), 1);
         
         final ChannelBindings[] array = cbCtx.getChannelBindings().toArray(new ChannelBindings[1]);
@@ -89,13 +90,13 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
         cb.setType("bar");
         cb.setValue("foo");
         
-        prc.getInboundMessageContext().getSubcontext(ChannelBindingsContext.class, true).getChannelBindings().add(cb);
-        prc.getInboundMessageContext().getSubcontext(SOAP11Context.class, true).getSubcontext(
-                ChannelBindingsContext.class, true).getChannelBindings().add(cb2);
+        prc.ensureInboundMessageContext().ensureSubcontext(ChannelBindingsContext.class).getChannelBindings().add(cb);
+        prc.ensureInboundMessageContext().ensureSubcontext(SOAP11Context.class).ensureSubcontext(
+                ChannelBindingsContext.class).getChannelBindings().add(cb2);
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.CHANNEL_BINDINGS_ERROR);
-        Assert.assertNull(prc.getOutboundMessageContext().getSubcontext(ChannelBindingsContext.class));
+        Assert.assertNull(prc.ensureOutboundMessageContext().getSubcontext(ChannelBindingsContext.class));
     }
     
     @Test public void testNoMatch2() throws MessageHandlerException {
@@ -105,11 +106,11 @@ public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
         cb.setType("foo");
         cb.setValue("foo");
         
-        prc.getInboundMessageContext().getSubcontext(ChannelBindingsContext.class, true).getChannelBindings().add(cb);
+        prc.ensureInboundMessageContext().ensureSubcontext(ChannelBindingsContext.class).getChannelBindings().add(cb);
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.CHANNEL_BINDINGS_ERROR);
-        Assert.assertNull(prc.getOutboundMessageContext().getSubcontext(ChannelBindingsContext.class));
+        Assert.assertNull(prc.ensureOutboundMessageContext().getSubcontext(ChannelBindingsContext.class));
     }
 
 }

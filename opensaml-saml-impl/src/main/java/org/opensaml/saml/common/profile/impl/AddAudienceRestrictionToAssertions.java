@@ -21,7 +21,6 @@ import java.util.Collection;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
@@ -37,10 +36,12 @@ import org.opensaml.saml.saml1.profile.SAML1ActionSupport;
 import org.opensaml.saml.saml2.core.AudienceRestriction;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action adds an audience restriction condition to every assertion contained in a SAML 1/2
@@ -65,13 +66,13 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
     @Nonnull private Function<ProfileRequestContext,SAMLObject> responseLookupStrategy;
 
     /** Strategy used to obtain the audiences to add. */
-    @Nullable private Function<ProfileRequestContext,Collection<String>> audienceRestrictionsLookupStrategy;
+    @NonnullAfterInit private Function<ProfileRequestContext,Collection<String>> audienceRestrictionsLookupStrategy;
     
     /** Response to modify. */
-    @Nullable private SAMLObject response;
+    @NonnullBeforeExec private SAMLObject response;
     
     /** Audiences to add. */
-    @Nullable private Collection<String> audiences; 
+    @NonnullBeforeExec private Collection<String> audiences; 
 
     /**
      * Constructor.
@@ -79,7 +80,8 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
     public AddAudienceRestrictionToAssertions() {
         addingAudiencesToExistingRestriction = true;
 
-        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(new OutboundMessageContextLookup());
+        responseLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(
+                new OutboundMessageContextLookup());
     }
     
     /**
@@ -130,6 +132,10 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         audiences = audienceRestrictionsLookupStrategy.apply(profileRequestContext);
         if (audiences == null || audiences.isEmpty()) {
             log.debug("{} No audiences to add, nothing to do", getLogPrefix());
@@ -162,23 +168,23 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        if (response instanceof org.opensaml.saml.saml1.core.Response) {
-            for (final org.opensaml.saml.saml1.core.Assertion assertion :
-                    ((org.opensaml.saml.saml1.core.Response) response).getAssertions()) {
+        if (response instanceof org.opensaml.saml.saml1.core.Response saml1) {
+            for (final var assertion : saml1.getAssertions()) {
+                assert assertion != null;
                 addAudienceRestriction(profileRequestContext,
                         SAML1ActionSupport.addConditionsToAssertion(this, assertion));
                 log.debug("{} Added AudienceRestrictionCondition to Assertion {}", getLogPrefix(), assertion.getID());
             }
-        } else if (response instanceof org.opensaml.saml.saml2.core.Response) {
-            for (final org.opensaml.saml.saml2.core.Assertion assertion :
-                    ((org.opensaml.saml.saml2.core.Response) response).getAssertions()) {
+        } else if (response instanceof org.opensaml.saml.saml2.core.Response saml2) {
+            for (final var assertion : saml2.getAssertions()) {
+                assert assertion != null;
                 addAudienceRestriction(profileRequestContext,
                         SAML2ActionSupport.addConditionsToAssertion(this, assertion));
                 log.debug("{} Added AudienceRestrictionCondition to Assertion {}", getLogPrefix(), assertion.getID());
@@ -204,7 +210,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
                                 org.opensaml.saml.saml1.core.Audience.DEFAULT_ELEMENT_NAME);
         for (final String audienceId : audiences) {
             log.debug("{} Adding {} as an Audience of the AudienceRestrictionCondition", getLogPrefix(), audienceId);
-            final org.opensaml.saml.saml1.core.Audience audience = audienceBuilder.buildObject();
+            final var audience = audienceBuilder.buildObject();
             audience.setURI(audienceId);
             condition.getAudiences().add(audience);
         }
@@ -228,7 +234,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
                                 org.opensaml.saml.saml2.core.Audience.DEFAULT_ELEMENT_NAME);
         for (final String audienceId : audiences) {
             log.debug("{} Adding {} as an Audience of the AudienceRestriction", getLogPrefix(), audienceId);
-            final org.opensaml.saml.saml2.core.Audience audience = audienceBuilder.buildObject();
+            final var audience = audienceBuilder.buildObject();
             audience.setURI(audienceId);
             condition.getAudiences().add(audience);
         }
@@ -259,6 +265,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
             condition = conditions.getAudienceRestrictionConditions().get(0);
         }
 
+        assert condition != null;
         return condition;
     }
     
@@ -287,6 +294,7 @@ public class AddAudienceRestrictionToAssertions extends AbstractConditionalProfi
             condition = conditions.getAudienceRestrictions().get(0);
         }
 
+        assert condition != null;
         return condition;
     }
 

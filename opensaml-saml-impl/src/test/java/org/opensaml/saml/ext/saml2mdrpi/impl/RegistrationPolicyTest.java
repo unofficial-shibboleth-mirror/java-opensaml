@@ -21,29 +21,27 @@ import org.testng.Assert;
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdrpi.RegistrationPolicy;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class RegistrationPolicyTest extends XMLObjectProviderBaseTestCase {
 
     /**
      * Constructor.
      */
     public RegistrationPolicyTest() {
-        super();
         singleElementFile = "/org/opensaml/saml/ext/saml2mdrpi/RegistrationPolicy.xml";
     }
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        RegistrationPolicy policy = (RegistrationPolicy) unmarshallElement(singleElementFile);
+        final RegistrationPolicy policy = (RegistrationPolicy) unmarshallElement(singleElementFile);
+        assert policy != null;
         Assert.assertEquals(policy.getXMLLang(), "en");
         Assert.assertEquals(policy.getURI(), "https://www.aai.dfn.de/en/join/");
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        RegistrationPolicy policy = (RegistrationPolicy) buildXMLObject(RegistrationPolicy.DEFAULT_ELEMENT_NAME);
+        final RegistrationPolicy policy = (RegistrationPolicy) buildXMLObject(RegistrationPolicy.DEFAULT_ELEMENT_NAME);
 
         policy.setURI("https://www.aai.dfn.de/en/join/");
         policy.setXMLLang("en");

@@ -50,9 +50,9 @@ public class GeneratedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        GeneratedKeyBuilder builder = (GeneratedKeyBuilder) builderFactory.getBuilder(GeneratedKey.DEFAULT_ELEMENT_NAME);
+        final GeneratedKeyBuilder builder = (GeneratedKeyBuilder) builderFactory.<GeneratedKey>ensureBuilder(GeneratedKey.DEFAULT_ELEMENT_NAME);
 
-        GeneratedKey key = builder.buildObject();
+        final GeneratedKey key = builder.buildObject();
         key.setSOAP11Actor(expectedSOAP11Actor);
         key.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);
         key.setValue(expectedValue);
@@ -63,13 +63,14 @@ public class GeneratedKeyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        GeneratedKey key = (GeneratedKey) unmarshallElement(singleElementFile);
+        final GeneratedKey key = (GeneratedKey) unmarshallElement(singleElementFile);
 
-        Assert.assertNotNull(key);
+        assert key != null;
         Assert.assertEquals(expectedValue, key.getValue());
         Assert.assertEquals(expectedSOAP11MustUnderstand, key.isSOAP11MustUnderstand(),
                 "SOAP mustUnderstand had unxpected value");
         Assert.assertEquals(expectedSOAP11Actor, key.getSOAP11Actor(),
                 "SOAP actor had unxpected value");
     }
+
 }

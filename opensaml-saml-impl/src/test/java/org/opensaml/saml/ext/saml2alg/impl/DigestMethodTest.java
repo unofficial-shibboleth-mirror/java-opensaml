@@ -36,16 +36,16 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DigestMethod digestMethod = (DigestMethod) unmarshallElement(singleElementFile);
-        Assert.assertNotNull(digestMethod);
+        final DigestMethod digestMethod = (DigestMethod) unmarshallElement(singleElementFile);
+        assert digestMethod != null;
         Assert.assertEquals(digestMethod.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        DigestMethod digestMethod = (DigestMethod) unmarshallElement(childElementsFile);
-        Assert.assertNotNull(digestMethod);
+        final DigestMethod digestMethod = (DigestMethod) unmarshallElement(childElementsFile);
+        assert digestMethod != null;
         Assert.assertEquals(digestMethod.getAlgorithm(), SignatureConstants.ALGO_ID_DIGEST_SHA256);
         Assert.assertEquals(digestMethod.getUnknownXMLObjects().size(), 3);
     }
@@ -53,7 +53,7 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        final DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
 
         assertXMLEquals(expectedDOM, digestMethod);
@@ -62,7 +62,7 @@ public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
+        final DigestMethod digestMethod = (DigestMethod) buildXMLObject(DigestMethod.DEFAULT_ELEMENT_NAME);
         digestMethod.setAlgorithm(SignatureConstants.ALGO_ID_DIGEST_SHA256);
         
         digestMethod.getUnknownXMLObjects().add(buildXMLObject(SimpleXMLObject.ELEMENT_NAME));

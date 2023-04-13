@@ -80,7 +80,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractDynamicHTTPMetadataResolver.class);
     
     /** HTTP Client used to pull the metadata. */
-    @Nonnull private HttpClient httpClient;
+    @NonnullAfterInit private HttpClient httpClient;
     
     /** List of supported MIME types for use in Accept request header and validation of 
      * response Content-Type header.*/
@@ -226,7 +226,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             setSupportedContentTypes(Arrays.asList(DEFAULT_CONTENT_TYPES));
         }
         
-        if (! getSupportedContentTypes().isEmpty()) {
+        if (!getSupportedContentTypes().isEmpty()) {
             supportedContentTypesValue = StringSupport.listToStringValue(getSupportedContentTypes(), ", ");
             supportedMediaTypes = new LazySet<>();
             for (final String contentType : getSupportedContentTypes()) {
@@ -242,6 +242,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
    /** {@inheritDoc} */
     @Override
     protected void doDestroy() {
+        // TODO: if we pull this, httpClient should be Nonnull.
         httpClient = null;
         httpClientSecurityParameters = null;
         
@@ -332,7 +333,6 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
     public class BasicMetadataResponseHandler implements HttpClientResponseHandler<XMLObject> {
 
         /** {@inheritDoc} */
-        @Override
         public XMLObject handleResponse(final ClassicHttpResponse response) throws IOException {
             
             final int httpStatusCode = response.getCode();
@@ -363,6 +363,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
             try {
                 final InputStream ins = response.getEntity().getContent();
                 final byte[] source = ByteStreams.toByteArray(ins);
+                assert source != null;
                 try (final ByteArrayInputStream bais = new ByteArrayInputStream(source)) {
                     final XMLObject xmlObject = unmarshallMetadata(bais);
                     xmlObject.getObjectMetadata().put(new XMLObjectSource(source));
@@ -381,7 +382,7 @@ public abstract class AbstractDynamicHTTPMetadataResolver extends AbstractDynami
          * @param response the received response
          * @throws ResolverException if the response was not valid, or if there is a fatal error validating the response
          */
-        protected void validateHttpResponse(final ClassicHttpResponse response) throws ResolverException {
+        protected void validateHttpResponse(@Nonnull final ClassicHttpResponse response) throws ResolverException {
             if (!getSupportedMediaTypes().isEmpty()) {
                 final String contentType = StringSupport.trimOrNull(response.getEntity().getContentType());
                 log.debug("{} Saw raw Content-Type from response header '{}'", getLogPrefix(), contentType);

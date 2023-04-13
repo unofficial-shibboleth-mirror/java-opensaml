@@ -23,10 +23,10 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NullableElements;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
@@ -34,7 +34,6 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.profile.FormatSpecificNameIdentifierGenerator;
 import org.opensaml.saml.common.profile.NameIdentifierGenerator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -52,7 +51,7 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
     @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingNameIdentifierGenerator.class);
     
     /** Map of formats to generators. */
-    @Nonnull @NonnullElements private ListMultimap<String,NameIdentifierGenerator<NameIdType>> nameIdGeneratorMap;
+    @Nonnull private ListMultimap<String,NameIdentifierGenerator<NameIdType>> nameIdGeneratorMap;
 
     /** Fallback generator, generally for legacy support. */
     @Nullable private NameIdentifierGenerator<NameIdType> defaultNameIdGenerator;
@@ -96,7 +95,6 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public NameIdType generate(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull @NotEmpty final String format) throws SAMLException {
         

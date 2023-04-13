@@ -17,7 +17,11 @@
 
 package org.opensaml.messaging.context;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+
+import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.ConstraintViolationException;
 
 /**
  * A context component which holds the state related to the processing of a single message.
@@ -38,10 +42,22 @@ public final class MessageContext extends BaseContext {
     /**
      * Get the message represented by the message context.
      * 
-     * @return the message
+     * @return the message or null
      */
     @Nullable public Object getMessage() {
         return msg;
+    }
+    
+    /**
+     * Get the message represented by the message context, raising a {@link ConstraintViolationException}
+     * if null.
+     * 
+     * @return the message
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public Object ensureMessage() {
+        return Constraint.isNotNull(msg, "Message was null");
     }
 
     /**

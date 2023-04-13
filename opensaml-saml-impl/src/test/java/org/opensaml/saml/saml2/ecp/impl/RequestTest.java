@@ -38,14 +38,20 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     
     private Boolean expectedSOAP11MustUnderstand;
     
+    /**
+     * Constructor.
+     */
     public RequestTest() {
         singleElementFile = "/org/opensaml/saml/saml2/ecp/impl/Request.xml";
         singleElementOptionalAttributesFile = "/org/opensaml/saml/saml2/ecp/impl/RequestOptionalAttributes.xml";
         childElementsFile = "/org/opensaml/saml/saml2/ecp/impl/RequestChildElements.xml";
     }
- 
+
+    /**
+     * Test set up.
+     */
     @BeforeMethod
-    protected void setUp() throws Exception {
+    protected void setUp() {
         expectedProviderName = "https://provider.example.org";
         expectedSOAP11Actor = "https://soap11actor.example.org";
         expectedSOAP11MustUnderstand = true;
@@ -57,9 +63,9 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Request request = (Request) unmarshallElement(singleElementFile);
+        final Request request = (Request) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(request);
+        assert request != null;
         
         Assert.assertEquals(request.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
         Assert.assertEquals(request.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
@@ -68,9 +74,9 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Request request = (Request) unmarshallElement(singleElementOptionalAttributesFile);
+        final Request request = (Request) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(request);
+        assert request != null;
         
         Assert.assertEquals(request.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
         Assert.assertEquals(request.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
@@ -82,9 +88,9 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Request request = (Request) unmarshallElement(childElementsFile);
+        final Request request = (Request) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(request);
+        assert request != null;
         
         Assert.assertEquals(request.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
         Assert.assertEquals(request.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
@@ -96,7 +102,7 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        final Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
         
         request.setSOAP11Actor(expectedSOAP11Actor);
         request.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);
@@ -107,7 +113,7 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        final Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
         
         request.setSOAP11Actor(expectedSOAP11Actor);
         request.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);
@@ -120,7 +126,7 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        final Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
         
         request.setSOAP11Actor(expectedSOAP11Actor);
         request.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);

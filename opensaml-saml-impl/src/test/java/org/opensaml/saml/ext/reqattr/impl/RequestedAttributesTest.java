@@ -59,7 +59,8 @@ public class RequestedAttributesTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         final RequestedAttributes requestedAttributes = (RequestedAttributes) unmarshallElement(childElementsFile);
-
+        assert requestedAttributes != null;
+        
         Assert.assertEquals(requestedAttributes.getRequestedAttributes().size(), expectedNames.length);
         
         for (int i = 0; i < expectedNames.length; i++) {

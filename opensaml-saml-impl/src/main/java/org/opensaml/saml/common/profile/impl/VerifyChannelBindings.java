@@ -21,7 +21,6 @@ import java.util.Objects;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
@@ -34,9 +33,10 @@ import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -72,10 +72,10 @@ public class VerifyChannelBindings extends AbstractProfileAction {
     @Nonnull private Function<ProfileRequestContext,ChannelBindingsContext> channelBindingsCreationStrategy;
     
     /** The first set of bindings. */
-    @Nullable private ChannelBindingsContext channelBindingsContext1;
+    @NonnullBeforeExec private ChannelBindingsContext channelBindingsContext1;
 
     /** The second set of bindings. */
-    @Nullable private ChannelBindingsContext channelBindingsContext2;
+    @NonnullBeforeExec private ChannelBindingsContext channelBindingsContext2;
 
     /** Constructor. */
     public VerifyChannelBindings() {
@@ -152,7 +152,13 @@ public class VerifyChannelBindings extends AbstractProfileAction {
             log.debug("{} No channel bindings found to verify, nothing to do", getLogPrefix());
             return false;
         }
-     
+
+        if (channelBindingsContext1 == null || channelBindingsContext2 == null) {
+            log.warn("{} Unable to verify channel bindings sent for comparison", getLogPrefix());
+            ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.CHANNEL_BINDINGS_ERROR);
+            return false;
+        }
+        
         return true;
     }
 
@@ -161,12 +167,6 @@ public class VerifyChannelBindings extends AbstractProfileAction {
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
 
-        if (channelBindingsContext1 == null || channelBindingsContext2 == null) {
-            log.warn("{} Unable to verify channel bindings sent for comparison", getLogPrefix());
-            ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.CHANNEL_BINDINGS_ERROR);
-            return;
-        }
-        
         ChannelBindings matched = null;
         
         for (final ChannelBindings cb1 : channelBindingsContext1.getChannelBindings()) {

@@ -33,13 +33,19 @@ public class RequestAuthenticatedTest extends XMLObjectProviderBaseTestCase {
     
     private Boolean expectedSOAP11MustUnderstand;
     
+    /**
+     * Constructor.
+     */
     public RequestAuthenticatedTest() {
         super();
         singleElementFile = "/org/opensaml/saml/saml2/ecp/impl/RequestAuthenticated.xml";
     }
  
+    /**
+     * Test set up.
+     */
     @BeforeMethod
-    protected void setUp() throws Exception {
+    protected void setUp() {
         expectedSOAP11Actor = "https://soap11actor.example.org";
         expectedSOAP11MustUnderstand = true;
     }
@@ -47,9 +53,9 @@ public class RequestAuthenticatedTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        RequestAuthenticated ra = (RequestAuthenticated) unmarshallElement(singleElementFile);
+        final RequestAuthenticated ra = (RequestAuthenticated) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(ra);
+        assert ra != null;
         
         Assert.assertEquals(expectedSOAP11MustUnderstand, ra.isSOAP11MustUnderstand(), 
                 "SOAP mustUnderstand had unxpected value");
@@ -59,7 +65,7 @@ public class RequestAuthenticatedTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        RequestAuthenticated ra = (RequestAuthenticated) buildXMLObject(RequestAuthenticated.DEFAULT_ELEMENT_NAME);
+        final RequestAuthenticated ra = (RequestAuthenticated) buildXMLObject(RequestAuthenticated.DEFAULT_ELEMENT_NAME);
         
         ra.setSOAP11Actor(expectedSOAP11Actor);
         ra.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);

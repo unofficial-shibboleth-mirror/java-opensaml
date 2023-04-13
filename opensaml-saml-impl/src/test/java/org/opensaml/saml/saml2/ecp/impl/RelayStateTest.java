@@ -34,12 +34,16 @@ public class RelayStateTest extends XMLObjectProviderBaseTestCase {
     
     private Boolean expectedSOAP11MustUnderstand;
     
+    /**
+     * Constructor.
+     */
     public RelayStateTest() {
         singleElementFile = "/org/opensaml/saml/saml2/ecp/impl/RelayState.xml";
     }
- 
+
+    /** Test set up. */
     @BeforeMethod
-    protected void setUp() throws Exception {
+    protected void setUp() {
         expectedContent = "ThisIsSomeRelayState";
         expectedSOAP11Actor = "https://soap11actor.example.org";
         expectedSOAP11MustUnderstand = true;
@@ -50,9 +54,8 @@ public class RelayStateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        RelayState relayState = (RelayState) unmarshallElement(singleElementFile);
-        
-        Assert.assertNotNull(relayState);
+        final RelayState relayState = (RelayState) unmarshallElement(singleElementFile);
+        assert relayState != null;
         
         Assert.assertEquals(relayState.isSOAP11MustUnderstand(), expectedSOAP11MustUnderstand, "SOAP mustUnderstand had unxpected value");
         Assert.assertEquals(relayState.getSOAP11Actor(), expectedSOAP11Actor, "SOAP actor had unxpected value");
@@ -62,7 +65,7 @@ public class RelayStateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        RelayState relayState = (RelayState) buildXMLObject(RelayState.DEFAULT_ELEMENT_NAME);
+        final RelayState relayState = (RelayState) buildXMLObject(RelayState.DEFAULT_ELEMENT_NAME);
         
         relayState.setSOAP11Actor(expectedSOAP11Actor);
         relayState.setSOAP11MustUnderstand(expectedSOAP11MustUnderstand);

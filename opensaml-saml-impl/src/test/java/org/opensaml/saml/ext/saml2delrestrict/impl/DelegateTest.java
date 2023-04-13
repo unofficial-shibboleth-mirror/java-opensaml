@@ -53,7 +53,7 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Delegate delegate = (Delegate) unmarshallElement(singleElementFile);
+        final Delegate delegate = (Delegate) unmarshallElement(singleElementFile);
 
         Assert.assertNotNull(delegate);
     }
@@ -61,9 +61,8 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Delegate delegate = (Delegate) unmarshallElement(singleElementOptionalAttributesFile);
-        
-        Assert.assertNotNull(delegate);
+        final Delegate delegate = (Delegate) unmarshallElement(singleElementOptionalAttributesFile);
+        assert delegate != null;
 
         Instant instant = delegate.getDelegationInstant();
         Assert.assertEquals(instant, expectedDelegationInstant, "DelegationInstant was unexpected value");
@@ -75,9 +74,8 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Delegate delegate = (Delegate) unmarshallElement(childElementsFile);
-        
-        Assert.assertNotNull(delegate);
+        final Delegate delegate = (Delegate) unmarshallElement(childElementsFile);
+        assert delegate != null;
         
         Assert.assertNotNull(delegate.getNameID(), "NameID was null");
         Assert.assertNull(delegate.getBaseID(), "BaseID was non-null");
@@ -87,7 +85,7 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
+        final Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
 
         assertXMLEquals(expectedDOM, delegate);
     }
@@ -95,7 +93,7 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
+        final Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
         
         delegate.setConfirmationMethod(expectedConfirmationMethod);
         delegate.setDelegationInstant(expectedDelegationInstant);
@@ -108,7 +106,7 @@ public class DelegateTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
+        final Delegate delegate = (Delegate) buildXMLObject(Delegate.DEFAULT_ELEMENT_NAME);
         
         delegate.setNameID((NameID) buildXMLObject(NameID.DEFAULT_ELEMENT_NAME));
         

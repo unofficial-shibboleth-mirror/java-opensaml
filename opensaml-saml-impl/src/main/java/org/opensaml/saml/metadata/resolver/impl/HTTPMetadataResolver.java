@@ -39,6 +39,7 @@ import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -63,10 +64,10 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPMetadataResolver.class);
 
     /** HTTP Client used to pull the metadata. */
-    @Nonnull private HttpClient httpClient;
+    @NonnullAfterInit private HttpClient httpClient;
 
     /** URL to the Metadata. */
-    @Nonnull private URI metadataURI;
+    @NonnullAfterInit private URI metadataURI;
 
     /** The ETag provided when the currently cached metadata was fetched. */
     @Nullable private String cachedMetadataETag;
@@ -174,6 +175,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
     /** {@inheritDoc} */
     @Override
     protected void doDestroy() {
+        // TODO: if we pull this, httpClient and metadataURI become Nonnull.
         httpClient = null;
         httpClientSecurityParameters = null;
         metadataURI = null;

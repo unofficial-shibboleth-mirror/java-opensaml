@@ -25,7 +25,7 @@ import org.opensaml.saml.ext.saml2mdrpi.RegistrationPolicy;
 import org.testng.Assert;
 
 
-
+@SuppressWarnings("javadoc")
 public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
 
     private static String expectedAuthority = "https://www.aai.dfn.de";
@@ -47,20 +47,22 @@ public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        RegistrationInfo info = (RegistrationInfo) unmarshallElement(singleElementFile);
+        final RegistrationInfo info = (RegistrationInfo) unmarshallElement(singleElementFile);
+        assert info != null;
         Assert.assertEquals(info.getRegistrationAuthority(), expectedAuthority);
     }
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesUnmarshall() {
-        RegistrationInfo info = (RegistrationInfo) unmarshallElement(singleElementOptionalAttributesFile);
+        final RegistrationInfo info = (RegistrationInfo) unmarshallElement(singleElementOptionalAttributesFile);
+        assert info != null;
         Assert.assertEquals(info.getRegistrationAuthority(), expectedAuthority);
         Assert.assertEquals(info.getRegistrationInstant(), expectedRegistrationInstant);
     }
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        RegistrationInfo info = (RegistrationInfo) buildXMLObject(RegistrationInfo.DEFAULT_ELEMENT_NAME);
+        final RegistrationInfo info = (RegistrationInfo) buildXMLObject(RegistrationInfo.DEFAULT_ELEMENT_NAME);
 
         info.setRegistrationAuthority(expectedAuthority);
 
@@ -69,7 +71,7 @@ public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        RegistrationInfo info = (RegistrationInfo) buildXMLObject(RegistrationInfo.DEFAULT_ELEMENT_NAME);
+        final RegistrationInfo info = (RegistrationInfo) buildXMLObject(RegistrationInfo.DEFAULT_ELEMENT_NAME);
 
         info.setRegistrationAuthority(expectedAuthority);
         info.setRegistrationInstant(expectedRegistrationInstant);
@@ -77,7 +79,8 @@ public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
         assertXMLEquals(expectedOptionalAttributesDOM, info);
     }
     public void testChildElementsUnmarshall() {
-        RegistrationInfo info = (RegistrationInfo) unmarshallElement(childElementsFile);
+        final RegistrationInfo info = (RegistrationInfo) unmarshallElement(childElementsFile);
+        assert info != null;
         Assert.assertEquals(info.getRegistrationAuthority(), expectedAuthority);
         Assert.assertEquals(info.getRegistrationInstant(), expectedRegistrationInstant);
         RegistrationPolicy policy = info.getRegistrationPolicies().get(0);
@@ -89,13 +92,12 @@ public class RegistrationInfoTest extends XMLObjectProviderBaseTestCase {
     }
 
     public void testChildElementsMarshall() {
-        RegistrationInfo info = (RegistrationInfo) buildXMLObject(RegistrationInfo.DEFAULT_ELEMENT_NAME);
+        final RegistrationInfo info = (RegistrationInfo) buildXMLObject(RegistrationInfo.DEFAULT_ELEMENT_NAME);
         info.setRegistrationAuthority(expectedAuthority);
         info.setRegistrationInstant(expectedRegistrationInstant);
 
         for (int i = 0; i < 2; i++) {
-
-            RegistrationPolicy policy = (RegistrationPolicy) buildXMLObject(RegistrationPolicy.DEFAULT_ELEMENT_NAME);
+            final RegistrationPolicy policy = (RegistrationPolicy) buildXMLObject(RegistrationPolicy.DEFAULT_ELEMENT_NAME);
             policy.setURI(uris[i]);
             policy.setXMLLang(langs[i]);
             info.getRegistrationPolicies().add(policy);

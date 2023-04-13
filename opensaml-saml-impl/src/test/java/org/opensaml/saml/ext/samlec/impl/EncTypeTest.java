@@ -45,9 +45,9 @@ public class EncTypeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        EncTypeBuilder builder = (EncTypeBuilder) builderFactory.getBuilder(EncType.DEFAULT_ELEMENT_NAME);
+        final EncTypeBuilder builder = (EncTypeBuilder) builderFactory.<EncType>ensureBuilder(EncType.DEFAULT_ELEMENT_NAME);
 
-        EncType et = builder.buildObject();
+        final EncType et = builder.buildObject();
         et.setValue(expectedValue);
 
         assertXMLEquals(expectedDOM, et);
@@ -56,8 +56,9 @@ public class EncTypeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EncType et = (EncType) unmarshallElement(singleElementFile);
-
+        final EncType et = (EncType) unmarshallElement(singleElementFile);
+        assert et != null;
         Assert.assertEquals(expectedValue, et.getValue());
     }
+    
 }

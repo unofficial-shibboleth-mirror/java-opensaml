@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link SignAssertions} unit test. */
+@SuppressWarnings("javadoc")
 public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
 
     private SignAssertions action;
@@ -60,14 +61,14 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test public void testNoMessage() throws Exception {
-        prc.getOutboundMessageContext().setMessage(null);
+        prc.ensureOutboundMessageContext().setMessage(null);
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
 
     @Test public void testBadMessage() throws Exception {
-        prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildAttributeQueryRequest(null));
+        prc.ensureOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildAttributeQueryRequest(null));
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -95,9 +96,9 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test public void testSignSAML1Assertions() throws Exception {
-        prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
-        final org.opensaml.saml.saml1.core.Assertion assertion = SAML1ActionTestingSupport.buildAssertion();
-        ((org.opensaml.saml.saml1.core.Response) prc.getOutboundMessageContext().getMessage()).getAssertions().add(assertion);
+        prc.ensureOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
+        final var assertion = SAML1ActionTestingSupport.buildAssertion();
+        ((org.opensaml.saml.saml1.core.Response) prc.ensureOutboundMessageContext().ensureMessage()).getAssertions().add(assertion);
 
         final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         final KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);
@@ -115,8 +116,8 @@ public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
     }
     
     @Test public void testSignSAML2Assertions() throws Exception {
-        final org.opensaml.saml.saml2.core.Assertion assertion = SAML2ActionTestingSupport.buildAssertion();
-        ((org.opensaml.saml.saml2.core.Response) prc.getOutboundMessageContext().getMessage()).getAssertions().add(assertion);
+        final var assertion = SAML2ActionTestingSupport.buildAssertion();
+        ((org.opensaml.saml.saml2.core.Response) prc.ensureOutboundMessageContext().ensureMessage()).getAssertions().add(assertion);
 
         final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         final KeyPair kp = KeySupport.generateKeyPair("RSA", 1024, null);

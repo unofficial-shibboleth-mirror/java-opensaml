@@ -23,6 +23,7 @@ import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.ext.saml2mdrpi.Publication;
 import org.testng.Assert;
 
+@SuppressWarnings("javadoc")
 public class PublicationTest extends XMLObjectProviderBaseTestCase {
 
     private static String expectedPublisher = "publisher";
@@ -40,13 +41,15 @@ public class PublicationTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementUnmarshall() {
-        Publication info = (Publication) unmarshallElement(singleElementFile);
+        final Publication info = (Publication) unmarshallElement(singleElementFile);
+        assert info != null;
         Assert.assertEquals(info.getPublisher(), expectedPublisher);
     }
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Publication info = (Publication) unmarshallElement(singleElementOptionalAttributesFile);
+        final Publication info = (Publication) unmarshallElement(singleElementOptionalAttributesFile);
+        assert info != null;
         Assert.assertEquals(info.getPublisher(), expectedPublisher);
         Assert.assertEquals(info.getPublicationId(), expectedPublicationId);
         Assert.assertEquals(info.getCreationInstant(), expectedCreationInstant);
@@ -54,7 +57,7 @@ public class PublicationTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementMarshall() {
-        Publication info = (Publication) buildXMLObject(Publication.DEFAULT_ELEMENT_NAME);
+        final Publication info = (Publication) buildXMLObject(Publication.DEFAULT_ELEMENT_NAME);
 
         info.setPublisher(expectedPublisher);
 
@@ -63,7 +66,7 @@ public class PublicationTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     public void testSingleElementOptionalAttributesMarshall() {
-        Publication info = (Publication) buildXMLObject(Publication.DEFAULT_ELEMENT_NAME);
+        final Publication info = (Publication) buildXMLObject(Publication.DEFAULT_ELEMENT_NAME);
 
         info.setPublisher(expectedPublisher);
         info.setCreationInstant(expectedCreationInstant);
