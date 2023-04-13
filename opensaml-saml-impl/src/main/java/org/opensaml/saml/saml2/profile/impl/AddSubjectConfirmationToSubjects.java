@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -40,12 +41,14 @@ import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.core.SubjectConfirmationData;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.servlet.HttpServletSupport;
 
@@ -100,7 +103,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     @NonnullAfterInit private String confirmationMethod;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
     
     /** Constructor. */
     public AddSubjectConfirmationToSubjects() {
@@ -132,9 +135,10 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         // Default pulls from SAML endpoint on outbound message context.
         recipientLookupStrategy = new Function<>() {
             public String apply(final ProfileRequestContext input) {
-                if (input.getOutboundMessageContext() != null) {
+                final MessageContext mc = input != null ? input.getOutboundMessageContext() : null;
+                if (mc != null) {
                     try {
-                        final URI uri = SAMLBindingSupport.getEndpointURL(input.getOutboundMessageContext());
+                        final URI uri = SAMLBindingSupport.getEndpointURL(mc);
                         if (uri != null) {
                             final String url = uri.toString();
                             log.debug("{} Setting confirmation data Recipient to {}", getLogPrefix(), url);
@@ -254,6 +258,11 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+
         log.debug("{} Attempting to add SubjectConfirmation to assertions in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -266,7 +275,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
  // Checkstyle: CyclomaticComplexity OFF
@@ -336,11 +345,12 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @return the subject to which the confirmation will be added
      */
     @Nonnull private Subject getAssertionSubject(@Nonnull final Assertion assertion) {
-        if (assertion.getSubject() != null) {
-            return assertion.getSubject();
+        Subject subject = assertion.getSubject();
+        if (subject != null) {
+            return subject;
         }
         
-        final Subject subject = subjectBuilder.buildObject();
+        subject = subjectBuilder.buildObject();
         assertion.setSubject(subject);
         return subject;
     }
@@ -379,12 +389,13 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
 
         /** {@inheritDoc} */
         @Nullable public String apply(@Nullable final ProfileRequestContext t) {
-            if (getHttpServletRequest() != null) {
-                return HttpServletSupport.getRemoteAddr(getHttpServletRequest());
+            final HttpServletRequest request = getHttpServletRequest();
+            if (request != null) {
+                return HttpServletSupport.getRemoteAddr(request);
             }
             
             return null;
         }
-        
     }
+
 }

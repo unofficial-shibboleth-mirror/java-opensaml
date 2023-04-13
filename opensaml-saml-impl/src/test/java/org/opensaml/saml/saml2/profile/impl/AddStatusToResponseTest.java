@@ -17,8 +17,6 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import java.util.Arrays;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
@@ -26,14 +24,17 @@ import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
+import org.opensaml.saml.saml2.core.StatusMessage;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddStatusToResponse} unit test. */
+@SuppressWarnings("javadoc")
 public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;
@@ -52,35 +53,38 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().ensureMessage();
 
         final Status status = response.getStatus();
-        Assert.assertNotNull(status);
-        
-        Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.RESPONDER);
-        Assert.assertNull(status.getStatusCode().getStatusCode());
+        assert status != null;
+        final StatusCode code = status.getStatusCode();
+        assert code != null;
+        Assert.assertEquals(code.getValue(), StatusCode.RESPONDER);
+        Assert.assertNull(code.getStatusCode());
         
         Assert.assertNull(status.getStatusMessage());
     }
 
     @Test public void testMultiStatus() throws ComponentInitializationException {
-        action.setStatusCodes(Arrays.asList(StatusCode.REQUESTER, StatusCode.REQUEST_VERSION_DEPRECATED));
+        action.setStatusCodes(CollectionSupport.listOf(StatusCode.REQUESTER, StatusCode.REQUEST_VERSION_DEPRECATED));
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().ensureMessage();
 
         final Status status = response.getStatus();
-        Assert.assertNotNull(status);
+        assert status != null;
+        StatusCode code = status.getStatusCode();
+        assert code != null;
         
-        Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.REQUESTER);
-        Assert.assertNotNull(status.getStatusCode().getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getStatusCode().getValue(), StatusCode.REQUEST_VERSION_DEPRECATED);
-        Assert.assertNull(status.getStatusCode().getStatusCode().getStatusCode());
+        Assert.assertEquals(code.getValue(), StatusCode.REQUESTER);
+        
+        code = code.getStatusCode();
+        assert code != null;
+        Assert.assertEquals(code.getValue(), StatusCode.REQUEST_VERSION_DEPRECATED);
+        Assert.assertNull(code.getStatusCode());
         
         Assert.assertNull(status.getStatusMessage());
     }
@@ -92,11 +96,13 @@ public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final Response response = (Response) prc.getOutboundMessageContext().getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().ensureMessage();
 
         final Status status = response.getStatus();
-        Assert.assertNotNull(status);
-        Assert.assertEquals(status.getStatusMessage().getValue(), "Foo");
+        assert status != null;
+        final StatusMessage msg = status.getStatusMessage();
+        assert msg != null;
+        Assert.assertEquals(msg.getValue(), "Foo");
     }
     
  }

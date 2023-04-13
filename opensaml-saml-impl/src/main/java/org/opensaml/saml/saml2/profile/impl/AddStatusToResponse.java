@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -43,13 +42,14 @@ import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.StatusMessage;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -91,14 +91,14 @@ public class AddStatusToResponse extends AbstractProfileAction {
     private boolean detailedErrors;
     
     /** Response to modify. */
-    @Nullable private StatusResponseType response;
+    @NonnullBeforeExec private StatusResponseType response;
     
     /** Constructor. */
     public AddStatusToResponse() {
         responseLookupStrategy =
                 new MessageLookup<>(StatusResponseType.class).compose(new OutboundMessageContextLookup());
-        detailedErrorsCondition = Predicates.alwaysFalse();
-        defaultStatusCodes = Collections.emptyList();
+        detailedErrorsCondition = PredicateSupport.alwaysFalse();
+        defaultStatusCodes = CollectionSupport.emptyList();
         detailedErrors = false;
     }
 
@@ -154,10 +154,11 @@ public class AddStatusToResponse extends AbstractProfileAction {
      * 
      * @param codes list of status code values to insert
      */
-    public void setStatusCodes(@Nonnull @NonnullElements final List<String> codes) {
+    public void setStatusCodes(@Nonnull final List<String> codes) {
         checkSetterPreconditions();
         
-        defaultStatusCodes = List.copyOf(Constraint.isNotNull(codes, "Status code list cannot be null"));
+        defaultStatusCodes = CollectionSupport.copyToList(
+                Constraint.isNotNull(codes, "Status code list cannot be null"));
     }
     
     /**
@@ -175,8 +176,11 @@ public class AddStatusToResponse extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        checkComponentActive();
-
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         response = responseLookupStrategy.apply(profileRequestContext);
         if (response == null) {
             log.debug("{} Response message was not returned by lookup strategy", getLogPrefix());
@@ -188,7 +192,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         
         log.debug("{} Detailed errors are {}", getLogPrefix(), detailedErrors ? "enabled" : "disabled");
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -216,6 +220,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
         if (!detailedErrors || statusMessageLookupStrategy == null) {
             if (statusMessage != null) {
                 log.debug("{} Setting StatusMessage to defaulted value", getLogPrefix());
+                assert statusMessage != null;
                 buildStatusMessage(status, statusMessage);
             }
         } else if (statusMessageLookupStrategy != null) {
@@ -227,6 +232,7 @@ public class AddStatusToResponse extends AbstractProfileAction {
             } else if (statusMessage != null) {
                 log.debug("{} Current state of request was not mappable, setting StatusMessage to defaulted value",
                         getLogPrefix());
+                assert statusMessage != null;
                 buildStatusMessage(status, statusMessage);
             }
         }
@@ -319,10 +325,11 @@ public class AddStatusToResponse extends AbstractProfileAction {
         @Nullable public List<String> apply(@Nullable final ProfileRequestContext input) {
             
             final EventContext eventCtx = eventContextLookupStrategy.apply(input);
-            if (eventCtx != null && eventCtx.getEvent() != null) {
-                return codeMappings.get(eventCtx.getEvent().toString());
+            final Object event = eventCtx != null ? eventCtx.getEvent() : null;
+            if (event != null) {
+                return codeMappings.get(event.toString());
             }
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
     }
 

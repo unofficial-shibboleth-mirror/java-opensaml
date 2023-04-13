@@ -23,7 +23,6 @@ import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -58,24 +57,27 @@ import org.opensaml.saml.criterion.ProtocolCriterion;
 import org.opensaml.saml.criterion.RoleDescriptorCriterion;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Issuer;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.profile.impl.ValidateAssertions.AssertionValidationInput;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.common.base.Predicates;
 
 import jakarta.servlet.http.HttpServletRequest;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.servlet.HttpServletSupport;
@@ -145,16 +147,16 @@ public class DefaultAssertionValidationContextBuilder
      * Constructor.
      */
     public DefaultAssertionValidationContextBuilder() {
-        signatureRequired = Predicates.alwaysTrue();
-        includeSelfEntityIDAsRecipient = Predicates.alwaysFalse();
-        checkAddress = Predicates.alwaysTrue();
+        signatureRequired = PredicateSupport.alwaysTrue();
+        includeSelfEntityIDAsRecipient = PredicateSupport.alwaysFalse();
+        checkAddress = PredicateSupport.alwaysTrue();
         inResponseTo = new DefaultValidInResponseToLookupFunction();
-        inResponseToRequired = Predicates.alwaysFalse();
-        recipientRequired = Predicates.alwaysFalse();
-        notOnOrAfterRequired = Predicates.alwaysFalse();
-        notBeforeRequired = Predicates.alwaysFalse();
-        addressRequired = Predicates.alwaysFalse();
-        requiredConditions = Collections.emptySet();
+        inResponseToRequired = PredicateSupport.alwaysFalse();
+        recipientRequired = PredicateSupport.alwaysFalse();
+        notOnOrAfterRequired = PredicateSupport.alwaysFalse();
+        notBeforeRequired = PredicateSupport.alwaysFalse();
+        addressRequired = PredicateSupport.alwaysFalse();
+        requiredConditions = CollectionSupport.emptySet();
         validIssuers = new DefaultValidIssuersLookupFunction();
 
         securityParametersLookupStrategy = new ChildContextLookup<>(SecurityParametersContext.class)
@@ -263,9 +265,11 @@ public class DefaultAssertionValidationContextBuilder
      */
     public void setRequiredConditions(@Nullable final Set<QName> conditions) {
         if (conditions != null) {
-            requiredConditions = conditions.stream().filter(Objects::nonNull).collect(Collectors.toUnmodifiableSet());
+            requiredConditions = conditions.stream()
+                    .filter(Objects::nonNull)
+                    .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableSet())).get();
         } else {
-            requiredConditions = Collections.emptySet();
+            requiredConditions = CollectionSupport.emptySet();
         }
     }
 
@@ -630,15 +634,17 @@ public class DefaultAssertionValidationContextBuilder
         final TreeMap<String, Object> staticParams = new TreeMap<>();
         
         // Clock skew
-        if (getClockSkew() != null) {
+        final var skewFunc = getClockSkew();
+        if (skewFunc != null) {
             staticParams.put(SAML2AssertionValidationParameters.CLOCK_SKEW,
-                    getClockSkew().apply(input.getProfileRequestContext()));
+                    skewFunc.apply(input.getProfileRequestContext()));
         }
         
         // Lifetime (for IssueInstant)
-        if (getLifetime() != null) {
+        final var lifetimeFunc = getLifetime();
+        if (lifetimeFunc != null) {
             staticParams.put(SAML2AssertionValidationParameters.LIFETIME,
-                    getLifetime().apply(input.getProfileRequestContext()));
+                    lifetimeFunc.apply(input.getProfileRequestContext()));
         }
         
         // Issuer
@@ -653,6 +659,7 @@ public class DefaultAssertionValidationContextBuilder
         
         final Set<InetAddress> validAddresses = getValidAddresses(input);
         final Boolean checkAddressEnabled = Boolean.valueOf(getCheckAddress().test(input.getProfileRequestContext()));
+        assert checkAddressEnabled != null;
         
         // SubjectConfirmation
         populateSubjectConfirmationParameters(staticParams, input, validAddresses, checkAddressEnabled);
@@ -678,11 +685,15 @@ public class DefaultAssertionValidationContextBuilder
                 Boolean.valueOf(getSignatureRequired().test(input.getProfileRequestContext())));
         staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_CRITERIA_SET, 
                 getSignatureCriteriaSet(input));
+        
         final SecurityParametersContext securityParameters = getSecurityParametersLookupStrategy()
                 .apply(input.getProfileRequestContext());
-        if (securityParameters != null && securityParameters.getSignatureValidationParameters() != null) {
+        
+        final SignatureValidationParameters valParams = securityParameters != null
+                ? securityParameters.getSignatureValidationParameters() : null;
+        if (valParams != null) {
             staticParams.put(SAML2AssertionValidationParameters.SIGNATURE_VALIDATION_TRUST_ENGINE,
-                    securityParameters.getSignatureValidationParameters().getSignatureTrustEngine());
+                    valParams.getSignatureTrustEngine());
         }
     }
     
@@ -735,9 +746,11 @@ public class DefaultAssertionValidationContextBuilder
         
         staticParams.put(SAML2AssertionValidationParameters.SC_IN_RESPONSE_TO_REQUIRED,
                 Boolean.valueOf(getInResponseToRequired().test(input.getProfileRequestContext())));
-        if (getInResponseTo() != null) {
+        
+        final var irtFunc = getInResponseTo();
+        if (irtFunc != null) {
             staticParams.put(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO,
-                    getInResponseTo().apply(input.getProfileRequestContext()));
+                    irtFunc.apply(input.getProfileRequestContext()));
         }
         
         staticParams.put(SAML2AssertionValidationParameters.SC_NOT_BEFORE_REQUIRED,
@@ -760,9 +773,11 @@ public class DefaultAssertionValidationContextBuilder
         // For AuthnStatement
         staticParams.put(SAML2AssertionValidationParameters.STMT_AUTHN_VALID_ADDRESSES, validAddresses);
         staticParams.put(SAML2AssertionValidationParameters.STMT_AUTHN_CHECK_ADDRESS, checkAddressEnabled);
-        if (getMaximumTimeSinceAuthn() != null) {
+        
+        final var maxTimeFunc = getMaximumTimeSinceAuthn();
+        if (maxTimeFunc != null) {
             staticParams.put(SAML2AssertionValidationParameters.STMT_AUTHN_MAX_TIME, 
-                    getMaximumTimeSinceAuthn().apply(input.getProfileRequestContext()));
+                    maxTimeFunc.apply(input.getProfileRequestContext()));
         }
     }
     
@@ -810,8 +825,9 @@ public class DefaultAssertionValidationContextBuilder
     @Nonnull protected CriteriaSet getSignatureCriteriaSet(@Nonnull final AssertionValidationInput input) {
         final CriteriaSet criteriaSet = new CriteriaSet();
         
-        if (getSignatureCriteriaSetFunction() != null) {
-            final CriteriaSet dynamicCriteria = getSignatureCriteriaSetFunction().apply(
+        final var sigCritFunc = getSignatureCriteriaSetFunction();
+        if (sigCritFunc != null) {
+            final CriteriaSet dynamicCriteria = sigCritFunc.apply(
                     new Pair<>(input.getProfileRequestContext(), input.getAssertion()));
             if (dynamicCriteria != null) {
                 criteriaSet.addAll(dynamicCriteria);
@@ -819,13 +835,13 @@ public class DefaultAssertionValidationContextBuilder
         }
         
         if (!criteriaSet.contains(EntityIdCriterion.class)) {
-            String issuer = null;
-            if (input.getAssertion().getIssuer() != null) {
-                issuer = StringSupport.trimOrNull(input.getAssertion().getIssuer().getValue());
-            }
-            if (issuer != null) {
-                log.debug("Adding internally-generated EntityIdCriterion with value of: {}", issuer);
-                criteriaSet.add(new EntityIdCriterion(issuer));
+            final Issuer issuerObj = input.getAssertion().getIssuer();
+            if (issuerObj != null) {
+                final String issuer = StringSupport.trimOrNull(issuerObj.getValue());
+                if (issuer != null) {
+                    log.debug("Adding internally-generated EntityIdCriterion with value of: {}", issuer);
+                    criteriaSet.add(new EntityIdCriterion(issuer));
+                }
             }
         }
         
@@ -864,8 +880,11 @@ public class DefaultAssertionValidationContextBuilder
         if (peerContext != null) {
             if (!criteriaSet.contains(RoleDescriptorCriterion.class)) {
                 final SAMLMetadataContext metadataContext = peerContext.getSubcontext(SAMLMetadataContext.class);
-                if (metadataContext != null && metadataContext.getRoleDescriptor() != null) {
-                    criteriaSet.add(new RoleDescriptorCriterion(metadataContext.getRoleDescriptor()));
+                if (metadataContext != null) {
+                    final RoleDescriptor role = metadataContext.getRoleDescriptor();
+                    if (role != null) {
+                        criteriaSet.add(new RoleDescriptorCriterion(role));
+                    }
                 }
             }
             if (!criteriaSet.contains(EntityRoleCriterion.class)) {
@@ -877,17 +896,21 @@ public class DefaultAssertionValidationContextBuilder
         }
 
         final SAMLProtocolContext protocolContext = inboundContext.getSubcontext(SAMLProtocolContext.class);
-        if (!criteriaSet.contains(ProtocolCriterion.class)
-                && protocolContext != null && protocolContext.getProtocol() != null) {
-            criteriaSet.add(new ProtocolCriterion(protocolContext.getProtocol()));
+        if (!criteriaSet.contains(ProtocolCriterion.class) && protocolContext != null) {
+            final String protocol = protocolContext.getProtocol();
+            if (protocol != null) {
+                criteriaSet.add(new ProtocolCriterion(protocol));
+            }
         }
         
         if (!criteriaSet.contains(SignatureValidationParametersCriterion.class)) {
             final SecurityParametersContext secParamsContext =
                     inboundContext.getSubcontext(SecurityParametersContext.class);
-            if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
-                criteriaSet.add(new SignatureValidationParametersCriterion(
-                        secParamsContext.getSignatureValidationParameters()));
+            if (secParamsContext != null) {
+                final SignatureValidationParameters valParams = secParamsContext.getSignatureValidationParameters();
+                if (valParams != null) {
+                    criteriaSet.add(new SignatureValidationParametersCriterion(valParams));
+                }
             }
         }
     }
@@ -959,7 +982,7 @@ public class DefaultAssertionValidationContextBuilder
         
         try {
             final String endpoint = SAMLBindingSupport.getActualReceiverEndpointURI(
-                    input.getProfileRequestContext().getInboundMessageContext(), input.getHttpServletRequest());
+                    input.getProfileRequestContext().ensureInboundMessageContext(), input.getHttpServletRequest());
             if (endpoint != null) {
                 validRecipients.add(endpoint);
             }
@@ -1004,10 +1027,10 @@ public class DefaultAssertionValidationContextBuilder
                 return validAddresses;
             }
             log.warn("Could not determine attester IP address. Validation of Assertion may or may not succeed");
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         } catch (final UnknownHostException e) {
             log.warn("Processing of attester IP address failed. Validation of Assertion may or may not succeed", e);
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
     }
     
@@ -1022,7 +1045,7 @@ public class DefaultAssertionValidationContextBuilder
      * 
      * @return the IP address of the attester
      */
-    @Nonnull protected String getAttesterIPAddress(@Nonnull final AssertionValidationInput input) {
+    @Nullable protected String getAttesterIPAddress(@Nonnull final AssertionValidationInput input) {
         //TODO support indirection via SAMLBindingSupport and use of SAMLMessageReceivedEndpointContext?
         return HttpServletSupport.getRemoteAddr(input.getHttpServletRequest());
     }
@@ -1050,8 +1073,9 @@ public class DefaultAssertionValidationContextBuilder
             validAudiences.add(selfEntityID);
         }
         
-        if (getAdditionalAudiences() != null) {
-            final Set<String> additional = getAdditionalAudiences().apply(input.getProfileRequestContext());
+        final var audFunc = getAdditionalAudiences();
+        if (audFunc != null) {
+            final Set<String> additional = audFunc.apply(input.getProfileRequestContext());
             if (additional != null) {
                 validAudiences.addAll(additional);
             }
@@ -1070,7 +1094,7 @@ public class DefaultAssertionValidationContextBuilder
      */
     @Nullable protected String getSelfEntityID(@Nonnull final AssertionValidationInput input) {
         final SAMLSelfEntityContext selfContext = input.getProfileRequestContext()
-                .getInboundMessageContext()
+                .ensureInboundMessageContext()
                 .getSubcontext(SAMLSelfEntityContext.class);
         
         if (selfContext != null) {
@@ -1084,7 +1108,7 @@ public class DefaultAssertionValidationContextBuilder
     public static class DefaultValidInResponseToLookupFunction implements Function<ProfileRequestContext, String> {
 
         /** The lookup delegate. */
-        private Function<MessageContext, String> delegate;
+        @Nonnull private Function<MessageContext, String> delegate;
 
         /** Constructor. */
         public DefaultValidInResponseToLookupFunction() {
@@ -1115,7 +1139,7 @@ public class DefaultAssertionValidationContextBuilder
     public static class DefaultValidIssuersLookupFunction implements Function<ProfileRequestContext, Set<String>> {
         
         /** The lookup delegate. */
-        private Function<MessageContext, String> delegate;
+        @Nonnull private Function<MessageContext, String> delegate;
 
         /** Constructor. */
         public DefaultValidIssuersLookupFunction() {
@@ -1133,9 +1157,9 @@ public class DefaultAssertionValidationContextBuilder
             // Note: Doesn't matter whether we apply to inbound or outbound
             final String entityID = delegate.apply(prc.getInboundMessageContext());
             if (entityID != null) {
-                return Collections.singleton(entityID);
+                return CollectionSupport.singleton(entityID);
             }
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         
     }

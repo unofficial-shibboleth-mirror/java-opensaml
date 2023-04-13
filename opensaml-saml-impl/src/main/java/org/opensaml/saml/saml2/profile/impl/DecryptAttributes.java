@@ -34,11 +34,12 @@ import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.EncryptedAttribute;
 import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml2.encryption.Decrypter;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action to decrypt an {@link EncryptedAttribute} element and replace it with the decrypted
@@ -63,12 +64,13 @@ public class DecryptAttributes extends AbstractDecryptAction {
         final SAMLObject message = getSAMLObject();
         
         try {
-            if (message instanceof Response) {
-                for (final Assertion a : ((Response) message).getAssertions()) {
+            if (message instanceof Response resp) {
+                for (final Assertion a : resp.getAssertions()) {
+                    assert a != null;
                     processAssertion(profileRequestContext, a);
                 }
-            } else if (message instanceof Assertion) {
-                processAssertion(profileRequestContext, (Assertion) message);
+            } else if (message instanceof Assertion a) {
+                processAssertion(profileRequestContext, a);
             } else {
                 log.debug("{} Message was of unrecognized type {}, nothing to do", getLogPrefix(),
                         message.getClass().getName());
@@ -99,11 +101,12 @@ public class DecryptAttributes extends AbstractDecryptAction {
             return null;
         }
         
-        if (getDecrypter() == null) {
+        final Decrypter decrypter = getDecrypter();
+        if (decrypter == null) {
             throw new DecryptionException("No decryption parameters, unable to decrypt EncryptedAttribute");
         }
         
-        return getDecrypter().decrypt(encAttr);
+        return decrypter.decrypt(encAttr);
     }
 
     /**
@@ -128,6 +131,7 @@ public class DecryptAttributes extends AbstractDecryptAction {
                 
                 try {
                     final EncryptedAttribute encrypted = i.next();
+                    assert encrypted != null;
                     final Attribute decrypted = processEncryptedAttribute(profileRequestContext, encrypted);
                     if (decrypted != null) {
                         encrypteds.add(encrypted);

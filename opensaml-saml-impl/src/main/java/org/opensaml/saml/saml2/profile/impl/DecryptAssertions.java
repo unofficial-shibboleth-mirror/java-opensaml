@@ -32,13 +32,13 @@ import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.profile.SAMLEventIds;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.EncryptedAssertion;
-import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml2.encryption.Decrypter;
 import org.opensaml.xmlsec.encryption.support.DecryptionException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action to decrypt an {@link EncryptedAssertion} element and replace it with the decrypted
@@ -90,16 +90,16 @@ public class DecryptAssertions extends AbstractDecryptAction {
     @Nullable private Assertion processEncryptedAssertion(@Nonnull final ProfileRequestContext profileRequestContext,
             @Nonnull final EncryptedAssertion encAssert) throws DecryptionException {
         
-        if (!getDecryptionPredicate().test(
-                new Pair<ProfileRequestContext,EncryptedElementType>(profileRequestContext, encAssert))) {
+        if (!getDecryptionPredicate().test(new Pair<>(profileRequestContext, encAssert))) {
             return null;
         }
         
-        if (getDecrypter() == null) {
+        final Decrypter decrypter = getDecrypter();
+        if (decrypter == null) {
             throw new DecryptionException("No decryption parameters, unable to decrypt EncryptedAssertion");
         }
         
-        return getDecrypter().decrypt(encAssert);
+        return decrypter.decrypt(encAssert);
     }
 
     /**
@@ -121,6 +121,7 @@ public class DecryptAssertions extends AbstractDecryptAction {
             log.debug("{} Decrypting EncryptedAssertion in Response", getLogPrefix());
             try {
                 final EncryptedAssertion encrypted = i.next();
+                assert encrypted != null;
                 final Assertion decrypted = processEncryptedAssertion(profileRequestContext, encrypted);
                 if (decrypted != null) {
                     encrypteds.add(encrypted);

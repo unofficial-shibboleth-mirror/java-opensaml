@@ -24,6 +24,7 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -34,9 +35,9 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.ECPContext;
 import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action to create and populate an {@link ECPContext} based on the request and, when encryption is in use,
@@ -44,6 +45,7 @@ import net.shibboleth.shared.logic.Constraint;
  * 
  * @event {@link EventIds#PROCEED_EVENT_ID}
  * @event {@link EventIds#INVALID_MSG_CTX}
+ * @event {@link EventIds#INVALID_SEC_CFG}
  */
 public class PopulateECPContext extends AbstractConditionalProfileAction {
 
@@ -141,8 +143,8 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
             return;
         }
         
-        ecpContext.setRequestAuthenticated(
-                SAMLBindingSupport.isMessageSigned(profileRequestContext.getInboundMessageContext()));
+        final MessageContext inbound = profileRequestContext.getInboundMessageContext();
+        ecpContext.setRequestAuthenticated(inbound != null && SAMLBindingSupport.isMessageSigned(inbound));
         log.debug("{} RequestAuthenticated: {}", getLogPrefix(), ecpContext.isRequestAuthenticated());
         
         boolean generateKey = true;
@@ -156,8 +158,14 @@ public class PopulateECPContext extends AbstractConditionalProfileAction {
         }
      
         if (generateKey) {
+            if (randomGenerator == null) {
+                log.warn("{} Unable to generate ECP session key, random source was null");
+                ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_SEC_CFG);
+                return;
+            }
             log.debug("{} Generating session key for use by ECP peers", getLogPrefix());
             final byte[] key = new byte[32];
+            assert randomGenerator != null;
             randomGenerator.nextBytes(key);
             ecpContext.setSessionKey(key);
         } else {

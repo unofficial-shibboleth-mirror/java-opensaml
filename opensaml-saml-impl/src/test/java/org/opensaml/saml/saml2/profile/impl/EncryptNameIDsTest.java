@@ -26,15 +26,20 @@ import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
+import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
@@ -44,6 +49,7 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link EncryptNameIDs}. */
+@SuppressWarnings("javadoc")
 public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     
     private EncryptionParameters encParams;
@@ -67,7 +73,7 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         encParams.setKeyTransportKeyInfoGenerator(generator.newInstance());
         
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.getOutboundMessageContext().getSubcontext(EncryptionContext.class, true).setIdentifierEncryptionParameters(encParams);
+        prc.ensureOutboundMessageContext().ensureSubcontext(EncryptionContext.class).setIdentifierEncryptionParameters(encParams);
         
         action = new EncryptNameIDs();
     }
@@ -79,7 +85,7 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
+        prc.ensureOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
     }
@@ -87,7 +93,7 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testEncryptedNameID() throws EncryptionException, ComponentInitializationException, MarshallingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().get(0).setSubject(SAML2ActionTestingSupport.buildSubject("morpheus"));
         action.initialize();
@@ -96,25 +102,32 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertProceedEvent(prc);
         
         Assert.assertEquals(response.getAssertions().size(), 1);
-        Assert.assertNull(response.getAssertions().get(0).getSubject().getNameID());
-        Assert.assertNotNull(response.getAssertions().get(0).getSubject().getEncryptedID());
+        final Assertion assertion = response.getAssertions().get(0);
+        assert assertion != null;
+        final Subject subject = assertion.getSubject();
+        assert subject != null;
+        Assert.assertNull(subject.getNameID());
+        Assert.assertNotNull(subject.getEncryptedID());
         
-        final EncryptedID encTarget = response.getAssertions().get(0).getSubject().getEncryptedID();
+        final EncryptedID encTarget = subject.getEncryptedID();
+        assert encTarget != null;
 
-        Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(),
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, "Algorithm attribute");
-        Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 1, 
-                "Number of EncryptedKeys");
-        Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
-                "EncryptedData ID attribute was empty");
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, "Algorithm attribute");
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 1, "Number of EncryptedKeys");
+        Assert.assertFalse(Strings.isNullOrEmpty(encData.getID()), "EncryptedData ID attribute was empty");
     }
     
     @Test
     public void testFailure() throws EncryptionException, ComponentInitializationException, MarshallingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().get(0).setSubject(SAML2ActionTestingSupport.buildSubject("morpheus"));
         
@@ -126,8 +139,12 @@ public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertEvent(prc, EventIds.UNABLE_TO_ENCRYPT);
         
         Assert.assertEquals(response.getAssertions().size(), 1);
-        Assert.assertNotNull(response.getAssertions().get(0).getSubject().getNameID());
-        Assert.assertNull(response.getAssertions().get(0).getSubject().getEncryptedID());
+        final Assertion assertion = response.getAssertions().get(0);
+        assert assertion != null;
+        final Subject subject = assertion.getSubject();
+        assert subject != null;
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertNull(subject.getEncryptedID());
     }
     
 }

@@ -49,6 +49,9 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
     
     private AddProxyRestrictionToAssertions action;
     
+    /**
+     * Test set up.
+     */
     @BeforeMethod public void setUp() {
         action = new AddProxyRestrictionToAssertions();
         action.setProxyRestrictionLookupStrategy(FunctionSupport.constant(new Pair<>(1,CollectionSupport.setOf(AUDIENCE1, AUDIENCE2))));
@@ -103,9 +106,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
-        final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getProxyRestriction());
+        final ProxyRestriction proxy = c.getProxyRestriction();
+        assert proxy != null;
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(0));
         Assert.assertTrue(proxy.getAudiences().isEmpty());
     }
@@ -132,9 +137,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
-        final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getProxyRestriction());
+        final ProxyRestriction proxy = c.getProxyRestriction();
+        assert proxy != null;
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
         Assert.assertTrue(proxy.getAudiences().isEmpty());
     }
@@ -161,9 +168,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
-        final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getProxyRestriction());
+        final ProxyRestriction proxy = c.getProxyRestriction();
+        assert proxy != null;
         Assert.assertNull(proxy.getProxyCount());
         Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
                 CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));
@@ -190,9 +199,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
-        final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getProxyRestriction());
+        final ProxyRestriction proxy = c.getProxyRestriction();
+        assert proxy != null;
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
         Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
                 CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));
@@ -222,9 +233,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
-        final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getProxyRestriction());
+        final ProxyRestriction proxy = c.getProxyRestriction();
+        assert proxy != null;
         Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
         Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
                 CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));
@@ -250,9 +263,11 @@ public class AddProxyRestrictionToAssertionsTest extends OpenSAMLInitBaseTestCas
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getConditions());
-            Assert.assertNotNull(assertion.getConditions().getProxyRestriction());
-            final ProxyRestriction proxy = assertion.getConditions().getProxyRestriction();
+            final Conditions c = assertion.getConditions();
+            assert c != null;
+            Assert.assertNotNull(c.getProxyRestriction());
+            final ProxyRestriction proxy = c.getProxyRestriction();
+            assert proxy != null;
             Assert.assertEquals(proxy.getProxyCount(), Integer.valueOf(1));
             Assert.assertEquals(proxy.getAudiences().stream().map(Audience::getURI).collect(Collectors.toUnmodifiableSet()),
                     CollectionSupport.setOf(AUDIENCE1, AUDIENCE2));

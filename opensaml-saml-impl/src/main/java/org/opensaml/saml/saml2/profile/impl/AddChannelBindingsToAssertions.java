@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.profile.impl;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
@@ -38,9 +37,10 @@ import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action to add {@link ChannelBindings} extension(s) to every {@link Assertion} in a {@link Response} message.
@@ -65,17 +65,18 @@ public class AddChannelBindingsToAssertions extends AbstractConditionalProfileAc
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
     /** ChannelBindingsContext to read from. */
-    @Nullable private ChannelBindingsContext channelBindingsContext;
+    @NonnullBeforeExec private ChannelBindingsContext channelBindingsContext;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
 
     /** Constructor. */
     public AddChannelBindingsToAssertions() {
         channelBindingsContextLookupStrategy =
                 new ChildContextLookup<>(ChannelBindingsContext.class).compose(
                         new OutboundMessageContextLookup());
-        responseLookupStrategy = new MessageLookup<>(Response.class).compose(new OutboundMessageContextLookup());
+        responseLookupStrategy = new MessageLookup<>(Response.class).compose(
+                new OutboundMessageContextLookup());
     }
 
     /**
@@ -140,6 +141,7 @@ public class AddChannelBindingsToAssertions extends AbstractConditionalProfileAc
                         ChannelBindings.DEFAULT_ELEMENT_NAME);
 
         for (final Assertion assertion : response.getAssertions()) {
+            assert assertion != null;
             final Advice advice = SAML2ActionSupport.addAdviceToAssertion(this, assertion);
             for (final ChannelBindings cb : channelBindingsContext.getChannelBindings()) {
                 final ChannelBindings newCB = cbBuilder.buildObject();

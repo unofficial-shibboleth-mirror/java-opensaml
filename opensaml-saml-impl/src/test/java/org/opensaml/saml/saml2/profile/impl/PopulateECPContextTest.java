@@ -38,6 +38,7 @@ import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 
 /** Unit test for {@link PopulateECPContext}. */
+@SuppressWarnings("javadoc")
 public class PopulateECPContextTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;
@@ -58,7 +59,7 @@ public class PopulateECPContextTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final ECPContext ecp = prc.getOutboundMessageContext().getSubcontext(ECPContext.class);
+        final ECPContext ecp = prc.ensureOutboundMessageContext().getSubcontext(ECPContext.class);
         if (ecp != null) {
             Assert.assertFalse(ecp.isRequestAuthenticated());
             Assert.assertNull(ecp.getSessionKey());
@@ -68,14 +69,14 @@ public class PopulateECPContextTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testAuthenticated() throws ComponentInitializationException {
         
-        prc.getInboundMessageContext().getSubcontext(SAMLBindingContext.class, true).setHasBindingSignature(true);
+        prc.ensureInboundMessageContext().ensureSubcontext(SAMLBindingContext.class).setHasBindingSignature(true);
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final ECPContext ecp = prc.getOutboundMessageContext().getSubcontext(ECPContext.class);
+        final ECPContext ecp = prc.ensureOutboundMessageContext().ensureSubcontext(ECPContext.class);
         Assert.assertTrue(ecp.isRequestAuthenticated());
         Assert.assertNull(ecp.getSessionKey());
     }
@@ -89,22 +90,22 @@ public class PopulateECPContextTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final ECPContext ecp = prc.getOutboundMessageContext().getSubcontext(ECPContext.class);
+        final ECPContext ecp = prc.ensureOutboundMessageContext().ensureSubcontext(ECPContext.class);
         Assert.assertNotNull(ecp.getSessionKey());
     }
     
     @Test
     public void testEncrypted() throws ComponentInitializationException {
         
-        prc.getOutboundMessageContext().getSubcontext(
-                EncryptionContext.class, true).setAssertionEncryptionParameters(new EncryptionParameters());
+        prc.ensureOutboundMessageContext().ensureSubcontext(
+                EncryptionContext.class).setAssertionEncryptionParameters(new EncryptionParameters());
 
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        final ECPContext ecp = prc.getOutboundMessageContext().getSubcontext(ECPContext.class);
+        final ECPContext ecp = prc.ensureOutboundMessageContext().ensureSubcontext(ECPContext.class);
         Assert.assertNotNull(ecp.getSessionKey());
     }
 

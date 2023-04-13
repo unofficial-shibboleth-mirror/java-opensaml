@@ -28,6 +28,7 @@ import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.common.messaging.context.ECPContext;
 import org.opensaml.saml.ext.samlec.GeneratedKey;
+import org.opensaml.saml.saml2.core.Advice;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
@@ -41,13 +42,24 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
     private ECPContext ecp;
     
+    private String encodedKey;
+    
     private AddGeneratedKeyToAssertions action;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     * @throws EncodingException 
+     */
     @BeforeMethod
-    public void setUp() throws ComponentInitializationException {
+    public void setUp() throws ComponentInitializationException, EncodingException {
         
         ecp = new ECPContext();
-        ecp.setSessionKey(new byte[]{1, 2, 3});
+        final byte[] key = new byte[]{1, 2, 3};
+        ecp.setSessionKey(key);
+        
+        encodedKey = Base64Support.encode(key, false);
         
         action = new AddGeneratedKeyToAssertions();
         action.initialize();
@@ -57,7 +69,7 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
     @Test
     public void testNoResponse() {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(ecp);
+        prc.ensureOutboundMessageContext().addSubcontext(ecp);
 
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
@@ -77,7 +89,7 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
     public void testNoAssertion() {
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML2ActionTestingSupport.buildResponse()).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(ecp);
+        prc.ensureOutboundMessageContext().addSubcontext(ecp);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -97,7 +109,7 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(ecp);
+        prc.ensureOutboundMessageContext().addSubcontext(ecp);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -105,10 +117,11 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getAdvice());
-        Assert.assertEquals(assertion.getAdvice().getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).size(), 1);
-        final GeneratedKey key = ((GeneratedKey) assertion.getAdvice().getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).get(0));
-        Assert.assertEquals(key.getValue(), Base64Support.encode(ecp.getSessionKey(), false));
+        final Advice advice = assertion.getAdvice();
+        assert advice != null;
+        Assert.assertEquals(advice.getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).size(), 1);
+        final GeneratedKey key = ((GeneratedKey) advice.getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).get(0));
+        Assert.assertEquals(key.getValue(), encodedKey);
     }
 
     /**
@@ -127,15 +140,16 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(ecp);
+        prc.ensureOutboundMessageContext().addSubcontext(ecp);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getAdvice());
-        Assert.assertEquals(assertion.getAdvice().getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).size(), 1);
-        final GeneratedKey key = ((GeneratedKey) assertion.getAdvice().getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).get(0));
-        Assert.assertEquals(key.getValue(), Base64Support.encode(ecp.getSessionKey(), false));
+        final Advice advice = assertion.getAdvice();
+        assert advice != null;
+        Assert.assertEquals(advice.getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).size(), 1);
+        final GeneratedKey key = ((GeneratedKey) advice.getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).get(0));
+        Assert.assertEquals(key.getValue(), encodedKey);
     }
 
     /** Test that the advice is properly added if there are multiple assertions in the response. 
@@ -149,7 +163,7 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(ecp);
+        prc.ensureOutboundMessageContext().addSubcontext(ecp);
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -158,10 +172,11 @@ public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (final Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getAdvice());
-            Assert.assertEquals(assertion.getAdvice().getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).size(), 1);
-            final GeneratedKey key = ((GeneratedKey) assertion.getAdvice().getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).get(0));
-            Assert.assertEquals(key.getValue(), Base64Support.encode(ecp.getSessionKey(), false));
+            final Advice advice = assertion.getAdvice();
+            assert advice != null;
+            Assert.assertEquals(advice.getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).size(), 1);
+            final GeneratedKey key = ((GeneratedKey) advice.getChildren(GeneratedKey.DEFAULT_ELEMENT_NAME).get(0));
+            Assert.assertEquals(key.getValue(), encodedKey);
         }
     }
     

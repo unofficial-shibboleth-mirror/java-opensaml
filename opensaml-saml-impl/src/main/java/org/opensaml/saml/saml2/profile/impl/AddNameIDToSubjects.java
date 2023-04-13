@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
@@ -26,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
+import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
 import org.opensaml.profile.action.ActionSupport;
@@ -49,14 +49,15 @@ import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.opensaml.saml.saml2.profile.SAML2NameIDGenerator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
@@ -117,7 +118,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     @NonnullAfterInit private SAML2NameIDGenerator generator;
 
     /** Formats to try. */
-    @Nonnull @NonnullElements private List<String> formats;
+    @NonnullBeforeExec private List<String> formats;
     
     /** Format required by requested {@link NameIDPolicy}. */
     @Nullable private String requiredFormat;
@@ -126,10 +127,10 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
     @Nullable private AuthnRequest request;
     
     /** Response to modify. */
-    @Nullable private List<Assertion> assertions;
+    @NonnullBeforeExec private List<Assertion> assertions;
     
     /** The generator to use. */
-    @Nullable private IdentifierGenerationStrategy idGenerator;
+    @NonnullBeforeExec private IdentifierGenerationStrategy idGenerator;
 
     /** EntityID to populate into Issuer element. */
     @Nullable private String issuerId;
@@ -164,7 +165,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         ((DefaultNameIDPolicyPredicate) nameIDPolicyPredicate).initialize();
         
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
-        formats = Collections.emptyList();
+        formats = CollectionSupport.emptyList();
     }
     
     /**
@@ -304,7 +305,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         
         requiredFormat = getRequiredFormat(profileRequestContext);
         if (requiredFormat != null) {
-            formats = Collections.singletonList(requiredFormat);
+            formats = CollectionSupport.singletonList(requiredFormat);
             log.debug("{} Request specified NameID format: {}", getLogPrefix(), requiredFormat);
         } else {
             formats = formatLookupStrategy.apply(profileRequestContext);
@@ -337,6 +338,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         int count = 0;
         
         for (final Assertion assertion : assertions) {
+            assert assertion != null;
             final Subject subject = getAssertionSubject(assertion);
             final NameID existing = subject.getNameID();
             if (existing == null || overwriteExisting) {
@@ -384,6 +386,7 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         
         // See if we can generate one.
         for (final String format : formats) {
+            assert format != null;
             log.debug("{} Trying to generate NameID with Format {}", getLogPrefix(), format);
             try {
                 final NameID nameId = generator.generate(profileRequestContext, format);
@@ -407,11 +410,12 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
      * @return the assertion to which the name identifier will be added
      */
     @Nonnull private Subject getAssertionSubject(@Nonnull final Assertion assertion) {
-        if (assertion.getSubject() != null) {
-            return assertion.getSubject();
+        Subject subject = assertion.getSubject();
+        if (subject != null) {
+            return subject;
         }
         
-        final Subject subject = subjectBuilder.buildObject();
+        subject = subjectBuilder.buildObject();
         assertion.setSubject(subject);
         return subject;
     }
@@ -447,15 +451,16 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         /** {@inheritDoc} */
         @Override
         @Nullable public List<Assertion> apply(@Nullable final ProfileRequestContext input) {
-            if (input != null && input.getOutboundMessageContext() != null) {
-                final Object outboundMessage = input.getOutboundMessageContext().getMessage();
+            final MessageContext outboundContext = input != null ? input.getOutboundMessageContext() : null;
+            if (outboundContext != null) {
+                final Object outboundMessage = outboundContext.getMessage();
                 if (outboundMessage == null) {
                     final Assertion ret = SAML2ActionSupport.buildAssertion(AddNameIDToSubjects.this,
                             idGenerator, issuerId);
-                    input.getOutboundMessageContext().setMessage(ret);
-                    return Collections.singletonList(ret);
+                    outboundContext.setMessage(ret);
+                    return CollectionSupport.singletonList(ret);
                 } else if (outboundMessage instanceof Assertion) {
-                    return Collections.singletonList((Assertion) outboundMessage);
+                    return CollectionSupport.singletonList((Assertion) outboundMessage);
                 } else if (outboundMessage instanceof Response) {
                     return ((Response) outboundMessage).getAssertions();
                 }
@@ -532,9 +537,9 @@ public class AddNameIDToSubjects extends AbstractProfileAction {
         @Nullable public String apply(@Nullable final ProfileRequestContext profileRequestContext) {
             
             final RequestAbstractType request = requestLookupStrategy.apply(profileRequestContext);
-            if (request != null && request.getIssuer() != null) {
+            if (request != null) {
                 final Issuer issuer = request.getIssuer();
-                if (issuer.getFormat() == null || NameID.ENTITY.equals(issuer.getFormat())) {
+                if (issuer != null && (issuer.getFormat() == null || NameID.ENTITY.equals(issuer.getFormat()))) {
                     return issuer.getValue();
                 }
             }

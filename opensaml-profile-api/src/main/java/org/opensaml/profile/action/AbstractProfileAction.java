@@ -120,7 +120,8 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
 
     /** {@inheritDoc} */
     @Override public void execute(@Nonnull final ProfileRequestContext profileRequestContext) {
-
+        checkComponentActive();
+        
         // Clear any existing EventContext that might be hanging around, and if it exists,
         // copy the Event to a PreviousEventContext. Don't clear any existing PreviousEventContext
         // because it may be from an earlier error of interest to other actions.
@@ -250,6 +251,8 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
      * Note the unsynchronized access.  The underlying field is only ever set true, so if true is
      * returned it is correct, if false is returned is is not safe to make any assumptions (even if
      * there was an call in flight.
+     *
+     * @return whether the preExecute hook was called 
      *
      * @since 5.0.0
      */

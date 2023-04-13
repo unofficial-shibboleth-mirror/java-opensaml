@@ -36,12 +36,12 @@ import org.opensaml.saml.saml2.encryption.Decrypter;
 import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Abstract base class for actions that perform SAML decryption.
@@ -75,7 +75,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
     @Nullable private Decrypter decrypter;
     
     /** Message to operate on. */
-    @Nullable private SAMLObject message;
+    @NonnullBeforeExec private SAMLObject message;
     
     /** Constructor. */
     public AbstractDecryptAction() {
@@ -83,8 +83,9 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
         securityParamsLookupStrategy =
                 new ChildContextLookup<>(SecurityParametersContext.class).compose(
                         new InboundMessageContextLookup());
-        messageLookupStrategy = new MessageLookup<>(Object.class).compose(new InboundMessageContextLookup());
-        decryptionPredicate = Predicates.alwaysTrue();
+        messageLookupStrategy = new MessageLookup<>(Object.class).compose(
+                new InboundMessageContextLookup());
+        decryptionPredicate = PredicateSupport.alwaysTrue();
     }
     
     /**
@@ -168,13 +169,17 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
      * 
      * @return  the object to act on
      */
-    @Nullable public SAMLObject getSAMLObject() {
+    @NonnullBeforeExec public SAMLObject getSAMLObject() {
         return message;
     }
     
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         final Object theMessage = messageLookupStrategy.apply(profileRequestContext);
         if (theMessage == null) {
             log.debug("{} No message was returned by lookup strategy", getLogPrefix());
@@ -188,15 +193,15 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
         message = (SAMLObject) theMessage;
         
         final SecurityParametersContext paramsCtx = securityParamsLookupStrategy.apply(profileRequestContext);
-        if (paramsCtx == null || paramsCtx.getDecryptionParameters() == null) {
+        final DecryptionParameters params = paramsCtx != null ? paramsCtx.getDecryptionParameters() : null;
+        if (params == null) {
             log.debug("{} No security parameter context or decryption parameters", getLogPrefix());
         } else {
-            final DecryptionParameters params = paramsCtx.getDecryptionParameters();
             decrypter = new Decrypter(params.getDataKeyInfoCredentialResolver(),
                     params.getKEKKeyInfoCredentialResolver(), params.getEncryptedKeyResolver());
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
 }

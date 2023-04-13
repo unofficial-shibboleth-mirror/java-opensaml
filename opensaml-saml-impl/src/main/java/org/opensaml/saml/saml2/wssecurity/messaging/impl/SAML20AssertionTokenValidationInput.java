@@ -31,13 +31,13 @@ import net.shibboleth.shared.logic.Constraint;
 public class SAML20AssertionTokenValidationInput {
     
     /** The message context input. */
-    private MessageContext messageContext;
+    @Nonnull private MessageContext messageContext;
     
     /** The HTTP request input. */
-    private HttpServletRequest httpServletRequest;
+    @Nonnull private HttpServletRequest httpServletRequest;
     
     /** The Assertion being evaluated. */
-    private Assertion assertion;
+    @Nonnull private Assertion assertion;
 
     /**
      * Constructor.

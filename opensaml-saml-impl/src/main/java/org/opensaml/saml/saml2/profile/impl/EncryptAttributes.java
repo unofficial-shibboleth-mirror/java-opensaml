@@ -42,10 +42,11 @@ import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -68,7 +69,7 @@ public class EncryptAttributes extends AbstractEncryptAction {
     @Nonnull private Function<ProfileRequestContext,StatusResponseType> responseLookupStrategy;
     
     /** The message to operate on. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
     
     /** Constructor. */
     public EncryptAttributes() {
@@ -101,6 +102,10 @@ public class EncryptAttributes extends AbstractEncryptAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         final StatusResponseType message = responseLookupStrategy.apply(profileRequestContext);
         if (message != null) {
             if (message instanceof Response) {
@@ -116,7 +121,7 @@ public class EncryptAttributes extends AbstractEncryptAction {
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -129,6 +134,7 @@ public class EncryptAttributes extends AbstractEncryptAction {
                 final List<EncryptedAttribute> accumulator = new ArrayList<>(statement.getAttributes().size());
                 
                 for (final Attribute attribute : statement.getAttributes()) {
+                    assert attribute != null;
                     try {
                         if (log.isDebugEnabled()) {
                             try {

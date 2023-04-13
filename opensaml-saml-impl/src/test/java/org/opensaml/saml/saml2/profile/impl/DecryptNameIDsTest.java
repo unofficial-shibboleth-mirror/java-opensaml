@@ -70,6 +70,12 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
     private SAMLObjectBuilder<Subject> subjectBuilder;
     
+    /**
+     * Test set up.
+     * 
+     * @throws NoSuchAlgorithmException
+     * @throws KeyException
+     */
     @BeforeMethod
     public void setUp() throws NoSuchAlgorithmException, KeyException {
         encURI = EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128;
@@ -92,12 +98,17 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         decParams.setDataKeyInfoCredentialResolver(keyResolver);
         
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.getInboundMessageContext().getSubcontext(
-                SecurityParametersContext.class, true).setDecryptionParameters(decParams);
+        prc.ensureInboundMessageContext().ensureSubcontext(
+                SecurityParametersContext.class).setDecryptionParameters(decParams);
         
         action = new DecryptNameIDs();
     }
     
+    /**
+     * Test with no message.
+     * 
+     * @throws ComponentInitializationException
+     */
     @Test
     public void testNoMessage() throws ComponentInitializationException {
         action.initialize();
@@ -115,8 +126,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testEncryptedNameIDNoParams() throws EncryptionException, ComponentInitializationException {
         final AuthnRequest authnRequest = SAML2ActionTestingSupport.buildAuthnRequest();
-        prc.getInboundMessageContext().setMessage(authnRequest);
-        final Subject subject = subjectBuilder.buildObject();
+        prc.ensureInboundMessageContext().setMessage(authnRequest);
+        Subject subject = subjectBuilder.buildObject();
         authnRequest.setSubject(subject);
         
         final NameID nameId = nameIdBuilder.buildObject();
@@ -128,11 +139,14 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
         action.initialize();
         
-        prc.getInboundMessageContext().removeSubcontext(SecurityParametersContext.class);
+        prc.ensureInboundMessageContext().removeSubcontext(SecurityParametersContext.class);
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.DECRYPT_NAMEID_FAILED);
-        Assert.assertNull(authnRequest.getSubject().getNameID());
+        
+        subject = ((AuthnRequest) prc.ensureInboundMessageContext().ensureMessage()).getSubject();
+        assert subject != null;
+        Assert.assertNull(subject.getNameID());
         
         action = new DecryptNameIDs();
         action.setErrorFatal(false);
@@ -140,7 +154,10 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertNull(authnRequest.getSubject().getNameID());
+
+        subject = ((AuthnRequest) prc.ensureInboundMessageContext().ensureMessage()).getSubject();
+        assert subject != null;
+        Assert.assertNull(subject.getNameID());
     }
 
     
@@ -153,11 +170,11 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testEncryptedNameID() throws EncryptionException, ComponentInitializationException {
         final AuthnRequest authnRequest = SAML2ActionTestingSupport.buildAuthnRequest();
-        prc.getInboundMessageContext().setMessage(authnRequest);
-        final Subject subject = subjectBuilder.buildObject();
+        prc.ensureInboundMessageContext().setMessage(authnRequest);
+        Subject subject = subjectBuilder.buildObject();
         authnRequest.setSubject(subject);
         
-        final NameID nameId = nameIdBuilder.buildObject();
+        NameID nameId = nameIdBuilder.buildObject();
         nameId.setFormat(NameID.TRANSIENT);
         nameId.setValue("foo");
         
@@ -168,9 +185,12 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertNotNull(authnRequest.getSubject().getNameID());
-        Assert.assertEquals(authnRequest.getSubject().getNameID().getValue(), "foo");
-        Assert.assertEquals(authnRequest.getSubject().getNameID().getFormat(), NameID.TRANSIENT);
+        subject = ((AuthnRequest) prc.ensureInboundMessageContext().ensureMessage()).getSubject();
+        assert subject != null;
+        nameId = subject.getNameID();
+        assert nameId != null;
+        Assert.assertEquals(nameId.getValue(), "foo");
+        Assert.assertEquals(nameId.getFormat(), NameID.TRANSIENT);
     }
 
     /**
@@ -181,8 +201,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testWrongKeyFatal() throws Exception {
         final AuthnRequest authnRequest = SAML2ActionTestingSupport.buildAuthnRequest();
-        prc.getInboundMessageContext().setMessage(authnRequest);
-        final Subject subject = subjectBuilder.buildObject();
+        prc.ensureInboundMessageContext().setMessage(authnRequest);
+        Subject subject = subjectBuilder.buildObject();
         authnRequest.setSubject(subject);
         
         final NameID nameId = nameIdBuilder.buildObject();
@@ -194,15 +214,19 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         KeyInfoCredentialResolver badKeyResolver = new StaticKeyInfoCredentialResolver(encCred);
-        prc.getInboundMessageContext().getSubcontext(
-                SecurityParametersContext.class).getDecryptionParameters().setDataKeyInfoCredentialResolver(
-                        badKeyResolver);
+        final DecryptionParameters params = prc.ensureInboundMessageContext().ensureSubcontext(
+                SecurityParametersContext.class).getDecryptionParameters();
+        assert params != null;
+        params.setDataKeyInfoCredentialResolver(badKeyResolver);
         
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.DECRYPT_NAMEID_FAILED);
-        Assert.assertNull(authnRequest.getSubject().getNameID());
+        
+        subject = ((AuthnRequest) prc.ensureInboundMessageContext().ensureMessage()).getSubject();
+        assert subject != null;
+        Assert.assertNull(subject.getNameID());
     }
 
     /**
@@ -213,8 +237,8 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     @Test
     public void testWrongKeyNonFatal() throws Exception {
         final AuthnRequest authnRequest = SAML2ActionTestingSupport.buildAuthnRequest();
-        prc.getInboundMessageContext().setMessage(authnRequest);
-        final Subject subject = subjectBuilder.buildObject();
+        prc.ensureInboundMessageContext().setMessage(authnRequest);
+        Subject subject = subjectBuilder.buildObject();
         authnRequest.setSubject(subject);
         
         final NameID nameId = nameIdBuilder.buildObject();
@@ -226,16 +250,20 @@ public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
 
         Credential encCred = AlgorithmSupport.generateSymmetricKeyAndCredential(encURI);
         KeyInfoCredentialResolver badKeyResolver = new StaticKeyInfoCredentialResolver(encCred);
-        prc.getInboundMessageContext().getSubcontext(
-                SecurityParametersContext.class).getDecryptionParameters().setDataKeyInfoCredentialResolver(
-                        badKeyResolver);
+        final DecryptionParameters params = prc.ensureInboundMessageContext().ensureSubcontext(
+                SecurityParametersContext.class).getDecryptionParameters();
+        assert params != null;
+        params.setDataKeyInfoCredentialResolver(badKeyResolver);
         
         action.setErrorFatal(false);
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertNull(authnRequest.getSubject().getNameID());
+        
+        subject = ((AuthnRequest) prc.ensureInboundMessageContext().ensureMessage()).getSubject();
+        assert subject != null;
+        Assert.assertNull(subject.getNameID());
     }
     
 }

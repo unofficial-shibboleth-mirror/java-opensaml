@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.profile.impl;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
@@ -36,9 +35,10 @@ import org.opensaml.saml.saml2.core.OneTimeUse;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action to add a {@link OneTimeUse} condition to every {@link Assertion} in a {@link Response} message.
@@ -56,7 +56,7 @@ public class AddOneTimeUseConditionToAssertions extends AbstractConditionalProfi
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
     /** Response to modify. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
 
     /** Constructor. */
     public AddOneTimeUseConditionToAssertions() {
@@ -77,6 +77,11 @@ public class AddOneTimeUseConditionToAssertions extends AbstractConditionalProfi
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         log.debug("{} Attempting to add OneTimeUse condition to every Assertion in Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -89,7 +94,7 @@ public class AddOneTimeUseConditionToAssertions extends AbstractConditionalProfi
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -101,6 +106,7 @@ public class AddOneTimeUseConditionToAssertions extends AbstractConditionalProfi
                         OneTimeUse.DEFAULT_ELEMENT_NAME);
 
         for (final Assertion assertion : response.getAssertions()) {
+            assert assertion != null;
             final Conditions conditions = SAML2ActionSupport.addConditionsToAssertion(this, assertion);
             if (conditions.getOneTimeUse() == null) {
                 conditions.getConditions().add(conditionBuilder.buildObject());

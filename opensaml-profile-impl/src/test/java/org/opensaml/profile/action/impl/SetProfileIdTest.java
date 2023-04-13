@@ -22,6 +22,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
 @SuppressWarnings("javadoc")
@@ -34,16 +35,17 @@ public class SetProfileIdTest {
         try {
             new SetProfileId("  ");
             Assert.fail();
-        } catch (ConstraintViolationException e) {
+        } catch (final ConstraintViolationException e) {
             // expected this
         }
     }
 
     @Test
-    public void testExecute() throws Exception {
+    public void testExecute() throws ComponentInitializationException {
         ProfileRequestContext context = new ProfileRequestContext();
 
         SetProfileId action = new SetProfileId("foo");
+        action.initialize();
         action.execute(context);
         Assert.assertEquals(context.getProfileId(), "foo");
         Assert.assertNull(context.getSubcontext(EventContext.class));

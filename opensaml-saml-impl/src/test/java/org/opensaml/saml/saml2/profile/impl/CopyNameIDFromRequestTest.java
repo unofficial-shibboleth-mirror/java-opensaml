@@ -23,6 +23,7 @@ import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
@@ -33,6 +34,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Test for {@link CopyNameIDFromRequest}. */
+@SuppressWarnings("javadoc")
 public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";
@@ -57,17 +59,17 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
 
     @Test
     public void testNoAssertions() {
-        prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
+        prc.ensureOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().isEmpty());
+        Assert.assertTrue(((Response) prc.ensureOutboundMessageContext().ensureMessage()).getAssertions().isEmpty());
     }
 
     @Test
     public void testNoRequest() {
-        prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
-        ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
+        prc.ensureOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
+        ((Response) prc.ensureOutboundMessageContext().ensureMessage()).getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         addAssertions();
 
         action.execute(prc);
@@ -76,11 +78,11 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
 
     @Test
     public void testNoName() {
-        prc.getOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
-        ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
+        prc.ensureOutboundMessageContext().setMessage(SAML2ActionTestingSupport.buildResponse());
+        ((Response) prc.ensureOutboundMessageContext().ensureMessage()).getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         addAssertions();
 
-        prc.getInboundMessageContext().setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
+        prc.ensureInboundMessageContext().setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(null));
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
@@ -89,19 +91,22 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
     @Test void testCopy() {
         
         Subject subject = SAML2ActionTestingSupport.buildSubject("jdoe");
-        subject.getNameID().setNameQualifier(NAME_QUALIFIER);
-        prc.getInboundMessageContext().setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(subject));
+        NameID nameID = subject.getNameID();
+        assert nameID != null;
+        nameID.setNameQualifier(NAME_QUALIFIER);
+        prc.ensureInboundMessageContext().setMessage(SAML2ActionTestingSupport.buildAttributeQueryRequest(subject));
         addAssertions();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
+        Assertion assertion = ((Response) prc.ensureOutboundMessageContext().ensureMessage()).getAssertions().get(0);
         subject = assertion.getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getNameID());
-        Assert.assertEquals(subject.getNameID().getValue(), "jdoe");
-        Assert.assertEquals(subject.getNameID().getNameQualifier(), NAME_QUALIFIER);
+        assert subject != null;
+        nameID = subject.getNameID();
+        assert nameID != null;
+        Assert.assertEquals(nameID.getValue(), "jdoe");
+        Assert.assertEquals(nameID.getNameQualifier(), NAME_QUALIFIER);
     }
 
     /** Set up the test message with some assertions. */
@@ -109,7 +114,7 @@ public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
         final Response response = SAML2ActionTestingSupport.buildResponse();
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
     }
     
 }

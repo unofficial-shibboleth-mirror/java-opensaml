@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Set;
 import java.util.function.Function;
 
@@ -39,6 +38,7 @@ import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AuthnRequest;
 import org.opensaml.saml.saml2.core.Condition;
+import org.opensaml.saml.saml2.core.Conditions;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.LogoutRequest;
 import org.opensaml.saml.saml2.core.ManageNameIDRequest;
@@ -46,6 +46,7 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NameIDMappingRequest;
 import org.opensaml.saml.saml2.core.NameIDMappingResponse;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
+import org.opensaml.saml.saml2.core.NewID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
@@ -54,11 +55,12 @@ import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 
@@ -83,15 +85,16 @@ public class EncryptNameIDs extends AbstractEncryptAction {
     @Nonnull private Function<ProfileRequestContext,SAMLObject> messageLookupStrategy;
     
     /** Formats to exclude from encryption. */
-    @Nonnull @NonnullElements private Set<String> excludedFormats;
+    @Nonnull private Set<String> excludedFormats;
     
     /** The message to operate on. */
-    @Nullable private SAMLObject message;
+    @NonnullBeforeExec private SAMLObject message;
     
     /** Constructor. */
     public EncryptNameIDs() {
-        messageLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(new OutboundMessageContextLookup());
-        excludedFormats = Collections.singleton(NameID.ENTITY);
+        messageLookupStrategy = new MessageLookup<>(SAMLObject.class).compose(
+                new OutboundMessageContextLookup());
+        excludedFormats = CollectionSupport.singleton(NameID.ENTITY);
     }
 
     /**
@@ -110,8 +113,8 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      * 
      * @param formats   formats to exclude
      */
-    public void setExcludedFormats(@Nonnull @NonnullElements final Collection<String> formats) {
-        excludedFormats = Set.copyOf(StringSupport.normalizeStringCollection(formats));
+    public void setExcludedFormats(@Nonnull final Collection<String> formats) {
+        excludedFormats = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(formats));
     }
 
     /** {@inheritDoc} */
@@ -127,6 +130,10 @@ public class EncryptNameIDs extends AbstractEncryptAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         message = messageLookupStrategy.apply(profileRequestContext);
 
         if (message != null && message instanceof ArtifactResponse) {
@@ -138,7 +145,7 @@ public class EncryptNameIDs extends AbstractEncryptAction {
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
 // Checkstyle: CyclomaticComplexity OFF
@@ -147,24 +154,25 @@ public class EncryptNameIDs extends AbstractEncryptAction {
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         try {
             
-            if (message instanceof AuthnRequest) {
-                processSubject(((AuthnRequest) message).getSubject());
-            } else if (message instanceof SubjectQuery) {
-                processSubject(((SubjectQuery) message).getSubject());
-            } else if (message instanceof Response) {
-                for (final Assertion a : ((Response) message).getAssertions()) {
+            if (message instanceof AuthnRequest m) {
+                processSubject(m.getSubject());
+            } else if (message instanceof SubjectQuery m) {
+                processSubject(m.getSubject());
+            } else if (message instanceof Response m) {
+                for (final Assertion a : m.getAssertions()) {
+                    assert a != null;
                     processAssertion(a);
                 }
-            } else if (message instanceof LogoutRequest) {
-                processLogoutRequest((LogoutRequest) message);
-            } else if (message instanceof ManageNameIDRequest) {
-                processManageNameIDRequest((ManageNameIDRequest) message);
-            } else if (message instanceof NameIDMappingRequest) {
-                processNameIDMappingRequest((NameIDMappingRequest) message);
-            } else if (message instanceof NameIDMappingResponse) {
-                processNameIDMappingResponse((NameIDMappingResponse) message);
-            } else if (message instanceof Assertion) {
-                processAssertion((Assertion) message);
+            } else if (message instanceof LogoutRequest m) {
+                processLogoutRequest(m);
+            } else if (message instanceof ManageNameIDRequest m) {
+                processManageNameIDRequest(m);
+            } else if (message instanceof NameIDMappingRequest m) {
+                processNameIDMappingRequest(m);
+            } else if (message instanceof NameIDMappingResponse m) {
+                processNameIDMappingResponse(m);
+            } else if (message instanceof Assertion m) {
+                processAssertion(m);
             } else {
                 log.debug("{} Message was of unrecognized type {}, nothing to do", getLogPrefix(),
                         message.getClass().getName());
@@ -184,24 +192,22 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      * 
      * @return  true iff encryption should happen
      */
-    private boolean shouldEncrypt(@Nullable final NameID name) {
-        if (name != null) {
-            String format = name.getFormat();
-            if (format == null) {
-                format = NameID.UNSPECIFIED;
-            }
-            if (!excludedFormats.contains(format)) {
-                if (log.isDebugEnabled()) {
-                    try {
-                        final Element dom = XMLObjectSupport.marshall(name);
-                        log.debug("{} NameID before encryption:\n{}", getLogPrefix(),
-                                SerializeSupport.prettyPrintXML(dom));
-                    } catch (final MarshallingException e) {
-                        log.error("{} Unable to marshall NameID for logging purposes", getLogPrefix(), e);
-                    }
+    private boolean shouldEncrypt(@Nonnull final NameID name) {
+        String format = name.getFormat();
+        if (format == null) {
+            format = NameID.UNSPECIFIED;
+        }
+        if (!excludedFormats.contains(format)) {
+            if (log.isDebugEnabled()) {
+                try {
+                    final Element dom = XMLObjectSupport.marshall(name);
+                    log.debug("{} NameID before encryption:\n{}", getLogPrefix(),
+                            SerializeSupport.prettyPrintXML(dom));
+                } catch (final MarshallingException e) {
+                    log.error("{} Unable to marshall NameID for logging purposes", getLogPrefix(), e);
                 }
-                return true;
             }
+            return true;
         }
         return false;
     }
@@ -216,17 +222,19 @@ public class EncryptNameIDs extends AbstractEncryptAction {
     private void processSubject(@Nullable final Subject subject) throws EncryptionException {
         
         if (subject != null) {
-            if (shouldEncrypt(subject.getNameID())) {
+            NameID nameID = subject.getNameID();
+            if (nameID != null && shouldEncrypt(nameID)) {
                 log.debug("{} Encrypt NameID in Subject", getLogPrefix());
-                final EncryptedID encrypted = getEncrypter().encrypt(subject.getNameID());
+                final EncryptedID encrypted = getEncrypter().encrypt(nameID);
                 subject.setEncryptedID(encrypted);
                 subject.setNameID(null);
             }
             
             for (final SubjectConfirmation sc : subject.getSubjectConfirmations()) {
-                if (shouldEncrypt(sc.getNameID())) {
+                nameID = sc.getNameID();
+                if (nameID != null && shouldEncrypt(nameID)) {
                     log.debug("{} Encrypt NameID in SubjectConfirmation", getLogPrefix());
-                    final EncryptedID encrypted = getEncrypter().encrypt(sc.getNameID());
+                    final EncryptedID encrypted = getEncrypter().encrypt(nameID);
                     sc.setEncryptedID(encrypted);
                     sc.setNameID(null);
                 }
@@ -242,10 +250,10 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      * @throws EncryptionException if an error occurs
      */
     private void processLogoutRequest(@Nonnull final LogoutRequest request) throws EncryptionException {
-        
-        if (shouldEncrypt(request.getNameID())) {
+        final NameID nameID = request.getNameID();
+        if (nameID != null && shouldEncrypt(nameID)) {
             log.debug("{} Encrypting NameID in LogoutRequest", getLogPrefix());
-            final EncryptedID encrypted = getEncrypter().encrypt(request.getNameID());
+            final EncryptedID encrypted = getEncrypter().encrypt(nameID);
             request.setEncryptedID(encrypted);
             request.setNameID(null);
         }
@@ -260,16 +268,18 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      */
     private void processManageNameIDRequest(@Nonnull final ManageNameIDRequest request) throws EncryptionException {
         
-        if (shouldEncrypt(request.getNameID())) {
+        final NameID nameID = request.getNameID();
+        if (nameID != null && shouldEncrypt(nameID)) {
             log.debug("{} Encrypting NameID in ManageNameIDRequest", getLogPrefix());
-            final EncryptedID encrypted = getEncrypter().encrypt(request.getNameID());
+            final EncryptedID encrypted = getEncrypter().encrypt(nameID);
             request.setEncryptedID(encrypted);
             request.setNameID(null);
         }
         
-        if (request.getNewID() != null) {
+        final NewID newID = request.getNewID();
+        if (newID != null && request.getNewID() != null) {
             log.debug("{} Encrypting NewID in ManageNameIDRequest", getLogPrefix());
-            final NewEncryptedID encrypted = getEncrypter().encrypt(request.getNewID());
+            final NewEncryptedID encrypted = getEncrypter().encrypt(newID);
             request.setNewEncryptedID(encrypted);
             request.setNewID(null);
         }
@@ -284,9 +294,10 @@ public class EncryptNameIDs extends AbstractEncryptAction {
      */
     private void processNameIDMappingRequest(@Nonnull final NameIDMappingRequest request) throws EncryptionException {
         
-        if (shouldEncrypt(request.getNameID())) {
+        final NameID nameID = request.getNameID();
+        if (nameID != null && shouldEncrypt(nameID)) {
             log.debug("{} Encrypting NameID in NameIDMappingRequest", getLogPrefix());
-            final EncryptedID encrypted = getEncrypter().encrypt(request.getNameID());
+            final EncryptedID encrypted = getEncrypter().encrypt(nameID);
             request.setEncryptedID(encrypted);
             request.setNameID(null);
         }
@@ -302,9 +313,10 @@ public class EncryptNameIDs extends AbstractEncryptAction {
     private void processNameIDMappingResponse(@Nonnull final NameIDMappingResponse response)
             throws EncryptionException {
         
-        if (shouldEncrypt(response.getNameID())) {
+        final NameID nameID = response.getNameID();
+        if (nameID != null && shouldEncrypt(nameID)) {
             log.debug("{} Encrypting NameID in NameIDMappingResponse", getLogPrefix());
-            final EncryptedID encrypted = getEncrypter().encrypt(response.getNameID());
+            final EncryptedID encrypted = getEncrypter().encrypt(nameID);
             response.setEncryptedID(encrypted);
             response.setNameID(null);
         }
@@ -321,15 +333,17 @@ public class EncryptNameIDs extends AbstractEncryptAction {
 
         processSubject(assertion.getSubject());            
         
-        if (assertion.getConditions() != null) {
-            for (final Condition c : assertion.getConditions().getConditions()) {
+        final Conditions conditions = assertion.getConditions();
+        if (conditions != null) {
+            for (final Condition c : conditions.getConditions()) {
                 if (!(c instanceof DelegationRestrictionType)) {
                     continue;
                 }
                 for (final Delegate d : ((DelegationRestrictionType) c).getDelegates()) {
-                    if (shouldEncrypt(d.getNameID())) {
+                    final NameID nameID = d.getNameID();
+                    if (nameID != null && shouldEncrypt(nameID)) {
                         log.debug("{} Encrypting NameID in Delegate", getLogPrefix());
-                        final EncryptedID encrypted = getEncrypter().encrypt(d.getNameID());
+                        final EncryptedID encrypted = getEncrypter().encrypt(nameID);
                         d.setEncryptedID(encrypted);
                         d.setNameID(null);
                     }

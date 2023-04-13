@@ -40,6 +40,11 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
 
     private AddOneTimeUseConditionToAssertions action;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod
     public void setUp() throws ComponentInitializationException {
         action = new AddOneTimeUseConditionToAssertions();
@@ -85,8 +90,9 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getOneTimeUse());
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getOneTimeUse());
     }
 
     /**
@@ -118,8 +124,9 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getOneTimeUse());
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getOneTimeUse());
     }
 
     /** Test that the condition is properly added if there are multiple assertions in the response. */
@@ -140,8 +147,9 @@ public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTes
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (final Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getConditions());
-            Assert.assertNotNull(assertion.getConditions().getOneTimeUse());
+            final Conditions c = assertion.getConditions();
+            assert c != null;
+            Assert.assertNotNull(c.getOneTimeUse());
         }
     }
     

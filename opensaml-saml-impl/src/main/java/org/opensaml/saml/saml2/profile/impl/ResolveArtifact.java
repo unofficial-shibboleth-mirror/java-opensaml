@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
@@ -34,14 +33,16 @@ import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap;
 import org.opensaml.saml.common.binding.artifact.SAMLArtifactMap.SAMLArtifactMapEntry;
 import org.opensaml.saml.common.messaging.context.navigate.SAMLMessageContextIssuerFunction;
 import org.opensaml.saml.common.profile.SAMLEventIds;
+import org.opensaml.saml.saml2.core.Artifact;
 import org.opensaml.saml.saml2.core.ArtifactResolve;
 import org.opensaml.saml.saml2.core.ArtifactResponse;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that resolves a SAML 2.0 artifact inside an {@link ArtifactResolve} request located
@@ -75,18 +76,18 @@ public class ResolveArtifact extends AbstractProfileAction {
     
     /** Artifact mapper. */
     @NonnullAfterInit private SAMLArtifactMap artifactMap;
-
-    /** Request to process. */
-    @Nullable private ArtifactResolve request;
+    
+    /** Artifact to resolve. */
+    @NonnullBeforeExec private String artifact;
     
     /** Response to populate. */
-    @Nullable private ArtifactResponse response;
+    @NonnullBeforeExec private ArtifactResponse response;
     
     /** Identity of issuer. */
-    @Nullable private String issuerId;
+    @NonnullBeforeExec private String issuerId;
 
     /** Identity of requester. */
-    @Nullable private String requesterId;
+    @NonnullBeforeExec private String requesterId;
     
     /** Constructor. */
     public ResolveArtifact() {
@@ -167,13 +168,21 @@ public class ResolveArtifact extends AbstractProfileAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
-        request = requestLookupStrategy.apply(profileRequestContext);
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+
+        final ArtifactResolve request = requestLookupStrategy.apply(profileRequestContext);
         if (request == null) {
             log.debug("{} No request located", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
-        } else if (request.getArtifact() == null || request.getArtifact().getValue() == null) {
-            log.debug("{} No Artifact element found in request, nothing to do", getLogPrefix());
+        }
+        
+        final Artifact artifactObject = request.getArtifact();
+        artifact = artifactObject != null ? artifactObject.getValue() : null;
+        if (artifact== null) {
+            log.debug("{} No Artifact found in request, nothing to do", getLogPrefix());
             ActionSupport.buildEvent(profileRequestContext, EventIds.INVALID_MSG_CTX);
             return false;
         }
@@ -199,14 +208,12 @@ public class ResolveArtifact extends AbstractProfileAction {
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
 
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
-        
-        final String artifact = request.getArtifact().getValue();
 
         SAMLArtifactMapEntry entry = null;
         

@@ -19,11 +19,12 @@ package org.opensaml.saml.saml2.profile.impl;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.util.Collections;
 import java.util.List;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.logic.PredicateSupport;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -33,21 +34,25 @@ import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.Response;
+import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.opensaml.xmlsec.keyinfo.impl.BasicKeyInfoGeneratorFactory;
+import org.opensaml.xmlsec.signature.KeyInfo;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
 import com.google.common.base.Strings;
 
 /** Unit test for self-encryption support in {@link AbstractEncryptAction} (using {@link EncryptNameIDs} as the concrete impl.) */
+@SuppressWarnings("javadoc")
 public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
     
     private EncryptionParameters encParams, encParamsSelf1, encParamsSelf2;
@@ -87,7 +92,7 @@ public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
         encParamsSelf2.setKeyTransportKeyInfoGenerator(generator.newInstance());
         
         prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.getOutboundMessageContext().getSubcontext(EncryptionContext.class, true).setIdentifierEncryptionParameters(encParams);
+        prc.ensureOutboundMessageContext().ensureSubcontext(EncryptionContext.class).setIdentifierEncryptionParameters(encParams);
         
         action = new EncryptNameIDs();
     }
@@ -95,11 +100,11 @@ public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
     @Test
     public void testSelfEncryption() throws EncryptionException, ComponentInitializationException, MarshallingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().get(0).setSubject(SAML2ActionTestingSupport.buildSubject("morpheus"));
         
-        action.setEncryptToSelf(Predicates.<ProfileRequestContext>alwaysTrue());
+        action.setEncryptToSelf(PredicateSupport.alwaysTrue());
         action.setEncryptToSelfParametersStrategy(FunctionSupport.constant(List.of(encParamsSelf1, encParamsSelf2)));
         action.setSelfRecipientLookupStrategy(FunctionSupport.constant("https://idp.example.org"));
         
@@ -109,30 +114,34 @@ public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertProceedEvent(prc);
         
         Assert.assertEquals(response.getAssertions().size(), 1);
-        Assert.assertNull(response.getAssertions().get(0).getSubject().getNameID());
-        Assert.assertNotNull(response.getAssertions().get(0).getSubject().getEncryptedID());
+        final Subject subject = response.getAssertions().get(0).getSubject();
+        assert subject != null;
+        Assert.assertNull(subject.getNameID());
         
-        final EncryptedID encTarget = response.getAssertions().get(0).getSubject().getEncryptedID();
+        final EncryptedID encTarget = subject.getEncryptedID();
+        assert encTarget != null;
 
-        Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(),
-                EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, "Algorithm attribute");
-        Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 3, 
-                "Number of EncryptedKeys");
-        Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
-                "EncryptedData ID attribute was empty");
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128, "Algorithm attribute");
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 3, "Number of EncryptedKeys");
+        Assert.assertFalse(Strings.isNullOrEmpty(encData.getID()), "EncryptedData ID attribute was empty");
     }
     
     @Test
     public void testFailureNoSelfEncryptionCreds() throws EncryptionException, ComponentInitializationException, MarshallingException {
         final Response response = SAML2ActionTestingSupport.buildResponse();
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
         response.getAssertions().add(SAML2ActionTestingSupport.buildAssertion());
         response.getAssertions().get(0).setSubject(SAML2ActionTestingSupport.buildSubject("morpheus"));
         
-        action.setEncryptToSelf(Predicates.<ProfileRequestContext>alwaysTrue());
-        action.setEncryptToSelfParametersStrategy(FunctionSupport.constant(Collections.emptyList()));
+        action.setEncryptToSelf(PredicateSupport.alwaysTrue());
+        action.setEncryptToSelfParametersStrategy(FunctionSupport.constant(CollectionSupport.emptyList()));
         action.setSelfRecipientLookupStrategy(FunctionSupport.constant("https://idp.example.org"));
         
         action.initialize();
@@ -141,8 +150,10 @@ public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
         ActionTestingSupport.assertEvent(prc, EventIds.UNABLE_TO_ENCRYPT);
         
         Assert.assertEquals(response.getAssertions().size(), 1);
-        Assert.assertNotNull(response.getAssertions().get(0).getSubject().getNameID());
-        Assert.assertNull(response.getAssertions().get(0).getSubject().getEncryptedID());
+        final Subject subject = response.getAssertions().get(0).getSubject();
+        assert subject != null;
+        Assert.assertNotNull(subject.getNameID());
+        Assert.assertNull(subject.getEncryptedID());
     }
     
 }

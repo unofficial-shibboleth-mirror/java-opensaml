@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml2.wssecurity.messaging.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -43,16 +42,18 @@ import org.opensaml.soap.wssecurity.WSSecurityConstants;
 import org.opensaml.soap.wssecurity.messaging.Token.ValidationStatus;
 import org.opensaml.soap.wssecurity.messaging.WSSecurityContext;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
 
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.NonnullSupplier;
 
 /**
@@ -71,11 +72,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
     
-    /** The SAML 2.0 Assertion validator, may be null.*/
-    @Nullable private SAML20AssertionValidator assertionValidator;
-    
-    /** The SAML 2.0 Assertion validator lookup function, may be null.*/
-    @Nullable private Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
+    /** The SAML 2.0 Assertion validator lookup function.*/
+    @Nonnull private Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
     
     /** Function that builds a {@link ValidationContext} instance based on a 
      * {@link SAML20AssertionTokenValidationInput} instance. */
@@ -86,6 +84,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     public WSSecuritySAML20AssertionTokenSecurityHandler() {
         setInvalidFatal(true);
         setValidationContextBuilder(new DefaultSAML20AssertionValidationContextBuilder());
+        assertionValidatorLookup = FunctionSupport.constant(null);
     }
 
     /**
@@ -125,10 +124,10 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @return current HTTP request
      */
     @Nullable public HttpServletRequest getHttpServletRequest() {
-        if (httpServletRequestSupplier == null) {
-            return null;
+        if (httpServletRequestSupplier != null) {
+            return httpServletRequestSupplier.get();
         }
-        return httpServletRequestSupplier.get();
+        return null;
     }
 
     /**
@@ -179,22 +178,26 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     }
     
     /**
-     * Get the locally-configured Assertion validator.
+     * Get the configured Assertion validator.
      * 
-     * @return the local Assertion validator, or null
+     * @param messageContext input message context 
+     * @param assertion input assertion
+     * 
+     * @return the configured Assertion validator, or null
      */
-    @Nullable public SAML20AssertionValidator getAssertionValidator() {
-        return assertionValidator;
+    @Nullable public SAML20AssertionValidator getAssertionValidator(@Nullable final MessageContext messageContext,
+            @Nullable final Assertion assertion) {
+        return assertionValidatorLookup.apply(new Pair<>(messageContext, assertion));
     }
 
     /**
-     * Set the locally-configured Assertion validator.
+     * Set a locally-configured Assertion validator.
      * 
      * @param validator the local Assertion validator, may be null
      */
     public void setAssertionValidator(@Nullable final SAML20AssertionValidator validator) {
         checkSetterPreconditions();
-        assertionValidator = validator;
+        assertionValidatorLookup = FunctionSupport.constant(validator);
     }
     
     /**
@@ -212,9 +215,9 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
      * @param function the Assertion validator lookup function, may be null
      */
     public void setAssertionValidatorLookup(
-            @Nullable final Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> function) {
+            @Nonnull final Function<Pair<MessageContext, Assertion>, SAML20AssertionValidator> function) {
         checkSetterPreconditions();
-        assertionValidatorLookup = function;
+        assertionValidatorLookup = Constraint.isNotNull(function, "Assertion validator lookup function cannot be null");
     }
 
     /** {@inheritDoc} */
@@ -227,13 +230,6 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         
         if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
-        }
-        
-        if (getAssertionValidator() == null) {
-            if (getAssertionValidatorLookup() == null) {
-                throw new ComponentInitializationException("Both Assertion validator and lookup function were null");
-            }
-            log.info("Assertion validator is null, must be resovleable via the lookup function");
         }
     }
 
@@ -254,7 +250,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         final WSSecurityContext wsContext = messageContext.ensureSubcontext(WSSecurityContext.class);
         
         for (final Assertion assertion : assertions) {
-            final SAML20AssertionValidator validator = resolveValidator(messageContext, assertion);
+            assert assertion != null;
+            final SAML20AssertionValidator validator = getAssertionValidator(messageContext, assertion);
             if (validator == null) {
                 log.warn("No SAML20AssertionValidator was available, terminating");
                 SOAPMessagingSupport.registerSOAP11Fault(messageContext, FaultCode.SERVER, 
@@ -341,36 +338,6 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     }
 
     /**
-     * Resolve the Assertion token validator to use with the specified Assertion.
-     * 
-     * @param messageContext the current message context
-     * @param assertion the assertion being evaluated
-     * 
-     * @return the token validator
-     */
-    @Nullable protected SAML20AssertionValidator resolveValidator(@Nonnull final MessageContext messageContext, 
-            @Nonnull final Assertion assertion) {
-        
-        if (getAssertionValidatorLookup() != null) {
-            log.debug("Attempting to resolve SAML 2 Assertion validator via lookup function");
-            final SAML20AssertionValidator validator = getAssertionValidatorLookup().apply(
-                    new Pair<>(messageContext, assertion));
-            if (validator != null) {
-                log.debug("Resolved SAML 2 Assertion validator via lookup function");
-                return validator;
-            }
-        }
-        
-        if (getAssertionValidator() != null) {
-            log.debug("Resolved locally configured SAML 2 Assertion validator");
-            return getAssertionValidator();
-        }
-        
-        log.debug("No SAML 2 Assertion validator could be resolved");
-        return null;
-    }
-
-    /**
      * Build the Assertion ValidationContext.
      * 
      * @param messageContext the current message context
@@ -383,8 +350,16 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
     @Nonnull protected ValidationContext buildValidationContext(@Nonnull final MessageContext messageContext, 
             @Nonnull final Assertion assertion) throws MessageHandlerException {
         
+        final HttpServletRequest servletRequest = getHttpServletRequest();
+        if (servletRequest == null) {
+            log.warn("HttpServletRequest was null");
+            SOAPMessagingSupport.registerSOAP11Fault(messageContext, FaultCode.SERVER, 
+                    "Internal processing error", null, null, null);
+            throw new MessageHandlerException("HttpServletRequest was null");
+        }
+        
         final ValidationContext validationContext = getValidationContextBuilder().apply(
-                new SAML20AssertionTokenValidationInput(messageContext, getHttpServletRequest(), assertion));
+                new SAML20AssertionTokenValidationInput(messageContext, servletRequest, assertion));
         
         if (validationContext == null) {
             log.warn("ValidationContext produced was null");
@@ -408,7 +383,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
                 Security.ELEMENT_NAME);
         if (securityHeaders == null || securityHeaders.isEmpty()) {
             log.debug("No WS-Security Security header found in inbound SOAP message. Skipping further processing.");
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         
         final LazyList<Assertion> assertions = new LazyList<>();

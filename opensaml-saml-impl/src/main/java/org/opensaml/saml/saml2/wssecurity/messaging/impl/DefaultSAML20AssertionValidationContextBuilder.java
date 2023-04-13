@@ -22,7 +22,6 @@ import java.net.UnknownHostException;
 import java.security.PublicKey;
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -31,8 +30,10 @@ import java.util.function.Function;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazySet;
 import net.shibboleth.shared.collection.Pair;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.servlet.HttpServletSupport;
@@ -43,15 +44,16 @@ import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.messaging.context.SAMLSelfEntityContext;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.messaging.ServletRequestX509CredentialAdapter;
 import org.opensaml.security.x509.X509Credential;
+import org.opensaml.xmlsec.SignatureValidationParameters;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.signature.support.SignatureValidationParametersCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  *  Function which implements default behavior for building an instance of {@link ValidationContext}
@@ -61,10 +63,10 @@ public class DefaultSAML20AssertionValidationContextBuilder
         implements Function<SAML20AssertionTokenValidationInput, ValidationContext> {
     
     /** Logger. */
-    @Nullable private Logger log = LoggerFactory.getLogger(DefaultSAML20AssertionValidationContextBuilder.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(DefaultSAML20AssertionValidationContextBuilder.class);
     
     /** A function for resolving the signature validation CriteriaSet for a particular function. */
-    private Function<Pair<MessageContext, Assertion>, CriteriaSet> signatureCriteriaSetFunction;
+    @Nullable private Function<Pair<MessageContext, Assertion>, CriteriaSet> signatureCriteriaSetFunction;
     
     /** Flag indicating whether an Assertion signature is required. */
     private boolean signatureRequired;
@@ -195,8 +197,9 @@ public class DefaultSAML20AssertionValidationContextBuilder
     @Nonnull protected CriteriaSet getSignatureCriteriaSet(@Nonnull final SAML20AssertionTokenValidationInput input) {
         final CriteriaSet criteriaSet = new CriteriaSet();
         
-        if (getSignatureCriteriaSetFunction() != null) {
-            final CriteriaSet dynamicCriteria = getSignatureCriteriaSetFunction().apply(
+        final var criteriaFunction = getSignatureCriteriaSetFunction(); 
+        if (criteriaFunction != null) {
+            final CriteriaSet dynamicCriteria = criteriaFunction.apply(
                     new Pair<>(input.getMessageContext(), input.getAssertion()));
             if (dynamicCriteria != null) {
                 criteriaSet.addAll(dynamicCriteria);
@@ -204,13 +207,13 @@ public class DefaultSAML20AssertionValidationContextBuilder
         }
         
         if (!criteriaSet.contains(EntityIdCriterion.class)) {
-            String issuer = null;
-            if (input.getAssertion().getIssuer() != null) {
-                issuer = StringSupport.trimOrNull(input.getAssertion().getIssuer().getValue());
-            }
-            if (issuer != null) {
-                log.debug("Adding internally-generated EntityIdCriterion with value of: {}", issuer);
-                criteriaSet.add(new EntityIdCriterion(issuer));
+            final Issuer issuerObj = input.getAssertion().getIssuer();
+            if (issuerObj != null) {
+                final String issuer = StringSupport.trimOrNull(issuerObj.getValue());
+                if (issuer != null) {
+                    log.debug("Adding internally-generated EntityIdCriterion with value of: {}", issuer);
+                    criteriaSet.add(new EntityIdCriterion(issuer));
+                }
             }
         }
         
@@ -222,9 +225,10 @@ public class DefaultSAML20AssertionValidationContextBuilder
         if (!criteriaSet.contains(SignatureValidationParametersCriterion.class)) {
             final SecurityParametersContext secParamsContext =
                     input.getMessageContext().getSubcontext(SecurityParametersContext.class);
-            if (secParamsContext != null && secParamsContext.getSignatureValidationParameters() != null) {
-                criteriaSet.add(new SignatureValidationParametersCriterion(
-                        secParamsContext.getSignatureValidationParameters()));
+            final SignatureValidationParameters params = secParamsContext != null
+                    ? secParamsContext.getSignatureValidationParameters() : null;
+            if (params != null) {
+                criteriaSet.add(new SignatureValidationParametersCriterion(params));
             }
         }
         
@@ -333,10 +337,10 @@ public class DefaultSAML20AssertionValidationContextBuilder
                 return validAddresses;
             }
             log.warn("Could not determine attester IP address. Validation of Assertion may or may not succeed");
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         } catch (final UnknownHostException e) {
             log.warn("Processing of attester IP address failed. Validation of Assertion may or may not succeed", e);
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
     }
     
@@ -351,7 +355,7 @@ public class DefaultSAML20AssertionValidationContextBuilder
      * 
      * @return the IP address of the attester
      */
-    @Nonnull protected String getAttesterIPAddress(@Nonnull final SAML20AssertionTokenValidationInput input) {
+    @Nullable protected String getAttesterIPAddress(@Nonnull final SAML20AssertionTokenValidationInput input) {
         return HttpServletSupport.getRemoteAddr(input.getHttpServletRequest());
     }
     

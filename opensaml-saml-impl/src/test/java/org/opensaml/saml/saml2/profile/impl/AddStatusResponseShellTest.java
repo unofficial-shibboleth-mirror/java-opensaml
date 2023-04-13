@@ -18,13 +18,13 @@
 package org.opensaml.saml.saml2.profile.impl;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
-import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
 import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml2.core.ArtifactResponse;
+import org.opensaml.saml.saml2.core.Issuer;
 import org.opensaml.saml.saml2.core.LogoutResponse;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddStatusResponseShell} unit test. */
+@SuppressWarnings("javadoc")
 public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
 
     private String issuer;
@@ -60,10 +61,8 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        final MessageContext outMsgCtx = prc.getOutboundMessageContext();
-        final Response response = (Response) outMsgCtx.getMessage();
+        final Response response = (Response) prc.ensureOutboundMessageContext().ensureMessage();
 
-        Assert.assertNotNull(response);
         Assert.assertNotNull(response.getID());
         Assert.assertNotNull(response.getIssueInstant());
         Assert.assertEquals(response.getVersion(), SAMLVersion.VERSION_20);
@@ -71,9 +70,10 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(response.getIssuer());
 
         final Status status = response.getStatus();
-        Assert.assertNotNull(status);
-        Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
+        assert status != null;
+        final StatusCode code = status.getStatusCode();
+        assert code != null;
+        Assert.assertEquals(code.getValue(), StatusCode.SUCCESS);
     }
 
     @Test public void testAddResponseWithIssuer() throws ComponentInitializationException {
@@ -87,13 +87,11 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        final MessageContext outMsgCtx = prc.getOutboundMessageContext();
-        final Response response = (Response) outMsgCtx.getMessage();
-
-        Assert.assertNotNull(response);
+        final Response response = (Response) prc.ensureOutboundMessageContext().ensureMessage();
         
-        Assert.assertNotNull(response.getIssuer());
-        Assert.assertEquals(response.getIssuer().getValue(), "foo");
+        final Issuer issuer = response.getIssuer();
+        assert issuer != null;
+        Assert.assertEquals(issuer.getValue(), "foo");
     }
     
     @Test public void testAddResponseWhenResponseAlreadyExist() throws ComponentInitializationException {
@@ -116,10 +114,8 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        final MessageContext outMsgCtx = prc.getOutboundMessageContext();
-        final ArtifactResponse response = (ArtifactResponse) outMsgCtx.getMessage();
+        final ArtifactResponse response = (ArtifactResponse) prc.ensureOutboundMessageContext().ensureMessage();
 
-        Assert.assertNotNull(response);
         Assert.assertNotNull(response.getID());
         Assert.assertNotNull(response.getIssueInstant());
         Assert.assertEquals(response.getVersion(), SAMLVersion.VERSION_20);
@@ -127,9 +123,10 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(response.getIssuer());
 
         final Status status = response.getStatus();
-        Assert.assertNotNull(status);
-        Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
+        assert status != null;
+        final StatusCode code = status.getStatusCode();
+        assert code != null;
+        Assert.assertEquals(code.getValue(), StatusCode.SUCCESS);
     }
     
     @Test public void testAddLogoutResponse() throws ComponentInitializationException {
@@ -141,10 +138,8 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        final MessageContext outMsgCtx = prc.getOutboundMessageContext();
-        final LogoutResponse response = (LogoutResponse) outMsgCtx.getMessage();
+        final LogoutResponse response = (LogoutResponse) prc.ensureOutboundMessageContext().ensureMessage();
 
-        Assert.assertNotNull(response);
         Assert.assertNotNull(response.getID());
         Assert.assertNotNull(response.getIssueInstant());
         Assert.assertEquals(response.getVersion(), SAMLVersion.VERSION_20);
@@ -152,9 +147,10 @@ public class AddStatusResponseShellTest extends OpenSAMLInitBaseTestCase {
         Assert.assertNull(response.getIssuer());
 
         final Status status = response.getStatus();
-        Assert.assertNotNull(status);
-        Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
+        assert status != null;
+        final StatusCode code = status.getStatusCode();
+        assert code != null;
+        Assert.assertEquals(code.getValue(), StatusCode.SUCCESS);
     }
 
 }

@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.profile.impl;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
@@ -38,11 +37,12 @@ import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action to add a {@link GeneratedKey} extension to every {@link Assertion} in a {@link Response} message.
@@ -68,17 +68,18 @@ public class AddGeneratedKeyToAssertions extends AbstractConditionalProfileActio
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
     /** ECPContext to read from. */
-    @Nullable private ECPContext ecpContext;
+    @NonnullBeforeExec private ECPContext ecpContext;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
 
     /** Constructor. */
     public AddGeneratedKeyToAssertions() {
         ecpContextLookupStrategy =
                 new ChildContextLookup<>(ECPContext.class).compose(
                         new OutboundMessageContextLookup());
-        responseLookupStrategy = new MessageLookup<>(Response.class).compose(new OutboundMessageContextLookup());
+        responseLookupStrategy = new MessageLookup<>(Response.class).compose(
+                new OutboundMessageContextLookup());
     }
 
     /**
@@ -142,9 +143,13 @@ public class AddGeneratedKeyToAssertions extends AbstractConditionalProfileActio
                         GeneratedKey.DEFAULT_ELEMENT_NAME);
 
         try {
-            final String key = Base64Support.encode(ecpContext.getSessionKey(), false);
+            final byte[] keyBytes = ecpContext.getSessionKey();
+            // Checked above.
+            assert keyBytes != null;
+            final String key = Base64Support.encode(keyBytes, false);
             
             for (final Assertion assertion : response.getAssertions()) {
+                assert assertion != null;
                 final Advice advice = SAML2ActionSupport.addAdviceToAssertion(this, assertion);
                 final GeneratedKey gk = keyBuilder.buildObject();
                 gk.setValue(key);

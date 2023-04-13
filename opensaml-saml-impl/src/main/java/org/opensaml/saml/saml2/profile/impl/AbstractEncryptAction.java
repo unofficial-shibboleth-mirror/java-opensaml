@@ -38,13 +38,13 @@ import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Predicates;
-
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.logic.PredicateSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Abstract base class for actions that perform simple unicast SAML encryption to a single
@@ -80,7 +80,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
     @Nullable private Function<ProfileRequestContext, String> selfRecipientLookupStrategy;
     
     /** The encryption object. */
-    @Nullable private Encrypter encrypter;
+    @NonnullBeforeExec private Encrypter encrypter;
     
     /** Constructor. */
     public AbstractEncryptAction() {
@@ -88,7 +88,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
                 new ChildContextLookup<>(EncryptionContext.class).compose(
                         new OutboundMessageContextLookup());
         keyPlacementLookupStrategy = FunctionSupport.constant(KeyPlacement.INLINE);
-        encryptToSelf = Predicates.alwaysFalse();
+        encryptToSelf = PredicateSupport.alwaysFalse();
     }
     
     /**
@@ -167,7 +167,7 @@ public abstract class AbstractEncryptAction extends AbstractConditionalProfileAc
      * 
      * @return  the encrypter
      */
-    @Nullable public Encrypter getEncrypter() {
+    @NonnullBeforeExec public Encrypter getEncrypter() {
         return encrypter;
     }
     

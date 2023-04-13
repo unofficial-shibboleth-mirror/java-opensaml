@@ -38,11 +38,13 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action adds an {@link ProxyRestriction} to every {@link Assertion} contained in a SAML 2
@@ -61,10 +63,10 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
     /** Strategy used to obtain the material to add. */
-    @Nullable private Function<ProfileRequestContext,Pair<Integer,Set<String>>> proxyRestrictionLookupStrategy;
+    @NonnullAfterInit private Function<ProfileRequestContext,Pair<Integer,Set<String>>> proxyRestrictionLookupStrategy;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
 
     /** ProxyCount to add. */
     @Nullable private Integer proxyCount;
@@ -123,9 +125,12 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
         if (result != null) {
             proxyCount = result.getFirst();
             audiences = result.getSecond();
+            if (audiences != null && audiences.isEmpty()) {
+                audiences = null;
+            }
         }
         
-        if (proxyCount == null && (audiences == null || audiences.isEmpty())) {
+        if (proxyCount == null && audiences == null) {
             log.debug("{} No restrictions to add, nothing to do", getLogPrefix());
             return false;
         }
@@ -150,6 +155,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
         for (final Assertion assertion : response.getAssertions()) {
+            assert assertion != null;
             addProxyRestriction(profileRequestContext, SAML2ActionSupport.addConditionsToAssertion(this, assertion));
             log.debug("{} Added ProxyRestriction to Assertion {}", getLogPrefix(), assertion.getID());
         }
@@ -176,6 +182,7 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
             final SAMLObjectBuilder<Audience> audienceBuilder = (SAMLObjectBuilder<Audience>)
                     XMLObjectProviderRegistrySupport.getBuilderFactory().<Audience>ensureBuilder(
                             Audience.DEFAULT_ELEMENT_NAME);
+            assert audiences != null;
             for (final String audienceId : audiences) {
                 log.debug("{} Adding {} as an Audience of the ProxyRestriction", getLogPrefix(), audienceId);
                 final Audience audience = audienceBuilder.buildObject();
@@ -194,9 +201,8 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
      */
     @Nonnull private ProxyRestriction getProxyRestriction(@Nonnull final Conditions conditions) {
         
-        final ProxyRestriction condition;
-
-        if (conditions.getProxyRestriction() == null) {
+        ProxyRestriction condition = conditions.getProxyRestriction();
+        if (condition == null) {
             final SAMLObjectBuilder<ProxyRestriction> conditionBuilder = (SAMLObjectBuilder<ProxyRestriction>)
                     XMLObjectProviderRegistrySupport.getBuilderFactory().<ProxyRestriction>ensureBuilder(
                             ProxyRestriction.DEFAULT_ELEMENT_NAME);
@@ -205,7 +211,6 @@ public class AddProxyRestrictionToAssertions extends AbstractConditionalProfileA
             conditions.getConditions().add(condition);
         } else {
             log.debug("{} Conditions already contained an ProxyRestriction, using it", getLogPrefix());
-            condition = conditions.getProxyRestriction();
         }
 
         return condition;

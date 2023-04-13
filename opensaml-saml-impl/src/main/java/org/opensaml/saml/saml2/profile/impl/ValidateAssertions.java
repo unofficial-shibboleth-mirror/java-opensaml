@@ -37,13 +37,14 @@ import org.opensaml.saml.saml2.assertion.SAML20AssertionValidator;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import jakarta.servlet.http.HttpServletRequest;
-import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.FunctionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * A profile action which resolves SAML 2.0 Assertions from the profile request context
@@ -63,29 +64,26 @@ public class ValidateAssertions extends AbstractProfileAction {
     /** Flag which indicates whether a failure of Assertion validation should be considered fatal. */
     private boolean invalidFatal;
     
-    /** The SAML 2.0 Assertion validator, may be null.*/
-    @Nullable private SAML20AssertionValidator assertionValidator;
-    
     /** The SAML 2.0 Assertion validator lookup function, may be null.*/
-    @Nullable
+    @Nonnull
     private Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> assertionValidatorLookup;
     
     /** Function that builds a {@link ValidationContext} instance based on a 
      * {@link AssertionValidationInput} instance. */
-    @NonnullAfterInit private Function<AssertionValidationInput, ValidationContext> validationContextBuilder;
+    @Nonnull private Function<AssertionValidationInput, ValidationContext> validationContextBuilder;
     
     /** The resolver for the list of assertions to be validated. */
     @Nonnull private Function<ProfileRequestContext, List<Assertion>> assertionResolver;
     
     /** The resolved assertions to be validated. */
-    private List<Assertion> assertions;
+    @NonnullBeforeExec private List<Assertion> assertions;
     
     /** Constructor. */
     public ValidateAssertions() {
-        super();
         setInvalidFatal(true);
-        setValidationContextBuilder(new DefaultAssertionValidationContextBuilder());
-        setAssertionResolver(new DefaultAssertionResolver());
+        assertionValidatorLookup = FunctionSupport.constant(null);
+        validationContextBuilder = new DefaultAssertionValidationContextBuilder();
+        assertionResolver = new DefaultAssertionResolver();
     }
 
     /**
@@ -104,7 +102,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      */
     public void setAssertionResolver(@Nonnull final Function<ProfileRequestContext, List<Assertion>> function) {
         checkSetterPreconditions();
-        assertionResolver = function;
+        assertionResolver = Constraint.isNotNull(function, "Assertion resolver cannot be null");
     }
 
     /**
@@ -117,7 +115,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      * 
      * @return the builder function
      */
-    @NonnullAfterInit
+    @Nonnull
     public Function<AssertionValidationInput, ValidationContext> getValidationContextBuilder() {
         return validationContextBuilder;
     }
@@ -135,7 +133,7 @@ public class ValidateAssertions extends AbstractProfileAction {
     public void setValidationContextBuilder(
             @Nonnull final Function<AssertionValidationInput, ValidationContext> builder) {
         checkSetterPreconditions();
-        validationContextBuilder = builder;
+        validationContextBuilder = Constraint.isNotNull(builder, "ValidationContext builder cannot be null");
     }
 
     /**
@@ -166,12 +164,16 @@ public class ValidateAssertions extends AbstractProfileAction {
     }
     
     /**
-     * Get the locally-configured Assertion validator.
+     * Get the configured Assertion validator.
      * 
-     * @return the local Assertion validator, or null
+     * @param profileRequestContext  profile request context
+     * @param assertion assertion
+     * 
+     * @return the Assertion validator, or null
      */
-    @Nullable public SAML20AssertionValidator getAssertionValidator() {
-        return assertionValidator;
+    @Nullable public SAML20AssertionValidator getAssertionValidator(
+            @Nonnull final ProfileRequestContext profileRequestContext, @Nonnull final Assertion assertion) {
+        return assertionValidatorLookup.apply(new Pair<>(profileRequestContext, assertion));
     }
 
     /**
@@ -181,17 +183,7 @@ public class ValidateAssertions extends AbstractProfileAction {
      */
     public void setAssertionValidator(@Nullable final SAML20AssertionValidator validator) {
         checkSetterPreconditions();
-        assertionValidator = validator;
-    }
-    
-    /**
-     * Get the Assertion validator lookup function.
-     * 
-     * @return the Assertion validator lookup function, or null
-     */
-    @Nullable
-    public Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> getAssertionValidatorLookup() {
-        return assertionValidatorLookup;
+        assertionValidatorLookup = FunctionSupport.constant(validator);
     }
 
     /**
@@ -200,32 +192,17 @@ public class ValidateAssertions extends AbstractProfileAction {
      * @param function the Assertion validator lookup function, may be null
      */
     public void setAssertionValidatorLookup(
-            @Nullable final Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> function) {
+            @Nonnull final Function<Pair<ProfileRequestContext, Assertion>, SAML20AssertionValidator> function) {
         checkSetterPreconditions();
-        assertionValidatorLookup = function;
+        assertionValidatorLookup = Constraint.isNotNull(function, "AssertionValidator lookup function cannot be null");
     }
 
     /** {@inheritDoc} */
     protected void doInitialize() throws ComponentInitializationException {
         super.doInitialize();
         
-        if (getAssertionResolver() == null) {
-            throw new ComponentInitializationException("Assertion resolver function cannot be null");
-        }
-
-        if (getValidationContextBuilder() == null) {
-            throw new ComponentInitializationException("ValidationContext builder cannot be null");
-        }
-        
         if (getHttpServletRequest() == null) {
             throw new ComponentInitializationException("HttpServletRequest cannot be null");
-        }
-        
-        if (getAssertionValidator() == null) {
-            if (getAssertionValidatorLookup() == null) {
-                throw new ComponentInitializationException("Both Assertion validator and lookup function were null");
-            }
-            log.info("{} Assertion validator is null, must be resovleable via the lookup function", getLogPrefix());
         }
     }
 
@@ -249,7 +226,8 @@ public class ValidateAssertions extends AbstractProfileAction {
     protected void doExecute(@Nonnull final ProfileRequestContext profileContext) {
         boolean sawNonValid = false;
         for (final Assertion assertion : assertions) {
-            final SAML20AssertionValidator validator = resolveValidator(profileContext, assertion);
+            assert assertion != null;
+            final SAML20AssertionValidator validator = getAssertionValidator(profileContext, assertion);
             if (validator == null) {
                 log.warn("{} No SAML20AssertionValidator was available, terminating", getLogPrefix());
                 ActionSupport.buildEvent(profileContext, SAMLEventIds.UNABLE_VALIDATE_ASSERTION);
@@ -300,36 +278,6 @@ public class ValidateAssertions extends AbstractProfileAction {
     }
 
     /**
-     * Resolve the Assertion token validator to use with the specified Assertion.
-     * 
-     * @param profileContext the current profile context
-     * @param assertion the assertion being evaluated
-     * 
-     * @return the token validator
-     */
-    @Nullable protected SAML20AssertionValidator resolveValidator(@Nonnull final ProfileRequestContext profileContext, 
-            @Nonnull final Assertion assertion) {
-        
-        if (getAssertionValidatorLookup() != null) {
-            log.debug("{} Attempting to resolve SAML 2 Assertion validator via lookup function", getLogPrefix());
-            final SAML20AssertionValidator validator = getAssertionValidatorLookup().apply(
-                    new Pair<>(profileContext, assertion));
-            if (validator != null) {
-                log.debug("{} Resolved SAML 2 Assertion validator via lookup function", getLogPrefix());
-                return validator;
-            }
-        }
-        
-        if (getAssertionValidator() != null) {
-            log.debug("{} Resolved locally configured SAML 2 Assertion validator", getLogPrefix());
-            return getAssertionValidator();
-        }
-        
-        log.debug("{} No SAML 2 Assertion validator could be resolved", getLogPrefix());
-        return null;
-    }
-
-    /**
      * Build the Assertion ValidationContext.
      * 
      * @param profileContext the current profile context
@@ -342,8 +290,10 @@ public class ValidateAssertions extends AbstractProfileAction {
     @Nonnull protected ValidationContext buildValidationContext(@Nonnull final ProfileRequestContext profileContext, 
             @Nonnull final Assertion assertion) throws AssertionValidationException {
         
+        final HttpServletRequest servletRequest = getHttpServletRequest();
+        assert servletRequest != null;
         final ValidationContext validationContext = getValidationContextBuilder().apply(
-                new AssertionValidationInput(profileContext, getHttpServletRequest(), assertion));
+                new AssertionValidationInput(profileContext, servletRequest, assertion));
         
         if (validationContext == null) {
             log.warn("{} ValidationContext produced was null", getLogPrefix());
@@ -359,8 +309,9 @@ public class ValidateAssertions extends AbstractProfileAction {
     public class DefaultAssertionResolver implements Function<ProfileRequestContext, List<Assertion>> {
 
         /** {@inheritDoc} */
-        public List<Assertion> apply(@Nonnull final ProfileRequestContext profileContext) {
-            final SAMLObject message = (SAMLObject) profileContext.getInboundMessageContext().getMessage();
+        public List<Assertion> apply(@Nullable final ProfileRequestContext profileContext) {
+            final SAMLObject message = profileContext != null
+                    ? (SAMLObject) profileContext.ensureInboundMessageContext().getMessage() : null;
             if (message instanceof Response) {
                 return ((Response) message).getAssertions();
             }
@@ -375,13 +326,13 @@ public class ValidateAssertions extends AbstractProfileAction {
      */
     public static class AssertionValidationInput {
         /** The profile request context input. */
-        private ProfileRequestContext profileContext;
+        @Nonnull private ProfileRequestContext profileContext;
         
         /** The HTTP request input. */
-        private HttpServletRequest httpServletRequest;
+        @Nonnull private HttpServletRequest httpServletRequest;
         
         /** The Assertion being evaluated. */
-        private Assertion assertion;
+        @Nonnull private Assertion assertion;
 
         /**
          * Constructor.
@@ -423,7 +374,6 @@ public class ValidateAssertions extends AbstractProfileAction {
         @Nonnull public Assertion getAssertion() {
             return assertion;
         }
-
     }
 
 }

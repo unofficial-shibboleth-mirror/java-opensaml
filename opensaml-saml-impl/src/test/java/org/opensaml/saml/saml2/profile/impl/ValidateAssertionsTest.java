@@ -43,6 +43,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.testing.ConstantSupplier;
 
+@SuppressWarnings("javadoc")
 public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     
     private ValidateAssertions action;
@@ -277,35 +278,11 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test(expectedExceptions = ComponentInitializationException.class)
-    public void testNoAssertionResolver() throws ComponentInitializationException {
-        action.setAssertionResolver(null);
-        
-        action.initialize();
-    }
-
-    @Test(expectedExceptions = ComponentInitializationException.class)
-    public void testNoValidators() throws ComponentInitializationException {
-        action.setAssertionValidator(null);
-        action.setAssertionValidatorLookup(null);
-        
-        action.initialize();
-    }
-
-    @Test(expectedExceptions = ComponentInitializationException.class)
     public void testNoHttpRequest() throws ComponentInitializationException {
         action.setHttpServletRequestSupplier(null);
         
         action.initialize();
     }
-
-    @Test(expectedExceptions = ComponentInitializationException.class)
-    public void testNoContextBuilder() throws ComponentInitializationException {
-        action.setValidationContextBuilder(null);
-        
-        action.initialize();
-    }
-
-    
     
     // Helpers
     

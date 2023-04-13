@@ -39,11 +39,12 @@ import org.opensaml.saml.saml2.core.Status;
 import org.opensaml.saml.saml2.core.StatusCode;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
@@ -79,7 +80,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
     @Nullable private Function<ProfileRequestContext,String> issuerLookupStrategy;
     
     /** The generator to use. */
-    @Nullable private IdentifierGenerationStrategy idGenerator;
+    @NonnullBeforeExec private IdentifierGenerationStrategy idGenerator;
 
     /** EntityID to populate into Issuer element. */
     @Nullable private String issuerId;
@@ -222,7 +223,7 @@ public class AddStatusResponseShell extends AbstractProfileAction {
             log.debug("{} No issuer value available, leaving Issuer unset", getLogPrefix());
         }
 
-        profileRequestContext.getOutboundMessageContext().setMessage(response);
+        profileRequestContext.ensureOutboundMessageContext().setMessage(response);
     }
     
 }

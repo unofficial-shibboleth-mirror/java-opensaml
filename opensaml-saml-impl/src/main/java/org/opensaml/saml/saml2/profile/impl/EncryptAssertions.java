@@ -40,10 +40,11 @@ import org.opensaml.saml.saml2.profile.context.EncryptionContext;
 import org.opensaml.xmlsec.EncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.xml.SerializeSupport;
 
 /**
@@ -61,13 +62,13 @@ public class EncryptAssertions extends AbstractEncryptAction {
     @Nonnull private final Logger log = LoggerFactory.getLogger(EncryptAssertions.class);
 
     /** Used to log protocol messages. */
-    private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
+    @Nonnull private Logger protocolMessageLog = LoggerFactory.getLogger("PROTOCOL_MESSAGE");
 
     /** Strategy used to locate the {@link Response} to operate on. */
     @Nonnull private Function<ProfileRequestContext,StatusResponseType> responseLookupStrategy;
     
     /** The message to operate on. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
     
     /** Constructor. */
 
@@ -101,6 +102,10 @@ public class EncryptAssertions extends AbstractEncryptAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         final StatusResponseType message = responseLookupStrategy.apply(profileRequestContext);
         if (message != null) {
             if (message instanceof Response) {
@@ -116,7 +121,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -136,6 +141,7 @@ public class EncryptAssertions extends AbstractEncryptAction {
         final List<EncryptedAssertion> accumulator = new ArrayList<>(response.getAssertions().size());
         
         for (final Assertion assertion : response.getAssertions()) {
+            assert assertion != null;
             try {
                 accumulator.add(getEncrypter().encrypt(assertion));
             } catch (final EncryptionException e) {

@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.profile.impl;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
@@ -38,9 +37,10 @@ import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Subject;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that builds a {@link NameID} and adds it to the {@link Subject} of all the statements
@@ -78,10 +78,10 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
     @Nonnull private Function<ProfileRequestContext,Response> responseLookupStrategy;
 
     /** NameID to copy. */
-    @Nullable private NameID nameId; 
+    @NonnullBeforeExec private NameID nameId; 
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
     
     /** Constructor. */
     public CopyNameIDFromRequest() {
@@ -139,6 +139,11 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         log.debug("{} Attempting to add NameID to statements in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -165,7 +170,7 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
             return false;
         }
                 
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
     /** {@inheritDoc} */
@@ -175,6 +180,7 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
         int count = 0;
         
         for (final Assertion assertion : response.getAssertions()) {
+            assert assertion != null;
             final Subject subject = getAssertionSubject(assertion);
             final NameID existing = subject.getNameID();
             if (existing == null || overwriteExisting) {
@@ -196,11 +202,12 @@ public class CopyNameIDFromRequest extends AbstractProfileAction {
      * @return the assertion to which the name identifier will be added
      */
     @Nonnull private Subject getAssertionSubject(@Nonnull final Assertion assertion) {
-        if (assertion.getSubject() != null) {
-            return assertion.getSubject();
+        Subject subject = assertion.getSubject();
+        if (subject != null) {
+            return subject;
         }
         
-        final Subject subject = subjectBuilder.buildObject();
+        subject = subjectBuilder.buildObject();
         assertion.setSubject(subject);
         return subject;
     }

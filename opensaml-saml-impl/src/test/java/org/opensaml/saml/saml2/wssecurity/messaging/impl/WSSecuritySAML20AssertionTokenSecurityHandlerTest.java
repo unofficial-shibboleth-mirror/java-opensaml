@@ -37,6 +37,7 @@ import org.opensaml.saml.common.messaging.context.SAMLSelfEntityContext;
 import org.opensaml.saml.saml2.assertion.SAML20AssertionValidator;
 import org.opensaml.saml.saml2.assertion.SAML2AssertionValidationParameters;
 import org.opensaml.saml.saml2.core.Assertion;
+import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.core.SubjectConfirmation;
 import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.saml.saml2.wssecurity.SAML20AssertionToken;
@@ -96,8 +97,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         
         handler.invoke(messageContext);
         
-        WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
-        Assert.assertNotNull(securityContext);
+        final WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
+        assert securityContext != null;
         Assert.assertEquals(securityContext.getTokens().size(), 1);
         Assert.assertTrue(securityContext.getTokens().get(0) instanceof SAML20AssertionToken);
         SAML20AssertionToken token = (SAML20AssertionToken) securityContext.getTokens().get(0);
@@ -114,10 +115,12 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         try {
             handler.invoke(messageContext);
             Assert.fail("Assertion validation should have failed");
-        } catch (MessageHandlerException e) {
-            Fault fault = messageContext.getSubcontext(SOAP11Context.class, true).getFault();
-            Assert.assertNotNull(fault);
-            Assert.assertEquals(fault.getCode().getValue(), WSSecurityConstants.SOAP_FAULT_INVALID_SECURITY_TOKEN);
+        } catch (final MessageHandlerException e) {
+            Fault fault = messageContext.ensureSubcontext(SOAP11Context.class).getFault();
+            assert fault != null;
+            final FaultCode code = fault.getCode();
+            assert code != null;
+            Assert.assertEquals(code.getValue(), WSSecurityConstants.SOAP_FAULT_INVALID_SECURITY_TOKEN);
         }
     }
     
@@ -129,10 +132,12 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         try {
             handler.invoke(messageContext);
             Assert.fail("Assertion validation should have failed");
-        } catch (MessageHandlerException e) {
-            Fault fault = messageContext.getSubcontext(SOAP11Context.class, true).getFault();
-            Assert.assertNotNull(fault);
-            Assert.assertEquals(fault.getCode().getValue(), WSSecurityConstants.SOAP_FAULT_INVALID_SECURITY_TOKEN);
+        } catch (final MessageHandlerException e) {
+            Fault fault = messageContext.ensureSubcontext(SOAP11Context.class).getFault();
+            assert fault != null;
+            final FaultCode code = fault.getCode();
+            assert code != null;
+            Assert.assertEquals(code.getValue(), WSSecurityConstants.SOAP_FAULT_INVALID_SECURITY_TOKEN);
         }
     }
     
@@ -150,11 +155,11 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         
         handler.invoke(messageContext);
         
-        WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
-        Assert.assertNotNull(securityContext);
+        final WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
+        assert securityContext != null;
         Assert.assertEquals(securityContext.getTokens().size(), 1);
         Assert.assertTrue(securityContext.getTokens().get(0) instanceof SAML20AssertionToken);
-        SAML20AssertionToken token = (SAML20AssertionToken) securityContext.getTokens().get(0);
+        final SAML20AssertionToken token = (SAML20AssertionToken) securityContext.getTokens().get(0);
         Assert.assertSame(token.getWrappedToken(), assertion);
         Assert.assertEquals(token.getValidationStatus(), ValidationStatus.VALID);
         Assert.assertSame(token.getSubjectConfirmation(), subjectConfirmation);
@@ -168,11 +173,11 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         
         handler.invoke(messageContext);
         
-        WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
-        Assert.assertNotNull(securityContext);
+        final WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
+        assert securityContext != null;
         Assert.assertEquals(securityContext.getTokens().size(), 1);
         Assert.assertTrue(securityContext.getTokens().get(0) instanceof SAML20AssertionToken);
-        SAML20AssertionToken token = (SAML20AssertionToken) securityContext.getTokens().get(0);
+        final SAML20AssertionToken token = (SAML20AssertionToken) securityContext.getTokens().get(0);
         Assert.assertSame(token.getWrappedToken(), assertion);
         Assert.assertEquals(token.getValidationStatus(), ValidationStatus.INVALID);
         Assert.assertSame(token.getSubjectConfirmation(), null);
@@ -186,11 +191,11 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         
         handler.invoke(messageContext);
         
-        WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
-        Assert.assertNotNull(securityContext);
+        final WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
+        assert securityContext != null;
         Assert.assertEquals(securityContext.getTokens().size(), 1);
         Assert.assertTrue(securityContext.getTokens().get(0) instanceof SAML20AssertionToken);
-        SAML20AssertionToken token = (SAML20AssertionToken) securityContext.getTokens().get(0);
+        final SAML20AssertionToken token = (SAML20AssertionToken) securityContext.getTokens().get(0);
         Assert.assertSame(token.getWrappedToken(), assertion);
         Assert.assertEquals(token.getValidationStatus(), ValidationStatus.INDETERMINATE);
         Assert.assertSame(token.getSubjectConfirmation(), null);
@@ -204,10 +209,12 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         try {
             handler.invoke(messageContext);
             Assert.fail("Assertion validation should have failed");
-        } catch (MessageHandlerException e) {
-            Fault fault = messageContext.getSubcontext(SOAP11Context.class, true).getFault();
-            Assert.assertNotNull(fault);
-            Assert.assertEquals(fault.getCode().getValue(), FaultCode.SERVER);
+        } catch (final MessageHandlerException e) {
+            Fault fault = messageContext.ensureSubcontext(SOAP11Context.class).getFault();
+            assert fault != null;
+            final FaultCode code = fault.getCode();
+            assert code != null;
+            Assert.assertEquals(code.getValue(), FaultCode.SERVER);
         }
     }
     
@@ -226,7 +233,13 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
     
     @Test
     public void testNoAssertions() throws ComponentInitializationException, MessageHandlerException {
-        messageContext.getSubcontext(SOAP11Context.class).getEnvelope().getHeader().getUnknownXMLObjects().clear();
+        final Envelope env = messageContext.ensureSubcontext(SOAP11Context.class).getEnvelope();
+        if (env != null) {
+            final Header header = env.getHeader();
+            if (header != null) {
+                header.getUnknownXMLObjects().clear();
+            }
+        }
         
         handler.setAssertionValidator(new MockAssertionValidator(ValidationResult.VALID, subjectConfirmation, false));
         handler.initialize();
@@ -239,7 +252,10 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
     
     @Test
     public void testNoHeader() throws ComponentInitializationException, MessageHandlerException {
-        messageContext.getSubcontext(SOAP11Context.class).getEnvelope().setHeader(null);
+        final Envelope env = messageContext.ensureSubcontext(SOAP11Context.class).getEnvelope();
+        if (env != null) {
+            env.setHeader(null);
+        }
         
         handler.setAssertionValidator(new MockAssertionValidator(ValidationResult.VALID, subjectConfirmation, false));
         handler.initialize();
@@ -248,13 +264,6 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         
         WSSecurityContext securityContext = messageContext.getSubcontext(WSSecurityContext.class);
         Assert.assertNull(securityContext);
-    }
-    
-    @Test(expectedExceptions=ComponentInitializationException.class)
-    public void testNoValidatorOrLookup() throws ComponentInitializationException, MessageHandlerException {
-        handler.setAssertionValidator(null);
-        handler.setAssertionValidatorLookup(null);
-        handler.initialize();
     }
     
     @Test(expectedExceptions=MessageHandlerException.class)
@@ -294,25 +303,27 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
     // Helper classes and methods
     //
 
-    private MessageContext buildMessageContext() {
+    @Nonnull private MessageContext buildMessageContext() {
         final MessageContext mc = new MessageContext();
-        mc.getSubcontext(SAMLSelfEntityContext.class, true).setEntityId(rpEntityID);
-        XMLObject payload = buildXMLObject(simpleXMLObjectQName);
+        mc.ensureSubcontext(SAMLSelfEntityContext.class).setEntityId(rpEntityID);
+        final XMLObject payload = buildXMLObject(simpleXMLObjectQName);
         mc.setMessage(payload);
         if (assertion == null) {
             throw new RuntimeException("Assertion wasn't built");
         }
-        Envelope envelope = buildXMLObject(Envelope.DEFAULT_ELEMENT_NAME);
-        envelope.setBody((Body)buildXMLObject(Body.DEFAULT_ELEMENT_NAME));
-        envelope.getBody().getUnknownXMLObjects().add(payload);
-        envelope.setHeader((Header)buildXMLObject(Header.DEFAULT_ELEMENT_NAME));
+        final Body body = buildXMLObject(Body.DEFAULT_ELEMENT_NAME);
+        body.getUnknownXMLObjects().add(payload);
+        final Envelope envelope = buildXMLObject(Envelope.DEFAULT_ELEMENT_NAME);
+        envelope.setBody(body);
+        final Header header = buildXMLObject(Header.DEFAULT_ELEMENT_NAME);
+        envelope.setHeader(header);
         
-        Security security = buildXMLObject(Security.ELEMENT_NAME);
+        final Security security = buildXMLObject(Security.ELEMENT_NAME);
         SOAPSupport.addSOAP11MustUnderstandAttribute(security, true);
         security.getUnknownXMLObjects().add(assertion);
-        envelope.getHeader().getUnknownXMLObjects().add(security);
+        header.getUnknownXMLObjects().add(security);
         
-        mc.getSubcontext(SOAP11Context.class, true).setEnvelope(envelope);
+        mc.ensureSubcontext(SOAP11Context.class).setEnvelope(envelope);
         
         return mc;
     }
@@ -327,13 +338,14 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         return request;
     }
 
-    private Assertion buildAssertion() throws SecurityException, MarshallingException, SignatureException {
+    @Nonnull private Assertion buildAssertion() throws SecurityException, MarshallingException, SignatureException {
         Assertion a = SAML2ActionTestingSupport.buildAssertion();
         a.setIssuer(SAML2ActionTestingSupport.buildIssuer(issuerEntityID));
-        a.setSubject(SAML2ActionTestingSupport.buildSubject("barney"));
+        final Subject subject = SAML2ActionTestingSupport.buildSubject("barney");
         subjectConfirmation = buildXMLObject(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
         subjectConfirmation.setMethod(SubjectConfirmation.METHOD_BEARER);
-        a.getSubject().getSubjectConfirmations().add(subjectConfirmation);
+        subject.getSubjectConfirmations().add(subjectConfirmation);
+        a.setSubject(subject);
         a.getAuthnStatements().add(SAML2ActionTestingSupport.buildAuthnStatement());
         return a;
     }
@@ -344,7 +356,7 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
         private boolean isThrowException;
         private SubjectConfirmation confirmedSubjectConfirmation;
         
-        public MockAssertionValidator(ValidationResult result, SubjectConfirmation confirmed, boolean throwException) {
+        public MockAssertionValidator(final ValidationResult result, final SubjectConfirmation confirmed, boolean throwException) {
             super(null, null, null, null, null, null);
             validationResult = result;
             confirmedSubjectConfirmation = confirmed;
@@ -359,6 +371,10 @@ public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObject
             }
             if (confirmedSubjectConfirmation != null) {
                 context.getDynamicParameters().put(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION, confirmedSubjectConfirmation);
+            }
+            
+            if (validationResult == null) {
+                throw new AssertionValidationException("Mock result was null");
             }
             return validationResult;
         }

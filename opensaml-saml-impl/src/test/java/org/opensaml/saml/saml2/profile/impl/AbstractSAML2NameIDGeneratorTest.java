@@ -48,7 +48,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.initialize();
         
         final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getSPProvidedID(), "bar");
         Assert.assertEquals(nameId.getNameQualifier(), NAME_QUALIFIER);
@@ -65,7 +65,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.initialize();
         
         final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
         Assert.assertNull(nameId.getSPNameQualifier());
@@ -79,7 +79,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.initialize();
         
         final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
         Assert.assertNull(nameId.getSPNameQualifier());
@@ -92,7 +92,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         mock.initialize();
         
         final NameID nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getNameQualifier(), NAME_QUALIFIER);
         Assert.assertEquals(nameId.getSPNameQualifier(), SP_NAME_QUALIFIER);
@@ -108,7 +108,7 @@ public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
         
         /** {@inheritDoc} */
         @Override
-        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws SAMLException {
+        protected String getIdentifier(@Nonnull final ProfileRequestContext profileRequestContext) throws SAMLException {
             return "foo";
         }
     }

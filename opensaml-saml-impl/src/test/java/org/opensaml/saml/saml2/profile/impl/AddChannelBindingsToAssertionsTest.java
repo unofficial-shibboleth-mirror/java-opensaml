@@ -26,6 +26,7 @@ import org.opensaml.profile.testing.RequestContextBuilder;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.common.messaging.context.ChannelBindingsContext;
 import org.opensaml.saml.ext.saml2cb.ChannelBindings;
+import org.opensaml.saml.saml2.core.Advice;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.profile.SAML2ActionSupport;
@@ -43,6 +44,11 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
     
     private AddChannelBindingsToAssertions action;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod
     public void setUp() throws ComponentInitializationException {
         
@@ -62,7 +68,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
     @Test
     public void testNoResponse() {
         final ProfileRequestContext prc = new RequestContextBuilder().buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(cbc);
+        prc.ensureOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
@@ -82,7 +88,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
     public void testNoAssertion() {
         final ProfileRequestContext prc = new RequestContextBuilder().setOutboundMessage(
                 SAML2ActionTestingSupport.buildResponse()).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(cbc);
+        prc.ensureOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -101,7 +107,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(cbc);
+        prc.ensureOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -109,9 +115,10 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getAdvice());
-        Assert.assertEquals(assertion.getAdvice().getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).size(), 1);
-        Assert.assertEquals(((ChannelBindings) assertion.getAdvice().getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).get(0)).getType(), "foo");
+        final Advice advice = assertion.getAdvice();
+        assert advice != null;
+        Assert.assertEquals(advice.getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).size(), 1);
+        Assert.assertEquals(((ChannelBindings) advice.getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).get(0)).getType(), "foo");
     }
 
     /**
@@ -129,14 +136,15 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(cbc);
+        prc.ensureOutboundMessageContext().addSubcontext(cbc);
 
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getAdvice());
-        Assert.assertEquals(assertion.getAdvice().getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).size(), 1);
-        Assert.assertEquals(((ChannelBindings) assertion.getAdvice().getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).get(0)).getType(), "foo");
+        final Advice advice = assertion.getAdvice();
+        assert advice != null;
+        Assert.assertEquals(advice.getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).size(), 1);
+        Assert.assertEquals(((ChannelBindings) advice.getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).get(0)).getType(), "foo");
     }
 
     /** Test that the advice is properly added if there are multiple assertions in the response. */
@@ -149,7 +157,7 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
 
         final ProfileRequestContext prc =
                 new RequestContextBuilder().setOutboundMessage(response).buildProfileRequestContext();
-        prc.getOutboundMessageContext().addSubcontext(cbc);
+        prc.ensureOutboundMessageContext().addSubcontext(cbc);
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
@@ -158,9 +166,10 @@ public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCas
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (final Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getAdvice());
-            Assert.assertEquals(assertion.getAdvice().getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).size(), 1);
-            Assert.assertEquals(((ChannelBindings) assertion.getAdvice().getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).get(0)).getType(), "foo");
+            final Advice advice = assertion.getAdvice();
+            assert advice != null;
+            Assert.assertEquals(advice.getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).size(), 1);
+            Assert.assertEquals(((ChannelBindings) advice.getChildren(ChannelBindings.DEFAULT_ELEMENT_NAME).get(0)).getType(), "foo");
         }
     }
     
