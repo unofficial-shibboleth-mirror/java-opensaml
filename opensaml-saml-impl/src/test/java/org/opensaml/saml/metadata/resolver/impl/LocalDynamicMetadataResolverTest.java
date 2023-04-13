@@ -154,8 +154,8 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         // Clear from in-memory cache
         resolver.clear(entityID1);
-        Assert.assertNull(resolver.getBackingStore().getIndexedDescriptors().get(entityID1));
-        Assert.assertFalse(resolver.getBackingStore().getOrderedDescriptors().contains(entity1));
+        Assert.assertNull(resolver.ensureBackingStore().getIndexedDescriptors().get(entityID1));
+        Assert.assertFalse(resolver.ensureBackingStore().getOrderedDescriptors().contains(entity1));
         
         // This should re-resolve from source manager directly
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID1))), entity1);

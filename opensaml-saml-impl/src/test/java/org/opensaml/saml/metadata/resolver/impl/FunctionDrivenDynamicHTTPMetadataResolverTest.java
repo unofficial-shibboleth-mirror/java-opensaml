@@ -112,8 +112,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -141,8 +141,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -169,7 +169,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
         Assert.assertNull(ed);
     }
     
@@ -192,7 +192,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
         Assert.assertNull(ed);
     }
     
@@ -215,7 +215,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
         Assert.assertNull(ed);
     }
     
@@ -240,8 +240,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -262,8 +262,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -292,8 +292,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         final CriteriaSet criteriaSet = new CriteriaSet( new ArtifactCriterion(sourceIDArtifact));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -320,8 +320,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -353,8 +353,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -385,8 +385,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
 
             CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
 
-            EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-            Assert.assertNotNull(ed);
+            final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+            assert ed != null;
             Assert.assertEquals(ed.getEntityID(), entityID);
             Assert.assertNull(ed.getDOM());
         } finally {
@@ -422,8 +422,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -455,7 +455,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
         Assert.assertNull(ed);
     }
     
@@ -486,8 +486,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }
@@ -519,8 +519,8 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         
         CriteriaSet criteriaSet = new CriteriaSet( new EntityIdCriterion(entityID));
         
-        EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
-        Assert.assertNotNull(ed);
+        final EntityDescriptor ed = resolver.resolveSingle(criteriaSet);
+        assert ed != null;
         Assert.assertEquals(ed.getEntityID(), entityID);
         Assert.assertNull(ed.getDOM());
     }

@@ -48,11 +48,11 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
 import com.google.common.io.ByteStreams;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.shared.testing.RepositorySupport;
@@ -60,6 +60,7 @@ import net.shibboleth.shared.testing.RepositorySupport;
 /**
  * Unit tests for {@link HTTPMetadataResolver}.
  */
+@SuppressWarnings("javadoc")
 public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     private HttpClientBuilder httpClientBuilder;
@@ -100,11 +101,11 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider = new HTTPMetadataResolver(httpClientBuilder.buildClient(), metadataURLHttp);
             metadataProvider.setParserPool(parserPool);
             metadataProvider.setId("test");
-            metadataProvider.setActivationCondition(Predicates.alwaysFalse());
+            metadataProvider.setActivationCondition(PredicateSupport.alwaysFalse());
             metadataProvider.initialize();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertTrue(flag != null && flag);
             Assert.assertNull(metadataProvider.getLastFailureCause());
         } catch (ComponentInitializationException e) {
             Assert.fail("Valid metadata failed init");
@@ -126,15 +127,15 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setId("test");
             metadataProvider.initialize();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertTrue(flag != null && flag);
             Assert.assertNull(metadataProvider.getLastFailureCause());
         } catch (ComponentInitializationException e) {
             Assert.fail("Valid metadata failed init");
         }
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -154,9 +155,9 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("metadata provider claims to have parsed known invalid data");
-        } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ComponentInitializationException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertTrue(flag == null || !flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         }
@@ -177,16 +178,16 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         
         try {
             metadataProvider.initialize();
-            
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         } catch (ComponentInitializationException e) {
             Assert.fail("Provider failed init with fail-fast=false");
         }
         
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
         Assert.assertNull(descriptor);
     }
     
@@ -200,12 +201,12 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider.setId("test");
         metadataProvider.initialize();
         
-        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+        Assert.assertTrue(flag != null && flag);
         Assert.assertNull(metadataProvider.getLastFailureCause());
         
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -223,12 +224,12 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider.setHttpClientSecurityParameters(params);
         metadataProvider.initialize();
         
-        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+        Assert.assertTrue(flag != null && flag);
         Assert.assertNull(metadataProvider.getLastFailureCause());
         
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -245,12 +246,12 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setId("test");
             metadataProvider.initialize();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertTrue(flag != null && flag);
             Assert.assertNull(metadataProvider.getLastFailureCause());
 
-            EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-            Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+            final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+            assert descriptor != null;
             Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
         } finally {
             System.setProperty("javax.net.ssl.trustStore", "");
@@ -272,12 +273,12 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
 
         metadataProvider.initialize();
         
-        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+        Assert.assertTrue(flag != null && flag);
         Assert.assertNull(metadataProvider.getLastFailureCause());
         
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -297,9 +298,9 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("Invalid metadata TLS should have failed init");
-        } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ComponentInitializationException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         }
@@ -319,12 +320,12 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
 
         metadataProvider.initialize();
         
-        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+        Assert.assertTrue(flag != null && flag);
         Assert.assertNull(metadataProvider.getLastFailureCause());
         
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -342,12 +343,12 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
 
         metadataProvider.initialize();
         
-        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+        Assert.assertTrue(flag != null && flag);
         Assert.assertNull(metadataProvider.getLastFailureCause());
         
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -367,8 +368,8 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.initialize();
             Assert.fail("Invalid metadata TLS should have failed init");
         } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         }
@@ -389,9 +390,9 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("Invalid metadata TLS should have failed init");
-        } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ComponentInitializationException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         }
@@ -411,9 +412,9 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("Invalid metadata TLS should have failed init");
-        } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ComponentInitializationException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         }

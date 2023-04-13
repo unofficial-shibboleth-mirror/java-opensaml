@@ -65,6 +65,7 @@ import org.opensaml.security.crypto.JCAConstants;
 import org.opensaml.security.crypto.KeySupport;
 import org.opensaml.xmlsec.SignatureSigningParameters;
 import org.opensaml.xmlsec.config.impl.DefaultSecurityConfigurationBootstrap;
+import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorFactory;
 import org.opensaml.xmlsec.signature.support.SignatureConstants;
 import org.opensaml.xmlsec.signature.support.SignatureException;
 import org.opensaml.xmlsec.signature.support.SignatureSupport;
@@ -115,7 +116,12 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         signingParams.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signingParams.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         signingParams.setSignatureReferenceDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256);
-        signingParams.setKeyInfoGenerator(DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager().getDefaultManager().getFactory(signingCred).newInstance());
+        
+        final KeyInfoGeneratorFactory factory =
+                DefaultSecurityConfigurationBootstrap.buildBasicKeyInfoGeneratorManager().getDefaultManager().getFactory(
+                        signingCred);
+        assert factory != null;
+        signingParams.setKeyInfoGenerator(factory.newInstance());
         
         signatureTrustEngine = new ExplicitKeySignatureTrustEngine(
                 new StaticCredentialResolver(signingCred), 
@@ -192,8 +198,6 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
-        
         Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
     }
 
@@ -201,7 +205,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     public void testNoEntities() throws ComponentInitializationException, ResolverException {
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
         
@@ -220,7 +224,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2))), ed2);
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3))), ed3);
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         Assert.assertTrue(backingStore.getIndexedDescriptors().containsKey(id1));
         Assert.assertEquals(backingStore.getIndexedDescriptors().get(id1).size(), 1);
@@ -244,7 +248,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2))), ed2);
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3))), ed3);
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         resolver.clear();
         
@@ -269,7 +273,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2))), ed2);
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3))), ed3);
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         resolver.clear(id1);
         resolver.clear(id2);
@@ -289,7 +293,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
         
@@ -311,7 +315,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     public void testGlobalClearWithNegativeLookupCache() throws ComponentInitializationException, ResolverException, InterruptedException {
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
         
@@ -330,7 +334,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     public void testEntityIDClearWithNegativeLookupCache() throws ComponentInitializationException, ResolverException, InterruptedException {
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         Assert.assertFalse(backingStore.getIndexedDescriptors().containsKey(id1));
         
@@ -443,7 +447,10 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertEquals(persistentCacheMap.size(), 0);
         
         Assert.assertNotNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
-        Assert.assertEquals(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))).getEntityID(), id1);
+        
+        EntityDescriptor ed = resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1)));
+        assert ed != null;
+        Assert.assertEquals(ed.getEntityID(), id1);
         
         Assert.assertEquals(persistentCacheMap.size(), 1);
         
@@ -451,10 +458,13 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(persistentCacheMap.containsKey(cacheKey));
         Assert.assertSame(persistentCacheMap.get(cacheKey), ed1);
         
-        Assert.assertNotNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2))));
-        Assert.assertEquals(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2))).getEntityID(), id2);
-        Assert.assertNotNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3))));
-        Assert.assertEquals(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3))).getEntityID(), id3);
+        ed = resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id2)));
+        assert ed != null;
+        Assert.assertEquals(ed.getEntityID(), id2);
+        
+        ed = resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id3)));
+        assert ed != null;
+        Assert.assertEquals(ed.getEntityID(), id3);
         
         Assert.assertEquals(persistentCacheMap.size(), 3);
         
@@ -481,7 +491,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         // These will be there before any resolve() calls, loaded from the persistent cache
         Assert.assertTrue(backingStore.getIndexedDescriptors().containsKey(id1));
@@ -527,7 +537,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         // This will be there before any resolve() calls, loaded from the persistent cache
         Assert.assertTrue(backingStore.getIndexedDescriptors().containsKey(id1));
@@ -567,7 +577,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertFalse(persistentCacheMap.containsKey("three"));
         Assert.assertTrue(persistentCacheMap.containsKey(persistentCacheKeyGenerator.apply(ed3)));
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         
         // These will be there before any resolve() calls, loaded from the persistent cache
         Assert.assertTrue(backingStore.getIndexedDescriptors().containsKey(id1));
@@ -595,7 +605,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         Optional<Set<String>> indexedData = Optional.empty();
         
         Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new SimpleStringCriterion(id1.toUpperCase()))));
@@ -621,7 +631,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         Optional<Set<String>> indexedData = null;
         
         Set<EntityDescriptor> results = new HashSet<>();
@@ -666,7 +676,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         
         resolver.initialize();
         
-        DynamicEntityBackingStore backingStore = resolver.getBackingStore();
+        final DynamicEntityBackingStore backingStore = resolver.ensureBackingStore();
         Optional<Set<String>> indexedData = null;
         
         Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(id1))));
@@ -705,13 +715,19 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
 
         protected XMLObject fetchFromOriginSource(@Nullable CriteriaSet criteria) throws IOException {
             
-            if (criteria.contains(EntityIdCriterion.class)) {
-                return originSourceMap.get(criteria.get(EntityIdCriterion.class).getEntityId());
-            } else if (secondaryLookup && criteria.contains(SimpleStringCriterion.class)) {
-                return originSourceMap.get(criteria.get(SimpleStringCriterion.class).getValue());
-            } else {
-                return null;
+            final EntityIdCriterion c1 = criteria != null ? criteria.get(EntityIdCriterion.class) : null;
+            if (c1 != null) {
+                return originSourceMap.get(c1.getEntityId());
             }
+            
+            if (secondaryLookup) {
+                final SimpleStringCriterion c2 = criteria != null ? criteria.get(SimpleStringCriterion.class) : null; 
+                if (c2 != null) {
+                    return originSourceMap.get(c2.getValue());
+                }
+            }
+            
+            return null;
         }
 
     }

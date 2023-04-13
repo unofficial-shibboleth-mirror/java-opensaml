@@ -67,12 +67,8 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider.setActivationCondition(Predicates.alwaysFalse());
         metadataProvider.initialize();
 
-        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertNull(metadataProvider.getLastFailureCause());
-        
-        Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-        Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+        final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+        Assert.assertTrue(flag != null && flag);
         Assert.assertNull(metadataProvider.getLastFailureCause());
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
@@ -92,15 +88,15 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setId("test");
             metadataProvider.initialize();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertTrue(flag != null && flag);
             Assert.assertNull(metadataProvider.getLastFailureCause());
         } catch (ComponentInitializationException e) {
             Assert.fail("Valid metdata failed init");
         }
         
-        EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
-        Assert.assertNotNull(descriptor, "Retrieved entity descriptor was null");
+        final EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
+        assert descriptor != null;
         Assert.assertEquals(descriptor.getEntityID(), entityID, "Entity's ID does not match requested ID");
     }
     
@@ -118,9 +114,9 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setId("test");
             metadataProvider.initialize();
             Assert.fail("Init should have thrown");
-        } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ComponentInitializationException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         }
@@ -149,9 +145,9 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setId("test");
             metadataProvider.initialize();
             Assert.fail("Init should have thrown");
-        } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ComponentInitializationException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         } finally {
@@ -179,9 +175,9 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setParserPool(parserPool);
             metadataProvider.setId("test");
             metadataProvider.initialize();
-        } catch (ComponentInitializationException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ComponentInitializationException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         } finally {
@@ -211,10 +207,10 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setId("test");
             metadataProvider.initialize();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertTrue(flag != null && flag);
             Assert.assertNull(metadataProvider.getLastFailureCause());
-        } catch (ComponentInitializationException e) {
+        } catch (final ComponentInitializationException e) {
             Assert.fail("Filesystem metadata provider init failed with file: " + targetFile.getAbsolutePath());
         }
         
@@ -223,9 +219,9 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.refresh();
             Assert.fail("Refresh should have thrown");
-        } catch (ResolverException e) {
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+        } catch (final ResolverException e) {
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         }
@@ -251,11 +247,11 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setId("test");
             metadataProvider.initialize();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
-        } catch (ComponentInitializationException | ResolverException e) {
+        } catch (final ComponentInitializationException | ResolverException e) {
             Assert.fail("Filesystem metadata provider init failed with non-existent file and fail fast = false");
         }
         
@@ -279,8 +275,8 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.refresh();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertTrue(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertTrue(flag != null && flag);
             Assert.assertNull(metadataProvider.getLastFailureCause());
             
             EntityDescriptor descriptor = metadataProvider.resolveSingle(criteriaSet);
@@ -304,8 +300,8 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
             metadataProvider.setParserPool(parserPool);
             metadataProvider.initialize();
             
-            Assert.assertNotNull(metadataProvider.wasLastRefreshSuccess());
-            Assert.assertFalse(metadataProvider.wasLastRefreshSuccess());
+            final Boolean flag = metadataProvider.wasLastRefreshSuccess();
+            Assert.assertFalse(flag != null && flag);
             Assert.assertNotNull(metadataProvider.getLastFailureCause());
             Assert.assertTrue(ResolverException.class.isInstance(metadataProvider.getLastFailureCause()));
         } catch (ComponentInitializationException | ResolverException e) {
@@ -315,4 +311,5 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp.example.org")));
         Assert.assertNull(entity);
     }
+    
 }
