@@ -47,7 +47,8 @@ public class PrivacyStatementURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        PrivacyStatementURL url = (PrivacyStatementURL) unmarshallElement(singleElementFile);
+        final PrivacyStatementURL url = (PrivacyStatementURL) unmarshallElement(singleElementFile);
+        assert url != null;
         
         Assert.assertEquals(url.getURI(), expectValue, "URI was not expected value");
         Assert.assertEquals(url.getXMLLang(), expectLang, "xml:lang was not expected value");
@@ -56,7 +57,7 @@ public class PrivacyStatementURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        PrivacyStatementURL url = (PrivacyStatementURL) buildXMLObject(PrivacyStatementURL.DEFAULT_ELEMENT_NAME);
+        final PrivacyStatementURL url = (PrivacyStatementURL) buildXMLObject(PrivacyStatementURL.DEFAULT_ELEMENT_NAME);
         
         url.setURI(expectValue);
         url.setXMLLang(expectLang);

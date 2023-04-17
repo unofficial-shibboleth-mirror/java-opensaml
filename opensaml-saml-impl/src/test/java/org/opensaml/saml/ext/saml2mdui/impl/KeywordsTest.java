@@ -57,12 +57,13 @@ public class KeywordsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Keywords name = (Keywords) unmarshallElement(singleElementFile);
+        final Keywords name = (Keywords) unmarshallElement(singleElementFile);
+        assert name != null;
         
         assertEquals(name.getKeywords(), expectedWords, "Keyworks were not expected value");
         assertEquals(name.getXMLLang(), expectedLang, "Language was not expected value");
 
-        Keywords keywords = (Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME);
+        final Keywords keywords = (Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME);
         assertNotEquals(keywords, name);
         keywords.setXMLLang(expectedLang);
         assertNotEquals(keywords, name);
@@ -73,7 +74,7 @@ public class KeywordsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Keywords keywords = (Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME);
+        final Keywords keywords = (Keywords) buildXMLObject(Keywords.DEFAULT_ELEMENT_NAME);
         keywords.setXMLLang(expectedLang);
         keywords.setKeywords(expectedWords);
 

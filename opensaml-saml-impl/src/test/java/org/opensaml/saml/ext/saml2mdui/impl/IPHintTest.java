@@ -50,7 +50,8 @@ public class IPHintTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        IPHint hint = (IPHint) unmarshallElement(singleElementFile);
+        final IPHint hint = (IPHint) unmarshallElement(singleElementFile);
+        assert hint != null;
         
         Assert.assertEquals(hint.getValue(), expectedHint, "Name was not expected value");
     }
@@ -58,7 +59,7 @@ public class IPHintTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        IPHint hint = (IPHint) buildXMLObject(IPHint.DEFAULT_ELEMENT_NAME);
+        final IPHint hint = (IPHint) buildXMLObject(IPHint.DEFAULT_ELEMENT_NAME);
         
         hint.setValue(expectedHint);
 

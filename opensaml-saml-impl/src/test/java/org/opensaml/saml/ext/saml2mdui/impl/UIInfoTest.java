@@ -70,7 +70,7 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        UIInfo uiinfo = (UIInfo) unmarshallElement(singleElementFile);
+        final UIInfo uiinfo = (UIInfo) unmarshallElement(singleElementFile);
         
         Assert.assertNotNull(uiinfo, "UIInfo");
     }
@@ -78,7 +78,7 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        UIInfo uiinfo = (UIInfo) buildXMLObject(UIInfo.DEFAULT_ELEMENT_NAME);
+        final UIInfo uiinfo = (UIInfo) buildXMLObject(UIInfo.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, uiinfo);
     }
@@ -86,7 +86,8 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall(){
-        UIInfo uiinfo = (UIInfo) unmarshallElement(childElementsFile);
+        final UIInfo uiinfo = (UIInfo) unmarshallElement(childElementsFile);
+        assert uiinfo != null;
         
         Assert.assertEquals(uiinfo.getDisplayNames().size(), expectedDisplayNamesCount, "<DisplayName> count");
         Assert.assertEquals(uiinfo.getDescriptions().size(), expectedDescriptionsCount, "<Descriptions> count");
@@ -103,7 +104,7 @@ public class UIInfoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall(){
-        UIInfo uiinfo = (UIInfo) buildXMLObject(UIInfo.DEFAULT_ELEMENT_NAME);
+        final UIInfo uiinfo = (UIInfo) buildXMLObject(UIInfo.DEFAULT_ELEMENT_NAME);
         
         uiinfo.getDisplayNames().add((DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME));
 

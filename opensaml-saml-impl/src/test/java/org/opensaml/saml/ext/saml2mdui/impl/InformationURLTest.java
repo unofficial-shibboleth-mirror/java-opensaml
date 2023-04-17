@@ -46,8 +46,8 @@ public class InformationURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        InformationURL url = (InformationURL) unmarshallElement(singleElementFile);
-
+        final InformationURL url = (InformationURL) unmarshallElement(singleElementFile);
+        assert url != null;
         Assert.assertEquals(url.getURI(), expectValue, "URI was not expected value");
         Assert.assertEquals(url.getXMLLang(), expectLang, "xml:lang was not expected value");
 
@@ -56,7 +56,7 @@ public class InformationURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        InformationURL url = (InformationURL) buildXMLObject(InformationURL.DEFAULT_ELEMENT_NAME);
+        final InformationURL url = (InformationURL) buildXMLObject(InformationURL.DEFAULT_ELEMENT_NAME);
         
         url.setURI(expectValue);
         url.setXMLLang(expectLang);

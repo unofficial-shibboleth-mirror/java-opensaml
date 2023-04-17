@@ -33,10 +33,13 @@ import org.opensaml.saml.saml2.core.EncryptedID;
 import org.opensaml.saml.saml2.core.NameID;
 import org.opensaml.saml.saml2.core.NewEncryptedID;
 import org.opensaml.saml.saml2.core.NewID;
+import org.opensaml.saml.saml2.core.Subject;
 import org.opensaml.saml.saml2.encryption.Encrypter;
 import org.opensaml.xmlsec.algorithm.AlgorithmSupport;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.opensaml.xmlsec.encryption.support.EncryptionException;
+import org.opensaml.xmlsec.encryption.EncryptedData;
+import org.opensaml.xmlsec.encryption.EncryptionMethod;
 import org.opensaml.xmlsec.encryption.support.DataEncryptionParameters;
 import org.opensaml.xmlsec.encryption.support.KeyEncryptionParameters;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoGenerator;
@@ -93,9 +96,9 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAssertion() {
-        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        final KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -105,6 +108,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         EncryptedAssertion encTarget = null;
         XMLObject encObject = null;
         try {
+            assert target != null;
             encObject = encrypter.encrypt(target);
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
@@ -114,18 +118,24 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(encObject instanceof EncryptedAssertion, 
                 "Encrypted object was not an instance of the expected type");
         encTarget = (EncryptedAssertion) encObject;
+        assert encTarget != null;
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
         
-        Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(), algoURI, 
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), algoURI, 
                 "Algorithm attribute");
-        Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, 
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyName, 
                 "KeyName");
         
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 0, 
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 0, 
                 "Number of EncryptedKeys");
         
-        Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
+        Assert.assertFalse(Strings.isNullOrEmpty(encData.getID()),
                 "EncryptedData ID attribute was empty");
     }
     
@@ -135,9 +145,9 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAssertionAsID() {
-        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        final KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -147,6 +157,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         EncryptedID encTarget = null;
         XMLObject encObject = null;
         try {
+            assert target != null;
             encObject = encrypter.encryptAsID(target);
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
@@ -156,18 +167,23 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(encObject instanceof EncryptedID, 
                 "Encrypted object was not an instance of the expected type");
         encTarget = (EncryptedID) encObject;
+        assert encTarget != null;
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
         
-        Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(), algoURI, 
-                "Algorithm attribute");
-        Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, 
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyName, 
                 "KeyName");
         
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 0, 
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 0, 
                 "Number of EncryptedKeys");
         
-        Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
+        Assert.assertFalse(Strings.isNullOrEmpty(encData.getID()),
                 "EncryptedData ID attribute was empty");
     }
     
@@ -177,10 +193,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testNameID() {
-        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
-        NameID target = assertion.getSubject().getNameID();
+        final Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        assert assertion != null;
+        final Subject sub = assertion.getSubject();
+        assert sub != null;
+        final NameID target = sub.getNameID();
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        final KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -190,6 +209,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         EncryptedID encTarget = null;
         XMLObject encObject = null;
         try {
+            assert target != null;
             encObject = encrypter.encrypt(target);
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
@@ -199,18 +219,23 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(encObject instanceof EncryptedID, 
                 "Encrypted object was not an instance of the expected type");
         encTarget = (EncryptedID) encObject;
+        assert encTarget != null;
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
         
-        Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(), algoURI, 
-                "Algorithm attribute");
-        Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, 
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyName, 
                 "KeyName");
         
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 0, 
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 0, 
                 "Number of EncryptedKeys");
         
-        Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
+        Assert.assertFalse(Strings.isNullOrEmpty(encData.getID()),
                 "EncryptedData ID attribute was empty");
     }
     
@@ -220,8 +245,9 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testAttribute() {
-        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
-        Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
+        final Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        assert assertion != null;
+        final Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
         
         
         KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
@@ -243,18 +269,23 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(encObject instanceof EncryptedAttribute, 
                 "Encrypted object was not an instance of the expected type");
         encTarget = (EncryptedAttribute) encObject;
+        assert encTarget != null;
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
         
-        Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(), algoURI, 
-                "Algorithm attribute");
-        Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, 
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyName, 
                 "KeyName");
         
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 0, 
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 0, 
                 "Number of EncryptedKeys");
         
-        Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
+        Assert.assertFalse(Strings.isNullOrEmpty(encData.getID()),
                 "EncryptedData ID attribute was empty");
     }
     
@@ -264,10 +295,10 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
      */
     @Test
     public void testNewID() {
-        NewID target = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
+        final NewID target = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
         target.setValue("SomeNewID");
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        final KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -286,18 +317,23 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(encObject instanceof NewEncryptedID, 
                 "Encrypted object was not an instance of the expected type");
         encTarget = (NewEncryptedID) encObject;
+        assert encTarget != null;
+        final EncryptedData encData = encTarget.getEncryptedData();
+        assert encData != null;
         
-        Assert.assertEquals(encTarget.getEncryptedData().getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
-        Assert.assertEquals(encTarget.getEncryptedData().getEncryptionMethod().getAlgorithm(), algoURI, 
-                "Algorithm attribute");
-        Assert.assertNotNull(encTarget.getEncryptedData().getKeyInfo(), "KeyInfo");
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getKeyNames().get(0).getValue(), expectedKeyName, 
+        Assert.assertEquals(encData.getType(), EncryptionConstants.TYPE_ELEMENT, "Type attribute");
+        final EncryptionMethod method = encData.getEncryptionMethod();
+        assert method != null;
+        Assert.assertEquals(method.getAlgorithm(), algoURI, "Algorithm attribute");
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertEquals(keyInfo.getKeyNames().get(0).getValue(), expectedKeyName, 
                 "KeyName");
         
-        Assert.assertEquals(encTarget.getEncryptedData().getKeyInfo().getEncryptedKeys().size(), 0, 
+        Assert.assertEquals(keyInfo.getEncryptedKeys().size(), 0, 
                 "Number of EncryptedKeys");
         
-        Assert.assertFalse(Strings.isNullOrEmpty(encTarget.getEncryptedData().getID()),
+        Assert.assertFalse(Strings.isNullOrEmpty(encData.getID()),
                 "EncryptedData ID attribute was empty");
         
     }
@@ -305,12 +341,13 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that reuse of the encrypter with the same encryption and key encryption parameters is allowed. */
     @Test
     public void testReuse() {
-        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        assert assertion != null;
         
-        Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
-        Attribute target2 = assertion.getAttributeStatements().get(0).getAttributes().get(1);
+        final Attribute target = assertion.getAttributeStatements().get(0).getAttributes().get(0);
+        final Attribute target2 = assertion.getAttributeStatements().get(0).getAttributes().get(1);
         
-        KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
+        final KeyName keyName = (KeyName) buildXMLObject(org.opensaml.xmlsec.signature.KeyName.DEFAULT_ELEMENT_NAME);
         keyName.setValue(expectedKeyName);
         keyInfo.getKeyNames().add(keyName);
         encParams.setKeyInfoGenerator(new StaticKeyInfoGenerator(keyInfo));
@@ -343,7 +380,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that a data encryption key is auto-generated if it is not supplied. */
     @Test
     public void testAutoKeyGen() {
-        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         encParams.setEncryptionCredential(null);
         
@@ -353,6 +390,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         
         XMLObject encObject = null;
         try {
+            assert target != null;
             encObject = encrypter.encrypt(target);
         } catch (EncryptionException e) {
             Assert.fail("Object encryption failed: " + e);
@@ -366,7 +404,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     /** Test that an error is thrown if the no data encryption credential is supplied and no KEK is specified. */
     @Test
     public void testAutoKeyGenNoKEK() {
-        Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
+        final Assertion target = (Assertion) unmarshallElement("/org/opensaml/saml/saml2/encryption/Assertion.xml");
         
         encParams.setEncryptionCredential(null);
         
@@ -375,6 +413,7 @@ public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
         encrypter = new Encrypter(encParams, kekParamsList);
         
         try {
+            assert target != null;
             encrypter.encrypt(target);
             Assert.fail("Object encryption should have failed: no KEK supplied with auto key generation for data encryption");
         } catch (EncryptionException e) {

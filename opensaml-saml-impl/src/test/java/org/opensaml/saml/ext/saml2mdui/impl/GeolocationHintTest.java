@@ -50,15 +50,15 @@ public class GeolocationHintTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        GeolocationHint hint = (GeolocationHint) unmarshallElement(singleElementFile);
-        
+        final GeolocationHint hint = (GeolocationHint) unmarshallElement(singleElementFile);
+        assert hint != null;
         Assert.assertEquals(hint.getURI(), expectedHint, "Name was not expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        GeolocationHint hint = (GeolocationHint) buildXMLObject(GeolocationHint.DEFAULT_ELEMENT_NAME);
+        final GeolocationHint hint = (GeolocationHint) buildXMLObject(GeolocationHint.DEFAULT_ELEMENT_NAME);
         
         hint.setURI(expectedHint);
 

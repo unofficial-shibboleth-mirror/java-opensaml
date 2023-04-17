@@ -46,7 +46,8 @@ public class DisplayNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DisplayName name = (DisplayName) unmarshallElement(singleElementFile);
+        final DisplayName name = (DisplayName) unmarshallElement(singleElementFile);
+        assert name != null;
         
         Assert.assertEquals(name.getValue(), expectValue, "Name was not expected value");
         Assert.assertEquals(name.getXMLLang(), expectLang, "xml:lang was not expected value");
@@ -55,7 +56,7 @@ public class DisplayNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DisplayName name = (DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME);
+        final DisplayName name = (DisplayName) buildXMLObject(DisplayName.DEFAULT_ELEMENT_NAME);
         
         name.setValue(expectValue);
         name.setXMLLang(expectLang);

@@ -50,7 +50,8 @@ public class DomainHintTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        DomainHint hint = (DomainHint) unmarshallElement(singleElementFile);
+        final DomainHint hint = (DomainHint) unmarshallElement(singleElementFile);
+        assert hint != null;
         
         Assert.assertEquals(hint.getValue(), expectedHint, "Name was not expected value");
     }
@@ -58,7 +59,7 @@ public class DomainHintTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        DomainHint hint = (DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME);
+        final DomainHint hint = (DomainHint) buildXMLObject(DomainHint.DEFAULT_ELEMENT_NAME);
         
         hint.setValue(expectedHint);
 

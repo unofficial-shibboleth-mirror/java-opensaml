@@ -58,7 +58,8 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Logo logo = (Logo) unmarshallElement(singleElementFile);
+        final Logo logo = (Logo) unmarshallElement(singleElementFile);
+        assert logo != null;
         
         Assert.assertEquals(logo.getURI(), expectedURL, "URL was not expected value");
         Assert.assertEquals(logo.getHeight(), expectedHeight, "height was not expected value");
@@ -68,7 +69,8 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Logo logo = (Logo) unmarshallElement(singleElementOptionalAttributesFile);
+        final Logo logo = (Logo) unmarshallElement(singleElementOptionalAttributesFile);
+        assert logo != null;
         
         Assert.assertEquals(logo.getURI(), expectedURL, "URL was not expected value");
         Assert.assertEquals(logo.getHeight(), expectedHeight, "height was not expected value");
@@ -79,7 +81,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
+        final Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
         
         logo.setURI(expectedURL);
         logo.setWidth(expectedWidth);
@@ -91,7 +93,7 @@ public class LogoTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
+        final Logo logo = (Logo) buildXMLObject(Logo.DEFAULT_ELEMENT_NAME);
         
         logo.setURI(expectedURL);
         logo.setWidth(expectedWidth);
