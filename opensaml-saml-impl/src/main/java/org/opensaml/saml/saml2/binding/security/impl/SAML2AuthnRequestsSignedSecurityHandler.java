@@ -26,11 +26,13 @@ import org.opensaml.saml.common.binding.SAMLBindingSupport;
 import org.opensaml.saml.common.messaging.context.SAMLMetadataContext;
 import org.opensaml.saml.common.messaging.context.SAMLPeerEntityContext;
 import org.opensaml.saml.saml2.core.AuthnRequest;
+import org.opensaml.saml.saml2.metadata.RoleDescriptor;
 import org.opensaml.saml.saml2.metadata.SPSSODescriptor;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Strings;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Message handler implementation that enforces the AuthnRequestsSigned flag of 
@@ -95,13 +97,14 @@ public class SAML2AuthnRequestsSignedSecurityHandler extends AbstractMessageHand
         }
         
         if (!(metadataContext.getRoleDescriptor() instanceof SPSSODescriptor)) {
+            final RoleDescriptor role = metadataContext.getRoleDescriptor();
             log.warn("RoleDescriptor was not an SPSSODescriptor, it was a {}. Unable to evaluate rule", 
-                    metadataContext.getRoleDescriptor().getClass().getName());
+                    role != null ? role.getClass().getName() : "(null)");
             return false;
         }
         
         final SPSSODescriptor spssoRole = (SPSSODescriptor) metadataContext.getRoleDescriptor();
-        
+        assert spssoRole != null;
         if (spssoRole.isAuthnRequestsSigned() == Boolean.TRUE) {
             log.debug("SPSSODescriptor for entity ID '{}' indicates AuthnRequests must be signed", messageIssuer);
             return true;

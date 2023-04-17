@@ -20,7 +20,6 @@ package org.opensaml.saml.saml2.binding.security.impl;
 import java.io.ByteArrayInputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -37,7 +36,6 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCriterion;
 import org.opensaml.xmlsec.signature.KeyInfo;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 
 import com.google.common.base.Strings;
@@ -47,8 +45,10 @@ import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.shared.xml.ParserPool;
@@ -177,7 +177,7 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
         final String kiBase64 = getHttpServletRequest().getParameter("KeyInfo");
         if (Strings.isNullOrEmpty(kiBase64)) {
             log.debug("Form control data did not contain a KeyInfo");
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
         log.debug("Found a KeyInfo in form control data, extracting validation credentials");
 
@@ -204,11 +204,6 @@ public class SAML2HTTPPostSimpleSignSecurityHandler extends BaseSAMLSimpleSignat
         } catch (final UnmarshallingException e) {
             log.warn("Error unmarshalling KeyInfo data: {}", e.getMessage());
             throw new MessageHandlerException("Error unmarshalling KeyInfo data", e);
-        }
-
-        if (keyInfo == null) {
-            log.warn("Could not successfully extract KeyInfo object from the form control data");
-            return Collections.emptyList();
         }
 
         final List<Credential> credentials = new ArrayList<>();

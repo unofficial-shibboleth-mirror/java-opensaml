@@ -66,13 +66,13 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
 
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.ensureSubcontext(SOAP11Context.class).setEnvelope(env);
         
         final ExtractChannelBindingsHeadersHandler handler = new ExtractChannelBindingsHeadersHandler();
         handler.initialize();
         
         handler.invoke(messageCtx);
-        final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(SOAP11Context.class).getSubcontext(
+        final ChannelBindingsContext cbCtx = messageCtx.ensureSubcontext(SOAP11Context.class).getSubcontext(
                 ChannelBindingsContext.class);
         Assert.assertNull(cbCtx);
     }
@@ -89,7 +89,7 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
 
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.ensureSubcontext(SOAP11Context.class).setEnvelope(env);
         
         final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
@@ -107,9 +107,9 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
         handler.initialize();
         
         handler.invoke(messageCtx);
-        final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(SOAP11Context.class).getSubcontext(
+        final ChannelBindingsContext cbCtx = messageCtx.ensureSubcontext(SOAP11Context.class).getSubcontext(
                 ChannelBindingsContext.class);
-        Assert.assertNotNull(cbCtx);
+        assert cbCtx != null;
         Assert.assertEquals(cbCtx.getChannelBindings().size(), 2);
         
         final ChannelBindings[] array = cbCtx.getChannelBindings().toArray(new ChannelBindings[2]);
@@ -129,7 +129,7 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
 
         final MessageContext messageCtx = new MessageContext();
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
-        messageCtx.getSubcontext(SOAP11Context.class, true).setEnvelope(env);
+        messageCtx.ensureSubcontext(SOAP11Context.class).setEnvelope(env);
         
         final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
@@ -148,9 +148,9 @@ public class ExtractChannelBindingsHeadersHandlerTest extends OpenSAMLInitBaseTe
         handler.initialize();
         
         handler.invoke(messageCtx);
-        final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(SOAP11Context.class).getSubcontext(
+        final ChannelBindingsContext cbCtx = messageCtx.ensureSubcontext(SOAP11Context.class).getSubcontext(
                 ChannelBindingsContext.class);
-        Assert.assertNotNull(cbCtx);
+        assert cbCtx != null;
         Assert.assertEquals(cbCtx.getChannelBindings().size(), 1);
         
         final ChannelBindings[] array = cbCtx.getChannelBindings().toArray(new ChannelBindings[2]);

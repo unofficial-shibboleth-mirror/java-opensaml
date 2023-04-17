@@ -26,6 +26,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class BearerSubjectConfirmationValidatorTest extends BaseAssertionValidationTest {
     
     private BearerSubjectConfirmationValidator validator;
@@ -35,7 +36,7 @@ public class BearerSubjectConfirmationValidatorTest extends BaseAssertionValidat
     @BeforeMethod(dependsOnMethods="setUpBasicAssertion")
     public void setUp() {
         validator = new BearerSubjectConfirmationValidator();
-        subjectConfirmation = getAssertion().getSubject().getSubjectConfirmations().get(0);
+        subjectConfirmation = getSubject().getSubjectConfirmations().get(0);
     }
     
     @Test

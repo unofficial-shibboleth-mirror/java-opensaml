@@ -28,6 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+@SuppressWarnings("javadoc")
 public class ProxyRestrictionConditionValidatorTest extends BaseAssertionValidationTest {
     
     private ProxyRestrictionConditionValidator validator;
@@ -38,7 +39,7 @@ public class ProxyRestrictionConditionValidatorTest extends BaseAssertionValidat
     public void setUp() {
         validator = new ProxyRestrictionConditionValidator();
         condition = (Condition) buildXMLObject(ProxyRestriction.DEFAULT_ELEMENT_NAME);
-        getAssertion().getConditions().getConditions().add(condition);
+        getConditions().getConditions().add(condition);
     }
     
     @Test
@@ -52,7 +53,7 @@ public class ProxyRestrictionConditionValidatorTest extends BaseAssertionValidat
     @Test
     public void testUnexpected() throws AssertionValidationException {
         condition = buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME);
-        getAssertion().getConditions().getConditions().add(condition);
+        getConditions().getConditions().add(condition);
         
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         

@@ -33,9 +33,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class AudienceRestrictionConditionValidatorTest extends BaseAssertionValidationTest {
     
     private String expectedAudienceURI = "https://sp.example.com";
@@ -53,7 +51,7 @@ public class AudienceRestrictionConditionValidatorTest extends BaseAssertionVali
         audience.setURI(expectedAudienceURI);
         condition = buildXMLObject(AudienceRestriction.DEFAULT_ELEMENT_NAME);
         ((AudienceRestriction)condition).getAudiences().add(audience);
-        getAssertion().getConditions().getConditions().add(condition);
+        getConditions().getConditions().add(condition);
     }
     
     @Test
@@ -106,7 +104,7 @@ public class AudienceRestrictionConditionValidatorTest extends BaseAssertionVali
     @Test
     public void testUnexpectedCondition() throws AssertionValidationException {
         condition = buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME);
-        getAssertion().getConditions().getConditions().add(condition);
+        getConditions().getConditions().add(condition);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.COND_VALID_AUDIENCES, Collections.singleton(expectedAudienceURI));

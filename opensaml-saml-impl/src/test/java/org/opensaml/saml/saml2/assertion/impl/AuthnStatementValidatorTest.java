@@ -21,6 +21,8 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.saml.common.assertion.AssertionValidationException;
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
@@ -29,11 +31,16 @@ import org.opensaml.saml.saml2.assertion.tests.BaseAssertionValidationTest;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.AttributeStatement;
 import org.opensaml.saml.saml2.core.AuthnContext;
+import org.opensaml.saml.saml2.core.AuthnContextClassRef;
 import org.opensaml.saml.saml2.core.AuthnStatement;
+import org.opensaml.saml.saml2.core.SubjectLocality;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.logic.Constraint;
+
+@SuppressWarnings("javadoc")
 public class AuthnStatementValidatorTest extends BaseAssertionValidationTest {
     
     private AuthnStatementValidator validator;
@@ -89,7 +96,7 @@ public class AuthnStatementValidatorTest extends BaseAssertionValidationTest {
 
     @Test
     public void testInvalidAddress() throws AssertionValidationException {
-        authnStatement.getSubjectLocality().setAddress("1.2.3.4");
+        getSubjectLocality().setAddress("1.2.3.4");
         
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
@@ -99,7 +106,7 @@ public class AuthnStatementValidatorTest extends BaseAssertionValidationTest {
 
     @Test
     public void testInvalidAddressWithAddressCheckDisabled() throws AssertionValidationException {
-        authnStatement.getSubjectLocality().setAddress("1.2.3.4");
+        getSubjectLocality().setAddress("1.2.3.4");
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
         staticParams.put(SAML2AssertionValidationParameters.STMT_AUTHN_CHECK_ADDRESS, Boolean.FALSE);
@@ -134,7 +141,7 @@ public class AuthnStatementValidatorTest extends BaseAssertionValidationTest {
     
     @Test
     public void testNoAddress() throws AssertionValidationException {
-        authnStatement.getSubjectLocality().setAddress(null);
+        getSubjectLocality().setAddress(null);
         
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         
@@ -157,10 +164,17 @@ public class AuthnStatementValidatorTest extends BaseAssertionValidationTest {
         // Just testing that if a subclass overrides this method, it gets processed.
         validator = new AuthnStatementValidator() {
             /** {@inheritDoc} */
-            protected ValidationResult validateAuthnContext(AuthnStatement statement, Assertion assertion,
-                    ValidationContext context) throws AssertionValidationException {
-                return AuthnContext.SMARTCARD_AUTHN_CTX.equals(statement.getAuthnContext().getAuthnContextClassRef().getURI())
-                        ? ValidationResult.VALID : ValidationResult.INVALID;
+            @Nonnull protected ValidationResult validateAuthnContext(@Nonnull final AuthnStatement statement,
+                    @Nonnull final Assertion assertion, @Nonnull final ValidationContext context) throws AssertionValidationException {
+                final AuthnContext ac = statement.getAuthnContext();
+                if (ac != null) {
+                    final AuthnContextClassRef acRef = ac.getAuthnContextClassRef();
+                    if (acRef != null) {
+                        return AuthnContext.SMARTCARD_AUTHN_CTX.equals(acRef.getURI())
+                                ? ValidationResult.VALID : ValidationResult.INVALID;
+                    }
+                }
+                return ValidationResult.INVALID;
             }
         };
         
@@ -174,8 +188,9 @@ public class AuthnStatementValidatorTest extends BaseAssertionValidationTest {
     public void testValidationThrows() throws AssertionValidationException {
         validator = new AuthnStatementValidator() {
             /** {@inheritDoc} */
-            protected ValidationResult validateAuthnInstant(AuthnStatement statement, Assertion assertion,
-                    ValidationContext context) throws AssertionValidationException {
+            @Nonnull protected ValidationResult validateAuthnInstant(@Nonnull final AuthnStatement statement,
+                    @Nonnull final Assertion assertion, @Nonnull final ValidationContext context)
+                            throws AssertionValidationException {
                 throw new RuntimeException();
             }
         };
@@ -193,6 +208,9 @@ public class AuthnStatementValidatorTest extends BaseAssertionValidationTest {
         Assert.assertEquals(validator.validate(buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME), getAssertion(), validationContext), 
                 ValidationResult.INDETERMINATE);  
     }
-    
+ 
+    @Nonnull private SubjectLocality getSubjectLocality() {
+        return Constraint.isNotNull(authnStatement.getSubjectLocality(), "SubjectLocality was null");
+    }
 
 }

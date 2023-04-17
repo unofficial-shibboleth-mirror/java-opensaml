@@ -28,9 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class DelegationRestrictionConditionValidatorTest extends BaseAssertionValidationTest {
     
     private DelegationRestrictionConditionValidator validator;
@@ -41,7 +39,7 @@ public class DelegationRestrictionConditionValidatorTest extends BaseAssertionVa
     public void setUp() {
         validator = new DelegationRestrictionConditionValidator();
         condition = (Condition) getBuilder(DelegationRestrictionType.TYPE_NAME).buildObject(Condition.DEFAULT_ELEMENT_NAME, DelegationRestrictionType.TYPE_NAME);
-        getAssertion().getConditions().getConditions().add(condition);
+        getConditions().getConditions().add(condition);
     }
     
     @Test
@@ -55,7 +53,7 @@ public class DelegationRestrictionConditionValidatorTest extends BaseAssertionVa
     @Test
     public void testUnexpected() throws AssertionValidationException {
         condition = buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME);
-        getAssertion().getConditions().getConditions().add(condition);
+        getConditions().getConditions().add(condition);
         
         ValidationContext validationContext = new ValidationContext(buildBasicStaticParameters());
         

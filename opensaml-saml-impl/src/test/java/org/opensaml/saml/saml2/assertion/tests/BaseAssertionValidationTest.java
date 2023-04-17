@@ -114,7 +114,7 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
         assertion.setSubject(subject);
         assertion.setConditions(buildBasicConditions());
         
-        SubjectConfirmation subjectConfirmation = buildXMLObject(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
+        final SubjectConfirmation subjectConfirmation = buildXMLObject(SubjectConfirmation.DEFAULT_ELEMENT_NAME);
         // Default to bearer with basic valid confirmation data, but the test can change as appropriate
         subjectConfirmation.setMethod(SubjectConfirmation.METHOD_BEARER);
         subjectConfirmation.setSubjectConfirmationData(buildBasicSubjectConfirmationData());

@@ -42,6 +42,11 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
     
     private SPSSODescriptor spssoDescriptor;
 
+    /**
+     * Test set up.
+     * 
+     * @throws Exception
+     */
     @BeforeMethod
     protected void setUp() throws Exception {
         handler = new SAML2AuthnRequestsSignedSecurityHandler();
@@ -51,9 +56,9 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
         spssoDescriptor.setAuthnRequestsSigned(false);
         
         messageContext = new MessageContext();
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLMetadataContext.class, true).setRoleDescriptor(spssoDescriptor);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(issuer);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLMetadataContext.class).setRoleDescriptor(spssoDescriptor);
     }
     
     /**
@@ -130,7 +135,7 @@ public class SAML2AuthnRequestsSignedSecurityHandlerTest extends XMLObjectBaseTe
         
         spssoDescriptor.setAuthnRequestsSigned(true);
         
-        messageContext.getSubcontext(SAMLBindingContext.class, true).setHasBindingSignature(true);
+        messageContext.ensureSubcontext(SAMLBindingContext.class).setHasBindingSignature(true);
         
         handler.invoke(messageContext);
     }

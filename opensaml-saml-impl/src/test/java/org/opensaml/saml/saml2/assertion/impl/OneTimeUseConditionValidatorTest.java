@@ -42,6 +42,7 @@ import org.testng.annotations.Test;
 /**
  * Unit test for {@link OneTimeUseConditionValidator}.
  */
+@SuppressWarnings("javadoc")
 public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTest {
     
     private MemoryStorageService storageService;
@@ -64,7 +65,7 @@ public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTes
         
         validator = new OneTimeUseConditionValidator(replayCache, null);
         condition = buildXMLObject(OneTimeUse.DEFAULT_ELEMENT_NAME);
-        getAssertion().getConditions().getConditions().add(condition);
+        getConditions().getConditions().add(condition);
     }
     
     @AfterMethod

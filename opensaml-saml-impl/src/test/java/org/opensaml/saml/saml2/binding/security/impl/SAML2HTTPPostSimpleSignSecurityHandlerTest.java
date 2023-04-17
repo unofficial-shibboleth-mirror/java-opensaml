@@ -230,10 +230,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         
         messageContext = new MessageContext();
         messageContext.setMessage(buildInboundSAMLMessage());
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setEntityId(issuer);
-        messageContext.getSubcontext(SAMLPeerEntityContext.class, true).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
-        messageContext.getSubcontext(SAMLProtocolContext.class, true).setProtocol(SAMLConstants.SAML20P_NS);
-        messageContext.getSubcontext(SecurityParametersContext.class, true).setSignatureValidationParameters(sigValParams);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setEntityId(issuer);
+        messageContext.ensureSubcontext(SAMLPeerEntityContext.class).setRole(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        messageContext.ensureSubcontext(SAMLProtocolContext.class).setProtocol(SAMLConstants.SAML20P_NS);
+        messageContext.ensureSubcontext(SecurityParametersContext.class).setSignatureValidationParameters(sigValParams);
     }
 
     /**
@@ -247,10 +247,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), issuer, 
+        Assert.assertEquals(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
         //TODO before this was evaling isInboundSAMLMessageAuthenticated
-        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
 
@@ -356,10 +356,10 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
 
         handler.invoke(messageContext);
         
-        Assert.assertEquals(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).getEntityId(), issuer, 
+        Assert.assertEquals(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).getEntityId(), issuer, 
                 "Unexpected value for Issuer found");
         //TODO before this was evaling isInboundSAMLMessageAuthenticated
-        Assert.assertTrue(messageContext.getSubcontext(SAMLPeerEntityContext.class, true).isAuthenticated(), 
+        Assert.assertTrue(messageContext.ensureSubcontext(SAMLPeerEntityContext.class).isAuthenticated(), 
                 "Unexpected value for context authentication state");
     }
 
@@ -406,13 +406,13 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         final MessageContext mc = new MessageContext();
         mc.setMessage(buildInboundSAMLMessage());
         SAMLBindingSupport.setRelayState(mc, expectedRelayValue);
-        mc.getSubcontext(SAMLPeerEntityContext.class, true)
-            .getSubcontext(SAMLEndpointContext.class, true).setEndpoint(samlEndpoint);
+        mc.ensureSubcontext(SAMLPeerEntityContext.class)
+            .ensureSubcontext(SAMLEndpointContext.class).setEndpoint(samlEndpoint);
         
         final SignatureSigningParameters signingParameters = new SignatureSigningParameters();
         signingParameters.setSigningCredential(signingX509Cred);
         signingParameters.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1);
-        mc.getSubcontext(SecurityParametersContext.class, true).setSignatureSigningParameters(signingParameters);
+        mc.ensureSubcontext(SecurityParametersContext.class).setSignatureSigningParameters(signingParameters);
         
         final MockHttpServletResponse response = new MockHttpServletResponse();
         
@@ -484,13 +484,18 @@ public class SAML2HTTPPostSimpleSignSecurityHandlerTest extends XMLObjectBaseTes
         Element current = doc.getDocumentElement();
         // head
         current = ElementSupport.getFirstChildElement(current);
+        assert current != null;
         // body
         current = ElementSupport.getNextSiblingElement(current);
+        assert current != null;
         // form
         current = ElementSupport.getFirstChildElement(current);
+        assert current != null;
         current = ElementSupport.getNextSiblingElement(current);
+        assert current != null;
         // div
         current = ElementSupport.getFirstChildElement(current);
+        assert current != null;
         // list of form input fields
         List<Element> inputs =
                 ElementSupport.getChildElementsByTagNameNS(current, null, "input");

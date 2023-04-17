@@ -44,9 +44,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.codec.EncodingException;
 
-/**
- *
- */
+@SuppressWarnings("javadoc")
 public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionValidationTest {
     
     private HolderOfKeySubjectConfirmationValidator validator;
@@ -73,12 +71,12 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
     protected void setUp() throws NoSuchAlgorithmException, NoSuchProviderException {
         validator = new HolderOfKeySubjectConfirmationValidator();
         
-        subjectConfirmation = getAssertion().getSubject().getSubjectConfirmations().get(0);
+        subjectConfirmation = getSubject().getSubjectConfirmations().get(0);
         subjectConfirmation.setMethod(SubjectConfirmation.METHOD_HOLDER_OF_KEY);
         subjectConfirmationData = buildBasicSubjectConfirmationData(KeyInfoConfirmationDataType.TYPE_NAME);
-        subjectConfirmation.setSubjectConfirmationData(subjectConfirmationData);
         keyInfo = buildXMLObject(KeyInfo.DEFAULT_ELEMENT_NAME);
-        ((KeyInfoConfirmationDataType)subjectConfirmation.getSubjectConfirmationData()).getKeyInfos().add(keyInfo);
+        ((KeyInfoConfirmationDataType)subjectConfirmationData).getKeyInfos().add(keyInfo);
+        subjectConfirmation.setSubjectConfirmationData(subjectConfirmationData);
     }
 
     @Test

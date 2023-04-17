@@ -41,12 +41,17 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
     
     private ExtractChannelBindingsExtensionsHandler handler;
     
+    /**
+     * Test set up.
+     * 
+     * @throws ComponentInitializationException
+     */
     @BeforeMethod public void setUp() throws ComponentInitializationException {
         handler = new ExtractChannelBindingsExtensionsHandler();
         handler.initialize();
         
         messageCtx = new MessageContext();
-        messageCtx.getSubcontext(SAMLBindingContext.class, true).setHasBindingSignature(true);
+        messageCtx.ensureSubcontext(SAMLBindingContext.class).setHasBindingSignature(true);
     }
     
     /**
@@ -86,7 +91,7 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
                 Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);
 
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
-        ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);
+        ((AuthnRequest) messageCtx.ensureMessage()).setExtensions(ext);
         
         final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
@@ -98,7 +103,7 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
         cb2.setValue("bar");
         ext.getUnknownXMLObjects().add(cb2);
         
-        messageCtx.getSubcontext(SAMLBindingContext.class).setHasBindingSignature(false);
+        messageCtx.ensureSubcontext(SAMLBindingContext.class).setHasBindingSignature(false);
         
         handler.invoke(messageCtx);
         final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(ChannelBindingsContext.class);
@@ -115,7 +120,7 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
                 Extensions.DEFAULT_ELEMENT_NAME).buildObject(Extensions.DEFAULT_ELEMENT_NAME);
 
         messageCtx.setMessage(SAML2ActionTestingSupport.buildAuthnRequest());
-        ((AuthnRequest) messageCtx.getMessage()).setExtensions(ext);
+        ((AuthnRequest) messageCtx.ensureMessage()).setExtensions(ext);
         
         final ChannelBindings cb = XMLObjectProviderRegistrySupport.getBuilderFactory().<ChannelBindings>ensureBuilder(
                 ChannelBindings.DEFAULT_ELEMENT_NAME).buildObject(ChannelBindings.DEFAULT_ELEMENT_NAME);
@@ -129,7 +134,7 @@ public class ExtractChannelBindingsExtensionsHandlerTest extends OpenSAMLInitBas
         
         handler.invoke(messageCtx);
         final ChannelBindingsContext cbCtx = messageCtx.getSubcontext(ChannelBindingsContext.class);
-        Assert.assertNotNull(cbCtx);
+        assert cbCtx != null;
         Assert.assertEquals(cbCtx.getChannelBindings().size(), 2);
         
         final ChannelBindings[] array = cbCtx.getChannelBindings().toArray(new ChannelBindings[2]);

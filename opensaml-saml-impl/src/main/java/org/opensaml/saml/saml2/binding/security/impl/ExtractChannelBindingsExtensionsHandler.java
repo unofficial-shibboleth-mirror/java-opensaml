@@ -34,7 +34,8 @@ import org.opensaml.saml.saml2.core.Extensions;
 import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * MessageHandler to process {@link ChannelBindings} extensions in an incoming SAML message
@@ -64,10 +65,10 @@ public class ExtractChannelBindingsExtensionsHandler extends AbstractMessageHand
     protected void doInvoke(@Nonnull final MessageContext messageContext) throws MessageHandlerException {
 
         Extensions extensions = null;
-        if (messageContext.getMessage() instanceof RequestAbstractType) {
-            extensions = ((RequestAbstractType) messageContext.getMessage()).getExtensions();
-        } else if (messageContext.getMessage() instanceof StatusResponseType) {
-            extensions = ((StatusResponseType) messageContext.getMessage()).getExtensions();
+        if (messageContext.getMessage() instanceof RequestAbstractType req) {
+            extensions = req.getExtensions();
+        } else if (messageContext.getMessage() instanceof StatusResponseType resp) {
+            extensions = resp.getExtensions();
         } else {
             log.debug("{} Message was not of a supported type", getLogPrefix());
             return;

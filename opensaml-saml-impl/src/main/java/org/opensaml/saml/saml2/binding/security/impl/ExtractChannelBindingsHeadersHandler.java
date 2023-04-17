@@ -33,7 +33,8 @@ import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.messaging.context.SOAP11Context;
 import org.opensaml.soap.soap11.ActorBearing;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * MessageHandler to process {@link ChannelBindings} SOAP header blocks in an incoming SOAP envelope
@@ -98,8 +99,10 @@ public class ExtractChannelBindingsHeadersHandler extends AbstractMessageHandler
             log.debug("{} No ChannelBindings header blocks found", getLogPrefix());
         } else {
             log.debug("{} {} ChannelBindings header block(s) found", getLogPrefix(), channelBindings.size());
-            messageContext.getSubcontext(SOAP11Context.class).ensureSubcontext(ChannelBindingsContext.class).
-                getChannelBindings().addAll(channelBindings);
+            messageContext.ensureSubcontext(SOAP11Context.class)
+                .ensureSubcontext(ChannelBindingsContext.class)
+                .getChannelBindings()
+                .addAll(channelBindings);
         }
     }
     
