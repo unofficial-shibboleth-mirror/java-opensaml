@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml1.profile.impl;
 
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
-import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.profile.testing.ActionTestingSupport;
@@ -35,6 +34,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddResponseShell} unit test. */
+@SuppressWarnings("javadoc")
 public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {
 
     private AddResponseShell action;
@@ -50,18 +50,17 @@ public class AddResponseShellTest extends OpenSAMLInitBaseTestCase {
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        final MessageContext outMsgCtx = prc.getOutboundMessageContext();
-        final Response response = (Response) outMsgCtx.getMessage();
+        final Response response = prc.ensureOutboundMessageContext().ensureMessage(Response.class);
 
-        Assert.assertNotNull(response);
         Assert.assertNotNull(response.getID());
         Assert.assertNotNull(response.getIssueInstant());
         Assert.assertEquals(response.getVersion(), SAMLVersion.VERSION_11);
 
         final Status status = response.getStatus();
-        Assert.assertNotNull(status);
-        Assert.assertNotNull(status.getStatusCode());
-        Assert.assertEquals(status.getStatusCode().getValue(), StatusCode.SUCCESS);
+        assert status != null;
+        final StatusCode code = status.getStatusCode();
+        assert code != null;
+        Assert.assertEquals(code.getValue(), StatusCode.SUCCESS);
     }
 
     @Test public void testAddResponseWhenResponseAlreadyExist() {

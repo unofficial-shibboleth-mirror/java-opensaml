@@ -21,7 +21,6 @@ import java.io.IOException;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.navigate.MessageLookup;
 import org.opensaml.profile.action.AbstractProfileAction;
@@ -39,11 +38,12 @@ import org.opensaml.saml.saml1.core.AssertionArtifact;
 import org.opensaml.saml.saml1.core.Request;
 import org.opensaml.saml.saml1.core.Response;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that resolves SAML 1.x artifacts inside a {@link Request} located via a lookup strategy,
@@ -78,16 +78,16 @@ public class ResolveArtifacts extends AbstractProfileAction {
     @NonnullAfterInit private SAMLArtifactMap artifactMap;
 
     /** Request to process. */
-    @Nullable private Request request;
+    @NonnullBeforeExec private Request request;
     
     /** Response to populate. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
     
     /** Identity of issuer. */
-    @Nullable private String issuerId;
+    @NonnullBeforeExec private String issuerId;
 
     /** Identity of requester. */
-    @Nullable private String requesterId;
+    @NonnullBeforeExec private String requesterId;
     
     /** Constructor. */
     public ResolveArtifacts() {
@@ -171,6 +171,10 @@ public class ResolveArtifacts extends AbstractProfileAction {
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
         
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         request = requestLookupStrategy.apply(profileRequestContext);
         if (request == null) {
             log.debug("{} No request located", getLogPrefix());
@@ -203,9 +207,10 @@ public class ResolveArtifacts extends AbstractProfileAction {
             return false;
         }
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
 
+// Checkstyle: CyclomaticComplexity OFF
     /** {@inheritDoc} */
     @Override
     protected void doExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
@@ -214,7 +219,11 @@ public class ResolveArtifacts extends AbstractProfileAction {
         
         try {
             for (final AssertionArtifact artifact : request.getAssertionArtifacts()) {
-                final SAMLArtifactMapEntry entry = artifactMap.get(artifact.getValue());
+                final String aval = artifact.getValue();
+                if (aval == null) {
+                    continue;
+                }
+                final SAMLArtifactMapEntry entry = artifactMap.get(aval);
                 if (entry == null) {
                     log.warn("{} Unresolvable AssertionArtifact '{}' from relying party '{}'", getLogPrefix(),
                             artifact.getValue(), requesterId);
@@ -222,7 +231,7 @@ public class ResolveArtifacts extends AbstractProfileAction {
                     break;
                 }
                 
-                artifactMap.remove(artifact.getValue());
+                artifactMap.remove(aval);
                 
                 if (!entry.getIssuerId().equals(issuerId)) {
                     log.warn("{} Artifact issuer mismatch, issued by '{}' but IdP has entityID of '{}'",
@@ -253,8 +262,12 @@ public class ResolveArtifacts extends AbstractProfileAction {
             
             // Make sure we remove everything requested.
             for (final AssertionArtifact artifact : request.getAssertionArtifacts()) {
+                final String aval = artifact.getValue();
+                if (aval == null) {
+                    continue;
+                }
                 try {
-                    artifactMap.remove(artifact.getValue());
+                    artifactMap.remove(aval);
                 } catch (final IOException e) {
                     log.error("{} Error removing mapping for artifact '{}'", getLogPrefix(),
                             artifact.getValue());
@@ -264,5 +277,6 @@ public class ResolveArtifacts extends AbstractProfileAction {
             ActionSupport.buildEvent(profileRequestContext, SAMLEventIds.UNABLE_RESOLVE_ARTIFACT);
         }
     }
+// Checkstyle: CyclomaticComplexity ON
 
 }

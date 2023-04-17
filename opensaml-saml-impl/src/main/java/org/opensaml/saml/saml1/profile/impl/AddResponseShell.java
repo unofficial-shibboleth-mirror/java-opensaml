@@ -21,7 +21,6 @@ import java.time.Instant;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObjectBuilderFactory;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
@@ -36,9 +35,10 @@ import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Status;
 import org.opensaml.saml.saml1.core.StatusCode;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy;
 import net.shibboleth.shared.security.IdentifierGenerationStrategy.ProviderType;
 
@@ -67,7 +67,7 @@ public class AddResponseShell extends AbstractProfileAction {
     private boolean overwriteExisting;
     
     /** The generator to use. */
-    @Nullable private IdentifierGenerationStrategy idGenerator;
+    @NonnullBeforeExec private IdentifierGenerationStrategy idGenerator;
     
     /** Constructor. */
     public AddResponseShell() {
@@ -153,7 +153,7 @@ public class AddResponseShell extends AbstractProfileAction {
         response.setStatus(status);
         response.setVersion(SAMLVersion.VERSION_11);
 
-        profileRequestContext.getOutboundMessageContext().setMessage(response);
+        profileRequestContext.ensureOutboundMessageContext().setMessage(response);
     }
 
 }

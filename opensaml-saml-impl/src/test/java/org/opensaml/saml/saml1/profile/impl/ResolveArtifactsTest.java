@@ -38,6 +38,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** {@link ResolveArtifacts} unit test. */
+@SuppressWarnings("javadoc")
 public class ResolveArtifactsTest extends OpenSAMLInitBaseTestCase {
 
     private BasicSAMLArtifactMap artifactMap;
@@ -49,7 +50,7 @@ public class ResolveArtifactsTest extends OpenSAMLInitBaseTestCase {
     @BeforeMethod public void setUp() throws ComponentInitializationException {
         prc = new RequestContextBuilder().setOutboundMessage(
                 SAML1ActionTestingSupport.buildResponse()).buildProfileRequestContext();
-        prc.getInboundMessageContext().getSubcontext(SAMLPeerEntityContext.class, true).setEntityId("SP");
+        prc.ensureInboundMessageContext().ensureSubcontext(SAMLPeerEntityContext.class).setEntityId("SP");
         
         artifactMap = new BasicSAMLArtifactMap();
         artifactMap.initialize();
@@ -66,77 +67,77 @@ public class ResolveArtifactsTest extends OpenSAMLInitBaseTestCase {
     }
 
     @Test public void testNoArtifacts() {
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest((String[]) null));
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest((String[]) null));
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
     
     @Test public void testNoResponse() {
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
-        prc.getOutboundMessageContext().setMessage(null);
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
+        prc.ensureOutboundMessageContext().setMessage(null);
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
     }
     
     @Test public void testMissingArtifacts() throws IOException {
         artifactMap.put("bar", "SP", "IdP", SAML1ActionTestingSupport.buildAssertion());
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo","bar"));
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo","bar"));
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.UNABLE_RESOLVE_ARTIFACT);
-        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().isEmpty());
+        Assert.assertTrue(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().isEmpty());
         Assert.assertNull(artifactMap.get("bar"));
     }
 
     @Test public void testWrongMessageType() throws IOException {
         artifactMap.put("foo", "SP", "IdP", SAML1ActionTestingSupport.buildResponse());
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.UNABLE_RESOLVE_ARTIFACT);
-        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().isEmpty());
+        Assert.assertTrue(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().isEmpty());
         Assert.assertNull(artifactMap.get("foo"));
     }
 
     @Test public void testWrongSP() throws IOException {
         artifactMap.put("foo", "SP2", "IdP", SAML1ActionTestingSupport.buildAssertion());
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.UNABLE_RESOLVE_ARTIFACT);
-        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().isEmpty());
+        Assert.assertTrue(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().isEmpty());
         Assert.assertNull(artifactMap.get("foo"));
     }
 
     @Test public void testWrongIdP() throws IOException {
         artifactMap.put("foo", "SP", "IdP2", SAML1ActionTestingSupport.buildAssertion());
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
         
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, SAMLEventIds.UNABLE_RESOLVE_ARTIFACT);
-        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().isEmpty());
+        Assert.assertTrue(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().isEmpty());
         Assert.assertNull(artifactMap.get("foo"));
     }
 
     @Test public void testOne() throws IOException {
         artifactMap.put("foo", "SP", "IdP", SAML1ActionTestingSupport.buildAssertion());
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo"));
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertEquals(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().size(), 1);
+        Assert.assertEquals(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().size(), 1);
         Assert.assertNull(artifactMap.get("foo"));
     }
 
     @Test public void testMultiple() throws IOException {
         artifactMap.put("foo", "SP", "IdP", SAML1ActionTestingSupport.buildAssertion());
         artifactMap.put("bar", "SP", "IdP", SAML1ActionTestingSupport.buildAssertion());
-        prc.getInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo", "bar"));
+        prc.ensureInboundMessageContext().setMessage(SAML1ActionTestingSupport.buildArtifactRequest("foo", "bar"));
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertEquals(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().size(), 2);
+        Assert.assertEquals(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().size(), 2);
         Assert.assertNull(artifactMap.get("foo"));
         Assert.assertNull(artifactMap.get("bar"));
     }

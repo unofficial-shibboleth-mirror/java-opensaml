@@ -18,13 +18,10 @@
 package org.opensaml.saml.saml1.profile.impl;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
-import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.messaging.context.navigate.MessageLookup;
@@ -44,11 +41,13 @@ import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.saml.saml1.core.SubjectStatement;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that builds {@link SubjectConfirmation} and adds it to the {@link Subject} of all the statements
@@ -85,7 +84,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     @Nonnull @NonnullElements private Collection<String> confirmationMethods;
     
     /** Response to modify. */
-    @Nullable private Response response;
+    @NonnullBeforeExec private Response response;
     
     /** Flag indicating whether the outbound message is being issued via the Artifact profile. */
     private boolean artifactProfile;
@@ -105,7 +104,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         overwriteExisting = true;
         
         responseLookupStrategy = new MessageLookup<>(Response.class).compose(new OutboundMessageContextLookup());
-        confirmationMethods = Collections.emptyList();
+        confirmationMethods = CollectionSupport.emptyList();
     }
     
     /**
@@ -137,7 +136,7 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
         checkSetterPreconditions();
         Constraint.isNotEmpty(methods, "Confirmation method collection cannot be null or empty");
         
-        confirmationMethods = List.copyOf(methods);
+        confirmationMethods = CollectionSupport.copyToList(methods);
     }
     
     /** {@inheritDoc} */
@@ -153,6 +152,11 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
     /** {@inheritDoc} */
     @Override
     protected boolean doPreExecute(@Nonnull final ProfileRequestContext profileRequestContext) {
+        
+        if (!super.doPreExecute(profileRequestContext)) {
+            return false;
+        }
+        
         log.debug("{} Attempting to add SubjectConfirmation to assertions in outgoing Response", getLogPrefix());
 
         response = responseLookupStrategy.apply(profileRequestContext);
@@ -165,12 +169,12 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
             return false;
         }
         
-        final SAMLBindingContext bindingCtx = profileRequestContext.getOutboundMessageContext().getSubcontext(
+        final SAMLBindingContext bindingCtx = profileRequestContext.ensureOutboundMessageContext().getSubcontext(
                 SAMLBindingContext.class);
         artifactProfile = bindingCtx != null
                 && Objects.equals(bindingCtx.getBindingUri(), SAMLConstants.SAML1_ARTIFACT_BINDING_URI);
         
-        return super.doPreExecute(profileRequestContext);
+        return true;
     }
     
 // Checkstyle: CyclomaticComplexity OFF    
@@ -222,11 +226,12 @@ public class AddSubjectConfirmationToSubjects extends AbstractProfileAction {
      * @return the subject to which the confirmation will be added
      */
     @Nonnull private Subject getStatementSubject(@Nonnull final SubjectStatement statement) {
-        if (statement.getSubject() != null) {
-            return statement.getSubject();
+        Subject subject = statement.getSubject();
+        if (subject != null) {
+            return subject;
         }
         
-        final Subject subject = subjectBuilder.buildObject();
+        subject = subjectBuilder.buildObject();
         statement.setSubject(subject);
         return subject;
     }

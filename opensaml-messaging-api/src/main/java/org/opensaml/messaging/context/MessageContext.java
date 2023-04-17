@@ -59,6 +59,22 @@ public final class MessageContext extends BaseContext {
     @Nonnull public Object ensureMessage() {
         return Constraint.isNotNull(msg, "Message was null");
     }
+    
+    /**
+     * Get the message represented by the message context, raising a {@link ConstraintViolationException}
+     * or {@link ClassCastException} if the message is absent or of the incorrect type.
+     * 
+     * @param <T> type of message
+     * @param claz class of message type
+     * 
+     * @return properly typed message
+     * 
+     * @since 5.0.0
+     */
+    @SuppressWarnings("null")
+    @Nonnull public <T> T ensureMessage(@Nonnull final Class<T> claz) {
+        return claz.cast(ensureMessage());
+    }
 
     /**
      * Set the message represented by the message context.

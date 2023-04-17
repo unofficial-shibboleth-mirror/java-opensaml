@@ -88,9 +88,10 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertNotNull(response.getAssertions());
         Assert.assertEquals(response.getAssertions().size(), 1);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getDoNotCacheConditions());
-        Assert.assertEquals(assertion.getConditions().getDoNotCacheConditions().size(), 1);
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getDoNotCacheConditions());
+        Assert.assertEquals(c.getDoNotCacheConditions().size(), 1);
     }
 
     /**
@@ -119,9 +120,10 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getDoNotCacheConditions());
-        Assert.assertEquals(assertion.getConditions().getDoNotCacheConditions().size(), 1);
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getDoNotCacheConditions());
+        Assert.assertEquals(c.getDoNotCacheConditions().size(), 1);
     }
 
     /**
@@ -155,9 +157,10 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
 
-        Assert.assertNotNull(assertion.getConditions());
-        Assert.assertNotNull(assertion.getConditions().getDoNotCacheConditions());
-        Assert.assertEquals(assertion.getConditions().getDoNotCacheConditions().size(), 1);
+        final Conditions c = assertion.getConditions();
+        assert c != null;
+        Assert.assertNotNull(c.getDoNotCacheConditions());
+        Assert.assertEquals(c.getDoNotCacheConditions().size(), 1);
     }
 
     /**
@@ -183,9 +186,10 @@ public class AddDoNotCacheConditionToAssertionsTest extends OpenSAMLInitBaseTest
         Assert.assertEquals(response.getAssertions().size(), 3);
 
         for (final Assertion assertion : response.getAssertions()) {
-            Assert.assertNotNull(assertion.getConditions());
-            Assert.assertNotNull(assertion.getConditions().getDoNotCacheConditions());
-            Assert.assertEquals(assertion.getConditions().getDoNotCacheConditions().size(), 1);
+            final Conditions c = assertion.getConditions();
+            assert c != null;
+            Assert.assertNotNull(c.getDoNotCacheConditions());
+            Assert.assertEquals(c.getDoNotCacheConditions().size(), 1);
         }
     }
     

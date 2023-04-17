@@ -38,12 +38,13 @@ import org.opensaml.saml.saml1.core.Subject;
 import org.opensaml.saml.saml1.core.SubjectStatement;
 import org.opensaml.saml.saml1.profile.SAML1NameIdentifierGenerator;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeExec;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Action that builds a {@link NameIdentifier} and adds it to the {@link Subject} of all the statements
@@ -82,10 +83,10 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
     @NonnullAfterInit private SAML1NameIdentifierGenerator generator;
     
     /** Formats to try. */
-    @Nonnull @NonnullElements private List<String> formats;
+    @NonnullBeforeExec private List<String> formats;
     
     /** Assertions to modify. */
-    @Nonnull @NonnullElements private List<Assertion> assertions;
+    @NonnullBeforeExec private List<Assertion> assertions;
     
     /** Constructor. */
     public AddNameIdentifierToSubjects() {
@@ -100,7 +101,6 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         
         assertionsLookupStrategy = new AssertionStrategy();
         formatLookupStrategy = new MetadataNameIdentifierFormatStrategy();
-        formats = Collections.emptyList();
     }
     
     /**
@@ -245,11 +245,12 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
      * @return the subject to which the name identifier will be added
      */
     @Nonnull private Subject getStatementSubject(@Nonnull final SubjectStatement statement) {
-        if (statement.getSubject() != null) {
-            return statement.getSubject();
+        Subject subject = statement.getSubject();
+        if (subject != null) {
+            return subject;
         }
         
-        final Subject subject = subjectBuilder.buildObject();
+        subject = subjectBuilder.buildObject();
         statement.setSubject(subject);
         return subject;
     }
@@ -284,7 +285,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
         @Override
         @Nullable public List<Assertion> apply(@Nullable final ProfileRequestContext input) {
             if (input != null && input.getOutboundMessageContext() != null) {
-                final Object outboundMessage = input.getOutboundMessageContext().getMessage();
+                final Object outboundMessage = input.ensureOutboundMessageContext().getMessage();
                 if (outboundMessage == null) {
                     return null;
                 } else if (outboundMessage instanceof Assertion) {

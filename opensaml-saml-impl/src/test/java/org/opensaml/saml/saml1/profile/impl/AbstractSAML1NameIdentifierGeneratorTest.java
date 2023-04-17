@@ -20,6 +20,8 @@ package org.opensaml.saml.saml1.profile.impl;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.FunctionSupport;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.context.ProfileRequestContext;
 import org.opensaml.saml.common.SAMLException;
@@ -42,7 +44,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         mock.initialize();
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getNameQualifier(), NAME_QUALIFIER);
     }
@@ -56,7 +58,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         mock.initialize();
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
     }
@@ -69,7 +71,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         mock.initialize();
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertNull(nameId.getNameQualifier());
     }
@@ -81,7 +83,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         mock.initialize();
         
         final NameIdentifier nameId = mock.generate(new ProfileRequestContext(), mock.getFormat());
-        Assert.assertNotNull(nameId);
+        assert nameId != null;
         Assert.assertEquals(nameId.getValue(), "foo");
         Assert.assertEquals(nameId.getNameQualifier(), NAME_QUALIFIER);
     }
@@ -95,7 +97,7 @@ public class AbstractSAML1NameIdentifierGeneratorTest extends OpenSAMLInitBaseTe
         
         /** {@inheritDoc} */
         @Override
-        protected String getIdentifier(ProfileRequestContext profileRequestContext) throws SAMLException {
+        protected String getIdentifier(@Nonnull final ProfileRequestContext profileRequestContext) throws SAMLException {
             return "foo";
         }
     }

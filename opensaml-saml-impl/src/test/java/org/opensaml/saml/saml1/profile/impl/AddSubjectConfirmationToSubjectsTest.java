@@ -17,9 +17,6 @@
 
 package org.opensaml.saml.saml1.profile.impl;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import org.opensaml.core.testing.OpenSAMLInitBaseTestCase;
 import org.opensaml.profile.action.EventIds;
 import org.opensaml.profile.context.ProfileRequestContext;
@@ -31,15 +28,18 @@ import org.opensaml.saml.saml1.core.Assertion;
 import org.opensaml.saml.saml1.core.ConfirmationMethod;
 import org.opensaml.saml.saml1.core.Response;
 import org.opensaml.saml.saml1.core.Subject;
+import org.opensaml.saml.saml1.core.SubjectConfirmation;
 import org.opensaml.saml.saml1.testing.SAML1ActionTestingSupport;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 
 /** Test for {@link AddSubjectConfirmationToSubjects}. */
+@SuppressWarnings("javadoc")
 public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;
@@ -60,7 +60,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
     
     @Test
     public void testNoMessage() throws ComponentInitializationException {
-        action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
+        action.setMethods(CollectionSupport.singleton(ConfirmationMethod.METHOD_BEARER));
         action.initialize();
         action.execute(prc);
         ActionTestingSupport.assertEvent(prc, EventIds.INVALID_MSG_CTX);
@@ -68,103 +68,107 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
 
     @Test
     public void testNoAssertions() throws ComponentInitializationException {
-        prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
+        prc.ensureOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
         
-        action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
+        action.setMethods(CollectionSupport.singleton(ConfirmationMethod.METHOD_BEARER));
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().isEmpty());
+        Assert.assertTrue(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().isEmpty());
     }
 
     @Test
     public void testNoStatements() throws ComponentInitializationException {
-        prc.getOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
-        ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
+        prc.ensureOutboundMessageContext().setMessage(SAML1ActionTestingSupport.buildResponse());
+        prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         
-        action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
+        action.setMethods(CollectionSupport.singleton(ConfirmationMethod.METHOD_BEARER));
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
-        Assert.assertTrue(((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0).getStatements().isEmpty());
+        Assert.assertTrue(prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().get(0).getStatements().isEmpty());
     }
 
     @Test void testSingle() throws ComponentInitializationException {
         addStatements();
         
-        action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
+        action.setMethods(CollectionSupport.singleton(ConfirmationMethod.METHOD_BEARER));
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
+        Assertion assertion = prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().get(0);
         Subject subject = assertion.getAuthenticationStatements().get(0).getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getSubjectConfirmation());
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 1);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
+        assert subject != null;
+        SubjectConfirmation sc = subject.getSubjectConfirmation();
+        assert sc != null;
+        Assert.assertEquals(sc.getConfirmationMethods().size(), 1);
+        Assert.assertEquals(sc.getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
 
-        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
+        assertion = prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().get(1);
         subject = assertion.getAttributeStatements().get(0).getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getSubjectConfirmation());
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 1);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
+        assert subject != null;
+        sc = subject.getSubjectConfirmation();
+        assert sc != null;
+        Assert.assertEquals(sc.getConfirmationMethods().size(), 1);
+        Assert.assertEquals(sc.getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
     }
 
     @Test void testMultiple() throws ComponentInitializationException {
         addStatements();
         
-        action.setMethods(Arrays.asList(ConfirmationMethod.METHOD_BEARER, ConfirmationMethod.METHOD_SENDER_VOUCHES));
+        action.setMethods(CollectionSupport.listOf(ConfirmationMethod.METHOD_BEARER, ConfirmationMethod.METHOD_SENDER_VOUCHES));
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
+        Assertion assertion = prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().get(0);
         Subject subject = assertion.getAuthenticationStatements().get(0).getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getSubjectConfirmation());
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 2);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
+        assert subject != null;
+        SubjectConfirmation sc = subject.getSubjectConfirmation();
+        assert sc != null;
+        Assert.assertEquals(sc.getConfirmationMethods().size(), 2);
+        Assert.assertEquals(sc.getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(1).getURI(),
+        Assert.assertEquals(sc.getConfirmationMethods().get(1).getURI(),
                 ConfirmationMethod.METHOD_SENDER_VOUCHES);
 
-        assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(1);
+        assertion = prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().get(1);
         subject = assertion.getAttributeStatements().get(0).getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getSubjectConfirmation());
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 2);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
+        assert subject != null;
+        sc = subject.getSubjectConfirmation();
+        assert sc != null;
+        Assert.assertEquals(sc.getConfirmationMethods().size(), 2);
+        Assert.assertEquals(sc.getConfirmationMethods().get(0).getURI(),
                 ConfirmationMethod.METHOD_BEARER);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(1).getURI(),
+        Assert.assertEquals(sc.getConfirmationMethods().get(1).getURI(),
                 ConfirmationMethod.METHOD_SENDER_VOUCHES);
     }
     
     @Test void testArtifact() throws ComponentInitializationException {
         addStatements();
-        prc.getOutboundMessageContext().getSubcontext(SAMLBindingContext.class, true).setBindingUri(
+        prc.ensureOutboundMessageContext().ensureSubcontext(SAMLBindingContext.class).setBindingUri(
                 SAMLConstants.SAML1_ARTIFACT_BINDING_URI);
         
-        action.setMethods(Collections.singleton(ConfirmationMethod.METHOD_BEARER));
+        action.setMethods(CollectionSupport.singleton(ConfirmationMethod.METHOD_BEARER));
         action.initialize();
         
         action.execute(prc);
         ActionTestingSupport.assertProceedEvent(prc);
         
-        Assertion assertion = ((Response) prc.getOutboundMessageContext().getMessage()).getAssertions().get(0);
+        Assertion assertion = prc.ensureOutboundMessageContext().ensureMessage(Response.class).getAssertions().get(0);
         Subject subject = assertion.getAuthenticationStatements().get(0).getSubject();
-        Assert.assertNotNull(subject);
-        Assert.assertNotNull(subject.getSubjectConfirmation());
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().size(), 1);
-        Assert.assertEquals(subject.getSubjectConfirmation().getConfirmationMethods().get(0).getURI(),
-                ConfirmationMethod.METHOD_ARTIFACT);
+        assert subject != null;
+        final SubjectConfirmation sc = subject.getSubjectConfirmation();
+        assert sc != null;
+        Assert.assertEquals(sc.getConfirmationMethods().size(), 1);
+        Assert.assertEquals(sc.getConfirmationMethods().get(0).getURI(), ConfirmationMethod.METHOD_ARTIFACT);
     }
     
     /** Set up the test message with some statements. */
@@ -174,7 +178,7 @@ public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCa
         response.getAssertions().add(SAML1ActionTestingSupport.buildAssertion());
         response.getAssertions().get(0).getAuthenticationStatements().add(SAML1ActionTestingSupport.buildAuthenticationStatement());
         response.getAssertions().get(1).getAttributeStatements().add(SAML1ActionTestingSupport.buildAttributeStatement());
-        prc.getOutboundMessageContext().setMessage(response);
+        prc.ensureOutboundMessageContext().setMessage(response);
     }
     
 }
