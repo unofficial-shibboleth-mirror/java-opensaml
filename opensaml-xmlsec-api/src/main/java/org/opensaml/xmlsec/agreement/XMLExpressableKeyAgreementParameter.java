@@ -38,6 +38,6 @@ public interface XMLExpressableKeyAgreementParameter extends KeyAgreementParamet
      * 
      * @return the XML object instance
      */
-    @Nonnull public XMLObject buildXMLObject();
+    @Nonnull XMLObject buildXMLObject();
 
 }

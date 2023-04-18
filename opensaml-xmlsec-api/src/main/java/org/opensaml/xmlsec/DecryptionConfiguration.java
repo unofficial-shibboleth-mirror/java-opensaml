@@ -32,7 +32,7 @@ public interface DecryptionConfiguration extends AlgorithmPolicyConfiguration {
      * 
      * @return the KeyInfoCredentialResolver instance
      */
-    @Nullable public KeyInfoCredentialResolver getDataKeyInfoCredentialResolver();
+    @Nullable KeyInfoCredentialResolver getDataKeyInfoCredentialResolver();
     
     /**
      * The KeyInfoCredentialResolver to use when processing the EncryptedKey/KeyInfo (the
@@ -40,13 +40,13 @@ public interface DecryptionConfiguration extends AlgorithmPolicyConfiguration {
      * 
      * @return the KeyInfoCredentialResolver instance
      */
-    @Nullable public KeyInfoCredentialResolver getKEKKeyInfoCredentialResolver();
+    @Nullable KeyInfoCredentialResolver getKEKKeyInfoCredentialResolver();
     
     /**
      * Get the EncryptedKeyResolver to use when resolving the EncryptedKey(s) to process.
      * 
      * @return the EncryptedKeyResolver instance
      */
-    @Nullable public EncryptedKeyResolver getEncryptedKeyResolver();
+    @Nullable EncryptedKeyResolver getEncryptedKeyResolver();
     
 }

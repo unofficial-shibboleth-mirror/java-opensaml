@@ -43,49 +43,49 @@ public interface EncryptionConfiguration extends AlgorithmPolicyConfiguration {
      * 
      * @return the list of encryption credentials, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getDataEncryptionCredentials();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive List<Credential> getDataEncryptionCredentials();
     
     /**
      * Get the list of preferred data encryption algorithm URIs, in preference order.
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getDataEncryptionAlgorithms();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getDataEncryptionAlgorithms();
     
     /**
      * Get the list of key transport encryption credentials to use, in preference order.
      * 
      * @return the list of encryption credentials, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getKeyTransportEncryptionCredentials();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive List<Credential> getKeyTransportEncryptionCredentials();
     
     /**
      * Get the list of preferred key transport encryption algorithm URIs, in preference order.
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getKeyTransportEncryptionAlgorithms();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getKeyTransportEncryptionAlgorithms();
 
     /**
      * Get the KeyInfoGenerator manager to use when generating the EncryptedData/KeyInfo.
      * 
      * @return the KeyInfoGenerator manager instance
      */
-    @Nullable public NamedKeyInfoGeneratorManager getDataKeyInfoGeneratorManager();
+    @Nullable NamedKeyInfoGeneratorManager getDataKeyInfoGeneratorManager();
     
     /**
      * Get the KeyInfoGenerator manager to use when generating the EncryptedKey/KeyInfo.
      * 
      * @return the KeyInfoGenerator manager instance
      */
-    @Nullable public NamedKeyInfoGeneratorManager getKeyTransportKeyInfoGeneratorManager();
+    @Nullable NamedKeyInfoGeneratorManager getKeyTransportKeyInfoGeneratorManager();
     
     /**
      * Get the instance of {@link RSAOAEPParameters}.
      * 
      * @return the parameters instance
      */
-    @Nullable public RSAOAEPParameters getRSAOAEPParameters();
+    @Nullable RSAOAEPParameters getRSAOAEPParameters();
     
     /**
      * Flag indicating whether to merge this configuration's {@link RSAOAEPParameters} values with those of 
@@ -93,14 +93,14 @@ public interface EncryptionConfiguration extends AlgorithmPolicyConfiguration {
      * 
      * @return true if should merge, false otherwise
      */
-    public boolean isRSAOAEPParametersMerge();
+    boolean isRSAOAEPParametersMerge();
     
     /**
      * Get the instance of {@link KeyTransportAlgorithmPredicate}.
      * 
      * @return the predicate instance
      */
-    @Nullable public KeyTransportAlgorithmPredicate getKeyTransportAlgorithmPredicate();
+    @Nullable KeyTransportAlgorithmPredicate getKeyTransportAlgorithmPredicate();
     
     /**
      * Get the map of {@link KeyAgreementEncryptionConfiguration} instances.
@@ -108,6 +108,6 @@ public interface EncryptionConfiguration extends AlgorithmPolicyConfiguration {
      * @return the 
      */
     @Nonnull @Unmodifiable @NotLive
-    public Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations();
+    Map<String, KeyAgreementEncryptionConfiguration> getKeyAgreementConfigurations();
     
 }

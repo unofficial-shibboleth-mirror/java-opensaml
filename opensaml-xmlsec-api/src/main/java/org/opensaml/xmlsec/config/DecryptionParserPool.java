@@ -31,7 +31,7 @@ import net.shibboleth.shared.xml.ParserPool;
 public class DecryptionParserPool {
     
     /** The wrapped parser pool instance. */
-    private ParserPool parserPool;
+    @Nonnull private ParserPool parserPool;
     
     /**
      * Constructor.

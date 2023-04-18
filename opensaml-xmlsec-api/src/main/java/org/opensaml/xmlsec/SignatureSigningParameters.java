@@ -29,25 +29,25 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGenerator;
 public class SignatureSigningParameters {
     
     /** The signing credential. */
-    private Credential signingCredential;
+    @Nullable private Credential signingCredential;
     
     /** The signature algorithm URI. */
-    private String signatureAlgorithmURI;
+    @Nullable private String signatureAlgorithmURI;
     
     /** The signature reference digest method URI. */
-    private String signatureReferenceDigestMethod;
+    @Nullable private String signatureReferenceDigestMethod;
     
     /** The signature reference canonicalization transform algorithm. */
-    private String signatureReferenceCanonicalizationAlgorithm;
+    @Nullable private String signatureReferenceCanonicalizationAlgorithm;
     
     /** The signature canonicalization algorithm URI. */
-    private String signatureCanonicalizationAlgorithm;
+    @Nullable private String signatureCanonicalizationAlgorithm;
     
     /** The signature HMAC output length value. */
-    private Integer signatureHMACOutputLength;
+    @Nullable private Integer signatureHMACOutputLength;
     
     /** The KeyInfo generator. */
-    private KeyInfoGenerator keyInfoGenerator;
+    @Nullable private KeyInfoGenerator keyInfoGenerator;
     
     /**
      * Get the signing credential to use when signing.

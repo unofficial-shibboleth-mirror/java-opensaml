@@ -35,7 +35,7 @@ public interface KeyTransportAlgorithmPredicate extends Predicate<KeyTransportAl
     /**
      * Input class for instances of {@link KeyTransportAlgorithmPredicate}.
      */
-    public static final class SelectionInput {
+    static final class SelectionInput {
         
         /** The candidate key transport algorithm. */
         @Nonnull private final String keyTransportAlgorithm;

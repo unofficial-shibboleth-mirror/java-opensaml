@@ -50,13 +50,6 @@ public class BasicXMLSecurityConfiguration extends BasicSecurityConfiguration im
     @Nullable private EncryptionConfiguration encryptConfig;
 
     /**
-     * Default constructor.
-     */
-    public BasicXMLSecurityConfiguration() {
-        
-    }
-
-    /**
      * Constructor.
      * 
      * @param skew the clock skew, must be greater than 0

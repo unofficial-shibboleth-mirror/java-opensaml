@@ -31,7 +31,7 @@ public interface KeyAgreementProcessor {
      * 
      * @return the algorithm
      */
-    @Nonnull public String getAlgorithm();
+    @Nonnull String getAlgorithm();
     
     /**
      * Perform the key agreement operation and return a new credential representing the results.
@@ -46,7 +46,7 @@ public interface KeyAgreementProcessor {
      * 
      * @throws KeyAgreementException if the key agreement operation is not completed successfully
      */
-    @Nonnull public KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
+    @Nonnull KeyAgreementCredential execute(@Nonnull final Credential publicCredential,
             @Nonnull final String keyAlgorithm, @Nonnull final KeyAgreementParameters parameters)
                     throws KeyAgreementException;
 

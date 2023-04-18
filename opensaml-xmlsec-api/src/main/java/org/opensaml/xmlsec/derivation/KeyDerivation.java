@@ -39,7 +39,7 @@ public interface KeyDerivation extends KeyAgreementParameter {
      * 
      * @return the algorithm
      */
-    @Nonnull public String getAlgorithm();
+    @Nonnull String getAlgorithm();
 
     /**
      * Derive a {@link SecretKey} from the specified secret.
@@ -55,7 +55,7 @@ public interface KeyDerivation extends KeyAgreementParameter {
      * 
      * @throws KeyDerivationException if the key derivation operation is not completed successfully
      */
-    @Nonnull public SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
+    @Nonnull SecretKey derive(@Nonnull final byte[] secret, @Nonnull final String keyAlgorithm,
             @Nullable final Integer keyLength) throws KeyDerivationException;
     
 }

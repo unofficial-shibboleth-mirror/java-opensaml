@@ -29,6 +29,6 @@ public interface KeyLengthSpecifiedAlgorithm extends AlgorithmDescriptor {
      * 
      * @return the specified key length
      */
-    @Nonnull public Integer getKeyLength();
+    @Nonnull Integer getKeyLength();
 
 }

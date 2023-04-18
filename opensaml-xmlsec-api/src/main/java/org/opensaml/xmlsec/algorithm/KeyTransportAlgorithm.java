@@ -31,13 +31,13 @@ public interface KeyTransportAlgorithm extends KeySpecifiedAlgorithm {
      * 
      * @return the cipher mode
      */
-    @Nonnull @NotEmpty public String getCipherMode();
+    @Nonnull @NotEmpty String getCipherMode();
     
     /**
      * Get the JCA padding algorithm specified by this algorithm.
      * 
      * @return the padding algorithm
      */
-    @Nonnull @NotEmpty public String getPadding();
+    @Nonnull @NotEmpty String getPadding();
 
 }

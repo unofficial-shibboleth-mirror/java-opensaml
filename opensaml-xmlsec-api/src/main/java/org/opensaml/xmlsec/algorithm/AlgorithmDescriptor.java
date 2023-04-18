@@ -27,7 +27,7 @@ import net.shibboleth.shared.annotation.constraint.NotEmpty;
 public interface AlgorithmDescriptor {
     
     /** Algorithm descriptor types. */
-    public enum AlgorithmType {
+    enum AlgorithmType {
         /** Block Encryption. */
         BlockEncryption,
         /** Message Authentication Code (MAC). */
@@ -49,20 +49,20 @@ public interface AlgorithmDescriptor {
      * 
      * @return the algorithm URI
      */
-    @Nonnull @NotEmpty public String getURI();
+    @Nonnull @NotEmpty String getURI();
     
     /**
      * Get the algorithm URI's fundamental type.
      * 
      * @return a type specified with {@link AlgorithmType}
      */
-    @Nonnull public AlgorithmType getType();
+    @Nonnull AlgorithmType getType();
     
     /**
      * Get the algorithm's JCA algorithm ID.
      * 
      * @return the JCA algorithm ID
      */
-    @Nonnull @NotEmpty public String getJCAAlgorithmID();
+    @Nonnull @NotEmpty String getJCAAlgorithmID();
 
 }

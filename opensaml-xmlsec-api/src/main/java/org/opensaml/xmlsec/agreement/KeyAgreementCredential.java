@@ -36,27 +36,27 @@ public interface KeyAgreementCredential extends Credential {
      * 
      * @return the algorithm
      */
-    @Nonnull public String getAlgorithm();
+    @Nonnull String getAlgorithm();
     
     /**
      * The credential holding the originator key material.
      * 
      * @return the originator credential
      */
-    @Nonnull public Credential getOriginatorCredential();
+    @Nonnull Credential getOriginatorCredential();
     
     /**
      * The credential holding the recipient key material.
      * 
      * @return the recipient credential
      */
-    @Nonnull public Credential getRecipientCredential();
+    @Nonnull Credential getRecipientCredential();
     
     /**
      * The parameters to the key agreement operation.
      * 
      * @return the parameters
      */
-    @Nonnull public KeyAgreementParameters getParameters();
+    @Nonnull KeyAgreementParameters getParameters();
     
 }

@@ -32,6 +32,6 @@ public interface SignatureAlgorithm extends KeySpecifiedAlgorithm {
      * 
      * @return the digest algorithm
      */
-    @Nonnull @NotEmpty public String getDigest();
+    @Nonnull @NotEmpty String getDigest();
 
 }

@@ -31,7 +31,6 @@ public interface MACAlgorithm extends AlgorithmDescriptor {
      * 
      * @return the digest algorithm
      */
-    @Nonnull @NotEmpty public String getDigest();
+    @Nonnull @NotEmpty String getDigest();
     
-
 }

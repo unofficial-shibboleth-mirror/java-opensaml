@@ -31,7 +31,7 @@ import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 public interface AlgorithmPolicyConfiguration {
     
     /** Rule precedence values. */
-    public enum Precedence {
+    enum Precedence {
         /** Include takes precedence over exclude. */
         INCLUDE,
         
@@ -44,7 +44,7 @@ public interface AlgorithmPolicyConfiguration {
      * 
      * @return the collection of algorithms
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getIncludedAlgorithms();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive Collection<String> getIncludedAlgorithms();
     
     /**
      * Flag indicating whether to merge this configuration's includes with one of a lower order of precedence,
@@ -52,14 +52,14 @@ public interface AlgorithmPolicyConfiguration {
      * 
      * @return true if should merge, false otherwise
      */
-    public boolean isIncludeMerge();
+    boolean isIncludeMerge();
     
     /**
      * Get the collection of excluded algorithm URIs.
      * 
      * @return the collection of algorithms
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Collection<String> getExcludedAlgorithms();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive Collection<String> getExcludedAlgorithms();
     
     /**
      * Flag indicating whether to merge this configuration's excludes with one of a lower order of precedence,
@@ -67,7 +67,7 @@ public interface AlgorithmPolicyConfiguration {
      * 
      * @return true if should merge, false otherwise
      */
-    public boolean isExcludeMerge();
+    boolean isExcludeMerge();
     
     /**
      * Get preference value indicating which should take precedence when both include and exclude collections
@@ -75,6 +75,6 @@ public interface AlgorithmPolicyConfiguration {
      * 
      * @return the configured precedence value.
      */
-    @Nonnull public Precedence getIncludeExcludePrecedence();
+    @Nonnull Precedence getIncludeExcludePrecedence();
 
 }

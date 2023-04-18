@@ -20,13 +20,16 @@ package org.opensaml.xmlsec.config;
 import java.util.Iterator;
 import java.util.ServiceLoader;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.core.config.InitializationException;
 import org.opensaml.core.config.Initializer;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessor;
 import org.opensaml.xmlsec.agreement.KeyAgreementProcessorRegistry;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * OpenSAML {@link Initializer} implementation for key agreement processors.
@@ -34,7 +37,7 @@ import org.slf4j.LoggerFactory;
 public class GlobalKeyAgreementProcessorRegistryInitializer implements Initializer {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(GlobalKeyAgreementProcessorRegistryInitializer.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(GlobalKeyAgreementProcessorRegistryInitializer.class);
 
     /** {@inheritDoc} */
     public void init() throws InitializationException {

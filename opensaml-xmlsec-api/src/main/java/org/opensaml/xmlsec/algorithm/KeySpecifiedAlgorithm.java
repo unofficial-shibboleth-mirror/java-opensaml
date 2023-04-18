@@ -31,6 +31,6 @@ public interface KeySpecifiedAlgorithm extends AlgorithmDescriptor {
      * 
      * @return the key type
      */
-    @Nonnull @NotEmpty public String getKey();
+    @Nonnull @NotEmpty String getKey();
    
 }

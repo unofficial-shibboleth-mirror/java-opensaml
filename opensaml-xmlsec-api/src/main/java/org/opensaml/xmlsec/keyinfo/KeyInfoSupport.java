@@ -104,7 +104,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * Methods are provided for converting the representation stored in the XMLTooling KeyInfo to Java java.security native
  * types, and for storing these Java native types inside a KeyInfo.
  */
-public class KeyInfoSupport {
+public final class KeyInfoSupport {
     
     /** Logger. */
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(KeyInfoSupport.class);
@@ -115,7 +115,7 @@ public class KeyInfoSupport {
     private static CertificateFactory x509CertFactory;
 
     /** Constructor. */
-    protected KeyInfoSupport() {
+    private KeyInfoSupport() {
 
     }
 

@@ -20,7 +20,6 @@ package org.opensaml.xmlsec.algorithm;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.Signature;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -38,13 +37,14 @@ import javax.crypto.NoSuchPaddingException;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.xmlsec.algorithm.AlgorithmDescriptor.AlgorithmType;
 import org.opensaml.xmlsec.encryption.support.EncryptionConstants;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.base.MoreObjects;
 
@@ -54,22 +54,22 @@ import com.google.common.base.MoreObjects;
 public class AlgorithmRegistry {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(AlgorithmRegistry.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(AlgorithmRegistry.class);
     
     /** Map of registered algorithm descriptors. */
-    private Map<String, AlgorithmDescriptor> descriptors;
+    @Nonnull private Map<String, AlgorithmDescriptor> descriptors;
     
     /** Index of registered AlgorithmType to algorithm URI. */
-    private Map<AlgorithmType, Set<String>> types;
+    @Nonnull private Map<AlgorithmType, Set<String>> types;
 
     /** Set containing algorithms which are supported by the runtime environment. */
-    private Set<String> runtimeSupported;
+    @Nonnull private Set<String> runtimeSupported;
     
     /** Index of digest type to AlgorithmDescriptor. */
-    private Map<String, DigestAlgorithm> digestAlgorithms;
+    @Nonnull private Map<String, DigestAlgorithm> digestAlgorithms;
     
     /** Index of (KeyType,DigestType) to AlgorithmDescriptor. */
-    private Map<SignatureAlgorithmIndex, SignatureAlgorithm> signatureAlgorithms;
+    @Nonnull private Map<SignatureAlgorithmIndex, SignatureAlgorithm> signatureAlgorithms;
     
     /** Constructor. */
     public  AlgorithmRegistry() {
@@ -216,9 +216,9 @@ public class AlgorithmRegistry {
         Constraint.isNotNull(type, "AlgorithmType was null");
         final Set<String> byType = types.get(type);
         if (byType != null) {
-            return Set.copyOf(byType);
+            return CollectionSupport.copyToSet(byType);
         }
-        return Collections.emptySet();
+        return CollectionSupport.emptySet();
     }
 
     /**
@@ -233,7 +233,7 @@ public class AlgorithmRegistry {
         return getRegisteredURIsByType(type).stream()
                 .map(this::get)
                 .filter(Objects::nonNull)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableSet())).get();
     }
 
     /**
@@ -242,7 +242,7 @@ public class AlgorithmRegistry {
      * 
      * @param descriptor the algorithm
      */
-    private void index(final AlgorithmDescriptor descriptor) {
+    private void index(@Nonnull final AlgorithmDescriptor descriptor) {
         Set<String> byType = types.get(descriptor.getType());
         if (byType == null) {
             byType = new HashSet<>();
@@ -259,12 +259,10 @@ public class AlgorithmRegistry {
             runtimeSupported.remove(descriptor.getURI());
         }
         
-        if (descriptor instanceof DigestAlgorithm) {
-            final DigestAlgorithm digestAlgorithm = (DigestAlgorithm) descriptor;
-            digestAlgorithms.put(digestAlgorithm.getJCAAlgorithmID(), digestAlgorithm);
+        if (descriptor instanceof DigestAlgorithm digest) {
+            digestAlgorithms.put(digest.getJCAAlgorithmID(), digest);
         }
-        if (descriptor instanceof SignatureAlgorithm) {
-            final SignatureAlgorithm sigAlg = (SignatureAlgorithm) descriptor;
+        if (descriptor instanceof SignatureAlgorithm sigAlg) {
             signatureAlgorithms.put(new SignatureAlgorithmIndex(sigAlg.getKey(), sigAlg.getDigest()), sigAlg);
         }
     }
@@ -275,7 +273,7 @@ public class AlgorithmRegistry {
      * 
      * @param descriptor the algorithm
      */
-    private void deindex(final AlgorithmDescriptor descriptor) {
+    private void deindex(@Nonnull final AlgorithmDescriptor descriptor) {
         final Set<String> byType = types.get(descriptor.getType());
         if (byType != null) {
             byType.remove(descriptor.getURI());
@@ -283,12 +281,10 @@ public class AlgorithmRegistry {
 
         runtimeSupported.remove(descriptor.getURI());
         
-        if (descriptor instanceof DigestAlgorithm) {
-            final DigestAlgorithm digestAlgorithm = (DigestAlgorithm) descriptor;
-            digestAlgorithms.remove(digestAlgorithm.getJCAAlgorithmID());
+        if (descriptor instanceof DigestAlgorithm digest) {
+            digestAlgorithms.remove(digest.getJCAAlgorithmID());
         }
-        if (descriptor instanceof SignatureAlgorithm) {
-            final SignatureAlgorithm sigAlg = (SignatureAlgorithm) descriptor;
+        if (descriptor instanceof SignatureAlgorithm sigAlg) {
             signatureAlgorithms.remove(new SignatureAlgorithmIndex(sigAlg.getKey(), sigAlg.getDigest()));
         }
     }
@@ -301,7 +297,7 @@ public class AlgorithmRegistry {
      * @return true if runtime supports the algorithm, false otherwise
      */
     // Checkstyle: CyclomaticComplexity OFF
-    private boolean checkRuntimeSupports(final AlgorithmDescriptor descriptor) {
+    private boolean checkRuntimeSupports(@Nonnull final AlgorithmDescriptor descriptor) {
         
         try {
             switch(descriptor.getType()) {
@@ -359,7 +355,7 @@ public class AlgorithmRegistry {
      * @return true if key length supported, false otherwise
      * @throws NoSuchAlgorithmException if the associated JCA algorithm is not supported by the runtime
      */
-    private boolean checkCipherSupportedKeyLength(final AlgorithmDescriptor descriptor)
+    private boolean checkCipherSupportedKeyLength(@Nonnull final AlgorithmDescriptor descriptor)
             throws NoSuchAlgorithmException {
         if (descriptor instanceof KeyLengthSpecifiedAlgorithm) {
             final int algoLength = ((KeyLengthSpecifiedAlgorithm)descriptor).getKeyLength();
@@ -380,7 +376,7 @@ public class AlgorithmRegistry {
      * 
      * @return true if algorithm is supported by the runtime environment, false otherwise
      */
-    private boolean checkSpecialCasesRuntimeSupport(final AlgorithmDescriptor descriptor) {
+    private boolean checkSpecialCasesRuntimeSupport(@Nonnull final AlgorithmDescriptor descriptor) {
         log.trace("Checking runtime support failure for special cases: {}", descriptor.getURI());
         try {
             // Per Santuario XMLCipher: Some JDKs don't support RSA/ECB/OAEPPadding.
@@ -405,10 +401,10 @@ public class AlgorithmRegistry {
     protected class SignatureAlgorithmIndex {
         
         /** Key type. */
-        private String key;
+        @Nonnull private String key;
         
         /** Digest type. */
-        private String digest;
+        @Nonnull private String digest;
         
         /**
          * Constructor.
@@ -417,8 +413,8 @@ public class AlgorithmRegistry {
          * @param digestType the digest type
          */
         public SignatureAlgorithmIndex(@Nonnull final String keyType, @Nonnull final String digestType) {
-            key = StringSupport.trim(keyType);
-            digest = StringSupport.trim(digestType);
+            key = Constraint.isNotNull(StringSupport.trim(keyType), "Key type was null");
+            digest = Constraint.isNotNull(StringSupport.trim(digestType), "Digest type was null");
         }
         
         /** {@inheritDoc} */

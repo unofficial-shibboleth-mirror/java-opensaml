@@ -31,6 +31,6 @@ public interface SignatureValidationConfiguration extends AlgorithmPolicyConfigu
      * 
      * @return the signature trust engine
      */
-    @Nullable public SignatureTrustEngine getSignatureTrustEngine();
+    @Nullable SignatureTrustEngine getSignatureTrustEngine();
 
 }

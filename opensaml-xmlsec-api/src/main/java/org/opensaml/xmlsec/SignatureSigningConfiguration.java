@@ -40,14 +40,14 @@ public interface SignatureSigningConfiguration extends AlgorithmPolicyConfigurat
      * 
      * @return the list of signing credentials, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<Credential> getSigningCredentials();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive List<Credential> getSigningCredentials();
     
     /**
      * Get the list of preferred signature algorithm URIs, in preference order.
      * 
      * @return the list of algorithm URIs, may be empty
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureAlgorithms();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getSignatureAlgorithms();
     
     /**
      * Get the list of digest method algorithm URIs suitable for use as a Signature Reference DigestMethod value,
@@ -55,21 +55,21 @@ public interface SignatureSigningConfiguration extends AlgorithmPolicyConfigurat
      * 
      * @return a digest method algorithm URI
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<String> getSignatureReferenceDigestMethods();
+    @Nonnull @NonnullElements @Unmodifiable @NotLive List<String> getSignatureReferenceDigestMethods();
     
     /**
      * Get a canonicalization algorithm URI suitable for use as a Signature Reference Transform value.
      * 
      * @return a digest method algorithm URI
      */
-    @Nullable public String getSignatureReferenceCanonicalizationAlgorithm();
+    @Nullable String getSignatureReferenceCanonicalizationAlgorithm();
     
     /**
      * Get a canonicalization algorithm URI suitable for use as a Signature CanonicalizationMethod value.
      * 
      * @return a canonicalization algorithm URI
      */
-    @Nullable public String getSignatureCanonicalizationAlgorithm();
+    @Nullable String getSignatureCanonicalizationAlgorithm();
     
     /**
      * Get the value to be used as the Signature SignatureMethod HMACOutputLength value, used
@@ -77,13 +77,13 @@ public interface SignatureSigningConfiguration extends AlgorithmPolicyConfigurat
      * 
      * @return the configured HMAC output length value
      */
-    @Nullable public Integer getSignatureHMACOutputLength();
+    @Nullable Integer getSignatureHMACOutputLength();
     
     /**
      * Get the manager for named KeyInfoGenerator instances.
      * 
      * @return the KeyInfoGenerator manager, or null if none is configured
      */
-    @Nullable public NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager();
+    @Nullable NamedKeyInfoGeneratorManager getKeyInfoGeneratorManager();
 
 }
