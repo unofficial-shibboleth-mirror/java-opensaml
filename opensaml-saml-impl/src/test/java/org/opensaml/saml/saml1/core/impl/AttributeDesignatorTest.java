@@ -32,6 +32,7 @@ import org.opensaml.saml.saml1.core.AttributeDesignator;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeDesignatorTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -59,6 +60,7 @@ public class AttributeDesignatorTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         AttributeDesignator ad = (AttributeDesignator) unmarshallElement(singleElementFile);
+        assert ad!=null;
 
         Assert.assertNull(ad.getAttributeName(), "AttributeName");
         Assert.assertNull(ad.getAttributeNamespace(), "AttributeNamespace");
@@ -68,6 +70,7 @@ public class AttributeDesignatorTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeDesignator ad = (AttributeDesignator) unmarshallElement(singleElementOptionalAttributesFile);
+        assert ad!=null;
 
         Assert.assertEquals(ad.getAttributeName(), expectedAttributeName, "AttributeName");
         Assert.assertEquals(ad.getAttributeNamespace(), expectedAttributeNamespace, "AttributeNamespace");

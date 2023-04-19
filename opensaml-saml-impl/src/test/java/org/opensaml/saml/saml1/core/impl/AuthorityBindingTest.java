@@ -32,6 +32,7 @@ import org.opensaml.saml.saml1.core.AuthorityBinding;
 /**
  *  Test for {@link org.opensaml.saml.saml1.core.AuthorityBinding}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -62,7 +63,8 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementFile);
+        final AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementFile);
+        assert authorityBinding!=null;
         Assert.assertNull(authorityBinding.getAuthorityKind(), "AuthorityKind attribute present");
         Assert.assertNull(authorityBinding.getBinding(), "Binding attribute present");
         Assert.assertNull(authorityBinding.getLocation(), "Location attribute present");
@@ -71,7 +73,8 @@ public class AuthorityBindingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementOptionalAttributesFile);
+        final AuthorityBinding authorityBinding = (AuthorityBinding) unmarshallElement(singleElementOptionalAttributesFile);
+        assert authorityBinding!=null;
         Assert.assertEquals(authorityBinding.getAuthorityKind(), expectedAuthorityKind, "AuthorityKind attribute");
         Assert.assertEquals(authorityBinding.getBinding(), expectedBinding, "Binding attribute");
         Assert.assertEquals(authorityBinding.getLocation(), expectedLocation, "Location attribute");        

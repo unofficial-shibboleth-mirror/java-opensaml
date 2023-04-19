@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.SubjectLocality;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.SubjectLocality}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -57,8 +58,8 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
-        
+        final SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
+        assert subjectLocality != null;
         Assert.assertNull(subjectLocality.getIPAddress(), "IPAddress present");
         Assert.assertNull(subjectLocality.getDNSAddress(), "DNSAddress present");
     }
@@ -67,8 +68,8 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
+        assert subjectLocality != null;
         Assert.assertEquals(subjectLocality.getIPAddress(), expectedIPAddress, "IPAddress");
         Assert.assertEquals(subjectLocality.getDNSAddress(), expectedDNSAddress, "DNSAddress");
     }

@@ -27,6 +27,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
 import org.opensaml.saml.saml1.core.Advice;
 import org.opensaml.saml.saml1.core.Assertion;
@@ -35,6 +36,7 @@ import org.opensaml.saml.saml1.core.AuthenticationStatement;
 import org.opensaml.saml.saml1.core.AuthorizationDecisionStatement;
 import org.opensaml.saml.saml1.core.Conditions;
 import org.opensaml.saml.saml1.core.Statement;
+import org.opensaml.xmlsec.signature.Signature;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -45,6 +47,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.Assertion}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AssertionTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -78,6 +81,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     public void testSingleElementUnmarshall() {
 
         Assertion assertion = (Assertion) unmarshallElement(singleElementFile);
+        assert assertion!=null;
 
         Assert.assertNull(assertion.getIssuer(), "Issuer attribute");
         Assert.assertNull(assertion.getIssueInstant(), "IssueInstant attribute");
@@ -98,6 +102,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(singleElementOptionalAttributesFile);
+        assert assertion!=null;
 
         Assert.assertEquals(assertion.getIssuer(), expectedIssuer, "Issuer attribute");
         Assert.assertEquals(assertion.getIssueInstant(), expectedIssueInstant, "IssueInstant attribute");
@@ -121,6 +126,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         Assertion assertion = (Assertion) unmarshallElement(childElementsFile);
+        assert assertion!=null;
 
         Assert.assertNull(assertion.getIssuer(), "Issuer attribute");
         Assert.assertNull(assertion.getID(), "ID attribute");
@@ -201,37 +207,47 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     
     @Test
     public void testSignatureUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
-        
+        final Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
+        assert assertion!=null;
+
         Assert.assertNotNull(assertion, "Assertion was null");
-        Assert.assertNotNull(assertion.getSignature(), "Signature was null");
-        Assert.assertNotNull(assertion.getSignature().getKeyInfo(), "KeyInfo was null");
+        final Signature sig = assertion.getSignature();
+        assert sig != null && sig.getKeyInfo()!=null;
     }
     
     @Test
     public void testDOMIDResolutionUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
-        
+        final Assertion assertion = (Assertion) unmarshallElement("/org/opensaml/saml/saml1/impl/AssertionWithSignature.xml");
+        assert assertion!=null;
+
         Assert.assertNotNull(assertion, "Assertion was null");
         Assert.assertNotNull(assertion.getSignature(), "Signature was null");
-        Document document = assertion.getSignature().getDOM().getOwnerDocument();
-        Element idElem = assertion.getDOM();
-        
+        final Signature sig = assertion.getSignature();
+        assert sig != null;
+        final Element element = sig.getDOM();
+        assert element!= null;
+        final Document document = element.getOwnerDocument();
+        final Element idElem = assertion.getDOM();
+        assert idElem!=null;
         Assert.assertNotNull(document.getElementById(expectedID), "DOM ID resolution returned null");
         Assert.assertTrue(idElem.isSameNode(document.getElementById(expectedID)), "DOM elements were not equal");
     }
 
     @Test
     public void testDOMIDResolutionMarshall() throws MarshallingException {
-        Assertion assertion = (Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME);
+        final Assertion assertion = (Assertion) buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME);
         assertion.setID(expectedID);
         assertion.getAttributeStatements().add((AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME));
-        
-        marshallerFactory.getMarshaller(assertion).marshall(assertion);
-        
-        Document document = assertion.getStatements().get(0).getDOM().getOwnerDocument();
-        Element idElem = assertion.getDOM();
-        
+        assert assertion!=null;
+
+        final Marshaller marshaller = marshallerFactory.getMarshaller(assertion);
+        assert marshaller!=null;
+        marshaller.marshall(assertion);
+        final Element statementElem = assertion.getStatements().get(0).getDOM();
+        assert statementElem!=null;
+        final Document document = statementElem.getOwnerDocument();
+        final Element idElem = assertion.getDOM();
+        assert idElem!=null;
         Assert.assertNotNull(document.getElementById(expectedID), "DOM ID resolution returned null");
         Assert.assertTrue(idElem.isSameNode(document.getElementById(expectedID)), "DOM elements were not equal");
     }

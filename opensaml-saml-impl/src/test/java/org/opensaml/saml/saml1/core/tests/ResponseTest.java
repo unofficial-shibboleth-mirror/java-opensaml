@@ -33,6 +33,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Tests unmarshalling and marshalling for various response messages.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ResponseTest extends XMLObjectBaseTestCase {
 
     /** Path to file with full response message */

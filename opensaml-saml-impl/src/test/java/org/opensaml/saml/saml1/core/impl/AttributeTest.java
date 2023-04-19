@@ -35,6 +35,7 @@ import org.opensaml.saml.saml1.core.AttributeValue;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -62,7 +63,8 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Attribute attribute = (Attribute) unmarshallElement(singleElementFile);
+        final Attribute attribute = (Attribute) unmarshallElement(singleElementFile);
+        assert attribute!=null;
 
         Assert.assertNull(attribute.getAttributeName(), "AttributeName");
         Assert.assertNull(attribute.getAttributeNamespace(), "AttributeNamespace");
@@ -73,6 +75,7 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         Attribute attribute = (Attribute) unmarshallElement(singleElementOptionalAttributesFile);
+        assert attribute!=null;
 
         Assert.assertEquals(attribute.getAttributeName(), expectedAttributeName, "AttributeName");
         Assert.assertEquals(attribute.getAttributeNamespace(), expectedAttributeNamespace, "AttributeNamespace");
@@ -81,7 +84,8 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Attribute attribute = (Attribute) unmarshallElement(childElementsFile);
+        final Attribute attribute = (Attribute) unmarshallElement(childElementsFile);
+        assert attribute!=null;
 
         Assert.assertNotNull(attribute.getAttributeValues(), "<AttributeValue> subelement not found");
         Assert.assertEquals(attribute.getAttributeValues().size(), 4, "Number of <AttributeValue> subelement not found");
@@ -96,7 +100,7 @@ public class AttributeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        Attribute attribute = (Attribute) buildXMLObject(qname);
+        final Attribute attribute = (Attribute) buildXMLObject(qname);
 
         attribute.setAttributeName(expectedAttributeName);
         attribute.setAttributeNamespace(expectedAttributeNamespace);

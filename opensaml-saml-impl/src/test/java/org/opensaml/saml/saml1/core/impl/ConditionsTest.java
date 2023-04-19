@@ -37,6 +37,7 @@ import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 /**
  * Test class for org.opensaml.saml.saml1.core.Conditions
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ConditionsTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -69,10 +70,9 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Conditions conditions;
-
+        final Conditions conditions;
         conditions = (Conditions) unmarshallElement(singleElementFile);
-
+        assert conditions!=null;
         Instant date = conditions.getNotBefore();
         Assert.assertNull(date, "NotBefore attribute has a value of " + date + ", expected no value");
 
@@ -84,10 +84,9 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Conditions conditions;
-
+        final Conditions conditions;
         conditions = (Conditions) unmarshallElement(singleElementOptionalAttributesFile);
-
+        assert conditions!=null;
         Assert.assertEquals(conditions.getNotBefore(), expectedNotBeforeDate, "NotBefore attribute ");
         Assert.assertEquals(conditions.getNotOnOrAfter(), expectedNotOnOfAfter, "NotOnOrAfter attribute ");
     }
@@ -97,10 +96,10 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
      */
     @Test
     public void testChildElementsUnmarshall() {
-        Conditions conditions;
+        final Conditions conditions;
 
         conditions = (Conditions) unmarshallElement(childElementsFile);
-
+        assert conditions!=null;
         Assert.assertEquals(conditions
                 .getAudienceRestrictionConditions().size(), 3, "Number of AudienceRestrictionCondition elements");
         Assert.assertEquals(conditions.getDoNotCacheConditions().size(), 1, "Number of DoNotCacheCondition children");

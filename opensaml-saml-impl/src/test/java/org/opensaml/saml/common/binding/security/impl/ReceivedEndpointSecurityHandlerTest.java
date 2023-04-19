@@ -39,7 +39,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test the received endpoint check message handler.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class ReceivedEndpointSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;

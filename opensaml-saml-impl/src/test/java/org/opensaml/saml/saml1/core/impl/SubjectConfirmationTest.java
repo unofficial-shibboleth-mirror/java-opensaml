@@ -38,6 +38,7 @@ import org.w3c.dom.Document;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.SubjectConfirmation}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -65,8 +66,8 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(singleElementFile);
-
+        final SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(singleElementFile);
+        assert subjectConfirmation != null;
         Assert.assertEquals(subjectConfirmation
                 .getConfirmationMethods().size(), 0, "Non zero number of child ConfirmationMethods elements");
         Assert.assertNull(subjectConfirmation
@@ -84,8 +85,8 @@ public class SubjectConfirmationTest extends XMLObjectProviderBaseTestCase {
      */
     @Test
     public void testFullElementsUnmarshall() {
-        SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(fullElementsFile);
-
+        final SubjectConfirmation subjectConfirmation = (SubjectConfirmation) unmarshallElement(fullElementsFile);
+        assert subjectConfirmation != null;
         Assert.assertEquals(subjectConfirmation.getConfirmationMethods().size(), 2, "Number of ConfirmationMethods");
         Assert.assertNotNull(subjectConfirmation.getSubjectConfirmationData(), "Zero child SubjectConfirmationData elements");
     }

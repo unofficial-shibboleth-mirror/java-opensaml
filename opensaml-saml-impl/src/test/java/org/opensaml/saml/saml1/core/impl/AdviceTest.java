@@ -34,6 +34,7 @@ import org.opensaml.saml.saml1.core.AssertionIDReference;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.Advice}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AdviceTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -52,7 +53,7 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         Advice advice = (Advice) unmarshallElement(singleElementFile);
-
+        assert advice != null;
         Assert.assertEquals(advice.getAssertionIDReferences().size(), 0, "Number of child AssertIDReference elements");
         Assert.assertEquals(advice.getAssertions().size(), 0, "Number of child Assertion elements");
     }
@@ -63,7 +64,7 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         Advice advice = (Advice) unmarshallElement(childElementsFile);
-
+        assert advice != null;
         Assert.assertEquals(advice.getAssertionIDReferences().size(), 2, "Number of child AssertIDReference elements");
         Assert.assertEquals(advice.getAssertions().size(), 1, "Number of child Assertion elements");
     }

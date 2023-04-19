@@ -35,6 +35,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 /**
  * Testing SAML message replay security policy rule.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class MessageReplaySecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;

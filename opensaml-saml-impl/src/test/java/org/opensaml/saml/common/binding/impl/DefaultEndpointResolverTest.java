@@ -53,7 +53,7 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
 /** Test for {@link DefaultEndpointResolver}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class DefaultEndpointResolverTest extends XMLObjectBaseTestCase {
 
     private static final String LOCATION = "https://sp.example.org/ACS";

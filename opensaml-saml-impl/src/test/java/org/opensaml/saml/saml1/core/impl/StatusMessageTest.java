@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.StatusMessage;
 /**
  * Test for org.opensaml.saml.saml1.core.StatusMessage 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -54,7 +55,8 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementFile);
+        final StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementFile);
+        assert statusMessage != null;
         Assert.assertNull(statusMessage.getValue(), "Contents");
     }
 
@@ -62,7 +64,8 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementOptionalAttributesFile);
+        final StatusMessage statusMessage = (StatusMessage) unmarshallElement(singleElementOptionalAttributesFile);
+        assert statusMessage != null;
         Assert.assertEquals(statusMessage.getValue(), contents, "Contents");
     }
 

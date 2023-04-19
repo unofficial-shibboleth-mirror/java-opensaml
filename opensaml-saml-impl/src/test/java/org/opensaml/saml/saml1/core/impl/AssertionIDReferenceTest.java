@@ -32,6 +32,7 @@ import org.opensaml.saml.saml1.core.AssertionIDReference;
 /**
  * Test case for {@link org.opensaml.saml.saml1.core.impl.AssertionIDReferenceImpl}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
     private final String expectedNCName;
@@ -55,10 +56,10 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        AssertionIDReference assertionIDReference;
+        final AssertionIDReference assertionIDReference;
 
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementFile);
-
+        assert assertionIDReference!=null;
         Assert.assertNull(assertionIDReference
                 .getValue(), "NCName was " + assertionIDReference.getValue() + " expected null");
     }
@@ -67,10 +68,10 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AssertionIDReference assertionIDReference;
+        final AssertionIDReference assertionIDReference;
 
         assertionIDReference = (AssertionIDReference) unmarshallElement(singleElementOptionalAttributesFile);
-
+        assert assertionIDReference!=null;
         Assert.assertEquals(assertionIDReference.getValue(), expectedNCName, "NCName ");
     }
 
@@ -85,7 +86,7 @@ public class AssertionIDReferenceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        AssertionIDReference assertionIDReference = (AssertionIDReference) buildXMLObject(qname);
+        final AssertionIDReference assertionIDReference = (AssertionIDReference) buildXMLObject(qname);
 
         assertionIDReference.setValue(expectedNCName);
         assertXMLEquals(expectedOptionalAttributesDOM, assertionIDReference);

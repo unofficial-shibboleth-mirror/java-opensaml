@@ -33,6 +33,7 @@ import org.opensaml.saml.saml1.core.Subject;
 /**
  * Test class for org.opensaml.saml.saml1.core.AuthenticationQuery
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -55,10 +56,9 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
 
-        AuthenticationQuery authenticationQuery;
-        
+        final AuthenticationQuery authenticationQuery;
         authenticationQuery = (AuthenticationQuery) unmarshallElement(singleElementFile);
-
+        assert authenticationQuery!=null;
         Assert.assertNull(authenticationQuery.getAuthenticationMethod(), "AuthenticationQuery attribute present");;
         Assert.assertNull(authenticationQuery.getSubject(), "Subject element present");
     }
@@ -66,10 +66,9 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthenticationQuery authenticationQuery;
-        
+        final AuthenticationQuery authenticationQuery;
         authenticationQuery = (AuthenticationQuery) unmarshallElement(singleElementOptionalAttributesFile);
-
+        assert authenticationQuery!=null;
         Assert.assertEquals(authenticationQuery.getAuthenticationMethod(), expectedAuthenticationMethod, "AuthenticationQuery attribute");;
         Assert.assertNull(authenticationQuery.getSubject(), "Subject element present");
     }
@@ -77,10 +76,9 @@ public class AuthenticationQueryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AuthenticationQuery authenticationQuery;
-        
+        final AuthenticationQuery authenticationQuery;
         authenticationQuery = (AuthenticationQuery) unmarshallElement(childElementsFile);
-
+        assert authenticationQuery!=null;
         Assert.assertNotNull(authenticationQuery.getSubject(), "No Subject element found");
     }
 

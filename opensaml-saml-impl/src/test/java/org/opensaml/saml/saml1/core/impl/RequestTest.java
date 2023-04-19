@@ -26,11 +26,15 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.core.xml.io.Marshaller;
 import org.opensaml.core.xml.io.MarshallingException;
+import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.saml.saml1.core.AssertionArtifact;
 import org.opensaml.saml.saml1.core.AssertionIDReference;
 import org.opensaml.saml.saml1.core.AttributeQuery;
+import org.opensaml.saml.saml1.core.Query;
 import org.opensaml.saml.saml1.core.Request;
+import org.opensaml.xmlsec.signature.Signature;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
@@ -41,6 +45,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Test in and around the {@link org.opensaml.saml.saml1.core.Request} interface
  */
+@SuppressWarnings({"null", "javadoc"})
 public class RequestTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -64,8 +69,8 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Request request = (Request) unmarshallElement(singleElementFile);
-
+        final Request request = (Request) unmarshallElement(singleElementFile);
+        assert request != null;
         String id = request.getID();
         Assert.assertNull(id, "ID attribute has value " + id + "expected no value");
         
@@ -81,10 +86,12 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Request request = (Request) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final Request request = (Request) unmarshallElement(singleElementOptionalAttributesFile);
+        assert request != null;
         Assert.assertEquals(request.getID(), expectedID, "ID");
-        Assert.assertEquals(request.getVersion().getMinorVersion(), expectedMinorVersion, "MinorVersion");
+        final SAMLVersion version = request.getVersion();
+        assert version!=null;
+        Assert.assertEquals(version.getMinorVersion(), expectedMinorVersion, "MinorVersion");
         Assert.assertEquals(request.getIssueInstant(), expectedIssueInstant, "IssueInstant");
         
     }
@@ -97,18 +104,19 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
         Request request; 
         
         request = (Request) unmarshallElement("/org/opensaml/saml/saml1/impl/RequestWithAssertionArtifact.xml");
-        
+        assert request != null;
         Assert.assertNull(request.getQuery(), "Query is not null");
         Assert.assertEquals(request.getAssertionIDReferences().size(), 0, "AssertionId count");
         Assert.assertEquals(request.getAssertionArtifacts().size(), 2, "AssertionArtifact count");
         
         request = (Request) unmarshallElement("/org/opensaml/saml/saml1/impl/RequestWithQuery.xml");
-        
+        assert request != null;
         Assert.assertNotNull(request.getQuery(), "Query is null");
         Assert.assertEquals(request.getAssertionIDReferences().size(), 0, "AssertionId count");
         Assert.assertEquals(request.getAssertionArtifacts().size(), 0, "AssertionArtifact count");
         
         request = (Request) unmarshallElement("/org/opensaml/saml/saml1/impl/RequestWithAssertionIDReference.xml");
+        assert request != null;
         Assert.assertNull(request.getQuery(), "Query is not null");
         Assert.assertNotNull(request.getAssertionIDReferences(), "AssertionId");
         Assert.assertEquals(request.getAssertionIDReferences().size(), 3, "AssertionId count");
@@ -185,36 +193,47 @@ public class RequestTest extends XMLObjectProviderBaseTestCase {
     
     @Test
     public void testSignatureUnmarshall() {
-        Request request = (Request) unmarshallElement("/org/opensaml/saml/saml1/impl/RequestWithSignature.xml");
-        
-        Assert.assertNotNull(request, "Request was null");
-        Assert.assertNotNull(request.getSignature(), "Signature was null");
-        Assert.assertNotNull(request.getSignature().getKeyInfo(), "KeyInfo was null");
+        final Request request = (Request) unmarshallElement("/org/opensaml/saml/saml1/impl/RequestWithSignature.xml");
+        assert request != null;
+        final Signature sig = request.getSignature();
+        assert sig != null;
+        Assert.assertNotNull(sig.getKeyInfo(), "KeyInfo was null");
     }
     
     @Test
     public void testDOMIDResolutionUnmarshall() {
-        Request request = (Request) unmarshallElement("/org/opensaml/saml/saml1/impl/RequestWithSignature.xml");
-        
-        Assert.assertNotNull(request, "Request was null");
-        Assert.assertNotNull(request.getSignature(), "Signature was null");
-        Document document = request.getSignature().getDOM().getOwnerDocument();
-        Element idElem = request.getDOM();
-        
+        final Request request = (Request) unmarshallElement("/org/opensaml/saml/saml1/impl/RequestWithSignature.xml");
+        assert request != null;
+        assert request != null;
+        final Signature sig = request.getSignature();
+        assert sig != null;
+        final Element elem = sig.getDOM();
+        assert elem != null;
+        final Document document = elem.getOwnerDocument();
+        final Element idElem = request.getDOM();
+        assert idElem != null;
         Assert.assertNotNull(document.getElementById(expectedID), "DOM ID resolution returned null");
         Assert.assertTrue(idElem.isSameNode(document.getElementById(expectedID)), "DOM elements were not equal");
     }
 
     @Test
     public void testDOMIDResolutionMarshall() throws MarshallingException {
-        Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        final Request request = (Request) buildXMLObject(Request.DEFAULT_ELEMENT_NAME);
+        assert request != null;
         request.setID(expectedID);
         request.setQuery((AttributeQuery) buildXMLObject(AttributeQuery.DEFAULT_ELEMENT_NAME));
         
-        marshallerFactory.getMarshaller(request).marshall(request);
+        final Marshaller marshaller = marshallerFactory.getMarshaller(request);
+        assert marshaller!=null;
+        marshaller.marshall(request);
         
-        Document document = request.getQuery().getDOM().getOwnerDocument();
-        Element idElem = request.getDOM();
+        final Query query = request.getQuery();
+        assert query != null;
+        final Element elem = query.getDOM();
+        assert elem != null;
+        final Document document = elem.getOwnerDocument();
+        final Element idElem = request.getDOM();
+        assert idElem != null;
         
         Assert.assertNotNull(document.getElementById(expectedID), "DOM ID resolution returned null");
         Assert.assertTrue(idElem.isSameNode(document.getElementById(expectedID)), "DOM elements were not equal");

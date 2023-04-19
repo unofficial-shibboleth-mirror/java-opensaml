@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 /**
  * Testing SAML issue instant security policy rule.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class MessageLifetimeSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;

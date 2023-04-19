@@ -43,6 +43,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test case for SAML 1.X HTTP SOAP 1.1 binding encoding.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class HTTPSOAP11EncoderTest extends XMLObjectBaseTestCase {
 
     /**

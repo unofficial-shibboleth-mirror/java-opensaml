@@ -30,6 +30,7 @@ import org.opensaml.saml.saml1.core.DoNotCacheCondition;
 /**
  * Test class for {@link org.opensaml.saml.saml1.core.impl.DoNotCacheConditionImpl} objects
  */
+@SuppressWarnings({"null", "javadoc"})
 public class DoNotCacheConditionTest extends XMLObjectProviderBaseTestCase {
 
     /**

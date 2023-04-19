@@ -39,7 +39,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 
 
 /** Test for {@link AddSubjectConfirmationToSubjects}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;

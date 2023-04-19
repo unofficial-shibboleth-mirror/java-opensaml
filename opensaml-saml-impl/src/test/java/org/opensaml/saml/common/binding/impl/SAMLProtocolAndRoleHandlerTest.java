@@ -32,7 +32,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLProtocolAndRoleHandlerTest {
     
     private SAMLProtocolAndRoleHandler handler;

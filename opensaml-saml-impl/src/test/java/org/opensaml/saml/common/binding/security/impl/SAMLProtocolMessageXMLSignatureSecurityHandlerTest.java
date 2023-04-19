@@ -49,6 +49,7 @@ import org.testng.annotations.Test;
 /**
  * Test SAML protocol message XML signature message handler.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;

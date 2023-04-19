@@ -39,6 +39,7 @@ import org.w3c.dom.Document;
 /**
  * Test class for org.opensaml.saml.saml1.core.AttributeQuery
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -76,9 +77,9 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
     @Test
     public void testSingleElementUnmarshall() {
 
-        AuthorizationDecisionQuery authorizationDecisionQuery;
+        final AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(singleElementFile);
-
+        assert authorizationDecisionQuery!=null;
         Assert.assertNull(authorizationDecisionQuery.getResource(), "Resource attribute present");
         Assert.assertNull(authorizationDecisionQuery.getSubject(), "Subject element present");
         Assert.assertEquals(authorizationDecisionQuery.getActions().size(), 0, "Count of AttributeDesignator elements");
@@ -88,9 +89,9 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthorizationDecisionQuery authorizationDecisionQuery;
+        final AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(singleElementOptionalAttributesFile);
-
+        assert authorizationDecisionQuery!=null;
         Assert.assertEquals(authorizationDecisionQuery.getResource(), expectedResource, "Resource attribute");
         Assert.assertNull(authorizationDecisionQuery.getSubject(), "Subject element present");
         Assert.assertEquals(authorizationDecisionQuery.getActions().size(), 0, "Count of AttributeDesignator elements");
@@ -102,9 +103,9 @@ public class AuthorizationDecisionQueryTest extends XMLObjectProviderBaseTestCas
      */
     @Test
     public void testFullElementsUnmarshall() {
-        AuthorizationDecisionQuery authorizationDecisionQuery;
+        final AuthorizationDecisionQuery authorizationDecisionQuery;
         authorizationDecisionQuery = (AuthorizationDecisionQuery) unmarshallElement(fullElementsFile);
-
+        assert authorizationDecisionQuery!=null;
         Assert.assertNotNull(authorizationDecisionQuery.getSubject(), "Subject element present");
         Assert.assertEquals(authorizationDecisionQuery.getActions().size(), 3, "Count of Action elements");
         Assert.assertNotNull(authorizationDecisionQuery.getEvidence(), "Evidence element present");

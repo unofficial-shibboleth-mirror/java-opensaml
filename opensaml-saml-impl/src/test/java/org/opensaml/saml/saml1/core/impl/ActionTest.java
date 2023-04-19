@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.Action;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.impl.ActionImpl}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ActionTest extends XMLObjectProviderBaseTestCase {
 
     private final String expectedContents;
@@ -54,7 +55,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        Action action = (Action) unmarshallElement(singleElementFile);
+        final Action action = (Action) unmarshallElement(singleElementFile);
+        assert action!=null;
         Assert.assertNull(action.getNamespace(), "namespace attribute present");
         Assert.assertNull(action.getValue(), "Contents present");
     }
@@ -63,7 +65,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
+        final Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
+        assert action!=null;
         Assert.assertEquals(action.getNamespace(), expectedNamespace, "namespace attribute ");
         Assert.assertEquals(action.getValue(), expectedContents, "Contents ");
     }

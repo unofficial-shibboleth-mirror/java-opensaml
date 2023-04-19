@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.NameIdentifier;
 /**
  * Test case for NameIdentifier
  */
+@SuppressWarnings({"null", "javadoc"})
 public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -57,8 +58,8 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementFile);
-        
+        final NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementFile);
+        assert nameIdentifier != null;
         Assert.assertNull(nameIdentifier.getValue(), "Name Identifer contents present");
         Assert.assertNull(nameIdentifier.getNameQualifier(), "NameQualifier present");
         Assert.assertNull(nameIdentifier.getFormat(), "Format present");
@@ -69,7 +70,7 @@ public class NameIdentifierTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         NameIdentifier nameIdentifier = (NameIdentifier) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        assert nameIdentifier != null;
         Assert.assertEquals(nameIdentifier.getValue(), expectedNameIdentifier, "Name Identifier contents");
         Assert.assertEquals(nameIdentifier.getNameQualifier(), expectedNameQualifier, "NameQualfier attribute");
         Assert.assertEquals(nameIdentifier.getFormat(), expectedFormat, "Format attribute");

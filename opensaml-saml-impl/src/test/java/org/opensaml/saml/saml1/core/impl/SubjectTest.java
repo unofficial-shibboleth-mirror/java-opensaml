@@ -34,6 +34,7 @@ import org.opensaml.saml.saml1.core.SubjectConfirmation;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.Subject}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SubjectTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -51,8 +52,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Subject subject = (Subject) unmarshallElement(singleElementFile);
-
+        final Subject subject = (Subject) unmarshallElement(singleElementFile);
+        assert subject != null;
         Assert.assertNull(subject.getNameIdentifier(), "Non zero number of child NameIdentifier elements");
         Assert.assertNull(subject.getSubjectConfirmation(), "Non zero number of child SubjectConfirmation elements");
     }
@@ -62,8 +63,8 @@ public class SubjectTest extends XMLObjectProviderBaseTestCase {
      */
     @Test
     public void testChildElementsUnmarshall() {
-        Subject subject = (Subject) unmarshallElement(childElementsFile);
-
+        final Subject subject = (Subject) unmarshallElement(childElementsFile);
+        assert subject != null;
         Assert.assertNotNull(subject.getNameIdentifier(), "Zero child NameIdentifier elements");
         Assert.assertNotNull(subject.getSubjectConfirmation(), "Zero child SubjectConfirmation elements");
     }

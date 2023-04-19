@@ -17,17 +17,18 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.StatusCode;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * Test class for org.opensaml.saml.saml1.core.StatusCode.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects. */
@@ -46,7 +47,8 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
 
-        StatusCode code = (StatusCode) unmarshallElement(singleElementFile);
+        final StatusCode code = (StatusCode) unmarshallElement(singleElementFile);
+        assert code != null;
 
         Assert.assertEquals(code.getValue(), StatusCode.SUCCESS, "Single Element Value wrong");
     }
@@ -56,7 +58,8 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
 
-        StatusCode code = (StatusCode) unmarshallElement(childElementsFile);
+        final StatusCode code = (StatusCode) unmarshallElement(childElementsFile);
+        assert code != null;
 
         Assert.assertNotNull(code.getStatusCode(), "Child StatusCode");
     }
@@ -77,13 +80,14 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsMarshall() {
 
-        StatusCode code = (StatusCode) buildXMLObject(qname);
+        final StatusCode code = (StatusCode) buildXMLObject(qname);
 
         code.setValue(StatusCode.REQUESTER);
 
         code.setStatusCode((StatusCode) buildXMLObject(qname));
-
-        code.getStatusCode().setValue(StatusCode.VERSION_MISMATCH);
+        final StatusCode code2 = code.getStatusCode();
+        assert code2 != null;
+        code2.setValue(StatusCode.VERSION_MISMATCH);
 
         assertXMLEquals(expectedChildElementsDOM, code);
     }

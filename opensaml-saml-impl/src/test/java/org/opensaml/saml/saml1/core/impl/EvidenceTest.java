@@ -34,6 +34,7 @@ import org.opensaml.saml.saml1.core.Evidence;
 /**
  * Test for {@link EvidenceImpl}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -55,7 +56,8 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        Evidence evidence = (Evidence) unmarshallElement(singleElementFile);
+        final Evidence evidence = (Evidence) unmarshallElement(singleElementFile);
+        assert evidence !=null;
 
         Assert.assertEquals(evidence.getEvidence().size(), 0, "AssertionIDReference or Assertion element was present");
     }
@@ -64,7 +66,8 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testChildElementsUnmarshall() {
-        Evidence evidence = (Evidence) unmarshallElement(childElementsFile);
+        final Evidence evidence = (Evidence) unmarshallElement(childElementsFile);
+        assert evidence !=null;
 
         Assert.assertEquals(evidence.getEvidence().size(), 4, "Assertion and AssertionIDReference element count");
         Assert.assertEquals(evidence.getAssertionIDReferences().size(), 2, "AssertionIDReference element count");
@@ -82,10 +85,10 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testChildElementsMarshall() {
-        Evidence evidence = (Evidence) buildXMLObject(qname);
+        final Evidence evidence = (Evidence) buildXMLObject(qname);
 
-        QName refQname = new QName(SAMLConstants.SAML1_NS, AssertionIDReference.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
-        QName assertionQname = new QName(SAMLConstants.SAML1_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        final QName refQname = new QName(SAMLConstants.SAML1_NS, AssertionIDReference.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
+        final QName assertionQname = new QName(SAMLConstants.SAML1_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML1_PREFIX);
         
         evidence.getAssertionIDReferences().add((AssertionIDReference) buildXMLObject(refQname));
         evidence.getAssertions().add((Assertion) buildXMLObject(assertionQname));

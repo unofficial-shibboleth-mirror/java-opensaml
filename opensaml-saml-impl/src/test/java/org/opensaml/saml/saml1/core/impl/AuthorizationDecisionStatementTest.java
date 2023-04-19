@@ -41,6 +41,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -73,9 +74,9 @@ public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTes
     @Test
     public void testSingleElementUnmarshall() {
 
-        AuthorizationDecisionStatement authorizationDecisionStatement;
+        final AuthorizationDecisionStatement authorizationDecisionStatement;
         authorizationDecisionStatement = (AuthorizationDecisionStatement) unmarshallElement(singleElementFile);
-
+        assert authorizationDecisionStatement!=null;
         Assert.assertNull(authorizationDecisionStatement.getDecision(), "Decision attribute null");
         Assert.assertNull(authorizationDecisionStatement.getResource(), "Resource attribute null");
         Assert.assertEquals(authorizationDecisionStatement.getActions().size(), 0, "<Actions> elements present");
@@ -89,9 +90,12 @@ public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTes
 
         AuthorizationDecisionStatement authorizationDecisionStatement;
         authorizationDecisionStatement = (AuthorizationDecisionStatement) unmarshallElement(singleElementOptionalAttributesFile);
+        assert authorizationDecisionStatement!=null;
 
         Assert.assertEquals(authorizationDecisionStatement.getResource(), expectedResource, "Resource attribute ");
-        Assert.assertEquals(authorizationDecisionStatement.getDecision().toString(), expectedDecision.toString(), "Decision attribute ");
+        final DecisionTypeEnumeration decision = authorizationDecisionStatement.getDecision();
+        assert decision!=null;
+        Assert.assertEquals(decision.toString(), expectedDecision.toString(), "Decision attribute ");
 
         try {
             Document doc = parserPool.parse(this.getClass().getResourceAsStream(illegalAttributesFile));
@@ -113,10 +117,9 @@ public class AuthorizationDecisionStatementTest extends XMLObjectProviderBaseTes
 
     @Test
     public void testChildElementsUnmarshall() {
-        AuthorizationDecisionStatement authorizationDecisionStatement;
-
+        final AuthorizationDecisionStatement authorizationDecisionStatement;
         authorizationDecisionStatement = (AuthorizationDecisionStatement) unmarshallElement(childElementsFile);
-
+        assert authorizationDecisionStatement!=null;
         Assert.assertNotNull(authorizationDecisionStatement.getSubject(), "<Subject> element not present");
         Assert.assertNotNull(authorizationDecisionStatement.getEvidence(), "<Evidence> element not present");
         Assert.assertNotNull(authorizationDecisionStatement.getActions(), "<Action> elements not present");

@@ -36,6 +36,7 @@ import org.opensaml.saml.saml1.core.Subject;
 /**
  * Test class for org.opensaml.saml.saml1.core.AttributeQuery
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -59,9 +60,9 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
 
-        AttributeQuery attributeQuery;
+        final AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(singleElementFile);
-
+        assert attributeQuery!=null;
         Assert.assertNull(attributeQuery.getResource(), "Resource attribute present");
         Assert.assertNull(attributeQuery.getSubject(), "Subject element present");
         Assert.assertEquals(attributeQuery.getAttributeDesignators().size(), 0, "Count of AttributeDesignator elements");
@@ -70,9 +71,9 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AttributeQuery attributeQuery;
+        final AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(singleElementOptionalAttributesFile);
-
+        assert attributeQuery!=null;
         Assert.assertEquals(attributeQuery.getResource(), expectedResource, "Resource attribute");
         Assert.assertNull(attributeQuery.getSubject(), "Subject element present");
         Assert.assertEquals(attributeQuery.getAttributeDesignators().size(), 0, "Count of AttributeDesignator elements");
@@ -81,9 +82,9 @@ public class AttributeQueryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AttributeQuery attributeQuery;
+        final AttributeQuery attributeQuery;
         attributeQuery = (AttributeQuery) unmarshallElement(childElementsFile);
-
+        assert attributeQuery!=null;
         Assert.assertNotNull(attributeQuery.getSubject(), "Subject element present");
         Assert.assertEquals(attributeQuery.getAttributeDesignators().size(), 4, "Count of AttributeDesignator elements");
     }

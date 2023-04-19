@@ -52,7 +52,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test class for SAML 1 HTTP Post encoding.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
 
     /** Velocity template engine. */

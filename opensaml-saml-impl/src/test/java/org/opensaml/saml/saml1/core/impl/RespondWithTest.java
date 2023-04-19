@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.RespondWith;
 /**
  * Test for org.opensaml.saml.saml1.core.RespondWith.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class RespondWithTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected QName element content. */
@@ -51,8 +52,8 @@ public class RespondWithTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        RespondWith respondWith = (RespondWith) unmarshallElement(singleElementFile);
-        Assert.assertNotNull(respondWith, "Object was null");
+        final RespondWith respondWith = (RespondWith) unmarshallElement(singleElementFile);
+        assert respondWith != null;
         
         Assert.assertEquals(respondWith.getValue(), expectedQName, "Unexpected QName content value");
     }

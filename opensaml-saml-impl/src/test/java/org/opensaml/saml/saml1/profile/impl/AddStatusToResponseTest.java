@@ -34,7 +34,7 @@ import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddStatusToResponse} unit test. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AddStatusToResponseTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;

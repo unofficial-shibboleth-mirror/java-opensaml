@@ -34,7 +34,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 /**
  * Test the {@link SAMLOutboundDestinationHandler}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLOutboundDestinationHandlerTest extends XMLObjectBaseTestCase {
     
     private SAMLOutboundDestinationHandler handler;

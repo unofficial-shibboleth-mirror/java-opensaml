@@ -37,7 +37,7 @@ import org.xmlunit.diff.Diff;
 /**
  * Test the storage-backed SAML artifact map implementation.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class StorageServiceSAMLArtifactMapTest extends XMLObjectBaseTestCase {
 
     private MemoryStorageService storageService;

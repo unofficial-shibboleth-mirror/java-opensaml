@@ -36,6 +36,7 @@ import org.opensaml.saml.saml1.core.Subject;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.AttributeStatement}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -56,6 +57,7 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(singleElementFile);
+        assert attributeStatement!=null;
 
         Assert.assertNull(attributeStatement.getSubject(), "<Subject> element present");
         Assert.assertEquals(attributeStatement.getAttributes().size(), 0, "Non zero count of <Attribute> elements");
@@ -66,6 +68,7 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(childElementsFile);
+        assert attributeStatement!=null;
 
         Assert.assertNotNull(attributeStatement.getSubject(), "<Subject> element not present");
         Assert.assertNotNull(attributeStatement.getAttributes(), "<AuthorityBinding> elements not present");

@@ -56,6 +56,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test SAML client cert auth message handler.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLMDClientCertAuthSecurityHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;

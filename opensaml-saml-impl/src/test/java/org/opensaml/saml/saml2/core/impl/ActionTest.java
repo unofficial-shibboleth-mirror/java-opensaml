@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.Action;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.ActionImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ActionTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected value of action */
@@ -52,7 +53,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Action action = (Action) unmarshallElement(singleElementFile);
+        final Action action = (Action) unmarshallElement(singleElementFile);
+        assert action != null;
 
         String actionname = action.getValue();
         Assert.assertEquals(actionname, expectedAction, "Action was " + actionname + ", expected " + expectedAction);
@@ -61,8 +63,8 @@ public class ActionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
-
+        final Action action = (Action) unmarshallElement(singleElementOptionalAttributesFile);
+        assert action != null;
         String actionname = action.getValue();
         Assert.assertEquals(actionname, expectedAction, "Action was " + actionname + ", expected " + expectedAction);
 

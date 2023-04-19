@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.ConfirmationMethod;
 /**
  * test for {@link org.opensaml.saml.saml1.core.ConfirmationMethod}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -54,8 +55,8 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementFile);
-        
+        final ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementFile);
+        assert confirmationMethod!=null;
         Assert.assertNull(confirmationMethod.getURI(), "Contents of Confirmation Method");
 
     }
@@ -64,8 +65,8 @@ public class ConfirmationMethodTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final ConfirmationMethod confirmationMethod = (ConfirmationMethod) unmarshallElement(singleElementOptionalAttributesFile);
+        assert confirmationMethod!=null;
         Assert.assertEquals(confirmationMethod.getURI(), expectedConfirmationMethod, "Contents of Confirmation Method");
     }
 

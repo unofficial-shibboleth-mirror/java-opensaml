@@ -57,7 +57,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 /**
  * Test for {@link SAMLMetadataLookupHandler}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLMetadataLookupHandlerTest extends XMLObjectBaseTestCase {
 
     private PredicateRoleDescriptorResolver roleResolver;

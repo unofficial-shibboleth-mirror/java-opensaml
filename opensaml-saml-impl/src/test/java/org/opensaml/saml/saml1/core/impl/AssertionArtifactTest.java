@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.AssertionArtifact;
 /**
  * Test for {@link org.opensaml.saml.saml1.core.AssertionArtifact}
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -52,16 +53,16 @@ public class AssertionArtifactTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementFile);
-        
+        final AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementFile);
+        assert artifact!=null;
         Assert.assertNull(artifact.getValue(), "AssertionArtifact contents present");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final AssertionArtifact artifact = (AssertionArtifact) unmarshallElement(singleElementOptionalAttributesFile);
+        assert artifact!=null;        
         Assert.assertEquals(artifact.getValue(), expectedAssertionArtifact, "AssertionArtifact contents present");
     }
 

@@ -38,6 +38,7 @@ import org.opensaml.saml.saml1.core.SubjectLocality;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -68,8 +69,8 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementFile);
-
+        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementFile);
+        assert authenticationStatement!=null;
         Assert.assertNull(authenticationStatement.getAuthenticationMethod(), "AuthenticationMethod attribute present");
         Assert.assertNull(authenticationStatement.getAuthenticationInstant(), "AuthenticationInstant attribute present");
 
@@ -82,8 +83,8 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementOptionalAttributesFile);
-
+        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(singleElementOptionalAttributesFile);
+        assert authenticationStatement!=null;
         Assert.assertEquals(authenticationStatement
                 .getAuthenticationMethod(), expectedAuthenticationMethod, "AuthenticationMethod");
         Assert.assertEquals(authenticationStatement.getAuthenticationInstant(), expectedAuthenticationInstant, "AuthenticationInstant");
@@ -95,8 +96,8 @@ public class AuthenticationStatementTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testChildElementsUnmarshall() {
-        AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(childElementsFile);
-
+        final AuthenticationStatement authenticationStatement = (AuthenticationStatement) unmarshallElement(childElementsFile);
+        assert authenticationStatement!=null;
         Assert.assertNotNull(authenticationStatement.getSubject(), "<Subject> element not present");
 
         Assert.assertNotNull(authenticationStatement.getSubjectLocality(), "<SubjectLocality> element not present");

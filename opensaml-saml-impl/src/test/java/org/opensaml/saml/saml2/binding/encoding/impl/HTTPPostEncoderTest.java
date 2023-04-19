@@ -55,7 +55,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test case for {@link HTTPPostEncoder}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class HTTPPostEncoderTest extends XMLObjectBaseTestCase {
 
     /** Velocity template engine. */

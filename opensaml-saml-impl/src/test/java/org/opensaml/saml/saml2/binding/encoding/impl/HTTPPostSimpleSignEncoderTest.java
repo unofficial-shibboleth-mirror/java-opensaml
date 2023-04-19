@@ -67,7 +67,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Test case for {@link HTTPPostEncoder}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
 
     /** Velocity template engine. */
@@ -198,7 +198,6 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
     }
 
     @Test
-    @SuppressWarnings("unchecked")
     public void testRequestEncoding() throws Exception {
         SAMLObjectBuilder<AuthnRequest> responseBuilder =
                 (SAMLObjectBuilder<AuthnRequest>) builderFactory.<AuthnRequest>ensureBuilder(AuthnRequest.DEFAULT_ELEMENT_NAME);
@@ -292,7 +291,6 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
     }
     
     @Test
-    @SuppressWarnings("unchecked")
     public void testRequestEncodingWithSimpleSign() throws Exception {
         SAMLObjectBuilder<AuthnRequest> responseBuilder =
                 (SAMLObjectBuilder<AuthnRequest>) builderFactory.<AuthnRequest>ensureBuilder(AuthnRequest.DEFAULT_ELEMENT_NAME);
@@ -394,7 +392,9 @@ public class HTTPPostSimpleSignEncoderTest extends XMLObjectBaseTestCase {
             Assert.assertTrue(xmlObject instanceof KeyInfo);
             final KeyInfoGenerator generator = signingParameters.getKeyInfoGenerator();
             assert generator != null;
-            assertXMLEquals(xmlObject.ensureDOM().getOwnerDocument(), generator.generate(signingParameters.getSigningCredential()));
+            final KeyInfo generated = generator.generate(signingParameters.getSigningCredential());
+            assert generated != null;
+            assertXMLEquals(xmlObject.ensureDOM().getOwnerDocument(), generated);
         }
         
         Element submit = body.selectFirst("noscript > div > input[type=submit]");

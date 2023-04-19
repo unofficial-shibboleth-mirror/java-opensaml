@@ -44,7 +44,7 @@ import net.shibboleth.shared.component.ComponentInitializationException;
 /**
  * Tests for {@link SAMLOutboundProtocolMessageSigningHandler}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLOutboundProtocolMessageSigningHandlerTest extends XMLObjectBaseTestCase {
     
     private MessageContext messageContext;

@@ -38,7 +38,7 @@ import org.opensaml.saml.saml1.core.Response;
 /**
  * Test the storage-backed SAML artifact map entry factory.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class StorageServiceSAMLArtifactMapEntryFactoryTest extends XMLObjectBaseTestCase {
 
     @Nonnull private final String artifact = "the-artifact";

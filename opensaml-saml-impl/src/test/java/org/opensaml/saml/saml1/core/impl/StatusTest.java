@@ -21,8 +21,6 @@
 
 package org.opensaml.saml.saml1.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
@@ -30,10 +28,13 @@ import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml1.core.Status;
 import org.opensaml.saml.saml1.core.StatusCode;
 import org.opensaml.saml.saml1.core.StatusMessage;
+import org.testng.Assert;
+import org.testng.annotations.Test;
 
 /**
  * org.opensaml.saml.saml1.core.Status.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class StatusTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects. */
@@ -54,8 +55,8 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
 
-        Status status = (Status) unmarshallElement(singleElementFile);
-
+        final Status status = (Status) unmarshallElement(singleElementFile);
+        assert status!= null;
         Assert.assertNotNull(status.getStatusCode(), "StatusCode");
         Assert.assertNull(status.getStatusMessage(), "StatusMessage");
         Assert.assertNull(status.getStatusDetail(), "StatusDetail");
@@ -66,8 +67,8 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
      */
     @Test
     public void testChildElementsUnmarshall() {
-        Status status = (Status) unmarshallElement(childElementsFile);
-
+        final Status status = (Status) unmarshallElement(childElementsFile);
+        assert status!= null;
         Assert.assertNotNull(status.getStatusCode(), "StatusCode");
         Assert.assertNotNull(status.getStatusMessage(), "StatusMessage");
     }
@@ -76,8 +77,8 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementMarshall() {
-        Status status = (Status) buildXMLObject(qname);
-
+        final Status status = (Status) buildXMLObject(qname);
+        assert status!= null;
         StatusCode statusCode = (StatusCode) buildXMLObject(StatusCode.DEFAULT_ELEMENT_NAME);
         statusCode.setValue(StatusCode.SUCCESS);
         status.setStatusCode(statusCode);

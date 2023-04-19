@@ -31,6 +31,7 @@ import org.opensaml.saml.saml1.core.Audience;
 /**
  * Test for org.opensaml.saml.saml1.core.Audience Objects
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     /** name used to generate objects */
@@ -53,8 +54,8 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementUnmarshall() {
-        Audience audience = (Audience) unmarshallElement(singleElementFile);
-        
+        final Audience audience = (Audience) unmarshallElement(singleElementFile);
+        assert audience!= null;
         Assert.assertNull(audience.getURI(), "Uri is non-null");
     }
 
@@ -62,8 +63,8 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Audience audience = (Audience) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final Audience audience = (Audience) unmarshallElement(singleElementOptionalAttributesFile);
+        assert audience!= null;
         Assert.assertEquals(audience.getURI(), expectedUri, "Uri");
     }
 
@@ -78,8 +79,8 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        Audience audience = (Audience) buildXMLObject(qname);
-        
+        final Audience audience = (Audience) buildXMLObject(qname);
+        assert audience!= null;        
         audience.setURI(expectedUri);
         assertXMLEquals(expectedOptionalAttributesDOM, audience);
         
