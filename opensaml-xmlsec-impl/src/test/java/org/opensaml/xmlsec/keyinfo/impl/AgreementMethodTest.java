@@ -65,7 +65,7 @@ import com.google.common.collect.Iterables;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class AgreementMethodTest extends XMLObjectBaseTestCase {
     
     private LocalKeyInfoCredentialResolver resolver;

@@ -39,6 +39,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoGeneratorManager;
 /**
  * Test the KeyInfoGeneratorFactory manager.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyInfoGeneratorManagerTest extends XMLObjectBaseTestCase {
     
     private KeyInfoGeneratorManager manager;

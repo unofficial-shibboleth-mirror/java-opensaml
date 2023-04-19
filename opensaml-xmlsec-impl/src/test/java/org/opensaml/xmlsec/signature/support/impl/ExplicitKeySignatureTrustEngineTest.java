@@ -56,6 +56,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 /**
  * Test explicit key signature trust engine.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ExplicitKeySignatureTrustEngineTest extends XMLObjectBaseTestCase {
     
     private X509Certificate signingCert;

@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.encryption.KeyReference;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyReferenceTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedURI;

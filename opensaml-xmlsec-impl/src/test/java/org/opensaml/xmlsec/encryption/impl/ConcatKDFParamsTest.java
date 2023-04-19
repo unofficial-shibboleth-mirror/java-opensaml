@@ -29,6 +29,7 @@ import org.testng.annotations.Test;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ConcatKDFParamsTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedDigestMethod;

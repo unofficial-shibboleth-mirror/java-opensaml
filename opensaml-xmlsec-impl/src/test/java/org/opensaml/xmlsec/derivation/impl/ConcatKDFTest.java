@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.codec.EncodingException;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class ConcatKDFTest extends XMLObjectBaseTestCase {
     
     @Test

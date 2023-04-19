@@ -62,6 +62,7 @@ import org.opensaml.xmlsec.signature.support.SignatureConstants;
 /**
  * Tests the factory and impl for X509KeyInfoGenerator.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class X509KeyInfoGeneratorTest extends XMLObjectBaseTestCase {
 
     private static String subjectAltNameExtensionOID = "2.5.29.17";

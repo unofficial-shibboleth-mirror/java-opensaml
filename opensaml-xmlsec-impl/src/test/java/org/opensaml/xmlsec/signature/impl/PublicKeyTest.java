@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class PublicKeyTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

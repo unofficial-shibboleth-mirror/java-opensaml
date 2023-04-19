@@ -38,6 +38,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 /**
  * Test the inline encrypted key resolver.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     
     /** The resolver instance to be tested. */

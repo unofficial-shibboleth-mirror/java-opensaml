@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.MasterKeyName;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class MasterKeyNameTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

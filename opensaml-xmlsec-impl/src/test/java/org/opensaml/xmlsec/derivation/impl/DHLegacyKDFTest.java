@@ -30,7 +30,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.codec.Base64Support;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class DHLegacyKDFTest extends OpenSAMLInitBaseTestCase {
     
     @Test

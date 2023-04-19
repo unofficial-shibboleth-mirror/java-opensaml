@@ -31,7 +31,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class AlgorithmRuntimeSupportedPredicateTest extends OpenSAMLInitBaseTestCase {
     
     private AlgorithmRuntimeSupportedPredicate predicate;

@@ -66,7 +66,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class BasicEncryptionParametersResolverTest extends XMLObjectBaseTestCase {
     
     private BasicEncryptionParametersResolver resolver;

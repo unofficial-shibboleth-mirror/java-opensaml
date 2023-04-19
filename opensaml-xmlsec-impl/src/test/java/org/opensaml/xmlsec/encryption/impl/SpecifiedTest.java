@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.Specified;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SpecifiedTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

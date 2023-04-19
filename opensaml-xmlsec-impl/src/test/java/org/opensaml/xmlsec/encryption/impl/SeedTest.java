@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.Seed;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SeedTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

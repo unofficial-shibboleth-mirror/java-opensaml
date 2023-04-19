@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.RSAKeyValue;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyValueTest extends XMLObjectProviderBaseTestCase {
     
     /**

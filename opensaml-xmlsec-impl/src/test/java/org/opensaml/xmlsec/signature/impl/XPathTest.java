@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.XPath;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class XPathTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

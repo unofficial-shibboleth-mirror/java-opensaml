@@ -33,6 +33,7 @@ import org.w3c.dom.Attr;
 /**
  * Unmarshaller for {@link org.opensaml.core.xml.mock.SimpleXMLObject}.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SignableSimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */

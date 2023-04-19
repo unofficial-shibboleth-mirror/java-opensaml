@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.signature.Transform;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class TransformsTest extends XMLObjectProviderBaseTestCase {
     
     private int expectedNumTransforms;

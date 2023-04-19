@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.X509Certificate;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class X509CertificateTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.signature.Transforms;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class RetrievalMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedURI;

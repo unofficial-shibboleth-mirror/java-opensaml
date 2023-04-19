@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.Exponent;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ExponentTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

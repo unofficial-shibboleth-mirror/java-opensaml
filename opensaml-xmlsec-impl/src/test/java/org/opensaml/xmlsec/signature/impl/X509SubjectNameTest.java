@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.X509SubjectName;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class X509SubjectNameTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

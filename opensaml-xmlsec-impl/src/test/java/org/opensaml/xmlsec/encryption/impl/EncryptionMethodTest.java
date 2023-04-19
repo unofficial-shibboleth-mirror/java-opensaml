@@ -30,6 +30,7 @@ import org.opensaml.xmlsec.encryption.OAEPparams;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;

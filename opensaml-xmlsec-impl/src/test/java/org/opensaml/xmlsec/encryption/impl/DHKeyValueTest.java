@@ -33,6 +33,7 @@ import org.opensaml.xmlsec.encryption.Seed;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DHKeyValueTest extends XMLObjectProviderBaseTestCase {
     
     /**

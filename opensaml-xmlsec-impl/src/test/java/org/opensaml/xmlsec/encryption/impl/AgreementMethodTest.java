@@ -31,6 +31,7 @@ import org.opensaml.xmlsec.encryption.RecipientKeyInfo;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class AgreementMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;

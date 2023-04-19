@@ -29,6 +29,7 @@ import org.opensaml.xmlsec.signature.XPath;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class TransformTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;

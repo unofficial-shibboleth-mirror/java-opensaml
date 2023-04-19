@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.J;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class JTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

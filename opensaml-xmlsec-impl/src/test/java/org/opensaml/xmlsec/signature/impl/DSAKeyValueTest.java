@@ -33,6 +33,7 @@ import org.opensaml.xmlsec.signature.Y;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DSAKeyValueTest extends XMLObjectProviderBaseTestCase {
     
     /**

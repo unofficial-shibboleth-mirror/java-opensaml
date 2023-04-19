@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.CarriedKeyName;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class CarriedKeyNameTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

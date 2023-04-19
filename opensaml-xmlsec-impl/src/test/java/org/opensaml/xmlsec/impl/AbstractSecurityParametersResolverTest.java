@@ -52,7 +52,7 @@ import org.testng.annotations.Test;
  * Test various aspects of the {@link AbstractSecurityParametersResolver} so don't have to test
  * them in all the individual subclasses.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class AbstractSecurityParametersResolverTest extends XMLObjectBaseTestCase {
     
     private DummyParametersResolver resolver;

@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.KeyLength;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyLengthTest extends XMLObjectProviderBaseTestCase {
     
     private Integer expectedIntegerContent;

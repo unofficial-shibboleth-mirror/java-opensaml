@@ -55,7 +55,7 @@ import net.shibboleth.shared.testing.RepositorySupport;
 import net.shibboleth.shared.xml.SerializeSupport;
 import net.shibboleth.shared.xml.impl.BasicParserPool;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class DetachedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */

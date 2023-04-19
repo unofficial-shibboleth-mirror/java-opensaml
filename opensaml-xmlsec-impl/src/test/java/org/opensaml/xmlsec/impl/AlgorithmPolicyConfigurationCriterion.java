@@ -35,6 +35,7 @@ import org.opensaml.xmlsec.AlgorithmPolicyConfiguration;
  * Criterion which holds one or more instances of {@link AlgorithmPolicyConfiguration},
  * used exclusively for testing the {@link AbstractSecurityParametersResolver}.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class AlgorithmPolicyConfigurationCriterion implements Criterion {
     
     /** The list of configuration instances. */

@@ -28,7 +28,7 @@ import org.opensaml.xmlsec.encryption.support.PreDecryptionValidationException;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class DefaultPreDecryptionValidatorTest extends XMLObjectBaseTestCase {
     
     private DefaultPreDecryptionValidator validator;

@@ -42,6 +42,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 /**
  * Test resolution of credentials from RSAKeyValue child of KeyInfo.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DSAKeyValueTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver resolver;

@@ -25,7 +25,7 @@ import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
 import org.opensaml.xmlsec.signature.DigestMethod;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class DigestMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;

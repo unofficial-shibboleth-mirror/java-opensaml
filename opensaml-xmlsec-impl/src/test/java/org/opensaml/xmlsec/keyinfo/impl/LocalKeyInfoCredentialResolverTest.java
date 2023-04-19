@@ -44,7 +44,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 /**
  * Test the local credential resolver specialization of the KeyInfo credential resolver.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class LocalKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private String keyName;

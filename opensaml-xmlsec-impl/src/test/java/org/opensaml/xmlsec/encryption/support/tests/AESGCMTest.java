@@ -42,7 +42,7 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class AESGCMTest extends XMLObjectBaseTestCase {
     
     private Logger log = LoggerFactory.getLogger(AESGCMTest.class);

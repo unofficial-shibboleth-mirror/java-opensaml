@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.Generator;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class GeneratorTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

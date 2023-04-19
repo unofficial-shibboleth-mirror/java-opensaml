@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.KeySize;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeySizeTest extends XMLObjectProviderBaseTestCase {
     
     private Integer expectedIntegerContent;

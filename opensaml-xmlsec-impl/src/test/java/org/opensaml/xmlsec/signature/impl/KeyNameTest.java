@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.KeyName;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyNameTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

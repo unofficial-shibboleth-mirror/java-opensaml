@@ -50,6 +50,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * where the X509Data contains various identifiers for the entity cert
  * within a cert chain.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class CertChainX509DataTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver resolver;

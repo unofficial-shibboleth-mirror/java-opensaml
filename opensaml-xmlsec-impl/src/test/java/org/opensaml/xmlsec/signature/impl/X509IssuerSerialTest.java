@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.signature.X509SerialNumber;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class X509IssuerSerialTest extends XMLObjectProviderBaseTestCase {
     
     /**

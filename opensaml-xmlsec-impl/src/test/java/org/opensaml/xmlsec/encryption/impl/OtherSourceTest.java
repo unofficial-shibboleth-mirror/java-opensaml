@@ -30,6 +30,7 @@ import org.testng.annotations.Test;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class OtherSourceTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;

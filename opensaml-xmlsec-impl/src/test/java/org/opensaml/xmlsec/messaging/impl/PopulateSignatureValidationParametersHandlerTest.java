@@ -38,7 +38,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /** Unit test for {@link PopulateSignatureValidationParametersHandler}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class PopulateSignatureValidationParametersHandlerTest extends OpenSAMLInitBaseTestCase {
 
     private MessageContext messageContext;

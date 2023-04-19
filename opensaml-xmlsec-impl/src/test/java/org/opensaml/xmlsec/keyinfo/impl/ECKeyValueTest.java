@@ -41,6 +41,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 /**
  * Test resolution of credentials from RSAKeyValue child of KeyInfo.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ECKeyValueTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver resolver;

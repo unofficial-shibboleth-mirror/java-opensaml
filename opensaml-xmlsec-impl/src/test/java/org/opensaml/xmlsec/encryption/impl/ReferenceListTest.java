@@ -29,6 +29,7 @@ import org.opensaml.xmlsec.encryption.ReferenceList;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ReferenceListTest extends XMLObjectProviderBaseTestCase {
     
     private int expectedNumDataRefs;

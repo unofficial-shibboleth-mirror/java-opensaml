@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.KANonce;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KANonceTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedBase64Content;

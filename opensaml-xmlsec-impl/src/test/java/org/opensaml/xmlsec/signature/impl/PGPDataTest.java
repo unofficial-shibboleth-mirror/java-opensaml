@@ -29,6 +29,7 @@ import org.opensaml.xmlsec.signature.PGPKeyPacket;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class PGPDataTest extends XMLObjectProviderBaseTestCase {
     
     

@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.IterationCount;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class IterationCountTest extends XMLObjectProviderBaseTestCase {
     
     private Integer expectedIntegerContent;

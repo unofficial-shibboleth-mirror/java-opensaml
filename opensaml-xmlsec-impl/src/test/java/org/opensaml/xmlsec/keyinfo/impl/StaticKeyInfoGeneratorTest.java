@@ -37,6 +37,7 @@ import org.w3c.dom.Element;
 /**
  * Test the static KeyInfo generator.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class StaticKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     private StaticKeyInfoGenerator generator;

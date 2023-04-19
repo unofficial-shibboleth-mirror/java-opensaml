@@ -60,6 +60,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Simple tests for encryption.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     
     private Encrypter encrypter;

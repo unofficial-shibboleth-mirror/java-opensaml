@@ -35,6 +35,7 @@ import org.opensaml.xmlsec.signature.X509Data;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class OriginatorKeyInfoTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedID;

@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.encryption.Transforms;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class CipherReferenceTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedURI;

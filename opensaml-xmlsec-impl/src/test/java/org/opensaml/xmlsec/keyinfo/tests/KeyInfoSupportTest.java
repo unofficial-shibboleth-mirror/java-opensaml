@@ -88,6 +88,7 @@ import net.shibboleth.shared.logic.Constraint;
  * Test to exercise the KeyInfoSupport methods to convert between XMLObject's contained within KeyInfo and Java security
  * native types.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyInfoSupportTest extends XMLObjectBaseTestCase {
 
     /** Cert which contains no X.509 v3 extensions. */

@@ -257,6 +257,7 @@ public class ConcatKDF extends AbstractInitializableComponent
             try {
                 // We don't store this off for later use b/c these appear to be non-thread-safe, per-use instances,
                 // so we get a new one each time in derive(...).
+                assert digestMethod!=null;
                 getDigestInstance(digestMethod);
             } catch (final KeyDerivationException e) {
                 throw new ComponentInitializationException("Unable to obtain digest instance", e);
@@ -281,7 +282,7 @@ public class ConcatKDF extends AbstractInitializableComponent
                 decodeParam(partyVInfo, "PartyVInfo"),
                 decodeParam(suppPubInfo, "SuppPubInfo"),
                 decodeParam(suppPrivInfo, "SuppPrivInfo"));
-        
+        assert otherInfo!=null;
         final byte[] keyBytes = derive(secret, otherInfo, jcaKeyLength);
     
         return new SecretKeySpec(keyBytes, jcaKeyAlgorithm); 
@@ -307,6 +308,7 @@ public class ConcatKDF extends AbstractInitializableComponent
     protected byte[] derive(@Nonnull final byte[] secret, @Nonnull final byte[] otherInfo,
             @Nonnull final Integer keyLength) throws KeyDerivationException {
         
+        assert digestMethod!=null;
         final Digest digest = getDigestInstance(digestMethod);
         
         final ConcatenationKDFGenerator concatKDF = new ConcatenationKDFGenerator(digest);
@@ -383,7 +385,7 @@ public class ConcatKDF extends AbstractInitializableComponent
         } catch (final DecoderException e) {
             throw new KeyDerivationException("ConcatKDF parameter was not valid hex-encoded value: " + name, e);
         }
-        
+        assert decoded!=null;
         return decoded;
     }
     

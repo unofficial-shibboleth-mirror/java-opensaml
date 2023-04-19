@@ -39,6 +39,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 /**
  * Tests the factory and impl for BasicKeyInfoGenerator.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class BasicKeyInfoGeneratorTest extends XMLObjectBaseTestCase {
     
     private BasicCredential credential;

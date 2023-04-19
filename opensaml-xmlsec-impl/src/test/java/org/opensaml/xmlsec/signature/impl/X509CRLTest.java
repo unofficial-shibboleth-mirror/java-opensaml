@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.X509CRL;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class X509CRLTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

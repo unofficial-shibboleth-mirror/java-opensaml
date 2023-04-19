@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.OAEPparams;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class OAEPparamsTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedBase64Content;

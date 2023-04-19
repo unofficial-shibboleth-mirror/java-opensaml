@@ -39,6 +39,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyInfoTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedID;

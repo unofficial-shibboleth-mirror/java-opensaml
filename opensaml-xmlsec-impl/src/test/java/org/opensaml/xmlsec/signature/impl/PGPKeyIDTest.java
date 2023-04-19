@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.PGPKeyID;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class PGPKeyIDTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

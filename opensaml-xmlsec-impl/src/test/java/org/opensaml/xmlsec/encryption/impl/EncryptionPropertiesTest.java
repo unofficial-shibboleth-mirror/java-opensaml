@@ -32,6 +32,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class EncryptionPropertiesTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedID;

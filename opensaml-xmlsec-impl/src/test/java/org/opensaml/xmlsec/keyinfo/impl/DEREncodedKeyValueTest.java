@@ -41,6 +41,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 /**
  * Test resolution of credentials from DEREncodedKeyValue child of KeyInfo.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DEREncodedKeyValueTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver resolver;

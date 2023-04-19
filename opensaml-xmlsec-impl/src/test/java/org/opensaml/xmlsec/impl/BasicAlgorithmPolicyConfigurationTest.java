@@ -18,7 +18,10 @@
 
 package org.opensaml.xmlsec.impl;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertTrue;
 
 import java.util.Arrays;
 
@@ -26,9 +29,7 @@ import org.opensaml.xmlsec.AlgorithmPolicyConfiguration.Precedence;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import net.shibboleth.shared.logic.ConstraintViolationException;
-
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class BasicAlgorithmPolicyConfigurationTest {
     
     private BasicAlgorithmPolicyConfiguration config;

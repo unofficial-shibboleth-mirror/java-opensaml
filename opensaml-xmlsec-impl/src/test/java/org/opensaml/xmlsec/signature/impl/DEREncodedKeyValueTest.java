@@ -31,6 +31,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DEREncodedKeyValueTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedID;

@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
+@SuppressWarnings({"javadoc", "null"})
 public class ChainingKeyInfoCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private ChainingKeyInfoCredentialResolver chainingResolver;

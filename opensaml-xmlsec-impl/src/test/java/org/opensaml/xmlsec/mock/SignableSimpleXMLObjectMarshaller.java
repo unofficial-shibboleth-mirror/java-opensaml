@@ -26,6 +26,7 @@ import org.w3c.dom.Element;
 /**
  * Marshaller for {@link org.opensaml.core.xml.mock.SimpleXMLObject} objects.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SignableSimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */

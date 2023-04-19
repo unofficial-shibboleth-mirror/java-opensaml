@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.PgenCounter;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class PgenCounterTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

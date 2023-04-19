@@ -73,7 +73,7 @@ import org.testng.annotations.Test;
 /**
  * Unit test for {@link KeySupport}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class AlgorithmSupportTest extends OpenSAMLInitBaseTestCase {
     
     @Test

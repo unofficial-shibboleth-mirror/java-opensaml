@@ -42,6 +42,7 @@ import org.testng.annotations.Test;
 /**
  * Test the encrypted key resolver which dereferences RetrievalMethods.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ChainingEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
     
     /** The resolver instance to be tested. */

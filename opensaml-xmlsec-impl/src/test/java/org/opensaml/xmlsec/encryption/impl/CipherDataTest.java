@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.encryption.CipherValue;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class CipherDataTest extends XMLObjectProviderBaseTestCase {
     
     /**

@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.MgmtData;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class MgmtDataTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

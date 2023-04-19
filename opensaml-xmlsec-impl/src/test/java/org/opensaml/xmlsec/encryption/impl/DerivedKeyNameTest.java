@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.DerivedKeyName;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DerivedKeyNameTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

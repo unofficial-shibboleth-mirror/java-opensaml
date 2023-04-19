@@ -28,6 +28,7 @@ import org.testng.annotations.Test;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class KeyDerivationMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;

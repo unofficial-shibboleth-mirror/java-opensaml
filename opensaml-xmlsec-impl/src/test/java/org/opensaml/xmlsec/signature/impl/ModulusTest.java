@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.Modulus;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ModulusTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

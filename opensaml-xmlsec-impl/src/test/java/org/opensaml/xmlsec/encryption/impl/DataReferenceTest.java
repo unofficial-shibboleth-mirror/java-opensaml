@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.encryption.DataReference;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DataReferenceTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedURI;

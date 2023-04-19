@@ -29,6 +29,7 @@ import org.opensaml.xmlsec.signature.X509SerialNumber;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class X509SerialNumberTest extends XMLObjectProviderBaseTestCase {
     
     private BigInteger expectedBigIntegerContent;

@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DerivedKeyTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedId;

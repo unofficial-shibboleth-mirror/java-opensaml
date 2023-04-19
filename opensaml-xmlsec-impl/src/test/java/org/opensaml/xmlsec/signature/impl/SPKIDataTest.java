@@ -28,6 +28,7 @@ import org.opensaml.xmlsec.signature.SPKISexp;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SPKIDataTest extends XMLObjectProviderBaseTestCase {
     
     /**

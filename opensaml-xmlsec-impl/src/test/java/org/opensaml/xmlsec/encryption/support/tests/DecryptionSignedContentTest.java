@@ -62,6 +62,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Test decryption of signed content.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class DecryptionSignedContentTest extends XMLObjectBaseTestCase {
 
     /** Credential used to sign and verify. */

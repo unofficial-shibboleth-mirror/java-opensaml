@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.Q;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class QTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;

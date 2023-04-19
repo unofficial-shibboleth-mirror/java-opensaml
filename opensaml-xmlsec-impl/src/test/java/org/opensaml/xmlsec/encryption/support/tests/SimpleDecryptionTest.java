@@ -63,6 +63,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Simple tests for decryption.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver keyResolver;

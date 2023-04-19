@@ -33,6 +33,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class ECKeyValueTest extends XMLObjectProviderBaseTestCase {
 
     private String expectedID;

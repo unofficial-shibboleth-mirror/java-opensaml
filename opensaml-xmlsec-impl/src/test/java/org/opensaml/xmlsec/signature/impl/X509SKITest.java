@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.signature.X509SKI;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class X509SKITest extends XMLObjectProviderBaseTestCase {
     
     private String expectedStringContent;

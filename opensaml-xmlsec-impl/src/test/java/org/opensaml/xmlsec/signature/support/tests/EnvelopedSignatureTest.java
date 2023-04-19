@@ -59,6 +59,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Test to verify {@link org.opensaml.xmlsec.signature.Signature} and its marshallers and unmarshallers.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class EnvelopedSignatureTest extends XMLObjectBaseTestCase {
 
     /** Class logger. */

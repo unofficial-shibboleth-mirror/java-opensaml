@@ -45,6 +45,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * Test resolution of credentials from X509Data child of KeyInfo,
  * where the X509Data contains a single certificate.
  */
+@SuppressWarnings({"javadoc", "null"})
 public class SingleCertX509DataTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver resolver;

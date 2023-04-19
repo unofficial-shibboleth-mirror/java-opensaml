@@ -76,7 +76,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class ECDHTest extends XMLObjectBaseTestCase {
     
     private String targetFile;

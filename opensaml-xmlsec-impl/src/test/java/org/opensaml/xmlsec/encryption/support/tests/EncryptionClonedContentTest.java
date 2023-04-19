@@ -36,7 +36,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class EncryptionClonedContentTest extends XMLObjectBaseTestCase {
     
     private String targetFile;

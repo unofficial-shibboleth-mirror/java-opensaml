@@ -38,7 +38,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class DHWithExplicitKDFKeyAgreementProcessorTest extends OpenSAMLInitBaseTestCase {
     
     private DHWithExplicitKDFKeyAgreementProcessor processor;

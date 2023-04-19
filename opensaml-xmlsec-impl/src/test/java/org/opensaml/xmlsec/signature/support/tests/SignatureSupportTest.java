@@ -39,7 +39,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public class SignatureSupportTest extends XMLObjectBaseTestCase {
     
     private Credential signingCredential;

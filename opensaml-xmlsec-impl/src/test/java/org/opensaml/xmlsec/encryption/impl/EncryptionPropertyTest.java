@@ -34,6 +34,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class EncryptionPropertyTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedTarget;

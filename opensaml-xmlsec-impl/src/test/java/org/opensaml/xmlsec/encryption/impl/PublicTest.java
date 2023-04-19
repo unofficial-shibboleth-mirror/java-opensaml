@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.Public;
 /**
  *
  */
+@SuppressWarnings({"javadoc", "null"})
 public class PublicTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedCryptoBinaryContent;
