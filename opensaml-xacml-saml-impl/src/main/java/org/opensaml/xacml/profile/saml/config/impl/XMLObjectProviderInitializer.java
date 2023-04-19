@@ -17,6 +17,8 @@
 
 package org.opensaml.xacml.profile.saml.config.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
@@ -25,7 +27,7 @@ import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
-    private static String[] configs = {
+    @Nonnull private static String[] configs = {
         "/xacml10-saml2-profile-config.xml",
         "/xacml11-saml2-profile-config.xml",
         "/xacml2-saml2-profile-config.xml",
@@ -33,7 +35,7 @@ public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderIniti
         };
 
     /** {@inheritDoc} */
-    protected String[] getConfigResources() {
+    @Nonnull protected String[] getConfigResources() {
         return configs;
     }
 

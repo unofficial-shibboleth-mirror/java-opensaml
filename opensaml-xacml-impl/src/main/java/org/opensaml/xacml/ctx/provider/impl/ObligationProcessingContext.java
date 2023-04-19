@@ -17,6 +17,8 @@
 
 package org.opensaml.xacml.ctx.provider.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.xacml.ctx.ResultType;
 
 /**
@@ -25,14 +27,14 @@ import org.opensaml.xacml.ctx.ResultType;
 public class ObligationProcessingContext {
 
     /** Result of a XACML authorization request. */
-    private ResultType result;
+    @Nonnull private ResultType result;
 
     /**
      * Constructor.
      * 
      * @param authzResult result of a XACML authorization request
      */
-    public ObligationProcessingContext(final ResultType authzResult) {
+    public ObligationProcessingContext(@Nonnull final ResultType authzResult) {
         if (authzResult == null) {
             throw new IllegalArgumentException("Authorization request result may not be null");
         }
@@ -44,7 +46,7 @@ public class ObligationProcessingContext {
      * 
      * @return result of a XACML authorization request
      */
-    public ResultType getAuthorizationDecisionResult() {
+    @Nonnull public ResultType getAuthorizationDecisionResult() {
         return result;
     }
 }

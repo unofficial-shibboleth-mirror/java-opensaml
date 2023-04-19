@@ -28,19 +28,25 @@ import java.util.TreeSet;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.xacml.ctx.DecisionType.DECISION;
 import org.opensaml.xacml.policy.EffectType;
 import org.opensaml.xacml.policy.ObligationType;
 import org.opensaml.xacml.policy.ObligationsType;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.logic.Constraint;
+
 /** A service for evaluating the obligations within a context. */
 public class ObligationService {
 
     /** Read/write lock around the registered obligation handlers. */
-    private ReentrantReadWriteLock rwLock;
+    @Nonnull private ReentrantReadWriteLock rwLock;
 
     /** Registered obligation handlers. */
-    private Set<BaseObligationHandler> obligationHandlers;
+    @Nonnull private Set<BaseObligationHandler> obligationHandlers;
 
     /** Constructor. */
     public ObligationService() {
@@ -53,7 +59,7 @@ public class ObligationService {
      * 
      * @return registered obligation handlers
      */
-    public Set<BaseObligationHandler> getObligationHandlers() {
+    @Nonnull @Unmodifiable @Live public Set<BaseObligationHandler> getObligationHandlers() {
         return Collections.unmodifiableSet(obligationHandlers);
     }
 
@@ -64,10 +70,8 @@ public class ObligationService {
      * 
      * @param handler the handler to add to the list of registered handlers.
      */
-    public void addObligationhandler(final BaseObligationHandler handler) {
-        if (handler == null) {
-            return;
-        }
+    public void addObligationhandler(@Nonnull final BaseObligationHandler handler) {
+        Constraint.isNotNull(handler, "Handler cannot be null");
 
         final Lock writeLock = rwLock.writeLock();
         writeLock.lock();
@@ -85,8 +89,9 @@ public class ObligationService {
      * 
      * @param handlers the collection of handlers to add to the list of registered handlers.
      */
-    public void addObligationhandler(final Collection<BaseObligationHandler> handlers) {
-        if (handlers == null || handlers.isEmpty()) {
+    public void addObligationhandler(@Nonnull final Collection<BaseObligationHandler> handlers) {
+        Constraint.isNotNull(handlers, "Handlers cannot be null");
+        if (handlers.isEmpty()) {
             return;
         }
 
@@ -106,10 +111,8 @@ public class ObligationService {
      * 
      * @param handler the handler to remove from the list of registered handlers.
      */
-    public void removeObligationHandler(final BaseObligationHandler handler) {
-        if (handler == null) {
-            return;
-        }
+    public void removeObligationHandler(@Nonnull final BaseObligationHandler handler) {
+        Constraint.isNotNull(handler, "Handler cannot be null");
 
         final Lock writeLock = rwLock.writeLock();
         writeLock.lock();
@@ -129,7 +132,8 @@ public class ObligationService {
      * 
      * @throws ObligationProcessingException thrown if there is a problem evaluating an obligation
      */
-    public void processObligations(final ObligationProcessingContext context) throws ObligationProcessingException {
+    public void processObligations(@Nonnull final ObligationProcessingContext context)
+            throws ObligationProcessingException {
         final Lock readLock = rwLock.readLock();
         readLock.lock();
         try {
@@ -157,7 +161,7 @@ public class ObligationService {
      * 
      * @return preprocessed obligations
      */
-    protected Map<String, ObligationType> preprocessObligations(final ObligationProcessingContext context) {
+    @Nonnull protected Map<String, ObligationType> preprocessObligations(@Nonnull final ObligationProcessingContext context) {
         final HashMap<String, ObligationType> effectiveObligations = new HashMap<>();
 
         final ObligationsType obligations = context.getAuthorizationDecisionResult().getObligations();

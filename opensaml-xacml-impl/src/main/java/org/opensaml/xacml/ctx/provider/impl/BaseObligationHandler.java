@@ -19,8 +19,11 @@ package org.opensaml.xacml.ctx.provider.impl;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.xacml.policy.ObligationType;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.primitive.StringSupport;
 
 /**
@@ -34,7 +37,7 @@ import net.shibboleth.shared.primitive.StringSupport;
 public abstract class BaseObligationHandler {
 
     /** ID of the handled obligation. */
-    private String id;
+    @Nonnull @NotEmpty private String id;
 
     /** Precedence of this handler. */
     private int precedence;
@@ -44,7 +47,7 @@ public abstract class BaseObligationHandler {
      * 
      * @param obligationId ID of the handled obligation
      */
-    protected BaseObligationHandler(final String obligationId) {
+    protected BaseObligationHandler(@Nonnull @NotEmpty final String obligationId) {
         this(obligationId, Integer.MIN_VALUE);
     }
 
@@ -54,7 +57,7 @@ public abstract class BaseObligationHandler {
      * @param obligationId ID of the handled obligation
      * @param handlerPrecedence precedence of this handler
      */
-    protected BaseObligationHandler(final String obligationId, final int handlerPrecedence) {
+    protected BaseObligationHandler(@Nonnull @NotEmpty final String obligationId, final int handlerPrecedence) {
         id = StringSupport.trimOrNull(obligationId);
         if (id == null) {
             throw new IllegalArgumentException("Provided obligation ID may not be null or empty");
@@ -68,7 +71,7 @@ public abstract class BaseObligationHandler {
      * 
      * @return ID of the handled obligation
      */
-    public String getObligationId() {
+    @Nonnull @NotEmpty public String getObligationId() {
         return id;
     }
 
@@ -89,8 +92,8 @@ public abstract class BaseObligationHandler {
      * 
      * @throws ObligationProcessingException thrown if there is a problem evaluating this handler
      */
-    public abstract void evaluateObligation(ObligationProcessingContext context, ObligationType obligation)
-            throws ObligationProcessingException;
+    public abstract void evaluateObligation(@Nonnull final ObligationProcessingContext context,
+            @Nonnull final ObligationType obligation) throws ObligationProcessingException;
 
     /** {@inheritDoc} */
     public int hashCode() {
@@ -109,4 +112,5 @@ public abstract class BaseObligationHandler {
 
         return false;
     }
+
 }

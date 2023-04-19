@@ -17,6 +17,8 @@
 
 package org.opensaml.xacml.config.impl;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
@@ -25,13 +27,13 @@ import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 public class XMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
-    private static String[] configs = {
+    @Nonnull private static String[] configs = {
         "/xacml20-context-config.xml",
         "/xacml20-policy-config.xml",
         };
 
     /** {@inheritDoc} */
-    protected String[] getConfigResources() {
+    @Nonnull protected String[] getConfigResources() {
         return configs;
     }
 
