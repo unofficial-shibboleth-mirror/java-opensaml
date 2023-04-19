@@ -96,7 +96,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param expectedDOM the expected DOM
      * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
      */
-    protected void assertXMLEquals(Document expectedDOM, XMLObject xmlObject) {
+    protected void assertXMLEquals(Document expectedDOM, @Nonnull XMLObject xmlObject) {
         assertXMLEquals("Marshalled DOM was not the same as the expected DOM", expectedDOM, xmlObject);
     }
 
@@ -109,11 +109,13 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param xmlObject the XMLObject to be marshalled and compared against the expected DOM
      */
     protected void assertXMLEquals(String failMessage, Document expectedDOM, XMLObject xmlObject) {
+        assert xmlObject!=null;
         final Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
         if (marshaller == null) {
             Assert.fail("Unable to locate marshaller for " + xmlObject.getElementQName()
                     + " can not perform equality check assertion");
         }
+        assert marshaller!= null;
 
         try {
             final Element generatedDOM = marshaller.marshall(xmlObject, parserPool.newDocument());
@@ -227,10 +229,13 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
     protected void printXML(@Nonnull final XMLObject xmlObject, @Nonnull final String filename) {
         Element elem = null;
         try {
-            elem = marshallerFactory.getMarshaller(xmlObject).marshall(xmlObject);
+            final Marshaller marshaller = marshallerFactory.getMarshaller(xmlObject);
+            assert marshaller!= null;
+            elem = marshaller.marshall(xmlObject);
         } catch (MarshallingException e) {
             e.printStackTrace();
         }
+        assert elem != null;
         printXML(elem, filename);
     }
 
@@ -272,11 +277,12 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @param qname the QName for which to find the unmarshaller
      * @return the unmarshaller
      */
-    protected Unmarshaller getUnmarshaller(@Nonnull final QName qname) {
+    @Nonnull protected Unmarshaller getUnmarshaller(@Nonnull final QName qname) {
         Unmarshaller unmarshaller = unmarshallerFactory.getUnmarshaller(qname);
         if (unmarshaller == null) {
             Assert.fail("no unmarshaller registered for " + qname);
         }
+        assert unmarshaller!=null;
         return unmarshaller;
     }
 
@@ -301,6 +307,7 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
         if (unmarshaller == null) {
             Assert.fail("no unmarshaller registered for " + QNameSupport.getNodeQName(element));
         }
+        assert unmarshaller!=null;
         return unmarshaller;
     }
 
@@ -312,7 +319,8 @@ public abstract class XMLObjectBaseTestCase extends OpenSAMLInitBaseTestCase {
      * @throws XMLParserException if parsing did not succeed
      */
     @Nonnull protected Document parseXMLDocument(@Nonnull final String xmlFilename) throws XMLParserException {
-        InputStream is = getClass().getResourceAsStream(xmlFilename);
+        final InputStream is = getClass().getResourceAsStream(xmlFilename);
+        assert is != null;
         Document doc = parserPool.parse(is);
         return doc;
     }

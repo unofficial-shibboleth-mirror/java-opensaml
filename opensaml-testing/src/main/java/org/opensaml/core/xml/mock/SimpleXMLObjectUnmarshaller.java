@@ -21,6 +21,8 @@
 
 package org.opensaml.core.xml.mock;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectUnmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
@@ -33,7 +35,7 @@ import org.w3c.dom.Attr;
 public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
     /** {@inheritDoc} */
-    protected void processChildElement(XMLObject parentXMLObject, XMLObject childXMLObject)
+    protected void processChildElement(@Nonnull XMLObject parentXMLObject, @Nonnull XMLObject childXMLObject)
             throws UnmarshallingException {
 
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) parentXMLObject;
@@ -46,7 +48,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processAttribute(XMLObject xmlObject, Attr attribute) throws UnmarshallingException {
+    protected void processAttribute(@Nonnull XMLObject xmlObject, @Nonnull Attr attribute) throws UnmarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         if (attribute.getLocalName().equals(SimpleXMLObject.ID_ATTRIB_NAME)) {
@@ -58,7 +60,7 @@ public class SimpleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void processElementContent(XMLObject xmlObject, String elementContent) {
+    protected void processElementContent(@Nonnull XMLObject xmlObject, @Nonnull String elementContent) {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         simpleXMLObject.setValue(elementContent);

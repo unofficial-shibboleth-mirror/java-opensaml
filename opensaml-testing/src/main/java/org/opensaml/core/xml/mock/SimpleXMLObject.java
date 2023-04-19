@@ -142,7 +142,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
     
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    @Nonnull public List<XMLObject> getUnknownXMLObjects(QName typeOrName) {
+    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 

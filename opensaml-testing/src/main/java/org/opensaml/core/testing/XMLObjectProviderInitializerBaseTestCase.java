@@ -47,9 +47,10 @@ public abstract class XMLObjectProviderInitializerBaseTestCase extends Initializ
         initializer.init();
         
         registry = ConfigurationService.get(XMLObjectProviderRegistry.class);
-        Assert.assertNotNull(registry, "Registry was null");
+        assert registry!= null;
         
         for (QName providerName : getTestedProviders()) {
+            assert providerName!=null;
             Assert.assertNotNull(registry.getBuilderFactory().getBuilder(providerName),
                     "Builder  for provider '" + providerName + "'was null");
             Assert.assertNotNull(registry.getUnmarshallerFactory().getUnmarshaller(providerName),

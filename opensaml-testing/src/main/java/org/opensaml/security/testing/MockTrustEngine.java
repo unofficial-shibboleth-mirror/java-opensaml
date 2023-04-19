@@ -17,6 +17,9 @@
 
 package org.opensaml.security.testing;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.SecurityException;
 import org.opensaml.security.trust.TrustEngine;
 
@@ -37,7 +40,7 @@ public class MockTrustEngine<TokenType> implements TrustEngine<TokenType> {
     }
 
     /** {@inheritDoc} */
-    public boolean validate(TokenType token, CriteriaSet trustBasisCriteria) throws SecurityException {
+    public boolean validate(@Nonnull TokenType token, @Nullable CriteriaSet trustBasisCriteria) throws SecurityException {
         if (throwable != null) {
             if (SecurityException.class.isInstance(throwable)) {
                 throw SecurityException.class.cast(throwable);

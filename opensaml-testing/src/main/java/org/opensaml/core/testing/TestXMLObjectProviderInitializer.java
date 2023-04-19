@@ -17,6 +17,8 @@
 
 package org.opensaml.core.testing;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 
 /**
@@ -25,12 +27,12 @@ import org.opensaml.core.xml.config.AbstractXMLObjectProviderInitializer;
 public class TestXMLObjectProviderInitializer extends AbstractXMLObjectProviderInitializer {
     
     /** Config resources. */
-    private static String[] configs = {
+    @Nonnull private static String[] configs = {
         "/xmltooling-config.xml",
         };
 
     /** {@inheritDoc} */
-    protected String[] getConfigResources() {
+    protected @Nonnull String[] getConfigResources() {
         return configs;
     }
 

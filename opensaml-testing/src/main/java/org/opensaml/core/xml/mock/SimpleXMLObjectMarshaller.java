@@ -17,6 +17,8 @@
 
 package org.opensaml.core.xml.mock;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.AbstractXMLObjectMarshaller;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -29,7 +31,7 @@ import org.w3c.dom.Element;
 public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
 
     /** {@inheritDoc} */
-    protected void marshallAttributes(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    protected void marshallAttributes(@Nonnull XMLObject xmlObject, @Nonnull Element domElement) throws MarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         if (simpleXMLObject.getId() != null) {
@@ -42,7 +44,7 @@ public class SimpleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
     }
 
     /** {@inheritDoc} */
-    protected void marshallElementContent(XMLObject xmlObject, Element domElement) throws MarshallingException {
+    protected void marshallElementContent(@Nonnull XMLObject xmlObject, @Nonnull Element domElement) throws MarshallingException {
         SimpleXMLObject simpleXMLObject = (SimpleXMLObject) xmlObject;
 
         if (simpleXMLObject.getValue() != null) {

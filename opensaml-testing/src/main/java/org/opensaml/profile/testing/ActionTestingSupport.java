@@ -49,7 +49,7 @@ public class ActionTestingSupport {
      */
     public static void assertEvent(@Nonnull final ProfileRequestContext profileRequestContext, @Nonnull final Object event) {
         EventContext ctx = profileRequestContext.getSubcontext(EventContext.class);
-        Assert.assertNotNull(ctx);
+        assert ctx!=null;
         Assert.assertEquals(ctx.getEvent(), event);
     }
 
@@ -60,7 +60,7 @@ public class ActionTestingSupport {
      */
     public static void assertProceedEvent(@Nonnull final ProfileRequestContext profileRequestContext) {
         EventContext ctx = profileRequestContext.getSubcontext(EventContext.class);
-        Assert.assertTrue(ctx == null || ctx.getEvent().equals(EventIds.PROCEED_EVENT_ID));
+        Assert.assertTrue(ctx == null || EventIds.PROCEED_EVENT_ID.equals(ctx.getEvent()));
     }
     
 }

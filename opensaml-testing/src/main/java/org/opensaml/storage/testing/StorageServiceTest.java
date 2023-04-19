@@ -44,7 +44,7 @@ import net.shibboleth.shared.component.InitializableComponent;
 /**
  * Test of {@link StorageService} implementations.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"javadoc", "null"})
 public abstract class StorageServiceTest {
     
     protected SecureRandom random;
@@ -92,7 +92,7 @@ public abstract class StorageServiceTest {
         
         for (int i = 1; i <= 100; i++) {
             StorageRecord<?> rec = shared.read(context, Integer.toString(i));
-            Assert.assertNotNull(rec);
+            assert rec!=null;
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 1));
         }
 
@@ -103,7 +103,7 @@ public abstract class StorageServiceTest {
 
         for (int i = 1; i <= 100; i++) {
             StorageRecord<?> rec = shared.read(context, Integer.toString(i));
-            Assert.assertNotNull(rec);
+            assert rec!=null;
             Assert.assertEquals(rec.getValue(), Integer.toString(i + 2));
         }
 
@@ -156,7 +156,7 @@ public abstract class StorageServiceTest {
         }
         
         StorageRecord<?> rec = shared.read(context, key);
-        Assert.assertNotNull(rec);
+        assert rec!=null;
         Assert.assertEquals(rec.getVersion(), 2);
     }
     
@@ -169,16 +169,19 @@ public abstract class StorageServiceTest {
 
         shared.create(context, context, value, expiration);
         StorageRecord<Object> rec = shared.read(context, context);
+        assert rec!=null;
         assertEquals(rec.getValue(), value);
         assertEquals(rec.getExpiration(), expiration);
 
         shared.updateExpiration(context, context, expiration+50000);
         rec = shared.read(context, context);
+        assert rec!=null;
         assertEquals(rec.getValue(), value);
         assertNotEquals(rec.getExpiration(), expiration);
 
         shared.update(context, context, newValue, expiration+100000);
         rec = shared.read(context, context);
+        assert rec!=null;
         assertEquals(rec.getValue(), newValue);
         assertNotEquals(rec.getExpiration(), expiration);
     }

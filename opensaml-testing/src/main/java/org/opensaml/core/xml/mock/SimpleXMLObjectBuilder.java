@@ -21,6 +21,9 @@
 
 package org.opensaml.core.xml.mock;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.xml.AbstractXMLObjectBuilder;
 
 /**
@@ -33,7 +36,7 @@ public class SimpleXMLObjectBuilder extends AbstractXMLObjectBuilder<SimpleXMLOb
     }
 
     /** {@inheritDoc} */
-    public SimpleXMLObject buildObject(String namespaceURI, String localName, String namespacePrefix) {
+    public @Nonnull SimpleXMLObject buildObject(@Nullable String namespaceURI, @Nonnull String localName, @Nullable String namespacePrefix) {
         return new SimpleXMLObject(namespaceURI, localName, namespacePrefix);
     }
 }
