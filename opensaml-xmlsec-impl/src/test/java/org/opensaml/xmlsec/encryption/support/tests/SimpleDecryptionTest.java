@@ -164,7 +164,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         } catch (DecryptionException e) {
             Assert.fail("Error on decryption of EncryptedData to element: " + e);
         }
-        
+        assert decryptedXMLObject!=null;
         assertXMLEquals(targetDOM, decryptedXMLObject);
         
     }
@@ -205,6 +205,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         } catch (DecryptionException e) {
             Assert.fail("Error on decryption of EncryptedData to element: " + e);
         }
+        assert decryptedXMLObject!=null;
         
         assertXMLEquals(targetDOM, decryptedXMLObject);
         
@@ -482,6 +483,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of EncryptedData to element: " + e);
         }
         
+        assert decryptedXMLObject!=null;
         assertXMLEquals(targetDOM, decryptedXMLObject);
         
     }
