@@ -31,11 +31,10 @@ import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.opensaml.saml.saml2.core.Attribute;
 
-import com.google.common.base.Predicates;
-
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.logic.PredicateSupport;
 
 /** Concrete implementation of {@link EntityAttributes}. */
 public class EntityAttributesImpl extends AbstractXMLObject implements EntityAttributes {
@@ -82,7 +81,7 @@ public class EntityAttributesImpl extends AbstractXMLObject implements EntityAtt
 
         return attributeInfo
                 .stream()
-                .filter(Predicates.or(Assertion.class::isInstance, Attribute.class::isInstance))
+                .filter(PredicateSupport.or(Assertion.class::isInstance, Attribute.class::isInstance))
                 .collect(Collectors.toUnmodifiableList());
     }
 

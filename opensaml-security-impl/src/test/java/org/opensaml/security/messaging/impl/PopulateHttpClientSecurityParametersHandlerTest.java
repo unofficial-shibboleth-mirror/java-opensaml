@@ -42,11 +42,10 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
-
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -91,7 +90,7 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
     
     @Test public void testSuccessIncludeClientTLS() throws Exception {
         handler.setHttpClientSecurityParametersResolver(new MockResolver(false));
-        handler.setClientTLSPredicate(Predicates.<MessageContext>alwaysTrue());
+        handler.setClientTLSPredicate(PredicateSupport.alwaysTrue());
         handler.initialize();
         
         assert messageContext != null;
@@ -104,7 +103,7 @@ public class PopulateHttpClientSecurityParametersHandlerTest extends OpenSAMLIni
     
     @Test public void testSuccessExcludeClientTLS() throws Exception {
         handler.setHttpClientSecurityParametersResolver(new MockResolver(false));
-        handler.setClientTLSPredicate(Predicates.<MessageContext>alwaysFalse());
+        handler.setClientTLSPredicate(PredicateSupport.alwaysFalse());
         handler.initialize();
         
         assert messageContext != null;

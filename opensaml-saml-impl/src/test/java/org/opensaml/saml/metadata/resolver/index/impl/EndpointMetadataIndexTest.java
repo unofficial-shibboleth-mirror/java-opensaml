@@ -45,8 +45,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
-
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 @SuppressWarnings("javadoc")
@@ -176,7 +175,7 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
     
     @Test
     public void testGenerateKeysFromDescriptorAlwaysFalseSelector() {
-        EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex(Predicates.alwaysFalse());
+        EndpointMetadataIndex metadataIndex = new EndpointMetadataIndex(PredicateSupport.alwaysFalse());
         
         final Set<MetadataIndexKey> keys = metadataIndex.generateKeys(descriptor);
         assert keys != null;

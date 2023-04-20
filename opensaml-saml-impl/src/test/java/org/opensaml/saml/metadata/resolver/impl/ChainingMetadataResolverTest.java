@@ -33,9 +33,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
-
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 @SuppressWarnings("javadoc")
@@ -83,7 +82,7 @@ public class ChainingMetadataResolverTest extends XMLObjectBaseTestCase {
     
     @Test()
     public void testInactive() throws Exception {
-        metadataProvider.setActivationCondition(Predicates.alwaysFalse());
+        metadataProvider.setActivationCondition(PredicateSupport.alwaysFalse());
         metadataProvider.initialize();
         
         EntityDescriptor descriptor = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID)));

@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -33,7 +34,6 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
 import com.google.common.io.Files;
 
 @SuppressWarnings("javadoc")
@@ -64,7 +64,7 @@ public class FilesystemMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider = new FilesystemMetadataResolver(mdFile);
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
-        metadataProvider.setActivationCondition(Predicates.alwaysFalse());
+        metadataProvider.setActivationCondition(PredicateSupport.alwaysFalse());
         metadataProvider.initialize();
 
         final Boolean flag = metadataProvider.wasLastRefreshSuccess();

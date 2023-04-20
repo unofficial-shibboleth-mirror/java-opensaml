@@ -22,6 +22,7 @@ import java.net.URL;
 import java.time.Duration;
 import java.util.Timer;
 
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 import net.shibboleth.shared.resource.Resource;
@@ -34,8 +35,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-import com.google.common.base.Predicates;
 
 /** Unit test for {@link ResourceBackedMetadataResolver}. */
 public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
@@ -75,7 +74,7 @@ public class ResourceBackedMetadataResolverTest extends XMLObjectBaseTestCase {
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setMaxRefreshDelay(Duration.ofSeconds(500));
         metadataProvider.setId("test");
-        metadataProvider.setActivationCondition(Predicates.alwaysFalse());
+        metadataProvider.setActivationCondition(PredicateSupport.alwaysFalse());
         metadataProvider.initialize();
         
         criteriaSet = new CriteriaSet(new EntityIdCriterion(entityID));

@@ -42,12 +42,12 @@ import javax.annotation.Nullable;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.primitive.StringSupport;
 
 import org.opensaml.profile.context.ProfileRequestContext;
 
 import com.google.common.base.MoreObjects;
-import com.google.common.base.Predicates;
 
 /**
  * A class that describes a SAML binding and encapsulates information required for
@@ -79,7 +79,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
         synchronous = false;
         artifact = false;
         signatureCapable = false;
-        activationCondition = Predicates.alwaysTrue();
+        activationCondition = PredicateSupport.alwaysTrue();
     }
     
     /**

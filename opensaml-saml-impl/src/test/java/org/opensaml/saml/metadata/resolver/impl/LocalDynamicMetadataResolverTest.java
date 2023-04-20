@@ -33,12 +33,12 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-import com.google.common.base.Predicates;
 import com.google.common.util.concurrent.Uninterruptibles;
 
 import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.codec.StringDigester.OutputFormat;
 import net.shibboleth.shared.component.ComponentInitializationException;
+import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -93,7 +93,7 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         resolver = new LocalDynamicMetadataResolver(null, sourceManager, new IdentityEntityIDGenerator());
         resolver.setId("abc123");
         resolver.setParserPool(parserPool);
-        resolver.setActivationCondition(Predicates.alwaysFalse());
+        resolver.setActivationCondition(PredicateSupport.alwaysFalse());
         resolver.initialize();
         
         sourceManager.save(entityID1, entity1);
