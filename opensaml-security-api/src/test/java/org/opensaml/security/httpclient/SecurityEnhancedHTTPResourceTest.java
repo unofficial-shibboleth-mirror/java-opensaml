@@ -18,11 +18,11 @@
 package org.opensaml.security.httpclient;
 
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLSession;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
 import net.shibboleth.shared.spring.httpclient.resource.HTTPResource;
@@ -39,6 +39,7 @@ import org.testng.annotations.Test;
 /**
  * Test for HTTPResource with security support added.
  */
+@SuppressWarnings("javadoc")
 public class SecurityEnhancedHTTPResourceTest {
 
     private final String path = "data/org/opensaml/security/httpclient/document.xml";
@@ -85,7 +86,7 @@ public class SecurityEnhancedHTTPResourceTest {
         final HTTPResource existsResource = new HTTPResource(client, existsHttps);
         existsResource.setHttpClientContextHandler(handler);
         
-        params.setTLSProtocols(Collections.singletonList("SSLv3"));
+        params.setTLSProtocols(CollectionSupport.singletonList("SSLv3"));
         
         Assert.assertFalse(existsResource.exists());
     }

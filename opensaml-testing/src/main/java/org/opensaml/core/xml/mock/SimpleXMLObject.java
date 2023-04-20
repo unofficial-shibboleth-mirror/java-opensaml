@@ -20,7 +20,6 @@
  */
 package org.opensaml.core.xml.mock;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -37,6 +36,7 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Simple XMLObject that can be used for testing
@@ -153,7 +153,7 @@ public class SimpleXMLObject extends AbstractXMLObject  implements ElementExtens
         children.addAll(simpleXMLObjects);
         children.addAll(unknownXMLObjects);
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
     /** {@inheritDoc} */

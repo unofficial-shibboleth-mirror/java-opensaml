@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.binding.security.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -35,6 +34,7 @@ import org.opensaml.saml.saml2.core.RequestAbstractType;
 import org.opensaml.saml.saml2.core.StatusResponseType;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
@@ -76,7 +76,7 @@ public class ExtractChannelBindingsExtensionsHandler extends AbstractMessageHand
         
         final List<XMLObject> bindings = extensions != null
                 ? extensions.getUnknownXMLObjects(ChannelBindings.DEFAULT_ELEMENT_NAME)
-                        : Collections.<XMLObject>emptyList();
+                        : CollectionSupport.emptyList();
         if (bindings.isEmpty()) {
             log.debug("{} Message did not contain any ChannelBindings extensions", getLogPrefix());
             return;

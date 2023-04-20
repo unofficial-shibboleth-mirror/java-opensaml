@@ -26,7 +26,6 @@ import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -237,7 +236,7 @@ public class StaticPKIXFactoryBean extends AbstractComponentAwareFactoryBean<PKI
                 new BasicPKIXValidationInformation(getCertificates(), getCRLs(), verifyDepth);
         
         final StaticPKIXValidationInformationResolver resolver =
-                new StaticPKIXValidationInformationResolver(Collections.singletonList(info), trustedNames, checkNames);
+                new StaticPKIXValidationInformationResolver(CollectionSupport.singletonList(info), trustedNames, checkNames);
 
         final PKIXTrustEvaluator pkixTrustEvaluator =
                 trustEvaluator != null ? trustEvaluator : new CertPathPKIXTrustEvaluator();

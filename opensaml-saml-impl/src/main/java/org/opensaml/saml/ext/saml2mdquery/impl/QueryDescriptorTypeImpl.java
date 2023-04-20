@@ -18,7 +18,6 @@
 package org.opensaml.saml.ext.saml2mdquery.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -33,6 +32,7 @@ import org.opensaml.saml.saml2.metadata.impl.RoleDescriptorImpl;
 
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link QueryDescriptorType}.
@@ -100,7 +100,7 @@ public abstract class QueryDescriptorTypeImpl extends RoleDescriptorImpl impleme
         children.addAll(super.getOrderedChildren());
         children.addAll(nameIDFormats);
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.ext.saml2alg.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,6 +31,7 @@ import org.opensaml.saml.ext.saml2alg.DigestMethod;
 import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Implementation of {@link DigestMethod}.
@@ -82,7 +82,7 @@ public class DigestMethodImpl extends AbstractXMLObject implements DigestMethod 
 
     /** {@inheritDoc} */
     @Nullable @NotLive @Unmodifiable public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownChildren);
+        return CollectionSupport.copyToList(unknownChildren);
     }
 
 }

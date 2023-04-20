@@ -19,7 +19,6 @@ package org.opensaml.saml.common.binding.security.impl;
 
 import java.security.cert.X509Certificate;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -44,6 +43,8 @@ import org.opensaml.xmlsec.signature.support.impl.ExplicitKeySignatureTrustEngin
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 
 /**
@@ -180,7 +181,7 @@ public class SAMLProtocolMessageXMLSignatureSecurityHandlerTest extends XMLObjec
      */
     @Test(expectedExceptions=MessageHandlerException.class)
     public void testBlacklistedSigntureAlgorithm() throws MessageHandlerException {
-        sigValParams.setExcludedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        sigValParams.setExcludedAlgorithms(CollectionSupport.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         
         trustedCredentials.add(signingX509Cred);
         

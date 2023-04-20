@@ -17,7 +17,6 @@
 
 package org.opensaml.core.xml.schema.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -29,6 +28,10 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link XSAny}.
@@ -81,8 +84,8 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
     }
 
     /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
-        return Collections.unmodifiableList(unknownXMLObjects);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(unknownXMLObjects);
     }
 
     /** {@inheritDoc} */

@@ -23,7 +23,6 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Instant;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.List;
@@ -89,7 +88,7 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     
     @Test
     public void emptyDir() throws IOException {
-        testState(Collections.emptySet());
+        testState(CollectionSupport.emptySet());
     }
     
     @DataProvider
@@ -102,12 +101,12 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
     
     @Test(dataProvider="saveLoadUpdateRemoveParams")
     public void saveLoadUpdateRemove(Boolean buildWithObjectSourceByteArray) throws IOException {
-        testState(Collections.emptySet());
+        testState(CollectionSupport.emptySet());
         
         Assert.assertNull(manager.load("bogus"));
         
         manager.save("foo", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
-        testState(Collections.singleton("foo"));
+        testState(CollectionSupport.singleton("foo"));
         
         manager.save("bar", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
         manager.save("baz", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
@@ -154,20 +153,20 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         
         Assert.assertTrue(manager.remove("bar"));
         Assert.assertTrue(manager.remove("baz"));
-        testState(Collections.emptySet());
+        testState(CollectionSupport.emptySet());
     }
     
     @Test(dataProvider="saveLoadUpdateRemoveParams")
     public void saveLoadUpdateRemoveWithIntermediateDirs(Boolean buildWithObjectSourceByteArray) throws IOException {
         manager = new FilesystemLoadSaveManager<>(baseDir, intermediateDirectoryStrategy);
         
-        testState(Collections.emptySet());
+        testState(CollectionSupport.emptySet());
         
         Assert.assertNull(manager.load("bogus"));
         
         Assert.assertFalse(new File(parentPath(baseDir, "fo"), "foo").exists());
         manager.save("foo", (SimpleXMLObject) buildXMLObject(SimpleXMLObject.ELEMENT_NAME, buildWithObjectSourceByteArray));
-        testState(Collections.singleton("foo"));
+        testState(CollectionSupport.singleton("foo"));
         Assert.assertTrue(new File(parentPath(baseDir, "fo"), "foo").exists());
         
         Assert.assertFalse(new File(parentPath(baseDir, "ba"), "bar").exists());
@@ -226,7 +225,7 @@ public class FilesystemLoadSaveManagerTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(new File(parentPath(baseDir, "ba"), "baz").exists());
         Assert.assertTrue(manager.remove("bar"));
         Assert.assertTrue(manager.remove("baz"));
-        testState(Collections.emptySet());
+        testState(CollectionSupport.emptySet());
         Assert.assertFalse(new File(parentPath(baseDir, "ba"), "bar").exists());
         Assert.assertFalse(new File(parentPath(baseDir, "ba"), "baz").exists());
     }

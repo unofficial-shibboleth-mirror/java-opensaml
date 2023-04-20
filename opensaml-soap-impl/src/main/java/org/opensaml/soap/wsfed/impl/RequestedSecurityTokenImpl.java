@@ -17,8 +17,6 @@
 
 package org.opensaml.soap.wsfed.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -28,6 +26,10 @@ import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.soap.wsfed.RequestedSecurityToken;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /** Implementation of the {@link RequestedSecurityToken} object. */
 public class RequestedSecurityTokenImpl extends AbstractXMLObject implements RequestedSecurityToken {
@@ -54,15 +56,8 @@ public class RequestedSecurityTokenImpl extends AbstractXMLObject implements Req
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        final ArrayList<XMLObject> children = new ArrayList<>(1 + tokens.size());
-
-        children.addAll(tokens);
-
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return CollectionSupport.copyToList(tokens);
     }
+
 }

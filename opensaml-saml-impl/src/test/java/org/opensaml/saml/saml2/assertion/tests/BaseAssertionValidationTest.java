@@ -15,7 +15,6 @@
  * limitations under the License.
  */
 
-
 package org.opensaml.saml.saml2.assertion.tests;
 
 import java.io.File;
@@ -30,7 +29,6 @@ import java.security.cert.X509Certificate;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -67,6 +65,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 @SuppressWarnings("javadoc")
@@ -175,15 +174,15 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
         
         params.put(SAML2AssertionValidationParameters.CLOCK_SKEW, CLOCK_SKEW);
         
-        params.put(SAML2AssertionValidationParameters.VALID_ISSUERS, Collections.singleton(ISSUER));
+        params.put(SAML2AssertionValidationParameters.VALID_ISSUERS, CollectionSupport.singleton(ISSUER));
         
         params.put(SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO, SUBJECT_CONFIRMATION_IN_RESPONSE_TO);
         
         params.put(SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS, 
-                Collections.singleton(SUBJECT_CONFIRMATION_RECIPIENT));
+                CollectionSupport.singleton(SUBJECT_CONFIRMATION_RECIPIENT));
         try {
             params.put(SAML2AssertionValidationParameters.SC_VALID_ADDRESSES, 
-                    Collections.singleton(InetAddress.getByName(SUBJECT_CONFIRMATION_ADDRESS)));
+                    CollectionSupport.singleton(InetAddress.getByName(SUBJECT_CONFIRMATION_ADDRESS)));
         } catch(UnknownHostException e) {
             Assert.fail("Invalid address: " + SUBJECT_CONFIRMATION_ADDRESS);
         }
@@ -192,7 +191,7 @@ public class BaseAssertionValidationTest extends XMLObjectBaseTestCase {
         
         try {
             params.put(SAML2AssertionValidationParameters.STMT_AUTHN_VALID_ADDRESSES, 
-                    Collections.singleton(InetAddress.getByName(AUTHN_STATEMENT_ADDRESS)));
+                    CollectionSupport.singleton(InetAddress.getByName(AUTHN_STATEMENT_ADDRESS)));
         } catch(UnknownHostException e) {
             Assert.fail("Invalid address: " + AUTHN_STATEMENT_ADDRESS);
         }

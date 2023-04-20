@@ -17,9 +17,6 @@
 
 package org.opensaml.saml.common.profile.logic.tests;
 
-import java.util.Arrays;
-import java.util.Collections;
-
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
@@ -75,7 +72,7 @@ public class EntityGroupNamePredicateTest extends XMLObjectBaseTestCase {
     public void testNoMatch() throws Exception {
 
         final EntityGroupNamePredicate condition =
-                new EntityGroupNamePredicate(Collections.singletonList("GroupBad"), metadataProvider);
+                new EntityGroupNamePredicate(CollectionSupport.singletonList("GroupBad"), metadataProvider);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
@@ -88,7 +85,7 @@ public class EntityGroupNamePredicateTest extends XMLObjectBaseTestCase {
     public void testGroupMatch() throws Exception {
 
         final EntityGroupNamePredicate condition =
-                new EntityGroupNamePredicate(Collections.singletonList("GroupTop"), metadataProvider);
+                new EntityGroupNamePredicate(CollectionSupport.singletonList("GroupTop"), metadataProvider);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
@@ -101,7 +98,7 @@ public class EntityGroupNamePredicateTest extends XMLObjectBaseTestCase {
     public void testGroupsMatch() throws Exception {
 
         final EntityGroupNamePredicate condition =
-                new EntityGroupNamePredicate(Arrays.asList("GroupBad", "GroupSub2"), metadataProvider);
+                new EntityGroupNamePredicate(CollectionSupport.listOf("GroupBad", "GroupSub2"), metadataProvider);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub2a.example.org")));
@@ -114,7 +111,7 @@ public class EntityGroupNamePredicateTest extends XMLObjectBaseTestCase {
     public void testAffiliationMatch() throws Exception {
 
         final EntityGroupNamePredicate condition =
-                new EntityGroupNamePredicate(Collections.singletonList("https://affiliation.example.org"), metadataProvider);
+                new EntityGroupNamePredicate(CollectionSupport.singletonList("https://affiliation.example.org"), metadataProvider);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-sub2a.example.org")));
@@ -127,7 +124,7 @@ public class EntityGroupNamePredicateTest extends XMLObjectBaseTestCase {
     public void testAffiliationNoMatch() throws Exception {
 
         final EntityGroupNamePredicate condition =
-                new EntityGroupNamePredicate(Collections.singletonList("https://affiliation.example.org"), metadataProvider);
+                new EntityGroupNamePredicate(CollectionSupport.singletonList("https://affiliation.example.org"), metadataProvider);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));

@@ -17,7 +17,6 @@
 
 package org.opensaml.profile.action.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -38,6 +37,7 @@ import org.opensaml.security.x509.tls.ClientTLSValidationParametersResolver;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -127,8 +127,8 @@ public class PopulateClientTLSValidationParameters extends AbstractProfileAction
         } else if (configurationLookupStrategy == null) {
             configurationLookupStrategy = new Function<>() {
                 public List<ClientTLSValidationConfiguration> apply(final ProfileRequestContext input) {
-                    return Collections.singletonList(
-                            ConfigurationService.get(ClientTLSValidationConfiguration.class));
+                    return CollectionSupport.singletonList(
+                            ConfigurationService.ensure(ClientTLSValidationConfiguration.class));
                 }
             };
         }

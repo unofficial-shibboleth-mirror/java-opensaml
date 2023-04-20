@@ -17,33 +17,33 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import java.util.Collections;
 import java.util.Map;
 import java.util.function.Function;
+
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.saml2.profile.impl.ValidateAssertions.AssertionValidationInput;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
-/**
- *
- */
-@SuppressWarnings({"null", "javadoc"})
+@SuppressWarnings("javadoc")
 public class MockAssertionValidationContextBuilder implements Function<AssertionValidationInput, ValidationContext> {
     
-    private Map<String,Object> staticParams;
+    @Nonnull private Map<String,Object> staticParams;
     
     public MockAssertionValidationContextBuilder() {
-       staticParams = Collections.emptyMap(); 
+       staticParams = CollectionSupport.emptyMap(); 
     }
     
-    public MockAssertionValidationContextBuilder(Map<String,Object> statics) {
+    public MockAssertionValidationContextBuilder(@Nonnull final Map<String,Object> statics) {
         staticParams = Constraint.isNotNull(statics, "Static params were null");
     }
 
     /** {@inheritDoc} */
-    public ValidationContext apply(AssertionValidationInput t) {
+    @Nullable public ValidationContext apply(@Nullable final AssertionValidationInput t) {
         return new ValidationContext(staticParams);
     }
 

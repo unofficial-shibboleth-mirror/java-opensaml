@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml2.profile.impl;
 
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +39,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.testing.ConstantSupplier;
 
@@ -207,7 +207,7 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
         Assertion assertion1 = SAML2ActionTestingSupport.buildAssertion();
         resultsMap.put(assertion1, ValidationResult.VALID);
         
-        action.setAssertionResolver(input -> {return Collections.singletonList(assertion1);});
+        action.setAssertionResolver(input -> {return CollectionSupport.singletonList(assertion1);});
         action.initialize();
         
         action.execute(prc);
@@ -218,7 +218,7 @@ public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     
     @Test
     public void testNoAssertions() throws ComponentInitializationException {
-        action.setAssertionResolver(input -> {return Collections.emptyList();});
+        action.setAssertionResolver(input -> {return CollectionSupport.emptyList();});
         action.initialize();
         
         action.execute(prc);

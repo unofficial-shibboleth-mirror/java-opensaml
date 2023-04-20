@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -30,6 +29,7 @@ import org.opensaml.xmlsec.encryption.AlgorithmIdentifierType;
 
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Abstract implementation of {@link AlgorithmIdentifierType}.
@@ -37,10 +37,10 @@ import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 public abstract class AlgorithmIdentifierTypeImpl extends AbstractXMLObject implements AlgorithmIdentifierType {
     
     /** Algorithm attribute value. */
-    private String algorithm;
+    @Nullable private String algorithm;
     
     /** Parameters child element. */
-    private XMLObject parameters;
+    @Nullable private XMLObject parameters;
     
     /**
      * Constructor.
@@ -82,7 +82,7 @@ public abstract class AlgorithmIdentifierTypeImpl extends AbstractXMLObject impl
             children.add(parameters);
         }
         
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

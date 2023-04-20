@@ -18,13 +18,15 @@
 package org.opensaml.security.x509.impl;
 
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
+
 import org.testng.annotations.BeforeMethod;
 import org.testng.Assert;
 import java.io.InputStream;
 import java.security.cert.X509CRL;
 import java.security.cert.X509Certificate;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -35,8 +37,6 @@ import org.opensaml.security.x509.PKIXTrustEvaluator;
 import org.opensaml.security.x509.PKIXValidationInformation;
 import org.opensaml.security.x509.X509Credential;
 import org.opensaml.security.x509.X509Support;
-import org.opensaml.security.x509.impl.BasicPKIXValidationInformation;
-import org.opensaml.security.x509.impl.CertPathPKIXTrustEvaluator;
 
 /**
  * Tests the {@link CertPathPKIXTrustEvaluator} implementation.
@@ -60,8 +60,8 @@ public class CertPathPKIXTrustEvaluatorTest extends XMLObjectBaseTestCase {
     
     private CertPathPKIXValidationOptions opts;
        
-    private static Set<String> testPolicy1 = Collections.singleton("1.3.6.1.4.1.32473.2011.6.20");
-    private static Set<String> testPolicy2 = Collections.singleton("1.3.6.1.4.1.32473.2011.6.21");
+    private static Set<String> testPolicy1 = CollectionSupport.singleton("1.3.6.1.4.1.32473.2011.6.20");
+    private static Set<String> testPolicy2 = CollectionSupport.singleton("1.3.6.1.4.1.32473.2011.6.21");
     
     @BeforeMethod
     protected void setUp() throws Exception {

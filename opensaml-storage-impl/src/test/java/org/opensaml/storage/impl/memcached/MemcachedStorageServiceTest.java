@@ -17,6 +17,7 @@
 
 package org.opensaml.storage.impl.memcached;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
 import net.spy.memcached.BinaryConnectionFactory;
@@ -32,7 +33,6 @@ import org.testng.annotations.Test;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
@@ -59,7 +59,7 @@ public class MemcachedStorageServiceTest {
     public void setUp() throws IOException {
         final MemcachedClient client = new MemcachedClient(
                 new BinaryConnectionFactory(),
-                Collections.singletonList(new InetSocketAddress("localhost", 11211)));
+                CollectionSupport.singletonList(new InetSocketAddress("localhost", 11211)));
         try {
             client.asyncGet("does_not_exist").get(500, TimeUnit.MILLISECONDS);
         } catch (Exception e) {

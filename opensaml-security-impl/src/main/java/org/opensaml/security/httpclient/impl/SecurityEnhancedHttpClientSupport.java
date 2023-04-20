@@ -17,11 +17,8 @@
 
 package org.opensaml.security.httpclient.impl;
 
-import java.util.Collections;
 
 import javax.annotation.Nonnull;
-import javax.net.ssl.KeyManager;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509KeyManager;
 import javax.net.ssl.X509TrustManager;
 
@@ -30,6 +27,7 @@ import org.opensaml.security.trust.TrustEngine;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509CredentialKeyManager;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.httpclient.HttpClientSupport;
 import net.shibboleth.shared.httpclient.TLSSocketFactoryBuilder;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -134,12 +132,12 @@ public final class SecurityEnhancedHttpClientSupport {
             
             if (supportTrustEngine) {
                 wrappedFactoryBuilder.setTrustManagers(
-                        Collections.<TrustManager>singletonList(new ThreadLocalX509TrustManager()));
+                        CollectionSupport.singletonList(new ThreadLocalX509TrustManager()));
             }
 
             if (supportClientTLS) {
                 wrappedFactoryBuilder.setKeyManagers(
-                        Collections.<KeyManager>singletonList(new ThreadLocalX509CredentialKeyManager()));
+                        CollectionSupport.singletonList(new ThreadLocalX509CredentialKeyManager()));
             }
             
             return new SecurityEnhancedTLSSocketFactory(wrappedFactoryBuilder.build());

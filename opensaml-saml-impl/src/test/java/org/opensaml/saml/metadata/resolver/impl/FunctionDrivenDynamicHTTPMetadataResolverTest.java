@@ -20,7 +20,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.security.MessageDigest;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
@@ -40,6 +39,7 @@ import com.google.common.base.Predicates;
 
 import net.shibboleth.shared.codec.StringDigester;
 import net.shibboleth.shared.codec.StringDigester.OutputFormat;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.testing.RepositorySupport;
@@ -274,7 +274,7 @@ public class FunctionDrivenDynamicHTTPMetadataResolverTest extends XMLObjectBase
         String entityID = "urn:mace:incommon:osu.edu";
         
         MetadataQueryProtocolRequestURLBuilder requestURLBuilder = new MetadataQueryProtocolRequestURLBuilder(baseURL,
-                Collections.singletonList(new SAMLArtifactURLBuilder()));
+                CollectionSupport.singletonList(new SAMLArtifactURLBuilder()));
         
         httpClientBuilder.setConnectionDisregardTLSCertificate(true);
         resolver = new FunctionDrivenDynamicHTTPMetadataResolver(httpClientBuilder.buildClient());

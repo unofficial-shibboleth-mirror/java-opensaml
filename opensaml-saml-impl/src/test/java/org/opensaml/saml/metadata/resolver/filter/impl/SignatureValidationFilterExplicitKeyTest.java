@@ -19,8 +19,8 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Collections;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.XMLParserException;
@@ -139,7 +139,7 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
         
         SignatureValidationParameters sigParams = new SignatureValidationParameters();
-        sigParams.setExcludedAlgorithms(Collections.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
+        sigParams.setExcludedAlgorithms(CollectionSupport.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
         CriteriaSet defaultCriteriaSet = new CriteriaSet(new SignatureValidationParametersCriterion(sigParams));
         filter.setDefaultCriteria(defaultCriteriaSet);
         

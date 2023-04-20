@@ -22,7 +22,6 @@ import java.net.MalformedURLException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -163,7 +162,7 @@ public class SAMLArtifactMetadataIndex implements MetadataIndex {
                 assert sourceID != null;
                 final ArtifactSourceIDMetadataIndexKey key = new ArtifactSourceIDMetadataIndexKey(sourceID);
                 log.trace("For entityID '{}' produced artifact SourceID index key: {}", entityID, key);
-                return Collections.<MetadataIndexKey>singleton(key);
+                return CollectionSupport.singleton(key);
             } catch (final NoSuchAlgorithmException e) {
                 // SHA-1 should be supported in every JVM, so this should never happen.
                 log.error("Digest algorithm '{}' was invalid for encoding artifact SourceID", 

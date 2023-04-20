@@ -17,7 +17,6 @@
 
 package org.opensaml.profile.action.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -38,6 +37,7 @@ import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -123,7 +123,8 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
         } else if (configurationLookupStrategy == null) {
             configurationLookupStrategy = new Function<>() {
                 public List<DecryptionConfiguration> apply(final ProfileRequestContext input) {
-                    return Collections.singletonList(SecurityConfigurationSupport.getGlobalDecryptionConfiguration());
+                    return CollectionSupport.singletonList(
+                            SecurityConfigurationSupport.ensureGlobalDecryptionConfiguration());
                 }
             };
         }

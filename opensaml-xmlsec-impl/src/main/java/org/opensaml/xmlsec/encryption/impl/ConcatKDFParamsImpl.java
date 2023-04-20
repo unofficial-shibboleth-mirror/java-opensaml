@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -32,13 +31,15 @@ import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.xmlsec.encryption.ConcatKDFParams;
 import org.opensaml.xmlsec.signature.DigestMethod;
 
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link ConcatKDFParams}.
  */
 public class ConcatKDFParamsImpl extends AbstractXMLObject implements ConcatKDFParams {
     
     /** DigestMethod. */
-    private DigestMethod digestMethod;
+    @Nullable private DigestMethod digestMethod;
     
     /** AlgorithmID. */
     @Nullable private String algorithmID;
@@ -205,11 +206,7 @@ public class ConcatKDFParamsImpl extends AbstractXMLObject implements ConcatKDFP
             children.add(digestMethod); 
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

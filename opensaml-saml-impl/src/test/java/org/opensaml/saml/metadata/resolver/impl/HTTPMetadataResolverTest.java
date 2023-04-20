@@ -22,7 +22,6 @@ import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Collections;
 import java.util.Set;
 
 import org.apache.hc.client5.http.socket.LayeredConnectionSocketFactory;
@@ -50,6 +49,7 @@ import org.testng.annotations.Test;
 
 import com.google.common.io.ByteStreams;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.httpclient.HttpClientBuilder;
 import net.shibboleth.shared.logic.PredicateSupport;
@@ -425,9 +425,9 @@ public class HTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     public static TrustEngine<? super X509Credential> buildPKIXTrustEngine(String cert, String name, boolean nameCheckEnabled) throws URISyntaxException, CertificateException, IOException {
         final InputStream certStream = FileBackedHTTPMetadataResolver.class.getResourceAsStream((HTTPMetadataResolverTest.DATA_PATH + cert));
         final X509Certificate rootCert = X509Support.decodeCertificate(ByteStreams.toByteArray(certStream));
-        final PKIXValidationInformation info = new BasicPKIXValidationInformation(Collections.singletonList(rootCert), null, 5);
-        final Set<String> trustedNames = name != null ? Collections.singleton(name) : Collections.emptySet();
-        final StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(Collections.singletonList(info), trustedNames);
+        final PKIXValidationInformation info = new BasicPKIXValidationInformation(CollectionSupport.singletonList(rootCert), null, 5);
+        final Set<String> trustedNames = name != null ? CollectionSupport.singleton(name) : CollectionSupport.emptySet();
+        final StaticPKIXValidationInformationResolver resolver = new StaticPKIXValidationInformationResolver(CollectionSupport.singletonList(info), trustedNames);
         return new PKIXX509CredentialTrustEngine(resolver,
                 new CertPathPKIXTrustEvaluator(),
                 (nameCheckEnabled ? new BasicX509CredentialNameEvaluator() : null));

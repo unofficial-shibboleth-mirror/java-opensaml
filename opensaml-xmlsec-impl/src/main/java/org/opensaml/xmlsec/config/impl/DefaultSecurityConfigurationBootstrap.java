@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.config.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -96,11 +95,11 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicEncryptionConfiguration buildDefaultEncryptionConfiguration() {
         final BasicEncryptionConfiguration config = new BasicEncryptionConfiguration();
         
-        config.setExcludedAlgorithms(Collections.singletonList(
+        config.setExcludedAlgorithms(CollectionSupport.singletonList(
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15
                 ));
         
-        config.setDataEncryptionAlgorithms(List.of(
+        config.setDataEncryptionAlgorithms(CollectionSupport.listOf(
                 // The order of these is significant.
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES128,
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_AES192,
@@ -108,7 +107,7 @@ public class DefaultSecurityConfigurationBootstrap {
                 EncryptionConstants.ALGO_ID_BLOCKCIPHER_TRIPLEDES
                 ));
         
-        config.setKeyTransportEncryptionAlgorithms(List.of(
+        config.setKeyTransportEncryptionAlgorithms(CollectionSupport.listOf(
                 // The order of the RSA algos is significant.
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSAOAEP,
                 
@@ -168,7 +167,7 @@ public class DefaultSecurityConfigurationBootstrap {
                 ecConfig.setParameters(Set.of(ecPBKDF2));
             } else {
                 LOG.warn("Saw unknown value for ECDH KDF '{}', omitting global ECDH KDF configuration", ecKDF);
-                ecConfig.setParameters(Collections.emptySet());
+                ecConfig.setParameters(CollectionSupport.emptySet());
             }
             kaConfigs.put(JCAConstants.KEY_ALGO_EC, ecConfig);
             
@@ -199,7 +198,7 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicDecryptionConfiguration buildDefaultDecryptionConfiguration() {
         final BasicDecryptionConfiguration config = new BasicDecryptionConfiguration();
         
-        config.setExcludedAlgorithms(Collections.singletonList(
+        config.setExcludedAlgorithms(CollectionSupport.singletonList(
                 EncryptionConstants.ALGO_ID_KEYTRANSPORT_RSA15
                 ));
         
@@ -216,13 +215,13 @@ public class DefaultSecurityConfigurationBootstrap {
     @Nonnull public static BasicSignatureSigningConfiguration buildDefaultSignatureSigningConfiguration() {
         final BasicSignatureSigningConfiguration config = new BasicSignatureSigningConfiguration();
         
-        config.setExcludedAlgorithms(List.of(
+        config.setExcludedAlgorithms(CollectionSupport.listOf(
                 SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5,
                 SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5,
                 SignatureConstants.ALGO_ID_MAC_HMAC_NOT_RECOMMENDED_MD5
                 ));
         
-        config.setSignatureAlgorithms(List.of(
+        config.setSignatureAlgorithms(CollectionSupport.listOf(
                 // The order within each key group is significant.
                 // The order of the key groups themselves is not significant.
                 

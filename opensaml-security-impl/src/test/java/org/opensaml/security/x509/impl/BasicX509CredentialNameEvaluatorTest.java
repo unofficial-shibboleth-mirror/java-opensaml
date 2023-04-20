@@ -19,7 +19,6 @@ package org.opensaml.security.x509.impl;
 
 import java.security.cert.X509Certificate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -31,6 +30,8 @@ import org.opensaml.security.x509.X509Support;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Tests the {@link CertPathPKIXTrustEvaluator} implementation.
@@ -152,7 +153,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.DNS_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(CollectionSupport.singleton(X509Support.DNS_ALT_NAME));
         
         names.add(altNameDNS);
         
@@ -164,7 +165,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.DNS_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(CollectionSupport.singleton(X509Support.DNS_ALT_NAME));
         
         names.add("wacky.internet2.edu");
         
@@ -176,7 +177,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.URI_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(CollectionSupport.singleton(X509Support.URI_ALT_NAME));
         
         names.add(altNameURL);
         
@@ -188,7 +189,7 @@ public class BasicX509CredentialNameEvaluatorTest extends XMLObjectBaseTestCase 
         evaluator.setCheckSubjectAltNames(true);
         evaluator.setCheckSubjectDN(false);
         evaluator.setCheckSubjectDNCommonName(false);
-        evaluator.setSubjectAltNameTypes(Collections.singleton(X509Support.URI_ALT_NAME));
+        evaluator.setSubjectAltNameTypes(CollectionSupport.singleton(X509Support.URI_ALT_NAME));
         
         names.add("http://wacky.internet2.edu/idp");
         

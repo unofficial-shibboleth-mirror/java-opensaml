@@ -21,7 +21,6 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Arrays;
-import java.util.Collections;
 
 import org.opensaml.security.credential.Credential;
 import org.opensaml.security.credential.CredentialSupport;
@@ -32,6 +31,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 @SuppressWarnings({"javadoc", "null"})
 public class BasicSignatureSigningConfigurationTest {
@@ -75,7 +76,7 @@ public class BasicSignatureSigningConfigurationTest {
         Assert.assertNotNull(config.getSigningCredentials());
         Assert.assertEquals(config.getSigningCredentials().size(), 0);
         
-        config.setSigningCredentials(Arrays.asList(cred1, cred2));
+        config.setSigningCredentials(CollectionSupport.listOf(cred1, cred2));
         
         Assert.assertNotNull(config.getSigningCredentials());
         Assert.assertEquals(config.getSigningCredentials().size(), 2);
@@ -88,7 +89,7 @@ public class BasicSignatureSigningConfigurationTest {
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSigningCredentialsImmutable() throws NoSuchAlgorithmException, NoSuchProviderException {
-        config.setSigningCredentials(Collections.singletonList(cred1));
+        config.setSigningCredentials(CollectionSupport.singletonList(cred1));
         config.getSigningCredentials().add(cred2);
     }
 
@@ -113,7 +114,7 @@ public class BasicSignatureSigningConfigurationTest {
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSignatureAlgorithmURIsImmutable() {
-        config.setSignatureAlgorithms(Arrays.asList("A", "B", "C"));
+        config.setSignatureAlgorithms(CollectionSupport.listOf("A", "B", "C"));
         config.getSignatureAlgorithms().add("D");
     }
 
@@ -138,7 +139,7 @@ public class BasicSignatureSigningConfigurationTest {
 
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testSignatureReferenceDigestMethodsImmutable() {
-        config.setSignatureReferenceDigestMethods(Arrays.asList("A", "B", "C"));
+        config.setSignatureReferenceDigestMethods(CollectionSupport.listOf("A", "B", "C"));
         config.getSignatureReferenceDigestMethods().add("D");
     }
 

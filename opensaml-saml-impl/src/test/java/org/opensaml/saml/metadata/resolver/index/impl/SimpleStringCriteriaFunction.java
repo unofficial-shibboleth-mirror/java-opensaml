@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.index.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -27,6 +26,7 @@ import javax.annotation.Nullable;
 import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 @SuppressWarnings("javadoc")
@@ -34,7 +34,7 @@ public class SimpleStringCriteriaFunction implements Function<CriteriaSet, Set<M
     
     @Nullable public Set<MetadataIndexKey> apply(@Nullable CriteriaSet input) {
         if (input == null) {
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         SimpleStringCriterion crit = input.get(SimpleStringCriterion.class);
         HashSet<MetadataIndexKey> result = new HashSet<>();

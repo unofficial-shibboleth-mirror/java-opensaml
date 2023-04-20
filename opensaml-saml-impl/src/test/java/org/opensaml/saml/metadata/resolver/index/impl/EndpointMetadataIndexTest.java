@@ -19,7 +19,6 @@ package org.opensaml.saml.metadata.resolver.index.impl;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -45,6 +44,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.PredicateSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -225,7 +225,7 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
     public void testGenerateKeysFromDescriptorIndexOnlyACS() {
         Map<QName, Set<QName>> indexableEndpoints = new HashMap<>();
         indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                Collections.singleton(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
+                CollectionSupport.singleton(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
         EndpointMetadataIndex metadataIndex = 
                 new EndpointMetadataIndex(new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints));
         
@@ -249,25 +249,25 @@ public class EndpointMetadataIndexTest extends XMLObjectBaseTestCase {
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate();
         Assert.assertFalse(predicate.test(endpoint));
         
-        indexableEndpoints = Collections.emptyMap();
+        indexableEndpoints = CollectionSupport.emptyMap();
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints);
         Assert.assertFalse(predicate.test(endpoint));
         
         indexableEndpoints = new HashMap<>();
         indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                Collections.singleton(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
+                CollectionSupport.singleton(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints);
         Assert.assertFalse(predicate.test(endpoint));
         
         indexableEndpoints = new HashMap<>();
         indexableEndpoints.put(IDPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                Collections.singleton(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
+                CollectionSupport.singleton(ArtifactResolutionService.DEFAULT_ELEMENT_NAME));
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints);
         Assert.assertFalse(predicate.test(endpoint));
         
         indexableEndpoints = new HashMap<>();
         indexableEndpoints.put(SPSSODescriptor.DEFAULT_ELEMENT_NAME,
-                Collections.singleton(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
+                CollectionSupport.singleton(AssertionConsumerService.DEFAULT_ELEMENT_NAME));
         predicate = new EndpointMetadataIndex.DefaultEndpointSelectionPredicate(indexableEndpoints);
         Assert.assertTrue(predicate.test(endpoint));
     }

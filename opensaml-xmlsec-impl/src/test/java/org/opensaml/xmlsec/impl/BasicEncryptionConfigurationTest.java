@@ -21,7 +21,6 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Arrays;
-import java.util.Collections;
 
 import javax.annotation.Nullable;
 
@@ -36,6 +35,8 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 @SuppressWarnings({"javadoc", "null"})
 public class BasicEncryptionConfigurationTest {
@@ -98,7 +99,7 @@ public class BasicEncryptionConfigurationTest {
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testDataEncryptionCredentialsImmutable() {
-        config.setDataEncryptionCredentials(Collections.singletonList(cred1));
+        config.setDataEncryptionCredentials(CollectionSupport.singletonList(cred1));
         config.getDataEncryptionCredentials().add(cred2);
     }
     
@@ -107,7 +108,7 @@ public class BasicEncryptionConfigurationTest {
         Assert.assertNotNull(config.getDataEncryptionAlgorithms());
         Assert.assertEquals(config.getDataEncryptionAlgorithms().size(), 0);
         
-        config.setDataEncryptionAlgorithms(Arrays.asList("   A   ", "   B    ", "   C    "));
+        config.setDataEncryptionAlgorithms(CollectionSupport.listOf("   A   ", "   B    ", "   C    "));
         
         Assert.assertNotNull(config.getDataEncryptionAlgorithms());
         Assert.assertEquals(config.getDataEncryptionAlgorithms().size(), 3);
@@ -123,7 +124,7 @@ public class BasicEncryptionConfigurationTest {
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testDataEncryptionAlgorithmURIsImmutable() {
-        config.setDataEncryptionAlgorithms(Arrays.asList("A", "B", "C"));
+        config.setDataEncryptionAlgorithms(CollectionSupport.listOf("A", "B", "C"));
         config.getDataEncryptionAlgorithms().add("D");
     }
     
@@ -132,7 +133,7 @@ public class BasicEncryptionConfigurationTest {
         Assert.assertNotNull(config.getKeyTransportEncryptionCredentials());
         Assert.assertEquals(config.getKeyTransportEncryptionCredentials().size(), 0);
         
-        config.setKeyTransportEncryptionCredentials(Arrays.asList(cred1, cred2));
+        config.setKeyTransportEncryptionCredentials(CollectionSupport.listOf(cred1, cred2));
         
         Assert.assertNotNull(config.getKeyTransportEncryptionCredentials());
         Assert.assertEquals(config.getKeyTransportEncryptionCredentials().size(), 2);
@@ -145,7 +146,7 @@ public class BasicEncryptionConfigurationTest {
     
     @Test(expectedExceptions=UnsupportedOperationException.class)
     public void testKeyTransportEncryptionCredentialsImmutable() {
-        config.setKeyTransportEncryptionCredentials(Collections.singletonList(cred1));
+        config.setKeyTransportEncryptionCredentials(CollectionSupport.singletonList(cred1));
         config.getKeyTransportEncryptionCredentials().add(cred2);
     }
     

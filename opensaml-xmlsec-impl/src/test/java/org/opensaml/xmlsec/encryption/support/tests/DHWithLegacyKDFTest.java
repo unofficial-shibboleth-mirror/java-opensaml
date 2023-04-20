@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -197,7 +196,7 @@ public class DHWithLegacyKDFTest extends XMLObjectBaseTestCase {
         
         final DataEncryptionParameters dataEncParams = new DataEncryptionParameters(encParams);
         final List<KeyEncryptionParameters> kekParams = encParams.getKeyTransportEncryptionCredential() != null ?
-                List.of(new KeyEncryptionParameters(encParams, null)) : Collections.emptyList();
+                List.of(new KeyEncryptionParameters(encParams, null)) : CollectionSupport.emptyList();
         
         final EncryptedData encryptedDataOrig = encrypter.encryptElement(sxoOrig, dataEncParams, kekParams);
         Assert.assertNotNull(encryptedDataOrig);

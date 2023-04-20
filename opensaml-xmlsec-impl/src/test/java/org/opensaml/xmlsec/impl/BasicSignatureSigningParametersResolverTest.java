@@ -23,12 +23,12 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.crypto.SecretKey;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -105,7 +105,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
         
         // Set these as defaults on the last config in the chain, just so don't have to set in every test.
         config3.setSignatureAlgorithms(List.of(defaultRSAAlgo, defaultDSAAlgo, defaultECAlgo, defaultHMACAlgo));
-        config3.setSignatureReferenceDigestMethods(Collections.singletonList(defaultReferenceDigest));
+        config3.setSignatureReferenceDigestMethods(CollectionSupport.singletonList(defaultReferenceDigest));
         config3.setSignatureCanonicalizationAlgorithm(defaultC14N);
         config3.setSignatureHMACOutputLength(defaultHMACOutputLength);
         
@@ -123,7 +123,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testBasicRSA() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         
         final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         assert params != null;
@@ -139,9 +139,9 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testRSAWithAlgorithmOverride() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         
-        config2.setSignatureAlgorithms(Collections.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        config2.setSignatureAlgorithms(CollectionSupport.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         
         final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         assert params != null;
@@ -157,7 +157,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testRSAWithBlacklist() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         config1.setExcludedAlgorithms(List.of(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1, SignatureConstants.ALGO_ID_DIGEST_SHA1));
         
         // Deliberately putting SHA-1 variants first here.  They should be filtered out.
@@ -178,7 +178,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testRSAWithWhitelist() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         config1.setIncludedAlgorithms(List.of(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
         // Deliberately putting SHA-1 variants first here.  They should be filtered out.
@@ -199,7 +199,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testBasicDSA() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(dsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(dsaCred));
         
         final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         assert params != null;
@@ -217,7 +217,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     public void testBasicEC() throws ResolverException {
         // EC support isn't universal
         if (ecCred != null) {
-            config1.setSigningCredentials(Collections.singletonList(ecCred));
+            config1.setSigningCredentials(CollectionSupport.singletonList(ecCred));
             
             final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
             assert params != null;
@@ -234,7 +234,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testBasicHMAC() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(hmacCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(hmacCred));
         
         final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         assert params != null;
@@ -250,10 +250,10 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testHMACWithOverrides() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(hmacCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(hmacCred));
         
-        config2.setSignatureAlgorithms(Collections.singletonList(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
-        config2.setSignatureReferenceDigestMethods(Collections.singletonList(SignatureConstants.ALGO_ID_DIGEST_SHA256));
+        config2.setSignatureAlgorithms(CollectionSupport.singletonList(SignatureConstants.ALGO_ID_MAC_HMAC_SHA256));
+        config2.setSignatureReferenceDigestMethods(CollectionSupport.singletonList(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         config2.setSignatureHMACOutputLength(160);
         
         final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
@@ -270,7 +270,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testC14NOverride() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         
         config2.setSignatureCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N11_WITH_COMMENTS);
         
@@ -288,7 +288,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testReferenceC14NOverride() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         
         config2.setSignatureReferenceCanonicalizationAlgorithm(SignatureConstants.TRANSFORM_C14N_EXCL_WITH_COMMENTS);
         
@@ -364,10 +364,10 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testCredOverrides() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(dsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(dsaCred));
         
         config2.setSigningCredentials(List.of(rsaCred, dsaCred, hmacCred));
-        config2.setSignatureAlgorithms(Collections.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
+        config2.setSignatureAlgorithms(CollectionSupport.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256));
         
         final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         assert params != null;
@@ -383,7 +383,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testKeyInfoGenerationProfile() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         
         criteriaSet.add(new KeyInfoGenerationProfileCriterion("testKeyInfoProfile"));
         
@@ -412,7 +412,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testResolve() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         
         Iterable<SignatureSigningParameters> paramsIter = resolver.resolve(criteriaSet);
         assertNotNull(paramsIter);
@@ -444,7 +444,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testNoAlgorithms() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         config3.setSignatureAlgorithms(new ArrayList<String>());
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
@@ -454,7 +454,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testNoReferenceDigestMethods() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         config3.setSignatureReferenceDigestMethods(new ArrayList<String>());
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
@@ -464,7 +464,7 @@ public class BasicSignatureSigningParametersResolverTest extends XMLObjectBaseTe
     
     @Test
     public void testNoC14NAlgorithm() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred));
         config3.setSignatureCanonicalizationAlgorithm(null);
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);

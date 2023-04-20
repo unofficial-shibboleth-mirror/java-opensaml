@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -56,6 +55,7 @@ import com.google.common.collect.Multimap;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -157,8 +157,8 @@ public class AlgorithmFilter extends AbstractInitializableComponent implements M
      */
     protected void filterEntityDescriptor(@Nonnull final EntityDescriptor descriptor) {
         
-        Set<String> existingDigests = Collections.emptySet();
-        Set<String> existingSignings = Collections.emptySet();
+        Set<String> existingDigests = CollectionSupport.emptySet();
+        Set<String> existingSignings = CollectionSupport.emptySet();
         final Extensions exts = descriptor.getExtensions();
         if (exts != null) {
             existingDigests = exts.getUnknownXMLObjects(DigestMethod.DEFAULT_ELEMENT_NAME)

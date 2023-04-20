@@ -17,7 +17,6 @@
 
 package org.opensaml.messaging.handler.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,6 +30,7 @@ import org.opensaml.messaging.handler.MessageHandlerException;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * A basic implementation of {@link MessageHandlerChain}.
@@ -66,9 +66,9 @@ public class BasicMessageHandlerChain extends AbstractMessageHandler
      */
     public void setHandlers(@Nullable @NonnullElements final List<MessageHandler> handlers) {
         if (handlers != null) {
-            members = List.copyOf(handlers);
+            members = CollectionSupport.copyToList(handlers);
         } else {
-            members = Collections.emptyList();
+            members = CollectionSupport.emptyList();
         }
     }
 

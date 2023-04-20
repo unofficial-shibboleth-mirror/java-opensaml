@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.metadata.resolver.index.impl;
 
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.function.Function;
@@ -28,6 +27,7 @@ import org.opensaml.saml.metadata.resolver.index.MetadataIndexKey;
 import org.opensaml.saml.metadata.resolver.index.SimpleStringMetadataIndexKey;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -43,7 +43,7 @@ public class ConstantEntityDescriptorFunction implements Function<EntityDescript
 
     @Nullable public Set<MetadataIndexKey> apply(@Nullable EntityDescriptor input) {
         if (input == null) {
-            return Collections.emptySet();
+            return CollectionSupport.emptySet();
         }
         HashSet<MetadataIndexKey> result = new HashSet<>();
         if (input != null) {

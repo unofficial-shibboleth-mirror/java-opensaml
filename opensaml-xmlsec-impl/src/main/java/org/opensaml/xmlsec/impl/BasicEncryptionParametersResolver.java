@@ -22,7 +22,6 @@ import java.security.KeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.PublicKey;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -528,7 +527,7 @@ public class BasicEncryptionParametersResolver extends AbstractSecurityParameter
                     .filter(Objects::nonNull)
                     .map(KeyAgreementEncryptionConfiguration::getParameters)
                     .filter(Objects::nonNull)
-                    .findFirst().orElse(Collections.emptySet())
+                    .findFirst().orElse(CollectionSupport.emptySet())
                 );
         
         if (config.getAlgorithm() == null) {

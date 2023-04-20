@@ -18,7 +18,6 @@
 package org.opensaml.core.xml.schema.impl;
 
 import java.time.Instant;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -29,6 +28,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSDateTime;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 
 
 /**
@@ -62,8 +63,8 @@ public class XSDateTimeImpl extends AbstractXMLObject implements XSDateTime {
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
-        return Collections.emptyList();
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
+        return null;
     }
 
 }

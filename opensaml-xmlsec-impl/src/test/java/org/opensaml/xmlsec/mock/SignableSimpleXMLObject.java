@@ -20,7 +20,6 @@
  */
 package org.opensaml.xmlsec.mock;
 
-import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -36,6 +35,9 @@ import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 import org.opensaml.core.xml.util.XMLObjectChildrenList;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.signature.AbstractSignableXMLObject;
+import org.opensaml.xmlsec.signature.Signature;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Simple XMLObject that can be used for testing
@@ -177,9 +179,13 @@ public class SignableSimpleXMLObject extends AbstractSignableXMLObject implement
             children.add(encryptedData);
         }
         children.addAll(unknownXMLObjects);
-        children.add(getSignature());
         
-        return Collections.unmodifiableList(children);
+        final Signature sig = getSignature();
+        if (sig != null) {
+            children.add(sig);
+        }
+        
+        return CollectionSupport.copyToList(children);
     }
 
     /** {@inheritDoc} */

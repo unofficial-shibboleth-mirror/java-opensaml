@@ -18,10 +18,17 @@
 package org.opensaml.saml.common.assertion;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.primitive.StringSupport;
 
@@ -32,13 +39,13 @@ import net.shibboleth.shared.primitive.StringSupport;
 public class ValidationContext {
 
     /** Static parameters used as input to the validation process. */
-    private Map<String, Object> staticParameters;
+    @Nonnull private Map<String, Object> staticParameters;
 
     /** Dynamic parameters used as input to, and output from, the validation process. */
-    private Map<String, Object> dynamicParameters;
+    @Nonnull private Map<String, Object> dynamicParameters;
 
     /** Error messaging describing what validation check an assertion failed. */
-    private String validationFailureMessage;
+    @Nullable private String validationFailureMessage;
 
     /** Constructor. Creates a validation context with no global environment. */
     public ValidationContext() {
@@ -50,11 +57,12 @@ public class ValidationContext {
      * 
      * @param newStaticParameters static parameters for the validation evaluation
      */
-    public ValidationContext(final Map<String, Object> newStaticParameters) {
+    public ValidationContext(@Nullable final Map<String, Object> newStaticParameters) {
         if (newStaticParameters == null) {
-            staticParameters = Collections.unmodifiableMap(Collections.emptyMap());
+            staticParameters = CollectionSupport.emptyMap();
         } else {
-            staticParameters = Collections.unmodifiableMap(newStaticParameters);
+            // TODO: are nulls actually allowed?
+            staticParameters = Collections.unmodifiableMap(new HashMap<>(newStaticParameters));
         }
         dynamicParameters = new LazyMap<>();
     }
@@ -64,7 +72,7 @@ public class ValidationContext {
      * 
      * @return static parameters used as input to the validation process
      */
-    public Map<String, Object> getStaticParameters() {
+    @Nonnull @Unmodifiable @NotLive public Map<String, Object> getStaticParameters() {
         return staticParameters;
     }
 
@@ -73,7 +81,7 @@ public class ValidationContext {
      * 
      * @return dynamic parameters used input to, and output from, the validation process
      */
-    public Map<String, Object> getDynamicParameters() {
+    @Nonnull @Live public Map<String, Object> getDynamicParameters() {
         return dynamicParameters;
     }
 
@@ -82,7 +90,7 @@ public class ValidationContext {
      * 
      * @return message describing why the validation process failed
      */
-    public String getValidationFailureMessage() {
+    @Nullable public String getValidationFailureMessage() {
         return validationFailureMessage;
     }
 
@@ -91,7 +99,8 @@ public class ValidationContext {
      * 
      * @param message message describing why the validation process failed
      */
-    public void setValidationFailureMessage(final String message) {
+    public void setValidationFailureMessage(@Nullable final String message) {
         validationFailureMessage = StringSupport.trimOrNull(message);
     }
+
 }

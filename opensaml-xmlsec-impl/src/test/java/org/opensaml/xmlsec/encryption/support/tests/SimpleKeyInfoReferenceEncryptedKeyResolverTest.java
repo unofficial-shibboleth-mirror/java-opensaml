@@ -18,9 +18,6 @@
 package org.opensaml.xmlsec.encryption.support.tests;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -36,6 +33,8 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Test the encrypted key resolver which dereferences KeyInfoReferences.
@@ -89,7 +88,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(CollectionSupport.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -115,7 +114,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(Collections.singleton("foo"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(CollectionSupport.singleton("foo"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
@@ -144,7 +143,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(new HashSet<>(Arrays.asList("foo", "baz")));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(CollectionSupport.setOf("foo", "baz"));
         
         List<EncryptedKey> resolved = generateList(encData, resolver);
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");

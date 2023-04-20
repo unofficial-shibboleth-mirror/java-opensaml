@@ -20,7 +20,6 @@ package org.opensaml.security.httpclient.impl;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.Collections;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -45,6 +44,7 @@ import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustEngineSupport;
 import org.opensaml.security.x509.tls.impl.ThreadLocalX509TrustManager;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.httpclient.HttpClientSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -266,7 +266,7 @@ public class SecurityEnhancedTLSSocketFactory implements LayeredConnectionSocket
                 log.debug("No CriteriaSet supplied by caller, building new instance with signing " 
                         + "and trusted names criteria");
                 criteriaSet = new CriteriaSet(new UsageCriterion(UsageType.SIGNING));
-                criteriaSet.add(new TrustedNamesCriterion(Collections.singleton(hostname)));
+                criteriaSet.add(new TrustedNamesCriterion(CollectionSupport.singleton(hostname)));
             } else {
                 log.trace("Saw CriteriaSet: {}", criteriaSet);
             }

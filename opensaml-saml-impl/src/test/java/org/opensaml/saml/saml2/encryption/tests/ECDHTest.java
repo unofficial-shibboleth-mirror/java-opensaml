@@ -25,7 +25,6 @@ import java.security.cert.CertificateEncodingException;
 import java.security.cert.X509Certificate;
 import java.security.spec.ECGenParameterSpec;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -87,6 +86,7 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
 import net.shibboleth.shared.codec.EncodingException;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -252,7 +252,7 @@ public class ECDHTest extends XMLObjectBaseTestCase {
         
         DataEncryptionParameters dataEncParams = new DataEncryptionParameters(encParams);
         List<KeyEncryptionParameters> kekParams = encParams.getKeyTransportEncryptionCredential() != null ?
-                List.of(new KeyEncryptionParameters(encParams, null)) : Collections.emptyList();
+                List.of(new KeyEncryptionParameters(encParams, null)) : CollectionSupport.emptyList();
                 
         encrypter = new Encrypter(dataEncParams, kekParams);
         encrypter.setKeyPlacement(keyPlacement);

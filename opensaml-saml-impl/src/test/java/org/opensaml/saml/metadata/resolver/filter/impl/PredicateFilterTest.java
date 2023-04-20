@@ -17,8 +17,7 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-import java.util.Collections;
-
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
 
@@ -66,7 +65,7 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         final String denied = "urn:mace:incommon:osu.edu";
         final String osu = "urn:mace:incommon:osu.edu";
 
-        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(denied));
+        final EntityIdPredicate condition = new EntityIdPredicate(CollectionSupport.singletonList(denied));
         
         metadataProvider.setMetadataFilter(new PredicateFilter(Direction.EXCLUDE, condition));
         metadataProvider.initialize();
@@ -92,7 +91,7 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         final String denied = "urn:mace:incommon:osu.edu";
         final String osu = "urn:mace:incommon:osu.edu";
 
-        final EntityIdPredicate condition = new EntityIdPredicate(Collections.singletonList(allowed));
+        final EntityIdPredicate condition = new EntityIdPredicate(CollectionSupport.singletonList(allowed));
         
         metadataProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE, condition));
         metadataProvider.initialize();
@@ -103,7 +102,8 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(allowed)));
         Assert.assertNotNull(entity);
         
-        singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE,  new EntityIdPredicate(Collections.singletonList(osu))));
+        singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE,
+                new EntityIdPredicate(CollectionSupport.singletonList(osu))));
         singleEntityProvider.initialize();
         
         entity = singleEntityProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(osu)));

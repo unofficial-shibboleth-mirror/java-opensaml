@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.common.profile.impl;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -25,6 +24,7 @@ import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NullableElements;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -103,7 +103,8 @@ public class ChainingNameIdentifierGenerator<NameIdType extends SAMLObject>
         List<NameIdentifierGenerator<NameIdType>> generators = nameIdGeneratorMap.get(format);
         if (generators.isEmpty() && defaultNameIdGenerator != null) {
             log.debug("No generators installed for Format {}, trying default/fallback method", format);
-            generators = Collections.singletonList(defaultNameIdGenerator);
+            assert defaultNameIdGenerator != null;
+            generators = CollectionSupport.singletonList(defaultNameIdGenerator);
         }
         
         for (final NameIdentifierGenerator<NameIdType> generator : generators) {

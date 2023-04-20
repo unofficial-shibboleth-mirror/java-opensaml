@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.common.profile.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -40,6 +39,7 @@ import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -179,8 +179,8 @@ public class PopulateSignatureSigningParameters
         } else if (configurationLookupStrategy == null) {
             configurationLookupStrategy = new Function<>() {
                 public List<SignatureSigningConfiguration> apply(final ProfileRequestContext input) {
-                    return Collections.singletonList(
-                            SecurityConfigurationSupport.getGlobalSignatureSigningConfiguration());
+                    return CollectionSupport.singletonList(
+                            SecurityConfigurationSupport.ensureGlobalSignatureSigningConfiguration());
                 }
             };
         }

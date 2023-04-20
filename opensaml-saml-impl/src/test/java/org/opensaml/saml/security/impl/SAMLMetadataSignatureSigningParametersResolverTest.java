@@ -21,11 +21,11 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.crypto.SecretKey;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
@@ -123,7 +123,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
         
         // Set these as defaults on the last config in the chain, just so don't have to set in every test.
         config3.setSignatureAlgorithms(List.of(defaultRSAAlgo, defaultDSAAlgo, defaultECAlgo, defaultHMACAlgo));
-        config3.setSignatureReferenceDigestMethods(Collections.singletonList(defaultReferenceDigest));
+        config3.setSignatureReferenceDigestMethods(CollectionSupport.singletonList(defaultReferenceDigest));
         config3.setSignatureCanonicalizationAlgorithm(defaultC14N);
         config3.setSignatureHMACOutputLength(defaultHMACOutputLength);
         
@@ -144,7 +144,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     @Test
     public void testBasicRSA() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         
         final SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
         
@@ -159,7 +159,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     @Test
     public void testRSAWithRoleDescriptorSigningMethod() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, null));
         
@@ -176,7 +176,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
 
     @Test
     public void testRSAWithEntityDescriptorSigningMethod() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         
         addEntityDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256, null, null));
         
@@ -193,7 +193,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     @Test
     public void testRSAWithRoleDescriptorDigestMethod() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         
         addRoleDescriptorExtension(roleDesc, buildDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
@@ -210,7 +210,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
 
     @Test
     public void testRSAWithEntityDescriptorDigestMethod() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         
         addEntityDescriptorExtension(roleDesc, buildDigestMethod(SignatureConstants.ALGO_ID_DIGEST_SHA256));
         
@@ -227,9 +227,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     @Test
     public void testRSAWithSigningMethodBlacklisted() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         
-        config1.setExcludedAlgorithms(Collections.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
+        config1.setExcludedAlgorithms(CollectionSupport.singletonList(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5));
         
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_NOT_RECOMMENDED_RSA_MD5, null, null));
         addRoleDescriptorExtension(roleDesc, buildSigningMethod(SignatureConstants.ALGO_ID_SIGNATURE_DSA_SHA1, null, null));
@@ -248,9 +248,9 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
 
     @Test
     public void testRSAWithDigestMethodBlacklisted() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         
-        config1.setExcludedAlgorithms(Collections.singletonList(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
+        config1.setExcludedAlgorithms(CollectionSupport.singletonList(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
         
         addRoleDescriptorExtension(roleDesc, buildDigestMethod(SignatureConstants.ALGO_ID_DIGEST_NOT_RECOMMENDED_MD5));
         
@@ -348,7 +348,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     @Test
     public void testNoAlgorithms() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         config3.setSignatureAlgorithms(new ArrayList<String>());
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
@@ -358,7 +358,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     @Test
     public void testNoReferenceDigestMethods() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         config3.setSignatureReferenceDigestMethods(new ArrayList<String>());
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);
@@ -368,7 +368,7 @@ public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjec
     
     @Test
     public void testNoC14NAlgorithm() throws ResolverException {
-        config1.setSigningCredentials(Collections.singletonList(rsaCred2048));
+        config1.setSigningCredentials(CollectionSupport.singletonList(rsaCred2048));
         config3.setSignatureCanonicalizationAlgorithm(null);
         
         SignatureSigningParameters params = resolver.resolveSingle(criteriaSet);

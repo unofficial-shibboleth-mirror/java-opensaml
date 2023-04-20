@@ -17,9 +17,9 @@
 
 package org.opensaml.saml.common.profile.logic.tests;
 
-import java.util.Collections;
 import java.util.regex.Pattern;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
 
@@ -39,6 +39,7 @@ import org.testng.annotations.Test;
 /**
  * Unit tests for {@link EntityAttributesPredicate}.
  */
+@SuppressWarnings("javadoc")
 public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
 
     private ResourceBackedMetadataResolver metadataProvider;
@@ -58,9 +59,9 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
     public void testWrongName() throws Exception {
 
         final Candidate candidate = new Candidate("urn:foo:bar", Attribute.URI_REFERENCE);
-        candidate.setValues(Collections.singletonList("bar"));
+        candidate.setValues(CollectionSupport.singletonList("bar"));
         final EntityAttributesPredicate condition =
-                new EntityAttributesPredicate(Collections.singletonList(candidate), false);
+                new EntityAttributesPredicate(CollectionSupport.singletonList(candidate), false);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
@@ -73,9 +74,9 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
     public void testWrongNameFormat() throws Exception {
 
         final Candidate candidate = new Candidate("urn:foo", Attribute.BASIC);
-        candidate.setValues(Collections.singletonList("bar"));
+        candidate.setValues(CollectionSupport.singletonList("bar"));
         final EntityAttributesPredicate condition =
-                new EntityAttributesPredicate(Collections.singletonList(candidate), false);
+                new EntityAttributesPredicate(CollectionSupport.singletonList(candidate), false);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
@@ -88,9 +89,9 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
     public void testGroupUnspecified() throws Exception {
 
         final Candidate candidate = new Candidate("urn:foo", null);
-        candidate.setValues(Collections.singletonList("bar"));
+        candidate.setValues(CollectionSupport.singletonList("bar"));
         final EntityAttributesPredicate condition =
-                new EntityAttributesPredicate(Collections.singletonList(candidate), false);
+                new EntityAttributesPredicate(CollectionSupport.singletonList(candidate), false);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
@@ -103,9 +104,9 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
     public void testGroupExact() throws Exception {
 
         final Candidate candidate = new Candidate("urn:foo", Attribute.URI_REFERENCE);
-        candidate.setValues(Collections.singletonList("bar"));
+        candidate.setValues(CollectionSupport.singletonList("bar"));
         final EntityAttributesPredicate condition =
-                new EntityAttributesPredicate(Collections.singletonList(candidate), false);
+                new EntityAttributesPredicate(CollectionSupport.singletonList(candidate), false);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));
@@ -117,9 +118,9 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
     @Test
     public void testIdP1475()  throws Exception {
         final Candidate candidate = new Candidate("https://its.umich.edu/identity/activationCondition/isMemberOf");
-        candidate.setValues(Collections.singletonList("true"));
+        candidate.setValues(CollectionSupport.singletonList("true"));
         final EntityAttributesPredicate condition =
-                new EntityAttributesPredicate(Collections.singletonList(candidate));
+                new EntityAttributesPredicate(CollectionSupport.singletonList(candidate));
 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-1475.example.org")));
@@ -131,10 +132,10 @@ public class EntityAttributesPredicateTest extends XMLObjectBaseTestCase {
     public void testGroupAdditional() throws Exception {
 
         final Candidate candidate = new Candidate("urn:foo", Attribute.URI_REFERENCE);
-        candidate.setValues(Collections.singletonList("bar"));
-        candidate.setRegexps(Collections.singletonList(Pattern.compile("baz")));
+        candidate.setValues(CollectionSupport.singletonList("bar"));
+        candidate.setRegexps(CollectionSupport.singletonList(Pattern.compile("baz")));
         final EntityAttributesPredicate condition =
-                new EntityAttributesPredicate(Collections.singletonList(candidate), false);
+                new EntityAttributesPredicate(CollectionSupport.singletonList(candidate), false);
                 
         final EntityDescriptor entity =
                 metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion("https://idp-top.example.org")));

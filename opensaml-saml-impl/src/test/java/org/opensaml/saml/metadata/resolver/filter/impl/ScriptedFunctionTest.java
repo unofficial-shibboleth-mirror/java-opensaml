@@ -18,7 +18,6 @@
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
 import java.io.IOException;
-import java.util.Collections;
 import java.util.Set;
 
 import javax.script.ScriptException;
@@ -32,6 +31,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resource.Resource;
 import net.shibboleth.shared.spring.resource.ResourceHelper;
 
@@ -68,7 +68,7 @@ public class ScriptedFunctionTest extends XMLObjectBaseTestCase {
     @Test public void customScript() throws ScriptException {
         
         final ScriptedTrustedNamesFunction what = ScriptedTrustedNamesFunction.inlineScript("custom;");
-        what.setCustomObject(Collections.singleton("String"));
+        what.setCustomObject(CollectionSupport.singleton("String"));
         
         final Set<String> s = what.apply(makeObject());
         assert s != null;

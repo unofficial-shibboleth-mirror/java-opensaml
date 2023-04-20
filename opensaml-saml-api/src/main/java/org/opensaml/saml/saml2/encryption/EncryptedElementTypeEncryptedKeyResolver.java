@@ -18,7 +18,6 @@
 package org.opensaml.saml.saml2.encryption;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +28,8 @@ import org.opensaml.saml.saml2.core.EncryptedElementType;
 import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.AbstractEncryptedKeyResolver;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * An implementation of {@link org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver}
@@ -57,7 +58,7 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
      * @param recipient the recipient
      */
     public EncryptedElementTypeEncryptedKeyResolver(@Nullable final String recipient) {
-        this(Collections.singleton(recipient));
+        this(recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
 
     /** {@inheritDoc} */

@@ -21,7 +21,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.security.KeyPair;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,6 +72,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -200,7 +200,7 @@ public class DHWithExplicitKDFTest extends XMLObjectBaseTestCase {
         
         final DataEncryptionParameters dataEncParams = new DataEncryptionParameters(encParams);
         final List<KeyEncryptionParameters> kekParams = encParams.getKeyTransportEncryptionCredential() != null ?
-                List.of(new KeyEncryptionParameters(encParams, null)) : Collections.emptyList();
+                List.of(new KeyEncryptionParameters(encParams, null)) : CollectionSupport.emptyList();
         
         final EncryptedData encryptedDataOrig = encrypter.encryptElement(sxoOrig, dataEncParams, kekParams);
         Assert.assertNotNull(encryptedDataOrig);

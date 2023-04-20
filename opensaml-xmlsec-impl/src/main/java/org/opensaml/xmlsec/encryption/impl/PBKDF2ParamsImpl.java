@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,6 +30,10 @@ import org.opensaml.xmlsec.encryption.KeyLength;
 import org.opensaml.xmlsec.encryption.PBKDF2Params;
 import org.opensaml.xmlsec.encryption.PRF;
 import org.opensaml.xmlsec.encryption.Salt;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link PBKDF2Params}.
@@ -102,7 +105,7 @@ public class PBKDF2ParamsImpl extends AbstractXMLObject implements PBKDF2Params 
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
        final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (salt != null) {
@@ -118,11 +121,7 @@ public class PBKDF2ParamsImpl extends AbstractXMLObject implements PBKDF2Params 
             children.add(prf);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

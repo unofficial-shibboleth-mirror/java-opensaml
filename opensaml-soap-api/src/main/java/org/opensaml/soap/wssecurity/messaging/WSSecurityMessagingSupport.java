@@ -17,7 +17,6 @@
 
 package org.opensaml.soap.wssecurity.messaging;
 
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -29,6 +28,7 @@ import org.opensaml.messaging.context.MessageContext;
 import org.opensaml.soap.messaging.SOAPMessagingSupport;
 import org.opensaml.soap.wssecurity.Security;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 
@@ -76,7 +76,7 @@ public final class WSSecurityMessagingSupport {
 
         final List<XMLObject> securityHeaders =
                 SOAPMessagingSupport.getHeaderBlock(messageContext, Security.ELEMENT_NAME,
-                targetNode != null ? Collections.singleton(targetNode) : null, 
+                targetNode != null ? CollectionSupport.singleton(targetNode) : null, 
                 isFinalDestination);
         
         Security security = null;

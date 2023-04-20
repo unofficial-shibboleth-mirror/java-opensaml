@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -32,6 +31,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -74,7 +74,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
      * @param recipient the recipient
      */
     public SimpleKeyInfoReferenceEncryptedKeyResolver(@Nullable final String recipient) {
-        this(Collections.singleton(recipient));
+        this(recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
     
     /**

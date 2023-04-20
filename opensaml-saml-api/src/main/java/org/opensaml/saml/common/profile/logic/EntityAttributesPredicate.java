@@ -20,7 +20,6 @@ package org.opensaml.saml.common.profile.logic;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -463,11 +462,11 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
             if (toMatchAlt != null) {
                 return List.of(toMatch, toMatchAlt);
             } else if (toMatch != null) {
-                return Collections.singletonList(toMatch);
+                return CollectionSupport.singletonList(toMatch);
             }
             log.warn("Unrecognized XMLObject type ({}), unable to convert to a string for comparison",
                     object.getClass().getName());
-            return Collections.emptyList();
+            return CollectionSupport.emptyList();
         }
     }
 // Checkstyle: CyclomaticComplexity OFF

@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.support;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -29,6 +28,7 @@ import org.opensaml.xmlsec.encryption.EncryptedData;
 import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.signature.KeyInfo;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 
 /**
@@ -57,7 +57,7 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * @param recipient the recipient
      */
     public InlineEncryptedKeyResolver(@Nullable final String recipient) {
-        this(Collections.singleton(recipient));
+        this(recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
 
     /** {@inheritDoc} */

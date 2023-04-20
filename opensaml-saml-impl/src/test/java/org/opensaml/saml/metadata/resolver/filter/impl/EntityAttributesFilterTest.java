@@ -20,7 +20,6 @@ package org.opensaml.saml.metadata.resolver.filter.impl;
 import java.io.File;
 import java.net.URL;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Predicate;
 
@@ -131,7 +130,7 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         final XSString value = valueBuilder.buildObject(AttributeValue.DEFAULT_ELEMENT_NAME, XSString.TYPE_NAME);
         value.setValue("bar");
         tag.getAttributeValues().add(value);
-        final Collection<Attribute> tags = Collections.singletonList(tag);
+        final Collection<Attribute> tags = CollectionSupport.singletonList(tag);
         
         final EntityAttributesFilter filter = new EntityAttributesFilter();
         filter.setRules(CollectionSupport.singletonMap(this, tags));

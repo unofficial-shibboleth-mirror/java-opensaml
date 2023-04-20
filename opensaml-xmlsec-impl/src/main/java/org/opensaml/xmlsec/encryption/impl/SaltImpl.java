@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -30,16 +29,20 @@ import org.opensaml.xmlsec.encryption.OtherSource;
 import org.opensaml.xmlsec.encryption.Salt;
 import org.opensaml.xmlsec.encryption.Specified;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
+
 /**
  * Concrete implementation of {@link Salt}.
  */
 public class SaltImpl extends AbstractXMLObject implements Salt {
     
     /** Specified child element value. */
-    private Specified specified;
+    @Nullable private Specified specified;
     
     /** OtherSource child element value. */
-    private OtherSource otherSource;
+    @Nullable private OtherSource otherSource;
     
     /**
      * Constructor.
@@ -74,7 +77,7 @@ public class SaltImpl extends AbstractXMLObject implements Salt {
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
         
         if (specified != null) {
@@ -84,11 +87,7 @@ public class SaltImpl extends AbstractXMLObject implements Salt {
             children.add(otherSource);
         }
         
-        if (children.size() == 0) {
-            return null;
-        }
-        
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }

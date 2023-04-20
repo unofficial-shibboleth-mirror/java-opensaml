@@ -32,7 +32,6 @@ import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -40,6 +39,7 @@ import javax.annotation.Nullable;
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 import org.apache.hc.client5.http.auth.CredentialsProvider;
@@ -100,8 +100,8 @@ public class HttpClientSecuritySupportTest {
         params.setCredentialsProvider(new BasicCredentialsProvider());
         params.setTLSTrustEngine(new MockTrustEngine());
         params.setTLSCriteriaSet(new CriteriaSet());
-        params.setTLSProtocols(Collections.singletonList("foo"));
-        params.setTLSCipherSuites(Collections.singletonList("foo"));
+        params.setTLSProtocols(CollectionSupport.singletonList("foo"));
+        params.setTLSCipherSuites(CollectionSupport.singletonList("foo"));
         params.setClientTLSCredential(new BasicX509Credential(cert));
         params.setHostnameVerifier(new DefaultHostnameVerifier());
         params.setServerTLSFailureFatal(Boolean.TRUE);
@@ -126,8 +126,8 @@ public class HttpClientSecuritySupportTest {
         context.setCredentialsProvider(new BasicCredentialsProvider());
         context.setAttribute(CONTEXT_KEY_TRUST_ENGINE, new MockTrustEngine());
         context.setAttribute(CONTEXT_KEY_CRITERIA_SET, new CriteriaSet());
-        context.setAttribute(CONTEXT_KEY_TLS_PROTOCOLS, Collections.singletonList("foo"));
-        context.setAttribute(CONTEXT_KEY_TLS_CIPHER_SUITES, Collections.singletonList("foo"));
+        context.setAttribute(CONTEXT_KEY_TLS_PROTOCOLS, CollectionSupport.singletonList("foo"));
+        context.setAttribute(CONTEXT_KEY_TLS_CIPHER_SUITES, CollectionSupport.singletonList("foo"));
         context.setAttribute(CONTEXT_KEY_CLIENT_TLS_CREDENTIAL, new BasicX509Credential(cert));
         context.setAttribute(CONTEXT_KEY_HOSTNAME_VERIFIER, new DefaultHostnameVerifier());
         context.setAttribute(CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL, Boolean.FALSE);
@@ -136,8 +136,8 @@ public class HttpClientSecuritySupportTest {
         params.setCredentialsProvider(new BasicCredentialsProvider());
         params.setTLSTrustEngine(new MockTrustEngine());
         params.setTLSCriteriaSet(new CriteriaSet());
-        params.setTLSProtocols(Collections.singletonList("foo"));
-        params.setTLSCipherSuites(Collections.singletonList("foo"));
+        params.setTLSProtocols(CollectionSupport.singletonList("foo"));
+        params.setTLSCipherSuites(CollectionSupport.singletonList("foo"));
         params.setClientTLSCredential(new BasicX509Credential(cert));
         params.setHostnameVerifier(new DefaultHostnameVerifier());
         params.setServerTLSFailureFatal(Boolean.TRUE);
@@ -161,8 +161,8 @@ public class HttpClientSecuritySupportTest {
         CredentialsProvider credProvider = new BasicCredentialsProvider();
         TrustEngine<X509Credential> trustEngine = new MockTrustEngine();
         CriteriaSet criteriaSet = new CriteriaSet();
-        List<String> protocols = Collections.singletonList("foo");
-        List<String> cipherSuites = Collections.singletonList("foo");
+        List<String> protocols = CollectionSupport.singletonList("foo");
+        List<String> cipherSuites = CollectionSupport.singletonList("foo");
         X509Credential clientTLSCred = new BasicX509Credential(cert);
         HostnameVerifier verifier = new DefaultHostnameVerifier();
         
@@ -179,8 +179,8 @@ public class HttpClientSecuritySupportTest {
         params.setCredentialsProvider(new BasicCredentialsProvider());
         params.setTLSTrustEngine(new MockTrustEngine());
         params.setTLSCriteriaSet(new CriteriaSet());
-        params.setTLSProtocols(Collections.singletonList("foo"));
-        params.setTLSCipherSuites(Collections.singletonList("foo"));
+        params.setTLSProtocols(CollectionSupport.singletonList("foo"));
+        params.setTLSCipherSuites(CollectionSupport.singletonList("foo"));
         params.setClientTLSCredential(new BasicX509Credential(cert));
         params.setHostnameVerifier(new DefaultHostnameVerifier());
         params.setServerTLSFailureFatal(Boolean.TRUE);

@@ -17,7 +17,6 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -87,7 +86,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
             @Nonnull @NonnullElements @ParameterName(name="encKeyResolvers")
             final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable @ParameterName(name="recipient") final String recipient) {
-        this(encKeyResolvers, Collections.singleton(recipient));
+        this(encKeyResolvers, recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
 
     /**

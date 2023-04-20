@@ -17,7 +17,6 @@
 
 package org.opensaml.saml.saml1.profile.impl;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.function.Function;
 
@@ -289,7 +288,7 @@ public class AddNameIdentifierToSubjects extends AbstractProfileAction {
                 if (outboundMessage == null) {
                     return null;
                 } else if (outboundMessage instanceof Assertion) {
-                    return Collections.singletonList((Assertion) outboundMessage);
+                    return CollectionSupport.singletonList((Assertion) outboundMessage);
                 } else if (outboundMessage instanceof Response) {
                     return ((Response) outboundMessage).getAssertions();
                 }

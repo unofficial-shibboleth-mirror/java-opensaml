@@ -23,7 +23,6 @@ import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
 import java.util.Arrays;
-import java.util.Collections;
 
 import javax.crypto.SecretKey;
 
@@ -58,12 +57,13 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.xml.XMLParserException;
 
 /**
  * Simple tests for decryption.
  */
-@SuppressWarnings({"javadoc", "null"})
+@SuppressWarnings("null")
 public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver keyResolver;
@@ -250,7 +250,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedDataAlgorithmBlacklistFail() throws DecryptionException {
-        Decrypter decrypter = new Decrypter(keyResolver, null, null, null, Collections.singleton(encURI));
+        Decrypter decrypter = new Decrypter(keyResolver, null, null, null, CollectionSupport.singleton(encURI));
         decrypter.decryptData(encryptedData);
     }
     
@@ -261,7 +261,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedDataAlgorithmWhitelistFail() throws DecryptionException {
-        Decrypter decrypter = new Decrypter(keyResolver, null, null, Collections.singleton("urn-x:some:bogus:algo"), null);
+        Decrypter decrypter = new Decrypter(keyResolver, null, null, CollectionSupport.singleton("urn-x:some:bogus:algo"), null);
         decrypter.decryptData(encryptedData);
     }
     
@@ -273,7 +273,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
      */
     @Test()
     public void testEncryptedDataAlgorithmWhitelistPass() throws DecryptionException {
-        Decrypter decrypter = new Decrypter(keyResolver, null, null, Collections.singleton(encURI), null);
+        Decrypter decrypter = new Decrypter(keyResolver, null, null, CollectionSupport.singleton(encURI), null);
         decrypter.decryptData(encryptedData);
     }
     
@@ -285,7 +285,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyAlgorithmBlacklistFail() throws DecryptionException {
         // Note: here testing the implicit digest method and MGF, which are the SHA-1 variants.
-        Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(kekURI));
+        Decrypter decrypter = new Decrypter(null, kekResolver, null, null, CollectionSupport.singleton(kekURI));
         decrypter.decryptKey(encryptedKey, encURI);
     }
     
@@ -310,7 +310,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Encrypter encrypter = new Encrypter();
             encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
             
-            Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(EncryptionConstants.ALGO_ID_DIGEST_SHA256));
+            Decrypter decrypter = new Decrypter(null, kekResolver, null, null, CollectionSupport.singleton(EncryptionConstants.ALGO_ID_DIGEST_SHA256));
             decrypter.decryptKey(encryptedKey, encURI);
         } finally {
             providerSupport.unloadBC();
@@ -338,7 +338,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Encrypter encrypter = new Encrypter();
             encryptedKey = encrypter.encryptKey(encKey, params, parserPool.newDocument());
             
-            Decrypter decrypter = new Decrypter(null, kekResolver, null, null, Collections.singleton(EncryptionConstants.ALGO_ID_MGF1_SHA256));
+            Decrypter decrypter = new Decrypter(null, kekResolver, null, null, CollectionSupport.singleton(EncryptionConstants.ALGO_ID_MGF1_SHA256));
             decrypter.decryptKey(encryptedKey, encURI);
         } finally {
             providerSupport.unloadBC();
@@ -355,7 +355,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     @Test(expectedExceptions=DecryptionException.class)
     public void testEncryptedKeyAlgorithmWhitelistFail() throws DecryptionException, EncryptionException, XMLParserException {
         // Note: here testing the implicit digest method and MGF, which are the SHA-1 variants.
-        Decrypter decrypter = new Decrypter(null, kekResolver, null, Collections.singleton("urn-x:some:bogus:algo"), null);
+        Decrypter decrypter = new Decrypter(null, kekResolver, null, CollectionSupport.singleton("urn-x:some:bogus:algo"), null);
         decrypter.decryptKey(encryptedKey, encURI);
     }
     

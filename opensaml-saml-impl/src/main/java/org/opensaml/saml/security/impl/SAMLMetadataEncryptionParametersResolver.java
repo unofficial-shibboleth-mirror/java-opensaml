@@ -19,7 +19,6 @@ package org.opensaml.saml.security.impl;
 
 import java.security.Key;
 import java.security.PublicKey;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 import java.util.function.Predicate;
@@ -287,8 +286,8 @@ public class SAMLMetadataEncryptionParametersResolver extends BasicEncryptionPar
         final SAMLMDCredentialContext metadataCredContext = 
                 credContextSet != null ? credContextSet.get(SAMLMDCredentialContext.class) : null;
         
-        List<String> metadataKeyWrapAlgorithms = Collections.emptyList();
-        List<String> metadataDataEncryptionAlgorithms = Collections.emptyList(); 
+        List<String> metadataKeyWrapAlgorithms = CollectionSupport.emptyList();
+        List<String> metadataDataEncryptionAlgorithms = CollectionSupport.emptyList(); 
         if (metadataCredContext != null) {
             final List<EncryptionMethod> methods = metadataCredContext.getEncryptionMethods();
             if (methods != null) {

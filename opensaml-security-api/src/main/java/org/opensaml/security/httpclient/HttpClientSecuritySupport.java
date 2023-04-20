@@ -27,7 +27,6 @@ import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTE
 import static org.opensaml.security.httpclient.HttpClientSecurityConstants.CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL;
 
 import java.net.URISyntaxException;
-import java.util.Collections;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -42,6 +41,7 @@ import org.opensaml.security.x509.TrustedNamesCriterion;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
@@ -89,8 +89,8 @@ public final class HttpClientSecuritySupport {
 
             if (!criteria.contains(TrustedNamesCriterion.class)) {
                 try {
-                    criteria.add(new TrustedNamesCriterion(Collections.singleton(request.getUri().getHost())));
-                } catch (URISyntaxException e) {
+                    criteria.add(new TrustedNamesCriterion(CollectionSupport.singleton(request.getUri().getHost())));
+                } catch (final URISyntaxException e) {
                     LOG.error("HttpRequest URI was invalid, got not extract hostname for TrustedNamesCriterion", e);
                 }
             }

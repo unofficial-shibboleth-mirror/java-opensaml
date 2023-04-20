@@ -18,7 +18,6 @@
 package org.opensaml.xmlsec.encryption.impl;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import javax.annotation.Nonnull;
@@ -31,6 +30,10 @@ import org.opensaml.xmlsec.encryption.DerivedKeyName;
 import org.opensaml.xmlsec.encryption.KeyDerivationMethod;
 import org.opensaml.xmlsec.encryption.MasterKeyName;
 import org.opensaml.xmlsec.encryption.ReferenceList;
+
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Concrete implementation of {@link DerivedKey}.
@@ -143,7 +146,7 @@ public class DerivedKeyImpl extends AbstractXMLObject implements DerivedKey {
     }
 
     /** {@inheritDoc} */
-    public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         final ArrayList<XMLObject> children = new ArrayList<>();
 
         if (keyDerivationMethod != null) {
@@ -162,11 +165,7 @@ public class DerivedKeyImpl extends AbstractXMLObject implements DerivedKey {
             children.add(masterKeyName);
         }
 
-        if (children.size() == 0) {
-            return null;
-        }
-
-        return Collections.unmodifiableList(children);
+        return CollectionSupport.copyToList(children);
     }
 
 }
