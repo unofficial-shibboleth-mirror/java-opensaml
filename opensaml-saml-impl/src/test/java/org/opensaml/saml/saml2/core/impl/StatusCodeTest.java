@@ -20,19 +20,20 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import javax.xml.namespace.QName;
 
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.common.xml.SAMLConstants;
 import org.opensaml.saml.saml2.core.StatusCode;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.StatusCodeImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected Value attribute value*/
@@ -79,16 +80,16 @@ public class StatusCodeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        StatusCode statusCode = (StatusCode) unmarshallElement(singleElementFile);
-        
+        final StatusCode statusCode = (StatusCode) unmarshallElement(singleElementFile);
+        assert statusCode !=null;
         Assert.assertEquals(statusCode.getValue(), expectedValue, "Unmarshalled status code URI value was not the expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        StatusCode statusCode = (StatusCode) unmarshallElement(childElementsFile);
-        
+        final StatusCode statusCode = (StatusCode) unmarshallElement(childElementsFile);
+        assert statusCode !=null;        
         Assert.assertNotNull(statusCode.getStatusCode());
     }
 }

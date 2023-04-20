@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Test for {@link CopyNameIDFromRequest}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class CopyNameIDFromRequestTest extends OpenSAMLInitBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";

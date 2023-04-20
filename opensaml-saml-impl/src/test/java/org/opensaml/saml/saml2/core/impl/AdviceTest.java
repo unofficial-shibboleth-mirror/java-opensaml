@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.EncryptedAssertion;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AdviceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AdviceTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of AssertionIDRef subelements */
@@ -60,8 +61,8 @@ public class AdviceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Advice advice = (Advice) unmarshallElement(childElementsFile);
-
+        final Advice advice = (Advice) unmarshallElement(childElementsFile);
+        assert advice != null;
         Assert.assertEquals(advice.getAssertionIDReferences()
                 .size(), assertionIDRefCount, "AssertionIDRef count not as expected");
         Assert.assertEquals(advice.getAssertionURIReferences()

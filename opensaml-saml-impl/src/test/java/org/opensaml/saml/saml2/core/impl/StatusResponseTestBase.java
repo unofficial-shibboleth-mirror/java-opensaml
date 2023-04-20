@@ -39,6 +39,7 @@ import org.opensaml.saml.saml2.core.StatusResponseType;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCase {
     
     /** Expected ID attribute */
@@ -82,10 +83,10 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
         expectedDestination = "http://sp.example.org/endpoint";
         expectedConsent = "urn:string:consent";
         
-        QName issuerQName = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName issuerQName = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         expectedIssuer = (Issuer) buildXMLObject(issuerQName);
         
-        QName statusQName = new QName(SAMLConstants.SAML20P_NS, Status.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final  QName statusQName = new QName(SAMLConstants.SAML20P_NS, Status.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         expectedStatus = (Status) buildXMLObject(statusQName);
     }
 
@@ -105,7 +106,7 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
      * @param samlObject ...
      */
     protected void populateRequiredAttributes(SAMLObject samlObject) {
-        StatusResponseType sr = (StatusResponseType) samlObject;
+        final StatusResponseType sr = (StatusResponseType) samlObject;
         
         sr.setID(expectedID);
         sr.setIssueInstant(expectedIssueInstant);
@@ -120,7 +121,7 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
      * @param samlObject ...
      */
     protected void populateOptionalAttributes(SAMLObject samlObject) {
-        StatusResponseType sr = (StatusResponseType) samlObject;
+        final StatusResponseType sr = (StatusResponseType) samlObject;
         
         sr.setInResponseTo(expectedInResponseTo);
         sr.setConsent(expectedConsent);
@@ -134,7 +135,7 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
      * @param samlObject ...
      */
     protected void populateChildElements(SAMLObject samlObject) {
-        StatusResponseType sr = (StatusResponseType) samlObject;
+        final StatusResponseType sr = (StatusResponseType) samlObject;
         
         sr.setIssuer(expectedIssuer);
         sr.setStatus(expectedStatus);
@@ -145,7 +146,9 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
         StatusResponseType sr = (StatusResponseType) samlObject;
         
         Assert.assertEquals(sr.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
-        Assert.assertEquals(sr.getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        final SAMLVersion ver = sr.getVersion();
+        assert ver != null;
+        Assert.assertEquals(ver.toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
         Assert.assertEquals(expectedIssueInstant.compareTo(sr.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
         
         Assert.assertNull(sr.getInResponseTo(), "InResponseTo was not null");
@@ -155,10 +158,12 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
     }
     
     protected void helperTestSingleElementOptionalAttributesUnmarshall(SAMLObject samlObject) {
-        StatusResponseType sr = (StatusResponseType) samlObject;
+        final StatusResponseType sr = (StatusResponseType) samlObject;
         
         Assert.assertEquals(sr.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
-        Assert.assertEquals(sr.getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        final SAMLVersion ver = sr.getVersion();
+        assert ver != null;
+        Assert.assertEquals(ver.toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
         Assert.assertEquals(expectedIssueInstant.compareTo(sr.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
         
         Assert.assertEquals(sr.getInResponseTo(), expectedInResponseTo, "Unmarshalled InResponseTo attribute was not the expected value");
@@ -168,7 +173,7 @@ public abstract class StatusResponseTestBase extends XMLObjectProviderBaseTestCa
     }
 
     protected void helperTestChildElementsUnmarshall(SAMLObject samlObject) {
-        StatusResponseType sr = (StatusResponseType) samlObject;
+        final StatusResponseType sr = (StatusResponseType) samlObject;
         
         Assert.assertNotNull(sr.getIssuer(), "Issuer was null");
         Assert.assertNotNull(sr.getIssuer(), "Status was null");

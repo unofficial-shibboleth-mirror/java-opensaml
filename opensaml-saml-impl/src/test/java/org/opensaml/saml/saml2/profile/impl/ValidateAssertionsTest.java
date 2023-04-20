@@ -43,7 +43,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.testing.ConstantSupplier;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class ValidateAssertionsTest extends OpenSAMLInitBaseTestCase {
     
     private ValidateAssertions action;

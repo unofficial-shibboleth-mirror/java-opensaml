@@ -42,7 +42,7 @@ import org.testng.annotations.Test;
 /**
  * Unit test for {@link OneTimeUseConditionValidator}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class OneTimeUseConditionValidatorTest extends BaseAssertionValidationTest {
     
     private MemoryStorageService storageService;

@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.AffiliateMember;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AffiliateMemberImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedMemberID;
@@ -46,20 +47,20 @@ public class AffiliateMemberTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AffiliateMember member = (AffiliateMember)unmarshallElement(singleElementFile);
-        
-        String memberID = member.getURI();
+        final AffiliateMember member = (AffiliateMember)unmarshallElement(singleElementFile);
+        assert member!=null;
+        final String memberID = member.getURI();
         Assert.assertEquals(memberID, expectedMemberID, "Affiliation memeber ID was " + memberID + ", expected " + expectedMemberID);
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         
         AffiliateMember member = buildXMLObject(qname);
         
-        StringBuilder stringBuilder = new StringBuilder();
+        final StringBuilder stringBuilder = new StringBuilder();
         for (int i = 0; i < 1026; i++) {
             stringBuilder.append(i);
         }

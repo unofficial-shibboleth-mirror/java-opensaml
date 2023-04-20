@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.NameIDFormat;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.NameIDFormat}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected format */
@@ -50,15 +51,15 @@ public class NameIDFormatTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        NameIDFormat format = (NameIDFormat) unmarshallElement(singleElementFile);
-        
+        final NameIDFormat format = (NameIDFormat) unmarshallElement(singleElementFile);
+        assert format!=null;
         Assert.assertEquals(format.getURI(), expectFormat, "Format was not expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        NameIDFormat format = (NameIDFormat) buildXMLObject(NameIDFormat.DEFAULT_ELEMENT_NAME);
+        final NameIDFormat format = (NameIDFormat) buildXMLObject(NameIDFormat.DEFAULT_ELEMENT_NAME);
         
         format.setURI(expectFormat);
 

@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.metadata.ServiceDescription;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.ServiceDescription}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ServiceDescriptionTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected description */
@@ -47,7 +48,8 @@ public class ServiceDescriptionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ServiceDescription description = (ServiceDescription) unmarshallElement(singleElementFile);
+        final ServiceDescription description = (ServiceDescription) unmarshallElement(singleElementFile);
+        assert description!=null;
         
         Assert.assertEquals(description.getValue(), expectLocalizedDescription, "Description was not expected value");
         Assert.assertEquals(description.getXMLLang(), expectLang, "xml:lamg was not expected value");

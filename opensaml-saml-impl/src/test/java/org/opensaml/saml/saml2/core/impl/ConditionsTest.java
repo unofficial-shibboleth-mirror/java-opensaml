@@ -36,6 +36,7 @@ import org.opensaml.saml.saml2.core.ProxyRestriction;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.ConditionsImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ConditionsTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected NotBefore value */
@@ -66,7 +67,8 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Conditions conditions = (Conditions) unmarshallElement(singleElementFile);
+        final Conditions conditions = (Conditions) unmarshallElement(singleElementFile);
+        assert conditions !=null;
 
         Instant notBefore = conditions.getNotBefore();
         Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
@@ -75,7 +77,8 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Conditions conditions = (Conditions) unmarshallElement(singleElementOptionalAttributesFile);
+        final Conditions conditions = (Conditions) unmarshallElement(singleElementOptionalAttributesFile);
+        assert conditions !=null;
 
         Instant notBefore = conditions.getNotBefore();
         Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
@@ -89,7 +92,7 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementMarshall() {
         QName qname = new QName(SAMLConstants.SAML20_NS, Conditions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        Conditions conditions = (Conditions) buildXMLObject(qname);
+        final Conditions conditions = (Conditions) buildXMLObject(qname);
 
         conditions.setNotBefore(expectedNotBefore);
         assertXMLEquals(expectedDOM, conditions);
@@ -111,6 +114,7 @@ public class ConditionsTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         Conditions conditions = (Conditions) unmarshallElement(childElementsFile);
+        assert conditions !=null;
         Assert.assertEquals(conditions.getConditions().size(), conditionCount, "Condition count not as expected");
         Assert.assertNotNull(conditions.getOneTimeUse(), "OneTimeUse absent");
         Assert.assertNotNull(conditions.getProxyRestriction(), "ProxyRestriction absent");

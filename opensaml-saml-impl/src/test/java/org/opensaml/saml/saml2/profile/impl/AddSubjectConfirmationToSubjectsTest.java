@@ -41,7 +41,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 
 
 /** Test for {@link AddSubjectConfirmationToSubjects}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AddSubjectConfirmationToSubjectsTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;

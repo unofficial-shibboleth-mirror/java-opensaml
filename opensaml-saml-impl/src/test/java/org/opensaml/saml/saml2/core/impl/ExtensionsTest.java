@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.core.Extensions;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.ExtensionsImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ExtensionsTest extends XMLObjectProviderBaseTestCase {
 
     /**
@@ -78,7 +79,7 @@ public class ExtensionsTest extends XMLObjectProviderBaseTestCase {
     public void testChildElementsUnmarshall() {
         Extensions extensions = (Extensions) unmarshallElement(childElementsFile);
         
-        Assert.assertNotNull(extensions);
+        assert extensions!=null;
         Assert.assertEquals(extensions.getUnknownXMLObjects().size(), 3);
     }
     

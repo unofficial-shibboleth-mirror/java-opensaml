@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.Company;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.CompanyImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class CompanyTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected company name */
@@ -50,15 +51,15 @@ public class CompanyTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Company company = (Company) unmarshallElement(singleElementFile);
-        
+        final Company company = (Company) unmarshallElement(singleElementFile);
+        assert company!=null;
         Assert.assertEquals(company.getValue(), expectedName, "Company name was not expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Company company = (new CompanyBuilder()).buildObject();
+        final Company company = (new CompanyBuilder()).buildObject();
         
         company.setValue(expectedName);
 

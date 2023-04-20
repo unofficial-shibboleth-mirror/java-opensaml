@@ -36,6 +36,7 @@ import net.shibboleth.shared.xml.XMLParserException;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.AuthzDecisionStatementImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Resource value */
@@ -69,7 +70,8 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementFile);
+        final AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementFile);
+        assert authzDecisionStatement != null;
 
         String resource = authzDecisionStatement.getResource();
         Assert.assertEquals(resource, expectedResource, "Resource not as expected");
@@ -78,20 +80,23 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementOptionalAttributesFile);
+        final AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(singleElementOptionalAttributesFile);
+        assert authzDecisionStatement != null;
 
         String resource = authzDecisionStatement.getResource();
         Assert.assertEquals(resource, expectedResource, "Resource not as expected");
 
-        DecisionTypeEnumeration decision = authzDecisionStatement.getDecision();
+        final DecisionTypeEnumeration decision = authzDecisionStatement.getDecision();
+        assert decision != null;
+
         Assert.assertEquals(decision.toString(), expectedDecision.toString(), "Decision not as expected");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
 
         authzDecisionStatement.setResource(expectedResource);
         assertXMLEquals(expectedDOM, authzDecisionStatement);
@@ -100,8 +105,8 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
 
         authzDecisionStatement.setResource(expectedResource);
         authzDecisionStatement.setDecision(expectedDecision);
@@ -112,7 +117,8 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(childElementsFile);
+        final AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) unmarshallElement(childElementsFile);
+        assert authzDecisionStatement != null;
         Assert.assertEquals(authzDecisionStatement.getActions().size(), expectedActionCount, "Action Count");
         Assert.assertNotNull(authzDecisionStatement.getEvidence(), "Evidence element not present");
     }
@@ -120,8 +126,8 @@ public class AuthzDecisionStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final AuthzDecisionStatement authzDecisionStatement = (AuthzDecisionStatement) buildXMLObject(qname);
 
         QName actionQName = new QName(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         for (int i = 0; i < expectedActionCount; i++) {

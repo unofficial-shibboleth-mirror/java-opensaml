@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AttributeProfileImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected ProfileURI */
@@ -48,7 +49,7 @@ public class AttributeProfileTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall(){
         AttributeProfile profile = (AttributeProfile) unmarshallElement(singleElementFile);
-        
+        assert profile!=null;        
         Assert.assertEquals(profile.getURI(), expectedProfileURI);
     }
 

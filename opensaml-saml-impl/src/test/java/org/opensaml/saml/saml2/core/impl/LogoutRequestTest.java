@@ -39,6 +39,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class LogoutRequestTest extends RequestTestBase {
     
     /** Expected Reason attribute value */
@@ -132,8 +133,7 @@ public class LogoutRequestTest extends RequestTestBase {
     @Test
     public void testSingleElementUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(singleElementFile);
-        
-        Assert.assertNotNull(req, "LogoutRequest was null");
+        assert req!=null;
         Assert.assertNull(req.getReason(), "Reason was not null");
         Assert.assertNull(req.getNotOnOrAfter(), "NotOnOrAfter was not null");
         super.helperTestSingleElementUnmarshall(req);
@@ -143,6 +143,7 @@ public class LogoutRequestTest extends RequestTestBase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(singleElementOptionalAttributesFile);
+        assert req!=null;
         
         Assert.assertEquals(req.getReason(), expectedReason, "Unmarshalled Reason attribute was not the expectecd value");
         Assert.assertEquals(expectedNotOnOrAfter.compareTo(req.getNotOnOrAfter()), 0, "Unmarshalled NotOnOrAfter attribute was not the expectecd value");
@@ -153,6 +154,7 @@ public class LogoutRequestTest extends RequestTestBase {
     @Test
     public void testChildElementsUnmarshall() {
         LogoutRequest req = (LogoutRequest) unmarshallElement(childElementsFile);
+        assert req!=null;
         
         Assert.assertNotNull(req.getNameID(), "Identifier was null");
         Assert.assertEquals(req.getSessionIndexes().size(), expectedNumSessionIndexes, "Number of unmarshalled SessionIndexes was not the expected value");

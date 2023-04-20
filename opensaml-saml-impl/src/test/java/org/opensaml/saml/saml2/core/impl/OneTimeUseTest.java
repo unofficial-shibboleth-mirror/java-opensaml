@@ -28,6 +28,7 @@ import org.opensaml.saml.saml2.core.OneTimeUse;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.OneTimeUseImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class OneTimeUseTest extends XMLObjectProviderBaseTestCase {
 
     /** Constructor */

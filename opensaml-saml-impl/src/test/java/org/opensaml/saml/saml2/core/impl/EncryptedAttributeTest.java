@@ -27,6 +27,7 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.EncryptedAttributeImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class EncryptedAttributeTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of EncryptedKey subelements. */
@@ -41,9 +42,8 @@ public class EncryptedAttributeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EncryptedAttribute encElement = (EncryptedAttribute) unmarshallElement(singleElementFile);
-
-        Assert.assertNotNull(encElement);
+        final EncryptedAttribute encElement = (EncryptedAttribute) unmarshallElement(singleElementFile);
+        assert encElement!=null;
         Assert.assertNull(encElement.getEncryptedData(), "EncryptedData child element");
         Assert.assertEquals(encElement.getEncryptedKeys().size(), 0, "# of EncryptedKey children");
     }
@@ -51,9 +51,8 @@ public class EncryptedAttributeTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        EncryptedAttribute encElement = (EncryptedAttribute) unmarshallElement(childElementsFile);
-        
-        Assert.assertNotNull(encElement, "EncryptedAttribute was null");
+        final EncryptedAttribute encElement = (EncryptedAttribute) unmarshallElement(childElementsFile);
+        assert encElement!=null;
         Assert.assertNotNull(encElement.getEncryptedData(), "EncryptedData child element");
         Assert.assertEquals(encElement.getEncryptedKeys().size(), encryptedKeyCount, "# of EncryptedKey children");
 

@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.NameID;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.NameIDImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class NameIDTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name value */
@@ -64,30 +65,32 @@ public class NameIDTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        NameID nameID = (NameID) unmarshallElement(singleElementFile);
+        final NameID nameID = (NameID) unmarshallElement(singleElementFile);
+        assert nameID !=null;
 
-        String name = nameID.getValue();
+        final String name = nameID.getValue();
         Assert.assertEquals(expectedName, name, "Name not as expected");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        NameID nameID = (NameID) unmarshallElement(singleElementOptionalAttributesFile);
+        final NameID nameID = (NameID) unmarshallElement(singleElementOptionalAttributesFile);
+        assert nameID !=null;
 
-        String name = nameID.getValue();
+        final String name = nameID.getValue();
         Assert.assertEquals(expectedName, name, "Name not as expected");
 
-        String nameQualifier = nameID.getNameQualifier();
+        final String nameQualifier = nameID.getNameQualifier();
         Assert.assertEquals(expectedNameQualifier, nameQualifier, "NameQualifier not as expected");
 
-        String spNameQualifier = nameID.getSPNameQualifier();
+        final String spNameQualifier = nameID.getSPNameQualifier();
         Assert.assertEquals(expectedSPNameQualifier, spNameQualifier, "SPNameQualifier not as expected");
 
-        String format = nameID.getFormat();
+        final String format = nameID.getFormat();
         Assert.assertEquals(expectedFormat, format, "Format not as expected");
 
-        String spProvidedID = nameID.getSPProvidedID();
+        final String spProvidedID = nameID.getSPProvidedID();
         Assert.assertEquals(expectedSPID, spProvidedID, "SPProviderID not as expected");
     }
 

@@ -28,6 +28,7 @@ import org.opensaml.saml.saml2.core.Terminate;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class TerminateTest extends XMLObjectProviderBaseTestCase {
 
     /**

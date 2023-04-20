@@ -91,7 +91,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLMetadataEncryptionParametersResolverTest extends XMLObjectBaseTestCase {
     
     private MetadataCredentialResolver mdCredResolver;

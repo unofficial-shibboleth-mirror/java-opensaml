@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.GivenName;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.GivenName}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class GivenNameTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name */
@@ -50,15 +51,15 @@ public class GivenNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        GivenName name = (GivenName) unmarshallElement(singleElementFile);
-        
+        final GivenName name = (GivenName) unmarshallElement(singleElementFile);
+        assert name!=null;
         Assert.assertEquals(name.getValue(), expectName, "Name was not expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        GivenName name = (new GivenNameBuilder()).buildObject();
+        final GivenName name = (new GivenNameBuilder()).buildObject();
         
         name.setValue(expectName);
 

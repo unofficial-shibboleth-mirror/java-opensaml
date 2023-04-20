@@ -32,6 +32,7 @@ import org.opensaml.saml.saml2.metadata.ServiceName;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.ServiceDescription}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ServiceNameTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected description. */
@@ -51,7 +52,8 @@ public class ServiceNameTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         ServiceName name = (ServiceName) unmarshallElement(singleElementFile);
-        
+        assert name!=null;
+
         Assert.assertEquals(name.getXMLLang(), expectLang, "xml:lamg was not expected value");
         Assert.assertEquals(name.getValue(), expectValue, "Name was not expected value");
     }

@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.SingleSignOnService;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SingleSignOnServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -55,6 +56,7 @@ public class SingleSignOnServiceTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         SingleSignOnService service = ( SingleSignOnService) unmarshallElement(singleElementFile);
+        assert service!=null;
         
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
@@ -64,7 +66,7 @@ public class SingleSignOnServiceTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         SingleSignOnService service = ( SingleSignOnService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;

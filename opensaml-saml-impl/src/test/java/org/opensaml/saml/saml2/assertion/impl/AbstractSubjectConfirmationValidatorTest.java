@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.logic.Constraint;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AbstractSubjectConfirmationValidatorTest extends BaseAssertionValidationTest {
     
     private MockSubjectConfirmationValidator validator;

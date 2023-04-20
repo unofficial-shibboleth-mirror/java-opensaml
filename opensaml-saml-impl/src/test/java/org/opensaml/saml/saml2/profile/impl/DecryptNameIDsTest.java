@@ -52,6 +52,7 @@ import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.opensaml.xmlsec.keyinfo.impl.StaticKeyInfoCredentialResolver;
 
 /** Unit test for {@link DecryptNameIDs}. */
+@SuppressWarnings({"null", "javadoc"})
 public class DecryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     
     private KeyInfoCredentialResolver keyResolver;

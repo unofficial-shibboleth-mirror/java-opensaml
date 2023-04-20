@@ -38,7 +38,7 @@ import org.opensaml.saml.saml2.testing.SAML2ActionTestingSupport;
 import org.opensaml.xmlsec.EncryptionParameters;
 
 /** Unit test for {@link PopulateECPContext}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class PopulateECPContextTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;

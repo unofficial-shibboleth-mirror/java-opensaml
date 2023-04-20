@@ -32,6 +32,7 @@ import org.opensaml.saml.saml2.metadata.OrganizationURL;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationURL}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected URL. */
@@ -50,8 +51,8 @@ public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        OrganizationURL url = (OrganizationURL) unmarshallElement(singleElementFile);
-        
+        final OrganizationURL url = (OrganizationURL) unmarshallElement(singleElementFile);
+        assert url!=null;
         Assert.assertEquals(url.getURI(), expectValue, "URL was not expected value");
         Assert.assertEquals(url.getXMLLang(), expectLang, "langg was not expected value");
         url.hashCode();
@@ -60,8 +61,8 @@ public class OrganizationURLTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, OrganizationURL.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        OrganizationURL url = (OrganizationURL) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20MD_NS, OrganizationURL.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final OrganizationURL url = (OrganizationURL) buildXMLObject(qname);
         
         url.setURI(expectValue);
         url.setXMLLang(expectLang);

@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.AssertionIDRef;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AssertionIDRefImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected AssertionID value */
@@ -47,9 +48,9 @@ public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AssertionIDRef assertionIDRef = (AssertionIDRef) unmarshallElement(singleElementFile);
-
-        String assertionID = assertionIDRef.getValue();
+        final AssertionIDRef assertionIDRef = (AssertionIDRef) unmarshallElement(singleElementFile);
+        assert assertionIDRef!= null;
+        final String assertionID = assertionIDRef.getValue();
         Assert.assertEquals(assertionID, expectedAssertionID,
                 "AssertionID was " + assertionID + ", expected " + expectedAssertionID);
     }
@@ -63,8 +64,8 @@ public class AssertionIDRefTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AssertionIDRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        AssertionIDRef assertionIDRef = (AssertionIDRef) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AssertionIDRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final AssertionIDRef assertionIDRef = (AssertionIDRef) buildXMLObject(qname);
 
         assertionIDRef.setValue(expectedAssertionID);
         assertXMLEquals(expectedDOM, assertionIDRef);

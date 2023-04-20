@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.ManageNameIDService;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.ManageNameIDServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -54,8 +55,8 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ManageNameIDService service = (ManageNameIDService) unmarshallElement(singleElementFile);
-        
+        final ManageNameIDService service = (ManageNameIDService) unmarshallElement(singleElementFile);
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
@@ -63,8 +64,8 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        ManageNameIDService service = (ManageNameIDService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final ManageNameIDService service = (ManageNameIDService) unmarshallElement(singleElementOptionalAttributesFile);
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
@@ -73,7 +74,7 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ManageNameIDService service = (new ManageNameIDServiceBuilder()).buildObject();
+        final ManageNameIDService service = (new ManageNameIDServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -84,7 +85,7 @@ public class ManageNameIDServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        ManageNameIDService service = (ManageNameIDService) buildXMLObject(ManageNameIDService.DEFAULT_ELEMENT_NAME);
+        final ManageNameIDService service = (ManageNameIDService) buildXMLObject(ManageNameIDService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

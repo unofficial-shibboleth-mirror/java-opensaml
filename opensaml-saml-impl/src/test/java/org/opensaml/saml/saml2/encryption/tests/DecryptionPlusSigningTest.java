@@ -63,6 +63,7 @@ import org.w3c.dom.Element;
 /**
  *  Tests that decryption of an Assertion does not invalidate the signature of a containing object (Response).
  */
+@SuppressWarnings({"null", "javadoc"})
 public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver keyResolver;
@@ -186,7 +187,7 @@ public class DecryptionPlusSigningTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of EncryptedAssertion: " + e);
         }
         
-        Assert.assertNotNull(decryptedAssertion, "Decrypted Assertion was null");
+        assert decryptedAssertion!=null;
         
         assertXMLEquals(targetDOM, decryptedAssertion);
         

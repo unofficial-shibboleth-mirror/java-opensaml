@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.AuthnContextDeclRef;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextDeclRefImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthnContextDeclRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Declaration Reference value */
@@ -47,9 +48,10 @@ public class AuthnContextDeclRefTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) unmarshallElement(singleElementFile);
+        final AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) unmarshallElement(singleElementFile);
+        assert authnContextDeclRef !=null;
 
-        String declRef = authnContextDeclRef.getURI();
+        final String declRef = authnContextDeclRef.getURI();
         Assert.assertEquals(declRef, expectedDeclRef, "Declartion Reference was " + declRef + ", expected " + expectedDeclRef);
     }
 
@@ -62,8 +64,8 @@ public class AuthnContextDeclRefTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AuthnContextDeclRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AuthnContextDeclRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final AuthnContextDeclRef authnContextDeclRef = (AuthnContextDeclRef) buildXMLObject(qname);
 
         authnContextDeclRef.setURI(expectedDeclRef);
         assertXMLEquals(expectedDOM, authnContextDeclRef);

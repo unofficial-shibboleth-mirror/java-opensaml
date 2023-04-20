@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.SubjectLocality;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.SubjectLocalityImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Address value */
@@ -52,8 +53,9 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
-        String address = subjectLocality.getAddress();
+        final SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementFile);
+        assert subjectLocality !=null;
+        final String address = subjectLocality.getAddress();
 
         Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
 
@@ -62,12 +64,12 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
-
-        String address = subjectLocality.getAddress();
+        final SubjectLocality subjectLocality = (SubjectLocality) unmarshallElement(singleElementOptionalAttributesFile);
+        assert subjectLocality !=null;
+        final String address = subjectLocality.getAddress();
         Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
 
-        String dnsName = subjectLocality.getDNSName();
+        final String dnsName = subjectLocality.getDNSName();
         Assert.assertEquals(dnsName, expectedDNSName, "DNSName was " + dnsName + ", expected " + expectedDNSName);
     }
 
@@ -84,8 +86,8 @@ public class SubjectLocalityTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, SubjectLocality.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        SubjectLocality subjectLocality = (SubjectLocality) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, SubjectLocality.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final SubjectLocality subjectLocality = (SubjectLocality) buildXMLObject(qname);
 
         subjectLocality.setAddress(expectedAddress);
         subjectLocality.setDNSName(expectedDNSName);

@@ -55,6 +55,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Simple tests for SAML 2 decrypter, using a hardcoded key (so not testing complex encrypted key resolution, etc).
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
     
     private KeyInfoCredentialResolver keyResolver;
@@ -110,7 +111,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        assert decryptedTarget != null;
         Assert.assertTrue(decryptedTarget instanceof Assertion, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
@@ -129,9 +130,9 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
         
         final Assertion target = (Assertion) unmarshallElement(filename);
         assert target != null;
-        EncryptedID encryptedTarget = encrypter.encryptAsID(target);
+        final EncryptedID encryptedTarget = encrypter.encryptAsID(target);
         
-        Decrypter decrypter = new Decrypter(keyResolver, null, null);
+        final Decrypter decrypter = new Decrypter(keyResolver, null, null);
         
         SAMLObject decryptedTarget = null;
         try {
@@ -140,7 +141,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        assert decryptedTarget != null;
         Assert.assertTrue(decryptedTarget instanceof Assertion, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
@@ -170,7 +171,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        assert decryptedTarget != null;
         Assert.assertTrue(decryptedTarget instanceof NameID, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
@@ -200,7 +201,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        assert decryptedTarget != null;
         Assert.assertTrue(decryptedTarget instanceof NewID, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);
@@ -230,7 +231,7 @@ public class SimpleDecryptionTest extends XMLObjectBaseTestCase {
             Assert.fail("Error on decryption of encrypted SAML 2 type to element: " + e);
         }
         
-        Assert.assertNotNull(decryptedTarget, "Decrypted target was null");
+        assert decryptedTarget != null;
         Assert.assertTrue(decryptedTarget instanceof Attribute, "Decrypted target was not the expected type");
         
         assertXMLEquals(targetDOM, decryptedTarget);

@@ -32,8 +32,7 @@ import org.opensaml.saml.saml2.core.OneTimeUse;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AudienceRestrictionConditionValidatorTest extends BaseAssertionValidationTest {
     
     private String expectedAudienceURI = "https://sp.example.com";

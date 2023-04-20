@@ -64,6 +64,7 @@ import org.w3c.dom.Document;
 /**
  * Testing the metadata credential resolver.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class MetadataCredentialResolverTest extends XMLObjectBaseTestCase {
     
     private String idpRSAPubKeyName = "IDP-SSO-RSA-Key";

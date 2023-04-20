@@ -52,7 +52,7 @@ import org.testng.annotations.Test;
 import com.google.common.base.Strings;
 
 /** Unit test for self-encryption support in {@link AbstractEncryptAction} (using {@link EncryptNameIDs} as the concrete impl.) */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class TestSelfEncryption extends OpenSAMLInitBaseTestCase {
     
     private EncryptionParameters encParams, encParamsSelf1, encParamsSelf2;

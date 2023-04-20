@@ -44,7 +44,7 @@ import org.testng.annotations.Test;
 
 import net.shibboleth.shared.codec.EncodingException;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionValidationTest {
     
     private HolderOfKeySubjectConfirmationValidator validator;

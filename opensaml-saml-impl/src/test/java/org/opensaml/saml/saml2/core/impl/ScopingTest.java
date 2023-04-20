@@ -35,6 +35,7 @@ import org.opensaml.saml.saml2.core.Scoping;
  *Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.ScopingImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ScopingTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected ProxyCount*/
@@ -62,7 +63,7 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
+        final Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, scoping);
 
@@ -71,7 +72,7 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
+        final Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
         scoping.setProxyCount(Integer.valueOf(expectedProxyCount));
         
@@ -81,12 +82,12 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
+        final Scoping scoping = (Scoping) buildXMLObject(Scoping.DEFAULT_ELEMENT_NAME);
         
-        QName idpListQName = new QName(SAMLConstants.SAML20P_NS, IDPList.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName idpListQName = new QName(SAMLConstants.SAML20P_NS, IDPList.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         scoping.setIDPList((IDPList) buildXMLObject(idpListQName));
         
-        QName requesterIDQName = new QName(SAMLConstants.SAML20P_NS, RequesterID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName requesterIDQName = new QName(SAMLConstants.SAML20P_NS, RequesterID.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         for (int i = 0; i<expectedNumRequestIDs; i++){
             scoping.getRequesterIDs().add((RequesterID) buildXMLObject(requesterIDQName));
         }
@@ -97,8 +98,8 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Scoping scoping = (Scoping) unmarshallElement(singleElementFile);
-        
+        final Scoping scoping = (Scoping) unmarshallElement(singleElementFile);
+        assert scoping!=null;
         Assert.assertNull(scoping.getProxyCount(), "ProxyCount");
         Assert.assertNull(scoping.getIDPList(), "IDPList");
         Assert.assertEquals(scoping.getRequesterIDs().size(), 0 , "RequesterID count");
@@ -108,8 +109,8 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Scoping scoping = (Scoping) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final Scoping scoping = (Scoping) unmarshallElement(singleElementOptionalAttributesFile);
+        assert scoping!=null;
         Assert.assertNotNull(scoping.getProxyCount(), "ProxyCount");
         Assert.assertNull(scoping.getIDPList(), "IDPList");
         Assert.assertEquals(scoping.getRequesterIDs().size(), 0, "RequesterID count");
@@ -118,8 +119,8 @@ public class ScopingTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Scoping scoping = (Scoping) unmarshallElement(childElementsFile);
-        
+        final Scoping scoping = (Scoping) unmarshallElement(childElementsFile);
+        assert scoping!=null;
         Assert.assertNull(scoping.getProxyCount(), "ProxyCount");
         Assert.assertNotNull(scoping.getIDPList(), "IDPList");
         Assert.assertEquals(scoping.getRequesterIDs().size(), expectedNumRequestIDs, "RequesterID count");

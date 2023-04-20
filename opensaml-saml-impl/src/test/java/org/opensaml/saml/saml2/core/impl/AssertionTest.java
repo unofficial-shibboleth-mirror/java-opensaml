@@ -44,6 +44,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AssertionImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AssertionTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Version value */
@@ -84,9 +85,9 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement(singleElementFile);
-
-        Instant notBefore = assertion.getIssueInstant();
+        final Assertion assertion = (Assertion) unmarshallElement(singleElementFile);
+        assert assertion != null;
+        final Instant notBefore = assertion.getIssueInstant();
         Assert.assertEquals(notBefore, expectedIssueInstant,
                 "IssueInstant was " + notBefore + ", expected " + expectedIssueInstant);
     }
@@ -94,13 +95,13 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement(singleElementOptionalAttributesFile);
-
-        Instant issueInstant = assertion.getIssueInstant();
+        final Assertion assertion = (Assertion) unmarshallElement(singleElementOptionalAttributesFile);
+        assert assertion != null;
+        final Instant issueInstant = assertion.getIssueInstant();
         Assert.assertEquals(issueInstant, expectedIssueInstant,
                 "IssueInstant was " + issueInstant + ", expected " + expectedIssueInstant);
 
-        String id = assertion.getID();
+        final String id = assertion.getID();
         Assert.assertEquals(id, expectedID, "ID was " + id + ", expected " + expectedID);
         
         SAMLVersion version = assertion.getVersion();
@@ -110,8 +111,8 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        Assertion assertion = (Assertion) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final Assertion assertion = (Assertion) buildXMLObject(qname);
 
         assertion.setIssueInstant(expectedIssueInstant);
 
@@ -126,7 +127,7 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(Assertion.DEFAULT_ELEMENT_NAME);
 
         ((Assertion)target).setID("id123");
 
@@ -136,8 +137,8 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        Assertion assertion = (Assertion) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final Assertion assertion = (Assertion) buildXMLObject(qname);
 
         assertion.setIssueInstant(expectedIssueInstant);
         assertion.setID(expectedID);
@@ -149,8 +150,8 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Assertion assertion = (Assertion) unmarshallElement(childElementsFile);
-
+        final Assertion assertion = (Assertion) unmarshallElement(childElementsFile);
+        assert assertion != null;
         Assert.assertNotNull(assertion.getIssuer(), "Issuer element not present");
         Assert.assertNotNull(assertion.getSubject(), "Subject element not present");
         Assert.assertNotNull(assertion.getConditions(), "Conditions element not present");
@@ -166,19 +167,19 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        Assertion assertion = (Assertion) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, Assertion.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final Assertion assertion = (Assertion) buildXMLObject(qname);
 
-        QName issuerQName = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName issuerQName = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         assertion.setIssuer((Issuer) buildXMLObject(issuerQName));
         
-        QName subjectQName = new QName(SAMLConstants.SAML20_NS, Subject.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName subjectQName = new QName(SAMLConstants.SAML20_NS, Subject.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         assertion.setSubject((Subject) buildXMLObject(subjectQName));
         
-        QName conditionsQName = new QName(SAMLConstants.SAML20_NS, Conditions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName conditionsQName = new QName(SAMLConstants.SAML20_NS, Conditions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         assertion.setConditions((Conditions) buildXMLObject(conditionsQName));
         
-        QName adviceQName = new QName(SAMLConstants.SAML20_NS, Advice.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName adviceQName = new QName(SAMLConstants.SAML20_NS, Advice.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         assertion.setAdvice((Advice) buildXMLObject(adviceQName));
 
         QName authnStatementQName = new QName(SAMLConstants.SAML20_NS, AuthnStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
@@ -186,12 +187,12 @@ public class AssertionTest extends XMLObjectProviderBaseTestCase {
             assertion.getAuthnStatements().add((AuthnStatement) buildXMLObject(authnStatementQName));
         }
         
-        QName authzDecisionStatementQName = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName authzDecisionStatementQName = new QName(SAMLConstants.SAML20_NS, AuthzDecisionStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         for (int i = 0; i < authzDecisionStatementCount; i++) {
             assertion.getAuthzDecisionStatements().add((AuthzDecisionStatement) buildXMLObject(authzDecisionStatementQName));
         }
         
-        QName attributeStatementQName = new QName(SAMLConstants.SAML20_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName attributeStatementQName = new QName(SAMLConstants.SAML20_NS, AttributeStatement.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         for (int i = 0; i < attributeStatementCount; i++) {
             assertion.getAttributeStatements().add((AttributeStatement) buildXMLObject(attributeStatementQName));
         }

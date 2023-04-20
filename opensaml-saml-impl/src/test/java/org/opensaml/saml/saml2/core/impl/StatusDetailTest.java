@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.core.StatusDetail;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.StatusDetailImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class StatusDetailTest extends XMLObjectProviderBaseTestCase {
 
     /**
@@ -45,7 +46,7 @@ public class StatusDetailTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        StatusDetail statusDetail = (StatusDetail) buildXMLObject(StatusDetail.DEFAULT_ELEMENT_NAME);
+        final StatusDetail statusDetail = (StatusDetail) buildXMLObject(StatusDetail.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, statusDetail);
     }
@@ -53,8 +54,8 @@ public class StatusDetailTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        StatusDetail statusDetail = (StatusDetail) buildXMLObject(StatusDetail.DEFAULT_ELEMENT_NAME);
-        QName childQname = new QName("http://www.example.org/testObjects", "SimpleElement", "test");
+        final StatusDetail statusDetail = (StatusDetail) buildXMLObject(StatusDetail.DEFAULT_ELEMENT_NAME);
+        final QName childQname = new QName("http://www.example.org/testObjects", "SimpleElement", "test");
         
         statusDetail.getUnknownXMLObjects().add(buildXMLObject(childQname));
         statusDetail.getUnknownXMLObjects().add(buildXMLObject(childQname));
@@ -68,7 +69,7 @@ public class StatusDetailTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        StatusDetail statusDetail = (StatusDetail) unmarshallElement(singleElementFile);
+        final StatusDetail statusDetail = (StatusDetail) unmarshallElement(singleElementFile);
         
         Assert.assertNotNull(statusDetail);
     }
@@ -76,9 +77,8 @@ public class StatusDetailTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        StatusDetail statusDetail = (StatusDetail) unmarshallElement(childElementsFile);
-        
-        Assert.assertNotNull(statusDetail);
+        final StatusDetail statusDetail = (StatusDetail) unmarshallElement(childElementsFile);
+        assert statusDetail!=null;
         Assert.assertEquals(statusDetail.getUnknownXMLObjects().size(), 3);
     }
     

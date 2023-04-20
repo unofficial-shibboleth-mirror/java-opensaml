@@ -39,7 +39,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** {@link ResolveArtifact} unit test. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class ResolveArtifactTest extends OpenSAMLInitBaseTestCase {
 
     private BasicSAMLArtifactMap artifactMap;

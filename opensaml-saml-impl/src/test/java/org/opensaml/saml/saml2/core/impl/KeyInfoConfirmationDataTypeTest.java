@@ -36,6 +36,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.KeyInfoConfirmationDataTypeImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected NotBefore value. */
@@ -80,9 +81,9 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementFile);
+        final KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementFile);
         Assert.assertNotNull(kicd, "Object was null");
-        
+        assert kicd !=null;
         Assert.assertEquals(kicd.getSchemaType(), expectedType, "Object xsi:type was not the expected value");
 
     }
@@ -90,23 +91,23 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementOptionalAttributesFile);
-
-        Instant notBefore = kicd.getNotBefore();
+        final KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(singleElementOptionalAttributesFile);
+        assert kicd !=null;
+        final Instant notBefore = kicd.getNotBefore();
         Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
 
-        Instant notOnOrAfter = kicd.getNotOnOrAfter();
+        final Instant notOnOrAfter = kicd.getNotOnOrAfter();
         Assert.assertEquals(notOnOrAfter, expectedNotOnOrAfter,
                 "NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter);
 
-        String recipient = kicd.getRecipient();
+        final String recipient = kicd.getRecipient();
         Assert.assertEquals(recipient, expectedRecipient, "Recipient was " + recipient + ", expected " + expectedRecipient);
 
-        String inResponseTo = kicd.getInResponseTo();
+        final String inResponseTo = kicd.getInResponseTo();
         Assert.assertEquals(inResponseTo, expectedInResponseTo,
                 "InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo);
 
-        String address = kicd.getAddress();
+        final String address = kicd.getAddress();
         Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
         
         Assert.assertEquals(kicd.getSchemaType(), expectedType, "Object xsi:type was not the expected value");
@@ -115,7 +116,7 @@ public class KeyInfoConfirmationDataTypeTest extends XMLObjectProviderBaseTestCa
     @Test
     public void testChildElementsUnmarshall() {
         KeyInfoConfirmationDataType kicd = (KeyInfoConfirmationDataType) unmarshallElement(childElementsFile);
-        
+        assert kicd !=null;
         Assert.assertEquals(kicd.getKeyInfos().size(), 3, "Unexpected number of KeyInfo children");
         Assert.assertEquals(kicd.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME).size(), 3, "Unexpected number of KeyInfo children");
     }

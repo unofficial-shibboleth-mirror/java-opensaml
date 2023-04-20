@@ -36,6 +36,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AssertionIDRequestTest extends RequestTestBase {
     
     private int expectedNumAssertionIDRefs;
@@ -78,7 +79,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(AssertionIDRequest.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(AssertionIDRequest.DEFAULT_ELEMENT_NAME);
 
         ((AssertionIDRequest)target).setID("id123");
 
@@ -88,8 +89,8 @@ public class AssertionIDRequestTest extends RequestTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, AssertionIDRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        AssertionIDRequest req = (AssertionIDRequest) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, AssertionIDRequest.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final AssertionIDRequest req = (AssertionIDRequest) buildXMLObject(qname);
         
         super.populateRequiredAttributes(req);
         super.populateOptionalAttributes(req);
@@ -101,8 +102,9 @@ public class AssertionIDRequestTest extends RequestTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        AssertionIDRequestBuilder builder = (AssertionIDRequestBuilder) builderFactory.getBuilder(AssertionIDRequest.DEFAULT_ELEMENT_NAME);
-        AssertionIDRequest req = builder.buildObject();
+        final AssertionIDRequestBuilder builder = (AssertionIDRequestBuilder) builderFactory.getBuilder(AssertionIDRequest.DEFAULT_ELEMENT_NAME);
+        assert builder!= null;
+        final AssertionIDRequest req = builder.buildObject();
         
         super.populateChildElements(req);
         
@@ -116,7 +118,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(singleElementFile);
+        final AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(singleElementFile);
         
         super.helperTestSingleElementUnmarshall(req);
     }
@@ -124,7 +126,7 @@ public class AssertionIDRequestTest extends RequestTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(singleElementOptionalAttributesFile);
+        final AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(singleElementOptionalAttributesFile);
         
         super.helperTestSingleElementOptionalAttributesUnmarshall(req);
     }
@@ -132,8 +134,8 @@ public class AssertionIDRequestTest extends RequestTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(childElementsFile);
-        
+        final AssertionIDRequest req = (AssertionIDRequest) unmarshallElement(childElementsFile);
+        assert req != null;       
         super.helperTestChildElementsUnmarshall(req);
         Assert.assertEquals(req.getAssertionIDRefs().size(), expectedNumAssertionIDRefs, "AssertionIDRef count");
     }

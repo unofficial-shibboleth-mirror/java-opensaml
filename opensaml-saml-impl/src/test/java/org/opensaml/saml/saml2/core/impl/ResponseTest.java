@@ -39,6 +39,7 @@ import net.shibboleth.shared.xml.XMLParserException;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.ResponseImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ResponseTest extends StatusResponseTestBase {
     
     /** Expected number of Assertion child elements. */
@@ -69,9 +70,9 @@ public class ResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = 
+        final QName qname = 
             new QName(SAMLConstants.SAML20P_NS, Response.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        Response resp = (Response) buildXMLObject(qname);
+        final Response resp = (Response) buildXMLObject(qname);
         
         super.populateRequiredAttributes(resp);
         
@@ -86,7 +87,7 @@ public class ResponseTest extends StatusResponseTestBase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
 
         ((Response)target).setID("id123");
 
@@ -96,9 +97,9 @@ public class ResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = 
+        final QName qname = 
             new QName(SAMLConstants.SAML20P_NS, Response.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        Response resp = (Response) buildXMLObject(qname);
+        final Response resp = (Response) buildXMLObject(qname);
         
         super.populateRequiredAttributes(resp);
         super.populateOptionalAttributes(resp);
@@ -109,7 +110,7 @@ public class ResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Response resp = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
+        final Response resp = (Response) buildXMLObject(Response.DEFAULT_ELEMENT_NAME);
         
         super.populateChildElements(resp);
         
@@ -125,7 +126,7 @@ public class ResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Response resp = (Response) unmarshallElement(singleElementFile);
+        final Response resp = (Response) unmarshallElement(singleElementFile);
         
         Assert.assertNotNull(resp, "Response was null");
         super.helperTestSingleElementUnmarshall(resp);
@@ -134,7 +135,7 @@ public class ResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        Response resp = (Response) unmarshallElement(singleElementOptionalAttributesFile);
+        final Response resp = (Response) unmarshallElement(singleElementOptionalAttributesFile);
         
         Assert.assertNotNull(resp, "Response was null");
         super.helperTestSingleElementOptionalAttributesUnmarshall(resp);
@@ -143,8 +144,8 @@ public class ResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Response resp = (Response) unmarshallElement(childElementsFile);
-        
+        final Response resp = (Response) unmarshallElement(childElementsFile);
+        assert resp!=null;
         Assert.assertEquals(resp.getAssertions().size(), expectedNumAssertions, "Assertion count");
         Assert.assertEquals(resp.getEncryptedAssertions().size(), expectedNumEncryptedAssertions, "EncryptedAssertion count");
         super.helperTestChildElementsUnmarshall(resp);

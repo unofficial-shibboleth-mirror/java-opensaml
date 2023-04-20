@@ -27,6 +27,7 @@ import org.testng.annotations.Test;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AdditionalMetadataLocationImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected value of namespace attribute */
@@ -51,19 +52,20 @@ public class AdditionalMetadataLocationTest extends XMLObjectProviderBaseTestCas
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AdditionalMetadataLocation locationObj = (AdditionalMetadataLocation) unmarshallElement(singleElementFile);
+        final AdditionalMetadataLocation locationObj = (AdditionalMetadataLocation) unmarshallElement(singleElementFile);
+        assert locationObj!=null;
 
-        String location = locationObj.getURI();
+        final String location = locationObj.getURI();
         Assert.assertEquals(location, expectedContent, "Location URI was " + location + ", expected " + expectedContent);
 
-        String namespace = locationObj.getNamespaceURI();
+        final String namespace = locationObj.getNamespaceURI();
         Assert.assertEquals(namespace, expectedNamespace, "Namepsace URI was " + namespace + ", expected " + expectedNamespace);
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AdditionalMetadataLocation location = (new AdditionalMetadataLocationBuilder()).buildObject(); 
+        final AdditionalMetadataLocation location = (new AdditionalMetadataLocationBuilder()).buildObject(); 
         location.setURI(expectedContent);
         location.setNamespaceURI(expectedNamespace);
 

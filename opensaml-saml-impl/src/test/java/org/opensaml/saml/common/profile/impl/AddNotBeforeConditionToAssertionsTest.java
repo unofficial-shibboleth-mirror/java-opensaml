@@ -36,6 +36,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddNotBeforeConditionToAssertions} unit test. */
+@SuppressWarnings({"null", "javadoc"})
 public class AddNotBeforeConditionToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;

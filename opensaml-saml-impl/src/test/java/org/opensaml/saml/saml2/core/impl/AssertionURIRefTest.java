@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.AssertionURIRef;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AssertionURIRefImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Assertion URI value */
@@ -48,7 +49,7 @@ public class AssertionURIRefTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         AssertionURIRef assertionURIRef = (AssertionURIRef) unmarshallElement(singleElementFile);
-
+        assert assertionURIRef!=null;
         String assertionURI = assertionURIRef.getURI();
         Assert.assertEquals(assertionURI, expectedAssertionURI,
                 "AssertionURI was " + assertionURI + ", expected " + expectedAssertionURI);

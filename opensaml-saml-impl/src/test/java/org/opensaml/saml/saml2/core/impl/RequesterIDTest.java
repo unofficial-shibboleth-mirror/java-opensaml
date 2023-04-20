@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.core.RequesterID;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.RequesterIDImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content*/
@@ -52,15 +53,15 @@ public class RequesterIDTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        RequesterID reqID = (RequesterID) unmarshallElement(singleElementFile);
-        
+       final RequesterID reqID = (RequesterID) unmarshallElement(singleElementFile);
+       assert reqID!=null; 
        Assert.assertEquals(reqID.getURI(), expectedRequesterID, "Unmarshalled requester ID was not the expected value"); 
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        RequesterID reqID = (RequesterID) buildXMLObject(RequesterID.DEFAULT_ELEMENT_NAME);
+        final RequesterID reqID = (RequesterID) buildXMLObject(RequesterID.DEFAULT_ELEMENT_NAME);
 
         reqID.setURI(expectedRequesterID);
         

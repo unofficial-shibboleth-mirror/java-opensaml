@@ -41,6 +41,7 @@ import net.shibboleth.shared.xml.XMLParserException;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.EntitiesDescriptorImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name attribute value */
@@ -83,15 +84,15 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EntitiesDescriptor entitiesDescriptorObj = (EntitiesDescriptor) unmarshallElement(singleElementFile);
-
-        String name = entitiesDescriptorObj.getName();
+        final EntitiesDescriptor entitiesDescriptorObj = (EntitiesDescriptor) unmarshallElement(singleElementFile);
+        assert entitiesDescriptorObj!=null;
+        final String name = entitiesDescriptorObj.getName();
         Assert.assertNull(name, "Name attribute has a value of " + name + ", expected no value");
 
-        Duration duration = entitiesDescriptorObj.getCacheDuration();
+        final Duration duration = entitiesDescriptorObj.getCacheDuration();
         Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
-        Instant validUntil = entitiesDescriptorObj.getValidUntil();
+        final Instant validUntil = entitiesDescriptorObj.getValidUntil();
         Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
         Assert.assertTrue(entitiesDescriptorObj.isValid());
     }
@@ -99,20 +100,20 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        EntitiesDescriptor entitiesDescriptorObj = (EntitiesDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
-
-        String name = entitiesDescriptorObj.getName();
+        final EntitiesDescriptor entitiesDescriptorObj = (EntitiesDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
+        assert entitiesDescriptorObj!=null;
+        final String name = entitiesDescriptorObj.getName();
         Assert.assertEquals(name, expectedName,
                 "Name attribute has a value of " + name + ", expected a value of " + expectedName);
 
-        String id = entitiesDescriptorObj.getID();
+        final String id = entitiesDescriptorObj.getID();
         Assert.assertEquals(id, expectedID, "ID attriubte has a value of " + id + ", expected a value of " + expectedID);
 
-        Duration duration = entitiesDescriptorObj.getCacheDuration();
+        final Duration duration = entitiesDescriptorObj.getCacheDuration();
         Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration + ", expected a value of "
                         + expectedCacheDuration);
 
-        Instant validUntil = entitiesDescriptorObj.getValidUntil();
+        final Instant validUntil = entitiesDescriptorObj.getValidUntil();
         Assert.assertEquals(expectedValidUntil
                 .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
         Assert.assertFalse(entitiesDescriptorObj.isValid());
@@ -121,8 +122,8 @@ public class EntitiesDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) unmarshallElement(childElementsFile);
-
+        final EntitiesDescriptor entitiesDescriptor = (EntitiesDescriptor) unmarshallElement(childElementsFile);
+        assert entitiesDescriptor!=null;
         Assert.assertNotNull(entitiesDescriptor.getSignature(), "Signature");
         Assert.assertNotNull(entitiesDescriptor.getExtensions(), "Extensions");
         Assert.assertEquals(entitiesDescriptor

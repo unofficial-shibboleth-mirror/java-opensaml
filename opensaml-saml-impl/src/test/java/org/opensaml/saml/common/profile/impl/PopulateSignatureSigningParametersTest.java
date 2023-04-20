@@ -42,7 +42,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** Unit test for {@link PopulateSignatureSigningParameters}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class PopulateSignatureSigningParametersTest extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;

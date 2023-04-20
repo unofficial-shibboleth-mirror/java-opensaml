@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AttributeAuthorityDescriptorImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeAuthorityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /**
@@ -47,7 +48,7 @@ public class AttributeAuthorityDescriptorTest extends XMLObjectProviderBaseTestC
     @Test
     public void testSingleElementUnmarshall() {
         AttributeAuthorityDescriptor descriptor = (AttributeAuthorityDescriptor) unmarshallElement(singleElementFile);
-
+        assert descriptor!=null;
         Assert.assertEquals(descriptor.getAttributeServices().size(), 0);
         Assert.assertEquals(descriptor.getAssertionIDRequestServices().size(), 0);
         Assert.assertEquals(descriptor.getNameIDFormats().size(), 0);
@@ -60,7 +61,7 @@ public class AttributeAuthorityDescriptorTest extends XMLObjectProviderBaseTestC
     @Test
     public void testChildElementsUnmarshall() {
         AttributeAuthorityDescriptor descriptor = (AttributeAuthorityDescriptor) unmarshallElement(childElementsFile);
-
+        assert descriptor!=null;
         Assert.assertEquals(descriptor.getAttributeServices().size(), 1);
         Assert.assertEquals(descriptor.getAssertionIDRequestServices().size(), 2);
         Assert.assertEquals(descriptor.getNameIDFormats().size(), 1);

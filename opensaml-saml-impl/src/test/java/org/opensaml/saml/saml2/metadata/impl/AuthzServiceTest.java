@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.AuthzService;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AuthzServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthzServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -55,7 +56,7 @@ public class AuthzServiceTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         AuthzService service = (AuthzService) unmarshallElement(singleElementFile);
-        
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
@@ -64,7 +65,7 @@ public class AuthzServiceTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthzService service = (AuthzService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;

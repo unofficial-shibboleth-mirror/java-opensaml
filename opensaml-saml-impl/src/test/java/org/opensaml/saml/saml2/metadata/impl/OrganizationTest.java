@@ -37,6 +37,7 @@ import org.testng.annotations.Test;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class OrganizationTest extends XMLObjectProviderBaseTestCase {
 
     /** Unknown Attributes */
@@ -57,14 +58,16 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnmarshall() {
-        Organization org = (Organization) unmarshallElement(singleElementFile);
+        final Organization org = (Organization) unmarshallElement(singleElementFile);
+        assert org!=null;
         Assert.assertEquals(org.getDisplayNames().size(), 0, "Display names");
     }
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnknownAttributesUnmarshall() {
-        Organization org = (Organization) unmarshallElement(singleElementUnknownAttributesFile);
-        AttributeMap attributes = org.getUnknownAttributes();
+        final Organization org = (Organization) unmarshallElement(singleElementUnknownAttributesFile);
+        assert org!=null;
+        final AttributeMap attributes = org.getUnknownAttributes();
 
         Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
         for (int i = 0; i < unknownAttributeNames.length; i++) {
@@ -74,8 +77,8 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testChildElementsUnmarshall() {
-        Organization org = (Organization) unmarshallElement(childElementsFile);
-
+        final Organization org = (Organization) unmarshallElement(childElementsFile);
+        assert org!=null;
         Assert.assertNotNull(org.getExtensions(), "Extensions");
         Assert.assertEquals(org.getOrganizationNames().size(), 3, "OrganizationName count");
         Assert.assertEquals(org.getDisplayNames().size(), 2, "DisplayNames count");
@@ -84,13 +87,13 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementMarshall() {
-        Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
+        final Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 
         assertXMLEquals(expectedDOM, org);
     }
 
     @Test public void testSingleElementUnknownAttributesMarshall() {
-        Organization org = (new OrganizationBuilder()).buildObject();
+        final Organization org = (new OrganizationBuilder()).buildObject();
 
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             org.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
@@ -102,9 +105,9 @@ public class OrganizationTest extends XMLObjectProviderBaseTestCase {
      * {@inheritDoc}
      */
     @Test public void testChildElementsMarshall() {
-        Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
+        final Organization org = (Organization) buildXMLObject(Organization.DEFAULT_ELEMENT_NAME);
 
-        QName extensionsQName =
+        final QName extensionsQName =
                 new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         org.setExtensions((Extensions) buildXMLObject(extensionsQName));
 

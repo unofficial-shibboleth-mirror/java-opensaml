@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.EmailAddress;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.EmailAddressImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected email address */
@@ -50,8 +51,8 @@ public class EmailAddressTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EmailAddress address = (EmailAddress) unmarshallElement(singleElementFile);
-        
+        final EmailAddress address = (EmailAddress) unmarshallElement(singleElementFile);
+        assert address!=null;
         Assert.assertEquals(address.getURI(), expectedAddress, "Email address was not expected value");
     }
 

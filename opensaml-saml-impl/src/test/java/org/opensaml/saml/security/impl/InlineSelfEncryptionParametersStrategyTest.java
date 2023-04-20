@@ -48,7 +48,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class InlineSelfEncryptionParametersStrategyTest extends OpenSAMLInitBaseTestCase {
     
     private Credential cred1, cred2;

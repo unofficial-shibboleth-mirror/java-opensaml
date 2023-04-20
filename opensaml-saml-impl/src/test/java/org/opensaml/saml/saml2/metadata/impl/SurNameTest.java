@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.SurName;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.SurName}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SurNameTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected description */
@@ -50,15 +51,15 @@ public class SurNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SurName name = (SurName) unmarshallElement(singleElementFile);
-        
+        final SurName name = (SurName) unmarshallElement(singleElementFile);
+        assert name!=null;
         Assert.assertEquals(name.getValue(), expectedName, "Name was not expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SurName name = (new SurNameBuilder()).buildObject();
+        final SurName name = (new SurNameBuilder()).buildObject();
         
         name.setValue(expectedName);
 

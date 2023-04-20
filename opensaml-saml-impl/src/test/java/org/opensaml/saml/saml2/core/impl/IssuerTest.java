@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.Issuer;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.IssuerImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class IssuerTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Issuer value */
@@ -47,9 +48,9 @@ public class IssuerTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Issuer issuer = (Issuer) unmarshallElement(singleElementFile);
-
-        String issuername = issuer.getValue();
+        final Issuer issuer = (Issuer) unmarshallElement(singleElementFile);
+        assert issuer !=null;
+        final String issuername = issuer.getValue();
         Assert.assertEquals(issuername, expectedIssuer, "Issuer was " + issuername + ", expected " + expectedIssuer);
     }
 
@@ -62,8 +63,8 @@ public class IssuerTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        Issuer issuer = (Issuer) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final Issuer issuer = (Issuer) buildXMLObject(qname);
 
         issuer.setValue(expectedIssuer);
         assertXMLEquals(expectedDOM, issuer);

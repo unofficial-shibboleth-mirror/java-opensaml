@@ -54,6 +54,7 @@ import com.google.common.base.Strings;
  * Tests for encryption using single and multicast key encryption keys, 
  * and peer vs. inline key placement.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ComplexEncryptionTest extends XMLObjectBaseTestCase {
     
     private Encrypter encrypter;

@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.AuthnQueryService;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AuthnQueryServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -54,8 +55,8 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AuthnQueryService service = (AuthnQueryService) unmarshallElement(singleElementFile);
-        
+        final AuthnQueryService service = (AuthnQueryService) unmarshallElement(singleElementFile);
+        assert service!=null;        
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
@@ -63,8 +64,8 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthnQueryService service = (AuthnQueryService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final AuthnQueryService service = (AuthnQueryService) unmarshallElement(singleElementOptionalAttributesFile);
+        assert service!=null;        
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
@@ -73,7 +74,7 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AuthnQueryService service = (new AuthnQueryServiceBuilder()).buildObject();
+        final AuthnQueryService service = (new AuthnQueryServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -84,7 +85,7 @@ public class AuthnQueryServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        AuthnQueryService service = (AuthnQueryService) buildXMLObject(AuthnQueryService.DEFAULT_ELEMENT_NAME);
+        final AuthnQueryService service = (AuthnQueryService) buildXMLObject(AuthnQueryService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

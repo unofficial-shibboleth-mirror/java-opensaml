@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.core.AuthenticatingAuthority;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.AuthenticatingAuthorityImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthenticatingAuthorityTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected URI value */
@@ -48,9 +49,9 @@ public class AuthenticatingAuthorityTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) unmarshallElement(singleElementFile);
-
-        String assertionURI = authenticatingAuthority.getURI();
+        final AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) unmarshallElement(singleElementFile);
+        assert authenticatingAuthority !=null;
+        final String assertionURI = authenticatingAuthority.getURI();
         Assert.assertEquals(assertionURI, expectedURI, "URI was " + assertionURI + ", expected " + expectedURI);
     }
 
@@ -63,9 +64,9 @@ public class AuthenticatingAuthorityTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AuthenticatingAuthority.DEFAULT_ELEMENT_LOCAL_NAME,
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AuthenticatingAuthority.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
-        AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) buildXMLObject(qname);
+        final AuthenticatingAuthority authenticatingAuthority = (AuthenticatingAuthority) buildXMLObject(qname);
 
         authenticatingAuthority.setURI(expectedURI);
         assertXMLEquals(expectedDOM, authenticatingAuthority);

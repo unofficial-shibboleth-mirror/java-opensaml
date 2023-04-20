@@ -33,6 +33,7 @@ import org.opensaml.saml.saml2.metadata.OrganizationName;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class OrganizationNameTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name. */
@@ -57,8 +58,8 @@ public class OrganizationNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        OrganizationName name = (OrganizationName) unmarshallElement(singleElementFile);
-        
+        final OrganizationName name = (OrganizationName) unmarshallElement(singleElementFile);
+        assert name!=null;
         Assert.assertEquals(name.getValue(), expectValue, "Name was not expected value");
         Assert.assertEquals(name.getXMLLang(), expectLang, "xml:lang was not expected value");
         name.hashCode();
@@ -67,9 +68,9 @@ public class OrganizationNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, OrganizationName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        OrganizationName name = (OrganizationName) buildXMLObject(qname);
-        
+        final QName qname = new QName(SAMLConstants.SAML20MD_NS, OrganizationName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final OrganizationName name = (OrganizationName) buildXMLObject(qname);
+        assert name!=null;        
         name.setValue(expectValue);
         name.setXMLLang(expectLang);
         assertXMLEquals(expectedDOM, name);

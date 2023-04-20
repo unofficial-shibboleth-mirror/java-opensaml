@@ -55,7 +55,7 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SAMLMetadataSignatureSigningParametersResolverTest extends XMLObjectBaseTestCase {
     
     private SAMLMetadataSignatureSigningParametersResolver resolver;

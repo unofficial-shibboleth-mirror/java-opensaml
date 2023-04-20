@@ -40,6 +40,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** {@link AddNotOnOrAfterConditionToAssertions} unit test. */
+@SuppressWarnings({"null", "javadoc"})
 public class AddNotOnOrAfterConditionToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;

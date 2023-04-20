@@ -35,6 +35,7 @@ import org.opensaml.saml.saml2.core.RequestAbstractType;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
 
     /** Expected ID value */
@@ -71,7 +72,7 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
         expectedDestination = "http://idp.example.org/endpoint";
         expectedConsent = "urn:string:consent";
 
-        QName issuerQName = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME,
+        final QName issuerQName = new QName(SAMLConstants.SAML20_NS, Issuer.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
         expectedIssuer = (Issuer) buildXMLObject(issuerQName);
     }
@@ -124,11 +125,13 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     }
 
     protected void helperTestSingleElementUnmarshall(SAMLObject samlObject) {
-        RequestAbstractType req = (RequestAbstractType) samlObject;
+        final RequestAbstractType req = (RequestAbstractType) samlObject;
+        assert req!=null; 
 
         Assert.assertEquals(req.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
-        Assert.assertEquals(req
-                .getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        final SAMLVersion ver = req.getVersion();
+        assert ver!=null;
+        Assert.assertEquals(ver.toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
         Assert.assertEquals(expectedIssueInstant
                 .compareTo(req.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
 
@@ -138,11 +141,12 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     }
 
     protected void helperTestSingleElementOptionalAttributesUnmarshall(SAMLObject samlObject) {
-        RequestAbstractType req = (RequestAbstractType) samlObject;
+        final RequestAbstractType req = (RequestAbstractType) samlObject;
 
         Assert.assertEquals(req.getID(), expectedID, "Unmarshalled ID attribute was not the expected value");
-        Assert.assertEquals(req
-                .getVersion().toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
+        final SAMLVersion ver = req.getVersion();
+        assert ver!=null;
+        Assert.assertEquals(ver.toString(), expectedSAMLVersion.toString(), "Unmarshalled Version attribute was not the expected value");
         Assert.assertEquals(expectedIssueInstant
                 .compareTo(req.getIssueInstant()), 0, "Unmarshalled IssueInstant attribute was not the expected value");
 
@@ -153,7 +157,7 @@ public abstract class RequestTestBase extends XMLObjectProviderBaseTestCase {
     }
 
     protected void helperTestChildElementsUnmarshall(SAMLObject samlObject) {
-        RequestAbstractType req = (RequestAbstractType) samlObject;
+        final RequestAbstractType req = (RequestAbstractType) samlObject;
 
         Assert.assertNotNull(req.getIssuer(), "Issuer was null");
 

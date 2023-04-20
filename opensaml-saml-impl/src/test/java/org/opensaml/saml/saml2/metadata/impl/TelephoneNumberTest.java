@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.TelephoneNumber;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.TelephoneNumber}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected telephone number */
@@ -50,15 +51,15 @@ public class TelephoneNumberTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        TelephoneNumber number = (TelephoneNumber) unmarshallElement(singleElementFile);
-        
+        final TelephoneNumber number = (TelephoneNumber) unmarshallElement(singleElementFile);
+        assert number!=null;
         Assert.assertEquals(number.getValue(), expectedNumber, "Telephone number was not expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        TelephoneNumber number = (new TelephoneNumberBuilder()).buildObject();
+        final TelephoneNumber number = (new TelephoneNumberBuilder()).buildObject();
         
         number.setValue(expectedNumber);
 

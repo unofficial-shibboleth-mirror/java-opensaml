@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.Evidence;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.EvidenceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class EvidenceTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of AssertionIDRef subelements. */
@@ -61,8 +62,8 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Evidence evidence = (Evidence) unmarshallElement(childElementsFile);
-
+        final Evidence evidence = (Evidence) unmarshallElement(childElementsFile);
+        assert evidence!=null;
         Assert.assertEquals(evidence.getAssertionIDReferences()
                 .size(), assertionIDRefCount, "AssertionIDRef count not as expected");
         Assert.assertEquals(evidence
@@ -83,7 +84,7 @@ public class EvidenceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Evidence evidence = (Evidence) buildXMLObject(Evidence.DEFAULT_ELEMENT_NAME);
+        final Evidence evidence = (Evidence) buildXMLObject(Evidence.DEFAULT_ELEMENT_NAME);
         
         evidence.getAssertionIDReferences()
             .add((AssertionIDRef) buildXMLObject(AssertionIDRef.DEFAULT_ELEMENT_NAME));

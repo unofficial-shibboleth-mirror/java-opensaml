@@ -20,15 +20,16 @@
  */
 package org.opensaml.saml.saml2.core.impl;
 
-import org.testng.annotations.Test;
-import org.testng.annotations.BeforeMethod;
-import org.testng.Assert;
 import org.opensaml.core.testing.XMLObjectProviderBaseTestCase;
 import org.opensaml.saml.saml2.core.SessionIndex;
+import org.testng.Assert;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Test;
 
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SessionIndexTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content */
@@ -53,15 +54,15 @@ public class SessionIndexTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SessionIndex si = (SessionIndex) unmarshallElement(singleElementFile);
-        
+        final SessionIndex si = (SessionIndex) unmarshallElement(singleElementFile);
+        assert si !=null;
         Assert.assertEquals(si.getValue(), expectedSessionIndex, "The unmarshalled session index as not the expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SessionIndex si = (SessionIndex) buildXMLObject(SessionIndex.DEFAULT_ELEMENT_NAME);
+        final SessionIndex si = (SessionIndex) buildXMLObject(SessionIndex.DEFAULT_ELEMENT_NAME);
         
         si.setValue(expectedSessionIndex);
         

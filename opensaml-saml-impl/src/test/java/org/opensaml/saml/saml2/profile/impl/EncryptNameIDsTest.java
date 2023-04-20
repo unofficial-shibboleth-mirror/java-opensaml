@@ -49,7 +49,7 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link EncryptNameIDs}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class EncryptNameIDsTest extends OpenSAMLInitBaseTestCase {
     
     private EncryptionParameters encParams;

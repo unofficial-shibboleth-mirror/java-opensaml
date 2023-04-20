@@ -29,6 +29,7 @@ import net.shibboleth.shared.logic.Constraint;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class MockAssertionValidationContextBuilder implements Function<AssertionValidationInput, ValidationContext> {
     
     private Map<String,Object> staticParams;

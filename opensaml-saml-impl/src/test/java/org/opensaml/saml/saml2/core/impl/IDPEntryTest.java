@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.core.IDPEntry;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.IDPEntryImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected ProviderID */
@@ -61,7 +62,7 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
+        final IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
         
         entry.setProviderID(expectedProviderID);
 
@@ -71,7 +72,7 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
+        final IDPEntry entry = (IDPEntry) buildXMLObject(IDPEntry.DEFAULT_ELEMENT_NAME);
         
         entry.setProviderID(expectedProviderID);
         entry.setName(expectedName);
@@ -84,8 +85,8 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        IDPEntry entry = (IDPEntry) unmarshallElement(singleElementFile);
-        
+        final IDPEntry entry = (IDPEntry) unmarshallElement(singleElementFile);
+        assert entry!=null;
         Assert.assertEquals(entry.getProviderID(), expectedProviderID, "The unmarshalled ProviderID attribute was not the expected value");
 
     }
@@ -94,8 +95,8 @@ public class IDPEntryTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        IDPEntry entry = (IDPEntry) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final IDPEntry entry = (IDPEntry) unmarshallElement(singleElementOptionalAttributesFile);
+        assert entry!=null;
         Assert.assertEquals(entry.getName(), expectedName, "The unmarshalled Name attribute was not the expected value");
         Assert.assertEquals(entry.getLoc(), expectedLocation, "The unmarshalled Loc (location) attribute was not the expected value");
     }

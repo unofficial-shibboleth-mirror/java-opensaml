@@ -26,7 +26,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SenderVouchesSubjectConfirmationValidatorTest extends BaseAssertionValidationTest {
 
     private SenderVouchersSubjectConfirmationValidator validator;

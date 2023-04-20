@@ -52,7 +52,7 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link EncryptAttributes}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class EncryptAttributesTest extends OpenSAMLInitBaseTestCase {
     
     private SAMLObjectBuilder<Attribute> builder;

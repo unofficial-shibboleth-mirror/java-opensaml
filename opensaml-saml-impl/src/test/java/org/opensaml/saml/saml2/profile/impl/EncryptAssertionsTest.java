@@ -47,7 +47,7 @@ import com.google.common.base.Strings;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** Unit test for {@link EncryptAssertions}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class EncryptAssertionsTest extends OpenSAMLInitBaseTestCase {
     
     private EncryptionParameters encParams;

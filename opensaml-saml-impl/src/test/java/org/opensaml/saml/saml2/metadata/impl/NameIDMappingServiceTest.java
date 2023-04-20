@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.NameIDMappingService;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.NameIDMappingServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -54,8 +55,8 @@ public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        NameIDMappingService service = (NameIDMappingService) unmarshallElement(singleElementFile);
-        
+        final NameIDMappingService service = (NameIDMappingService) unmarshallElement(singleElementFile);
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
@@ -63,8 +64,8 @@ public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        NameIDMappingService service = (NameIDMappingService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final NameIDMappingService service = (NameIDMappingService) unmarshallElement(singleElementOptionalAttributesFile);
+        assert service!=null;        
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
@@ -73,7 +74,7 @@ public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        NameIDMappingService service = (new NameIDMappingServiceBuilder()).buildObject();
+        final NameIDMappingService service = (new NameIDMappingServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -84,7 +85,7 @@ public class NameIDMappingServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        NameIDMappingService service = (NameIDMappingService) buildXMLObject(NameIDMappingService.DEFAULT_ELEMENT_NAME);
+        final NameIDMappingService service = (NameIDMappingService) buildXMLObject(NameIDMappingService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

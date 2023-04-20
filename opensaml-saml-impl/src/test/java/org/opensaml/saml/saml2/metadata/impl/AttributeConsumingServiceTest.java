@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.metadata.ServiceName;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AssertionConsumerServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected int expectedIndex;
@@ -62,7 +63,7 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     @Test
     public void testSingleElementUnmarshall() {
         AttributeConsumingService service = (AttributeConsumingService) unmarshallElement(singleElementFile);
-        
+        assert service!=null;
         Assert.assertEquals(service.getIndex(), expectedIndex, "Index was not expected value");
     }
 
@@ -70,7 +71,7 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AttributeConsumingService service = (AttributeConsumingService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        assert service!=null;
         Assert.assertEquals(service.getIndex(), expectedIndex, "Index was not expected value");
         Assert.assertEquals(service.isDefaultXSBoolean(), expectedIsDefault, "isDefault was not expected value");
     }
@@ -80,7 +81,7 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
     @Test
     public void testChildElementsUnmarshall(){
         AttributeConsumingService service = (AttributeConsumingService) unmarshallElement(childElementsFile);
-        
+        assert service!=null;
         Assert.assertEquals(service.getNames().size(), expectedServiceNameCount, "<ServiceName> count");
         Assert.assertEquals(service.getDescriptions().size(), expectedServiceDecsriptionCount, "<ServiceDescription> count");
         Assert.assertEquals(service.getRequestedAttributes().size(), expectedRequestedAttributeCount, "<ReqestAttribute> count");
@@ -144,14 +145,18 @@ public class AttributeConsumingServiceTest extends XMLObjectProviderBaseTestCase
         Assert.assertNotNull(acs.isDefaultXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(acs.isDefaultXSBoolean(), new XSBooleanValue(Boolean.TRUE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(acs.isDefaultXSBoolean().toString(), "true", "XSBooleanValue string was unexpected value");
+        XSBooleanValue bool = acs.isDefaultXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "true", "XSBooleanValue string was unexpected value");
         
         acs.setIsDefault(Boolean.FALSE);
         Assert.assertEquals(acs.isDefault(), Boolean.FALSE, "Unexpected value for boolean attribute found");
         Assert.assertNotNull(acs.isDefaultXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(acs.isDefaultXSBoolean(), new XSBooleanValue(Boolean.FALSE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(acs.isDefaultXSBoolean().toString(), "false", "XSBooleanValue string was unexpected value");
+        bool = acs.isDefaultXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "false", "XSBooleanValue string was unexpected value");
         
         acs.setIsDefault((Boolean) null);
         Assert.assertEquals(acs.isDefault(), Boolean.FALSE, "Unexpected default value for boolean attribute found");

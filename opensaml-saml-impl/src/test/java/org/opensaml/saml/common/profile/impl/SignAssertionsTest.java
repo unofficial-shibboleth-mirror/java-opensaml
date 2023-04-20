@@ -37,7 +37,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link SignAssertions} unit test. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class SignAssertionsTest extends OpenSAMLInitBaseTestCase {
 
     private SignAssertions action;

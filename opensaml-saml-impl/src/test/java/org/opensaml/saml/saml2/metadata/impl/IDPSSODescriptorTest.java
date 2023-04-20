@@ -49,6 +49,7 @@ import org.testng.annotations.Test;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** List of expected supported protocols */
@@ -98,15 +99,15 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     @Test public void testSingleElementUnmarshall() {
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementFile);
-
+        final IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementFile);
+        assert descriptor!=null;
         Assert.assertEquals(descriptor.getSupportedProtocols(), expectedSupportedProtocol,
                 "Supported protocols not equal to expected value");
     }
 
     @Test public void testSingleElementOptionalAttributesUnmarshall() {
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementOptionalAttributesFile);
-
+        final IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementOptionalAttributesFile);
+        assert descriptor!=null;
         Assert.assertEquals(descriptor.getCacheDuration(), expectedCacheDuration,
                 "Cache duration was not expected value");
         Assert.assertEquals(descriptor.getValidUntil(), expectedValidUntil, "ValidUntil was not expected value");
@@ -115,7 +116,7 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     @Test public void testSingleElementUnknownAttributesMarshall() {
-        IDPSSODescriptor descriptor = (new IDPSSODescriptorBuilder()).buildObject();
+        final IDPSSODescriptor descriptor = (new IDPSSODescriptorBuilder()).buildObject();
 
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             descriptor.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
@@ -125,9 +126,10 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnknownAttributesUnmarshall() {
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementUnknownAttributesFile);
-        AttributeMap attributes = descriptor.getUnknownAttributes();
-
+        final  IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(singleElementUnknownAttributesFile);
+        assert descriptor!=null;
+        final AttributeMap attributes = descriptor.getUnknownAttributes();
+        assert descriptor!=null;
         Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             Assert.assertEquals(attributes.get(unknownAttributeNames[i]), unknownAttributeValues[i]);
@@ -136,8 +138,8 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testChildElementsUnmarshall() {
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(childElementsFile);
-
+        final IDPSSODescriptor descriptor = (IDPSSODescriptor) unmarshallElement(childElementsFile);
+        assert descriptor!=null;
         Assert.assertNotNull(descriptor.getExtensions(), "Extensions");
         Assert.assertNotNull(descriptor.getOrganization(), "Organization child");
         Assert.assertEquals(descriptor.getContactPersons().size(), 2, "ContactPerson count");
@@ -165,10 +167,10 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     @Test public void testSingleElementMarshall() {
-        QName qname =
+        final QName qname =
                 new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
+        final IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
 
         for (String protocol : expectedSupportedProtocol) {
             descriptor.addSupportedProtocol(protocol);
@@ -179,10 +181,10 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     @Test public void testSingleElementOptionalAttributesMarshall() {
-        QName qname =
+        final QName qname =
                 new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
+        final IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
 
         for (String protocol : expectedSupportedProtocol) {
             descriptor.addSupportedProtocol(protocol);
@@ -198,66 +200,66 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testChildElementsMarshall() {
-        QName qname =
+        final QName qname =
                 new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
+        final IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(qname);
 
-        QName extensionsQName =
+        final QName extensionsQName =
                 new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
-        QName orgQName =
+        final QName orgQName =
                 new QName(SAMLConstants.SAML20MD_NS, Organization.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.setOrganization((Organization) buildXMLObject(orgQName));
 
-        QName contactQName =
+        final QName contactQName =
                 new QName(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
             descriptor.getContactPersons().add((ContactPerson) buildXMLObject(contactQName));
         }
 
-        QName artResQName =
+        final QName artResQName =
                 new QName(SAMLConstants.SAML20MD_NS, ArtifactResolutionService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.getArtifactResolutionServices().add((ArtifactResolutionService) buildXMLObject(artResQName));
 
-        QName sloQName =
+        final QName sloQName =
                 new QName(SAMLConstants.SAML20MD_NS, SingleLogoutService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
             descriptor.getSingleLogoutServices().add((SingleLogoutService) buildXMLObject(sloQName));
         }
 
-        QName mngNameIDQName =
+        final QName mngNameIDQName =
                 new QName(SAMLConstants.SAML20MD_NS, ManageNameIDService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 4; i++) {
             descriptor.getManageNameIDServices().add((ManageNameIDService) buildXMLObject(mngNameIDQName));
         }
 
-        QName nameIDFormatQName =
+        final QName nameIDFormatQName =
                 new QName(SAMLConstants.SAML20MD_NS, NameIDFormat.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.getNameIDFormats().add((NameIDFormat) buildXMLObject(nameIDFormatQName));
 
-        QName ssoQName =
+        final QName ssoQName =
                 new QName(SAMLConstants.SAML20MD_NS, SingleSignOnService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 3; i++) {
             descriptor.getSingleSignOnServices().add((SingleSignOnService) buildXMLObject(ssoQName));
         }
 
-        QName nameIDMapQName =
+        final QName nameIDMapQName =
                 new QName(SAMLConstants.SAML20MD_NS, NameIDMappingService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
             descriptor.getNameIDMappingServices().add((NameIDMappingService) buildXMLObject(nameIDMapQName));
         }
 
-        QName assertIDReqQName =
+        final  QName assertIDReqQName =
                 new QName(SAMLConstants.SAML20MD_NS, AssertionIDRequestService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 3; i++) {
@@ -265,7 +267,7 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
                     .add((AssertionIDRequestService) buildXMLObject(assertIDReqQName));
         }
 
-        QName attributeProlfileQName =
+        final QName attributeProlfileQName =
                 new QName(SAMLConstants.SAML20MD_NS, AttributeProfile.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 3; i++) {
@@ -283,7 +285,7 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
      * Test the proper behavior of the XSBooleanValue attributes.
      */
     @Test public void testXSBooleanAttributes() {
-        IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        final IDPSSODescriptor descriptor = (IDPSSODescriptor) buildXMLObject(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
 
         descriptor.setWantAuthnRequestsSigned(Boolean.TRUE);
         Assert.assertEquals(descriptor.getWantAuthnRequestsSigned(), Boolean.TRUE,
@@ -291,7 +293,9 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(descriptor.getWantAuthnRequestsSignedXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(descriptor.getWantAuthnRequestsSignedXSBoolean(), new XSBooleanValue(Boolean.TRUE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(descriptor.getWantAuthnRequestsSignedXSBoolean().toString(), "true",
+        XSBooleanValue bool = descriptor.getWantAuthnRequestsSignedXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "true",
                 "XSBooleanValue string was unexpected value");
 
         descriptor.setWantAuthnRequestsSigned(Boolean.FALSE);
@@ -300,7 +304,9 @@ public class IDPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(descriptor.getWantAuthnRequestsSignedXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(descriptor.getWantAuthnRequestsSignedXSBoolean(), new XSBooleanValue(Boolean.FALSE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(descriptor.getWantAuthnRequestsSignedXSBoolean().toString(), "false",
+        bool = descriptor.getWantAuthnRequestsSignedXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "false",
                 "XSBooleanValue string was unexpected value");
 
         descriptor.setWantAuthnRequestsSigned((Boolean) null);

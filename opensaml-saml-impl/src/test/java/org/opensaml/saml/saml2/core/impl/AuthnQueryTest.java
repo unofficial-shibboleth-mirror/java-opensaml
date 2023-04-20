@@ -36,6 +36,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthnQueryTest extends SubjectQueryTestBase {
     
     /** Expected SessionIndex attribute value */
@@ -63,8 +64,8 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        AuthnQuery query = (AuthnQuery) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final AuthnQuery query = (AuthnQuery) buildXMLObject(qname);
         
         super.populateRequiredAttributes(query);
         
@@ -79,7 +80,7 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(AuthnQuery.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(AuthnQuery.DEFAULT_ELEMENT_NAME);
 
         ((AuthnQuery)target).setID("id123");
 
@@ -89,8 +90,8 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        AuthnQuery query = (AuthnQuery) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final AuthnQuery query = (AuthnQuery) buildXMLObject(qname);
         
         super.populateRequiredAttributes(query);
         super.populateOptionalAttributes(query);
@@ -102,12 +103,12 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        AuthnQuery query = (AuthnQuery) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, AuthnQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final AuthnQuery query = (AuthnQuery) buildXMLObject(qname);
         
         super.populateChildElements(query);
         
-        QName requestedAuthnContextQName = new QName(SAMLConstants.SAML20P_NS, RequestedAuthnContext.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName requestedAuthnContextQName = new QName(SAMLConstants.SAML20P_NS, RequestedAuthnContext.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         query.setRequestedAuthnContext((RequestedAuthnContext) buildXMLObject(requestedAuthnContextQName));
         
         assertXMLEquals(expectedChildElementsDOM, query);
@@ -117,8 +118,8 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AuthnQuery query = (AuthnQuery) unmarshallElement(singleElementFile);
-        
+        final  AuthnQuery query = (AuthnQuery) unmarshallElement(singleElementFile);
+        assert query!=null;
         Assert.assertNotNull(query, "AuthnQuery");
         Assert.assertNull(query.getSessionIndex(), "SessionIndex");
         super.helperTestSingleElementUnmarshall(query);
@@ -128,8 +129,8 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthnQuery query = (AuthnQuery) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final AuthnQuery query = (AuthnQuery) unmarshallElement(singleElementOptionalAttributesFile);
+        assert query!=null;
         super.helperTestSingleElementOptionalAttributesUnmarshall(query);
         Assert.assertEquals(query.getSessionIndex(), expectedSessionIndex, "Unmarshalled SessionIndex was not the expected value");
     }
@@ -137,8 +138,8 @@ public class AuthnQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AuthnQuery query = (AuthnQuery) unmarshallElement(childElementsFile);
-        
+        final AuthnQuery query = (AuthnQuery) unmarshallElement(childElementsFile);
+        assert query!=null;
         super.helperTestChildElementsUnmarshall(query);
         Assert.assertNotNull(query.getRequestedAuthnContext(), "RequestedAuthnContext");
     }

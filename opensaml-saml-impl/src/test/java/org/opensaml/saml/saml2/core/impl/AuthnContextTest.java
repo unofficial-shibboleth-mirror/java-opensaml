@@ -32,6 +32,7 @@ import org.testng.annotations.Test;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnContextImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of AuthenticatingAuthority subelements */
@@ -76,7 +77,7 @@ public class AuthnContextTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall() {
         AuthnContext authnContext = (AuthnContext) unmarshallElement(childElementsFile);
-
+        assert authnContext!=null;
         Assert.assertNotNull(authnContext.getAuthnContextClassRef(), "AuthnContextClassRef element not present");
         Assert.assertNotNull(authnContext.getAuthContextDecl(), "AuthnContextDecl element not present");
         Assert.assertNotNull(authnContext.getAuthnContextDeclRef(), "AuthnContextDeclRef element not present");

@@ -36,6 +36,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ArtifactResolveTest extends RequestTestBase {
 
     /**
@@ -72,7 +73,7 @@ public class ArtifactResolveTest extends RequestTestBase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(ArtifactResolve.DEFAULT_ELEMENT_NAME);
 
         ((ArtifactResolve)target).setID("id123");
 
@@ -82,7 +83,7 @@ public class ArtifactResolveTest extends RequestTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResolve.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, ArtifactResolve.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         ArtifactResolve ar = (ArtifactResolve) buildXMLObject(qname);
         
         super.populateRequiredAttributes(ar);
@@ -128,8 +129,8 @@ public class ArtifactResolveTest extends RequestTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        ArtifactResolve ar = (ArtifactResolve) unmarshallElement(childElementsFile);
-        
+        final ArtifactResolve ar = (ArtifactResolve) unmarshallElement(childElementsFile);
+        assert ar != null;
         Assert.assertNotNull(ar.getArtifact(), "Artifact was null");
         super.helperTestChildElementsUnmarshall(ar);
     }

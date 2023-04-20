@@ -34,6 +34,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class LogoutResponseTest extends StatusResponseTestBase {
 
     /**
@@ -55,7 +56,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
         
         super.populateRequiredAttributes(resp);
@@ -71,7 +72,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(LogoutResponse.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(LogoutResponse.DEFAULT_ELEMENT_NAME);
 
         ((LogoutResponse)target).setID("id123");
 
@@ -81,8 +82,8 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
         
         super.populateRequiredAttributes(resp);
         super.populateOptionalAttributes(resp);
@@ -93,8 +94,8 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, LogoutResponse.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final LogoutResponse resp = (LogoutResponse) buildXMLObject(qname);
         
         super.populateChildElements(resp);
         
@@ -104,7 +105,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        LogoutResponse resp = (LogoutResponse) unmarshallElement(singleElementFile);
+        final LogoutResponse resp = (LogoutResponse) unmarshallElement(singleElementFile);
         
         super.helperTestSingleElementUnmarshall(resp);
     }
@@ -112,7 +113,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        LogoutResponse resp = (LogoutResponse) unmarshallElement(singleElementOptionalAttributesFile);
+        final LogoutResponse resp = (LogoutResponse) unmarshallElement(singleElementOptionalAttributesFile);
 
         super.helperTestSingleElementOptionalAttributesUnmarshall(resp);
     }
@@ -120,7 +121,7 @@ public class LogoutResponseTest extends StatusResponseTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        LogoutResponse resp = (LogoutResponse) unmarshallElement(childElementsFile);
+        final LogoutResponse resp = (LogoutResponse) unmarshallElement(childElementsFile);
         
         super.helperTestChildElementsUnmarshall(resp);
     }

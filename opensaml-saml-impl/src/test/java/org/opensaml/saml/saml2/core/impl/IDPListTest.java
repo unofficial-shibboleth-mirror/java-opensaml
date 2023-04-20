@@ -35,6 +35,7 @@ import org.opensaml.saml.saml2.core.IDPList;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.IDPEntryImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class IDPListTest extends XMLObjectProviderBaseTestCase {
     
     /** The expected number of IDPEntry children */
@@ -57,7 +58,7 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
+        final IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
 
         assertXMLEquals(expectedDOM, list);
     }
@@ -66,14 +67,14 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
+        final  IDPList list = (IDPList) buildXMLObject(IDPList.DEFAULT_ELEMENT_NAME);
         
-        QName idpEntryQName = new QName(SAMLConstants.SAML20P_NS, IDPEntry.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName idpEntryQName = new QName(SAMLConstants.SAML20P_NS, IDPEntry.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         for (int i=0; i<expectedNumIDPEntryChildren; i++){
             list.getIDPEntrys().add((IDPEntry) buildXMLObject(idpEntryQName));
         }
         
-        QName getCompelteQName = new QName(SAMLConstants.SAML20P_NS, GetComplete.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName getCompelteQName = new QName(SAMLConstants.SAML20P_NS, GetComplete.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         list.setGetComplete((GetComplete) buildXMLObject(getCompelteQName));
         
         assertXMLEquals(expectedChildElementsDOM, list);
@@ -83,8 +84,8 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        IDPList list = (IDPList) unmarshallElement(singleElementFile);
-        
+        final IDPList list = (IDPList) unmarshallElement(singleElementFile);
+        assert list !=null;
         Assert.assertNotNull(list, "IDPList");
         Assert.assertEquals(list.getIDPEntrys().size(), 0, "IDPEntry count");
         Assert.assertNull(list.getGetComplete(), "GetComplete");
@@ -93,8 +94,8 @@ public class IDPListTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        IDPList list = (IDPList) unmarshallElement(childElementsFile);
-        
+        final IDPList list = (IDPList) unmarshallElement(childElementsFile);
+        assert list !=null;        
         Assert.assertEquals(list.getIDPEntrys().size(), expectedNumIDPEntryChildren, "IDPEntry count");
         Assert.assertNotNull(list.getGetComplete(), "GetComplete");
     }

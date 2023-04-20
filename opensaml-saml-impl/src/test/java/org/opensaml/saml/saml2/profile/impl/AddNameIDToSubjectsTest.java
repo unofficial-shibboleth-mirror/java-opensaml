@@ -58,7 +58,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** Test for {@link AddNameIDToSubjects}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AddNameIDToSubjectsTest extends XMLObjectBaseTestCase {
 
     private static final String NAME_QUALIFIER = "https://idp.example.org";

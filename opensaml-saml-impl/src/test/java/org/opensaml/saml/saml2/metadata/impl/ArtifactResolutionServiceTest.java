@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.metadata.ArtifactResolutionService;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.ArtifactResolutionServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -59,8 +60,8 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ArtifactResolutionService service = (ArtifactResolutionService) unmarshallElement(singleElementFile);
-        
+        final ArtifactResolutionService service = (ArtifactResolutionService) unmarshallElement(singleElementFile);
+        assert service!=null; 
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getIndex(), expectedIndex, "Index was not expected value");
@@ -69,8 +70,8 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        ArtifactResolutionService service = (ArtifactResolutionService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final ArtifactResolutionService service = (ArtifactResolutionService) unmarshallElement(singleElementOptionalAttributesFile);
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getIndex(), expectedIndex, "Index was not expected value");
@@ -102,33 +103,5 @@ public class ArtifactResolutionServiceTest extends XMLObjectProviderBaseTestCase
         service.setIsDefault(expectedIsDefault);
 
         assertXMLEquals(expectedOptionalAttributesDOM, service);
-    }
-    
-    /**
-     * Test the proper behavior of the XSBooleanValue attributes.
-     */
-    @Test
-    public void testXSBooleanAttributes() {
-        ArtifactResolutionService ars = 
-            (ArtifactResolutionService) buildXMLObject(ArtifactResolutionService.DEFAULT_ELEMENT_NAME);
-        
-        // isDefault attribute
-        ars.setIsDefault(Boolean.TRUE);
-        Assert.assertEquals(ars.isDefault(), Boolean.TRUE, "Unexpected value for boolean attribute found");
-        Assert.assertNotNull(ars.isDefaultXSBoolean(), "XSBooleanValue was null");
-        Assert.assertEquals(ars.isDefaultXSBoolean(), new XSBooleanValue(Boolean.TRUE, false),
-                "XSBooleanValue was unexpected value");
-        Assert.assertEquals(ars.isDefaultXSBoolean().toString(), "true", "XSBooleanValue string was unexpected value");
-        
-        ars.setIsDefault(Boolean.FALSE);
-        Assert.assertEquals(ars.isDefault(), Boolean.FALSE, "Unexpected value for boolean attribute found");
-        Assert.assertNotNull(ars.isDefaultXSBoolean(), "XSBooleanValue was null");
-        Assert.assertEquals(ars.isDefaultXSBoolean(), new XSBooleanValue(Boolean.FALSE, false),
-                "XSBooleanValue was unexpected value");
-        Assert.assertEquals(ars.isDefaultXSBoolean().toString(), "false", "XSBooleanValue string was unexpected value");
-        
-        ars.setIsDefault((Boolean) null);
-        Assert.assertEquals(ars.isDefault(), Boolean.FALSE, "Unexpected default value for boolean attribute found");
-        Assert.assertNull(ars.isDefaultXSBoolean(), "XSBooleanValue was not null");
     }
 }

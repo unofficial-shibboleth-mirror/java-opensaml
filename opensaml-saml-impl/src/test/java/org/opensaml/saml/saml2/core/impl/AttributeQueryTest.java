@@ -36,6 +36,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeQueryTest extends SubjectQueryTestBase {
     
     /** Expected number of Attribute child elements */
@@ -142,6 +143,7 @@ public class AttributeQueryTest extends SubjectQueryTestBase {
     public void testChildElementsUnmarshall() {
         AttributeQuery query = (AttributeQuery) unmarshallElement(childElementsFile);
         
+        assert query!=null;
         Assert.assertEquals(query.getAttributes().size(), expectedNumAttributes, "Attribute count");
         super.helperTestChildElementsUnmarshall(query);
     }

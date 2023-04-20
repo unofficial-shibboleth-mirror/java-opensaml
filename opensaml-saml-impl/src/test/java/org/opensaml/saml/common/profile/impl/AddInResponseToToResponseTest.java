@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddInResponseToToResponse} unit test. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AddInResponseToToResponseTest extends OpenSAMLInitBaseTestCase {
 
     private ProfileRequestContext prc;

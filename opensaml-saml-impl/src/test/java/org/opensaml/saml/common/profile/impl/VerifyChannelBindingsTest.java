@@ -34,7 +34,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link VerifyChannelBindings} unit test. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class VerifyChannelBindingsTest extends OpenSAMLInitBaseTestCase {
     
     private ProfileRequestContext prc;

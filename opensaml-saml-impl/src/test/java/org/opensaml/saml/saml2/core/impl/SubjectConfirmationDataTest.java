@@ -33,6 +33,7 @@ import org.opensaml.saml.saml2.core.SubjectConfirmationData;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.SubjectConfirmationDataImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected NotBefore value */
@@ -68,41 +69,42 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementFile);
-
-        Instant notBefore = subjectCD.getNotBefore();
+        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementFile);
+        assert subjectCD !=null;
+        final Instant notBefore = subjectCD.getNotBefore();
         Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementOptionalAttributesFile);
+        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) unmarshallElement(singleElementOptionalAttributesFile);
+        assert subjectCD !=null;
 
-        Instant notBefore = subjectCD.getNotBefore();
+        final Instant notBefore = subjectCD.getNotBefore();
         Assert.assertEquals(notBefore, expectedNotBefore, "NotBefore was " + notBefore + ", expected " + expectedNotBefore);
 
-        Instant notOnOrAfter = subjectCD.getNotOnOrAfter();
+        final Instant notOnOrAfter = subjectCD.getNotOnOrAfter();
         Assert.assertEquals(notOnOrAfter, expectedNotOnOrAfter,
                 "NotOnOrAfter was " + notOnOrAfter + ", expected " + expectedNotOnOrAfter);
 
-        String recipient = subjectCD.getRecipient();
+        final String recipient = subjectCD.getRecipient();
         Assert.assertEquals(recipient, expectedRecipient, "Recipient was " + recipient + ", expected " + expectedRecipient);
 
-        String inResponseTo = subjectCD.getInResponseTo();
+        final String inResponseTo = subjectCD.getInResponseTo();
         Assert.assertEquals(inResponseTo, expectedInResponseTo,
                 "InResponseTo was " + inResponseTo + ", expected " + expectedInResponseTo);
 
-        String address = subjectCD.getAddress();
+        final String address = subjectCD.getAddress();
         Assert.assertEquals(address, expectedAddress, "Address was " + address + ", expected " + expectedAddress);
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
+        final QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
-        SubjectConfirmationData subjectCD = (SubjectConfirmationData) buildXMLObject(qname);
+        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) buildXMLObject(qname);
 
         subjectCD.setNotBefore(expectedNotBefore);
         assertXMLEquals(expectedDOM, subjectCD);
@@ -111,9 +113,9 @@ public class SubjectConfirmationDataTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
+        final QName qname = new QName(SAMLConstants.SAML20_NS, SubjectConfirmationData.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20_PREFIX);
-        SubjectConfirmationData subjectCD = (SubjectConfirmationData) buildXMLObject(qname);
+        final SubjectConfirmationData subjectCD = (SubjectConfirmationData) buildXMLObject(qname);
 
         subjectCD.setNotBefore(expectedNotBefore);
         subjectCD.setNotOnOrAfter(expectedNotOnOrAfter);

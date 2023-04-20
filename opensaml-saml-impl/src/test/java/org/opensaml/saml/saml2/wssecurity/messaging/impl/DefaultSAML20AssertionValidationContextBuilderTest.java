@@ -51,7 +51,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class DefaultSAML20AssertionValidationContextBuilderTest extends XMLObjectBaseTestCase {
     
     private DefaultSAML20AssertionValidationContextBuilder builder;

@@ -33,6 +33,7 @@ import org.opensaml.saml.saml2.metadata.AttributeService;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AttributeServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -57,8 +58,8 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AttributeService service = (AttributeService) unmarshallElement(singleElementFile);
-        
+        final AttributeService service = (AttributeService) unmarshallElement(singleElementFile);
+        assert service!=null;        
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
@@ -66,8 +67,8 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AttributeService service = (AttributeService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final AttributeService service = (AttributeService) unmarshallElement(singleElementOptionalAttributesFile);
+        assert service!=null;                
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
@@ -76,7 +77,7 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AttributeService service = (new AttributeServiceBuilder()).buildObject();
+        final AttributeService service = (new AttributeServiceBuilder()).buildObject();
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -87,8 +88,8 @@ public class AttributeServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
-        AttributeService service = (AttributeService) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20MD_NS, AttributeService.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final AttributeService service = (AttributeService) buildXMLObject(qname);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);

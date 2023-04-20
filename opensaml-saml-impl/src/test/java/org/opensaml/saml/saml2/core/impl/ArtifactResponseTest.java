@@ -34,6 +34,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ArtifactResponseTest extends StatusResponseTestBase {
 
     /**

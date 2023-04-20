@@ -33,6 +33,7 @@ import org.opensaml.xmlsec.signature.KeyInfo;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.KeyDescriptorImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Name attribute value. */
@@ -60,9 +61,9 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementFile);
+        final KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(keyDescriptor, "KeyDescriptor");
+        assert keyDescriptor!=null;
         Assert.assertEquals(keyDescriptor.getUse(), UsageType.UNSPECIFIED, "Unexpected use attribute value");
 
     }
@@ -70,9 +71,9 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
+        final KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
         
-        Assert.assertNotNull(keyDescriptor, "KeyDescriptor");
+        assert keyDescriptor!=null;
         Assert.assertEquals(keyDescriptor.getUse(), expectedUse, "Use attribute");
     }
     
@@ -86,12 +87,15 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
         KeyDescriptor keyDescriptor = null;
         
         keyDescriptor = unmarshallElement("/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorUseNotPresent.xml");
+        assert keyDescriptor!=null;
         Assert.assertEquals(keyDescriptor.getUse(), UsageType.UNSPECIFIED);
             
         keyDescriptor = unmarshallElement("/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorUseSigning.xml");
+        assert keyDescriptor!=null;
         Assert.assertEquals(keyDescriptor.getUse(), UsageType.SIGNING);
         
         keyDescriptor = unmarshallElement("/org/opensaml/saml/saml2/metadata/impl/KeyDescriptorUseEncryption.xml");
+        assert keyDescriptor!=null;
         Assert.assertEquals(keyDescriptor.getUse(), UsageType.ENCRYPTION);
         
         try {
@@ -113,8 +117,8 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(childElementsFile);
-
+        final KeyDescriptor keyDescriptor = (KeyDescriptor) unmarshallElement(childElementsFile);
+        assert keyDescriptor!=null;
         Assert.assertNotNull(keyDescriptor, "KeyDescriptor");
         Assert.assertNotNull(keyDescriptor.getKeyInfo(), "KeyInfo Child element");
         Assert.assertEquals(keyDescriptor.getEncryptionMethods().size(), expectedNumEncMethods,
@@ -124,7 +128,7 @@ public class KeyDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        KeyDescriptor keyDescriptor = (new KeyDescriptorBuilder()).buildObject();
+        final KeyDescriptor keyDescriptor = (new KeyDescriptorBuilder()).buildObject();
         keyDescriptor.setUse(null);
 
         assertXMLEquals(expectedDOM, keyDescriptor);

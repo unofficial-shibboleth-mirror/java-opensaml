@@ -34,6 +34,7 @@ import org.testng.annotations.Test;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.StatusImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class StatusTest extends XMLObjectProviderBaseTestCase {
 
     /**
@@ -48,7 +49,7 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Status status = (Status) buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
+        final Status status = (Status) buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, status);
     }
@@ -56,12 +57,12 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Status status = (Status) buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
+        final Status status = (Status) buildXMLObject(Status.DEFAULT_ELEMENT_NAME);
         
-        QName statusCodeQName = new QName(SAMLConstants.SAML20P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName statusCodeQName = new QName(SAMLConstants.SAML20P_NS, StatusCode.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         status.setStatusCode((StatusCode) buildXMLObject(statusCodeQName));
         
-        QName statusMessageQName = new QName(SAMLConstants.SAML20P_NS, StatusMessage.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final QName statusMessageQName = new QName(SAMLConstants.SAML20P_NS, StatusMessage.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
         status.setStatusMessage((StatusMessage) buildXMLObject(statusMessageQName));
         
         assertXMLEquals(expectedChildElementsDOM, status);
@@ -71,9 +72,8 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Status status = (Status) unmarshallElement(singleElementFile);
-        
-        Assert.assertNotNull(status, "Status");
+        final Status status = (Status) unmarshallElement(singleElementFile);
+        assert status !=null;
         Assert.assertNull(status.getStatusCode(), "StatusCode child");
         Assert.assertNull(status.getStatusMessage(), "StatusMessage");
     }
@@ -82,8 +82,8 @@ public class StatusTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Status status = (Status) unmarshallElement(childElementsFile);
-        
+        final Status status = (Status) unmarshallElement(childElementsFile);
+        assert status !=null;
         Assert.assertNotNull(status.getStatusCode(), "StatusCode of Status was null");
         Assert.assertNotNull(status.getStatusMessage(), "StatusMessage of Status was null");
     }

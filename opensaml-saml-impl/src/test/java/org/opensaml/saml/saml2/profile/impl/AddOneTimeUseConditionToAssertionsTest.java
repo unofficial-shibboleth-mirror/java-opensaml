@@ -36,6 +36,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddOneTimeUseConditionToAssertions} unit test. */
+@SuppressWarnings({"null", "javadoc"})
 public class AddOneTimeUseConditionToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
     private AddOneTimeUseConditionToAssertions action;

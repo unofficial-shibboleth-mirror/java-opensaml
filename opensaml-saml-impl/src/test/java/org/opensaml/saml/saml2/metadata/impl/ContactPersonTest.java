@@ -38,6 +38,7 @@ import org.testng.annotations.Test;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.ContactPersonImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected company name */
@@ -71,14 +72,15 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        ContactPerson person = (ContactPerson) unmarshallElement(singleElementFile);
-        
+        final ContactPerson person = (ContactPerson) unmarshallElement(singleElementFile);
+        assert person!=null;
         Assert.assertEquals(person.getType(), expectedPersonType, "Contact type was not expected value");
     }
     
     /** {@inheritDoc} */
     @Test public void testSingleElementUnknownAttributesUnmarshall() {
-        ContactPerson person = (ContactPerson) unmarshallElement(singleElementUnknownAttributesFile);
+        final ContactPerson person = (ContactPerson) unmarshallElement(singleElementUnknownAttributesFile);
+        assert person!=null;
         AttributeMap attributes = person.getUnknownAttributes();
 
         Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
@@ -91,8 +93,8 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsUnmarshall()
     {
-        ContactPerson person = (ContactPerson) unmarshallElement(childElementsFile);
-        
+        final ContactPerson person = (ContactPerson) unmarshallElement(childElementsFile);
+        assert person!=null;
         Assert.assertNotNull(person.getExtensions(), "Extension Element not present");
         Assert.assertNotNull(person.getCompany(), "Company Element not present");
         Assert.assertNotNull(person.getSurName(), "SurName not present");
@@ -104,7 +106,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
+        final ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
         
         person.setType(expectedPersonType);
 
@@ -114,7 +116,7 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnknownAttributesMarshall() {
-        ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
+        final ContactPerson person = (ContactPerson) buildXMLObject(ContactPerson.DEFAULT_ELEMENT_NAME);
         person.setType(ContactPersonTypeEnumeration.OTHER);
 
         for (int i = 0; i < unknownAttributeNames.length; i++) {
@@ -127,28 +129,28 @@ public class ContactPersonTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testChildElementsMarshall()
     {
-        ContactPerson person = (new ContactPersonBuilder()).buildObject();
+        final ContactPerson person = (new ContactPersonBuilder()).buildObject();
         
         person.setType(expectedPersonType);
 
-        QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final  QName extensionsQName = new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         person.setExtensions((Extensions) buildXMLObject(extensionsQName));
         
-        QName companuQName = new QName(SAMLConstants.SAML20MD_NS, Company.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final QName companuQName = new QName(SAMLConstants.SAML20MD_NS, Company.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         person.setCompany((Company) buildXMLObject(companuQName));
         
-        QName givenNameQName = new QName(SAMLConstants.SAML20MD_NS, GivenName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final QName givenNameQName = new QName(SAMLConstants.SAML20MD_NS, GivenName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         person.setGivenName((GivenName) buildXMLObject(givenNameQName));
         
-        QName surnameQName = new QName(SAMLConstants.SAML20MD_NS, SurName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final QName surnameQName = new QName(SAMLConstants.SAML20MD_NS, SurName.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         person.setSurName((SurName) buildXMLObject(surnameQName));
         
-        QName teleQName = new QName(SAMLConstants.SAML20MD_NS, TelephoneNumber.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final QName teleQName = new QName(SAMLConstants.SAML20MD_NS, TelephoneNumber.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < telephoneNumberCount; i++) {
             person.getTelephoneNumbers().add((TelephoneNumber) buildXMLObject(teleQName));
         }
         
-        QName emailQName = new QName(SAMLConstants.SAML20MD_NS, EmailAddress.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final QName emailQName = new QName(SAMLConstants.SAML20MD_NS, EmailAddress.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < emailAddressCount; i++) {
             person.getEmailAddresses().add((EmailAddress) buildXMLObject(emailQName));
         }

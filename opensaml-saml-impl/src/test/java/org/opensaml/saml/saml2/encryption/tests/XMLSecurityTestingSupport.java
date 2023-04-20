@@ -34,6 +34,7 @@ import org.opensaml.xmlsec.keyinfo.impl.provider.RSAKeyValueProvider;
  * 
  * <p>This was copied from -xmlsec-impl to pull a test-jar dependency.
  */
+@SuppressWarnings({"null", "javadoc"})
 public final class XMLSecurityTestingSupport {
     
     private XMLSecurityTestingSupport() { }

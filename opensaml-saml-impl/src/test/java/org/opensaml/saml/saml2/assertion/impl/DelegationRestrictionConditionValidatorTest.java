@@ -28,7 +28,7 @@ import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class DelegationRestrictionConditionValidatorTest extends BaseAssertionValidationTest {
     
     private DelegationRestrictionConditionValidator validator;

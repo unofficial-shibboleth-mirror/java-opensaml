@@ -31,7 +31,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 
 /** Test for {@link AbstractSAML2NameIDGenerator}. */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class AbstractSAML2NameIDGeneratorTest extends OpenSAMLInitBaseTestCase {
 
     @Nonnull private static final String NAME_QUALIFIER = "https://idp.example.org";

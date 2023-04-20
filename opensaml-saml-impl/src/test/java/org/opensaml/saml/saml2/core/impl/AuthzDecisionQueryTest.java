@@ -37,6 +37,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     
     /** Expected Resource attribute value */
@@ -67,8 +68,8 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
         
         super.populateRequiredAttributes(query);
         query.setResource(expectedResource);
@@ -84,7 +85,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(AuthzDecisionQuery.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(AuthzDecisionQuery.DEFAULT_ELEMENT_NAME);
 
         ((AuthzDecisionQuery)target).setID("id123");
 
@@ -95,8 +96,8 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
         
         super.populateRequiredAttributes(query);
         super.populateOptionalAttributes(query);
@@ -110,17 +111,17 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
-        AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20P_NS, AuthzDecisionQuery.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20P_PREFIX);
+        final AuthzDecisionQuery query = (AuthzDecisionQuery) buildXMLObject(qname);
         
         super.populateChildElements(query);
         
-        QName actionQName = new QName(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName actionQName = new QName(SAMLConstants.SAML20_NS, Action.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         for (int i=0; i<expectedNumActions; i++){
             query.getActions().add((Action) buildXMLObject(actionQName));
         }
         
-        QName evidenceQName = new QName(SAMLConstants.SAML20_NS, Evidence.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName evidenceQName = new QName(SAMLConstants.SAML20_NS, Evidence.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         query.setEvidence((Evidence) buildXMLObject(evidenceQName));
         
         assertXMLEquals(expectedChildElementsDOM, query);
@@ -129,9 +130,9 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(singleElementFile);
+        final AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(query, "AuthzDecisionQuery was null");
+        assert query != null;
         Assert.assertEquals(query.getResource(), expectedResource, "Unmarshalled Resource attribute was not the expected value");
         super.helperTestSingleElementUnmarshall(query);
 
@@ -140,7 +141,7 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(singleElementOptionalAttributesFile);
+        final AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(singleElementOptionalAttributesFile);
         
         super.helperTestSingleElementOptionalAttributesUnmarshall(query);
     }
@@ -148,7 +149,8 @@ public class AuthzDecisionQueryTest extends SubjectQueryTestBase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(childElementsFile);
+        final AuthzDecisionQuery query = (AuthzDecisionQuery) unmarshallElement(childElementsFile);
+        assert query != null;
         
         Assert.assertEquals(query.getActions().size(), expectedNumActions, "Action count");
         Assert.assertNotNull(query.getEvidence(), "Evidence was null");

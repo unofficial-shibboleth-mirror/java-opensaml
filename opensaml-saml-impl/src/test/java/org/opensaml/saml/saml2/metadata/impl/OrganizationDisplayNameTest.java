@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.metadata.OrganizationDisplayName;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.OrganizationName}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class OrganizationDisplayNameTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected name. */
@@ -53,8 +54,8 @@ public class OrganizationDisplayNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        OrganizationDisplayName name = (OrganizationDisplayName) unmarshallElement(singleElementFile);
-        
+        final OrganizationDisplayName name = (OrganizationDisplayName) unmarshallElement(singleElementFile);
+        assert name!=null;
         Assert.assertEquals(name.getValue(), expectValue, "Name was not expected value");
         Assert.assertEquals(name.getXMLLang(), expectLang, "Name was not expected value");
     }
@@ -62,7 +63,7 @@ public class OrganizationDisplayNameTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        OrganizationDisplayName name = (OrganizationDisplayName) buildXMLObject(OrganizationDisplayName.DEFAULT_ELEMENT_NAME);
+        final OrganizationDisplayName name = (OrganizationDisplayName) buildXMLObject(OrganizationDisplayName.DEFAULT_ELEMENT_NAME);
         
         name.setValue(expectValue);
         name.setXMLLang(expectLang);

@@ -51,6 +51,7 @@ import com.google.common.base.Strings;
 /**
  * Simple tests for encryption.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SimpleEncryptionTest extends XMLObjectBaseTestCase {
     
     private Encrypter encrypter;

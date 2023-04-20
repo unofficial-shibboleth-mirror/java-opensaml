@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.NewID;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class NewIDTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content */
@@ -51,15 +52,15 @@ public class NewIDTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        NewID newID = (NewID) unmarshallElement(singleElementFile);
-        
-       Assert.assertEquals(newID.getValue(), expectedNewID, "The unmarshalled NewID was not the expected value");
+        final NewID newID = (NewID) unmarshallElement(singleElementFile);
+        assert newID!=null;
+        Assert.assertEquals(newID.getValue(), expectedNewID, "The unmarshalled NewID was not the expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        NewID newID = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
+        final NewID newID = (NewID) buildXMLObject(NewID.DEFAULT_ELEMENT_NAME);
         
         newID.setValue(expectedNewID);
         

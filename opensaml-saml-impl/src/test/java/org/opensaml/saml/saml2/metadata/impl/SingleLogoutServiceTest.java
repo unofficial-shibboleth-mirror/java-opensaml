@@ -35,6 +35,7 @@ import org.testng.annotations.Test;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.SingleLogoutServiceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     
     protected String expectedBinding;
@@ -66,17 +67,17 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        SingleLogoutService service = (SingleLogoutService) unmarshallElement(singleElementFile);
-        
+        final SingleLogoutService service = (SingleLogoutService) unmarshallElement(singleElementFile);
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
     }
     
     /** {@inheritDoc} */
     @Test public void testSingleElementUnknownAttributesUnmarshall() {
-        SingleLogoutService service = (SingleLogoutService) unmarshallElement(singleElementUnknownAttributesFile);
-        AttributeMap attributes = service.getUnknownAttributes();
-
+        final SingleLogoutService service = (SingleLogoutService) unmarshallElement(singleElementUnknownAttributesFile);
+        assert service!=null;
+        final AttributeMap attributes = service.getUnknownAttributes();
         Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             Assert.assertEquals(attributes.get(unknownAttributeNames[i]), unknownAttributeValues[i]);
@@ -87,8 +88,8 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        SingleLogoutService service = (SingleLogoutService) unmarshallElement(singleElementOptionalAttributesFile);
-        
+        final SingleLogoutService service = (SingleLogoutService) unmarshallElement(singleElementOptionalAttributesFile);
+        assert service!=null;
         Assert.assertEquals(service.getBinding(), expectedBinding, "Binding URI was not expected value");
         Assert.assertEquals(service.getLocation(), expectedLocation, "Location was not expected value");
         Assert.assertEquals(service.getResponseLocation(), expectedResponseLocation, "ResponseLocation was not expected value");;
@@ -97,7 +98,7 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        SingleLogoutService service = (SingleLogoutService) buildXMLObject(SingleLogoutService.DEFAULT_ELEMENT_NAME);
+        final SingleLogoutService service = (SingleLogoutService) buildXMLObject(SingleLogoutService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -107,7 +108,7 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     
     @Test
     public void testSingleElementUnknownAttributesMarshall() {
-        SingleLogoutService service = (new SingleLogoutServiceBuilder()).buildObject();
+        final SingleLogoutService service = (new SingleLogoutServiceBuilder()).buildObject();
 
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             service.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
@@ -119,7 +120,7 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        SingleLogoutService service = (SingleLogoutService) buildXMLObject(SingleLogoutService.DEFAULT_ELEMENT_NAME);
+        final SingleLogoutService service = (SingleLogoutService) buildXMLObject(SingleLogoutService.DEFAULT_ELEMENT_NAME);
         
         service.setBinding(expectedBinding);
         service.setLocation(expectedLocation);
@@ -130,7 +131,8 @@ public class SingleLogoutServiceTest extends XMLObjectProviderBaseTestCase {
     
     /** {@inheritDoc} */
     @Test public void testChildElementsUnmarshall() {
-        SingleLogoutService service = (SingleLogoutService) unmarshallElement(childElementsFile);
+        final SingleLogoutService service = (SingleLogoutService) unmarshallElement(childElementsFile);
+        assert service!=null;
         Assert.assertEquals(service.getUnknownXMLObjects().size(), 1);
     }
     

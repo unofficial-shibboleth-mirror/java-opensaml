@@ -38,6 +38,7 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 /** {@link AddGeneratedKeyToAssertions} unit test. */
+@SuppressWarnings({"null", "javadoc"})
 public class AddGeneratedKeyToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
     private ECPContext ecp;

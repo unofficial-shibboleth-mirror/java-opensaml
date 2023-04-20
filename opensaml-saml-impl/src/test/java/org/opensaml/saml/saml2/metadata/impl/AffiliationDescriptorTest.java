@@ -42,6 +42,7 @@ import net.shibboleth.shared.xml.XMLParserException;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.AffiliationDescriptorImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected affiliationOwnerID value */
@@ -82,16 +83,17 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementFile);
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementFile);
+        assert descriptor!=null;
 
-        String ownerId = descriptor.getOwnerID();
+        final String ownerId = descriptor.getOwnerID();
         Assert.assertEquals(ownerId,
                 expectedOwnerID, "entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID);
 
-        Duration duration = descriptor.getCacheDuration();
+        final Duration duration = descriptor.getCacheDuration();
         Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
-        Instant validUntil = descriptor.getValidUntil();
+        final Instant validUntil = descriptor.getValidUntil();
         Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
         
         Assert.assertTrue(descriptor.isValid());
@@ -100,20 +102,20 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
-
-        String ownerId = descriptor.getOwnerID();
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
+        assert descriptor!=null;
+        final String ownerId = descriptor.getOwnerID();
         Assert.assertEquals(ownerId,
                 expectedOwnerID, "entityID attribute has a value of " + ownerId + ", expected a value of " + expectedOwnerID);
 
-        String id = descriptor.getID();
+        final String id = descriptor.getID();
         Assert.assertEquals(id, expectedID, "ID attribute has a value of " + id + ", expected a value of " + expectedID);
 
-        Duration duration = descriptor.getCacheDuration();
+        final Duration duration = descriptor.getCacheDuration();
         Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration + ", expected a value of "
                         + expectedCacheDuration);
 
-        Instant validUntil = descriptor.getValidUntil();
+        final Instant validUntil = descriptor.getValidUntil();
         Assert.assertEquals(expectedValidUntil
                 .compareTo(validUntil), 0, "validUntil attribute value did not match expected value");
         Assert.assertFalse(descriptor.isValid());
@@ -121,8 +123,9 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnknownAttributesUnmarshall() {
-        AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementUnknownAttributesFile);
-        AttributeMap attributes = descriptor.getUnknownAttributes();
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(singleElementUnknownAttributesFile);
+        assert descriptor!=null;
+        final  AttributeMap attributes = descriptor.getUnknownAttributes();
 
         Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
         for (int i = 0; i < unknownAttributeNames.length; i++) {
@@ -133,8 +136,8 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(childElementsFile);
-
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) unmarshallElement(childElementsFile);
+        assert descriptor!=null;
         Assert.assertNotNull(descriptor.getExtensions(), "Extensions");
         Assert.assertNotNull(descriptor.getSignature(), "Signature");
         Assert.assertEquals(descriptor.getKeyDescriptors().size(), 1, "KeyDescriptor count");
@@ -144,9 +147,9 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+        final QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
-        AffiliationDescriptor descriptor = (AffiliationDescriptor) buildXMLObject(qname);
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) buildXMLObject(qname);
 
         descriptor.setOwnerID(expectedOwnerID);
 
@@ -161,7 +164,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(AffiliationDescriptor.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(AffiliationDescriptor.DEFAULT_ELEMENT_NAME);
 
         ((AffiliationDescriptor)target).setID("id123");
 
@@ -172,7 +175,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        AffiliationDescriptor descriptor = (new AffiliationDescriptorBuilder()).buildObject();
+        final AffiliationDescriptor descriptor = (new AffiliationDescriptorBuilder()).buildObject();
 
         descriptor.setOwnerID(expectedOwnerID);
         descriptor.setID(expectedID);
@@ -185,7 +188,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnknownAttributesMarshall() {
-        AffiliationDescriptor descriptor = (new AffiliationDescriptorBuilder()).buildObject();
+        final AffiliationDescriptor descriptor = (new AffiliationDescriptorBuilder()).buildObject();
 
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             descriptor.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
@@ -195,9 +198,9 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     @Test
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
+        final QName qname = new QName(SAMLConstants.SAML20MD_NS, AffiliationDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                 SAMLConstants.SAML20MD_PREFIX);
-        AffiliationDescriptor descriptor = (AffiliationDescriptor) buildXMLObject(qname);
+        final AffiliationDescriptor descriptor = (AffiliationDescriptor) buildXMLObject(qname);
 
         StringBuilder bigString = new StringBuilder();
         for (int i=0; i < 1026; i++) {
@@ -216,7 +219,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
 
         descriptor.setExtensions((Extensions) buildXMLObject(Extensions.DEFAULT_ELEMENT_NAME));
 
-        QName affilMemberQName = new QName(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
+        final QName affilMemberQName = new QName(SAMLConstants.SAML20MD_NS, AffiliateMember.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
         descriptor.getMembers().add((AffiliateMember) buildXMLObject(affilMemberQName));
@@ -231,7 +234,7 @@ public class AffiliationDescriptorTest extends XMLObjectProviderBaseTestCase {
      * @return minimally populated Signature element
      */
     private Signature buildSignatureSkeleton() {
-        Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
+        final Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
         signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         return signature;

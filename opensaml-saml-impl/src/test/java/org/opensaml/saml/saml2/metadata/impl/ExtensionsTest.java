@@ -31,6 +31,7 @@ import org.testng.annotations.Test;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.ExtensionsImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ExtensionsTest extends XMLObjectProviderBaseTestCase {
 
     /**
@@ -53,8 +54,8 @@ public class ExtensionsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        Extensions extensions = (Extensions) buildXMLObject(Extensions.DEFAULT_ELEMENT_NAME);
-        QName childQname = new QName("http://www.example.org/testObjects", "SimpleElement", "test");
+        final Extensions extensions = (Extensions) buildXMLObject(Extensions.DEFAULT_ELEMENT_NAME);
+        final QName childQname = new QName("http://www.example.org/testObjects", "SimpleElement", "test");
         
         extensions.getUnknownXMLObjects().add(buildXMLObject(childQname));
         extensions.getUnknownXMLObjects().add(buildXMLObject(childQname));
@@ -68,7 +69,7 @@ public class ExtensionsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Extensions extensions = (Extensions) unmarshallElement(singleElementFile);
+        final Extensions extensions = (Extensions) unmarshallElement(singleElementFile);
         
         Assert.assertNotNull(extensions);
     }
@@ -76,8 +77,8 @@ public class ExtensionsTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        Extensions extensions = (Extensions) unmarshallElement(childElementsFile);
-        
+        final Extensions extensions = (Extensions) unmarshallElement(childElementsFile);
+        assert extensions!=null;
         Assert.assertNotNull(extensions);
         Assert.assertEquals(extensions.getUnknownXMLObjects().size(), 3);
     }

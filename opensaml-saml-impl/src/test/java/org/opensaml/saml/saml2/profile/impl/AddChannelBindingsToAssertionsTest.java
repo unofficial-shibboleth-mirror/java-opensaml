@@ -38,6 +38,7 @@ import org.testng.annotations.Test;
 import net.shibboleth.shared.component.ComponentInitializationException;
 
 /** {@link AddChannelBindingsToAssertions} unit test. */
+@SuppressWarnings({"null", "javadoc"})
 public class AddChannelBindingsToAssertionsTest  extends OpenSAMLInitBaseTestCase {
 
     private ChannelBindingsContext cbc;

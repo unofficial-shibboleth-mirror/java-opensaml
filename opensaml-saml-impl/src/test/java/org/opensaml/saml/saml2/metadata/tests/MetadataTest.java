@@ -34,6 +34,7 @@ import net.shibboleth.shared.xml.XMLParserException;
  * Test cases that parses real, "in-the-wild", metadata files. Currently uses the InCommon and SWITCH federation
  * metadata files (current as of the time this test was written).
  */
+@SuppressWarnings({"null", "javadoc"})
 public class MetadataTest extends XMLObjectBaseTestCase {
 
     /**

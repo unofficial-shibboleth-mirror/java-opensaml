@@ -30,6 +30,7 @@ import org.opensaml.xmlsec.signature.DigestMethod;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     
     private String expectedAlgorithm;
@@ -54,8 +55,8 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        EncryptionMethod em = (EncryptionMethod) unmarshallElement(singleElementFile);
-        
+        final EncryptionMethod em = (EncryptionMethod) unmarshallElement(singleElementFile);
+        assert em!=null;        
         Assert.assertNotNull(em, "EncryptionMethod");
         Assert.assertEquals(em.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertNull(em.getKeySize(), "KeySize child");
@@ -66,9 +67,8 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        EncryptionMethod em = (EncryptionMethod) unmarshallElement(childElementsFile);
-        
-        Assert.assertNotNull(em, "EncryptionMethod");
+        final EncryptionMethod em = (EncryptionMethod) unmarshallElement(childElementsFile);
+        assert em!=null;
         Assert.assertEquals(em.getAlgorithm(), expectedAlgorithm, "Algorithm attribute");
         Assert.assertNotNull(em.getKeySize(), "KeySize child");
         Assert.assertNotNull(em.getOAEPparams(), "OAEPparams child");
@@ -78,7 +78,7 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        EncryptionMethod em = (EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
+        final EncryptionMethod em = (EncryptionMethod) buildXMLObject(EncryptionMethod.DEFAULT_ELEMENT_NAME);
         
         em.setAlgorithm(expectedAlgorithm);
         
@@ -88,7 +88,7 @@ public class EncryptionMethodTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        EncryptionMethod em = (new EncryptionMethodBuilder()).buildObject();
+        final EncryptionMethod em = (new EncryptionMethodBuilder()).buildObject();
         
         em.setAlgorithm(expectedAlgorithm);
         em.setKeySize((KeySize) buildXMLObject(KeySize.DEFAULT_ELEMENT_NAME));

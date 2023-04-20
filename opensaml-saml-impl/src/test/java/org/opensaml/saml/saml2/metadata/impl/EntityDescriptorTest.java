@@ -51,6 +51,7 @@ import net.shibboleth.shared.xml.XMLParserException;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.metadata.impl.EntityDescriptorImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected entityID value */
@@ -93,16 +94,16 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnmarshall() {
-        EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementFile);
-
-        String entityID = descriptor.getEntityID();
+        final EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementFile);
+        assert descriptor!=null;
+        final String entityID = descriptor.getEntityID();
         Assert.assertEquals(entityID, expectedEntityID, "entityID attribute has a value of " + entityID
                 + ", expected a value of " + expectedEntityID);
 
-        Duration duration = descriptor.getCacheDuration();
+        final Duration duration = descriptor.getCacheDuration();
         Assert.assertNull(duration, "cacheDuration attribute has a value of " + duration + ", expected no value");
 
-        Instant validUntil = descriptor.getValidUntil();
+        final Instant validUntil = descriptor.getValidUntil();
         Assert.assertNull(validUntil, "validUntil attribute has a value of " + validUntil + ", expected no value");
 
         Assert.assertTrue(descriptor.isValid());
@@ -110,20 +111,20 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementOptionalAttributesUnmarshall() {
-        EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
-
-        String entityID = descriptor.getEntityID();
+        final EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementOptionalAttributesFile);
+        assert descriptor!=null;
+        final String entityID = descriptor.getEntityID();
         Assert.assertEquals(entityID, expectedEntityID, "entityID attribute has a value of " + entityID
                 + ", expected a value of " + expectedEntityID);
 
-        String id = descriptor.getID();
+        final String id = descriptor.getID();
         Assert.assertEquals(id, expectedID, "ID attribute has a value of " + id + ", expected a value of " + expectedID);
 
-        Duration duration = descriptor.getCacheDuration();
+        final Duration duration = descriptor.getCacheDuration();
         Assert.assertEquals(duration, expectedCacheDuration, "cacheDuration attribute has a value of " + duration
                 + ", expected a value of " + expectedCacheDuration);
 
-        Instant validUntil = descriptor.getValidUntil();
+        final Instant validUntil = descriptor.getValidUntil();
         Assert.assertEquals(expectedValidUntil.compareTo(validUntil), 0,
                 "validUntil attribute value did not match expected value");
 
@@ -132,8 +133,9 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnknownAttributesUnmarshall() {
-        EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementUnknownAttributesFile);
-        AttributeMap attributes = descriptor.getUnknownAttributes();
+        final EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(singleElementUnknownAttributesFile);
+        assert descriptor!=null;
+        final AttributeMap attributes = descriptor.getUnknownAttributes();
 
         Assert.assertEquals(attributes.entrySet().size(), unknownAttributeNames.length);
         for (int i = 0; i < unknownAttributeNames.length; i++) {
@@ -143,8 +145,8 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testChildElementsUnmarshall() {
-        EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(childElementsFile);
-
+        final EntityDescriptor descriptor = (EntityDescriptor) unmarshallElement(childElementsFile);
+        assert descriptor!=null;
         Assert.assertNotNull(descriptor.getExtensions(), "Extensions child");
         Assert.assertNotNull(descriptor.getSignature(), "Signature child");
         Assert.assertEquals(descriptor.getRoleDescriptors(IDPSSODescriptor.DEFAULT_ELEMENT_NAME).size(), 2,
@@ -191,10 +193,10 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementMarshall() {
-        QName qname =
+        final QName qname =
                 new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
+        final EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
 
         StringBuilder bigString = new StringBuilder();
         for (int i = 0; i < 2000; i++ ) {
@@ -220,7 +222,7 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
      * */
     @Test
     public void testAttributeIDnessMarshall() throws MarshallingException, XMLParserException {
-        XMLObject target = buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
+        final XMLObject target = buildXMLObject(EntityDescriptor.DEFAULT_ELEMENT_NAME);
 
         ((EntityDescriptor)target).setID("id123");
 
@@ -229,7 +231,7 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
 
     @Test public void testSingleElementUnknownAttributesMarshall() {
-        EntityDescriptor descriptor = (new EntityDescriptorBuilder()).buildObject();
+        final EntityDescriptor descriptor = (new EntityDescriptorBuilder()).buildObject();
 
         for (int i = 0; i < unknownAttributeNames.length; i++) {
             descriptor.getUnknownAttributes().put(unknownAttributeNames[i], unknownAttributeValues[i]);
@@ -239,10 +241,10 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementOptionalAttributesMarshall() {
-        QName qname =
+        final QName qname =
                 new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
+        final EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
 
         descriptor.setEntityID(expectedEntityID);
         descriptor.setID(expectedID);
@@ -254,29 +256,29 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testChildElementsMarshall() {
-        QName qname =
+        final QName qname =
                 new QName(SAMLConstants.SAML20MD_NS, EntityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         EntityDescriptor descriptor = (EntityDescriptor) buildXMLObject(qname);
         descriptor.setID(expectedID);
         descriptor.setEntityID(expectedEntityID);
 
-        QName extensionsQName =
+        final QName extensionsQName =
                 new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
         descriptor.setSignature(buildSignatureSkeleton());
 
-        QName idpSSOQName =
+        final QName idpSSOQName =
                 new QName(SAMLConstants.SAML20MD_NS, IDPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        QName spSSOQName =
+        final QName spSSOQName =
                 new QName(SAMLConstants.SAML20MD_NS, SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        QName authnAuthQName =
+        final QName authnAuthQName =
                 new QName(SAMLConstants.SAML20MD_NS, AuthnAuthorityDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        QName pdpQName =
+        final QName pdpQName =
                 new QName(SAMLConstants.SAML20MD_NS, PDPDescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         QName affilQName =
@@ -314,17 +316,17 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
         descriptor.getRoleDescriptors(PDPDescriptor.DEFAULT_ELEMENT_NAME).add((PDPDescriptor) buildXMLObject(pdpQName));
         descriptor.setAffiliationDescriptor((AffiliationDescriptor) buildXMLObject(affilQName));
 
-        QName orgQName =
+        final QName orgQName =
                 new QName(SAMLConstants.SAML20MD_NS, Organization.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.setOrganization((Organization) buildXMLObject(orgQName));
 
-        QName contactQName =
+        final QName contactQName =
                 new QName(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.getContactPersons().add((ContactPerson) buildXMLObject(contactQName));
 
-        QName addMDQName =
+        final QName addMDQName =
                 new QName(SAMLConstants.SAML20MD_NS, AdditionalMetadataLocation.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 3; i++) {
@@ -340,7 +342,7 @@ public class EntityDescriptorTest extends XMLObjectProviderBaseTestCase {
      * @return minimally populated Signature element
      */
     private Signature buildSignatureSkeleton() {
-        Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
+        final Signature signature = (Signature) buildXMLObject(Signature.DEFAULT_ELEMENT_NAME);
         signature.setSignatureAlgorithm(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA256);
         signature.setCanonicalizationAlgorithm(SignatureConstants.ALGO_ID_C14N_EXCL_OMIT_COMMENTS);
         return signature;

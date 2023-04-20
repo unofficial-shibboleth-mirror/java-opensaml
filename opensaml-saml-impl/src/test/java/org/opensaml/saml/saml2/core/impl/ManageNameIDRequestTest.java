@@ -37,6 +37,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ManageNameIDRequestTest extends RequestTestBase {
 
     /**
@@ -132,7 +133,8 @@ public class ManageNameIDRequestTest extends RequestTestBase {
     @Test
     public void testChildElementsUnmarshall() {
         ManageNameIDRequest req = (ManageNameIDRequest) unmarshallElement(childElementsFile);
-        
+        assert req!=null;
+
         Assert.assertNotNull(req.getNameID(), "NameID was null");
         Assert.assertNotNull(req.getNewID(), "NewID was null");
         super.helperTestChildElementsUnmarshall(req);

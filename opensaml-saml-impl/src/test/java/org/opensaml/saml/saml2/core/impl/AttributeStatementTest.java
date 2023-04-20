@@ -27,6 +27,7 @@ import org.opensaml.saml.saml2.core.EncryptedAttribute;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AttributeStatementImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of Attribute subelements. */
@@ -45,7 +46,7 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(singleElementFile);
+        final AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(singleElementFile);
 
         Assert.assertNotNull(attributeStatement);
     }
@@ -53,7 +54,8 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(childElementsFile);
+        final AttributeStatement attributeStatement = (AttributeStatement) unmarshallElement(childElementsFile);
+        assert attributeStatement!=null;
         Assert.assertEquals(attributeStatement.getAttributes().size(), expectedAttributeCount, "Attribute Count");
         Assert.assertEquals(attributeStatement.getEncryptedAttributes().size(), 
                 expectedEncryptedAttributeCount, "EncryptedAttribute Count");
@@ -63,7 +65,7 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AttributeStatement attributeStatement = 
+        final AttributeStatement attributeStatement = 
             (AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME);
 
         assertXMLEquals(expectedDOM, attributeStatement);
@@ -72,7 +74,7 @@ public class AttributeStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        AttributeStatement attributeStatement = 
+        final AttributeStatement attributeStatement = 
             (AttributeStatement) buildXMLObject(AttributeStatement.DEFAULT_ELEMENT_NAME);
 
         attributeStatement.getAttributes()

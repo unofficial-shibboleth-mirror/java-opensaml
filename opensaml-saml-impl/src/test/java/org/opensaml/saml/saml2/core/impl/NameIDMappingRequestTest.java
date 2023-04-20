@@ -37,6 +37,7 @@ import net.shibboleth.shared.xml.XMLParserException;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class NameIDMappingRequestTest extends RequestTestBase {
 
     /**
@@ -133,7 +134,7 @@ public class NameIDMappingRequestTest extends RequestTestBase {
     @Test
     public void testChildElementsUnmarshall() {
         NameIDMappingRequest req = (NameIDMappingRequest) unmarshallElement(childElementsFile);
-        
+        assert req!=null;
         Assert.assertNotNull(req.getNameID(), "Identifier was null");
         Assert.assertNotNull(req.getNameIDPolicy(), "NameIDPolicy was null");
         super.helperTestChildElementsUnmarshall(req);

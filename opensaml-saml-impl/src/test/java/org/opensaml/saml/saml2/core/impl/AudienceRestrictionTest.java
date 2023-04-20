@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.AudienceRestriction;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AudienceRestrictionImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AudienceRestrictionTest extends XMLObjectProviderBaseTestCase {
 
     /** Count of Audience subelements */
@@ -43,7 +44,7 @@ public class AudienceRestrictionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        AudienceRestriction audienceRestriction = (AudienceRestriction) unmarshallElement(singleElementFile);
+        final AudienceRestriction audienceRestriction = (AudienceRestriction) unmarshallElement(singleElementFile);
 
         Assert.assertNotNull(audienceRestriction);
     }
@@ -57,8 +58,8 @@ public class AudienceRestrictionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AudienceRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        AudienceRestriction audienceRestriction = (AudienceRestriction) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AudienceRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final AudienceRestriction audienceRestriction = (AudienceRestriction) buildXMLObject(qname);
 
         assertXMLEquals(expectedDOM, audienceRestriction);
     }
@@ -72,17 +73,18 @@ public class AudienceRestrictionTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AudienceRestriction audienceRestriction = (AudienceRestriction) unmarshallElement(childElementsFile);
+        final AudienceRestriction audienceRestriction = (AudienceRestriction) unmarshallElement(childElementsFile);
+        assert audienceRestriction!=null;
         Assert.assertEquals(audienceRestriction.getAudiences().size(), expectedAudienceCount, "Audience Count");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, AudienceRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        AudienceRestriction audienceRestriction = (AudienceRestriction) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, AudienceRestriction.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final AudienceRestriction audienceRestriction = (AudienceRestriction) buildXMLObject(qname);
 
-        QName audienceQName = new QName(SAMLConstants.SAML20_NS, Audience.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName audienceQName = new QName(SAMLConstants.SAML20_NS, Audience.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         for (int i = 0; i < expectedAudienceCount; i++) {
             audienceRestriction.getAudiences().add((Audience) buildXMLObject(audienceQName));
         }

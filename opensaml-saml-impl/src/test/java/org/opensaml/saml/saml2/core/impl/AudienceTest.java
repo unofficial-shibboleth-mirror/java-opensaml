@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.Audience;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AudienceImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AudienceTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected Audience URI value */
@@ -47,9 +48,10 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Audience audience = (Audience) unmarshallElement(singleElementFile);
+        final Audience audience = (Audience) unmarshallElement(singleElementFile);
+        assert audience !=null;
 
-        String audienceURI = audience.getURI();
+        final String audienceURI = audience.getURI();
         Assert.assertEquals(audienceURI, expectedAudienceURI,
                 "AssertionURI was " + audienceURI + ", expected " + expectedAudienceURI);
     }
@@ -63,8 +65,8 @@ public class AudienceTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        QName qname = new QName(SAMLConstants.SAML20_NS, Audience.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
-        Audience audience = (Audience) buildXMLObject(qname);
+        final QName qname = new QName(SAMLConstants.SAML20_NS, Audience.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final Audience audience = (Audience) buildXMLObject(qname);
 
         audience.setURI(expectedAudienceURI);
         assertXMLEquals(expectedDOM, audience);

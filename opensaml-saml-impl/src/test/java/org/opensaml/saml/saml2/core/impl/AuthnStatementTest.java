@@ -31,6 +31,7 @@ import org.opensaml.saml.saml2.core.SubjectLocality;
 /**
  * Test case for creating, marshalling, and unmarshalling {@link org.opensaml.saml.saml2.core.impl.AuthnStatementImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
 
     /** Expected AuthnInstant value */
@@ -60,8 +61,9 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementUnmarshall() {
         AuthnStatement authnStatement = (AuthnStatement) unmarshallElement(singleElementFile);
+        assert authnStatement != null;
 
-        Instant authnInstant = authnStatement.getAuthnInstant();
+        final Instant authnInstant = authnStatement.getAuthnInstant();
         Assert.assertEquals(authnInstant, expectedAuthnInstant,
                 "AuthnInstant was " + authnInstant + ", expected " + expectedAuthnInstant);
     }
@@ -70,16 +72,17 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
         AuthnStatement authnStatement = (AuthnStatement) unmarshallElement(singleElementOptionalAttributesFile);
+        assert authnStatement != null;
 
-        Instant authnInstant = authnStatement.getAuthnInstant();
+        final Instant authnInstant = authnStatement.getAuthnInstant();
         Assert.assertEquals(authnInstant, expectedAuthnInstant,
                 "AuthnInstant was " + authnInstant + ", expected " + expectedAuthnInstant);
 
-        String sessionIndex = authnStatement.getSessionIndex();
+        final String sessionIndex = authnStatement.getSessionIndex();
         Assert.assertEquals(sessionIndex, expectedSessionIndex,
                 "SessionIndex was " + sessionIndex + ", expected " + expectedSessionIndex);
 
-        Instant sessionNotOnOrAfter = authnStatement.getSessionNotOnOrAfter();
+        final Instant sessionNotOnOrAfter = authnStatement.getSessionNotOnOrAfter();
         Assert.assertEquals(sessionNotOnOrAfter,
                 expectedSessionNotOnOrAfter, "SessionNotOnOrAfter was " + sessionNotOnOrAfter + ", expected " + expectedSessionNotOnOrAfter);
     }
@@ -87,7 +90,7 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
+        final AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 
         authnStatement.setAuthnInstant(expectedAuthnInstant);
         assertXMLEquals(expectedDOM, authnStatement);
@@ -96,7 +99,7 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
+        final AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 
         authnStatement.setAuthnInstant(expectedAuthnInstant);
         authnStatement.setSessionIndex(expectedSessionIndex);
@@ -108,7 +111,8 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        AuthnStatement authnStatement = (AuthnStatement) unmarshallElement(childElementsFile);
+        final AuthnStatement authnStatement = (AuthnStatement) unmarshallElement(childElementsFile);
+        assert authnStatement != null;
         Assert.assertNotNull(authnStatement.getAuthnContext(), "AuthnContext element not present");
         Assert.assertNotNull(authnStatement.getSubjectLocality(), "SubjectLocality element not present");
     }
@@ -116,7 +120,7 @@ public class AuthnStatementTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
+        final AuthnStatement authnStatement = (AuthnStatement) buildXMLObject(AuthnStatement.DEFAULT_ELEMENT_NAME);
 
         authnStatement.setSubjectLocality((SubjectLocality) buildXMLObject(SubjectLocality.DEFAULT_ELEMENT_NAME));
         

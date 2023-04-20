@@ -30,6 +30,7 @@ import org.opensaml.saml.saml2.core.GetComplete;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.GetCompleteImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content*/
@@ -52,8 +53,8 @@ public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        GetComplete gc = (GetComplete) unmarshallElement(singleElementFile);
-        
+       final GetComplete gc = (GetComplete) unmarshallElement(singleElementFile);
+       assert gc!=null; 
        Assert.assertEquals(gc.getURI(), expectedGetComplete, "Unmarshalled GetComplete URI was not the expected value"); 
 
     }
@@ -61,7 +62,7 @@ public class GetCompleteTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        GetComplete gc = (GetComplete) buildXMLObject(GetComplete.DEFAULT_ELEMENT_NAME);
+        final GetComplete gc = (GetComplete) buildXMLObject(GetComplete.DEFAULT_ELEMENT_NAME);
 
         gc.setURI(expectedGetComplete);
         

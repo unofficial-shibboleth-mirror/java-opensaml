@@ -35,6 +35,7 @@ import org.opensaml.saml.saml2.core.RequestedAuthnContext;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected Comparison attribute */
@@ -64,7 +65,7 @@ public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
+        final RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
         
         assertXMLEquals(expectedDOM, rac);
 
@@ -73,7 +74,7 @@ public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesMarshall() {
-        RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
+        final RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
         
         rac.setComparison(AuthnContextComparisonTypeEnumeration.EXACT);
         
@@ -83,9 +84,9 @@ public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testChildElementsMarshall() {
-        RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
+        final RequestedAuthnContext rac = (RequestedAuthnContext) buildXMLObject(RequestedAuthnContext.DEFAULT_ELEMENT_NAME);
         
-        QName authnContextClassRefQName = new QName(SAMLConstants.SAML20_NS, AuthnContextClassRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
+        final QName authnContextClassRefQName = new QName(SAMLConstants.SAML20_NS, AuthnContextClassRef.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20_PREFIX);
         for (int i=0; i< expectedNumClassRefs; i++){
             rac.getAuthnContextClassRefs().add((AuthnContextClassRef) buildXMLObject(authnContextClassRefQName));
         }
@@ -96,24 +97,27 @@ public class RequestedAuthnContextTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(singleElementFile);
+        final RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(singleElementFile);
         
-        Assert.assertNotNull(rac, "RequestedAuthnContext");
+        assert rac!=null;
         Assert.assertNull(rac.getComparison(), "Comparison");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementOptionalAttributesUnmarshall() {
-        RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(singleElementOptionalAttributesFile);
-        Assert.assertNotNull(rac.getComparison(), "Comparison");
-        Assert.assertEquals(rac.getComparison().toString(), expectedComparison.toString(), "The unmarshalled Comparison attribute was not the expected value");
+        final RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(singleElementOptionalAttributesFile);
+        assert rac!=null;
+        final AuthnContextComparisonTypeEnumeration comp = rac.getComparison();
+        assert comp!= null;
+        Assert.assertEquals(comp.toString(), expectedComparison.toString(), "The unmarshalled Comparison attribute was not the expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testChildElementsUnmarshall() {
-        RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(childElementsFile);
+        final RequestedAuthnContext rac = (RequestedAuthnContext) unmarshallElement(childElementsFile);
+        assert rac!=null;
        
         Assert.assertEquals(rac.getAuthnContextClassRefs().size(), expectedNumClassRefs, "AuthnContextClassRef");
     }

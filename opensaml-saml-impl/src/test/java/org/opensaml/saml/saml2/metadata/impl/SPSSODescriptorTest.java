@@ -45,6 +45,7 @@ import org.testng.annotations.Test;
 /**
  * 
  */
+@SuppressWarnings({"null", "javadoc"})
 public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** expected value for AuthnRequestSigned attribute */
@@ -90,8 +91,8 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementUnmarshall() {
-        SPSSODescriptor descriptor = (SPSSODescriptor) unmarshallElement(singleElementFile);
-
+        final SPSSODescriptor descriptor = (SPSSODescriptor) unmarshallElement(singleElementFile);
+        assert descriptor!=null;
         Assert.assertEquals(descriptor.getSupportedProtocols(), expectedSupportedProtocol,
                 "Supported protocols not equal to expected value");
         descriptor.removeAllSupportedProtocols();
@@ -101,8 +102,8 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testSingleElementOptionalAttributesUnmarshall() {
-        SPSSODescriptor descriptor = (SPSSODescriptor) unmarshallElement(singleElementOptionalAttributesFile);
-
+        final SPSSODescriptor descriptor = (SPSSODescriptor) unmarshallElement(singleElementOptionalAttributesFile);
+        assert descriptor!=null;
         Assert.assertEquals(descriptor.getSupportedProtocols(), expectedSupportedProtocol,
                 "Supported protocols not equal to expected value");
         Assert.assertEquals(descriptor.isAuthnRequestsSignedXSBoolean(), expectedAuthnRequestSigned,
@@ -123,8 +124,8 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testChildElementsUnmarshall() {
-        SPSSODescriptor descriptor = (SPSSODescriptor) unmarshallElement(childElementsFile);
-
+        final SPSSODescriptor descriptor = (SPSSODescriptor) unmarshallElement(childElementsFile);
+        assert descriptor!=null;
         Assert.assertEquals(descriptor.getID(), expectedId);
         Assert.assertEquals(descriptor.getSignatureReferenceID(), expectedId);
         Assert.assertNotNull(descriptor.getSignature());
@@ -170,7 +171,7 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
     }
 
     @Test public void testSingleElementOptionalAttributesMarshall() {
-        SPSSODescriptor descriptor = (new SPSSODescriptorBuilder()).buildObject();
+        final SPSSODescriptor descriptor = (new SPSSODescriptorBuilder()).buildObject();
 
         descriptor.setAuthnRequestsSigned(expectedAuthnRequestSigned);
         descriptor.setWantAssertionsSigned(expectedWantAssertionsSigned);
@@ -187,55 +188,55 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
 
     /** {@inheritDoc} */
     @Test public void testChildElementsMarshall() {
-        QName qname =
+        final  QName qname =
                 new QName(SAMLConstants.SAML20MD_NS, SPSSODescriptor.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
-        SPSSODescriptor descriptor = (SPSSODescriptor) buildXMLObject(qname);
+        final SPSSODescriptor descriptor = (SPSSODescriptor) buildXMLObject(qname);
 
         descriptor.setID(expectedId);
         descriptor.setSignature( buildSignatureSkeleton() );
 
-        QName extensionsQName =
+        final QName extensionsQName =
                 new QName(SAMLConstants.SAML20MD_NS, Extensions.DEFAULT_ELEMENT_LOCAL_NAME, SAMLConstants.SAML20MD_PREFIX);
         descriptor.setExtensions((Extensions) buildXMLObject(extensionsQName));
 
-        QName orgQName =
+        final QName orgQName =
                 new QName(SAMLConstants.SAML20MD_NS, Organization.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.setOrganization((Organization) buildXMLObject(orgQName));
 
-        QName contactQName =
+        final QName contactQName =
                 new QName(SAMLConstants.SAML20MD_NS, ContactPerson.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
             descriptor.getContactPersons().add((ContactPerson) buildXMLObject(contactQName));
         }
 
-        QName artResQName =
+        final  QName artResQName =
                 new QName(SAMLConstants.SAML20MD_NS, ArtifactResolutionService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.getArtifactResolutionServices().add((ArtifactResolutionService) buildXMLObject(artResQName));
 
-        QName sloQName =
+        final QName sloQName =
                 new QName(SAMLConstants.SAML20MD_NS, SingleLogoutService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
             descriptor.getSingleLogoutServices().add((SingleLogoutService) buildXMLObject(sloQName));
         }
 
-        QName mngNameIDQName =
+        final QName mngNameIDQName =
                 new QName(SAMLConstants.SAML20MD_NS, ManageNameIDService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 4; i++) {
             descriptor.getManageNameIDServices().add((ManageNameIDService) buildXMLObject(mngNameIDQName));
         }
 
-        QName nameIDFormatQName =
+        final QName nameIDFormatQName =
                 new QName(SAMLConstants.SAML20MD_NS, NameIDFormat.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.getNameIDFormats().add((NameIDFormat) buildXMLObject(nameIDFormatQName));
 
-        QName assertConsumeQName =
+        final QName assertConsumeQName =
                 new QName(SAMLConstants.SAML20MD_NS, AssertionConsumerService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         for (int i = 0; i < 2; i++) {
@@ -243,7 +244,7 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
                     .add((AssertionConsumerService) buildXMLObject(assertConsumeQName));
         }
 
-        QName attribConsumeQName =
+        final QName attribConsumeQName =
                 new QName(SAMLConstants.SAML20MD_NS, AttributeConsumingService.DEFAULT_ELEMENT_LOCAL_NAME,
                         SAMLConstants.SAML20MD_PREFIX);
         descriptor.getAttributeConsumingServices().add((AttributeConsumingService) buildXMLObject(attribConsumeQName));
@@ -255,7 +256,7 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
      * Test the proper behavior of the XSBooleanValue attributes.
      */
     @Test public void testXSBooleanAttributes() {
-        SPSSODescriptor descriptor = (SPSSODescriptor) buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
+        final SPSSODescriptor descriptor = (SPSSODescriptor) buildXMLObject(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
 
         // AuthnRequestsSigned
         descriptor.setAuthnRequestsSigned(Boolean.TRUE);
@@ -264,8 +265,9 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(descriptor.isAuthnRequestsSignedXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(descriptor.isAuthnRequestsSignedXSBoolean(), new XSBooleanValue(Boolean.TRUE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(descriptor.isAuthnRequestsSignedXSBoolean().toString(), "true",
-                "XSBooleanValue string was unexpected value");
+        XSBooleanValue bool = descriptor.isAuthnRequestsSignedXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "true", "XSBooleanValue string was unexpected value");
 
         descriptor.setAuthnRequestsSigned(Boolean.FALSE);
         Assert.assertEquals(descriptor.isAuthnRequestsSigned(), Boolean.FALSE,
@@ -273,7 +275,9 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(descriptor.isAuthnRequestsSignedXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(descriptor.isAuthnRequestsSignedXSBoolean(), new XSBooleanValue(Boolean.FALSE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(descriptor.isAuthnRequestsSignedXSBoolean().toString(), "false",
+        bool = descriptor.isAuthnRequestsSignedXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "false",
                 "XSBooleanValue string was unexpected value");
 
         descriptor.setAuthnRequestsSigned((Boolean) null);
@@ -288,8 +292,9 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(descriptor.getWantAssertionsSignedXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(descriptor.getWantAssertionsSignedXSBoolean(), new XSBooleanValue(Boolean.TRUE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(descriptor.getWantAssertionsSignedXSBoolean().toString(), "true",
-                "XSBooleanValue string was unexpected value");
+        bool = descriptor.getWantAssertionsSignedXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "true", "XSBooleanValue string was unexpected value");
 
         descriptor.setWantAssertionsSigned(Boolean.FALSE);
         Assert.assertEquals(descriptor.getWantAssertionsSigned(), Boolean.FALSE,
@@ -297,8 +302,9 @@ public class SPSSODescriptorTest extends XMLObjectProviderBaseTestCase {
         Assert.assertNotNull(descriptor.getWantAssertionsSignedXSBoolean(), "XSBooleanValue was null");
         Assert.assertEquals(descriptor.getWantAssertionsSignedXSBoolean(), new XSBooleanValue(Boolean.FALSE, false),
                 "XSBooleanValue was unexpected value");
-        Assert.assertEquals(descriptor.getWantAssertionsSignedXSBoolean().toString(), "false",
-                "XSBooleanValue string was unexpected value");
+        bool = descriptor.getWantAssertionsSignedXSBoolean();
+        assert bool != null;
+        Assert.assertEquals(bool.toString(), "false", "XSBooleanValue string was unexpected value");
 
         descriptor.setWantAssertionsSigned((Boolean) null);
         Assert.assertEquals(descriptor.getWantAssertionsSigned(), Boolean.FALSE,

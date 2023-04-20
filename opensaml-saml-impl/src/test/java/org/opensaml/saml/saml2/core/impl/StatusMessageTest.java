@@ -27,6 +27,7 @@ import org.opensaml.saml.saml2.core.StatusMessage;
  * Test case for creating, marshalling, and unmarshalling
  * {@link org.opensaml.saml.saml2.core.impl.StatusMessageImpl}.
  */
+@SuppressWarnings({"null", "javadoc"})
 public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     
    /** The expected message*/ 
@@ -49,7 +50,7 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        StatusMessage message = (StatusMessage) buildXMLObject(StatusMessage.DEFAULT_ELEMENT_NAME);
+        final StatusMessage message = (StatusMessage) buildXMLObject(StatusMessage.DEFAULT_ELEMENT_NAME);
         
         message.setValue(expectedMessage);
         
@@ -59,8 +60,9 @@ public class StatusMessageTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        StatusMessage message = (StatusMessage) unmarshallElement(singleElementFile);
-        
+        final StatusMessage message = (StatusMessage) unmarshallElement(singleElementFile);
+        assert message!=null;
+
         Assert.assertEquals(message.getValue(), expectedMessage, "Unmarshalled status message was not the expected value");   
     }
 }

@@ -29,6 +29,7 @@ import org.opensaml.saml.saml2.core.Artifact;
 /**
  *
  */
+@SuppressWarnings({"null", "javadoc"})
 public class ArtifactTest extends XMLObjectProviderBaseTestCase {
     
     /** Expected element content*/
@@ -50,15 +51,15 @@ public class ArtifactTest extends XMLObjectProviderBaseTestCase {
     /** {@inheritDoc} */
     @Test
     public void testSingleElementUnmarshall() {
-        Artifact artifact = (Artifact) unmarshallElement(singleElementFile);
-        
+        final Artifact artifact = (Artifact) unmarshallElement(singleElementFile);
+        assert artifact != null;
         Assert.assertEquals(artifact.getValue(), expectedContent, "Artifact content is not the expected value");
     }
 
     /** {@inheritDoc} */
     @Test
     public void testSingleElementMarshall() {
-        Artifact artifact = (Artifact) buildXMLObject(Artifact.DEFAULT_ELEMENT_NAME);
+        final Artifact artifact = (Artifact) buildXMLObject(Artifact.DEFAULT_ELEMENT_NAME);
         
         artifact.setValue(expectedContent);
         

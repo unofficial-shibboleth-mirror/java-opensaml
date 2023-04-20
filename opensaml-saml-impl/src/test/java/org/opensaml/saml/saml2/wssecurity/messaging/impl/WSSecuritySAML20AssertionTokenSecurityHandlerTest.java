@@ -66,7 +66,7 @@ import net.shibboleth.shared.testing.ConstantSupplier;
 /**
  * Unit test for {@link WSSecuritySAML20AssertionTokenSecurityHandler}.
  */
-@SuppressWarnings("javadoc")
+@SuppressWarnings({"null", "javadoc"})
 public class WSSecuritySAML20AssertionTokenSecurityHandlerTest extends XMLObjectBaseTestCase {
     private WSSecuritySAML20AssertionTokenSecurityHandler handler;
     
