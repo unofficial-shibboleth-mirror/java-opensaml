@@ -144,9 +144,9 @@ public class HolderOfKeySubjectConfirmationValidatorTest extends BaseAssertionVa
         KeyInfoSupport.addCertificate(keyInfo, cert1);
         
         Map<String,Object> staticParams = buildBasicStaticParameters();
+        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, cert2);
         
         ValidationContext validationContext = new ValidationContext(staticParams);
-        staticParams.put(SAML2AssertionValidationParameters.SC_HOK_PRESENTER_CERT, cert2);
         
         Assert.assertEquals(validator.validate(subjectConfirmation, getAssertion(), validationContext), 
                 ValidationResult.INVALID);
