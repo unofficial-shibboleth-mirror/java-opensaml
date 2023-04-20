@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.core.config.ConfigurationService;
 
 /**
@@ -28,39 +31,83 @@ public final class SecurityConfigurationSupport {
     private SecurityConfigurationSupport() { }
     
     /**
-     * Get the global {@link DecryptionConfiguration}  instance.
+     * Get the global {@link DecryptionConfiguration} instance.
      * 
      * @return the global decryption configuration
      */
-    public static DecryptionConfiguration getGlobalDecryptionConfiguration() {
+    @Nullable public static DecryptionConfiguration getGlobalDecryptionConfiguration() {
         return ConfigurationService.get(DecryptionConfiguration.class);
     }
 
     /**
-     * Get the global {@link EncryptionConfiguration}  instance.
+     * Get the global {@link DecryptionConfiguration} instance, raising an exception if absent.
+     * 
+     * @return the global decryption configuration
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static DecryptionConfiguration ensureGlobalDecryptionConfiguration() {
+        return ConfigurationService.ensure(DecryptionConfiguration.class);
+    }
+    
+    /**
+     * Get the global {@link EncryptionConfiguration} instance.
      * 
      * @return the global encryption configuration
      */
-    public static EncryptionConfiguration getGlobalEncryptionConfiguration() {
+    @Nullable public static EncryptionConfiguration getGlobalEncryptionConfiguration() {
         return ConfigurationService.get(EncryptionConfiguration.class);
     }
     
     /**
-     * Get the global {@link SignatureSigningConfiguration }  instance.
+     * Get the global {@link EncryptionConfiguration} instance, raising an exception if absent.
      * 
-     * @return the global signature signing configuration
+     * @return the global encryption configuration
+     * 
+     * @since 5.0.0
      */
-    public static SignatureSigningConfiguration getGlobalSignatureSigningConfiguration() {
-        return ConfigurationService.get(SignatureSigningConfiguration.class);
+    @Nonnull public static EncryptionConfiguration ensureGlobalEncryptionConfiguration() {
+        return ConfigurationService.ensure(EncryptionConfiguration.class);
     }
     
     /**
-     * Get the global {@link SignatureValidationConfiguration}  instance.
+     * Get the global {@link SignatureSigningConfiguration} instance.
+     * 
+     * @return the global signature signing configuration
+     */
+    @Nullable public static SignatureSigningConfiguration getGlobalSignatureSigningConfiguration() {
+        return ConfigurationService.get(SignatureSigningConfiguration.class);
+    }
+
+    /**
+     * Get the global {@link SignatureSigningConfiguration} instance, raising an exception if absent.
+     * 
+     * @return the global signature signing configuration
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static SignatureSigningConfiguration ensureGlobalSignatureSigningConfiguration() {
+        return ConfigurationService.ensure(SignatureSigningConfiguration.class);
+    }
+
+    /**
+     * Get the global {@link SignatureValidationConfiguration} instance.
      * 
      * @return the global signature validation configuration
      */
-    public static SignatureValidationConfiguration getGlobalSignatureValidationConfiguration() {
+    @Nullable public static SignatureValidationConfiguration getGlobalSignatureValidationConfiguration() {
         return ConfigurationService.get(SignatureValidationConfiguration.class);
     }
     
+    /**
+     * Get the global {@link SignatureValidationConfiguration} instance, raising an exception if absent.
+     * 
+     * @return the global signature validation configuration
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public static SignatureValidationConfiguration ensureGlobalSignatureValidationConfiguration() {
+        return ConfigurationService.ensure(SignatureValidationConfiguration.class);
+    }
+
 }
