@@ -139,7 +139,7 @@ public class InlineSelfEncryptionParametersStrategyTest extends OpenSAMLInitBase
                 rsaParams.setDigestMethod(EncryptionConstants.ALGO_ID_DIGEST_SHA256);
                 selfConfig.setRSAOAEPParameters(rsaParams);
                 selfConfig.setRSAOAEPParametersMerge(true);
-                return CollectionSupport.listOf(selfConfig, SecurityConfigurationSupport.getGlobalEncryptionConfiguration());
+                return CollectionSupport.listOf(selfConfig, SecurityConfigurationSupport.ensureGlobalEncryptionConfiguration());
         }};
         
         final InlineSelfEncryptionParametersStrategy strategy = new InlineSelfEncryptionParametersStrategy(credResolver, paramsResolver, configStrategy);
