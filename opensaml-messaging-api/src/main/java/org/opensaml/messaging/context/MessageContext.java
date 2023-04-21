@@ -20,7 +20,6 @@ package org.opensaml.messaging.context;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.logic.ConstraintViolationException;
 
 /**
@@ -57,7 +56,10 @@ public final class MessageContext extends BaseContext {
      * @since 5.0.0
      */
     @Nonnull public Object ensureMessage() {
-        return Constraint.isNotNull(msg, "Message was null");
+        if (msg != null) {
+            return msg;
+        }
+        throw new IllegalStateException("Message was null");
     }
     
     /**

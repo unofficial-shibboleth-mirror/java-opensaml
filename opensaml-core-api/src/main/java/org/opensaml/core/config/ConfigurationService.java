@@ -104,8 +104,13 @@ public class ConfigurationService {
      */
     @Nonnull public static <T extends Object> T ensure(@Nonnull final Class<T> configClass) {
         final String partitionName = getPartitionName();
-        return Constraint.isNotNull(getConfiguration().get(configClass, partitionName),
-                "Configuration instance of type " + configClass.getName() + " was unavailable");
+        final T config = getConfiguration().get(configClass, partitionName);
+        if (config == null) {
+            throw new IllegalStateException("Configuration instance of type "
+                    + configClass.getName() + " was unavailable");
+        }
+        
+        return config;
     }
 
     /**

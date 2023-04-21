@@ -111,7 +111,10 @@ public abstract class AbstractXMLObject implements XMLObject {
 
     /** {@inheritDoc} */
     @Nonnull public Element ensureDOM() {
-        return Constraint.isNotNull(dom, "DOM was null");
+        if (dom != null) {
+            return dom;
+        }
+        throw new XMLRuntimeException("DOM was null");
     }
 
     /** {@inheritDoc} */
@@ -496,7 +499,8 @@ public abstract class AbstractXMLObject implements XMLObject {
      */
     protected void setElementQName(@Nonnull final QName name) {
         Constraint.isNotNull(name, "Element QName cannot be null");
-        elementQname = QNameSupport.constructQName(name.getNamespaceURI(), name.getLocalPart(), name.getPrefix());
+        elementQname = QNameSupport.constructQName(name.getNamespaceURI(), QNameSupport.ensureLocalPart(name),
+                name.getPrefix());
         getNamespaceManager().registerElementName(elementQname);
     }
 

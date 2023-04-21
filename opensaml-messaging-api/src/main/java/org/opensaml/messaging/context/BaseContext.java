@@ -17,7 +17,6 @@
 
 package org.opensaml.messaging.context;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
@@ -115,7 +114,12 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @return the held instance of the class, or null
      */ 
     @Nonnull public <T extends BaseContext> T ensureSubcontext(@Nonnull final Class<T> clazz) {
-        return Constraint.isNotNull(getSubcontext(clazz, true), "Auto-creation of subcontext failed");
+        final T newContext = getSubcontext(clazz, true);
+        if (newContext == null) {
+            throw new IllegalStateException("Context of type " + clazz.getName() + "did not exist or was not created");
+        }
+        
+        return newContext;
     }
     
     /**
@@ -170,7 +174,12 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @return the held instance of the class, or null
      */ 
     @Nullable public BaseContext ensureSubcontext(@Nonnull @NotEmpty final String className) {
-        return Constraint.isNotNull(getSubcontext(className, true), "Auto-creation of subcontext failed");
+        final BaseContext newContext = getSubcontext(className, true);
+        if (newContext == null) {
+            throw new IllegalStateException("Context of type " + className + "did not exist or was not created");
+        }
+        
+        return newContext;
     }
     
     /**
@@ -340,10 +349,8 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * @return the new subcontext instance
      */
     @Nonnull protected <T extends BaseContext> T createSubcontext(@Nonnull final Class<T> clazz) {
-        final Constructor<T> constructor;
         try {
-            constructor = clazz.getConstructor();
-            return constructor.newInstance();
+            return clazz.getConstructor().newInstance();
         } catch (final SecurityException|NoSuchMethodException|IllegalArgumentException|InstantiationException|
                     IllegalAccessException|InvocationTargetException e) {
             log.error("Error creating subcontext: {}", e.getMessage());
