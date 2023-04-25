@@ -109,7 +109,7 @@ public class JSONClientStorageServiceStore extends AbstractClientStorageServiceS
         
         if (getContextMap().isEmpty()) {
             log.trace("{} Data is empty", storageService.getLogPrefix());
-            return new ClientStorageServiceOperation(storageService.getId(), storageService.getStorageName(), null,
+            return new ClientStorageServiceOperation(storageService.ensureId(), storageService.getStorageName(), null,
                     source);
         }
 

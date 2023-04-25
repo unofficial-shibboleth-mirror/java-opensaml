@@ -173,7 +173,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /** {@inheritDoc} */
     @Override
     public int hashCode() {
-        return getId().hashCode();
+        return ensureId().hashCode();
     }
 
     /** {@inheritDoc} */
@@ -188,7 +188,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
         }
 
         if (obj instanceof BindingDescriptor) {
-            return getId().equals(((BindingDescriptor) obj).getId());
+            return ensureId().equals(((BindingDescriptor) obj).getId());
         }
 
         return false;
@@ -197,7 +197,7 @@ public class BindingDescriptor extends AbstractIdentifiableInitializableComponen
     /** {@inheritDoc} */
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("bindingId", getId())
+        return MoreObjects.toStringHelper(this).add("bindingId", ensureId())
                 .add("shortName", shortName)
                 .add("synchronous", synchronous)
                 .add("artifact", artifact)

@@ -82,7 +82,7 @@ public class SaveCookieBackedClientStorageServices
         storageServices = new HashMap<>(services.size());
         for (final ClientStorageService ss : services) {
             if (ss != null) {
-                storageServices.put(ss.getId(), ss);
+                storageServices.put(ss.ensureId(), ss);
             }
         }
     }
