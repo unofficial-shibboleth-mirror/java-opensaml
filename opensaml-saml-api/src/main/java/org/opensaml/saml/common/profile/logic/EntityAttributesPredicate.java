@@ -45,6 +45,7 @@ import org.slf4j.Logger;
 import com.google.common.collect.Iterables;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
@@ -59,7 +60,11 @@ import java.util.function.Predicate;
 
 /**
  * Predicate to determine whether an {@link EntityDescriptor} or its parent groups contain an {@link EntityAttributes}
- * extension {@link Attribute} that matches the predicate's criteria. 
+ * extension {@link Attribute} that matches the predicate's criteria.
+ * 
+ * <p>This class uses a nested helper class, {@link Candidate}, to capture the rules to check for, with each such
+ * object representing a single condition that the predicate can combine either via an AND or OR semantic to produce
+ * the final result. Each {@link Candidate}'s own matching rules must match entirely.</p>
  */
 public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
 
@@ -204,6 +209,9 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
     /**
      * An object to encapsulate the set of criteria that must be satisfied by an {@link EntityAttributes}
      * extension to satisfy the enclosing predicate.
+     * 
+     * <p>All of the value and regular expression criteria provided must match for the individual object's result
+     * to be "true".</p>
      */
     public static class Candidate {
         
@@ -314,7 +322,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
     private class EntityAttributesMatcher implements Predicate<Candidate> {
         
         /** Population to evaluate for a match. */
-        private final Collection<Attribute> attributes;
+        @Nonnull private final Collection<Attribute> attributes;
         
         /**
          * Constructor.
@@ -412,7 +420,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @param attribute what to inspect
          * @return all possible values, as string.
          */
-        @Nonnull List<String> getPossibleAttributeValuesAsStrings(final @Nonnull Attribute attribute) {
+        @Nonnull @Live private List<String> getPossibleAttributeValuesAsStrings(final @Nonnull Attribute attribute) {
             final List<XMLObject> cvals = attribute.getAttributeValues();
             final List<String> result = new ArrayList<>(cvals.size()*2);
             for (final XMLObject cval : cvals) {
@@ -428,7 +436,7 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
          * @param object object to convert
          * @return the converted value, or null
          */
-        @Nullable private List<String> xmlObjectToStrings(@Nonnull final XMLObject object) {
+        @Nullable @Unmodifiable @NotLive private List<String> xmlObjectToStrings(@Nonnull final XMLObject object) {
             String toMatch = null;
             String toMatchAlt = null;
             if (object instanceof XSString xs) {
@@ -459,8 +467,8 @@ public class EntityAttributesPredicate implements Predicate<EntityDescriptor> {
                     toMatch = wc.getTextContent();
                 }
             }
-            if (toMatchAlt != null) {
-                return List.of(toMatch, toMatchAlt);
+            if (toMatch != null && toMatchAlt != null) {
+                return CollectionSupport.listOf(toMatch, toMatchAlt);
             } else if (toMatch != null) {
                 return CollectionSupport.singletonList(toMatch);
             }
