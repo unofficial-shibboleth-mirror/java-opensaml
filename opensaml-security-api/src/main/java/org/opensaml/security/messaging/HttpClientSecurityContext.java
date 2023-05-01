@@ -34,10 +34,10 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public final class HttpClientSecurityContext extends BaseContext {
     
     /** The HttpClient security parameters instance. */
-    private HttpClientSecurityParameters securityParameters;
+    @Nullable private HttpClientSecurityParameters securityParameters;
     
     /** TLS criteria strategy function. */
-    private Function<MessageContext,CriteriaSet> tlsCriteriaSetStrategy;
+    @Nullable private Function<MessageContext,CriteriaSet> tlsCriteriaSetStrategy;
     
     /**
      * Get the {@link HttpClientSecurityParameters} instance.

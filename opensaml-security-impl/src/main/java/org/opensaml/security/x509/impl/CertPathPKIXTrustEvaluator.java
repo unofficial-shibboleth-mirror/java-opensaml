@@ -127,7 +127,6 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean validate(@Nonnull final PKIXValidationInformation validationInfo,
             @Nonnull final X509Credential untrustedCredential) throws SecurityException {
         
@@ -144,6 +143,7 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
             final CertPathBuilder builder = CertPathBuilder.getInstance("PKIX");
             final PKIXCertPathBuilderResult buildResult = (PKIXCertPathBuilderResult) builder.build(params);
             if (log.isDebugEnabled()) {
+                assert buildResult != null;
                 logCertPathDebug(buildResult, untrustedCredential.getEntityCertificate());
                 log.debug("PKIX validation succeeded for untrusted credential: {}",
                         X509Support.getIdentifiersToken(untrustedCredential, getX500DNHandler()));
@@ -176,8 +176,9 @@ public class CertPathPKIXTrustEvaluator implements PKIXTrustEvaluator {
      * 
      * @throws GeneralSecurityException thrown if the parameters can not be created
      */
-    protected PKIXBuilderParameters getPKIXBuilderParameters(@Nonnull final PKIXValidationInformation validationInfo,
-            @Nonnull final X509Credential untrustedCredential) throws GeneralSecurityException {
+    @Nonnull protected PKIXBuilderParameters getPKIXBuilderParameters(
+            @Nonnull final PKIXValidationInformation validationInfo, @Nonnull final X509Credential untrustedCredential)
+                    throws GeneralSecurityException {
         final Set<TrustAnchor> trustAnchors = getTrustAnchors(validationInfo);
         if (trustAnchors == null || trustAnchors.isEmpty()) {
             throw new GeneralSecurityException(

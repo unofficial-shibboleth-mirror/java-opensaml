@@ -77,13 +77,11 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public Collection<X509CRL> getCRLs() {
         return CollectionSupport.emptyList();
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull public X509Certificate getEntityCertificate() {
         try {
             final Certificate cert = keyStore.getCertificate(credentialAlias);
@@ -98,7 +96,6 @@ public class KeyStoreX509CredentialAdapter extends AbstractCredential implements
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull public Collection<X509Certificate> getEntityCertificateChain() {
         List<X509Certificate> certsCollection = CollectionSupport.emptyList();
 

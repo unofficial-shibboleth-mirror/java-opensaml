@@ -22,12 +22,16 @@ import java.util.Set;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.resolver.CriteriaSet;
+import net.shibboleth.shared.resolver.Criterion;
 import net.shibboleth.shared.resolver.Resolver;
 import net.shibboleth.shared.resolver.ResolverException;
 
 /**
- * A resolver which uses {@link net.shibboleth.shared.resolver.Criterion} to resolve
+ * A resolver which uses {@link Criterion} to resolve
  * {@link PKIXValidationInformation}, which will typically be used by PKIX-based trust engines.
  * 
  * Implementations must also implement {@link #resolveTrustedNames(CriteriaSet)}, which will 
@@ -46,14 +50,14 @@ public interface PKIXValidationInformationResolver extends Resolver<PKIXValidati
      * @throws ResolverException thrown if there is an error resolving the trusted names
      * @throws UnsupportedOperationException thrown if this optional method is not supported by the implementation
      */
-    @Nonnull public Set<String> resolveTrustedNames(@Nullable final CriteriaSet criteriaSet)
-        throws ResolverException;
+    @Nonnull @NonnullElements @Unmodifiable @NotLive Set<String> resolveTrustedNames(
+            @Nullable final CriteriaSet criteriaSet) throws ResolverException;
     
     /**
      * Check whether resolution of trusted names is supported.
      * 
      * @return true if the implementation supports resolution of trusted names, otherwise false
      */
-    public boolean supportsTrustedNameResolution();
+    boolean supportsTrustedNameResolution();
 
 }

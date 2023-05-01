@@ -25,6 +25,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
 
@@ -43,7 +44,8 @@ public class ClientTLSValidationConfigurationCriterion implements Criterion {
      */
     public ClientTLSValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
             List<ClientTLSValidationConfiguration> configurations) {
-        configs = List.copyOf(Constraint.isNotNull(configurations, "List of configurations cannot be null"));
+        configs = CollectionSupport.copyToList(Constraint.isNotNull(configurations,
+                "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
     
@@ -54,7 +56,8 @@ public class ClientTLSValidationConfigurationCriterion implements Criterion {
      */
     public ClientTLSValidationConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
             ClientTLSValidationConfiguration... configurations) {
-        configs = List.of(Constraint.isNotNull(configurations, "List of configurations cannot be null"));
+        configs = CollectionSupport.listOf(Constraint.isNotNull(configurations,
+                "List of configurations cannot be null"));
         Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
     

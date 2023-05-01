@@ -19,6 +19,7 @@ package org.opensaml.security.httpclient;
 
 import java.io.IOException;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.apache.hc.client5.http.protocol.HttpClientContext;
@@ -59,7 +60,8 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
     }
     
     /** {@inheritDoc} */
-    public void invokeBefore(final HttpClientContext context, final ClassicHttpRequest request) throws IOException {
+    public void invokeBefore(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)
+            throws IOException {
         checkComponentActive();
         
         HttpClientSecuritySupport.marshalSecurityParameters(context, httpClientSecurityParameters, false);
@@ -67,7 +69,9 @@ public class HttpClientSecurityContextHandler extends AbstractInitializableCompo
     }
 
     /** {@inheritDoc} */
-    public void invokeAfter(final HttpClientContext context, final ClassicHttpRequest request) throws IOException {
+    @SuppressWarnings("null")
+    public void invokeAfter(@Nonnull final HttpClientContext context, @Nonnull final ClassicHttpRequest request)
+            throws IOException {
         checkComponentActive();
         
         HttpClientSecuritySupport.checkTLSCredentialEvaluated(context, request.getScheme());

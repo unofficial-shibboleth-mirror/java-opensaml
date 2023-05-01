@@ -26,6 +26,10 @@ import javax.annotation.Nullable;
 import org.opensaml.security.x509.PKIXValidationInformation;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Basic implementation of {@link PKIXValidationInformation}.
@@ -33,13 +37,13 @@ import net.shibboleth.shared.annotation.ParameterName;
 public class BasicPKIXValidationInformation implements PKIXValidationInformation {
 
     /** Certs used as the trust anchors. */
-    private final Collection<X509Certificate> trustAnchors;
+    @Nullable @NonnullElements private final Collection<X509Certificate> trustAnchors;
 
     /** CRLs used during validation. */
-    private final Collection<X509CRL> trustedCRLs;
+    @Nullable @NonnullElements private final Collection<X509CRL> trustedCRLs;
 
     /** Max verification depth during PKIX validation. */
-    private final Integer verificationDepth;
+    @Nullable private final Integer verificationDepth;
 
     /**
      * Constructor.
@@ -49,30 +53,28 @@ public class BasicPKIXValidationInformation implements PKIXValidationInformation
      * @param depth max verification path depth
      */
     public BasicPKIXValidationInformation(
-            @Nullable @ParameterName(name="anchors") final Collection<X509Certificate> anchors,
-            @Nullable @ParameterName(name="crls") final Collection<X509CRL> crls,
-            @Nullable @ParameterName(name="depth") final Integer depth) {
+            @Nullable @NonnullElements @ParameterName(name="anchors") final Collection<X509Certificate> anchors,
+            @Nullable @NonnullElements @ParameterName(name="crls") final Collection<X509CRL> crls,
+            @Nullable @NonnullElements @ParameterName(name="depth") final Integer depth) {
 
         verificationDepth = depth;
-        trustAnchors = anchors;
-        trustedCRLs = crls;
+        trustAnchors = anchors != null ? CollectionSupport.copyToList(anchors) : null;
+        trustedCRLs = crls != null ? CollectionSupport.copyToList(crls) : null;
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nullable public Collection<X509CRL> getCRLs() {
+    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509CRL> getCRLs() {
         return trustedCRLs;
     }
 
     /** {@inheritDoc} */
-    @Override
-    @Nullable public Collection<X509Certificate> getCertificates() {
+    @Nullable @NonnullElements @Unmodifiable @NotLive public Collection<X509Certificate> getCertificates() {
         return trustAnchors;
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nullable public Integer getVerificationDepth() {
         return verificationDepth;
     }
+
 }

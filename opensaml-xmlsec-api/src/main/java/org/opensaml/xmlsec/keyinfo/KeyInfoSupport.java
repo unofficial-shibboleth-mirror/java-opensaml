@@ -91,6 +91,7 @@ import org.slf4j.Logger;
 
 import com.google.common.base.Strings;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.codec.Base64Support;
 import net.shibboleth.shared.codec.DecodingException;
@@ -169,7 +170,7 @@ public final class KeyInfoSupport {
      * @throws CertificateException thrown if there is a problem converting the X509 data into
      *             {@link java.security.cert.X509Certificate}s.
      */
-    @Nonnull public static List<X509Certificate> getCertificates(@Nullable final KeyInfo keyInfo)
+    @Nonnull @Live public static List<X509Certificate> getCertificates(@Nullable final KeyInfo keyInfo)
             throws CertificateException {
         final List<X509Certificate> certList = new LinkedList<>();
 
@@ -195,7 +196,7 @@ public final class KeyInfoSupport {
      * @throws CertificateException thrown if there is a problem converting the X509 data into
      *             {@link java.security.cert.X509Certificate}s.
      */
-    @Nonnull public static List<X509Certificate> getCertificates(@Nullable final X509Data x509Data)
+    @Nonnull @Live public static List<X509Certificate> getCertificates(@Nullable final X509Data x509Data)
             throws CertificateException {
         final List<X509Certificate> certList = new LinkedList<>();
 

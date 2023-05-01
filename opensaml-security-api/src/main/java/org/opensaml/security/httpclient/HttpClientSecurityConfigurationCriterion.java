@@ -25,6 +25,7 @@ import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.resolver.Criterion;
 
@@ -44,7 +45,7 @@ public class HttpClientSecurityConfigurationCriterion implements Criterion {
     public HttpClientSecurityConfigurationCriterion(@Nonnull @NonnullElements @NotEmpty final
             List<HttpClientSecurityConfiguration> configurations) {
         Constraint.isNotNull(configurations, "List of configurations cannot be null");
-        configs = List.copyOf(configurations);
+        configs = CollectionSupport.copyToList(configurations);
         Constraint.isNotEmpty(configs, "At least one configuration is required");
         
     }
@@ -57,7 +58,7 @@ public class HttpClientSecurityConfigurationCriterion implements Criterion {
     public HttpClientSecurityConfigurationCriterion(@Nonnull @NonnullElements  @NotEmpty final
             HttpClientSecurityConfiguration... configurations) {
         Constraint.isNotNull(configurations, "List of configurations cannot be null");
-        configs = List.of(configurations);
+        configs = CollectionSupport.listOf(configurations);
         Constraint.isNotEmpty(configs, "At least one configuration is required");
     }
     

@@ -37,5 +37,5 @@ public interface TrustedCredentialTrustEngine<TokenType> extends TrustEngine<Tok
      * @return credential resolver used to recover trusted credentials 
      *         that may be used to validate tokens
      */
-    @Nonnull public CredentialResolver getCredentialResolver();
+    @Nonnull CredentialResolver getCredentialResolver();
 }

@@ -30,7 +30,7 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class X509SubjectNameCriterion implements Criterion {
     
     /** X.509 certificate subject name. */
-    private X500Principal subjectName;
+    @Nonnull private X500Principal subjectName;
     
     /**
      * Constructor.
@@ -38,7 +38,7 @@ public final class X509SubjectNameCriterion implements Criterion {
      * @param subject certificate subject name
      */
     public X509SubjectNameCriterion(@Nonnull final X500Principal subject) {
-        setSubjectName(subject);
+        subjectName = Constraint.isNotNull(subject, "Subject principal criteria value cannot be null");
     }
 
     /**
@@ -56,8 +56,7 @@ public final class X509SubjectNameCriterion implements Criterion {
      * @param subject The subject name
      */
     public void setSubjectName(@Nonnull final X500Principal subject) {
-        Constraint.isNotNull(subject, "Subject principal criteria value cannot be null");
-        this.subjectName = subject;
+        subjectName = Constraint.isNotNull(subject, "Subject principal criteria value cannot be null");
     }
     
     /** {@inheritDoc} */

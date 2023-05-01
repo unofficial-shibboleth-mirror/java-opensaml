@@ -30,7 +30,7 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class X509SubjectKeyIdentifierCriterion implements Criterion {
     
     /** X.509 certificate subject key identifier. */
-    private byte[] subjectKeyIdentifier;
+    @Nonnull private byte[] subjectKeyIdentifier;
     
     /**
      * Constructor.
@@ -38,7 +38,10 @@ public final class X509SubjectKeyIdentifierCriterion implements Criterion {
      * @param ski certificate subject key identifier
      */
     public X509SubjectKeyIdentifierCriterion(@Nonnull final byte[] ski) {
-        setSubjectKeyIdentifier(ski);
+        if (ski == null || ski.length == 0) {
+            throw new IllegalArgumentException("Subject key identifier criteria value cannot be null or empty");
+        }
+        subjectKeyIdentifier = ski;
     }
     
     /**

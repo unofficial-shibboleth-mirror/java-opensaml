@@ -35,7 +35,7 @@ public interface PKIXTrustEvaluator {
      * @return true if the credential can be successfully evaluated, false otherwise
      * @throws SecurityException thrown if there is an error evaluating the credential
      */
-    public boolean validate(@Nonnull final PKIXValidationInformation validationInfo,
+    boolean validate(@Nonnull final PKIXValidationInformation validationInfo,
             @Nonnull final X509Credential untrustedCredential) throws SecurityException;
     
     /**
@@ -43,6 +43,6 @@ public interface PKIXTrustEvaluator {
      * 
      * @return the PKIXValidationOptions instance
      */
-    @Nonnull public PKIXValidationOptions getPKIXValidationOptions();
+    @Nonnull PKIXValidationOptions getPKIXValidationOptions();
     
 }

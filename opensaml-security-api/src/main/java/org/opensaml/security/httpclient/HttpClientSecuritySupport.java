@@ -39,10 +39,10 @@ import org.opensaml.security.credential.UsageType;
 import org.opensaml.security.criteria.UsageCriterion;
 import org.opensaml.security.x509.TrustedNamesCriterion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
 
 /**
@@ -51,7 +51,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 public final class HttpClientSecuritySupport {
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(HttpClientSecuritySupport.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(HttpClientSecuritySupport.class);
     
     /** Constructor. */
     private HttpClientSecuritySupport() {}

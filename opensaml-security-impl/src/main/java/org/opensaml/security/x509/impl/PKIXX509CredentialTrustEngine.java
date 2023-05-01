@@ -31,6 +31,7 @@ import org.opensaml.security.x509.X509Credential;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -98,7 +99,6 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
 
     /** {@inheritDoc} */
-    @Override
     @Nonnull public PKIXValidationInformationResolver getPKIXResolver() {
         return pkixResolver;
     }
@@ -129,7 +129,6 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
     }
 
     /** {@inheritDoc} */
-    @Override
     public boolean validate(@Nonnull final X509Credential untrustedCredential,
             @Nullable final CriteriaSet trustBasisCriteria)
         throws SecurityException {
@@ -169,7 +168,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
      *          against trusted names or validation information
      */
     protected boolean validate(@Nonnull final X509Credential untrustedX509Credential,
-            @Nullable final Set<String> trustedNames,
+            @Nullable @NonnullElements final Set<String> trustedNames,
             @Nonnull final Iterable<PKIXValidationInformation> validationInfoSet) throws SecurityException {
         
         log.debug("Beginning PKIX validation using trusted validation information");
@@ -205,7 +204,7 @@ public class PKIXX509CredentialTrustEngine implements PKIXTrustEngine<X509Creden
      * @return true if evaluation is successful, false otherwise
      * @throws SecurityException thrown if there is an error evaluation the credential
      */
-    protected boolean checkNames(@Nullable final Set<String> trustedNames,
+    protected boolean checkNames(@Nullable @NonnullElements final Set<String> trustedNames,
             @Nonnull final X509Credential untrustedCredential)  throws SecurityException {
         
         if (credNameEvaluator == null) {

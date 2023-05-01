@@ -41,11 +41,13 @@ public final class HttpClientSecurityConstants {
     
     /** Context key for a server TLS credential evaluation result, populated by specialized instances 
      * of HttpClient socket factories. Type will be a {@link Boolean}. */
-    @Nonnull @NotEmpty public static final String CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED = "opensaml.ServerTLSCredentialTrusted";
+    @Nonnull @NotEmpty
+    public static final String CONTEXT_KEY_SERVER_TLS_CREDENTIAL_TRUSTED = "opensaml.ServerTLSCredentialTrusted";
     
     /** Context key for indicating whether server TLS evaluation failure should be treated as a fatal error.
      * Type will be a {@link Boolean}. */
-    @Nonnull @NotEmpty public static final String CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL = "opensaml.ServerTLSFailureIsFatal";
+    @Nonnull @NotEmpty
+    public static final String CONTEXT_KEY_SERVER_TLS_FAILURE_IS_FATAL = "opensaml.ServerTLSFailureIsFatal";
     
     /** HttpContext key for the client TLS credential. 
      * Must be an instance of {@link org.opensaml.security.x509.X509Credential}. */
@@ -53,14 +55,17 @@ public final class HttpClientSecurityConstants {
     
     /** HttpContext key for a a list of TLS protocols to enable on the socket.  
      * Must be an instance of {@link java.util.List}<code>&lt;</code>{@link String}<code>&gt;</code>. */
-    @Nonnull @NotEmpty public static final String CONTEXT_KEY_TLS_PROTOCOLS = TLSSocketFactory.CONTEXT_KEY_TLS_PROTOCOLS;
+    @Nonnull @NotEmpty
+    public static final String CONTEXT_KEY_TLS_PROTOCOLS = TLSSocketFactory.CONTEXT_KEY_TLS_PROTOCOLS;
     
     /** HttpContext key for a a list of TLS cipher suites to enable on the socket.  
      * Must be an instance of {@link java.util.List}<code>&lt;</code>{@link String}<code>&gt;</code>. */
-    @Nonnull @NotEmpty public static final String CONTEXT_KEY_TLS_CIPHER_SUITES = TLSSocketFactory.CONTEXT_KEY_TLS_CIPHER_SUITES;
+    @Nonnull @NotEmpty
+    public static final String CONTEXT_KEY_TLS_CIPHER_SUITES = TLSSocketFactory.CONTEXT_KEY_TLS_CIPHER_SUITES;
     
     /** HttpContext key for an instance of {@link javax.net.ssl.HostnameVerifier}. */
-    @Nonnull @NotEmpty public static final String CONTEXT_KEY_HOSTNAME_VERIFIER = TLSSocketFactory.CONTEXT_KEY_HOSTNAME_VERIFIER;
+    @Nonnull @NotEmpty
+    public static final String CONTEXT_KEY_HOSTNAME_VERIFIER = TLSSocketFactory.CONTEXT_KEY_HOSTNAME_VERIFIER;
     
     /** Constructor. */
     private HttpClientSecurityConstants() {}

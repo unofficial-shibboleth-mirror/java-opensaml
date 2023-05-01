@@ -50,7 +50,8 @@ public class ServletRequestX509CredentialAdapter extends AbstractCredential impl
     @Nonnull @NotEmpty public static final String X509_CERT_REQUEST_ATTRIBUTE = "javax.servlet.request.X509Certificate";
     
     /** Servlet request attribute to pull certificate info from. */
-    @Nonnull @NotEmpty public static final String JAKARTA_X509_CERT_REQUEST_ATTRIBUTE = "jakarta.servlet.request.X509Certificate";
+    @Nonnull @NotEmpty public static final String JAKARTA_X509_CERT_REQUEST_ATTRIBUTE =
+            "jakarta.servlet.request.X509Certificate";
     
     /** The entity certificate. */
     @Nonnull private X509Certificate cert;

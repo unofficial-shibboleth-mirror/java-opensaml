@@ -32,10 +32,10 @@ import net.shibboleth.shared.resolver.Criterion;
 public final class X509IssuerSerialCriterion implements Criterion {
     
     /** X.509 certificate issuer name. */
-    private X500Principal issuerName;
+    @Nonnull private X500Principal issuerName;
     
     /** X.509 certificate serial number. */
-    private BigInteger serialNumber;
+    @Nonnull private BigInteger serialNumber;
     
     /**
      * Constructor.
@@ -44,8 +44,8 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * @param serial certificate serial number
      */
     public X509IssuerSerialCriterion(@Nonnull final X500Principal issuer, @Nonnull final BigInteger serial) {
-        setIssuerName(issuer);
-        setSerialNumber(serial);
+        issuerName = Constraint.isNotNull(issuer, "Issuer principal criteria value cannot be null");
+        serialNumber = Constraint.isNotNull(serial, "Serial number criteria value cannot be null");
     }
     
     /** Get the issuer name.
@@ -62,8 +62,7 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * @param issuer The issuer name to set.
      */
     public void setIssuerName(@Nonnull final X500Principal issuer) {
-        Constraint.isNotNull(issuer, "Issuer principal criteria value cannot be null");
-        this.issuerName = issuer;
+        issuerName = Constraint.isNotNull(issuer, "Issuer principal criteria value cannot be null");
     }
 
     /**
@@ -81,8 +80,7 @@ public final class X509IssuerSerialCriterion implements Criterion {
      * @param serial The serial number to set.
      */
     public void setSerialNumber(@Nonnull final BigInteger serial) {
-        Constraint.isNotNull(serial, "Serial number criteria value cannot be null");
-        this.serialNumber = serial;
+        serialNumber = Constraint.isNotNull(serial, "Serial number criteria value cannot be null");
     }
     
     /** {@inheritDoc} */

@@ -19,7 +19,15 @@ package org.opensaml.security.x509.impl;
 
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 import org.opensaml.security.x509.PKIXValidationOptions;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Specialization of {@link PKIXValidationOptions} which specifies options specific to a
@@ -40,16 +48,15 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
     private boolean anyPolicyInhibit;
 
     /** Acceptable policy OIDs. */
-    private Set<String> initialPolicies;
+    @Nonnull private Set<String> initialPolicies;
     
     /** Constructor. */
     public CertPathPKIXValidationOptions() {
-        super();
         forceRevocationEnabled = false;
         revocationEnabled = true;
         policyMappingInhibit = false;
         anyPolicyInhibit = false;
-        initialPolicies = null;
+        initialPolicies = CollectionSupport.emptySet();
     }
     
     /**
@@ -152,7 +159,7 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * @return Returns the initialPolicies set.
      */
-    public Set<String> getInitialPolicies() {
+    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<String> getInitialPolicies() {
         return initialPolicies;
     }
 
@@ -163,7 +170,8 @@ public class CertPathPKIXValidationOptions extends PKIXValidationOptions {
      * 
      * @param newPolicies the initial set of policy identifiers (OID strings)
      */
-    public void setInitialPolicies(final Set<String> newPolicies) {
-        initialPolicies = newPolicies;
-    }    
+    public void setInitialPolicies(@Nullable @NonnullElements final Set<String> newPolicies) {
+        initialPolicies = newPolicies != null ? CollectionSupport.copyToSet(newPolicies) : CollectionSupport.emptySet();
+    }
+    
 }

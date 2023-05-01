@@ -44,6 +44,6 @@ public interface TrustEngine<TokenType> {
      *
      * @throws SecurityException thrown if there is a problem validating the security token
      */
-    public boolean validate(@Nonnull final TokenType token, @Nullable final CriteriaSet trustBasisCriteria)
+    boolean validate(@Nonnull final TokenType token, @Nullable final CriteriaSet trustBasisCriteria)
             throws SecurityException;
 }

@@ -22,6 +22,9 @@ import java.util.List;
 import javax.annotation.Nonnull;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.Live;
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+
 /**
  * An XMLObject whose content model contains "any" child elements.
  */
@@ -32,7 +35,7 @@ public interface ElementExtensibleXMLObject extends XMLObject {
      * 
      * @return list of XMLObjects added to this XMLObject as part of the "any" content model
      */
-    @Nonnull public List<XMLObject> getUnknownXMLObjects();
+    @Nonnull @NonnullElements @Live public List<XMLObject> getUnknownXMLObjects();
     
     /**
      * Gets the list of XMLObjects added to this XMLObject as part of the "any" content model,
@@ -43,5 +46,5 @@ public interface ElementExtensibleXMLObject extends XMLObject {
      * 
      * TODO: think this should be typed List&lt;? extends XMLObject&gt; 
      */
-    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName);
+    @Nonnull @NonnullElements @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName);
 }

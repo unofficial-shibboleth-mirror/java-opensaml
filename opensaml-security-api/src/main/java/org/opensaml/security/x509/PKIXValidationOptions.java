@@ -66,7 +66,7 @@ public class PKIXValidationOptions {
      * @param flag whether to process empty CRLs
      */
     public void setProcessEmptyCRLs(final boolean flag) {
-        this.processEmptyCRLs = flag;
+        processEmptyCRLs = flag;
     }
 
     /**
@@ -88,7 +88,7 @@ public class PKIXValidationOptions {
      * @param flag whether expired CRLs should be processed
      */
     public void setProcessExpiredCRLs(final boolean flag) {
-        this.processExpiredCRLs = flag;
+        processExpiredCRLs = flag;
     }
 
     /**
@@ -110,7 +110,7 @@ public class PKIXValidationOptions {
      * @param flag whether to process CRLs from an untrusted credential
      */
     public void setProcessCredentialCRLs(final boolean flag) {
-        this.processCredentialCRLs = flag;
+        processCredentialCRLs = flag;
     }
 
     /**

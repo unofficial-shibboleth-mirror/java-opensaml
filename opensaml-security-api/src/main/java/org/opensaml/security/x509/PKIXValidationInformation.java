@@ -23,6 +23,9 @@ import java.util.Collection;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Source of PKIX validation information such as trust anchors and CRLs.
  */
@@ -40,12 +43,13 @@ public interface PKIXValidationInformation {
      * 
      * @return trust anchors used during PKIX validation
      */
-    @Nullable public Collection<X509Certificate> getCertificates();
+    @Nullable @Unmodifiable @NotLive public Collection<X509Certificate> getCertificates();
 
     /**
      * Gets the CRLs used during PKIX validation.
      * 
      * @return CRLs used during PKIX validation
      */
-    @Nullable public Collection<X509CRL> getCRLs();
+    @Nullable @Unmodifiable @NotLive public Collection<X509CRL> getCRLs();
+
 }
