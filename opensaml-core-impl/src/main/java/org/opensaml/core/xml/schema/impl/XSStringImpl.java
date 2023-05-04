@@ -26,13 +26,16 @@ import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSString;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSString}.
  */
 public class XSStringImpl extends AbstractXMLObject implements XSString {
 
     /** Value of this string element. */
-    private String value;
+    @Nullable private String value;
     
     /**
      * Constructor.
@@ -63,8 +66,9 @@ public class XSStringImpl extends AbstractXMLObject implements XSString {
     /**
      * {@inheritDoc}
      */
-    @Nullable public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
+    
 }

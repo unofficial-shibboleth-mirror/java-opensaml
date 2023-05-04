@@ -27,13 +27,16 @@ import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSQName;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSQName}.
  */
 public class XSQNameImpl extends AbstractXMLObject implements XSQName {
 
     /** QName value. */
-    private QName value;
+    @Nullable private QName value;
     
     /**
      * Constructor.
@@ -58,7 +61,8 @@ public class XSQNameImpl extends AbstractXMLObject implements XSQName {
     }
 
     /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         return null;
     }
+    
 }

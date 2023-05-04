@@ -29,6 +29,7 @@ import org.opensaml.core.xml.schema.XSAny;
 import org.opensaml.core.xml.util.AttributeMap;
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -73,13 +74,13 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
     }
 
     /** {@inheritDoc} */
-    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return unknownXMLObjects;
     }
     
     /** {@inheritDoc} */
     @SuppressWarnings("unchecked")
-    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) unknownXMLObjects.subList(typeOrName);
     }
 
@@ -92,4 +93,5 @@ public class XSAnyImpl extends AbstractXMLObject implements XSAny {
     @Nonnull public AttributeMap getUnknownAttributes() {
         return unknownAttributes;
     }
+
 }

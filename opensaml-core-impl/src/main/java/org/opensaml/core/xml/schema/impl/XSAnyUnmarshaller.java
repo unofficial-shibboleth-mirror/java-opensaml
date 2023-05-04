@@ -48,9 +48,8 @@ public class XSAnyUnmarshaller extends AbstractXMLObjectUnmarshaller {
             throws UnmarshallingException {
         final XSAny xsAny = (XSAny) xmlObject;
 
-        final QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(),
-                attribute.getPrefix());
-
+        final QName attribQName = QNameSupport.getNodeQName(attribute);
+        
         if (attribute.isId()) {
             xsAny.getUnknownAttributes().registerID(attribQName);
         }
@@ -65,4 +64,5 @@ public class XSAnyUnmarshaller extends AbstractXMLObjectUnmarshaller {
 
         xsAny.setTextContent(elementContent);
     }
+    
 }

@@ -38,7 +38,7 @@ import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 public class XSDateTimeImpl extends AbstractXMLObject implements XSDateTime {
     
     /** Value of this dateTime element. */
-    private Instant value;
+    @Nullable private Instant value;
     
     /**
      * Constructor.

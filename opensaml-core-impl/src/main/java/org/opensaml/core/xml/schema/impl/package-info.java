@@ -16,4 +16,7 @@
  */
 
 /** Implementations of the interfaces for XMLObjects that represent XML schema types. */
+@NonnullElements
 package org.opensaml.core.xml.schema.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -26,6 +26,9 @@ import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSURI;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Conrete implementation of {@link org.opensaml.core.xml.schema.XSURI}.
  */
@@ -57,7 +60,8 @@ public class XSURIImpl extends AbstractXMLObject implements XSURI {
     }
 
     /** {@inheritDoc} */
-    @Nullable public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         return null;
     }
+    
 }

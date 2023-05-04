@@ -27,6 +27,9 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBoolean;
 import org.opensaml.core.xml.schema.XSBooleanValue;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 
 /** Concrete implementation of {@link XSBoolean}. */
 public class XSBooleanImpl extends AbstractXMLObject implements XSBoolean {
@@ -63,7 +66,7 @@ public class XSBooleanImpl extends AbstractXMLObject implements XSBoolean {
     /**
      * {@inheritDoc}
      */
-    @Nullable public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }

@@ -26,6 +26,9 @@ import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSBase64Binary;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSBase64Binary}.
  */
@@ -63,7 +66,7 @@ public class XSBase64BinaryImpl extends AbstractXMLObject implements XSBase64Bin
     /**
      * {@inheritDoc}
      */
-    @Nullable public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }

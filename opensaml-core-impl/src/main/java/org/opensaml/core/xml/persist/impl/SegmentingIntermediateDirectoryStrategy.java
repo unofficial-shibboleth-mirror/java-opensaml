@@ -22,12 +22,15 @@ import java.util.List;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.opensaml.core.xml.persist.FilesystemLoadSaveManager;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -68,7 +71,7 @@ public class SegmentingIntermediateDirectoryStrategy implements Function<String,
     }
 
     /** {@inheritDoc} */
-    public List<String> apply(final String key) {
+    @Nullable @Unmodifiable @NotLive public List<String> apply(final String key) {
         final String source = sourceStrategy.apply(key);
         if (source == null || source.length() == 0) {
             log.trace("Source strategy returned null or empty, returning null");

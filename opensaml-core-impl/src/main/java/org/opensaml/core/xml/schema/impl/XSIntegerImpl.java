@@ -26,13 +26,16 @@ import org.opensaml.core.xml.AbstractXMLObject;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.schema.XSInteger;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+
 /**
  * Concrete implementation of {@link org.opensaml.core.xml.schema.XSInteger}.
  */
 public class XSIntegerImpl extends AbstractXMLObject implements XSInteger {
 
     /** Value of this integer element. */
-    private Integer value;
+    @Nullable private Integer value;
     
     /**
      * Constructor.
@@ -63,8 +66,9 @@ public class XSIntegerImpl extends AbstractXMLObject implements XSInteger {
     /**
      * {@inheritDoc}
      */
-    @Nullable public List<XMLObject> getOrderedChildren() {
+    @Nullable @Unmodifiable @NotLive public List<XMLObject> getOrderedChildren() {
         // no children
         return null;
     }
+    
 }

@@ -18,5 +18,7 @@
 /**
  * Implementation classes supporting code instrumentation.
  */
-
+@NonnullElements
 package org.opensaml.core.metrics.impl;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -22,8 +22,6 @@ import com.codahale.metrics.MetricFilter;
 import com.codahale.metrics.MetricSet;
 import com.codahale.metrics.RatioGauge;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
-
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collections;
@@ -38,7 +36,7 @@ import javax.annotation.Nonnull;
 public class CoreGaugeSet implements MetricSet, MetricFilter {
 
     /** The map of gauges. */
-    @Nonnull @NonnullElements private final Map<String,Metric> gauges;
+    @Nonnull private final Map<String,Metric> gauges;
     
 // Checkstyle: MethodLength OFF    
     /** Constructor. */

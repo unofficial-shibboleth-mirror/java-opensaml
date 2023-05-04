@@ -33,5 +33,4 @@ public class PassthroughSourceStrategy implements Function<String, String> {
         return key;
     }
 
-
 }
