@@ -37,7 +37,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName);
+    @Nonnull XMLObjectType buildObject(@Nonnull final QName objectName);
     
     /**
      * Creates an XMLObject with a given fully qualified name and schema type.
@@ -47,7 +47,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName, @Nullable final QName schemaType);
+    @Nonnull XMLObjectType buildObject(@Nonnull final QName objectName, @Nullable final QName schemaType);
 
     /**
      * Creates an XMLObject with a given fully qualified name.
@@ -58,7 +58,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    @Nonnull public XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+    @Nonnull XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
             @Nullable final String namespacePrefix);
 
     /**
@@ -71,7 +71,7 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    @Nonnull public XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
+    @Nonnull XMLObjectType buildObject(@Nullable final String namespaceURI, @Nonnull final String localName,
             @Nullable final String namespacePrefix, @Nullable final QName schemaType);
 
     /**
@@ -84,5 +84,6 @@ public interface XMLObjectBuilder<XMLObjectType extends XMLObject> {
      * 
      * @return the constructed XMLObject
      */
-    @Nonnull public XMLObjectType buildObject(@Nonnull final Element element);
+    @Nonnull XMLObjectType buildObject(@Nonnull final Element element);
+    
 }

@@ -24,7 +24,6 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.annotation.ParameterName;
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
@@ -67,7 +66,7 @@ public class LoggerDrivenMetricFilter implements MetricFilter {
     @Nonnull @NotEmpty private final String loggerPrefix;
     
     /** Map of metrics to logging levels. */
-    @Nonnull @NonnullElements private final Map<String,Level> levelMap;
+    @Nonnull private final Map<String,Level> levelMap;
     
     /**
      * Constructor.
@@ -85,7 +84,7 @@ public class LoggerDrivenMetricFilter implements MetricFilter {
      * @param map map of metric names to logging levels
      */
     public LoggerDrivenMetricFilter(@Nonnull @NotEmpty @ParameterName(name="prefix") final String prefix,
-            @Nullable @NonnullElements @ParameterName(name="map") final Map<String,Level> map) {
+            @Nullable @ParameterName(name="map") final Map<String,Level> map) {
         loggerPrefix = Constraint.isNotNull(StringSupport.trimOrNull(prefix), "Prefix cannot be null or empty.");
         
         if (map == null || map.isEmpty()) {

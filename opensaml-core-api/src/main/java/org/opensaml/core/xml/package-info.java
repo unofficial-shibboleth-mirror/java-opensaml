@@ -16,4 +16,7 @@
  */
 
 /** Base classes for working with XML as Java objects and configuring the library. */
+@NonnullElements
 package org.opensaml.core.xml;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

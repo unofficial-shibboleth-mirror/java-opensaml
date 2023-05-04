@@ -24,6 +24,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -133,7 +135,7 @@ public class UnmarshallerFactory {
      * 
      * @return a listing of all the Unmarshallers currently registered
      */
-    @Nonnull public Map<QName, Unmarshaller> getUnmarshallers() {
+    @Nonnull @Unmodifiable @NotLive public Map<QName, Unmarshaller> getUnmarshallers() {
         return CollectionSupport.copyToMap(unmarshallers);
     }
 

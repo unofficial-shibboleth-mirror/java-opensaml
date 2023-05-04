@@ -16,4 +16,7 @@
  */
 
 /** Core {@link net.shibboleth.shared.resolver.Criterion} subclasses. */
+@NonnullElements
 package org.opensaml.core.criterion;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -16,4 +16,7 @@
  */
 
 /** Utility classes for working with XML, XMLObjects, and various data types. */
+@NonnullElements
 package org.opensaml.core.xml.util;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

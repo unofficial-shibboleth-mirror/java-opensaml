@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and abstract implementations of marshallers and unmarshallers. */
+@NonnullElements
 package org.opensaml.core.xml.io;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

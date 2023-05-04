@@ -16,4 +16,7 @@
  */
 
 /** Components for persisting XMLObjects. */
+@NonnullElements
 package org.opensaml.core.xml.persist;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

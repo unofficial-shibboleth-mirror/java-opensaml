@@ -17,6 +17,7 @@
 
 package org.opensaml.core.config;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 /**
@@ -40,7 +41,7 @@ public interface Configuration {
      * 
      * @return the instance of the registered configuration interface, or null
      */
-    @Nullable public <T extends Object> T get(Class<T> configClass, String partitionName);
+    @Nullable <T extends Object> T get(@Nonnull final Class<T> configClass, @Nonnull final String partitionName);
     
     /**
      * Register a configuration instance.
@@ -52,7 +53,8 @@ public interface Configuration {
      * @param configInstance the configuration implementation instance being registered
      * @param partitionName the partition name to use
      */
-    public <T extends Object, I extends T> void register(Class<T> configClass, I configInstance, String partitionName);
+    <T extends Object, I extends T> void register(@Nonnull final Class<T> configClass,
+            @Nonnull final I configInstance, @Nonnull final String partitionName);
     
     /**
      * Deregister a configuration instance.
@@ -64,6 +66,6 @@ public interface Configuration {
      * 
      * @return the configuration implementation instance which was deregistered, or null
      */
-    @Nullable public <T extends Object> T deregister(Class<T> configClass, String partitionName);
+    @Nullable <T extends Object> T deregister(@Nonnull final Class<T> configClass, @Nonnull final String partitionName);
 
 }

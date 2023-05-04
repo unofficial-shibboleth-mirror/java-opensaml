@@ -16,4 +16,7 @@
  */
 
 /** Configuration of XML object providers and related functionality. */
+@NonnullElements
 package org.opensaml.core.xml.config;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

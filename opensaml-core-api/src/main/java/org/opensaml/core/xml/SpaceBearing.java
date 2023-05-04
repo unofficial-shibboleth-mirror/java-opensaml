@@ -31,7 +31,7 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface SpaceBearing {
     
     /** Enum representing the allowed values of the xml:space attribute. */
-    public enum XMLSpaceEnum {
+    enum XMLSpaceEnum {
         /** xml:space value "default". */
         DEFAULT,
         /** xml:space value "preserve". */
@@ -63,10 +63,10 @@ public interface SpaceBearing {
     }
 
     /** The <code>space</code> attribute local name. */
-    @Nonnull @NotEmpty public static final String XML_SPACE_ATTR_LOCAL_NAME = "space";
+    @Nonnull @NotEmpty static final String XML_SPACE_ATTR_LOCAL_NAME = "space";
 
     /** The <code>xml:space</code> qualified attribute name. */
-    @Nonnull public static final QName XML_SPACE_ATTR_NAME =
+    @Nonnull static final QName XML_SPACE_ATTR_NAME =
         new QName(XMLConstants.XML_NS, XML_SPACE_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**
@@ -74,13 +74,13 @@ public interface SpaceBearing {
      * 
      * @return The <code>@xml:space</code> attribute value or <code>null</code>.
      */
-    @Nullable public XMLSpaceEnum getXMLSpace();
+    @Nullable XMLSpaceEnum getXMLSpace();
 
     /**
      * Sets the <code>@xml:space</code> attribute value.
      * 
      * @param newSpace The <code>@xml:space</code> attribute value
      */
-    public void setXMLSpace(@Nullable final XMLSpaceEnum newSpace);
+    void setXMLSpace(@Nullable final XMLSpaceEnum newSpace);
 
 }

@@ -28,11 +28,6 @@ import org.w3c.dom.Element;
  * <code>xs:anyAttribute</code> attributes.
  */
 public abstract class AbstractExtensibleXMLObjectMarshaller extends AbstractElementExtensibleXMLObjectMarshaller {
-    
-    /** Constructor. */
-    public AbstractExtensibleXMLObjectMarshaller(){
-        super();
-    }
 
     /**
      * Marshalls the <code>xs:anyAttribute</code> attributes.

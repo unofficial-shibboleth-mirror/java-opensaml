@@ -32,6 +32,6 @@ public interface Initializer {
      * 
      * @throws InitializationException if initialization could not be completed successfully
      */
-    public void init() throws InitializationException;
+    void init() throws InitializationException;
 
 }

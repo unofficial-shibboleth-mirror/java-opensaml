@@ -26,7 +26,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import javax.xml.namespace.QName;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -79,7 +79,7 @@ public class NamespaceManager {
     @Nonnull private final Map<String, Namespace> attrValues;
     
     /** Registered namespaces of content values. */
-    private Namespace contentValue;
+    @Nullable private Namespace contentValue;
     
     /**
      * Constructor.
@@ -102,6 +102,7 @@ public class NamespaceManager {
      * @param name attribute name as a QName
      * @return a string attribute ID
      */
+    @SuppressWarnings("null")
     @Nonnull @NotEmpty public static String generateAttributeID(@Nonnull final QName name) {
        return name.toString(); 
     }
@@ -120,7 +121,7 @@ public class NamespaceManager {
      * 
      * @return the unmodifiable set of namespaces
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<Namespace> getNamespaces() {
+    @Nonnull @Unmodifiable @NotLive public Set<Namespace> getNamespaces() {
         final Set<Namespace> namespaces = mergeNamespaceCollections(decls, attrNames, attrValues.values());
         addNamespace(namespaces, getElementNameNamespace());
         addNamespace(namespaces, getElementTypeNamespace());
@@ -151,7 +152,7 @@ public class NamespaceManager {
      * 
      * @return the set of namespace declarations
      */
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public Set<Namespace> getNamespaceDeclarations() {
+    @Nonnull @Unmodifiable @NotLive public Set<Namespace> getNamespaceDeclarations() {
         return CollectionSupport.copyToSet(decls);
     }
     
@@ -228,7 +229,7 @@ public class NamespaceManager {
      * 
      * @return the set of non-visibly used namespace prefixes
      */
-    @Nonnull public Set<String> getNonVisibleNamespacePrefixes() {
+    @Nonnull @Unmodifiable @NotLive public Set<String> getNonVisibleNamespacePrefixes() {
         final LazySet<String> prefixes = new LazySet<>();
         addPrefixes(prefixes, getNonVisibleNamespaces());
         return prefixes;
@@ -245,7 +246,7 @@ public class NamespaceManager {
      * 
      * @return the set of non-visibly used namespaces 
      */
-    @Nonnull public Set<Namespace> getNonVisibleNamespaces() {
+    @Nonnull @Unmodifiable @NotLive public Set<Namespace> getNonVisibleNamespaces() {
         final LazySet<Namespace> nonVisibleCandidates = new LazySet<>();
 
         // Collect each child's non-visible namespaces
@@ -283,13 +284,14 @@ public class NamespaceManager {
      * 
      * @return set of all namespaces in scope for the owning object
      */
-    @Nonnull public Set<Namespace> getAllNamespacesInSubtreeScope() {
+    @Nonnull @Unmodifiable @NotLive public Set<Namespace> getAllNamespacesInSubtreeScope() {
         final LazySet<Namespace> namespaces = new LazySet<>();
 
         // Collect namespaces for the subtree rooted at each child
         final List<XMLObject> children = getOwner().getOrderedChildren();
         if (children != null) {
-            for(final XMLObject child : children) {
+            for (final XMLObject child : children) {
+                // TODO: This check isn't necessary by spec, but we have XACML code still including null elements.
                 if (child != null) {
                     final Set<Namespace> childNamespaces = child.getNamespaceManager().getAllNamespacesInSubtreeScope();
                     if (!childNamespaces.isEmpty()) {
@@ -380,7 +382,7 @@ public class NamespaceManager {
      * @param namespaces the set of namespaces
      * @param newNamespace the namespace to add to the set
      */
-    private void addNamespace(@Nonnull final Set<Namespace> namespaces, @Nullable final Namespace newNamespace) {
+    private void addNamespace(@Nonnull @Live final Set<Namespace> namespaces, @Nullable final Namespace newNamespace) {
         if (newNamespace == null) {
             return;
         }
@@ -394,7 +396,8 @@ public class NamespaceManager {
      * @param namespaces the set of namespaces
      * @param oldNamespace the namespace to add to the set
      */
-    private void removeNamespace(@Nonnull final Set<Namespace> namespaces, @Nullable final Namespace oldNamespace) {
+    private void removeNamespace(@Nonnull @Live final Set<Namespace> namespaces,
+            @Nullable final Namespace oldNamespace) {
         if (oldNamespace == null) {
             return;
         }
@@ -409,7 +412,8 @@ public class NamespaceManager {
      * @return the a new set of merged Namespaces
      */
     @SafeVarargs
-    @Nonnull private Set<Namespace> mergeNamespaceCollections(final Collection<Namespace> ... namespaces) {
+    @Nonnull @Unmodifiable @NotLive private Set<Namespace> mergeNamespaceCollections(
+            @Nonnull final Collection<Namespace> ... namespaces) {
         final LazySet<Namespace> newNamespaces = new LazySet<>();
         
         for (final Collection<Namespace> nsCollection : namespaces) {
@@ -429,7 +433,7 @@ public class NamespaceManager {
      * 
      * @return the set of visibly-used namespaces
      */
-    @Nonnull private Set<Namespace> getVisibleNamespaces() {
+    @Nonnull @Unmodifiable @NotLive private Set<Namespace> getVisibleNamespaces() {
         final LazySet<Namespace> namespaces = new LazySet<>();
 
         // Add namespace from element name.
@@ -458,7 +462,7 @@ public class NamespaceManager {
      * 
      * @return the set of non-visibly-used namespaces
      */
-    @Nonnull private Set<Namespace> getNonVisibleNamespaceCandidates() {
+    @Nonnull @Unmodifiable @NotLive private Set<Namespace> getNonVisibleNamespaceCandidates() {
         final LazySet<Namespace> namespaces = new LazySet<>();
 
         // Add xsi:type value's prefix, if element carries an xsi:type
@@ -487,7 +491,8 @@ public class NamespaceManager {
      * @param prefixes the set of prefixes to which to add
      * @param namespaces the source set of Namespaces
      */
-    private void addPrefixes(@Nonnull final Set<String> prefixes, @Nonnull final Collection<Namespace> namespaces) {
+    private void addPrefixes(@Nonnull @Live final Set<String> prefixes,
+            @Nonnull final Collection<Namespace> namespaces) {
         for (final Namespace ns : namespaces) {
             String prefix = StringSupport.trimOrNull(ns.getNamespacePrefix());
             if (prefix == null) {

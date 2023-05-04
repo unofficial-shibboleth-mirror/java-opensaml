@@ -536,7 +536,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
     
     /** {@inheritDoc} */
-    public Boolean isNil() {
+    @Nullable public Boolean isNil() {
         if (nil != null) {
             return nil.getValue();
         }
@@ -545,7 +545,7 @@ public abstract class AbstractXMLObject implements XMLObject {
     }
 
     /** {@inheritDoc} */
-    public XSBooleanValue isNilXSBoolean() {
+    @Nullable public XSBooleanValue isNilXSBoolean() {
         return nil;
     }
 

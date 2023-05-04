@@ -32,10 +32,10 @@ import org.opensaml.core.xml.io.UnmarshallerFactory;
 import net.shibboleth.shared.xml.ParserPool;
 
 /** Class for loading library configuration files and retrieving the configured components. */
-public class XMLObjectProviderRegistrySupport {
+public final class XMLObjectProviderRegistrySupport {
 
     /** Constructor. */
-    protected XMLObjectProviderRegistrySupport() {
+    private XMLObjectProviderRegistrySupport() {
 
     }
     

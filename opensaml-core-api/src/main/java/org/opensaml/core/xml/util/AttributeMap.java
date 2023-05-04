@@ -87,6 +87,7 @@ public class AttributeMap implements Map<QName, String> {
     /** {@inheritDoc} */
     public String put(final QName attributeName, final String value) {
         Constraint.isNotNull(attributeName, "Attribute name cannot be null");
+        assert attributeName != null;
         final String oldValue = get(attributeName);
         if (!Objects.equals(value, oldValue)) {
             releaseDOM();
@@ -120,6 +121,7 @@ public class AttributeMap implements Map<QName, String> {
      */
     public QName put(final QName attributeName, final QName value) {
         Constraint.isNotNull(attributeName, "Attribute name cannot be null");
+        assert attributeName != null;
         final String oldValueString = get(attributeName);
         
         QName oldValue = null;
@@ -194,6 +196,7 @@ public class AttributeMap implements Map<QName, String> {
         if (removedValue != null) {
             releaseDOM();
             final QName attributeName = (QName) key;
+            assert attributeName != null;
             if (isIDAttribute(attributeName) || XMLObjectProviderRegistrySupport.isIDAttribute(attributeName)) {
                 attributeOwner.getIDIndex().deregisterIDMapping(removedValue);
             }
@@ -509,7 +512,7 @@ public class AttributeMap implements Map<QName, String> {
      * @param attributeValue the QName to process
      * @return the attribute value string representation of the QName
      */
-    private String constructAttributeValue(@Nonnull final QName attributeValue) {
+    @Nullable private String constructAttributeValue(@Nonnull final QName attributeValue) {
         final String trimmedLocalName = StringSupport.trimOrNull(attributeValue.getLocalPart());
 
         if (trimmedLocalName == null) {

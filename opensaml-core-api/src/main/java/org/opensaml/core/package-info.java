@@ -16,4 +16,7 @@
  */
 
 /** Classes at the most general level of the library. */
+@NonnullElements
 package org.opensaml.core;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

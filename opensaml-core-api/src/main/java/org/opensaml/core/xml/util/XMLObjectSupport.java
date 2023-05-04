@@ -31,6 +31,7 @@ import javax.xml.namespace.QName;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.AttributeSupport;
+import net.shibboleth.shared.xml.ElementSupport;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.QNameSupport;
 import net.shibboleth.shared.xml.SerializeSupport;
@@ -53,7 +54,6 @@ import org.slf4j.Logger;
 import org.w3c.dom.Attr;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
 
 /**
  * A helper class for working with XMLObjects.
@@ -166,6 +166,7 @@ public final class XMLObjectSupport {
                 throw new XMLRuntimeException("Saw unsupported value for CloneOutputOption enum: " + cloneOutputOption);
         }
         
+        assert clonedElement != null;
         final Unmarshaller unmarshaller = getUnmarshaller(clonedElement);
         if (unmarshaller == null) {
             throw new UnmarshallingException("Unable to obtain Unmarshaller for element: "
@@ -196,7 +197,7 @@ public final class XMLObjectSupport {
 
         try {
             final Document messageDoc = parserPool.parse(inputStream);
-            final Element messageElem = messageDoc.getDocumentElement();
+            final Element messageElem = ElementSupport.ensureDocumentElement(messageDoc);
 
             if (LOG.isTraceEnabled()) {
                 LOG.trace("Resultant DOM message was:");
@@ -237,7 +238,7 @@ public final class XMLObjectSupport {
 
         try {
             final Document messageDoc = parserPool.parse(reader);
-            final Element messageElem = messageDoc.getDocumentElement();
+            final Element messageElem = ElementSupport.ensureDocumentElement(messageDoc);
 
             if (LOG.isTraceEnabled()) {
                 LOG.trace("Resultant DOM message was:");
@@ -386,7 +387,7 @@ public final class XMLObjectSupport {
      */
     public static void marshallAttribute(@Nonnull final QName attributeName, @Nullable final String attributeValue,
             @Nonnull final Element domElement, final boolean isIDAttribute) {
-        final Document document = domElement.getOwnerDocument();
+        final Document document = ElementSupport.ensureOwnerDocument(domElement);
         final Attr attribute = AttributeSupport.constructAttribute(document, attributeName);
         attribute.setValue(attributeValue);
         domElement.setAttributeNodeNS(attribute);
@@ -403,14 +404,15 @@ public final class XMLObjectSupport {
      */
     public static void marshallAttributeMap(@Nonnull final AttributeMap attributeMap,
             @Nonnull final Element domElement) {
-        final Document document = domElement.getOwnerDocument();
+        final Document document = ElementSupport.ensureOwnerDocument(domElement);
         Attr attribute = null;
         for (final Entry<QName, String> entry : attributeMap.entrySet()) {
-            attribute = AttributeSupport.constructAttribute(document, entry.getKey());
+            final QName key = entry.getKey();
+            assert key != null;
+            attribute = AttributeSupport.constructAttribute(document, key);
             attribute.setValue(entry.getValue());
             domElement.setAttributeNodeNS(attribute);
-            if (XMLObjectProviderRegistrySupport.isIDAttribute(entry.getKey()) ||
-                    attributeMap.isIDAttribute(entry.getKey())) {
+            if (XMLObjectProviderRegistrySupport.isIDAttribute(key) || attributeMap.isIDAttribute(key)) {
                 domElement.setIdAttributeNode(attribute, true);
             }
         }
@@ -425,6 +427,7 @@ public final class XMLObjectSupport {
     public static void marshallAttributeMapIDness(@Nonnull final AttributeMap attributeMap,
             @Nonnull final Element domElement) {
         for (final QName qname : attributeMap.keySet()) {
+            assert qname != null;
             if (XMLObjectProviderRegistrySupport.isIDAttribute(qname) || attributeMap.isIDAttribute(qname)) {
                 marshallAttributeIDness(qname, domElement, true);
             }
@@ -469,8 +472,7 @@ public final class XMLObjectSupport {
      */
     public static void unmarshallToAttributeMap(@Nonnull final AttributeMap attributeMap,
             @Nonnull final Attr attribute) {
-        final QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(),
-                attribute.getPrefix());
+        final QName attribQName = QNameSupport.getNodeQName(attribute);
         attributeMap.put(attribQName, attribute.getValue());
         if (attribute.isId() || XMLObjectProviderRegistrySupport.isIDAttribute(attribQName)) {
             attributeMap.registerID(attribQName);

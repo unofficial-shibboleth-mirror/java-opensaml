@@ -22,6 +22,8 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
@@ -109,7 +111,7 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testBasicResolveLifecycle() throws ResolverException, IOException {
-        sourceManager.save(sha1Digester.apply(entityID1), entity1);
+        sourceManager.save(sha1Digester(entityID1), entity1);
         
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID1))), entity1);
         
@@ -117,7 +119,7 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertNull(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID2))));
         
         // Add it
-        sourceManager.save(sha1Digester.apply(entityID2), entity2);
+        sourceManager.save(sha1Digester(entityID2), entity2);
         
         // Wait for the negative lookup cache to expire
         Uninterruptibles.sleepUninterruptibly(resolver.getNegativeLookupCacheDuration().toMillis()+150, TimeUnit.MILLISECONDS);
@@ -126,10 +128,10 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID2))), entity2);
         
         // Remove source data
-        sourceManager.remove(sha1Digester.apply(entityID1));
-        sourceManager.remove(sha1Digester.apply(entityID2));
-        Assert.assertNull(sourceManager.load(sha1Digester.apply(entityID1)));
-        Assert.assertNull(sourceManager.load(sha1Digester.apply(entityID2)));
+        sourceManager.remove(sha1Digester(entityID1));
+        sourceManager.remove(sha1Digester(entityID2));
+        Assert.assertNull(sourceManager.load(sha1Digester(entityID1)));
+        Assert.assertNull(sourceManager.load(sha1Digester(entityID2)));
         
         // Should still be live b/c already resolved
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID1))), entity1);
@@ -144,7 +146,7 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         resolver.setParserPool(parserPool);
         resolver.initialize();
         
-        sourceManager.save(sha1Digester.apply(entityID1), entity1);
+        sourceManager.save(sha1Digester(entityID1), entity1);
         
         // This will resolve from source manager directly
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID1))), entity1);
@@ -177,6 +179,14 @@ public class LocalDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
         sourceManager.save(entityID1, entity1);
         
         Assert.assertSame(resolver.resolveSingle(new CriteriaSet(new EntityIdCriterion(entityID1))), entity1);
+    }
+    
+    @Nonnull private String sha1Digester(@Nonnull final String input) {
+        final String sha1 = sha1Digester.apply(input);
+        if (sha1 == null) {
+            throw new IllegalStateException("Digest was null");
+        }
+        return sha1;
     }
     
 }

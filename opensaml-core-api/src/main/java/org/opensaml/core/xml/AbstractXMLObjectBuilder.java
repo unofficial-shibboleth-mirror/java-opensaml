@@ -23,6 +23,7 @@ import javax.xml.namespace.QName;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.xml.DOMTypeSupport;
+import net.shibboleth.shared.xml.QNameSupport;
 
 import org.w3c.dom.Element;
 
@@ -38,12 +39,14 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
 
     /** {@inheritDoc} */
     @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName){
-        return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix());
+        return buildObject(objectName.getNamespaceURI(), QNameSupport.ensureLocalPart(objectName),
+                objectName.getPrefix());
     }
     
     /** {@inheritDoc} */
     @Nonnull public XMLObjectType buildObject(@Nonnull final QName objectName, @Nullable final QName schemaType){
-        return buildObject(objectName.getNamespaceURI(), objectName.getLocalPart(), objectName.getPrefix(), schemaType);
+        return buildObject(objectName.getNamespaceURI(), QNameSupport.ensureLocalPart(objectName),
+                objectName.getPrefix(), schemaType);
     }
     
     /** {@inheritDoc} */
@@ -56,22 +59,17 @@ public abstract class AbstractXMLObjectBuilder<XMLObjectType extends XMLObject> 
         final XMLObjectType xmlObject;
 
         xmlObject = buildObject(namespaceURI, localName, namespacePrefix);
-        ((AbstractXMLObject) xmlObject).setSchemaType(schemaType);
+        if (xmlObject instanceof AbstractXMLObject downcast) {
+            downcast.setSchemaType(schemaType);
+        }
 
         return xmlObject;
     }
 
     /** {@inheritDoc} */
     @Nonnull public XMLObjectType buildObject(@Nonnull final Element element) {
-        final XMLObjectType xmlObject;
-
-        final String localName = element.getLocalName();
-        final String nsURI = element.getNamespaceURI();
-        final String nsPrefix = element.getPrefix();
         final QName schemaType = DOMTypeSupport.getXSIType(element);
-
-        xmlObject = buildObject(nsURI, localName, nsPrefix, schemaType);
-
-        return xmlObject;
+        return buildObject(QNameSupport.getNodeQName(element), schemaType);
     }
+
 }

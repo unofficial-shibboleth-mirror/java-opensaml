@@ -24,6 +24,7 @@ import java.util.ServiceLoader;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -68,7 +69,8 @@ public class ConfigurationService {
     @Nonnull private static final Logger LOG = LoggerFactory.getLogger(ConfigurationService.class);
     
     /** The service loader used to locate registered implementations of ConfigurationPropertiesSource. */
-    private static ServiceLoader<ConfigurationPropertiesSource> configPropertiesLoader = 
+    @SuppressWarnings("null")
+    @Nonnull private static ServiceLoader<ConfigurationPropertiesSource> configPropertiesLoader = 
         ServiceLoader.load(ConfigurationPropertiesSource.class) ;
     
     /** The configuration instance to use. */
@@ -149,8 +151,7 @@ public class ConfigurationService {
      * <p>
      * The properties set is obtained from the first registered instance of 
      * {@link ConfigurationPropertiesSource} which returns a non-null properties set.
-     * The implementations of properties sources to use
-     * are obtained via the Java Services API.
+     * The implementations of properties sources to use are obtained via the Java Services API.
      * </p>
      * 
      * <p>
@@ -160,7 +161,7 @@ public class ConfigurationService {
      * 
      * @return the set of configuration meta-properties
      */
-    @Nullable public static Properties getConfigurationProperties() {
+    @Nullable @Live public static Properties getConfigurationProperties() {
         //TODO make these immutable?
         LOG.trace("Resolving configuration propreties source");
         final Iterator<ConfigurationPropertiesSource> iter = configPropertiesLoader.iterator();

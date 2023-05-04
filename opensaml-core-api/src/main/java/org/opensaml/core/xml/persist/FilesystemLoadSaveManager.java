@@ -43,14 +43,17 @@ import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.util.XMLObjectSource;
 import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import com.google.common.io.ByteStreams;
 import com.google.common.io.Files;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.xml.ParserPool;
 import net.shibboleth.shared.xml.XMLParserException;
@@ -72,17 +75,17 @@ import net.shibboleth.shared.xml.XMLParserException;
 public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractConditionalLoadXMLObjectLoadSaveManager<T> {
     
     /** Logger. */
-    private Logger log = LoggerFactory.getLogger(FilesystemLoadSaveManager.class);
+    @Nonnull private Logger log = LoggerFactory.getLogger(FilesystemLoadSaveManager.class);
     
     /** The base directory used for storing individual serialized XML files. */
-    private File baseDirectory;
+    @Nonnull private File baseDirectory;
     
     /** Optional strategy function which produces the intermediate directory path(s) between
      * the <code>baseDirectory</code> and the actual file. */
-    private Function<String, List<String>> intermediateDirectoryStrategy;
+    @Nullable private Function<String, List<String>> intermediateDirectoryStrategy;
 
     /** Parser pool instance for deserializing XML from the filesystem. */
-    private ParserPool parserPool;
+    @Nonnull private ParserPool parserPool;
     
     /**
      * Constructor.
@@ -252,8 +255,9 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
             Constraint.isTrue(baseDirectory.mkdirs(), "Base directory did not exist and could not be created");
         }
         
-        parserPool = pp;
-        if (parserPool == null) {
+        if (pp != null) {
+            parserPool = pp;
+        } else {
             parserPool = Constraint.isNotNull(XMLObjectProviderRegistrySupport.getParserPool(),
                     "Specified ParserPool was null and global ParserPool was not available");
         }
@@ -262,26 +266,26 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Set<String> listKeys() throws IOException {
+    @Nonnull @NotLive @Unmodifiable public Set<String> listKeys() throws IOException {
         return java.nio.file.Files.walk(baseDirectory.toPath())
                 .filter(java.nio.file.Files::isRegularFile)
                 .map(Path::getFileName)
                 .map(Path::toString)
-                .collect(Collectors.toUnmodifiableSet());
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableSet())).get();
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<Pair<String, T>> listAll() throws IOException {
+    @Nonnull @NotLive @Unmodifiable public Iterable<Pair<String, T>> listAll() throws IOException {
         return new FileIterable(listKeys());
     }
 
     /** {@inheritDoc} */
-    public boolean exists(final String key) throws IOException {
+    public boolean exists(@Nonnull final String key) throws IOException {
         return buildFile(key).exists();
     }
 
     /** {@inheritDoc} */
-    public T load(final String key) throws IOException {
+    public T load(@Nonnull final String key) throws IOException {
         final File file = buildFile(key);
         if (!file.exists()) {
             log.debug("Target file with key '{}' does not exist, path: {}", key, file.getAbsolutePath());
@@ -317,12 +321,13 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     }
 
     /** {@inheritDoc} */
-    public void save(final String key, final T xmlObject) throws IOException {
+    public void save(@Nonnull final String key, @Nonnull final T xmlObject) throws IOException {
         save(key, xmlObject, false);
     }
 
     /** {@inheritDoc} */
-    public void save(final String key, final T xmlObject, final boolean overwrite) throws IOException {
+    public void save(@Nonnull final String key, @Nonnull final T xmlObject, final boolean overwrite)
+            throws IOException {
         if (!overwrite && exists(key)) {
             throw new IOException(
                     String.format("Target file already exists for key '%s' and overwrite not indicated", key));
@@ -353,7 +358,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     }
 
     /** {@inheritDoc} */
-    public boolean remove(final String key) throws IOException {
+    public boolean remove(@Nonnull final String key) throws IOException {
         final File file = buildFile(key);
         if (file.exists()) {
             final boolean success = file.delete();
@@ -367,7 +372,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     }
 
     /** {@inheritDoc} */
-    public boolean updateKey(final String currentKey, final String newKey) throws IOException {
+    public boolean updateKey(@Nonnull final String currentKey, @Nonnull final String newKey) throws IOException {
         final File currentFile = buildFile(currentKey);
         if (!currentFile.exists()) {
             return false;
@@ -412,7 +417,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
      * @return the constructed File instance for the target file
      * @throws IOException if there is a fatal error constructing or evaluating the candidate target path
      */
-    public File buildFile(final String key) throws IOException {
+    @Nonnull public File buildFile(final String key) throws IOException {
         File parentDirectory = baseDirectory;
         if (intermediateDirectoryStrategy != null) {
             final List<String> intermediateDirs = intermediateDirectoryStrategy.apply(key);
@@ -438,7 +443,7 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     private class FileIterable implements Iterable<Pair<String, T>> {
         
         /** Snapshot of filesystem keys at time of construction. */
-        private Set<String> keys;
+        @Nonnull private Set<String> keys;
 
         /**
          * Constructor.
@@ -446,7 +451,9 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
          * @param filenames Snapshot of filesystem keys at time of construction
          */
         public FileIterable(@Nonnull final Collection<String> filenames) {
-            keys = filenames.stream().filter(s -> s != null).collect(Collectors.toSet());
+            keys = filenames.stream()
+                    .filter(s -> s != null)
+                    .collect(CollectionSupport.nonnullCollector(Collectors.toSet())).get();
         }
 
         /** {@inheritDoc} */
@@ -462,10 +469,10 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
     private class FileIterator implements Iterator<Pair<String, T>> {
         
         /** Iterator for the keys. */
-        private Iterator<String> keysIter;
+        @Nonnull private Iterator<String> keysIter;
         
         /** Current value to return from next(). */
-        private Pair<String, T> current;
+        @Nullable private Pair<String, T> current;
         
         /**
          * Constructor.
@@ -513,10 +520,11 @@ public class FilesystemLoadSaveManager<T extends XMLObject> extends AbstractCond
          * 
          * @return the next item for iteration, or null if no more items
          */
-        private Pair<String, T> getNext() {
+        @Nullable private Pair<String, T> getNext() {
             while (keysIter.hasNext()) {
                 final String key = keysIter.next();
                 try {
+                    assert key != null;
                     final T xmlObject = load(key);
                     if (xmlObject != null) {
                         // This is to defensively guard against files being removed after files/keys are enumerated.

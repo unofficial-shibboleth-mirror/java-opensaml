@@ -28,11 +28,6 @@ import org.w3c.dom.Element;
  * <code>xs:anyAttribute</code> attributes or text content.
  */
 public abstract class AbstractElementExtensibleXMLObjectMarshaller extends AbstractXMLObjectMarshaller {
-    
-    /** Constructor. */
-    public AbstractElementExtensibleXMLObjectMarshaller(){
-        super();
-    }
 
     /**
      * No <code>xs:anyAttribute</code> attributes.
@@ -53,4 +48,5 @@ public abstract class AbstractElementExtensibleXMLObjectMarshaller extends Abstr
     protected void marshallElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final Element domElement)
             throws MarshallingException {
     }
+
 }

@@ -43,12 +43,13 @@ import net.shibboleth.shared.primitive.StringSupport;
  * </p>
  */
 public abstract class AbstractFilesystemConfigurationPropertiesSource implements ConfigurationPropertiesSource {
-    /** Cache of properties. */
-    private Properties cachedProperties;
     
     /** Logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(AbstractFilesystemConfigurationPropertiesSource.class);
     
+    /** Cache of properties. */
+    @Nullable private Properties cachedProperties;
+
     /** {@inheritDoc} */
     @Nullable public Properties getProperties() {
         final String fileName = StringSupport.trimOrNull(getFilename());
@@ -86,4 +87,5 @@ public abstract class AbstractFilesystemConfigurationPropertiesSource implements
      * @return the absolute filename
      */
     @Nullable protected abstract String getFilename();
+    
 }

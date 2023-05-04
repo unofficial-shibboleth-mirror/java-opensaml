@@ -49,4 +49,5 @@ public abstract class AbstractExtensibleXMLObject extends AbstractElementExtensi
     @Nonnull public AttributeMap getUnknownAttributes() {
         return anyAttributes;
     }
+    
 }

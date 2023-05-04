@@ -31,10 +31,10 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface LangBearing {
 
     /** The <code>lang</code> attribute local name. */
-    @Nonnull @NotEmpty public static final String XML_LANG_ATTR_LOCAL_NAME = "lang";
+    @Nonnull @NotEmpty static final String XML_LANG_ATTR_LOCAL_NAME = "lang";
 
     /** The <code>xml:lang</code> qualified attribute name. */
-    @Nonnull public static final QName XML_LANG_ATTR_NAME =
+    @Nonnull static final QName XML_LANG_ATTR_NAME =
         new QName(XMLConstants.XML_NS, XML_LANG_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**
@@ -42,13 +42,13 @@ public interface LangBearing {
      * 
      * @return The <code>@xml:lang</code> attribute value or <code>null</code>.
      */
-    @Nullable public String getXMLLang();
+    @Nullable String getXMLLang();
 
     /**
      * Sets the <code>@xml:lang</code> attribute value.
      * 
      * @param newLang The <code>@xml:lang</code> attribute value
      */
-    public void setXMLLang(@Nullable final String newLang);
+    void setXMLLang(@Nullable final String newLang);
 
 }

@@ -33,5 +33,6 @@ public interface AttributeExtensibleXMLObject extends XMLObject {
      * 
      * @return a map of the attributes
      */
-    @Nonnull public AttributeMap getUnknownAttributes();
+    @Nonnull AttributeMap getUnknownAttributes();
+    
 }

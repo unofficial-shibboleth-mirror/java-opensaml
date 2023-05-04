@@ -45,7 +45,7 @@ public abstract class AbstractConditionalLoadXMLObjectLoadSaveManager<T extends 
     private boolean loadConditionally;
     
     /** Storage for last modified time of requested data. */
-    private Map<String,Instant> loadLastModified;
+    @Nonnull private Map<String,Instant> loadLastModified;
     
     /** 
      * Constructor. 

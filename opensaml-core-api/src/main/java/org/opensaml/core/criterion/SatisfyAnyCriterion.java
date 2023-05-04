@@ -30,13 +30,13 @@ import net.shibboleth.shared.resolver.Criterion;
 public class SatisfyAnyCriterion implements Criterion {
     
     /** The satisfyAny criterion value. */
-    private Boolean satisfyAny;
+    private boolean satisfyAny;
     
     /**
      * Constructor.
      */
     public SatisfyAnyCriterion() {
-        satisfyAny = Boolean.TRUE;
+        satisfyAny = true;
     }
     
     /**
@@ -59,7 +59,7 @@ public class SatisfyAnyCriterion implements Criterion {
 
     /** {@inheritDoc} */
     public int hashCode() {
-        return satisfyAny.hashCode();
+        return Boolean.valueOf(satisfyAny).hashCode();
     }
 
     /** {@inheritDoc} */

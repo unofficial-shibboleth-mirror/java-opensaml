@@ -308,14 +308,14 @@ public abstract class AbstractXMLObjectMarshaller implements Marshaller {
                 final String declared = NamespaceSupport.lookupNamespaceURI(domElement, null, 
                         namespace.getNamespacePrefix());
                 log.trace("Lookup of prefix '{}' returned '{}'", namespace.getNamespacePrefix(),  declared);
-                if (declared != null && namespace.getNamespaceURI().equals(declared)) {
+                if (declared != null && declared.equals(namespace.getNamespaceURI())) {
                     log.trace("Namespace {} has already been declared on an ancestor of {} no need to add it here", 
                             namespace, xmlObject.getElementQName());
                     continue;
                 }
             }
             log.trace("Adding namespace declaration {} to {}", namespace, xmlObject.getElementQName());
-            NamespaceSupport.appendNamespaceDeclaration(domElement, namespace.getNamespaceURI(),
+            NamespaceSupport.appendNamespaceDeclaration(domElement, namespace.ensureNamespaceURI(),
                     namespace.getNamespacePrefix());
         }
     }

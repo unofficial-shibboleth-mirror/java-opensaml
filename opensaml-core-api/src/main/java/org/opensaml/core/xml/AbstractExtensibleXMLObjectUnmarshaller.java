@@ -30,11 +30,6 @@ import net.shibboleth.shared.xml.QNameSupport;
  * <code>xs:anyAttribute</code> attributes.
  */
 public abstract class AbstractExtensibleXMLObjectUnmarshaller extends AbstractElementExtensibleXMLObjectUnmarshaller {
-    
-    /** Constructor. */
-    public AbstractExtensibleXMLObjectUnmarshaller() {
-        super();
-    }
 
     /**
      * Unmarshalls the <code>xs:anyAttribute</code> attributes.
@@ -45,8 +40,7 @@ public abstract class AbstractExtensibleXMLObjectUnmarshaller extends AbstractEl
     protected void processAttribute(@Nonnull final XMLObject xmlObject, @Nonnull final Attr attribute)
             throws UnmarshallingException {
         final AttributeExtensibleXMLObject anyAttribute = (AttributeExtensibleXMLObject) xmlObject;
-        final QName attribQName = QNameSupport.constructQName(attribute.getNamespaceURI(), attribute.getLocalName(),
-                attribute.getPrefix());
+        final QName attribQName = QNameSupport.getNodeQName(attribute);
         if (attribute.isId()) {
             anyAttribute.getUnknownAttributes().registerID(attribQName);
         }

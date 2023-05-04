@@ -19,6 +19,7 @@ package org.opensaml.core.xml;
 
 import java.util.Objects;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.shibboleth.shared.primitive.StringSupport;
@@ -28,13 +29,13 @@ import net.shibboleth.shared.xml.XMLConstants;
 public class Namespace {
 
     /** URI of the namespace. */
-    private String namespaceURI;
+    @Nullable private String namespaceURI;
 
     /** Prefix of the namespace. */
-    private String namespacePrefix;
+    @Nullable private String namespacePrefix;
 
     /** String representation of this namespace. */
-    private String nsStr;
+    @Nullable private String nsStr;
 
     /**
      * Constructor.
@@ -53,7 +54,7 @@ public class Namespace {
      * 
      * @return the prefix of the namespace, may be null if this is a default namespace
      */
-    public String getNamespacePrefix() {
+    @Nullable public String getNamespacePrefix() {
         return namespacePrefix;
     }
 
@@ -62,8 +63,22 @@ public class Namespace {
      * 
      * @return the URI of the namespace
      */
-    public String getNamespaceURI() {
+    @Nullable public String getNamespaceURI() {
         return namespaceURI;
+    }
+    
+    /**
+     * Get the URI of the namespace, raising an {@link IllegalStateException} if null.
+     * 
+     * @return namespace URI
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull public String ensureNamespaceURI() {
+        if (namespaceURI != null) {
+            return namespaceURI;
+        }
+        throw new IllegalStateException("Namespace URI was not set");
     }
 
     /** {@inheritDoc} */
@@ -135,4 +150,5 @@ public class Namespace {
 
         nsStr = stringRep.toString();
     }
+    
 }

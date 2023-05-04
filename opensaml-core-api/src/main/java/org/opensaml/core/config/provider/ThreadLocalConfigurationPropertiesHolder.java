@@ -28,7 +28,7 @@ import javax.annotation.Nullable;
 public final class ThreadLocalConfigurationPropertiesHolder {
     
     /** ThreadLocal storage for the properties set. */
-    @Nonnull private static ThreadLocal<Properties> properties = new ThreadLocal<>();
+    @Nonnull private static final ThreadLocal<Properties> PROPERTIES = new ThreadLocal<>();
     
     /** Constructor. */
     private ThreadLocalConfigurationPropertiesHolder() {}
@@ -39,7 +39,7 @@ public final class ThreadLocalConfigurationPropertiesHolder {
      * @return the thread-local Properties
      */
     @Nullable public static Properties getProperties() {
-        return properties.get();
+        return PROPERTIES.get();
     }
     
     /**
@@ -48,14 +48,14 @@ public final class ThreadLocalConfigurationPropertiesHolder {
      * @param newProperties the new thread-local Properties instance
      */
     public static void setProperties(@Nullable final Properties newProperties) {
-        properties.set(newProperties);
+        PROPERTIES.set(newProperties);
     }
     
     /**
      *  Clear the thread-local configuration Properties instance.
      */
     public static void clear() {
-        properties.remove();
+        PROPERTIES.remove();
     }
 
 }

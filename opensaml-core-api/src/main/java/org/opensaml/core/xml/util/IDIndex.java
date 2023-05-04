@@ -25,6 +25,8 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.NotThreadSafe;
 
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
 import net.shibboleth.shared.logic.Constraint;
@@ -149,7 +151,8 @@ public class IDIndex {
      * 
      * @return the set of ID strings which are keys to the index
      */
-    @Nonnull public Set<String> getIDs() {
+    @SuppressWarnings("null")
+    @Nonnull @Unmodifiable @NotLive public Set<String> getIDs() {
         return CollectionSupport.copyToSet(idMappings.keySet());
     }
     
@@ -158,7 +161,7 @@ public class IDIndex {
      * 
      * @return the ID-to-XMLObject mapping
      */
-    @Nonnull protected Map<String, XMLObject> getIDMappings() {
+    @Nonnull @Unmodifiable @NotLive protected Map<String, XMLObject> getIDMappings() {
         return CollectionSupport.copyToMap(idMappings);
     }
     

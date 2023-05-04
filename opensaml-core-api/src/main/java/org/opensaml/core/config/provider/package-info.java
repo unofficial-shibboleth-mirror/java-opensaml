@@ -16,4 +16,7 @@
  */
 
 /** Implementation of library configuration and initialization. */
+@NonnullElements
 package org.opensaml.core.config.provider;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

@@ -28,11 +28,6 @@ import org.w3c.dom.Attr;
  * <code>xs:anyAttribute</code> attributes or text content.
  */
 public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends AbstractXMLObjectUnmarshaller {
-    
-    /** Constructor. */
-    public AbstractElementExtensibleXMLObjectUnmarshaller(){
-        super();
-    }
 
     /**
      * Unmarshalls all child elements in the <code>xs:any</code> list.
@@ -64,4 +59,5 @@ public abstract class AbstractElementExtensibleXMLObjectUnmarshaller extends Abs
     @Override
     protected void processElementContent(@Nonnull final XMLObject xmlObject, @Nonnull final String elementContent) {
     }
+
 }

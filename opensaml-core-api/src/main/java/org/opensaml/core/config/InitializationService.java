@@ -68,6 +68,7 @@ public class InitializationService {
      * 
      * @return the service loader instance to use
      */
+    @SuppressWarnings("null")
     @Nonnull private static ServiceLoader<Initializer> getServiceLoader() {
         // TODO ideally would store off loader and reuse on subsequent calls,
         // so inited state in providers would be persisted across calls,

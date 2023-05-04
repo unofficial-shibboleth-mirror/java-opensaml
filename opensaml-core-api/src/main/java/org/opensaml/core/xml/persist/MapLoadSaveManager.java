@@ -29,11 +29,14 @@ import javax.annotation.concurrent.NotThreadSafe;
 
 import org.opensaml.core.xml.XMLObject;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import net.shibboleth.shared.annotation.ParameterName;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Simple implementation of {@link XMLObjectLoadSaveManager} which uses an in-memory map.
@@ -100,26 +103,28 @@ public class MapLoadSaveManager<T extends XMLObject> extends AbstractConditional
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Set<String> listKeys() throws IOException {
-        return backingMap.keySet();
+    @SuppressWarnings("null")
+    @Nonnull @NotLive @Unmodifiable public Set<String> listKeys() throws IOException {
+        return CollectionSupport.copyToSet(backingMap.keySet());
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<Pair<String, T>> listAll() throws IOException {
+    @Nonnull @NotLive @Unmodifiable public Iterable<Pair<String, T>> listAll() throws IOException {
         final ArrayList<Pair<String,T>> list = new ArrayList<>();
         for (final String key : listKeys()) {
+            assert key != null;
             list.add(new Pair<>(key, load(key)));
         }
-        return list;
+        return CollectionSupport.copyToList(list);
     }
 
     /** {@inheritDoc} */
-    public boolean exists(final String key) throws IOException {
+    public boolean exists(@Nonnull final String key) throws IOException {
         return backingMap.containsKey(key);
     }
 
     /** {@inheritDoc} */
-    public T load(final String key) throws IOException {
+    public T load(@Nonnull final String key) throws IOException {
         if (!exists(key)) {
             log.debug("Target data with key '{}' does not exist", key);
             clearLoadLastModified(key);
@@ -134,12 +139,13 @@ public class MapLoadSaveManager<T extends XMLObject> extends AbstractConditional
     }
 
     /** {@inheritDoc} */
-    public void save(final String key, final T xmlObject) throws IOException {
+    public void save(@Nonnull final String key, @Nonnull final T xmlObject) throws IOException {
         save(key, xmlObject, false);
     }
 
     /** {@inheritDoc} */
-    public void save(final String key, final T xmlObject, final boolean overwrite) throws IOException {
+    public void save(@Nonnull final String key, @Nonnull final T xmlObject, final boolean overwrite)
+            throws IOException {
         if (!overwrite && exists(key)) {
             throw new IOException(String.format("Value already exists for key '%s'", key));
         }
@@ -148,7 +154,7 @@ public class MapLoadSaveManager<T extends XMLObject> extends AbstractConditional
     }
 
     /** {@inheritDoc} */
-    public boolean remove(final String key) throws IOException {
+    public boolean remove(@Nonnull final String key) throws IOException {
         final T removed = backingMap.remove(key);
         dataLastModified.remove(key);
         clearLoadLastModified(key);
@@ -156,7 +162,7 @@ public class MapLoadSaveManager<T extends XMLObject> extends AbstractConditional
     }
 
     /** {@inheritDoc} */
-    public boolean updateKey(final String currentKey, final String newKey) throws IOException {
+    public boolean updateKey(@Nonnull final String currentKey, @Nonnull final String newKey) throws IOException {
         final T value = backingMap.get(currentKey);
         if (value == null) {
             return false;

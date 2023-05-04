@@ -25,6 +25,7 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.util.IndexedXMLObjectChildrenList;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -58,12 +59,14 @@ public abstract class AbstractElementExtensibleXMLObject extends AbstractXMLObje
     }
 
     /** {@inheritDoc} */
-    @Nonnull public List<XMLObject> getUnknownXMLObjects() {
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects() {
         return anyXMLObjects;
     }
 
     /** {@inheritDoc} */
-    @Nonnull public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
+    @SuppressWarnings("unchecked")
+    @Nonnull @Live public List<XMLObject> getUnknownXMLObjects(@Nonnull final QName typeOrName) {
         return (List<XMLObject>) anyXMLObjects.subList(typeOrName);
     }
+
 }

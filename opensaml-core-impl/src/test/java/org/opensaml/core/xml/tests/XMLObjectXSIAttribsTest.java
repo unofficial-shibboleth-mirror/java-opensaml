@@ -26,7 +26,6 @@ import org.opensaml.core.xml.XMLObjectBuilder;
 import org.opensaml.core.xml.io.Unmarshaller;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.core.xml.mock.SimpleXMLObject;
-import org.opensaml.core.xml.mock.SimpleXMLObjectBuilder;
 import org.w3c.dom.Document;
 
 import net.shibboleth.shared.xml.XMLParserException;
@@ -54,7 +53,8 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         final SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
         Assert.assertNull(sxObject.isNilXSBoolean());
-        Assert.assertFalse(sxObject.isNil(), "Expected isNil() false");
+        final Boolean nil = sxObject.isNil();
+        Assert.assertTrue(nil != null && !nil, "Expected isNil() false");
     }
     
     @Test
@@ -66,7 +66,8 @@ public class XMLObjectXSIAttribsTest extends XMLObjectBaseTestCase {
         SimpleXMLObject sxObject = (SimpleXMLObject) unmarshaller.unmarshall(document.getDocumentElement());
 
         Assert.assertNotNull(sxObject.isNilXSBoolean());
-        Assert.assertTrue(sxObject.isNil(), "Expected isNil() true");
+        final Boolean nil = sxObject.isNil();
+        Assert.assertTrue(nil != null && nil, "Expected isNil() true");
     }
     
     @Test

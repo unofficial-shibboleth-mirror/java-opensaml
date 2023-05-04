@@ -28,6 +28,8 @@ import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.XMLRuntimeException;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -130,7 +132,7 @@ public class MarshallerFactory {
      * 
      * @return a listing of all the Marshallers currently registered
      */
-    @Nonnull public Map<QName, Marshaller> getMarshallers() {
+    @Nonnull @Unmodifiable @NotLive public Map<QName, Marshaller> getMarshallers() {
         return CollectionSupport.copyToMap(marshallers);
     }
 
@@ -160,4 +162,5 @@ public class MarshallerFactory {
         log.debug("Deregistering marshaller for object type {}", key);
         return marshallers.remove(key);
     }
+    
 }

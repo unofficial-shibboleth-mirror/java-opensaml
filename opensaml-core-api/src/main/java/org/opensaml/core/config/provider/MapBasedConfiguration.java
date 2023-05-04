@@ -49,7 +49,8 @@ public class MapBasedConfiguration implements Configuration {
      * 
      * @return the instance of the registered configuration interface, or null
      */
-    @Nullable public <T extends Object> T get(final Class<T> configClass, final String partitionName) {
+    @Nullable public <T extends Object> T get(@Nonnull final Class<T> configClass,
+            @Nonnull final String partitionName) {
         final Map<String, Object> partition = getPartition(partitionName);
         return configClass.cast(partition.get(configClass.getName()));
     }
@@ -64,8 +65,8 @@ public class MapBasedConfiguration implements Configuration {
      * @param configuration the configuration implementation instance being registered
      * @param partitionName the partition name to use
      */
-    public <T extends Object, I extends T> void register(final Class<T> configClass, final I configuration,
-            final String partitionName) {
+    public <T extends Object, I extends T> void register(@Nonnull final Class<T> configClass,
+            @Nonnull final I configuration, @Nonnull final String partitionName) {
         final Map<String, Object> partition = getPartition(partitionName);
         partition.put(configClass.getName(), configuration);
     }
@@ -80,7 +81,8 @@ public class MapBasedConfiguration implements Configuration {
      * 
      * @return the configuration implementation instance which was deregistered, or null
      */
-    @Nullable public <T extends Object> T deregister(final Class<T> configClass, final String partitionName) {
+    @Nullable public <T extends Object> T deregister(@Nonnull final Class<T> configClass,
+            @Nonnull final String partitionName) {
         final Map<String, Object> partition = getPartition(partitionName);
         synchronized (partition) {
             final T old = configClass.cast(partition.get(configClass.getName()));
@@ -96,7 +98,7 @@ public class MapBasedConfiguration implements Configuration {
      * 
      * @return the Map corresponding to the partition name.  A new empty Map will be created if necessary
      */
-    @Nonnull private synchronized Map<String, Object> getPartition(final String partitionName) {
+    @Nonnull private synchronized Map<String, Object> getPartition(@Nonnull final String partitionName) {
         Map<String, Object> partition = storage.get(partitionName);
         if (partition == null) {
             partition = new ConcurrentHashMap<>();

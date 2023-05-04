@@ -31,10 +31,10 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface BaseBearing {
 
     /** The <code>base</code> attribute local name. */
-    @Nonnull @NotEmpty public static final String XML_BASE_ATTR_LOCAL_NAME = "base";
+    @Nonnull @NotEmpty static final String XML_BASE_ATTR_LOCAL_NAME = "base";
 
     /** The <code>xml:base</code> qualified attribute name. */
-    @Nonnull public static final QName XML_BASE_ATTR_NAME =
+    @Nonnull static final QName XML_BASE_ATTR_NAME =
         new QName(XMLConstants.XML_NS, XML_BASE_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**
@@ -42,13 +42,13 @@ public interface BaseBearing {
      * 
      * @return The <code>@xml:base</code> attribute value or <code>null</code>.
      */
-    @Nullable public String getXMLBase();
+    @Nullable String getXMLBase();
 
     /**
      * Sets the <code>@xml:base</code> attribute value.
      * 
      * @param newBase The <code>@xml:base</code> attribute value
      */
-    public void setXMLBase(@Nullable final String newBase);
+    void setXMLBase(@Nullable final String newBase);
 
 }

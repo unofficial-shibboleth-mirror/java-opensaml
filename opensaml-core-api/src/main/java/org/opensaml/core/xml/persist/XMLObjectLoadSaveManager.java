@@ -25,7 +25,6 @@ import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 
-import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
@@ -50,7 +49,7 @@ public interface XMLObjectLoadSaveManager<T extends XMLObject> {
      * 
      * @throws IOException if there is a fatal error obtaining the keys
      */
-    @Nonnull @NonnullElements @NotLive @Unmodifiable Set<String> listKeys() throws IOException;
+    @Nonnull @NotLive @Unmodifiable Set<String> listKeys() throws IOException;
 
     /**
      * Return an iterable of all objects under management, along with their associated index key.
@@ -59,7 +58,7 @@ public interface XMLObjectLoadSaveManager<T extends XMLObject> {
      * 
      * @throws IOException if there is a fatal error loading the managed objects
      */
-    @Nonnull @NonnullElements Iterable<Pair<String,T>> listAll() throws IOException;
+    @Nonnull @NotLive @Unmodifiable Iterable<Pair<String,T>> listAll() throws IOException;
 
     /**
      * Evaluate whether an object already exists indexed by the supplied key.

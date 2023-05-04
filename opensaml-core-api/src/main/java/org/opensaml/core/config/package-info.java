@@ -16,4 +16,7 @@
  */
 
 /** Interfaces and classes related to library configuration and initialization. */
+@NonnullElements
 package org.opensaml.core.config;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

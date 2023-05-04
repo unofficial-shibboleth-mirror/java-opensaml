@@ -31,10 +31,10 @@ import net.shibboleth.shared.xml.XMLConstants;
 public interface IdBearing {
 
     /** The <code>id</code> attribute local name. */
-    @Nonnull @NotEmpty public static final String XML_ID_ATTR_LOCAL_NAME = "id";
+    @Nonnull @NotEmpty static final String XML_ID_ATTR_LOCAL_NAME = "id";
 
     /** The <code>xml:id</code> qualified attribute name. */
-    @Nonnull public static final QName XML_ID_ATTR_NAME =
+    @Nonnull static final QName XML_ID_ATTR_NAME =
         new QName(XMLConstants.XML_NS, XML_ID_ATTR_LOCAL_NAME, XMLConstants.XML_PREFIX);
 
     /**
@@ -42,13 +42,13 @@ public interface IdBearing {
      * 
      * @return The <code>@xml:id</code> attribute value or <code>null</code>.
      */
-    @Nullable public String getXMLId();
+    @Nullable String getXMLId();
 
     /**
      * Sets the <code>@xml:id</code> attribute value.
      * 
      * @param newId The <code>@xml:id</code> attribute value
      */
-    public void setXMLId(@Nullable final String newId);
+    void setXMLId(@Nullable final String newId);
 
 }
