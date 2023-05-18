@@ -67,7 +67,7 @@ public class MockAssertionValidator extends SAML20AssertionValidator {
         if (ValidationResult.class.isInstance(result)) {
             ValidationResult vr = ValidationResult.class.cast(result);
             if (!ValidationResult.VALID.equals(vr)) {
-                context.setValidationFailureMessage("Mock validation was not valid");
+                context.getValidationFailureMessages().add("Mock validation was not valid");
             }
             return vr;
         }
@@ -75,7 +75,7 @@ public class MockAssertionValidator extends SAML20AssertionValidator {
         if (Pair.class.isInstance(result)) {
             Pair<ValidationResult,String> pair = Pair.class.cast(result);
             if (!ValidationResult.VALID.equals(pair.getFirst())) {
-                context.setValidationFailureMessage(pair.getSecond());
+                context.getValidationFailureMessages().add(pair.getSecond());
             }
             return Constraint.isNotNull(pair.getFirst(), "ValidationResult was null");
         }

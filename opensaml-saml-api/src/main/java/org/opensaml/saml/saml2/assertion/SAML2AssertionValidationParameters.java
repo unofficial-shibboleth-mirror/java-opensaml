@@ -55,7 +55,8 @@ public final class SAML2AssertionValidationParameters {
     /**
      * Carries the {@link org.opensaml.saml.saml2.core.SubjectConfirmation} that confirmed the subject.
      */
-    @Nonnull @NotEmpty public static final String CONFIRMED_SUBJECT_CONFIRMATION = STD_PREFIX + ".ConfirmedSubjectConfirmation";
+    @Nonnull @NotEmpty public static final String CONFIRMED_SUBJECT_CONFIRMATION =
+            STD_PREFIX + ".ConfirmedSubjectConfirmation";
     
     /**
      * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.lang.String}<code>&gt;</code>
@@ -73,20 +74,23 @@ public final class SAML2AssertionValidationParameters {
      * Carries a {@link net.shibboleth.shared.resolver.CriteriaSet} which will be used as the 
      * input to a {@link org.opensaml.xmlsec.signature.support.SignatureTrustEngine}.
      */
-    @Nonnull @NotEmpty public static final String SIGNATURE_VALIDATION_CRITERIA_SET = STD_PREFIX + ".SignatureValidationCriteriaSet";
+    @Nonnull @NotEmpty public static final String SIGNATURE_VALIDATION_CRITERIA_SET =
+            STD_PREFIX + ".SignatureValidationCriteriaSet";
 
     /**
      * Carries a {@link org.opensaml.xmlsec.signature.support.SignatureTrustEngine} which will be used
      * to validate the Assertion signature.
      */
-    @Nonnull @NotEmpty public static final String SIGNATURE_VALIDATION_TRUST_ENGINE = STD_PREFIX + ".SignatureValidationTrustEngine";
+    @Nonnull @NotEmpty public static final String SIGNATURE_VALIDATION_TRUST_ENGINE =
+            STD_PREFIX + ".SignatureValidationTrustEngine";
 
     /**
      * Carries a {@link org.opensaml.xmlsec.signature.support.SignaturePrevalidator} which will be used
      * to pre-validate the Assertion signature.
      * 
      */
-    @Nonnull @NotEmpty public static final String SIGNATURE_VALIDATION_PREVALIDATOR = STD_PREFIX + ".SignatureValidationPrevalidator";
+    @Nonnull @NotEmpty public static final String SIGNATURE_VALIDATION_PREVALIDATOR =
+            STD_PREFIX + ".SignatureValidationPrevalidator";
 
     /**
      * Carries a {@link java.lang.Boolean} flag which indicates whether
@@ -98,7 +102,8 @@ public final class SAML2AssertionValidationParameters {
      * Carries a {@link java.lang.Boolean} flag which indicates whether
      * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} NotOnOrAfter is required.
      */
-    @Nonnull @NotEmpty public static final String SC_NOT_ON_OR_AFTER_REQUIRED = STD_PREFIX + SC_INFIX + ".NoOnOrAfterRequired";
+    @Nonnull @NotEmpty public static final String SC_NOT_ON_OR_AFTER_REQUIRED =
+            STD_PREFIX + SC_INFIX + ".NoOnOrAfterRequired";
     
     /**
      * Carries a {@link java.lang.Boolean} flag which indicates whether
@@ -136,13 +141,15 @@ public final class SAML2AssertionValidationParameters {
      * Carries a {@link java.lang.Boolean} flag which indicates whether
      * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} InResponseTo is required.
      */
-    @Nonnull @NotEmpty public static final String SC_IN_RESPONSE_TO_REQUIRED = STD_PREFIX + SC_INFIX + ".InResponseToRequired";
+    @Nonnull @NotEmpty public static final String SC_IN_RESPONSE_TO_REQUIRED =
+            STD_PREFIX + SC_INFIX + ".InResponseToRequired";
     
     /**
      * Carries a {@link java.lang.String} whose value is the acceptable 
      * {@link org.opensaml.saml.saml2.core.SubjectConfirmationData} InResponseTo.
      */
-    @Nonnull @NotEmpty public static final String SC_VALID_IN_RESPONSE_TO = STD_PREFIX + SC_INFIX + ".ValidInResponseTo";
+    @Nonnull @NotEmpty public static final String SC_VALID_IN_RESPONSE_TO =
+            STD_PREFIX + SC_INFIX + ".ValidInResponseTo";
     
     /**
      * Carries the {@link java.security.PublicKey} used by the presenter.
@@ -152,19 +159,22 @@ public final class SAML2AssertionValidationParameters {
     /**
      * Carries the {@link java.security.cert.X509Certificate} used by the presenter.
      */
-    @Nonnull @NotEmpty public static final String SC_HOK_PRESENTER_CERT = STD_PREFIX + SC_INFIX + ".HoK.PresenterCertificate";
+    @Nonnull @NotEmpty public static final String SC_HOK_PRESENTER_CERT =
+            STD_PREFIX + SC_INFIX + ".HoK.PresenterCertificate";
 
     /**
      * Carries the {@link org.opensaml.xmlsec.signature.KeyInfo} that successfully confirmed the subject 
      * via holder-of-key subject confirmation.
      */
-    @Nonnull @NotEmpty public static final String SC_HOK_CONFIRMED_KEYINFO = STD_PREFIX + SC_INFIX + ".HoK.ConfirmedKeyInfo";
+    @Nonnull @NotEmpty public static final String SC_HOK_CONFIRMED_KEYINFO =
+            STD_PREFIX + SC_INFIX + ".HoK.ConfirmedKeyInfo";
 
     /**
      * Carries a {@link java.util.Set}<code>&lt;</code>{@link javax.xml.namespace.QName}<code>&gt;</code>
      * of required conditions which must be present in the assertion.
      */
-    @Nonnull @NotEmpty public static final String COND_REQUIRED_CONDITIONS = STD_PREFIX + COND_INFIX + ".RequiredConditions";
+    @Nonnull @NotEmpty public static final String COND_REQUIRED_CONDITIONS =
+            STD_PREFIX + COND_INFIX + ".RequiredConditions";
 
     /**
      * Carries a {@link java.util.Set}<code>&lt;</code>{@link java.lang.String}<code>&gt;</code>
@@ -178,7 +188,8 @@ public final class SAML2AssertionValidationParameters {
      * Carries a {@link java.time.Duration} representing the per-invocation value for the Assertion 
      * replay cache expiration.
      */
-    @Nonnull @NotEmpty public static final String COND_ONE_TIME_USE_EXPIRES = STD_PREFIX + COND_INFIX + ".OneTimeUseExpires";
+    @Nonnull @NotEmpty public static final String COND_ONE_TIME_USE_EXPIRES =
+            STD_PREFIX + COND_INFIX + ".OneTimeUseExpires";
 
     /**
      * Carries a {@link java.lang.Boolean} flag which indicates whether the
@@ -200,7 +211,8 @@ public final class SAML2AssertionValidationParameters {
      * Carries a {@link java.time.Duration} used to evaluate the 
      * allowed value of an AuthnInstant attribute of an {@link AuthnStatement}.
      */
-    @Nonnull @NotEmpty public static final String STMT_AUTHN_MAX_TIME = STD_PREFIX + STMT_INFIX + ".Authn.MaxTimeSinceAuthn";
+    @Nonnull @NotEmpty public static final String STMT_AUTHN_MAX_TIME =
+            STD_PREFIX + STMT_INFIX + ".Authn.MaxTimeSinceAuthn";
     
     
     /** Constructor. */

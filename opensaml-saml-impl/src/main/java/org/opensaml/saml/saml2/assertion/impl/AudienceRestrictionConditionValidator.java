@@ -86,15 +86,13 @@ public class AudienceRestrictionConditionValidator implements ConditionValidator
             validAudiences = (Set<String>) context.getStaticParameters().get(
                     SAML2AssertionValidationParameters.COND_VALID_AUDIENCES);
         } catch (final ClassCastException e) {
-            log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
-                    SAML2AssertionValidationParameters.COND_VALID_AUDIENCES);
-            context.setValidationFailureMessage("Unable to determine list of valid audiences");
+            context.getValidationFailureMessages().add("Unable to determine list of valid audiences");
             return ValidationResult.INDETERMINATE;
         }
         if (validAudiences == null || validAudiences.isEmpty()) {
-            log.warn("Set of valid audiences was not available from the validation context, " 
-                    + "unable to evaluate AudienceRestriction Condition");
-            context.setValidationFailureMessage("Unable to determine list of valid audiences");
+            context.getValidationFailureMessages().add(
+                    "Set of valid audiences was not available from the validation context, " 
+                            + "unable to evaluate AudienceRestriction Condition");
             return ValidationResult.INDETERMINATE;
         }
         log.debug("Evaluating the Assertion's AudienceRestriction/Audience values " 
@@ -104,9 +102,9 @@ public class AudienceRestrictionConditionValidator implements ConditionValidator
         final AudienceRestriction audienceRestriction = (AudienceRestriction) condition;
         final List<Audience> audiences = audienceRestriction.getAudiences();
         if (audiences == null || audiences.isEmpty()) {
-            context.setValidationFailureMessage(String.format(
-                    "'%s' condition in assertion '%s' is malformed as it does not contain any audiences",
-                    getServicedCondition(), assertion.getID()));
+            context.getValidationFailureMessages().add(
+                    String.format("'%s' condition in assertion '%s' is malformed as it does not contain any audiences",
+                            getServicedCondition(), assertion.getID()));
             return ValidationResult.INVALID;
         }
 
@@ -118,10 +116,9 @@ public class AudienceRestrictionConditionValidator implements ConditionValidator
             }
         }
 
-        final String msg = String.format(
-                "None of the audiences within Assertion '%s' matched the list of valid audiances", assertion.getID());
-        log.debug(msg);
-        context.setValidationFailureMessage(msg);
+        context.getValidationFailureMessages().add(String.format(
+                "None of the audiences within Assertion '%s' matched the list of valid audiances", assertion.getID()));
         return ValidationResult.INVALID;
     }
+
 }

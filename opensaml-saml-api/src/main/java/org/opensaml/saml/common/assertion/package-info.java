@@ -18,5 +18,7 @@
 /**
  * Common classes for validating SAML Assertions.
  */
-
+@NonnullElements
 package org.opensaml.saml.common.assertion;
+
+import net.shibboleth.shared.annotation.constraint.NonnullElements;

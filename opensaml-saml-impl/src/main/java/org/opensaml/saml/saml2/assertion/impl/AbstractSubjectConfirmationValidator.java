@@ -144,8 +144,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         } else {
             if (inResponseToRequired || recipientRequired || notOnOrAfterRequired || notBeforeRequired 
                     || addressRequired) {
-                log.warn("SubjectConfirmationData was null, and one of more data elements were required");
-                context.setValidationFailureMessage(
+                context.getValidationFailureMessages().add(
                         "SubjectConfirmationData was null and one or more data elements were required");
                 return ValidationResult.INVALID;
             }
@@ -250,8 +249,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                 StringSupport.trimOrNull(confirmationData.getInResponseTo());
         if (inResponseTo == null) {
             if (required) {
-                log.warn("SubjectConfirmationData/@InResponseTo was missing and was required");
-                context.setValidationFailureMessage(
+                context.getValidationFailureMessages().add(
                         "SubjectConfirmationData/@InResponseTo was missing and was required");
                 return ValidationResult.INVALID;
             }
@@ -265,16 +263,13 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             validInResponseTo = (String) context.getStaticParameters().get(
                     SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO);
         } catch (final ClassCastException e) {
-            log.warn("The value of the static validation parameter '{}' was not java.lang.String",
-                    SAML2AssertionValidationParameters.SC_VALID_IN_RESPONSE_TO);
-            context.setValidationFailureMessage(
+            context.getValidationFailureMessages().add(
                     "Unable to determine valid subject confirmation InResponseTo");
             return ValidationResult.INDETERMINATE;
         }
         if (validInResponseTo == null) {
-            log.warn("Valid InResponseTo was not available from the validation context, " 
+            context.getValidationFailureMessages().add("Valid InResponseTo was not available from the validation context, " 
                     + "unable to evaluate SubjectConfirmationData@InResponseTo");
-            context.setValidationFailureMessage("Unable to determine valid subject confirmation InResponseTo");
             return ValidationResult.INDETERMINATE;
         }
 
@@ -283,11 +278,9 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             return ValidationResult.VALID;
         }
         
-        log.debug("Failed to match SubjectConfirmationData@InResponse to the valid value: {}", validInResponseTo);
-
-        context.setValidationFailureMessage(String.format(
-                "Subject confirmation InResponseTo for assertion '%s' did not match the valid value",
-                assertion.getID()));
+        context.getValidationFailureMessages().add(String.format(
+                "Subject confirmation InResponseTo for assertion '%s' did not match the valid value: %s",
+                assertion.getID(), validInResponseTo));
         return ValidationResult.INVALID;
     }
 
@@ -310,8 +303,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         final Instant notBefore = confirmationData.getNotBefore();
         if (notBefore == null) {
             if (required) {
-                log.warn("SubjectConfirmationData/@NotBefore was missing and was required");
-                context.setValidationFailureMessage(
+                context.getValidationFailureMessages().add(
                         "SubjectConfirmationData/@NotBefore was missing and was required");
                 return ValidationResult.INVALID;
             }
@@ -323,7 +315,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         log.debug("Evaluating SubjectConfirmationData NotBefore '{}' against 'skewed now' time '{}'",
                 notBefore, skewedNow);
         if (notBefore != null && notBefore.isAfter(skewedNow)) {
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "Subject confirmation, in assertion '%s', with NotBefore condition of '%s' is not yet valid",
                     assertion.getID(), notBefore));
             return ValidationResult.INVALID;
@@ -351,8 +343,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         final Instant notOnOrAfter = confirmationData.getNotOnOrAfter();
         if (notOnOrAfter == null) {
             if (required) {
-                log.warn("SubjectConfirmationData/@NotOnOrAfter was missing and was required");
-                context.setValidationFailureMessage(
+                context.getValidationFailureMessages().add(
                         "SubjectConfirmationData/@NotOnOrAfter was missing and was required");
                 return ValidationResult.INVALID;
             }
@@ -364,7 +355,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         log.debug("Evaluating SubjectConfirmationData NotOnOrAfter '{}' against 'skewed now' time '{}'",
                 notOnOrAfter, skewedNow);
         if (notOnOrAfter != null && notOnOrAfter.isBefore(skewedNow)) {
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "Subject confirmation, in assertion '%s', with NotOnOrAfter condition of '%s' is no longer valid",
                     assertion.getID(), notOnOrAfter));
             return ValidationResult.INVALID;
@@ -393,32 +384,28 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
                 StringSupport.trimOrNull(confirmationData.getRecipient());
         if (recipient == null) {
             if (required) {
-                log.warn("SubjectConfirmationData/@Recipient was missing and was required");
-                context.setValidationFailureMessage(
+                context.getValidationFailureMessages().add(
                         "SubjectConfirmationData/@Recipient was missing and was required");
                 return ValidationResult.INVALID;
             }
             return ValidationResult.VALID;
         }
         
-        log.debug("Evaluating SubjectConfirmationData@Recipient of : {}", recipient);
+        log.debug("Evaluating SubjectConfirmationData@Recipient of: {}", recipient);
 
         final Set<String> validRecipients;
         try {
             validRecipients = (Set<String>) context.getStaticParameters().get(
                     SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS);
         } catch (final ClassCastException e) {
-            log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
-                    SAML2AssertionValidationParameters.SC_VALID_RECIPIENTS);
-            context.setValidationFailureMessage(
+            context.getValidationFailureMessages().add(
                     "Unable to determine list of valid subject confirmation recipient endpoints");
             return ValidationResult.INDETERMINATE;
         }
         if (validRecipients == null || validRecipients.isEmpty()) {
-            log.warn("Set of valid recipient URI's was not available from the validation context, " 
-                    + "unable to evaluate SubjectConfirmationData@Recipient");
-            context.setValidationFailureMessage(
-                    "Unable to determine list of valid subject confirmation recipient endpoints");
+            context.getValidationFailureMessages().add(
+                    "Set of valid recipient URI's was not available from the validation context, " 
+                            + "unable to evaluate SubjectConfirmationData@Recipient");
             return ValidationResult.INDETERMINATE;
         }
 
@@ -426,13 +413,10 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
             log.debug("Matched valid recipient: {}", recipient);
             return ValidationResult.VALID;
         }
-        
-        log.debug("Failed to match SubjectConfirmationData@Recipient to any supplied valid recipients: {}",
-                validRecipients);
 
-        context.setValidationFailureMessage(String.format(
-                "Subject confirmation recipient for assertion '%s' did not match any valid recipients", assertion
-                        .getID()));
+        context.getValidationFailureMessages().add(String.format(
+                "Subject confirmation recipient for assertion '%s' did not match any valid recipients: %s",
+                assertion.getID(), validRecipients));
         return ValidationResult.INVALID;
     }
 
@@ -463,8 +447,7 @@ public abstract class AbstractSubjectConfirmationValidator implements SubjectCon
         final String address = StringSupport.trimOrNull(confirmationData.getAddress());
         if (address == null) {
             if (required) {
-                log.warn("SubjectConfirmationData/@Address was missing and was required");
-                context.setValidationFailureMessage(
+                context.getValidationFailureMessages().add(
                         "SubjectConfirmationData/@Address was missing and was required");
                 return ValidationResult.INVALID;
             }

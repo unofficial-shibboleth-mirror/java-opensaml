@@ -17,8 +17,10 @@
 
 package org.opensaml.saml.common.assertion;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Nonnull;
@@ -30,7 +32,6 @@ import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.collection.LazyMap;
-import net.shibboleth.shared.primitive.StringSupport;
 
 /**
  * Context which holds state related to a single validation event.
@@ -45,7 +46,7 @@ public class ValidationContext {
     @Nonnull private Map<String, Object> dynamicParameters;
 
     /** Error messaging describing what validation check an assertion failed. */
-    @Nullable private String validationFailureMessage;
+    @Nonnull private final List<String> validationFailureMessages;
 
     /** Constructor. Creates a validation context with no global environment. */
     public ValidationContext() {
@@ -65,6 +66,7 @@ public class ValidationContext {
             staticParameters = Collections.unmodifiableMap(new HashMap<>(newStaticParameters));
         }
         dynamicParameters = new LazyMap<>();
+        validationFailureMessages = new ArrayList<>();
     }
 
     /**
@@ -90,17 +92,8 @@ public class ValidationContext {
      * 
      * @return message describing why the validation process failed
      */
-    @Nullable public String getValidationFailureMessage() {
-        return validationFailureMessage;
-    }
-
-    /**
-     * Sets the message describing why the validation process failed.
-     * 
-     * @param message message describing why the validation process failed
-     */
-    public void setValidationFailureMessage(@Nullable final String message) {
-        validationFailureMessage = StringSupport.trimOrNull(message);
+    @Nonnull @Live public List<String> getValidationFailureMessages() {
+        return validationFailureMessages;
     }
 
 }

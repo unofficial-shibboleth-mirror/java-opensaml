@@ -111,14 +111,15 @@ public class OneTimeUseConditionValidator implements ConditionValidator {
         
         if (!(condition instanceof OneTimeUse) 
                 && !Objects.equals(condition.getElementQName(), getServicedCondition())) {
-            log.warn("Condition '{}' of type '{}' in assertion '{}' was not an '{}' condition.  Unable to process.",
-                    new Object[] { condition.getElementQName(), condition.getSchemaType(), assertion.getID(),
-                            getServicedCondition(), });
+            context.getValidationFailureMessages().add(
+                    String.format("Condition '%s' of type '%s' in assertion '%s' was not an '%s' condition",
+                            condition.getElementQName(), condition.getSchemaType(), assertion.getID(),
+                            getServicedCondition()));
             return ValidationResult.INDETERMINATE;
         }
         
         if (!replayCache.check(CACHE_CONTEXT, getCacheValue(assertion), getExpires(assertion, context))) {
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "Assertion '%s' has a one time use condition and has been used before", assertion.getID()));
             return ValidationResult.INVALID;
         }

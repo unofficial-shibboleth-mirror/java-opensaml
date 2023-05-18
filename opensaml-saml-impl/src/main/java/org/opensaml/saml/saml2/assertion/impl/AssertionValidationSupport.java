@@ -19,7 +19,6 @@ package org.opensaml.saml.saml2.assertion.impl;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.Arrays;
 import java.util.Set;
 
 import javax.annotation.Nonnull;
@@ -29,7 +28,9 @@ import org.opensaml.saml.common.assertion.ValidationContext;
 import org.opensaml.saml.common.assertion.ValidationResult;
 import org.opensaml.saml.saml2.core.Assertion;
 import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
+import net.shibboleth.shared.collection.CollectionSupport;
+import net.shibboleth.shared.primitive.LoggerFactory;
 
 /**
  * Support methods for assertion validation.
@@ -37,7 +38,7 @@ import org.slf4j.LoggerFactory;
 public final class AssertionValidationSupport {
     
     /** Logger. */
-    private static final Logger LOG = LoggerFactory.getLogger(AssertionValidationSupport.class);
+    @Nonnull private static final Logger LOG = LoggerFactory.getLogger(AssertionValidationSupport.class);
     
     /** Constructor. */
     private AssertionValidationSupport() { }
@@ -69,33 +70,29 @@ public final class AssertionValidationSupport {
         try {
             confirmingAddresses = InetAddress.getAllByName(address);
         } catch (final UnknownHostException e) {
-            LOG.warn("The {} value '{}' in assertion '{}' can not be resolved to a valid set of IP address(s)",
-                    description, address, assertion.getID());
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "%s '%s' is not resolvable to hostname or IP address", description, address));
             return ValidationResult.INDETERMINATE;
         }
         
         if (LOG.isDebugEnabled()) {
-            LOG.debug("{} was resolved to addresses: {}", description, Arrays.asList(confirmingAddresses));
+            assert confirmingAddresses != null;
+            LOG.debug("{} was resolved to addresses: {}", description, CollectionSupport.listOf(confirmingAddresses));
         }
 
         final Set<InetAddress> validAddresses;
         try {
             validAddresses = (Set<InetAddress>) context.getStaticParameters().get(validAddressesParam);
         } catch (final ClassCastException e) {
-            LOG.warn("The value of the static validation parameter '{}' was not a java.util.Set<InetAddress>",
-                    validAddressesParam);
-            context.setValidationFailureMessage(String.format("Unable to determine list of valid values for %s",
-                    description));
+            context.getValidationFailureMessages().add(
+                    String.format("Unable to determine list of valid values for %s", description));
             return ValidationResult.INDETERMINATE;
         }
         
         if (validAddresses == null || validAddresses.isEmpty()) {
-            LOG.warn("Set of valid addresses was not available from the validation context, unable to evaluate {}",
-                    description);
-            context.setValidationFailureMessage(String.format("Unable to determine list of valid values for %s",
-                    description));
+            context.getValidationFailureMessages().add(String.format(
+                    "Set of valid addresses was not available from the validation context, unable to evaluate %s",
+                            description));
             return ValidationResult.INDETERMINATE;
         }
 
@@ -106,10 +103,9 @@ public final class AssertionValidationSupport {
             }
         }
         
-        LOG.debug("Failed to match {} to any supplied valid addresses: {}", description, validAddresses);
-
-        context.setValidationFailureMessage(String.format(
-                "%s for assertion '%s' did not match any valid addresses", description, assertion.getID()));
+        context.getValidationFailureMessages().add(
+                String.format("%s for assertion '%s' did not match supplied valid addresses: %s",
+                        description, assertion.getID(), validAddresses));
         return ValidationResult.INVALID;
     }
  

@@ -379,7 +379,7 @@ public class SAML20AssertionValidator {
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
         if (assertion.getVersion() != SAMLVersion.VERSION_20) {
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "Assertion '%s' is not a SAML 2.0 version Assertion", assertion.getID()));
             return ValidationResult.INVALID;
         }
@@ -402,7 +402,7 @@ public class SAML20AssertionValidator {
         final Instant issueInstant = assertion.getIssueInstant();
 
         if (issueInstant == null) {
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "Assertion '%s' did not contain the required IssueInstant", assertion.getID()));
             return ValidationResult.INVALID; 
         }
@@ -416,17 +416,18 @@ public class SAML20AssertionValidator {
 
         // Check assertion wasn't issued in the future
         if (issueInstant.isAfter(latestValid)) {
-            log.warn("Assertion was not yet valid: IssueInstant: '{}', latest valid: '{}'", issueInstant, latestValid);
-            context.setValidationFailureMessage("Assertion IssueInstant was invalid, issued in future");
+            context.getValidationFailureMessages().add(
+                    String.format("Assertion was not yet valid: IssueInstant: '%s', latest valid: '%s'",
+                            issueInstant, latestValid));
             return ValidationResult.INVALID;
             
         }
 
         // Check assertion has not expired
         if (expiration.isBefore(now)) {
-            log.warn("Assertion IssueInstant was expired: IssueInstant: '{}', expiration: '{}', now: '{}'",
-                    issueInstant, expiration, now);
-            context.setValidationFailureMessage("Assertion IssueInstant was invalid, expired");
+            context.getValidationFailureMessages().add(
+                    String.format("Assertion IssueInstant was expired: IssueInstant: '{}', expiration: '{}', now: '{}'",
+                            issueInstant, expiration, now));
             return ValidationResult.INVALID;
         }
         
@@ -453,8 +454,7 @@ public class SAML20AssertionValidator {
             issuer = StringSupport.trimOrNull(issuerElement.getValue());
         }
         if (issuer == null) {
-            log.warn("Assertion Issuer was missing and was required");
-            context.setValidationFailureMessage("Assertion Issuer was missing and was required");
+            context.getValidationFailureMessages().add("Assertion Issuer was missing and was required");
             return ValidationResult.INVALID;
         }
         
@@ -465,9 +465,7 @@ public class SAML20AssertionValidator {
             validIssuers = (Set<String>) context.getStaticParameters().get(
                     SAML2AssertionValidationParameters.VALID_ISSUERS);
         } catch (final ClassCastException e) {
-            log.warn("The value of the static validation parameter '{}' was not java.util.Set<String>",
-                    SAML2AssertionValidationParameters.VALID_ISSUERS);
-            context.setValidationFailureMessage("Unable to determine list of valid issuers");
+            context.getValidationFailureMessages().add("Unable to determine list of valid issuers");
             return ValidationResult.INDETERMINATE;
         }
         if (validIssuers == null || validIssuers.isEmpty()) {
@@ -486,9 +484,7 @@ public class SAML20AssertionValidator {
             return ValidationResult.VALID;
         }
         
-        log.debug("Failed to match Issuer to any supplied valid issuers: {}", validIssuers);
-
-        context.setValidationFailureMessage(String.format(
+        context.getValidationFailureMessages().add(String.format(
                 "Issuer of Assertion '%s' did not match any valid issuers", assertion.getID()));
         return ValidationResult.INVALID;
     }
@@ -515,7 +511,7 @@ public class SAML20AssertionValidator {
         // Validate params and requirements
         if (!token.isSigned()) {
             if (signatureRequired) {
-                context.setValidationFailureMessage("Assertion was required to be signed, but was not");
+                context.getValidationFailureMessages().add("Assertion was required to be signed, but was not");
                 return ValidationResult.INVALID;
             }
             log.debug("Assertion was not required to be signed, and was not signed.  " 
@@ -541,8 +537,8 @@ public class SAML20AssertionValidator {
 
         final SignatureTrustEngine signatureTrustEngine = getSignatureValidationTrustEngine(token, context);
         if (signatureTrustEngine == null) {
-            log.warn("Signature validation was necessary, but no signature trust engine was available");
-            context.setValidationFailureMessage("Assertion signature could not be evaluated due to internal error");
+            context.getValidationFailureMessages().add(
+                    "Signature validation was necessary, but no signature trust engine was available");
             return ValidationResult.INDETERMINATE;
         }
 
@@ -566,9 +562,8 @@ public class SAML20AssertionValidator {
                 log.warn("No SignaturePrevalidator was available, skipping pre-validation");
             }
         } catch (final SignatureException e) {
-            final String msg = String.format("Assertion Signature failed pre-validation: %s", e.getMessage());
-            log.warn(msg);
-            context.setValidationFailureMessage(msg);
+            context.getValidationFailureMessages().add(
+                    String.format("Assertion Signature failed pre-validation: %s", e.getMessage()));
             return ValidationResult.INVALID;
         }
         
@@ -580,20 +575,16 @@ public class SAML20AssertionValidator {
                         token.getID(), tokenIssuer);
                 return ValidationResult.VALID;
             }
-            final String msg = String.format(
-                    "Signature of Assertion '%s' from Issuer '%s' was not valid", token.getID(), tokenIssuer);
-            log.warn(msg);
-            context.setValidationFailureMessage(msg);
+            context.getValidationFailureMessages().add(
+                    String.format("Signature of Assertion '%s' from Issuer '%s' was not valid",
+                            token.getID(), tokenIssuer));
             return ValidationResult.INVALID;
         } catch (final SecurityException e) {
-            final String msg = String.format(
-                    "A problem was encountered evaluating the signature over Assertion with ID '%s': %s",
-                    token.getID(), e.getMessage());
-            log.warn(msg);
-            context.setValidationFailureMessage(msg);
+            context.getValidationFailureMessages().add(
+                    String.format("A problem was encountered evaluating the signature over Assertion with ID '%s': %s",
+                            token.getID(), e.getMessage()));
             return ValidationResult.INDETERMINATE;
         }
-        
     }
 
     /**
@@ -709,22 +700,15 @@ public class SAML20AssertionValidator {
             }
 
             if (validator == null) {
-                final String msg = String.format(
-                        "Unknown Condition '%s' of type '%s' in assertion '%s'", 
-                                condition.getElementQName(), condition.getSchemaType(), assertion.getID());
-                log.debug(msg);
-                context.setValidationFailureMessage(msg);
+                context.getValidationFailureMessages().add(
+                        String.format("Unknown Condition '%s' of type '%s' in assertion '%s'", 
+                                condition.getElementQName(), condition.getSchemaType(), assertion.getID()));
                 return ValidationResult.INDETERMINATE;
             }
             if (validator.validate(condition, assertion, context) != ValidationResult.VALID) {
-                String msg = String.format(
-                        "Condition '%s' of type '%s' in assertion '%s' was not valid.",
-                                condition.getElementQName(), condition.getSchemaType(), assertion.getID());
-                if (context.getValidationFailureMessage() != null) {
-                    msg = msg + ": " + context.getValidationFailureMessage();
-                }
-                log.debug(msg);
-                context.setValidationFailureMessage(msg);
+                context.getValidationFailureMessages().add(
+                        String.format("Condition '%s' of type '%s' in assertion '%s' was not valid.",
+                                condition.getElementQName(), condition.getSchemaType(), assertion.getID()));
                 return ValidationResult.INVALID;
             }
         }
@@ -754,8 +738,7 @@ public class SAML20AssertionValidator {
         
         final Conditions conditions = assertion.getConditions();
         if (conditions == null || conditions.getConditions().isEmpty()) {
-            log.warn("At least 1 Condition was indicated as required, but Assertion contained no Conditions");
-            context.setValidationFailureMessage(
+            context.getValidationFailureMessages().add(
                     "At least 1 Condition was indicated as required, but Assertion contained no Conditions");
             return ValidationResult.INVALID;
         }
@@ -764,13 +747,9 @@ public class SAML20AssertionValidator {
             assert requiredCondition != null;
             final List<Condition> found = conditions.getConditions(requiredCondition);
             if (found == null || found.isEmpty()) {
-                String msg = String.format("Condition '%s' was required, but was not found in assertion '%s'",
-                        requiredCondition, assertion.getID());
-                if (context.getValidationFailureMessage() != null) {
-                    msg = msg + ": " + context.getValidationFailureMessage();
-                }
-                log.warn(msg);
-                context.setValidationFailureMessage(msg);
+                context.getValidationFailureMessages().add(
+                        String.format("Condition '%s' was required, but was not found in assertion '%s'",
+                                requiredCondition, assertion.getID()));
                 return ValidationResult.INVALID;
             }
         }
@@ -803,7 +782,7 @@ public class SAML20AssertionValidator {
         log.debug("Evaluating Conditions NotBefore '{}' against 'skewed now' time '{}'",
                 notBefore, now.plus(clockSkew));
         if (notBefore != null && notBefore.isAfter(now.plus(clockSkew))) {
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "Assertion '%s' with NotBefore condition of '%s' is not yet valid", assertion.getID(), notBefore));
             return ValidationResult.INVALID;
         }
@@ -812,7 +791,7 @@ public class SAML20AssertionValidator {
         log.debug("Evaluating Conditions NotOnOrAfter '{}' against 'skewed now' time '{}'",
                 notOnOrAfter, now.minus(clockSkew));
         if (notOnOrAfter != null && notOnOrAfter.isBefore(now.minus(clockSkew))) {
-            context.setValidationFailureMessage(String.format(
+            context.getValidationFailureMessages().add(String.format(
                     "Assertion '%s' with NotOnOrAfter condition of '%s' is no longer valid", assertion.getID(),
                     notOnOrAfter));
             return ValidationResult.INVALID;
@@ -865,10 +844,9 @@ public class SAML20AssertionValidator {
             }
         }
 
-        final String msg = String.format(
-                "No subject confirmation methods were met for assertion with ID '%s'", assertion.getID());
-        log.debug(msg);
-        context.setValidationFailureMessage(msg);
+        context.getValidationFailureMessages().add(
+                String.format("No subject confirmation methods were met for assertion with ID '%s'",
+                        assertion.getID()));
         return ValidationResult.INVALID;
     }
 

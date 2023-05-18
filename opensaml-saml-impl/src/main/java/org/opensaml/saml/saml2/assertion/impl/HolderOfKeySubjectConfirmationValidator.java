@@ -29,6 +29,7 @@ import javax.annotation.Nullable;
 import javax.annotation.concurrent.ThreadSafe;
 import javax.xml.namespace.QName;
 
+import net.shibboleth.shared.annotation.constraint.Live;
 import net.shibboleth.shared.collection.LazyList;
 import net.shibboleth.shared.collection.Pair;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -132,19 +133,17 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         
         log.debug("Attempting holder-of-key subject confirmation");
         if (!isValidConfirmationDataType(confirmationData)) {
-            final String msg = String.format(
-                    "Subject confirmation data is not of type '%s'", KeyInfoConfirmationDataType.TYPE_NAME);
-            log.debug(msg);
-            context.setValidationFailureMessage(msg);
+            context.getValidationFailureMessages().add(
+                    String.format("Subject confirmation data is not of type '%s'",
+                            KeyInfoConfirmationDataType.TYPE_NAME));
             return ValidationResult.INVALID;
         }
 
         final List<KeyInfo> possibleKeys = getSubjectConfirmationKeyInformation(confirmationData, assertion, context);
         if (possibleKeys.isEmpty()) {
-            final String msg = String.format(
-                    "No key information for holder of key subject confirmation in assertion '%s'", assertion.getID());
-            log.debug(msg);
-            context.setValidationFailureMessage(msg);
+            context.getValidationFailureMessages().add(
+                    String.format("No key information for holder of key subject confirmation in assertion '%s'",
+                            assertion.getID()));
             return ValidationResult.INVALID;
         }
 
@@ -152,14 +151,14 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
         try {
             keyCertPair = getKeyAndCertificate(context);
         } catch (final IllegalArgumentException e) {
-            log.warn("Problem with the validation context presenter key/cert params: {}", e.getMessage());
-            context.setValidationFailureMessage("Unable to obtain presenter key/cert params from validation context");
+            context.getValidationFailureMessages().add(String.format(
+                    "Unable to obtain presenter key/cert params from validation context: %s", e.getMessage()));
             return ValidationResult.INDETERMINATE;
         }
         
         if (keyCertPair.getFirst() == null && keyCertPair.getSecond() == null) {
-            log.debug("Neither the presenter's certificate nor its public key were provided");
-            context.setValidationFailureMessage("Neither the presenter's certificate nor its public key were provided");
+            context.getValidationFailureMessages().add(
+                    "Neither the presenter's certificate nor its public key were provided");
             return ValidationResult.INDETERMINATE;
         }
 
@@ -265,15 +264,13 @@ public class HolderOfKeySubjectConfirmationValidator extends AbstractSubjectConf
      * @throws AssertionValidationException if there is a problem processing the SubjectConfirmation
      *
      */
-    @Nonnull protected List<KeyInfo> getSubjectConfirmationKeyInformation(
+    @Nonnull @Live protected List<KeyInfo> getSubjectConfirmationKeyInformation(
             @Nonnull final SubjectConfirmationData confirmationData, @Nonnull final Assertion assertion, 
             @Nonnull final ValidationContext context) throws AssertionValidationException {
         
         final List<KeyInfo> keyInfos = new LazyList<>();
         for (final XMLObject object : confirmationData.getUnknownXMLObjects(KeyInfo.DEFAULT_ELEMENT_NAME)) {
-            if (object != null) {
-                keyInfos.add((KeyInfo) object);
-            }
+            keyInfos.add((KeyInfo) object);
         }
 
         log.debug("Found '{}' KeyInfo children of SubjectConfirmationData", keyInfos.size());

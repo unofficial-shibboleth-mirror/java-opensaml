@@ -43,8 +43,6 @@ import org.opensaml.soap.wssecurity.messaging.Token.ValidationStatus;
 import org.opensaml.soap.wssecurity.messaging.WSSecurityContext;
 import org.slf4j.Logger;
 
-import com.google.common.base.Strings;
-
 import jakarta.servlet.http.HttpServletRequest;
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
 import net.shibboleth.shared.collection.CollectionSupport;
@@ -292,11 +290,6 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
         
         log.debug("Assertion token validation result was: {}", validationResult);
         
-        String validationMsg = validationContext.getValidationFailureMessage();
-        if (Strings.isNullOrEmpty(validationMsg)) {
-            validationMsg  = "unspecified";
-        }
-                    
         switch (validationResult) {
             case VALID:
                 token.setValidationStatus(ValidationStatus.VALID);
@@ -304,7 +297,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
                         .get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION));
                 break;
             case INVALID:
-                log.warn("Assertion token validation was INVALID.  Reason: {}", validationMsg);
+                log.warn("Assertion token validation was INVALID. Reason(s): {}",
+                        validationContext.getValidationFailureMessages());
                 if (isInvalidFatal()) {
                     SOAPMessagingSupport.registerSOAP11Fault(messageContext,
                             WSSecurityConstants.SOAP_FAULT_INVALID_SECURITY_TOKEN, 
@@ -316,7 +310,8 @@ public class WSSecuritySAML20AssertionTokenSecurityHandler extends AbstractMessa
                         .get(SAML2AssertionValidationParameters.CONFIRMED_SUBJECT_CONFIRMATION));
                 break;
             case INDETERMINATE:
-                log.warn("Assertion token validation was INDETERMINATE. Reason: {}", validationMsg);
+                log.warn("Assertion token validation was INDETERMINATE. Reason(s): {}",
+                        validationContext.getValidationFailureMessages());
                 if (isInvalidFatal()) {
                     SOAPMessagingSupport.registerSOAP11Fault(messageContext,
                             WSSecurityConstants.SOAP_FAULT_INVALID_SECURITY_TOKEN, 
