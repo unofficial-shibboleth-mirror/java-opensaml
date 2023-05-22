@@ -65,6 +65,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
     @Nullable private Function<String, String> transformer;
     
     /** Path escaper for escaping the input value inserted into the URL path. */
+    @SuppressWarnings("null")
     @Nonnull private final Escaper pathEscaper = UrlEscapers.urlPathSegmentEscaper();
     
     /** List of secondary URL builders. */
@@ -80,7 +81,6 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
         this(baseURL, null, null);
     }
     
-    
     /**
      * Constructor.
      *
@@ -92,6 +92,7 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
             @ParameterName(name="transform") @Nullable final Function<String,String> transform) {
         this(baseURL, transform, null);
     }
+    
     /**
      * Constructor.
      *
@@ -132,6 +133,17 @@ public class MetadataQueryProtocolRequestURLBuilder implements Function<Criteria
         }
     }
 
+    /**
+     * Gets the base URL configured into function.
+     * 
+     * @return base URL
+     * 
+     * @since 5.0.0
+     */
+    @Nonnull @NotEmpty public String getBaseURL() {
+        return base;
+    }
+    
     /** {@inheritDoc} */
     @Nullable public String apply(@Nullable final CriteriaSet criteria) {
         final EntityIdCriterion criterion = criteria != null ? criteria.get(EntityIdCriterion.class) : null;

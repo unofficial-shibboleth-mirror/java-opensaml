@@ -35,6 +35,7 @@ import org.apache.hc.core5.http.ClassicHttpResponse;
 import org.apache.hc.core5.http.Header;
 import org.apache.hc.core5.http.HttpStatus;
 import org.apache.hc.core5.http.io.entity.EntityUtils;
+import org.opensaml.saml.metadata.resolver.RemoteMetadataResolver;
 import org.opensaml.security.httpclient.HttpClientSecurityParameters;
 import org.opensaml.security.httpclient.HttpClientSecuritySupport;
 import org.slf4j.Logger;
@@ -58,7 +59,7 @@ import net.shibboleth.shared.resolver.ResolverException;
  * It is the responsibility of the caller to re-initialize, via {@link #initialize()}, if any properties of this
  * provider are changed.
  */
-public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
+public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver implements RemoteMetadataResolver {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(HTTPMetadataResolver.class);
@@ -112,11 +113,7 @@ public class HTTPMetadataResolver extends AbstractReloadingMetadataResolver {
         }
     }
 
-    /**
-     * Gets the URL to fetch the metadata.
-     * 
-     * @return the URL to fetch the metadata
-     */
+    /** {@inheritDoc} */
     @Nonnull public String getMetadataURI() {
         return metadataURI.toASCIIString();
     }
