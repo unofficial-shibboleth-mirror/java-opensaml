@@ -22,6 +22,8 @@ import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+
 /**
  * A metadata filter is used to process a metadata document after it has been unmarshalled into an 
  * instance of {@link XMLObject}, either an {@link org.opensaml.saml.saml2.metadata.EntityDescriptor}
@@ -40,6 +42,15 @@ import org.opensaml.core.xml.XMLObject;
  * </p>
  */
 public interface MetadataFilter {
+
+    /**
+     * Gets the type of filter for reporting or logging purposes.
+     * 
+     * @return filter type
+     * 
+     * @since 5.0.0
+     */
+    @Nullable @NotEmpty String getType();
 
     /**
      * Filters the given metadata, perhaps to remove elements that are not wanted.

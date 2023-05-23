@@ -31,8 +31,8 @@ import javax.annotation.Nullable;
 import org.opensaml.core.criterion.EntityIdCriterion;
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.data.impl.MetadataSource;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -688,7 +688,7 @@ public class FileBackedHTTPMetadataResolverTest extends XMLObjectBaseTestCase {
     
     // Test helpers
 
-    public class MockContextTrackingFilter implements MetadataFilter {
+    public class MockContextTrackingFilter extends AbstractMetadataFilter {
 
         public MetadataFilterContext lastFilterContext;
 

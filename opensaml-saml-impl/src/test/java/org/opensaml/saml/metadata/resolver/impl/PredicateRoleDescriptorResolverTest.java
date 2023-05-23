@@ -421,6 +421,10 @@ public class PredicateRoleDescriptorResolverTest extends XMLObjectBaseTestCase {
         }
 
         public void setMetadataFilter(@Nullable final MetadataFilter newFilter) { }
+
+        @Nonnull public String getType() {
+            return "Static";
+        }
     }
     
     public static class BooleanPredicateCriterion implements EvaluableRoleDescriptorCriterion {

@@ -24,8 +24,8 @@ import javax.xml.validation.Validator;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.xml.SAMLSchemaBuilder;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.slf4j.Logger;
 import org.xml.sax.SAXException;
@@ -37,7 +37,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
 /**
  * A metadata filter that schema validates an incoming metadata file.
  */
-public class SchemaValidationFilter implements MetadataFilter {
+public class SchemaValidationFilter extends AbstractMetadataFilter {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SchemaValidationFilter.class);

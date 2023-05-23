@@ -26,8 +26,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -44,7 +44,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * well. If the root element of the metadata document is an @link EntitiesDescriptor}, it will never be removed,
  * regardless of of whether it still has children.</p>
  */
-public class PredicateFilter implements MetadataFilter {
+public class PredicateFilter extends AbstractMetadataFilter {
 
     /** Whether matching means to include or exclude an entity. */
     public enum Direction {

@@ -36,8 +36,8 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2alg.DigestMethod;
 import org.opensaml.saml.ext.saml2alg.SigningMethod;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.metadata.EncryptionMethod;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -56,7 +56,6 @@ import com.google.common.collect.Multimap;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.CollectionSupport;
-import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -67,7 +66,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * <p>The entities to annotate are identified with a {@link Predicate}, and multiple algorithms can be
  * associated with each.</p>
  */
-public class AlgorithmFilter extends AbstractInitializableComponent implements MetadataFilter {
+public class AlgorithmFilter extends AbstractMetadataFilter {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AlgorithmFilter.class);

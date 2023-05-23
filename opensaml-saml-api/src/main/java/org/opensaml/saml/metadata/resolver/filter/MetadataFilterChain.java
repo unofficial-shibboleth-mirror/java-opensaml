@@ -35,11 +35,11 @@ import org.slf4j.Logger;
  * A filter that allows the composition of {@link MetadataFilter}s. Filters will be executed on the given metadata
  * document in the order they were added to the chain.
  */
-public class MetadataFilterChain implements MetadataFilter {
+public class MetadataFilterChain extends AbstractMetadataFilter {
 
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(MetadataFilterChain.class);
-
+    
     /** Registered filters. */
     @Nonnull @NonnullElements private List<MetadataFilter> filters;
 
@@ -49,7 +49,7 @@ public class MetadataFilterChain implements MetadataFilter {
     public MetadataFilterChain() {
         filters = new ArrayList<>();
     }
-
+    
     /** {@inheritDoc} */
     @Override
     @Nullable public final XMLObject filter(@Nullable final XMLObject xmlObject,
@@ -96,5 +96,5 @@ public class MetadataFilterChain implements MetadataFilter {
         
         filters = new ArrayList<>(List.copyOf(newFilters));
     }
-    
+
 }

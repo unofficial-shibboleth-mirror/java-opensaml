@@ -36,8 +36,8 @@ import org.opensaml.core.xml.util.XMLObjectSupport;
 import org.opensaml.saml.common.SAMLObject;
 import org.opensaml.saml.common.SAMLObjectBuilder;
 import org.opensaml.saml.ext.saml2mdattr.EntityAttributes;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.core.Attribute;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -49,7 +49,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
@@ -63,7 +62,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * <p>As of 3.4.0, another predicate can be set to validate pre-existing extension content to better
  * protect use cases of this component.</p>
  */
-public class EntityAttributesFilter extends AbstractInitializableComponent implements MetadataFilter {
+public class EntityAttributesFilter extends AbstractMetadataFilter {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityAttributesFilter.class);

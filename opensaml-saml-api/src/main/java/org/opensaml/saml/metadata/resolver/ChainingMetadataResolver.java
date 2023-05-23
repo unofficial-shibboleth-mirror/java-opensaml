@@ -37,11 +37,13 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.annotation.constraint.NotLive;
 import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.AbstractIdentifiableInitializableComponent;
 import net.shibboleth.shared.primitive.LoggerFactory;
+import net.shibboleth.shared.primitive.StringSupport;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.ResolverException;
 
@@ -57,6 +59,9 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(ChainingMetadataResolver.class);
 
+    /** Resolver type. */
+    @Nullable @NotEmpty private String resolverType;
+    
     /** Registered resolvers. */
     @Nonnull @NonnullElements private List<MetadataResolver> resolvers;
     
@@ -70,6 +75,22 @@ public class ChainingMetadataResolver extends AbstractIdentifiableInitializableC
     public ChainingMetadataResolver() {
         resolvers = CollectionSupport.emptyList();
         detectDuplicateEntityIDs = DetectDuplicateEntityIDs.Off;
+    }    
+
+    /** {@inheritDoc} */
+    @Nullable @NotEmpty public String getType() {
+        return resolverType;
+    }
+    
+    /**
+     * Sets the type of this resolver for reporting/logging.
+     * 
+     * @param type type to set
+     * 
+     * @since 5.0.0
+     */
+    public void setType(@Nullable @NotEmpty final String type) {
+        resolverType = StringSupport.trimOrNull(type);
     }
 
     /**

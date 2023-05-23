@@ -15,25 +15,36 @@
  * limitations under the License.
  */
 
-package org.opensaml.saml.metadata.resolver.impl;
+package org.opensaml.saml.metadata.resolver.filter;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
-import org.opensaml.core.xml.XMLObject;
-import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
-import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
+import net.shibboleth.shared.component.AbstractInitializableComponent;
+import net.shibboleth.shared.primitive.StringSupport;
 
 /**
- * Mock filter to test init failures.
+ * Abstract base class for {@link MetadataFilter}.
+ * 
+ * @since 5.0.0
  */
-public class MockFailureFilter extends AbstractMetadataFilter {
+public abstract class AbstractMetadataFilter extends AbstractInitializableComponent implements MetadataFilter {
 
+    /** Filter type for logging/reporting. */
+    @Nullable @NotEmpty private String filterType;
+    
     /** {@inheritDoc} */
-    @Nullable public XMLObject filter(@Nullable XMLObject metadata, @Nonnull final MetadataFilterContext context)
-            throws FilterException {
-        throw new FilterException("Something really terrible happened");
+    @Nullable @NotEmpty public String getType() {
+        return filterType;
+    }
+    
+    /**
+     * Set filter type for reporting/logging.
+     * 
+     * @param type filter type
+     */
+    public void setType(@Nullable @NotEmpty final String type) {
+        filterType = StringSupport.trimOrNull(type);
     }
 
 }

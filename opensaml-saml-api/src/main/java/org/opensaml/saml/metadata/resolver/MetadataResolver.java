@@ -19,6 +19,7 @@ package org.opensaml.saml.metadata.resolver;
 
 import javax.annotation.Nullable;
 
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.IdentifiedComponent;
 import net.shibboleth.shared.resolver.CriteriaSet;
 import net.shibboleth.shared.resolver.Resolver;
@@ -43,6 +44,15 @@ import org.opensaml.saml.saml2.metadata.EntityDescriptor;
  * </ul>
  */
 public interface MetadataResolver extends Resolver<EntityDescriptor, CriteriaSet>, IdentifiedComponent {
+    
+    /**
+     * Gets the type of resolver for reporting or logging purposes.
+     * 
+     * @return resolver type
+     * 
+     * @since 5.0.0
+     */
+    @Nullable @NotEmpty String getType();
     
     /**
      * Gets whether the metadata returned by queries must be valid. 

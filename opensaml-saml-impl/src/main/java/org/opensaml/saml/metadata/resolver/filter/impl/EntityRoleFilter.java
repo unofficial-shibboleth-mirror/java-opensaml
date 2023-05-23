@@ -27,8 +27,8 @@ import javax.xml.namespace.QName;
 
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.xml.SAMLConstants;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
 import org.opensaml.saml.saml2.metadata.EntityDescriptor;
@@ -55,7 +55,7 @@ import net.shibboleth.shared.primitive.LoggerFactory;
  * well. If the root element of the metadata document is an entities descriptor it will never be removed, regardless of
  * of whether it still contains entity descriptors.
  */
-public class EntityRoleFilter implements MetadataFilter {
+public class EntityRoleFilter extends AbstractMetadataFilter {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(EntityRoleFilter.class);

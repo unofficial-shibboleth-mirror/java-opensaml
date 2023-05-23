@@ -25,6 +25,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
@@ -46,7 +47,7 @@ import net.shibboleth.shared.primitive.StringSupport;
  * 
  * @since 4.0.0
  */
-public class ByReferenceMetadataFilter implements MetadataFilter {
+public class ByReferenceMetadataFilter extends AbstractMetadataFilter {
 
     /** Class logger. */
     @Nonnull private Logger log = LoggerFactory.getLogger(ByReferenceMetadataFilter.class);

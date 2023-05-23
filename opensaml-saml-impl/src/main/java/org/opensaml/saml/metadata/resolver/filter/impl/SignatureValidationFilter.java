@@ -26,8 +26,8 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import org.opensaml.core.xml.XMLObject;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.data.impl.MetadataSource;
 import org.opensaml.saml.saml2.metadata.AffiliationDescriptor;
@@ -55,7 +55,7 @@ import net.shibboleth.shared.resolver.CriteriaSet;
 /**
  * A metadata filter that validates XML signatures.
  */
-public class SignatureValidationFilter implements MetadataFilter {
+public class SignatureValidationFilter extends AbstractMetadataFilter {
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(SignatureValidationFilter.class);

@@ -78,6 +78,9 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractMetadataResolver.class);
 
+    /** Resolver type. */
+    @Nullable @NotEmpty private String resolverType;
+    
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
     @NonnullAfterInit private UnmarshallerFactory unmarshallerFactory;
 
@@ -124,6 +127,22 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
         useDefaultPredicateRegistry = true;
     }
 
+    /** {@inheritDoc} */
+    @Nullable @NotEmpty public String getType() {
+        return resolverType;
+    }
+    
+    /**
+     * Sets the type of this resolver for reporting/logging.
+     * 
+     * @param type type to set
+     * 
+     * @since 5.0.0
+     */
+    public void setType(@Nullable @NotEmpty final String type) {
+        resolverType = StringSupport.trimOrNull(type);
+    }
+    
     /** {@inheritDoc} */
     @Override public boolean isRequireValidMetadata() {
         return requireValidMetadata;

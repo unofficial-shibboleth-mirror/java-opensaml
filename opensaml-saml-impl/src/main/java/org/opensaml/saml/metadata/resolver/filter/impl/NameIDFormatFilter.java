@@ -30,8 +30,8 @@ import javax.annotation.Nullable;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.config.XMLObjectProviderRegistrySupport;
 import org.opensaml.saml.common.SAMLObjectBuilder;
+import org.opensaml.saml.metadata.resolver.filter.AbstractMetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
-import org.opensaml.saml.metadata.resolver.filter.MetadataFilter;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.saml2.metadata.AttributeAuthorityDescriptor;
 import org.opensaml.saml.saml2.metadata.EntitiesDescriptor;
@@ -46,7 +46,6 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
-import net.shibboleth.shared.component.AbstractInitializableComponent;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
 import net.shibboleth.shared.primitive.StringSupport;
@@ -58,7 +57,7 @@ import net.shibboleth.shared.primitive.StringSupport;
  * The entities to annotate are identified with a {@link Predicate}, and multiple formats can be
  * associated with each.
  */
-public class NameIDFormatFilter extends AbstractInitializableComponent implements MetadataFilter {
+public class NameIDFormatFilter extends AbstractMetadataFilter {
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(NameIDFormatFilter.class);
