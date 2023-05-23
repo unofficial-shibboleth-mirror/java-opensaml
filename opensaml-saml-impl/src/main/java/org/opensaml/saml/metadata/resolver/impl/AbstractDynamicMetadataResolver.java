@@ -109,10 +109,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
     
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractDynamicMetadataResolver.class);
-    
-    /** Base name for Metrics instrumentation names. */
-    @NonnullAfterInit private String metricsBaseName;
-    
+        
     /** Metrics Timer for {@link #resolve(CriteriaSet)}. */
     @Nullable private com.codahale.metrics.Timer timerResolve;
     
@@ -569,25 +566,6 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
         Constraint.isFalse(interval.isNegative() || interval.isZero(), "Cleanup task interval must be positive");
         
         cleanupTaskInterval = interval;
-    }
-
-    /**
-     * Get the base name for Metrics instrumentation.
-     * 
-     * @return the Metrics base name
-     */
-    @NonnullAfterInit public String getMetricsBaseName() {
-        return metricsBaseName;
-    }
-    
-    /**
-     * Set the base name for Metrics instrumentation.
-     * 
-     * @param baseName the Metrics base name
-     */
-    public void setMetricsBaseName(@Nullable final String baseName) {
-        checkSetterPreconditions();
-        metricsBaseName = StringSupport.trimOrNull(baseName);
     }
     
     /**
@@ -1326,7 +1304,7 @@ public abstract class AbstractDynamicMetadataResolver extends AbstractMetadataRe
      */
     private void initializeMetricsInstrumentation() {
         if (getMetricsBaseName() == null) {
-            setMetricsBaseName(MetricRegistry.name(this.getClass(), getId()));
+            setMetricsBaseName(MetricRegistry.name(getClass().getName(), getId()));
         }
         
         final MetricRegistry metricRegistry = MetricsSupport.getMetricRegistry();

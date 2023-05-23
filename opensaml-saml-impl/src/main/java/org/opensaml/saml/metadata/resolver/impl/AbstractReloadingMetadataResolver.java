@@ -30,6 +30,7 @@ import java.util.TimerTask;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import org.opensaml.core.metrics.MetricsSupport;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.RefreshableMetadataResolver;
@@ -40,6 +41,10 @@ import org.slf4j.Logger;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import com.codahale.metrics.MetricRegistry;
+import com.codahale.metrics.Timer.Context;
+
+import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -62,6 +67,9 @@ import net.shibboleth.shared.resolver.ResolverException;
  */
 public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMetadataResolver 
         implements RefreshableMetadataResolver {
+
+    /** Metric name for the timer for {@link #refresh()}. */
+    @Nonnull @NotEmpty public static final String METRIC_TIMER_REFRESH = "timer.refresh";
 
     /** Class logger. */
     @Nonnull private final Logger log = LoggerFactory.getLogger(AbstractReloadingMetadataResolver.class);
@@ -114,6 +122,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     /** Reason for the failure of the last refresh.  Will be null if last refresh was success. */
     @Nullable private Throwable lastFailureCause;
 
+    /** Metrics Timer for {@link #refresh()}. */
+    @Nullable private com.codahale.metrics.Timer timerRefresh;
 
     /** Constructor. */
     protected AbstractReloadingMetadataResolver() {
@@ -302,6 +312,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             taskTimer.cancel();
         }
         
+        timerRefresh = null;
         expirationTime = null;
         lastRefresh = null;
         lastUpdate = null;
@@ -318,6 +329,16 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
     protected void initMetadataResolver() throws ComponentInitializationException {
         super.initMetadataResolver();
         
+        if (getMetricsBaseName() == null) {
+            setMetricsBaseName(MetricRegistry.name(getClass().getName(), getId()));
+        }
+
+        final MetricRegistry metricRegistry = MetricsSupport.getMetricRegistry();
+        if (metricRegistry != null) {
+            timerRefresh = metricRegistry.timer(
+                    MetricRegistry.name(getMetricsBaseName(), METRIC_TIMER_REFRESH));
+        }
+        
         try {
             refresh();
         } catch (final ResolverException e) {
@@ -330,6 +351,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         }
     }
 
+// Checkstyle: MethodLength OFF
     /**
      * Refreshes the metadata from its source.
      * 
@@ -341,7 +363,9 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
         String mdId = null;
         trackRefreshSuccess = false;
 
+        Context contextRefresh = null;
         try {
+
             // In case a destroy() thread beat this thread into the monitor.
             if (isDestroyed()) {
                 return;
@@ -364,6 +388,8 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
                 processCachedMetadata(mdId, now);
             } else {
                 log.debug("{} Processing new metadata from '{}'", getLogPrefix(), mdId);
+                // Start timer for refresh.
+                contextRefresh = MetricsSupport.startTimer(timerRefresh);
                 processNewMetadata(mdId, now, mdBytes);
             }
         } catch (final Throwable t) {
@@ -377,6 +403,11 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             throw new ResolverException(String.format("Saw an error of type '%s' with message '%s'", 
                     t.getClass().getName(), t.getMessage()));
         } finally {
+            // Close out timer if started.
+            if (contextRefresh != null) {
+                MetricsSupport.stopTimer(contextRefresh);
+            }
+            
             if (now != null) {
                 logCachedMetadataExpiration(now);
             }
@@ -400,6 +431,7 @@ public abstract class AbstractReloadingMetadataResolver extends AbstractBatchMet
             lastRefresh = now;
         }
     }
+// Checkstyle: MethodLength ON
 
     /**
      * Check cached metadata for expiration or pending expiration and log appropriately.

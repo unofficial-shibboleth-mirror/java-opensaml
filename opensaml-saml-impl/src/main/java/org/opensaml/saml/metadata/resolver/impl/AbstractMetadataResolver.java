@@ -81,6 +81,9 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
     /** Resolver type. */
     @Nullable @NotEmpty private String resolverType;
     
+    /** Base name for Metrics instrumentation names. */
+    @NonnullAfterInit private String metricsBaseName;
+    
     /** Unmarshaller factory used to get an unmarshaller for the metadata DOM. */
     @NonnullAfterInit private UnmarshallerFactory unmarshallerFactory;
 
@@ -141,6 +144,29 @@ public abstract class AbstractMetadataResolver extends AbstractIdentifiableIniti
      */
     public void setType(@Nullable @NotEmpty final String type) {
         resolverType = StringSupport.trimOrNull(type);
+    }
+    
+    /**
+     * Get the base name for Metrics instrumentation.
+     * 
+     * @return the Metrics base name
+     * 
+     * @since 5.0.0
+     */
+    @NonnullAfterInit public String getMetricsBaseName() {
+        return metricsBaseName;
+    }
+    
+    /**
+     * Set the base name for Metrics instrumentation.
+     * 
+     * @param baseName the Metrics base name
+     * 
+     * @since 5.0.0
+     */
+    public void setMetricsBaseName(@Nullable final String baseName) {
+        checkSetterPreconditions();
+        metricsBaseName = StringSupport.trimOrNull(baseName);
     }
     
     /** {@inheritDoc} */
