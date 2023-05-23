@@ -58,7 +58,6 @@ public class AlgorithmFilterTest extends XMLObjectBaseTestCase implements Predic
     
     @BeforeMethod
     protected void setUp() throws Exception {
-
         URL mdURL = FilesystemMetadataResolverTest.class
                 .getResource("/org/opensaml/saml/metadata/resolver/filter/impl/EntityDescriptorWithAlgorithms.xml");
         mdFile = new File(mdURL.toURI());

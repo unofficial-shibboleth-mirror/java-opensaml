@@ -25,6 +25,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.annotation.Nonnull;
+
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.core.xml.io.MarshallingException;
@@ -59,19 +61,23 @@ import org.testng.annotations.Test;
 import org.testng.collections.Lists;
 import org.w3c.dom.Element;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeTest;
+import net.shibboleth.shared.component.ComponentInitializationException;
+
 @SuppressWarnings("javadoc")
 public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
     
-    private static final String DATA_PATH = "/org/opensaml/saml/metadata/resolver/filter/impl/";
+    @Nonnull private static final String DATA_PATH = "/org/opensaml/saml/metadata/resolver/filter/impl/";
     
-    private SignatureValidationFilter filter;
+    @NonnullBeforeTest private SignatureValidationFilter filter;
     
-    private MetadataFilterContext filterContext;
+    @NonnullBeforeTest private MetadataFilterContext filterContext;
 
     @BeforeMethod
-    public void setUp() {
+    public void setUp() throws ComponentInitializationException {
         filter = new SignatureValidationFilter(buildTrustEngine());
         filter.setDynamicTrustedNamesStrategy(new BasicDynamicTrustedNamesStrategy());
+        filter.initialize();
 
         filterContext = new MetadataFilterContext();
     }
@@ -129,7 +135,7 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
         return unmarshallerFactory.ensureUnmarshaller(dom).unmarshall(dom);
     }
 
-    private SignatureTrustEngine buildTrustEngine() {
+    @Nonnull private SignatureTrustEngine buildTrustEngine() {
         Collection<X509Certificate> roots = getCertificates("root.crt");
         
         PKIXValidationInformation pkixInfo = getPKIXInfoSet(roots, new HashSet<X509CRL>(), 10);
@@ -171,12 +177,11 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
     }
     
     private PrivateKey getPrivateKey(String fileName) {
-        try {
-            InputStream ins = getInputStream(fileName);
+        try (final InputStream ins = getInputStream(fileName)) {
             byte[] encoded = new byte[ins.available()];
             ins.read(encoded);
             return KeySupport.decodePrivateKey(encoded, null);
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Assert.fail("Could not create private key from file: " + fileName + ": " + e.getMessage());
         }
         return null;
@@ -191,12 +196,11 @@ public class SignatureValidationFilterPKIXTest extends XMLObjectBaseTestCase {
     }
     
     private X509Certificate getCertificate(String fileName) {
-        try {
-            InputStream ins = getInputStream(fileName);
+        try (final InputStream ins = getInputStream(fileName)) {
             byte[] encoded = new byte[ins.available()];
             ins.read(encoded);
             return X509Support.decodeCertificates(encoded).iterator().next();
-        } catch (Exception e) {
+        } catch (final Exception e) {
             Assert.fail("Could not create certificate from file: " + fileName + ": " + e.getMessage());
         }
         return null;

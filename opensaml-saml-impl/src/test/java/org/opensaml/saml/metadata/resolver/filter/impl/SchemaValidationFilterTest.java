@@ -38,9 +38,13 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     public void testValid() throws Exception {
         final ResourceBackedMetadataResolver metadataProvider = new ResourceBackedMetadataResolver(
                 ResourceHelper.of(new ClassPathResource("org/opensaml/saml/saml2/metadata/valid-metadata.xml")));
+        
+        final SchemaValidationFilter filter = new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11));
+        filter.initialize();
+        
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
-        metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11)));
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.initialize();
     }
     
@@ -48,9 +52,12 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     public void testStrict() throws Exception {
         final ResourceBackedMetadataResolver metadataProvider = new ResourceBackedMetadataResolver(
                 ResourceHelper.of(new ClassPathResource("org/opensaml/saml/saml2/metadata/valid-metadata.xml")));
+        final SchemaValidationFilter filter = new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11, true));
+        filter.initialize();
+
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
-        metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11, true)));
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.initialize();
     }
     
@@ -58,9 +65,12 @@ public class SchemaValidationFilterTest extends XMLObjectBaseTestCase {
     public void testStrictInvalid() throws Exception {
         final ResourceBackedMetadataResolver metadataProvider = new ResourceBackedMetadataResolver(
                 ResourceHelper.of(new ClassPathResource("org/opensaml/saml/saml2/metadata/invalid-metadata.xml")));
+        final SchemaValidationFilter filter = new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11, true));
+        filter.initialize();
+
         metadataProvider.setParserPool(parserPool);
         metadataProvider.setId("test");
-        metadataProvider.setMetadataFilter(new SchemaValidationFilter(new SAMLSchemaBuilder(SAML1Version.SAML_11, true)));
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.initialize();
         Assert.fail("Should have raised schema validation error");
     }

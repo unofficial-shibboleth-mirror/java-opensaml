@@ -55,7 +55,6 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         singleEntityProvider = new ResourceBackedMetadataResolver(null, ResourceHelper.of(singleResource));
         singleEntityProvider.setId("single");
         singleEntityProvider.setParserPool(parserPool);
-
     }
     
     @Test
@@ -66,8 +65,10 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         final String osu = "urn:mace:incommon:osu.edu";
 
         final EntityIdPredicate condition = new EntityIdPredicate(CollectionSupport.singletonList(denied));
+        final PredicateFilter filter = new PredicateFilter(Direction.EXCLUDE, condition);
+        filter.initialize();
         
-        metadataProvider.setMetadataFilter(new PredicateFilter(Direction.EXCLUDE, condition));
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.initialize();
         
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(denied)));
@@ -76,12 +77,11 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(allowed)));
         Assert.assertNotNull(entity);
         
-        singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.EXCLUDE, condition));
+        singleEntityProvider.setMetadataFilter(filter);
         singleEntityProvider.initialize();
         
         entity = singleEntityProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(osu)));
         Assert.assertNull(entity);
-        
     }
     
     @Test
@@ -93,7 +93,10 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
 
         final EntityIdPredicate condition = new EntityIdPredicate(CollectionSupport.singletonList(allowed));
         
-        metadataProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE, condition));
+        PredicateFilter filter = new PredicateFilter(Direction.INCLUDE, condition);
+        filter.initialize();
+        
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.initialize();
         
         EntityDescriptor entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(denied)));
@@ -102,12 +105,14 @@ public class PredicateFilterTest extends XMLObjectBaseTestCase {
         entity = metadataProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(allowed)));
         Assert.assertNotNull(entity);
         
-        singleEntityProvider.setMetadataFilter(new PredicateFilter(Direction.INCLUDE,
-                new EntityIdPredicate(CollectionSupport.singletonList(osu))));
+        filter = new PredicateFilter(Direction.INCLUDE, new EntityIdPredicate(CollectionSupport.singletonList(osu)));
+        filter.initialize();
+        
+        singleEntityProvider.setMetadataFilter(filter);
         singleEntityProvider.initialize();
         
         entity = singleEntityProvider.resolveSingle(new CriteriaSet(new EntityIdCriterion(osu)));
         Assert.assertNotNull(entity);
-
     }
+    
 }

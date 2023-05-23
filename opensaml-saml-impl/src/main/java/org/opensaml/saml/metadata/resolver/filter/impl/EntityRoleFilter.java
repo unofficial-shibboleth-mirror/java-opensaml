@@ -94,17 +94,6 @@ public class EntityRoleFilter extends AbstractMetadataFilter {
      * Get the unmodifiable list of roles that are NOT removed by this filter.
      * 
      * @return unmodifiable list of roles that are NOT removed by this filter
-     * @deprecated
-     */
-    @Deprecated(forRemoval=true, since="4.1.0")
-    @Nonnull @NonnullElements @Unmodifiable @NotLive public List<QName> getRoleWhiteList() {
-        return getRetainedRoles();
-    }
-
-    /**
-     * Get the unmodifiable list of roles that are NOT removed by this filter.
-     * 
-     * @return unmodifiable list of roles that are NOT removed by this filter
      */
     @Nonnull @NonnullElements @Unmodifiable @NotLive public List<QName> getRetainedRoles() {
         return retainedRoles;
@@ -125,6 +114,7 @@ public class EntityRoleFilter extends AbstractMetadataFilter {
      * @param remove whether to remove an entity descriptor if it does not contain any roles after filtering
      */
     public void setRemoveRolelessEntityDescriptors(final boolean remove) {
+        checkSetterPreconditions();
         removeRolelessEntityDescriptors = remove;
     }
 
@@ -147,12 +137,14 @@ public class EntityRoleFilter extends AbstractMetadataFilter {
      *            descriptors
      */
     public void setRemoveEmptyEntitiesDescriptors(final boolean remove) {
+        checkSetterPreconditions();
         removeEmptyEntitiesDescriptors = remove;
     }
 
     /** {@inheritDoc} */
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
+        checkComponentActive();
         if (metadata == null) {
             return null;
         }

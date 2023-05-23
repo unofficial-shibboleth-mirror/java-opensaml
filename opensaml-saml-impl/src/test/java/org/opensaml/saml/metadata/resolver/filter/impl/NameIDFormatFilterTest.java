@@ -65,7 +65,7 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
         
         metadataFilter = new NameIDFormatFilter();
         
-        formats = List.of(NameIDType.EMAIL, NameIDType.PERSISTENT);
+        formats = CollectionSupport.listOf(NameIDType.EMAIL, NameIDType.PERSISTENT);
     }
     
     @Test
@@ -86,7 +86,7 @@ public class NameIDFormatFilterTest extends XMLObjectBaseTestCase implements Pre
         assert role != null;
         final List<NameIDFormat> attachedFormats = role.getNameIDFormats();
         Assert.assertEquals(attachedFormats.stream().map(NameIDFormat::getURI).collect(Collectors.toUnmodifiableList()),
-                List.of(NameIDType.PERSISTENT, NameIDType.EMAIL));
+                CollectionSupport.listOf(NameIDType.PERSISTENT, NameIDType.EMAIL));
                 
         key = new EntityIdCriterion("https://cms.psu.edu/Shibboleth");
         entity = metadataProvider.resolveSingle(new CriteriaSet(key));

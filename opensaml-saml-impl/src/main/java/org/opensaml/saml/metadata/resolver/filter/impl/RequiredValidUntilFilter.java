@@ -71,6 +71,8 @@ public class RequiredValidUntilFilter extends AbstractMetadataFilter {
      * @param validity time between now and the <code>validUntil</code> date
      */
     public void setMaxValidityInterval(@Nullable final Duration validity) {
+        checkSetterPreconditions();
+        
         if (validity != null && !validity.isNegative() && !validity.isZero()) {
             maxValidityInterval = validity;
         } else {
@@ -81,6 +83,8 @@ public class RequiredValidUntilFilter extends AbstractMetadataFilter {
     /** {@inheritDoc} */
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
+        checkComponentActive();
+        
         if (metadata == null) {
             return null;
         }

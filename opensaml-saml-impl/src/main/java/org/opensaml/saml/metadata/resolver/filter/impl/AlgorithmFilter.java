@@ -135,6 +135,8 @@ public class AlgorithmFilter extends AbstractMetadataFilter {
     /** {@inheritDoc} */
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
+        checkComponentActive();
+        
         if (metadata == null) {
             return null;
         }

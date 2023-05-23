@@ -80,6 +80,7 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
         nameIDFilter.initialize();
         
         refFilter.setFilterMappings(CollectionSupport.singletonMap("Foo", nameIDFilter));
+        refFilter.initialize();
         
         metadataProvider.initialize();
         
@@ -93,6 +94,7 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
         nameIDFilter.initialize();
         
         refFilter.setFilterMappings(CollectionSupport.singletonMap(CollectionSupport.listOf("ICMD", "Foo"), nameIDFilter));
+        refFilter.initialize();
         
         metadataProvider.initialize();
         
@@ -126,4 +128,5 @@ public class ByReferenceMetadataFilterTest extends XMLObjectBaseTestCase impleme
     public boolean test(EntityDescriptor input) {
         return "https://carmenwiki.osu.edu/shibboleth".equals(input.getEntityID());
     }
+
 }

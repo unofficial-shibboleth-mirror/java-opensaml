@@ -17,17 +17,15 @@
 
 package org.opensaml.saml.metadata.resolver.filter.impl;
 
-import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import net.shibboleth.shared.annotation.constraint.NonnullBeforeTest;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.component.ComponentInitializationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
-import net.shibboleth.shared.xml.XMLParserException;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
-import org.opensaml.core.xml.io.UnmarshallingException;
 import org.opensaml.saml.metadata.resolver.filter.FilterException;
 import org.opensaml.saml.metadata.resolver.filter.MetadataFilterContext;
 import org.opensaml.saml.metadata.resolver.filter.data.impl.MetadataSource;
@@ -96,9 +94,9 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         "vCfzIS7/dk9oPnjeH7GqbxUZMsms4qDZzdNkNDUDWj82lJzIMfZyUKbn2waTsgg3mKja0dGw2UBy" +
         "urPV4NvVcNaIQZJunHI=";
     
-    private KeyInfoCredentialResolver kiResolver;
+    @NonnullBeforeTest private KeyInfoCredentialResolver kiResolver;
     
-    private MetadataFilterContext filterContext;
+    @NonnullBeforeTest private MetadataFilterContext filterContext;
 
     @BeforeClass
     public void buildKeyInfoCredentialResolver() {
@@ -110,203 +108,212 @@ public class SignatureValidationFilterExplicitKeyTest extends XMLObjectBaseTestC
         switchMDDocumentValid = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(switchMDFileValid));
         switchMDDocumentInvalid = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(switchMDFileInvalid));
         
-        X509Certificate switchCert = X509Support.decodeCertificate(switchMDCertBase64);
-        X509Credential switchCred = CredentialSupport.getSimpleCredential(switchCert, null);
-        StaticCredentialResolver switchCredResolver = new StaticCredentialResolver(switchCred);
+        final X509Certificate switchCert = X509Support.decodeCertificate(switchMDCertBase64);
+        final X509Credential switchCred = CredentialSupport.getSimpleCredential(switchCert, null);
+        final StaticCredentialResolver switchCredResolver = new StaticCredentialResolver(switchCred);
         switchSigTrustEngine = new ExplicitKeySignatureTrustEngine(switchCredResolver, kiResolver);
 
         filterContext = new MetadataFilterContext();
     }
 
     @Test
-    public void testValidSWITCHStandalone() throws UnmarshallingException {
-        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentValid
+    public void testValidSWITCHStandalone() throws Exception {
+        final XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentValid
                 .getDocumentElement()).unmarshall(switchMDDocumentValid.getDocumentElement());
         
-        SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        filter.initialize();
         try {
             filter.filter(xmlObject, filterContext);
-        } catch (FilterException e) {
+        } catch (final FilterException e) {
             Assert.fail("Filter failed validation, should have succeeded: " + e.getMessage());
         }
     }
     
     @Test(expectedExceptions=FilterException.class)
-    public void testSWITCHStandaloneBlacklistedSignatureAlgorithm() throws UnmarshallingException, FilterException {
-        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentValid
+    public void testSWITCHStandaloneBlacklistedSignatureAlgorithm() throws Exception {
+        final XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentValid
                 .getDocumentElement()).unmarshall(switchMDDocumentValid.getDocumentElement());
         
-        SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
         
-        SignatureValidationParameters sigParams = new SignatureValidationParameters();
+        final SignatureValidationParameters sigParams = new SignatureValidationParameters();
         sigParams.setExcludedAlgorithms(CollectionSupport.singleton(SignatureConstants.ALGO_ID_SIGNATURE_RSA_SHA1));
-        CriteriaSet defaultCriteriaSet = new CriteriaSet(new SignatureValidationParametersCriterion(sigParams));
+        final CriteriaSet defaultCriteriaSet = new CriteriaSet(new SignatureValidationParametersCriterion(sigParams));
         filter.setDefaultCriteria(defaultCriteriaSet);
+        filter.initialize();
         
         filter.filter(xmlObject, filterContext);
     }
     
     @Test
-    public void testInvalidSWITCHStandalone() throws UnmarshallingException {
-        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentInvalid
+    public void testInvalidSWITCHStandalone() throws Exception {
+        final XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentInvalid
                 .getDocumentElement()).unmarshall(switchMDDocumentInvalid.getDocumentElement());
         
-        SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        filter.initialize();
         try {
             filter.filter(xmlObject, filterContext);
             Assert.fail("Filter passed validation, should have failed");
-        } catch (FilterException e) {
+        } catch (final FilterException e) {
             // do nothing, should fail
         }
     }
 
     @Test
-    public void testInvalidSWITCHStandaloneWithRootSkip() throws UnmarshallingException {
+    public void testInvalidSWITCHStandaloneWithRootSkip() throws Exception {
         // Goal here is to test the root signature skip (indicated by filter context data) by using a known invalid root signature.
-        XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentInvalid
+        final XMLObject xmlObject = unmarshallerFactory.ensureUnmarshaller(switchMDDocumentInvalid
                 .getDocumentElement()).unmarshall(switchMDDocumentInvalid.getDocumentElement());
 
-        MetadataSource metadataSource = new MetadataSource();
+        final MetadataSource metadataSource = new MetadataSource();
         metadataSource.setTrusted(true);
         filterContext.add(metadataSource);
 
-        SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        filter.initialize();
         try {
             filter.filter(xmlObject, filterContext);
-        } catch (FilterException e) {
+        } catch (final FilterException e) {
             Assert.fail("Filter failed validation, should have passed b/c we implicitly said to skip root signature");
         }
     }
     
     @Test
-    public void testEntityDescriptor() throws UnmarshallingException, CertificateException, XMLParserException {
-        X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
-        X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
-        StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+    public void testEntityDescriptor() throws Exception {
+        final X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
+        final X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
+        final StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
+        final SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileValid));
-        XMLObject xmlObject = 
+        final Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileValid));
+        final XMLObject xmlObject = 
             unmarshallerFactory.ensureUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
-        EntityDescriptor ed = (EntityDescriptor) xmlObject;
+        final EntityDescriptor ed = (EntityDescriptor) xmlObject;
         Assert.assertTrue(ed.isSigned());
         Assert.assertNotNull(ed.getSignature(), "Signature was null");
         
-        SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        filter.initialize();
         try {
             filter.filter(ed, filterContext);
-        } catch (FilterException e) {
+        } catch (final FilterException e) {
             Assert.fail("Filter failed validation, should have succeeded: " + e.getMessage());
         }
     }
     
     @Test
-    public void testEntityDescriptorInvalid() throws UnmarshallingException, CertificateException, XMLParserException {
-        X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
-        X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
-        StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+    public void testEntityDescriptorInvalid() throws Exception {
+        final X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
+        final X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
+        final StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
+        final SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
-        XMLObject xmlObject = 
+        final Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
+        final XMLObject xmlObject = 
             unmarshallerFactory.ensureUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
-        EntityDescriptor ed = (EntityDescriptor) xmlObject;
+        final EntityDescriptor ed = (EntityDescriptor) xmlObject;
         Assert.assertTrue(ed.isSigned());
         Assert.assertNotNull(ed.getSignature(), "Signature was null");
         
-        SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        filter.initialize();
         try {
             filter.filter(xmlObject, filterContext);
             Assert.fail("Filter passed validation, should have failed");
-        } catch (FilterException e) {
+        } catch (final FilterException e) {
             // do nothing, should fail
         }
     }
 
     @Test
-    public void testEntityDescriptorInvalidWithRootSkip() throws UnmarshallingException, CertificateException, XMLParserException {
+    public void testEntityDescriptorInvalidWithRootSkip() throws Exception {
         // Goal here is to test the root signature skip (indicated by filter context data) by using a known invalid root signature.
-        X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
-        X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
-        StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+        final X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
+        final X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
+        final StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
+        final SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
 
-        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
-        XMLObject xmlObject =
+        final Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
+        final XMLObject xmlObject =
             unmarshallerFactory.ensureUnmarshaller(mdDoc.getDocumentElement()).unmarshall(mdDoc.getDocumentElement());
         Assert.assertTrue(xmlObject instanceof EntityDescriptor);
-        EntityDescriptor ed = (EntityDescriptor) xmlObject;
+        final EntityDescriptor ed = (EntityDescriptor) xmlObject;
         Assert.assertTrue(ed.isSigned());
         Assert.assertNotNull(ed.getSignature(), "Signature was null");
 
-        MetadataSource metadataSource = new MetadataSource();
+        final MetadataSource metadataSource = new MetadataSource();
         metadataSource.setTrusted(true);
         filterContext.add(metadataSource);
 
-        SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        filter.initialize();
         try {
             filter.filter(xmlObject, filterContext);
-        } catch (FilterException e) {
+        } catch (final FilterException e) {
             Assert.fail("Filter failed validation, should have passed b/c we implicitly said to skip root signature");
         }
     }
     
     @Test
-    public void testEntityDescriptorWithProvider() throws CertificateException, XMLParserException, UnmarshallingException {
-        X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
-        X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
-        StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
-        SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
+    public void testEntityDescriptorWithProvider() throws Exception {
+        final X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
+        final X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
+        final StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
+        final SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileValid));
+        final Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileValid));
         
-        DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
+        final DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setParserPool(parserPool);
         mdProvider.setId("test");
         mdProvider.setRequireValidMetadata(false);
         
-        SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        filter.initialize();
         mdProvider.setMetadataFilter(filter);
         
         try {
             mdProvider.initialize();
-        } catch (ComponentInitializationException e) {
+        } catch (final ComponentInitializationException e) {
             Assert.fail("Failed when initializing metadata provider");
         }
     }
     
     @Test
-    public void testInvalidEntityDescriptorWithProvider() throws CertificateException, XMLParserException, UnmarshallingException {
-        X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
-        X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
-        StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
+    public void testInvalidEntityDescriptorWithProvider() throws Exception {
+        final X509Certificate cert = X509Support.decodeCertificate(openIDCertBase64);
+        final X509Credential cred = CredentialSupport.getSimpleCredential(cert, null);
+        final StaticCredentialResolver credResolver = new StaticCredentialResolver(cred);
         SignatureTrustEngine trustEngine = new ExplicitKeySignatureTrustEngine(credResolver, kiResolver);
         
-        Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
+        final Document mdDoc = parserPool.parse(SignatureValidationFilterExplicitKeyTest.class.getResourceAsStream(openIDFileInvalid));
         
-        DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
+        final DOMMetadataResolver mdProvider = new DOMMetadataResolver(mdDoc.getDocumentElement());
         mdProvider.setParserPool(parserPool);
         mdProvider.setRequireValidMetadata(false);
         
-        SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        final SignatureValidationFilter filter = new SignatureValidationFilter(trustEngine);
+        filter.initialize();
         mdProvider.setId("test");
         mdProvider.setMetadataFilter(filter);
         
         try {
             mdProvider.initialize();
             Assert.fail("Metadata signature was invalid, provider initialization should have failed");
-        } catch (ComponentInitializationException e) {
+        } catch (final ComponentInitializationException e) {
             // do nothing, failure expected
         }
     }
 
     @Test
-    public void testIsSkipRootSignatureEval() {
-        MetadataFilterContext context = new MetadataFilterContext();
-        SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
-        MetadataSource metadataSource = new MetadataSource();
+    public void testIsSkipRootSignatureEval() throws ComponentInitializationException {
+        final MetadataFilterContext context = new MetadataFilterContext();
+        final SignatureValidationFilter filter = new SignatureValidationFilter(switchSigTrustEngine);
+        final MetadataSource metadataSource = new MetadataSource();
 
         Assert.assertFalse(filter.isSkipRootSignature(context));
 

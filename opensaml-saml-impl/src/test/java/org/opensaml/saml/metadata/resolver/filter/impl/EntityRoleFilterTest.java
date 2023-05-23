@@ -75,32 +75,40 @@ public class EntityRoleFilterTest extends XMLObjectBaseTestCase {
 
     @Test
     public void testWhiteListSPRole() throws Exception {
-        ArrayList<QName> retainedRoles = new ArrayList<>();
+        final ArrayList<QName> retainedRoles = new ArrayList<>();
         retainedRoles.add(SPSSODescriptor.DEFAULT_ELEMENT_NAME);
-
+        final EntityRoleFilter filter = new EntityRoleFilter(retainedRoles);
+        filter.initialize();
+        
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.setParserPool(parserPool);
-        metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.setId("test");
         metadataProvider.initialize();
     }
     
     @Test
     public void testWhiteListIdPRoles() throws Exception {
-        ArrayList<QName> retainedRoles = new ArrayList<>();
+        final ArrayList<QName> retainedRoles = new ArrayList<>();
         retainedRoles.add(IDPSSODescriptor.DEFAULT_ELEMENT_NAME);
         retainedRoles.add(AttributeAuthorityDescriptor.DEFAULT_ELEMENT_NAME);
 
+        final EntityRoleFilter filter = new EntityRoleFilter(retainedRoles);
+        filter.initialize();
+        
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.setParserPool(parserPool);
-        metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.setId("test");
         metadataProvider.initialize();
     }
     
     @Test
     public void testWhiteListNoRole() throws Exception {
-        ArrayList<QName> retainedRoles = new ArrayList<>();
+        final ArrayList<QName> retainedRoles = new ArrayList<>();
+        final EntityRoleFilter filter = new EntityRoleFilter(retainedRoles);
+        filter.initialize();
+        
+        metadataProvider.setMetadataFilter(filter);
         metadataProvider.setParserPool(parserPool);
-        metadataProvider.setMetadataFilter(new EntityRoleFilter(retainedRoles));
         metadataProvider.setId("test");
         metadataProvider.initialize();
     }

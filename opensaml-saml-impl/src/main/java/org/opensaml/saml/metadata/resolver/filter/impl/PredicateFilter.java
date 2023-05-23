@@ -118,12 +118,14 @@ public class PredicateFilter extends AbstractMetadataFilter {
      *            descriptors
      */
     public void setRemoveEmptyEntitiesDescriptors(final boolean remove) {
+        checkSetterPreconditions();
         removeEmptyEntitiesDescriptors = remove;
     }
 
     /** {@inheritDoc} */
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
+        checkComponentActive();
         
         if (metadata == null) {
             return null;

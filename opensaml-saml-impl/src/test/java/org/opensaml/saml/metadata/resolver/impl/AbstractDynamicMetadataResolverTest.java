@@ -20,8 +20,6 @@ package org.opensaml.saml.metadata.resolver.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.KeyPair;
-import java.security.NoSuchAlgorithmException;
-import java.security.NoSuchProviderException;
 import java.time.Duration;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -107,7 +105,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
     private boolean allowActivation;
     
     @BeforeClass
-    protected void setUpSigningSupport() throws NoSuchAlgorithmException, NoSuchProviderException {
+    protected void setUpSigningSupport() throws Exception {
         KeyPair kp = KeySupport.generateKeyPair(JCAConstants.KEY_ALGO_RSA, 1024, null);
         signingCred = CredentialSupport.getSimpleCredential(kp.getPublic(), kp.getPrivate());
         
@@ -128,6 +126,7 @@ public class AbstractDynamicMetadataResolverTest extends XMLObjectBaseTestCase {
                 DefaultSecurityConfigurationBootstrap.buildBasicInlineKeyInfoCredentialResolver());
         
         signatureValidationFilter = new SignatureValidationFilter(signatureTrustEngine);
+        signatureValidationFilter.initialize();
     }
     
     @BeforeMethod

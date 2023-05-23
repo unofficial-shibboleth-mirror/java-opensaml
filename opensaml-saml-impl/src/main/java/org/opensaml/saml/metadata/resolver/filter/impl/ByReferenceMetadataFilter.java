@@ -66,6 +66,7 @@ public class ByReferenceMetadataFilter extends AbstractMetadataFilter {
      * @param map filter mappings
      */
     public void setFilterMappings(@Nonnull @NonnullElements final Map<Object,MetadataFilter> map) {
+        checkSetterPreconditions();
         Constraint.isNotNull(map, "Filter mappings cannot be null");
         
         filterMap = new HashMap<>(map.size());
@@ -91,6 +92,7 @@ public class ByReferenceMetadataFilter extends AbstractMetadataFilter {
     /** {@inheritDoc} */
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
+        checkComponentActive();
         
         final MetadataSource source = context.get(MetadataSource.class);
         if (source == null || source.getSourceId() == null) {

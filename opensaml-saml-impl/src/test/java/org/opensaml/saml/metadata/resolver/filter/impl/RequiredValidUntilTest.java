@@ -52,6 +52,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     public void testRequiredValidUntil() throws Exception {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter();
         filter.setMaxValidityInterval(Duration.ZERO);
+        filter.initialize();
 
         FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(metadataFile);
         metadataProvider.setParserPool(parserPool);
@@ -59,7 +60,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
         metadataProvider.setMetadataFilter(filter);
         try {
             metadataProvider.initialize();
-        } catch (ComponentInitializationException e) {
+        } catch (final ComponentInitializationException e) {
             Assert.fail("Filter disallowed metadata that contained a proper validUntil attribute");
         }
     }
@@ -68,6 +69,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
     public void testRequiredValidUntilWithMaxValidity() throws Exception {
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter();
         filter.setMaxValidityInterval(Duration.ofSeconds(1));
+        filter.initialize();
 
         FilesystemMetadataResolver metadataProvider = new FilesystemMetadataResolver(metadataFile);
         metadataProvider.setParserPool(parserPool);
@@ -77,7 +79,7 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
         try {
             metadataProvider.initialize();
             Assert.fail("Filter accepted metadata with longer than allowed validity period.");
-        } catch (ComponentInitializationException e) {
+        } catch (final ComponentInitializationException e) {
             // we expect this
             return;
         }
@@ -93,9 +95,11 @@ public class RequiredValidUntilTest extends XMLObjectBaseTestCase {
 
         RequiredValidUntilFilter filter = new RequiredValidUntilFilter();
         filter.setMaxValidityInterval(Duration.ofSeconds(-1));
+        filter.initialize();
         filter.filter(descriptor, new MetadataFilterContext());
         
         filter = new RequiredValidUntilFilter();
+        filter.initialize();
         filter.filter(descriptor, new MetadataFilterContext());
     }
     

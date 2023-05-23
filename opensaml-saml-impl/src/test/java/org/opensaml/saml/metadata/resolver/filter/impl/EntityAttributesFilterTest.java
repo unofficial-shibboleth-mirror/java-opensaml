@@ -66,7 +66,7 @@ public class EntityAttributesFilterTest extends XMLObjectBaseTestCase implements
         valueBuilder = XMLObjectProviderRegistrySupport.getBuilderFactory().<XSString>ensureBuilder(
                 XSString.TYPE_NAME);
 
-        URL mdURL = FilesystemMetadataResolverTest.class
+        final URL mdURL = FilesystemMetadataResolverTest.class
                 .getResource("/org/opensaml/saml/saml2/metadata/InCommon-metadata.xml");
         mdFile = new File(mdURL.toURI());
 

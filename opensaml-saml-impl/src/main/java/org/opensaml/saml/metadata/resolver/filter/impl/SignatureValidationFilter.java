@@ -116,6 +116,7 @@ public class SignatureValidationFilter extends AbstractMetadataFilter {
      * @param flag true if root signature should always be verified, false if should be dynamically determined
      */
     public void setAlwaysVerifyTrustedSource(final boolean flag) {
+        checkSetterPreconditions();
         alwaysVerifyTrustedSource = flag;
     }
 
@@ -138,6 +139,7 @@ public class SignatureValidationFilter extends AbstractMetadataFilter {
      * @param strategy the function, may be null
      */
     public void setDynamicTrustedNamesStrategy(@Nullable final Function<XMLObject, Set<String>> strategy) {
+        checkSetterPreconditions();
         dynamicTrustedNamesStrategy = strategy;
     }
 
@@ -169,6 +171,7 @@ public class SignatureValidationFilter extends AbstractMetadataFilter {
      * @param validator the signature prevalidator to use
      */
     public void setSignaturePrevalidator(@Nullable final SignaturePrevalidator validator) {
+        checkSetterPreconditions();
         signaturePrevalidator = validator;
     }
 
@@ -191,6 +194,7 @@ public class SignatureValidationFilter extends AbstractMetadataFilter {
      * @param require whether incoming metadata is required to be signed
      */
     public void setRequireSignedRoot(final boolean require) {
+        checkSetterPreconditions();
         requireSignedRoot = require;
     }
      
@@ -209,12 +213,15 @@ public class SignatureValidationFilter extends AbstractMetadataFilter {
      * @param newCriteria the new criteria set to use
      */
     public void setDefaultCriteria(@Nullable final CriteriaSet newCriteria) {
+        checkSetterPreconditions();
         defaultCriteria = newCriteria;
     }
 
     /** {@inheritDoc} */
     @Nullable public XMLObject filter(@Nullable final XMLObject metadata, @Nonnull final MetadataFilterContext context)
             throws FilterException {
+        checkComponentActive();
+        
         if (metadata == null) {
             return null;
         }
