@@ -181,7 +181,9 @@ public abstract class AbstractProfileAction extends AbstractInitializableCompone
 
         final MetricContext metricCtx = profileRequestContext.getSubcontext(MetricContext.class);
         if (metricCtx != null) {
-            metricCtx.start(getClass().getSimpleName());
+            final String name = getClass().getSimpleName();
+            assert name != null;
+            metricCtx.start(name);
         }
         
         return true;

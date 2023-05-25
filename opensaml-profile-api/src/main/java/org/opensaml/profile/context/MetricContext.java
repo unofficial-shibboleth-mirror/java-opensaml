@@ -50,15 +50,16 @@ public final class MetricContext extends BaseContext {
      * 
      * <p>The first member is the timer name, the second the object to associate with the timer.</p>
      */
-    @Nonnull @NonnullElements private Multimap<String,Pair<String,String>> timerMap;
+    @Nonnull @NonnullElements private final Multimap<String,Pair<String,String>> timerMap;
     
     /** Map of objects to contexts to perform a stop signal. */
-    @Nonnull @NonnullElements private Multimap<String,Timer.Context> timerContextMap;
+    @Nonnull @NonnullElements private final Multimap<String,Timer.Context> timerContextMap;
     
     /** Map of objects to counter names. */
-    @Nonnull @NonnullElements private Map<String,String> counterMap;
+    @Nonnull @NonnullElements private final Map<String,String> counterMap;
     
     /** Constructor. */
+    @SuppressWarnings("null")
     public MetricContext() {
         timerMap = ArrayListMultimap.create();
         timerContextMap = ArrayListMultimap.create();
