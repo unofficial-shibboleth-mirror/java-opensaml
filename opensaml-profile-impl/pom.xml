@@ -63,6 +63,11 @@
             <artifactId>shib-security</artifactId>
         </dependency>       
 
+        <dependency>
+            <groupId>io.dropwizard.metrics</groupId>
+            <artifactId>metrics-core</artifactId>
+        </dependency>
+
         <!-- Provided Dependencies -->
        <dependency>
             <groupId>jakarta.servlet</groupId>
