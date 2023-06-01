@@ -19,6 +19,7 @@ package org.opensaml.messaging.context;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -27,9 +28,13 @@ import javax.annotation.concurrent.NotThreadSafe;
 import net.shibboleth.shared.annotation.constraint.NonnullElements;
 import net.shibboleth.shared.annotation.constraint.NotEmpty;
 import net.shibboleth.shared.collection.ClassIndexedSet;
+import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
+import net.shibboleth.shared.primitive.DeprecationSupport;
+import net.shibboleth.shared.primitive.DeprecationSupport.ObjectType;
 import net.shibboleth.shared.primitive.LoggerFactory;
 
+import org.opensaml.core.config.ConfigurationService;
 import org.opensaml.messaging.MessageRuntimeException;
 import org.slf4j.Logger;
 
@@ -200,6 +205,17 @@ public abstract class BaseContext implements Iterable<BaseContext> {
         try {
             return getSubcontext(Class.forName(className).asSubclass(BaseContext.class), autocreate);
         } catch (final ClassNotFoundException e) {
+            
+            // Check for a deprecated class name.
+            final DeprecatedContextClassNameLookAside lookaside =
+                    ConfigurationService.get(DeprecatedContextClassNameLookAside.class);
+            if (lookaside != null) {
+                final Class<? extends BaseContext> claz = lookaside.get(className);
+                if (claz != null) {
+                    return getSubcontext(claz, autocreate);
+                }
+            }
+            
             if (!autocreate) {
                 for (final BaseContext child : this) {
                     if (child.getClass().getSimpleName().equals(className)) {
@@ -328,7 +344,7 @@ public abstract class BaseContext implements Iterable<BaseContext> {
      * Clear the subcontexts of the current context.
      */
     public void clearSubcontexts() {
-        log.trace("Clearing all subcontexts from context with type '{}'", this.getClass().getName());
+        log.trace("Clearing all subcontexts from context with type '{}'", getClass().getName());
         for (final BaseContext subcontext : subcontexts) {
             subcontext.setParent(null);
         }
@@ -393,6 +409,45 @@ public abstract class BaseContext implements Iterable<BaseContext> {
             throw new UnsupportedOperationException("Removal of subcontexts via the iterator is unsupported");
         }
         
+    }
+
+    /**
+     * A facade for a map of class names to class types that allows string-based access to renamed classes.
+     * 
+     * @since 5.0.0
+     */
+    public static class DeprecatedContextClassNameLookAside {
+    
+        /** Map of renamed classes. */
+        @Nonnull private final Map<String,Class<? extends BaseContext>> lookAsideMap;
+        
+        /**
+         * Constructor.
+         *
+         * @param map look aside map of class name strings to classes
+         */
+        public DeprecatedContextClassNameLookAside(@Nullable final Map<String,Class<? extends BaseContext>> map) {
+            if (map != null) {
+                lookAsideMap = CollectionSupport.copyToMap(map);
+            } else {
+                lookAsideMap = CollectionSupport.emptyMap();
+            }
+        }
+        
+        /**
+         * Get the relocated class object if it exists.
+         * 
+         * @param name class name
+         * 
+         * @return relocated class object
+         */
+        @Nullable public Class<? extends BaseContext> get(@Nonnull final String name) {
+            final Class<? extends BaseContext> claz = lookAsideMap.get(name);
+            if (claz != null) {
+                DeprecationSupport.warn(ObjectType.CLASS, name, null, claz.getName());
+            }
+            return claz;
+        }
     }
     
 }
