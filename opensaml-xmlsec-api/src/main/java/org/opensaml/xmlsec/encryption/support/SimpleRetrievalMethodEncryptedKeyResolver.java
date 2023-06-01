@@ -61,6 +61,7 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
      * 
      * @param recipients the set of recipients
      */
+    @Deprecated
     public SimpleRetrievalMethodEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
     }
@@ -70,19 +71,21 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
      * 
      * @param recipient the recipient
      */
+    @Deprecated
     public SimpleRetrievalMethodEncryptedKeyResolver(@Nullable final String recipient) {
         this(recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData,
+            @Nullable final Set<String> recipients) {
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
         
         final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
 
         final KeyInfo keyInfo = encryptedData.getKeyInfo();
         if (keyInfo == null) {
-            return resolvedEncKeys;
+            return CollectionSupport.emptyList();
         }
 
         for (final RetrievalMethod rm : keyInfo.getRetrievalMethods()) {
@@ -92,11 +95,13 @@ public class SimpleRetrievalMethodEncryptedKeyResolver extends AbstractEncrypted
                 log.warn("EncryptedKey RetrievalMethod has transforms, cannot process");
                 continue;
             }
+            
+            final Set<String> validRecipients = getEffectiveRecipients(recipients);
 
             final EncryptedKey encKey = dereferenceURI(rm);
             if (encKey == null) {
                 continue;
-            } else if (matchRecipient(encKey.getRecipient())) {
+            } else if (matchRecipient(encKey.getRecipient(), validRecipients)) {
                 resolvedEncKeys.add(encKey);
             }
         }

@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.function.Function;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.messaging.context.navigate.ChildContextLookup;
 import org.opensaml.profile.action.AbstractConditionalProfileAction;
@@ -34,6 +35,7 @@ import org.opensaml.xmlsec.DecryptionParametersResolver;
 import org.opensaml.xmlsec.SecurityConfigurationSupport;
 import org.opensaml.xmlsec.context.SecurityParametersContext;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
+import org.opensaml.xmlsec.criterion.DecryptionRecipientsCriterion;
 import org.slf4j.Logger;
 
 import net.shibboleth.shared.annotation.constraint.NonnullAfterInit;
@@ -65,6 +67,9 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
     
     /** Resolver for parameters to store into context. */
     @NonnullAfterInit private DecryptionParametersResolver resolver;
+
+    /** Strategy used to look up the {@link SecurityParametersContext} to set the parameters for. */
+    @Nullable private Function<ProfileRequestContext,String> recipientLookupStrategy;
     
     /**
      * Constructor.
@@ -100,6 +105,18 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
         
         configurationLookupStrategy = Constraint.isNotNull(strategy,
                 "DecryptionConfiguration lookup strategy cannot be null");
+    }
+    
+    /**
+     * Set the strategy used to look up the dynamic recipient to include in decryption criteria.
+     * 
+     * @param strategy to use
+     */
+    public void setRecipientLookupStrategy(
+            @Nullable final Function<ProfileRequestContext,String> strategy) {
+        checkSetterPreconditions();
+        
+        recipientLookupStrategy = strategy;
     }
     
     /**
@@ -151,10 +168,18 @@ public class PopulateDecryptionParameters extends AbstractConditionalProfileActi
             return;
         }
         
+        String recipient = null;
+        if (recipientLookupStrategy != null) {
+            recipient = recipientLookupStrategy.apply(profileRequestContext);
+            log.debug("{} Resolved dynamic recipient for decryption: {}", getLogPrefix(), recipient);
+        }
+        
         try {
-            
-            final DecryptionParameters params = resolver.resolveSingle(
-                    new CriteriaSet(new DecryptionConfigurationCriterion(configs)));
+            final CriteriaSet criteria = new CriteriaSet(new DecryptionConfigurationCriterion(configs));
+            if (recipient != null) {
+                criteria.add(new DecryptionRecipientsCriterion(CollectionSupport.singleton(recipient)));
+            }
+            final DecryptionParameters params = resolver.resolveSingle(criteria);
             paramsCtx.setDecryptionParameters(params);
             log.debug("{} {} DecryptionParameters", getLogPrefix(),
                     params != null ? "Resolved" : "Failed to resolve");

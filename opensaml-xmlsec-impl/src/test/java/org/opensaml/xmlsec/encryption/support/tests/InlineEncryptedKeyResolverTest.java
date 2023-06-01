@@ -17,16 +17,13 @@
 
 package org.opensaml.xmlsec.encryption.support.tests;
 
-import org.testng.annotations.Test;
-
-import net.shibboleth.shared.collection.CollectionSupport;
-
-import org.testng.Assert;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.xmlsec.encryption.EncryptedData;
@@ -34,6 +31,10 @@ import org.opensaml.xmlsec.encryption.EncryptedKey;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
 import org.opensaml.xmlsec.signature.KeyInfo;
+import org.testng.Assert;
+import org.testng.annotations.Test;
+
+import net.shibboleth.shared.collection.CollectionSupport;
 
 /**
  * Test the inline encrypted key resolver.
@@ -58,7 +59,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         
         resolver = new InlineEncryptedKeyResolver();
         
-        final List<EncryptedKey> resolved = generateList(encData, resolver);
+        final List<EncryptedKey> resolved = generateList(encData, resolver, null);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -76,9 +77,9 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(CollectionSupport.singleton("foo"));
+        resolver = new InlineEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.singleton("foo"));
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -96,9 +97,9 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(CollectionSupport.singleton("bar"));
+        resolver = new InlineEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.singleton("bar"));
         Assert.assertEquals(resolved.size(), 0, "Incorrect number of resolved EncryptedKeys found");
     }
     
@@ -116,7 +117,7 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         
         resolver = new InlineEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, null);
         Assert.assertEquals(resolved.size(), 4, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -138,9 +139,9 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(CollectionSupport.singleton("foo"));
+        resolver = new InlineEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.singleton("foo"));
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -159,9 +160,9 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new InlineEncryptedKeyResolver(CollectionSupport.setOf("foo", "baz"));
+        resolver = new InlineEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.setOf("foo", "baz"));
         Assert.assertEquals(resolved.size(), 3, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -169,20 +170,42 @@ public class InlineEncryptedKeyResolverTest extends XMLObjectBaseTestCase {
         Assert.assertTrue(resolved.get(2) == allKeys.get(3), "Unexpected EncryptedKey instance found");
     }
     
+    /** Multi recipient specified to resolver via ctor and method args. */
+    @Test
+    @SuppressWarnings("deprecation")
+    public void  testMultiRecipientsCtorAndArgs() {
+        final String filename = "/org/opensaml/xmlsec/encryption/support/InlineEncryptedKeyResolverMultiple.xml";
+        final EncryptedData encData = (EncryptedData) unmarshallElement(filename);
+        assert encData != null;
+        
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        final List<EncryptedKey> allKeys = keyInfo.getEncryptedKeys();
+        Assert.assertFalse(allKeys.isEmpty());
+        
+        resolver = new InlineEncryptedKeyResolver(CollectionSupport.singleton("foo"));
+        
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.singleton("baz"));
+        Assert.assertEquals(resolved.size(), 3, "Incorrect number of resolved EncryptedKeys found");
+        
+        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
+        Assert.assertTrue(resolved.get(1) == allKeys.get(2), "Unexpected EncryptedKey instance found");
+        Assert.assertTrue(resolved.get(2) == allKeys.get(3), "Unexpected EncryptedKey instance found");
+    }
+
     /**
      * Resolve EncryptedKeys and put them in an ordered list.
      * 
      * @param encData the EncryptedData context
      * @param ekResolver the resolver to test
+     * @param recipients the valid recipients for resolution
      * @return list of resolved EncryptedKeys
      */
     @Nonnull private List<EncryptedKey> generateList(@Nonnull final EncryptedData encData,
-            @Nonnull final EncryptedKeyResolver ekResolver) {
-        List<EncryptedKey> resolved = new ArrayList<>();
-        for (EncryptedKey encKey : ekResolver.resolve(encData)) {
-            resolved.add(encKey);
-        }
-        return resolved;
+            @Nonnull final EncryptedKeyResolver ekResolver, @Nullable final Set<String> recipients) {
+        
+        return StreamSupport.stream(ekResolver.resolve(encData, recipients).spliterator(), false)
+                .collect(CollectionSupport.nonnullCollector(Collectors.toList())).get();
     }
 
 }

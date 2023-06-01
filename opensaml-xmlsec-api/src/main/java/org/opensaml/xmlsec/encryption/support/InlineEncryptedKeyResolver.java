@@ -1,5 +1,6 @@
 /*
  * Licensed to the University Corporation for Advanced Internet Development,
+
  * Inc. (UCAID) under one or more contributor license agreements.  See the
  * NOTICE file distributed with this work for additional information regarding
  * copyright ownership. The UCAID licenses this file to You under the Apache
@@ -20,6 +21,7 @@ package org.opensaml.xmlsec.encryption.support;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -47,6 +49,7 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * 
      * @param recipients the set of recipients
      */
+    @Deprecated
     public InlineEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
     }
@@ -56,28 +59,24 @@ public class InlineEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * 
      * @param recipient the recipient
      */
+    @Deprecated
     public InlineEncryptedKeyResolver(@Nullable final String recipient) {
         this(recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData,
+            @Nullable final Set<String> recipients) {
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
-        
-        final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
         
         final KeyInfo keyInfo = encryptedData.getKeyInfo();
         if (keyInfo == null) {
-            return resolvedEncKeys;
+            return CollectionSupport.emptyList();
         }
         
-        for (final EncryptedKey encKey : keyInfo.getEncryptedKeys()) {
-            if (matchRecipient(encKey.getRecipient())) {
-                resolvedEncKeys.add(encKey);
-            }
-        }
-        
-        return resolvedEncKeys;
+        return keyInfo.getEncryptedKeys().stream()
+                .filter(ek -> matchRecipient(ek.getRecipient(), getEffectiveRecipients(recipients)))
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
     }
 
 }

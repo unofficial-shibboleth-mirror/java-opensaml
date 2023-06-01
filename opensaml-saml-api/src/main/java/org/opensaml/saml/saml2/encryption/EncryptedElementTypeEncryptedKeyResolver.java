@@ -20,6 +20,7 @@ package org.opensaml.saml.saml2.encryption;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
@@ -48,6 +49,7 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
      * 
      * @param recipients the set of recipients
      */
+    @Deprecated
     public EncryptedElementTypeEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
     }
@@ -57,27 +59,24 @@ public class EncryptedElementTypeEncryptedKeyResolver extends AbstractEncryptedK
      * 
      * @param recipient the recipient
      */
+    @Deprecated
     public EncryptedElementTypeEncryptedKeyResolver(@Nullable final String recipient) {
         this(recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
 
     /** {@inheritDoc} */
-    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
-        final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData,
+            @Nullable final Set<String> recipients) {
         
         if (!(encryptedData.getParent() instanceof EncryptedElementType) ) {
-            return resolvedEncKeys;
+            return CollectionSupport.emptyList();
         }
         
         final EncryptedElementType encElementType = (EncryptedElementType) encryptedData.getParent();
         assert encElementType != null;
-        for (final EncryptedKey encKey : encElementType.getEncryptedKeys()) {
-            if (matchRecipient(encKey.getRecipient())) {
-                resolvedEncKeys.add(encKey);
-            }
-        }
-        
-        return resolvedEncKeys;
+        return  encElementType.getEncryptedKeys().stream()
+                .filter(ek -> matchRecipient(ek.getRecipient(), getEffectiveRecipients(recipients)))
+                .collect(CollectionSupport.nonnullCollector(Collectors.toUnmodifiableList())).get();
     }
     
 }

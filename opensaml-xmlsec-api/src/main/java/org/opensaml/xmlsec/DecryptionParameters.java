@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec;
 
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
@@ -35,6 +37,9 @@ public class DecryptionParameters extends AlgorithmPolicyParameters {
     
     /** The EncryptedKey resolver. */
     @Nullable private EncryptedKeyResolver encryptedKeyResolver;
+    
+    /** The set of recipients against which to evaluate candidate EncryptedKey elements. */
+    @Nullable private Set<String> recipients;
         
     /**
      * Get the KeyInfoCredentialResolver to use when processing the EncryptedData/KeyInfo.
@@ -90,6 +95,24 @@ public class DecryptionParameters extends AlgorithmPolicyParameters {
      */
     public void setEncryptedKeyResolver(@Nullable final EncryptedKeyResolver resolver) {
        encryptedKeyResolver = resolver; 
+    }
+
+    /**
+     * Get the set of recipients against which to evaluate candidate EncryptedKey elements.
+     * 
+     * @return the recipients
+     */
+    public @Nullable Set<String> getRecipients() {
+        return recipients;
+    }
+
+    /**
+     * Set the set of recipients against which to evaluate candidate EncryptedKey elements.
+     * 
+     * @param newRecipients the recipients
+     */
+    public void setRecipients(@Nullable Set<String> newRecipients) {
+        recipients = newRecipients;
     }
     
 }

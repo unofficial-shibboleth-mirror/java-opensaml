@@ -22,6 +22,7 @@ import static org.testng.Assert.assertNull;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Set;
 
 import net.shibboleth.shared.logic.ConstraintViolationException;
 import net.shibboleth.shared.resolver.CriteriaSet;
@@ -29,6 +30,7 @@ import net.shibboleth.shared.resolver.ResolverException;
 
 import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
+import org.opensaml.xmlsec.criterion.DecryptionRecipientsCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.encryption.support.InlineEncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
@@ -151,6 +153,57 @@ public class BasicDecryptionParametersResolverTest {
         
         encKeyResolver = resolver.resolveEncryptedKeyResolver(criteriaSet);
         Assert.assertTrue(encKeyResolver == controlEncKeyResolver3);
+    }
+    
+    @Test
+    public void testNoRecipients() throws ResolverException {
+        final DecryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        Assert.assertNull(params.getRecipients());
+    }
+    
+    @Test
+    public void testRecipientsFromConfig() throws ResolverException {
+        config1.setRecipients(Set.of("A", "B", "C"));
+        
+        final DecryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+        
+        final Set<String> recipients = params.getRecipients();
+        assert recipients != null;
+
+        Assert.assertNotNull(recipients);
+        Assert.assertTrue(recipients.equals(Set.of("A", "B", "C")));
+    }
+    
+    @Test
+    public void testRecipientsFromCriterion() throws ResolverException {
+        criteriaSet.add(new DecryptionRecipientsCriterion(Set.of("X", "Y", "Z")));
+        
+        final DecryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Set<String> recipients = params.getRecipients();
+        assert recipients != null;
+
+        Assert.assertNotNull(recipients);
+        Assert.assertTrue(recipients.equals(Set.of("X", "Y", "Z")));
+    }
+    
+    @Test
+    public void testRecipientsFromConfigAndCriterion() throws ResolverException {
+        config2.setRecipients(Set.of("A", "B", "C"));
+        criteriaSet.add(new DecryptionRecipientsCriterion(Set.of("X", "Y", "Z")));
+        
+        final DecryptionParameters params = resolver.resolveSingle(criteriaSet);
+        assert params != null;
+
+        final Set<String> recipients = params.getRecipients();
+        assert recipients != null;
+
+        Assert.assertNotNull(recipients);
+        Assert.assertTrue(recipients.equals(Set.of("A", "B", "C", "X", "Y", "Z")));
     }
     
     @Test

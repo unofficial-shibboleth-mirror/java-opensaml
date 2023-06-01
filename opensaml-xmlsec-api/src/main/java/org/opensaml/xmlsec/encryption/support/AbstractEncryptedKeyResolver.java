@@ -17,6 +17,7 @@
 
 package org.opensaml.xmlsec.encryption.support;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -57,6 +58,7 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * 
      * @param newRecipents set of recipients
      */
+    @Deprecated
     public AbstractEncryptedKeyResolver(@Nullable final Set<String> newRecipents) {
         recipients = CollectionSupport.copyToSet(StringSupport.normalizeStringCollection(newRecipents));
     }
@@ -76,8 +78,26 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
     }
 
     /** {@inheritDoc} */
+    @Deprecated
     @Nonnull @Unmodifiable @NotLive public Set<String> getRecipients() {
         return recipients;
+    }
+    
+    /**
+     * Get the effective set of recipients by merging the passed recipients set
+     * with the static set of recipients possibly configured on this resolver instance. 
+     * 
+     * @param values the recipients argument
+     * @return the merged recipients
+     */
+    @Nonnull @Unmodifiable @NotLive
+    protected Set<String> getEffectiveRecipients(@Nullable Set<String> values) {
+        final Set<String> temp = new HashSet<>();
+        temp.addAll(getRecipients());
+        if (values != null) {
+            temp.addAll(values);
+        }
+        return CollectionSupport.copyToSet(temp);
     }
     
     /**
@@ -85,20 +105,21 @@ public abstract class AbstractEncryptedKeyResolver implements EncryptedKeyResolv
      * recipient criteria.
      * 
      * @param recipient the recipient value to evaluate
+     * @param validRecipients recipients to consider valid for matching purposes.
+     *        If empty, then all recipients match
      * @return true if the recipient value matches the resolver's criteria, false otherwise
      */
-    protected boolean matchRecipient(@Nullable final String recipient) {
+    protected boolean matchRecipient(@Nullable final String recipient, @Nonnull Set<String> validRecipients) {
+        if (validRecipients.isEmpty()) {
+            return true;
+        }
+        
         final String trimmedRecipient = StringSupport.trimOrNull(recipient);
         if (trimmedRecipient == null) {
             return true;
         }
         
-        final Set<String> ourRecipients = getRecipients();
-        if (ourRecipients.isEmpty()) {
-            return true;
-        }
-        
-        return ourRecipients.contains(trimmedRecipient);
+        return validRecipients.contains(trimmedRecipient);
     }
     
     /**

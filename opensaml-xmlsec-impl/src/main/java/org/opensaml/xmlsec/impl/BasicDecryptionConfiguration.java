@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -38,6 +40,9 @@ public class BasicDecryptionConfiguration extends BasicAlgorithmPolicyConfigurat
     
     /** The EncryptedKey resolver. */
     @Nullable private EncryptedKeyResolver encryptedKeyResolver;
+    
+    /** The set of recipients against which to evaluate candidate EncryptedKey elements. */
+    @Nullable private Set<String> recipients;
 
     //TODO chaining to parent config instance on getters? or use a wrapping proxy, etc?
 
@@ -107,6 +112,24 @@ public class BasicDecryptionConfiguration extends BasicAlgorithmPolicyConfigurat
             @Nullable final EncryptedKeyResolver resolver) {
        encryptedKeyResolver = resolver;
        return this;
+    }
+    
+    /**
+     * Get the set of recipients against which to evaluate candidate EncryptedKey elements.
+     * 
+     * @return the recipients
+     */
+    public @Nullable Set<String> getRecipients() {
+        return recipients;
+    }
+
+    /**
+     * Set the set of recipients against which to evaluate candidate EncryptedKey elements.
+     * 
+     * @param newRecipients the recipients
+     */
+    public void setRecipients(@Nullable Set<String> newRecipients) {
+        recipients = newRecipients;
     }
     
 }

@@ -65,6 +65,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * @param encKeyResolvers the chain of encrypted key resolvers
      * @param recipients the set of recipients
      */
+    @Deprecated
     public ChainingEncryptedKeyResolver(
             @Nonnull @ParameterName(name="encKeyResolvers") final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable @ParameterName(name="recipients") final Set<String> recipients) {
@@ -79,6 +80,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
      * @param encKeyResolvers the chain of encrypted key resolvers
      * @param recipient the recipient
      */
+    @Deprecated
     public ChainingEncryptedKeyResolver(
             @Nonnull @ParameterName(name="encKeyResolvers") final List<EncryptedKeyResolver> encKeyResolvers,
             @Nullable @ParameterName(name="recipient") final String recipient) {
@@ -96,12 +98,13 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
     /** {@inheritDoc} */
     @Override
-    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData,
+            @Nullable final Set<String> recipients) {
         if (resolvers.isEmpty()) {
             log.warn("Chaining encrypted key resolver resolution was attempted with an empty resolver chain");
             throw new IllegalStateException("The resolver chain is empty");
         }
-        return new ChainingIterable(this, encryptedData);
+        return new ChainingIterable(this, encryptedData, recipients);
     }
 
     /**
@@ -114,22 +117,28 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
 
         /** The EncryptedData context for resolution. */
         @Nonnull private final EncryptedData encryptedData;
+        
+        /** The recipients for resolution. */
+        @Nullable private final Set<String> recipients;
 
         /**
          * Constructor.
          * 
          * @param resolver the ChainingEncryptedKeyResolver parent
          * @param encData the EncryptedData context for resolution
+         * @param recipientIDs the recipients for resolution
          */
         public ChainingIterable(@Nonnull final ChainingEncryptedKeyResolver resolver,
-                @Nonnull final EncryptedData encData) {
+                @Nonnull final EncryptedData encData, @Nullable final Set<String> recipientIDs) {
             parent = resolver;
             encryptedData = encData;
+            recipients = recipientIDs;
+            
         }
 
         /** {@inheritDoc} */
         @Nonnull public Iterator<EncryptedKey> iterator() {
-            return new ChainingIterator(parent, encryptedData);
+            return new ChainingIterator(parent, encryptedData, recipients);
         }
 
     }
@@ -150,6 +159,9 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
         /** The EncryptedData context for resolution. */
         @Nonnull private final EncryptedData encryptedData;
 
+        /** The recipients for resolution. */
+        @Nonnull @Unmodifiable @NotLive private final Set<String> validRecipients;
+
         /** The iterator over resolvers in the chain. */
         @Nonnull private final Iterator<EncryptedKeyResolver> resolverIterator;
 
@@ -167,11 +179,13 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
          * 
          * @param resolver the ChainingEncryptedKeyResolver parent
          * @param encData the EncryptedData context for resolution
+         * @param recipientIDs the recipients for resolution
          */
         public ChainingIterator(@Nonnull final ChainingEncryptedKeyResolver resolver,
-                @Nonnull final EncryptedData encData) {
+                @Nonnull final EncryptedData encData, @Nullable final Set<String> recipientIDs) {
             parent = resolver;
             encryptedData = encData;
+            validRecipients = getEffectiveRecipients(recipientIDs);
             resolverIterator = parent.getResolverChain().iterator();
             keyIterator = getNextKeyIterator();
             nextKey = null;
@@ -239,7 +253,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
             if (keyIterator != null) {
                 while (keyIterator.hasNext()) {
                     tempKey = keyIterator.next();
-                    if (parent.matchRecipient(tempKey.getRecipient())) {
+                    if (parent.matchRecipient(tempKey.getRecipient(), validRecipients)) {
                         log.debug("Found matching encrypted key: {}", tempKey.toString());
                         return tempKey;
                     }
@@ -250,7 +264,7 @@ public class ChainingEncryptedKeyResolver extends AbstractEncryptedKeyResolver {
             while (keyIterator != null) {
                 while (keyIterator.hasNext()) {
                     tempKey = keyIterator.next();
-                    if (parent.matchRecipient(tempKey.getRecipient())) {
+                    if (parent.matchRecipient(tempKey.getRecipient(), validRecipients)) {
                         log.debug("Found matching encrypted key: {}", tempKey.toString());
                         return tempKey;
                     }

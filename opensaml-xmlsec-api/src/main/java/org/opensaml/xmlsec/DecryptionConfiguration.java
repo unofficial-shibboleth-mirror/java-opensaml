@@ -17,6 +17,8 @@
 
 package org.opensaml.xmlsec;
 
+import java.util.Set;
+
 import javax.annotation.Nullable;
 
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
@@ -48,5 +50,12 @@ public interface DecryptionConfiguration extends AlgorithmPolicyConfiguration {
      * @return the EncryptedKeyResolver instance
      */
     @Nullable EncryptedKeyResolver getEncryptedKeyResolver();
+    
+    /**
+     * Get the set of recipients against which to evaluate candidate EncryptedKey elements.
+     * 
+     * @return the recipients
+     */
+    @Nullable Set<String> getRecipients();
     
 }

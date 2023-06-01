@@ -19,8 +19,12 @@ package org.opensaml.xmlsec.encryption.support.tests;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import org.opensaml.core.testing.XMLObjectBaseTestCase;
 import org.opensaml.core.xml.XMLObject;
@@ -64,7 +68,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         
         resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, null);
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -88,9 +92,9 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(CollectionSupport.singleton("foo"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.singleton("foo"));
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -114,9 +118,9 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(CollectionSupport.singleton("foo"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.singleton("foo"));
         Assert.assertEquals(resolved.size(), 1, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -143,9 +147,37 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
         Assert.assertFalse(allKeys.isEmpty());
         
-        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(CollectionSupport.setOf("foo", "baz"));
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver();
         
-        List<EncryptedKey> resolved = generateList(encData, resolver);
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.setOf("foo", "baz"));
+        Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
+        
+        Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
+        Assert.assertTrue(resolved.get(1) == allKeys.get(2), "Unexpected EncryptedKey instance found");
+    }
+    
+    /** Multi recipient specified to resolver via ctor and method args. */
+    @Test
+    @SuppressWarnings("deprecation")
+    public void testMultiRecipientsCtorAndArgs() {
+        final String filename =  "/org/opensaml/xmlsec/encryption/support/SimpleKeyInfoReferenceEncryptedKeyResolverMultiple.xml";
+        final SignableSimpleXMLObject sxo =  (SignableSimpleXMLObject) unmarshallElement(filename);
+        assert sxo != null;
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0));
+        Assert.assertNotNull(sxo.getSimpleXMLObjects().get(0).getEncryptedData());
+        
+        final EncryptedData encData = sxo.getSimpleXMLObjects().get(0).getEncryptedData();
+        assert encData != null;
+        final KeyInfo keyInfo = encData.getKeyInfo();
+        assert keyInfo != null;
+        Assert.assertFalse(keyInfo.getKeyInfoReferences().isEmpty());
+        
+        List<EncryptedKey> allKeys = getEncryptedKeys(sxo);
+        Assert.assertFalse(allKeys.isEmpty());
+        
+        resolver = new SimpleKeyInfoReferenceEncryptedKeyResolver(CollectionSupport.singleton("foo"));
+        
+        List<EncryptedKey> resolved = generateList(encData, resolver, CollectionSupport.singleton("baz"));
         Assert.assertEquals(resolved.size(), 2, "Incorrect number of resolved EncryptedKeys found");
         
         Assert.assertTrue(resolved.get(0) == allKeys.get(0), "Unexpected EncryptedKey instance found");
@@ -167,21 +199,20 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolverTest extends XMLObjectBas
         }
         return allKeys;
     }
-
+    
     /**
      * Resolve EncryptedKeys and put them in an ordered list.
      * 
      * @param encData the EncryptedData context
      * @param ekResolver the resolver to test
+     * @param recipients the valid recipients for resolution
      * @return list of resolved EncryptedKeys
      */
     @Nonnull private List<EncryptedKey> generateList(@Nonnull final EncryptedData encData,
-            @Nonnull final EncryptedKeyResolver ekResolver) {
-        List<EncryptedKey> resolved = new ArrayList<>();
-        for (EncryptedKey encKey : ekResolver.resolve(encData)) {
-            resolved.add(encKey);
-        }
-        return resolved;
+            @Nonnull final EncryptedKeyResolver ekResolver, @Nullable final Set<String> recipients) {
+        
+        return StreamSupport.stream(ekResolver.resolve(encData, recipients).spliterator(), false)
+                .collect(CollectionSupport.nonnullCollector(Collectors.toList())).get();
     }
 
 }

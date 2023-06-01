@@ -197,8 +197,7 @@ public abstract class AbstractDecryptAction extends AbstractProfileAction {
         if (params == null) {
             log.debug("{} No security parameter context or decryption parameters", getLogPrefix());
         } else {
-            decrypter = new Decrypter(params.getDataKeyInfoCredentialResolver(),
-                    params.getKEKKeyInfoCredentialResolver(), params.getEncryptedKeyResolver());
+            decrypter = new Decrypter(params);
         }
         
         return true;

@@ -31,6 +31,9 @@ import org.opensaml.xmlsec.signature.KeyInfo;
 import org.opensaml.xmlsec.signature.KeyInfoReference;
 import org.slf4j.Logger;
 
+import net.shibboleth.shared.annotation.constraint.NonnullElements;
+import net.shibboleth.shared.annotation.constraint.NotLive;
+import net.shibboleth.shared.annotation.constraint.Unmodifiable;
 import net.shibboleth.shared.collection.CollectionSupport;
 import net.shibboleth.shared.logic.Constraint;
 import net.shibboleth.shared.primitive.LoggerFactory;
@@ -63,6 +66,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
      * 
      * @param recipients the set of recipients
      */
+    @Deprecated
     public SimpleKeyInfoReferenceEncryptedKeyResolver(@Nullable final Set<String> recipients) {
         super(recipients);
         depthLimit = 5;
@@ -73,6 +77,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
      * 
      * @param recipient the recipient
      */
+    @Deprecated
     public SimpleKeyInfoReferenceEncryptedKeyResolver(@Nullable final String recipient) {
         this(recipient != null ? CollectionSupport.singleton(recipient) : null);
     }
@@ -97,10 +102,13 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
     
     /** {@inheritDoc} */
     @Override
-    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData) {
+    @Nonnull public Iterable<EncryptedKey> resolve(@Nonnull final EncryptedData encryptedData,
+            @Nullable final Set<String> recipients) {
         Constraint.isNotNull(encryptedData, "EncryptedData cannot be null");
         
-        return resolveKeyInfo(encryptedData.getKeyInfo(), depthLimit);
+        final Set<String> validRecipients = getEffectiveRecipients(recipients);
+        
+        return resolveKeyInfo(encryptedData.getKeyInfo(), depthLimit, validRecipients);
     }
 
     /**
@@ -108,9 +116,12 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
      * 
      * @param keyInfo KeyInfo to process
      * @param limit depth of references to follow
+     * @param validRecipients recipients to consider valid for matching purposes.
      * @return  encrypted keys
      */
-    @Nonnull protected Iterable<EncryptedKey> resolveKeyInfo(@Nullable final KeyInfo keyInfo, final int limit) {
+    @Nonnull protected Iterable<EncryptedKey> resolveKeyInfo(@Nullable final KeyInfo keyInfo, final int limit,
+            @Nonnull @NonnullElements @Unmodifiable @NotLive final Set<String> validRecipients) {
+
         final List<EncryptedKey> resolvedEncKeys = new ArrayList<>();
         
         if (keyInfo == null) {
@@ -121,7 +132,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
         // After that, we always start by looking inline.
         if (limit < depthLimit) {
             for (final EncryptedKey encKey : keyInfo.getEncryptedKeys()) {
-                if (matchRecipient(encKey.getRecipient())) {
+                if (matchRecipient(encKey.getRecipient(), validRecipients)) {
                     resolvedEncKeys.add(encKey);
                 }
             }
@@ -132,7 +143,7 @@ public class SimpleKeyInfoReferenceEncryptedKeyResolver extends AbstractEncrypte
         } else {
             for (final KeyInfoReference ref : keyInfo.getKeyInfoReferences()) {
                 assert ref != null;
-                for (final EncryptedKey encKey : resolveKeyInfo(dereferenceURI(ref), limit-1)) {
+                for (final EncryptedKey encKey : resolveKeyInfo(dereferenceURI(ref), limit-1, validRecipients)) {
                     resolvedEncKeys.add(encKey);
                 }
             }

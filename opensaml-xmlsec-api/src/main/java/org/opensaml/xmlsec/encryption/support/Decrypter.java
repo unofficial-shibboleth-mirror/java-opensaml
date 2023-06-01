@@ -205,6 +205,9 @@ public class Decrypter {
     /** Resolver for EncryptedKey instances which contain the encrypted data encryption key. */
     @Nullable private EncryptedKeyResolver encKeyResolver;
     
+    /** The set of recipients against which to evaluate candidate EncryptedKey elements. */
+    @Nullable private Set<String> recipients;
+    
     /** The collection of algorithm URIs which are included. */
     @Nullable private Collection<String> includedAlgorithmURIs;
     
@@ -236,6 +239,7 @@ public class Decrypter {
         this(   params.getDataKeyInfoCredentialResolver(),
                 params.getKEKKeyInfoCredentialResolver(),
                 params.getEncryptedKeyResolver(),
+                params.getRecipients(),
                 params.getIncludedAlgorithms(),
                 params.getExcludedAlgorithms()
                 );
@@ -252,7 +256,23 @@ public class Decrypter {
             @Nullable final KeyInfoCredentialResolver newKEKResolver,
             @Nullable final EncryptedKeyResolver newEncKeyResolver) {
         
-        this(newResolver, newKEKResolver, newEncKeyResolver, null, null);
+        this(newResolver, newKEKResolver, newEncKeyResolver, null, null, null);
+    }
+    
+    /**
+     * Constructor.
+     * 
+     * @param newResolver resolver for data encryption keys.
+     * @param newKEKResolver resolver for key encryption keys.
+     * @param newEncKeyResolver resolver for EncryptedKey elements
+     * @param newRecipients valid recipients of EncryptedKey elements
+     */
+    public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
+            @Nullable final KeyInfoCredentialResolver newKEKResolver,
+            @Nullable final EncryptedKeyResolver newEncKeyResolver,
+            @Nullable final Set<String> newRecipients) {
+        
+        this(newResolver, newKEKResolver, newEncKeyResolver, newRecipients, null, null);
     }
     
     /**
@@ -269,12 +289,33 @@ public class Decrypter {
             @Nullable final EncryptedKeyResolver newEncKeyResolver,
             @Nullable final Collection<String> includeAlgos,
             @Nullable final Collection<String> excludeAlgos) {
+
+        this(newResolver, newKEKResolver, newEncKeyResolver, null, includeAlgos, excludeAlgos);
+    }
+
+    /**
+     * Constructor.
+     * 
+     * @param newResolver resolver for data encryption keys.
+     * @param newKEKResolver resolver for key encryption keys.
+     * @param newEncKeyResolver resolver for EncryptedKey elements
+     * @param newRecipients valid recipients of EncryptedKey elements
+     * @param includeAlgos collection of included algorithm URIs
+     * @param excludeAlgos collection of excluded algorithm URIs
+     */
+    public Decrypter(@Nullable final KeyInfoCredentialResolver newResolver,
+            @Nullable final KeyInfoCredentialResolver newKEKResolver,
+            @Nullable final EncryptedKeyResolver newEncKeyResolver,
+            @Nullable final Set<String> newRecipients,
+            @Nullable final Collection<String> includeAlgos,
+            @Nullable final Collection<String> excludeAlgos) {
         
         this();
         
         resolver = newResolver;
         kekResolver = newKEKResolver;
         encKeyResolver = newEncKeyResolver;
+        recipients = newRecipients;
         includedAlgorithmURIs = includeAlgos;
         excludedAlgorithmURIs = excludeAlgos;
     }
@@ -838,7 +879,7 @@ public class Decrypter {
     @Nullable private DocumentFragment decryptUsingResolvedEncryptedKey(@Nonnull final EncryptedData encryptedData,
             @Nonnull final String algorithm) {
         if (encKeyResolver != null) {
-            for (final EncryptedKey encryptedKey : encKeyResolver.resolve(encryptedData)) {
+            for (final EncryptedKey encryptedKey : encKeyResolver.resolve(encryptedData, recipients)) {
                 try {
                     assert encryptedKey != null;
                     final Key decryptedKey = decryptKey(encryptedKey, algorithm);

@@ -17,6 +17,9 @@
 
 package org.opensaml.xmlsec.impl;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
@@ -30,6 +33,7 @@ import org.opensaml.xmlsec.DecryptionConfiguration;
 import org.opensaml.xmlsec.DecryptionParameters;
 import org.opensaml.xmlsec.DecryptionParametersResolver;
 import org.opensaml.xmlsec.criterion.DecryptionConfigurationCriterion;
+import org.opensaml.xmlsec.criterion.DecryptionRecipientsCriterion;
 import org.opensaml.xmlsec.encryption.support.EncryptedKeyResolver;
 import org.opensaml.xmlsec.keyinfo.KeyInfoCredentialResolver;
 import org.slf4j.Logger;
@@ -79,6 +83,7 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
         params.setDataKeyInfoCredentialResolver(resolveDataKeyInfoCredentialResolver(criteria));
         params.setKEKKeyInfoCredentialResolver(resolveKEKKeyInfoCredentialResolver(criteria));
         params.setEncryptedKeyResolver(resolveEncryptedKeyResolver(criteria));
+        params.setRecipients(resolveRecipients(criteria));
         
         logResult(params);
         
@@ -103,6 +108,8 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
                     params.getKEKKeyInfoCredentialResolver() != null ? "present" : "null");
             log.debug("\tEncryptedKeyResolver: {}", 
                     params.getEncryptedKeyResolver() != null ? "present" : "null");
+
+            log.debug("\tRecipients: {}", params.getRecipients());
             
         }
     }
@@ -167,6 +174,33 @@ public class BasicDecryptionParametersResolver extends AbstractSecurityParameter
             }
         }
         return null;
+    }
+
+    /**
+     * Resolve the effective set of recipients against which to evaluate candidate EncryptedKey elements.
+     * 
+     * @param criteria the input criteria being evaluated
+     * @return the recipients set, or null
+     */
+    private Set<String> resolveRecipients(@Nonnull final CriteriaSet criteria) {
+        final DecryptionConfigurationCriterion configCriterion = criteria.get(DecryptionConfigurationCriterion.class);
+        assert configCriterion != null;
+        
+        final Set<String> recipients = new HashSet<>();
+
+        for (final DecryptionConfiguration config : configCriterion.getConfigurations()) {
+            if (config.getRecipients() != null) {
+                recipients.addAll(config.getRecipients());
+                break;
+            }
+        }
+        
+        final DecryptionRecipientsCriterion recipientsCriterion = criteria.get(DecryptionRecipientsCriterion.class);
+        if (recipientsCriterion != null) {
+            recipients.addAll(recipientsCriterion.getRecipients());
+        }
+
+        return recipients.isEmpty() ? null : recipients;
     }
 
 }
